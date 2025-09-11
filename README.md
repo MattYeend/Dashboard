@@ -94,6 +94,21 @@ npm run dev
 
 ## General CLI Commands
 
+| Command | Description |
+| --- | --- |
+| `php artisan make:model modelName -mcr` | Create a model, migration, and resource controller |
+| `php artisan make:model modelName -a` or `php artisan make:model modelName --all` | Create a model, migration, factory, seeder, controller, resource, request(s) |
+| `php artisan make:model modelName` | Create a model |
+| `php artisan make:controller controllerName` | Create a controller |
+| `php artisan make:controller controllerName --resource` | Create a resource controller |
+| `php artisan make:migration migration_name` | Create a migration |
+| `php artisan make:seeder SeederName` | Create a seeder |
+| `php artisan make:factory FactoryName` | Create a factory |
+| `php artisan make:request RequestName` | Creates a form request for validation |
+| `php artisan make:event EventName` | Creates an event class |
+| `php artisan make:listener ListenerName` | Creates a listener class |
+| `php artisan make:job JobName` | Creates a queued job |
+
 --- 
 
 ## Sponsor The Project
