@@ -42,17 +42,63 @@ const user = page.props.auth.user;
 
                 <Form v-bind="ProfileController.update.form()" class="space-y-6" v-slot="{ errors, processing, recentlySuccessful }">
                     <div class="grid gap-2">
-                        <Label for="name">Name</Label>
-                        <Input
-                            id="name"
-                            class="mt-1 block w-full"
-                            name="name"
-                            :default-value="user.name"
+                        <Label for="title">Title</Label>
+                        <select
+                            id="title"
+                            name="title"
+                            :default-value="user.title"
                             required
-                            autocomplete="name"
-                            placeholder="Full name"
+                            autocomplete="title"
+                            class="border rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+                        >
+                            <option value="" disabled selected>Select a title</option>
+                            <option value="Mr" :selected="user.title ==='Mr'">Mr.</option>
+                            <option value="Ms" :selected="user.title ==='Ms'">Ms.</option>
+                            <option value="Mrs" :selected="user.title ==='Mrs'">Mrs.</option>
+                            <option value="Dr" :selected="user.title ==='Dr'">Dr.</option>
+                            <option value="Prof" :selected="user.title ==='Prof'">Prof.</option>
+                        </select>
+                        <InputError :message="errors.title" />
+                    </div>
+                    
+                    <div class="grid gap-2">
+                        <Label for="name">First Name</Label>
+                        <Input
+                            id="first_name"
+                            class="mt-1 block w-full"
+                            name="first_name"
+                            :default-value="user.first_name"
+                            required
+                            autocomplete="first_name"
+                            placeholder="First name"
                         />
-                        <InputError class="mt-2" :message="errors.name" />
+                        <InputError class="mt-2" :message="errors.first_name" />
+                    </div>
+                    <div class="grid gap-2">
+                        <Label for="name">Middle Name</Label>
+                        <Input
+                            id="first_name"
+                            class="mt-1 block w-full"
+                            name="middle_name"
+                            :default-value="user.middle_name"
+                            autocomplete="middle_name"
+                            placeholder="Middle name"
+                        />
+                        <InputError class="mt-2" :message="errors.middle_name" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="name">Last Name</Label>
+                        <Input
+                            id="last_name"
+                            class="mt-1 block w-full"
+                            name="last_name"
+                            :default-value="user.last_name"
+                            required
+                            autocomplete="last_name"
+                            placeholder="Last name"
+                        />
+                        <InputError class="mt-2" :message="errors.last_name" />
                     </div>
 
                     <div class="grid gap-2">

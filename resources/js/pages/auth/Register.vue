@@ -33,11 +33,11 @@ import { LoaderCircle } from 'lucide-vue-next';
                         class="border rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
                     >
                         <option value="" disabled selected>Select a title</option>
-                        <option value="mr">Mr.</option>
-                        <option value="ms">Ms.</option>
-                        <option value="mrs">Mrs.</option>
-                        <option value="dr">Dr.</option>
-                        <option value="prof">Prof.</option>
+                        <option value="Mr">Mr.</option>
+                        <option value="Ms">Ms.</option>
+                        <option value="Mrs">Mrs.</option>
+                        <option value="Dr">Dr.</option>
+                        <option value="Prof">Prof.</option>
                     </select>
                     <InputError :message="errors.title" />
                 </div>
