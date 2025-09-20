@@ -14,8 +14,10 @@ class TwoFactorAuthenticationController extends Controller implements HM
 {
     /**
      * Get the middleware that should be assigned to the controller.
+     *
+     * @return array<int, Middleware>
      */
-    public function getMiddleware(): array
+    public static function middleware(): array
     {
         return Features::optionEnabled(
             Features::twoFactorAuthentication(),
