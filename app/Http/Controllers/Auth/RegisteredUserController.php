@@ -32,29 +32,50 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         Logging::log(Logging::ACTION_REGISTER_USER, null, $request->ip());
-        $request->validate([
-            'title' => 'required|string|max:10',
-            'first_name' => 'required|string|max:255',
-            'middle_name' => 'nullable|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'
-                .User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
 
-        $user = User::create([
-            'title' => $request->title,
-            'first_name' => $request->first_name,
-            'middle_name' => $request->middle_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $validated = $this->validateRequest($request);
+
+        $user = $this->createUser($validated);
 
         event(new Registered($user));
 
         Auth::login($user);
 
         return to_route('dashboard');
+    }
+
+    /**
+     * Validate the incoming registration request.
+     *
+     * @return array<string, mixed>
+     */
+    private function validateRequest(Request $request): array
+    {
+        return $request->validate([
+            'title' => 'required|string|max:10',
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|lowercase|email|max:255|unique:' .
+                User::class,
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+    }
+
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @return \App\Models\User
+     */
+    private function createUser(array $data): User
+    {
+        return User::create([
+            'title' => $data['title'],
+            'first_name' => $data['first_name'],
+            'middle_name' => $data['middle_name'],
+            'last_name' => $data['last_name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
     }
 }

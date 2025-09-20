@@ -31,7 +31,11 @@ class PasswordController extends Controller
             'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
 
-        Logging::log(Logging::ACTION_PASSWORD_CHANGED, $request->user()->id, $request->ip());
+        Logging::log(
+            Logging::ACTION_PASSWORD_CHANGED,
+            $request->user()->id,
+            $request->ip()
+        );
 
         $request->user()->update([
             'password' => Hash::make($validated['password']),

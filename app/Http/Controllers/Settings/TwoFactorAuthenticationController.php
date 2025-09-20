@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
-use App\Models\Logging;
 use Illuminate\Routing\Controllers\HasMiddleware as HM;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
