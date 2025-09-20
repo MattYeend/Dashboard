@@ -36,18 +36,19 @@ class Logging extends Model
     public const ACTION_MFA_ENABLED = 21;
     public const ACTION_MFA_DISABLED = 22;
     public const ACTION_PROFILE_UPDATED = 23;
-    public const ACTION_EMAIL_UPDATED = 24;
+    public const ACTION_PROFILE_DELETED = 24;
+    public const ACTION_EMAIL_UPDATED = 25;
 
     // Role/Permission Management
-    public const ACTION_ROLE_ASSIGNED = 25;
-    public const ACTION_PERMISSION_GRANTED = 26;
-    public const ACTION_PERMISSION_REVOKED = 27;
+    public const ACTION_ROLE_ASSIGNED = 26;
+    public const ACTION_PERMISSION_GRANTED = 27;
+    public const ACTION_PERMISSION_REVOKED = 28;
 
     // Errors/Cache
-    public const ACTION_GENERAL_ERROR = 28;
-    public const ACTION_FOUR_HUNDRED_ERROR = 29;
-    public const ACTION_FIVE_HUNDRED_ERRORS = 30;
-    public const ACTION_CLEAR_CACHE = 31;
+    public const ACTION_GENERAL_ERROR = 29;
+    public const ACTION_FOUR_HUNDRED_ERROR = 30;
+    public const ACTION_FIVE_HUNDRED_ERRORS = 31;
+    public const ACTION_CLEAR_CACHE = 32;
 
     /**
      * The table associated with the model.
