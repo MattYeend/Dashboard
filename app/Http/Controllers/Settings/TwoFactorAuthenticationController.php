@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
+use App\Models\Logging;
 use Illuminate\Routing\Controllers\HasMiddleware as HM;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
@@ -15,7 +16,7 @@ class TwoFactorAuthenticationController extends Controller implements HM
     /**
      * Get the middleware that should be assigned to the controller.
      */
-    public static function middleware(): array
+    public function getMiddleware(): array
     {
         return Features::optionEnabled(
             Features::twoFactorAuthentication(),

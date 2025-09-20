@@ -54,6 +54,8 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        Logging::log(Logging::ACTION_PROFILE_DELETED, $user->id, $request->ip());
+
         Auth::logout();
 
         $user->delete();

@@ -36,6 +36,7 @@ class AuthenticatedSessionController extends Controller
         if (Features::enabled(
             Features::twoFactorAuthentication()
         ) && $user->hasEnabledTwoFactorAuthentication()) {
+            Logging::log(Logging::ACTION_MFA_ENABLED, $user->id, $request->ip());
             $request->session()->put([
                 'login.id' => $user->getKey(),
                 'login.remember' => $request->boolean('remember'),
