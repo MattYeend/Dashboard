@@ -50,6 +50,13 @@ class Logging extends Model
     public const ACTION_FIVE_HUNDRED_ERRORS = 31;
     public const ACTION_CLEAR_CACHE = 32;
 
+    // New Logging Actions should go here to be reviewed
+    // by the development team for future releases.
+    // Ensure to update the documentation accordingly.
+
+    // Empty constants
+    public const ACTION_NONE = 000;
+
     /**
      * The table associated with the model.
      *
