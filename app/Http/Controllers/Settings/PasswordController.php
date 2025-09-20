@@ -34,8 +34,8 @@ class PasswordController extends Controller
         Logging::log(
             Logging::ACTION_PASSWORD_CHANGED,
             [
-                $request->user()->id,
-                $request->ip(),
+                'user_id' => $request->user()->id,
+                'ip' => $request->ip(),
             ],
             $request->user()->id
         );

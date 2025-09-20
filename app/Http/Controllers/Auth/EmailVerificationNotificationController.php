@@ -17,7 +17,7 @@ class EmailVerificationNotificationController extends Controller
         Logging::log(
             Logging::ACTION_VERIFY_USER,
             [
-                $request->ip(),
+                'ip' => $request->ip(),
             ],
             $request->user()->id
         );

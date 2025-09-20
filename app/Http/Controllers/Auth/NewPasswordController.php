@@ -38,7 +38,7 @@ class NewPasswordController extends Controller
         Logging::log(
             Logging::ACTION_RESET_PASSWORD,
             [
-                $request->ip(),
+                'ip' => $request->ip(),
             ],
             $request->user()?->id
         );

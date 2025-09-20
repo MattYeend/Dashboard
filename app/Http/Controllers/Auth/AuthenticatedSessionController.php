@@ -47,6 +47,7 @@ class AuthenticatedSessionController extends Controller
         Auth::login($user, $request->boolean('remember'));
         $request->session()->regenerate();
 
+        $this->logAction(Logging::ACTION_LOGIN, $user, $request);
         $this->logAction(Logging::ACTION_LOGIN_SUCCESS, $user, $request);
 
         return redirect()->intended(route('dashboard'));
@@ -57,15 +58,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = $request->user();
         Auth::guard('web')->logout();
 
         Logging::log(
             Logging::ACTION_LOGOUT,
             [
-                Auth::id(),
-                $request->ip(),
+                'user_id' => $user->id,
+                'ip' => $request->ip(),
             ],
-            Auth::id()
+            $user->id
         );
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -84,7 +86,10 @@ class AuthenticatedSessionController extends Controller
     {
         Logging::log(
             $action,
-            ['user_id' => $user->id, 'ip' => $request->ip()],
+            [
+                'user_id' => $user->id, 
+                'ip' => $request->ip()
+            ],
             $user->id
         );
     }

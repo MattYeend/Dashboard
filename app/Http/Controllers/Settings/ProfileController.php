@@ -39,8 +39,8 @@ class ProfileController extends Controller
         Logging::log(
             Logging::ACTION_PROFILE_UPDATED,
             [
-                $request->user()->id,
-                $request->ip(),
+                'user_id' => $request->user()->id,
+                'ip' => $request->ip(),
             ],
             $request->user()->id
         );
@@ -64,8 +64,8 @@ class ProfileController extends Controller
         Logging::log(
             Logging::ACTION_PROFILE_DELETED,
             [
-                $user->id,
-                $request->ip(),
+                'user_id' => $user->id,
+                'ip' => $request->ip(),
             ],
             $user->id
         );
