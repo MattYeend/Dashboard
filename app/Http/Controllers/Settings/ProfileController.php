@@ -38,8 +38,11 @@ class ProfileController extends Controller
 
         Logging::log(
             Logging::ACTION_PROFILE_UPDATED,
-            $request->user()->id,
-            $request->ip()
+            [
+                $request->user()->id,
+                $request->ip(),
+            ],
+            $request->user()->id
         );
 
         $request->user()->save();
@@ -60,8 +63,11 @@ class ProfileController extends Controller
 
         Logging::log(
             Logging::ACTION_PROFILE_DELETED,
-            $user->id,
-            $request->ip()
+            [
+                $user->id,
+                $request->ip(),
+            ],
+            $user->id
         );
 
         Auth::logout();

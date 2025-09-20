@@ -31,7 +31,13 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        Logging::log(Logging::ACTION_REGISTER_USER, null, $request->ip());
+        Logging::log(
+            Logging::ACTION_REGISTER_USER,
+            [
+                $request->ip(),
+            ],
+            $request->user()?->id
+        );
 
         $validated = $this->validateRequest($request);
 

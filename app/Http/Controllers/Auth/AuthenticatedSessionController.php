@@ -36,26 +36,20 @@ class AuthenticatedSessionController extends Controller
         if (Features::enabled(
             Features::twoFactorAuthentication()
         ) && $user->hasEnabledTwoFactorAuthentication()) {
-            Logging::log(
-                Logging::ACTION_MFA_ENABLED,
-                $user->id,
-                $request->ip()
-            );
+            $this->logAction(Logging::ACTION_MFA_ENABLED, $user, $request);
             $request->session()->put([
                 'login.id' => $user->getKey(),
                 'login.remember' => $request->boolean('remember'),
             ]);
-
             return to_route('two-factor.login');
         }
 
-        Logging::log(Logging::ACTION_LOGIN_SUCCESS, $user->id, $request->ip());
-
         Auth::login($user, $request->boolean('remember'));
-
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $this->logAction(Logging::ACTION_LOGIN_SUCCESS, $user, $request);
+
+        return redirect()->intended(route('dashboard'));
     }
 
     /**
@@ -65,10 +59,33 @@ class AuthenticatedSessionController extends Controller
     {
         Auth::guard('web')->logout();
 
-        Logging::log(Logging::ACTION_LOGOUT, Auth::id(), $request->ip());
+        Logging::log(
+            Logging::ACTION_LOGOUT,
+            [
+                Auth::id(),
+                $request->ip(),
+            ],
+            Auth::id()
+        );
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    /**
+     * Log user actions
+     *
+     * @param int $action The action to log (use constants from Logging model)
+     * @param mixed $user The user performing the action
+     * @param Request $request The current request
+     */
+    private function logAction(int $action, $user, Request $request): void
+    {
+        Logging::log(
+            $action,
+            ['user_id' => $user->id, 'ip' => $request->ip()],
+            $user->id
+        );
     }
 }

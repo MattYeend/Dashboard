@@ -35,7 +35,13 @@ class NewPasswordController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        Logging::log(Logging::ACTION_RESET_PASSWORD, null, $request->ip());
+        Logging::log(
+            Logging::ACTION_RESET_PASSWORD,
+            [
+                $request->ip(),
+            ],
+            $request->user()?->id
+        );
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
