@@ -125,7 +125,9 @@ class Logging extends Model
             $logged_in_user_id = $logged_in_user_id ?? Auth::id();
 
             if (! is_null($data) && ! is_array($data)) {
-                throw new \InvalidArgumentException('Data must be an array or null.');
+                throw new \InvalidArgumentException(
+                    'Data must be an array or null.'
+                );
             }
 
             $log = new self();

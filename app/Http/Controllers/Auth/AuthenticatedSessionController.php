@@ -87,8 +87,8 @@ class AuthenticatedSessionController extends Controller
         Logging::log(
             $action,
             [
-                'user_id' => $user->id, 
-                'ip' => $request->ip()
+                'user_id' => $user->id,
+                'ip' => $request->ip(),
             ],
             $user->id
         );
