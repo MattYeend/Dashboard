@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Logging;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class NewPasswordController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        Logging::log(Logging::ACTION_RESET_PASSWORD, null, $request->ip());
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',

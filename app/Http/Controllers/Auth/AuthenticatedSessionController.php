@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Logging;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,6 +44,8 @@ class AuthenticatedSessionController extends Controller
             return to_route('two-factor.login');
         }
 
+        Logging::log(Logging::ACTION_LOGIN_SUCCESS, $user->id, $request->ip());
+
         Auth::login($user, $request->boolean('remember'));
 
         $request->session()->regenerate();
@@ -57,6 +60,7 @@ class AuthenticatedSessionController extends Controller
     {
         Auth::guard('web')->logout();
 
+        Logging::log(Logging::ACTION_LOGOUT, Auth::id(), $request->ip());
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

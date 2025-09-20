@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Logging;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -30,6 +31,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        Logging::log(Logging::ACTION_REGISTER_USER, null, $request->ip());
         $request->validate([
             'title' => 'required|string|max:10',
             'first_name' => 'required|string|max:255',
