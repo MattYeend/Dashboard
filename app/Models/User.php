@@ -39,6 +39,13 @@ class User extends Authenticatable
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var list<string>
+     */
+    protected $appends = ['short_name'];
+
+    /**
      * Get the user's full name.
      *
      * @return string
@@ -46,9 +53,9 @@ class User extends Authenticatable
     public function getFullNameAttribute(): string
     {
         return trim(
-            "{$this->first_name}
-             {$this->middle_name}
-             {$this->last_name}"
+            collect([$this->first_name, $this->middle_name, $this->last_name])
+                ->filter()
+                ->join(' ')
         );
     }
 
@@ -59,12 +66,14 @@ class User extends Authenticatable
      */
     public function getFormalNameAttribute(): string
     {
-        return trim(
-            "{$this->title}
-             {$this->first_name}
-             {$this->middle_name}
-             {$this->last_name}"
-        );
+        return collect([
+            $this->title,
+            $this->first_name,
+            $this->middle_name,
+            $this->last_name,
+        ])
+            ->filter()
+            ->join(' ');
     }
 
     /**
