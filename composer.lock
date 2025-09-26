@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e3c6ffcde7305ad42e222875114e46e",
+    "content-hash": "f93197be3d1f00ed1f60fb3586b8ebb1",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8046,6 +8046,77 @@
                 "source": "https://github.com/marc-mabe/php-enum/tree/v4.7.1"
             },
             "time": "2024-11-28T04:54:44+00:00"
+        },
+        {
+            "name": "mattyeend/laravel-model-service",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MatthewYeend/Laravel-Model-Service.git",
+                "reference": "9bd620aa8b33b797a42361a7d91134a2ab3cef12"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MatthewYeend/Laravel-Model-Service/zipball/9bd620aa8b33b797a42361a7d91134a2ab3cef12",
+                "reference": "9bd620aa8b33b797a42361a7d91134a2ab3cef12",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^10.0|^11.0|^12.0",
+                "illuminate/filesystem": "^10.0|^11.0|^12.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
+                "php": ">=8.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MattYeend\\LaravelModelService\\LaravelModelServiceServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MattYeend\\LaravelModelService\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Yeend",
+                    "email": "mail@mattyeend.co.uk"
+                }
+            ],
+            "description": "Extends Laravel make:model to also create a service class when using -S flag or --service option.",
+            "keywords": [
+                "Laravel-Model-Service",
+                "laravel",
+                "model",
+                "package",
+                "service"
+            ],
+            "support": {
+                "issues": "https://github.com/MatthewYeend/Laravel-Model-Service/issues",
+                "source": "https://github.com/MatthewYeend/Laravel-Model-Service/tree/v1.1.2"
+            },
+            "funding": [
+                {
+                    "url": "https://www.buymeacoffee.com/mattyeend",
+                    "type": "buy_me_a_coffee"
+                },
+                {
+                    "url": "https://github.com/MattYeend",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/MatthewYeend",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-08-23T12:46:10+00:00"
         },
         {
             "name": "mockery/mockery",
