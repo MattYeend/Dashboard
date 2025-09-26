@@ -25,6 +25,7 @@ class User extends Authenticatable
         'middle_name',
         'last_name',
         'email',
+        'admin',
         'password',
     ];
 
@@ -109,6 +110,26 @@ class User extends Authenticatable
         $initials .= $this->last_name[0] ?? '';
 
         return strtoupper($initials);
+    }
+
+    /**
+     * Determine if the user is an administrator.
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return (bool) $this->admin;
+    }
+
+    /**
+     * Determine if the user is a regular user.
+     *
+     * @return bool
+     */
+    public function isUser(): bool
+    {
+        return ! $this->isAdmin();
     }
 
     /**
