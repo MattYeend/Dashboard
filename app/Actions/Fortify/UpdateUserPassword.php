@@ -19,10 +19,16 @@ class UpdateUserPassword implements UpdatesUserPasswords
     public function update($user, array $input): void
     {
         Validator::make($input, [
-            'current_password' => ['required', 'string', 'current_password:web'],
+            'current_password' => [
+                'required',
+                'string',
+                'current_password:web',
+            ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
-            'current_password.current_password' => __('The provided password does not match your current password.'),
+            'current_password.current_password' => __(
+                'The provided password does not match your current password.'
+            ),
         ])->validate();
 
         $user->forceFill([

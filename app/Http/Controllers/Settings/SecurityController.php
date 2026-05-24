@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\PasswordUpdateRequest;
 use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
 use Illuminate\Http\RedirectResponse;
-// use Illuminate\Support\Collection;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -20,17 +19,23 @@ class SecurityController extends Controller
     public function edit(TwoFactorAuthenticationRequest $request): Response
     {
         $props = [
-            'canManageTwoFactor' => Features::canManageTwoFactorAuthentication(),
+            'canManageTwoFactor' => Features::
+                canManageTwoFactorAuthentication(),
             'canManagePasskeys' => Features::canManagePasskeys(),
             'passkeys' => $this->getFormattedPasskeys($request),
-            'passwordRules' => Password::defaults()->toPasswordRulesString(),
+            'passwordRules' => Password::defaults()
+                ->toPasswordRulesString(),
         ];
 
         if (Features::canManageTwoFactorAuthentication()) {
             $request->ensureStateIsValid();
 
-            $props['twoFactorEnabled'] = $request->user()->hasEnabledTwoFactorAuthentication();
-            $props['requiresConfirmation'] = Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm');
+            $props['twoFactorEnabled'] = $request->user()
+                ->hasEnabledTwoFactorAuthentication();
+            $props['requiresConfirmation'] = Features::optionEnabled(
+                Features::twoFactorAuthentication(),
+                'confirm'
+            );
         }
 
         return Inertia::render('settings/Security', $props);
@@ -45,7 +50,10 @@ class SecurityController extends Controller
             'password' => $request->password,
         ]);
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Password updated.')]);
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => __('Password updated.'),
+        ]);
 
         return back();
     }
@@ -55,25 +63,56 @@ class SecurityController extends Controller
      *
      * @return array<int, array<string, mixed>>
      */
-    private function getFormattedPasskeys(TwoFactorAuthenticationRequest $request): array
-    {
+    private function getFormattedPasskeys(
+        TwoFactorAuthenticationRequest $request
+    ): array {
         if (! Features::canManagePasskeys()) {
             return [];
         }
 
         return $request->user()
             ->passkeys()
-            ->select(['id', 'name', 'credential', 'created_at', 'last_used_at'])
+            ->select($this->getPasskeySelectColumns())
             ->latest()
             ->get()
-            ->map(fn ($passkey) => [
-                'id' => $passkey->id,
-                'name' => $passkey->name,
-                'authenticator' => $passkey->authenticator,
-                'created_at_diff' => $passkey->created_at->diffForHumans(),
-                'last_used_at_diff' => $passkey->last_used_at?->diffForHumans(),
-            ])
+            ->map($this->formatPasskey(...))
             ->values()
             ->all();
+    }
+
+    /**
+     * Get the columns to select for passkeys.
+     *
+     * @return array<int, string>
+     */
+    private function getPasskeySelectColumns(): array
+    {
+        return [
+            'id',
+            'name',
+            'credential',
+            'created_at',
+            'last_used_at',
+        ];
+    }
+
+    /**
+     * Format a single passkey for the response.
+     *
+     * @param  mixed  $passkey
+     *
+     * @return array<string, mixed>
+     */
+    private function formatPasskey($passkey): array
+    {
+        return [
+            'id' => $passkey->id,
+            'name' => $passkey->name,
+            'authenticator' => $passkey->authenticator,
+            'created_at_diff' => $passkey->created_at
+                ->diffForHumans(),
+            'last_used_at_diff' => $passkey->last_used_at
+                ?->diffForHumans(),
+        ];
     }
 }
