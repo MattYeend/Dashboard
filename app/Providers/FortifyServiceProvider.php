@@ -22,7 +22,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Currently Empty
     }
 
     /**
@@ -95,7 +95,7 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for('passkeys', function (Request $request) {
             return Limit::perMinute(10)->by(
-                ($request->input('credential.id') ?: $request->session()->getId()).'|'.$request->ip(),
+                ($request->input('credential.id') !== null ? $request->input('credential.id') : $request->session()->getId()).'|'.$request->ip(),
             );
         });
     }
