@@ -14,6 +14,7 @@ use Laravel\Fortify\Contracts\PasskeyUser;
 use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden([
@@ -29,7 +30,8 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
         Notifiable,
         PasskeyAuthenticatable,
         TwoFactorAuthenticatable,
-        HasApiTokens;
+        HasApiTokens,
+        HasRoles;
 
     /**
      * Get the attributes that should be cast.
