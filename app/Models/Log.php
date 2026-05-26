@@ -54,7 +54,7 @@ class Log extends Model
     public const ACTION_FIVE_HUNDRED_ERRORS = 34;
     public const ACTION_CLEAR_CACHE = 35;
 
-     // New Logging Actions should go here to be reviewed
+    // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
 
