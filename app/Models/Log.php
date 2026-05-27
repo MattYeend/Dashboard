@@ -54,6 +54,16 @@ class Log extends Model
     public const ACTION_FIVE_HUNDRED_ERRORS = 34;
     public const ACTION_CLEAR_CACHE = 35;
 
+    // Contact Management
+    public const ACTION_CREATE_CONTACT = 36;
+    public const ACTION_UPDATE_CONTACT = 37;
+    public const ACTION_VIEW_CONTACT = 38;
+    public const ACTION_DELETE_CONTACT = 39;
+    public const ACTION_FORCE_DELETE_CONTACT = 40;
+    public const ACTION_ASSIGN_CONTACT = 41;
+    public const ACTION_UNASSIGN_CONTACT = 42;
+    public const ACTION_RESTORE_CONTACT = 43;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
