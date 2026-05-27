@@ -17,7 +17,8 @@ class UpdaterService
     public function __construct(
         protected DataPreparationService $dataPreparation,
         protected LogService $logService
-    ) {}
+    ) {
+    }
 
     /**
      * Update an existing contact.

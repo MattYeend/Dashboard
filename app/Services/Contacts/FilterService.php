@@ -59,8 +59,10 @@ class FilterService
     public function applyAll(Builder $query, array $filters): Builder
     {
         $query = $this->applySearch($query, $filters['search'] ?? null);
-        $query = $this->applyCountry($query, $filters['country'] ?? null);
-
-        return $query;
+        return $query = $this->applyCountry(
+            $query,
+            $filters['country']
+            ?? null
+        );
     }
 }

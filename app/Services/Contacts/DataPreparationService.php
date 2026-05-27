@@ -46,6 +46,6 @@ class DataPreparationService
             'city' => $data['city'] ?? null,
             'postal_code' => $data['postal_code'] ?? null,
             'country' => $data['country'] ?? null,
-        ], fn(mixed $value): bool => $value !== null);
+        ], fn (mixed $value): bool => $value !== null);
     }
 }

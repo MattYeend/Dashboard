@@ -46,7 +46,8 @@ class UpdateContactRequest extends FormRequest
             'phone.max' => 'The phone number may not exceed 255 characters.',
             'address.max' => 'The address may not exceed 255 characters.',
             'city.max' => 'The city may not exceed 255 characters.',
-            'postal_code.max' => 'The postal code may not exceed 255 characters.',
+            'postal_code.max' => 'The postal code may not exceed 255
+                 characters.',
             'country.max' => 'The country may not exceed 255 characters.',
         ];
     }

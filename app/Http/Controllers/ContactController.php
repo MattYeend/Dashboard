@@ -11,15 +11,11 @@ use App\Services\Contacts\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
-use Inertia\Inertia;
-use Inertia\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ContactController extends Controller
 {
     use AuthorizesRequests;
-    
+
     /**
      * Inject the required services into the controller.
      *
@@ -196,17 +192,17 @@ class ContactController extends Controller
     public function bulkDelete(Request $request): JsonResponse
     {
         $request->validate([
-            'ids'   => ['required', 'array'],
+            'ids' => ['required', 'array'],
             'ids.*' => ['required', 'integer', 'exists:contacts,id'],
         ]);
 
         $actor = $request->user();
-        $ids   = $request->input('ids');
+        $ids = $request->input('ids');
 
         $this->management->bulkDelete(
             $ids,
             $actor,
-            fn(Contact $contact) => $this->authorize('delete', $contact)
+            fn (Contact $contact) => $this->authorize('delete', $contact)
         );
 
         return response()->json(null, 204);
@@ -224,17 +220,17 @@ class ContactController extends Controller
     public function bulkRestore(Request $request): JsonResponse
     {
         $request->validate([
-            'ids'   => ['required', 'array'],
+            'ids' => ['required', 'array'],
             'ids.*' => ['required', 'integer', 'exists:contacts,id'],
         ]);
 
         $actor = $request->user();
-        $ids   = $request->input('ids');
+        $ids = $request->input('ids');
 
         $this->management->bulkRestore(
             $ids,
             $actor,
-            fn(Contact $contact) => $this->authorize('restore', $contact)
+            fn (Contact $contact) => $this->authorize('restore', $contact)
         );
 
         return response()->json(null, 204);

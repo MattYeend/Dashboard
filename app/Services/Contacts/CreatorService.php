@@ -18,7 +18,8 @@ class CreatorService
     public function __construct(
         protected DataPreparationService $dataPreparation,
         protected LogService $logService
-    ) {}
+    ) {
+    }
 
     /**
      * Create a new contact.

@@ -24,7 +24,6 @@ class ContactPolicy
         PolicyAuthorisationService $authorisationService
     ) {
         $this->authorisationService = $authorisationService;
-
     }
 
     /**

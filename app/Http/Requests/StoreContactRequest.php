@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use App\Models\Contact;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreContactRequest extends FormRequest
 {
@@ -46,16 +45,19 @@ class StoreContactRequest extends FormRequest
     {
         return [
             'contactable_type.required' => 'The contactable type is required.',
-            'contactable_type.string' => 'The contactable type must be a string.',
+            'contactable_type.string' => 'The contactable type must be a
+                 string.',
             'contactable_id.required' => 'The contactable ID is required.',
-            'contactable_id.integer' => 'The contactable ID must be an integer.',
+            'contactable_id.integer' => 'The contactable ID must be an
+                 integer.',
             'contactable_id.min' => 'The contactable ID must be at least 1.',
             'email.email' => 'The email address must be a valid email.',
             'email.max' => 'The email address may not exceed 255 characters.',
             'phone.max' => 'The phone number may not exceed 255 characters.',
             'address.max' => 'The address may not exceed 255 characters.',
             'city.max' => 'The city may not exceed 255 characters.',
-            'postal_code.max' => 'The postal code may not exceed 255 characters.',
+            'postal_code.max' => 'The postal code may not exceed 255
+                 characters.',
             'country.max' => 'The country may not exceed 255 characters.',
         ];
     }

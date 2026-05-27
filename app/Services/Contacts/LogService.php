@@ -12,8 +12,8 @@ class LogService
      * Log contact creation.
      *
      * @param  Contact $contact
-     * @param  User    $actor
-     * @param  int     $actorId
+     * @param  User $actor
+     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -40,8 +40,8 @@ class LogService
      * Log a contact show event.
      *
      * @param  Contact $contact
-     * @param  User    $actor
-     * @param  int     $actorId
+     * @param  User $actor
+     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -68,8 +68,8 @@ class LogService
      * Log a contact update event.
      *
      * @param  Contact $contact
-     * @param  User    $actor
-     * @param  int     $actorId
+     * @param  User $actor
+     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -96,8 +96,8 @@ class LogService
      * Log a contact deletion event.
      *
      * @param  Contact $contact
-     * @param  User    $actor
-     * @param  int     $actorId
+     * @param  User $actor
+     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -124,8 +124,8 @@ class LogService
      * Log contact force deletion (permanent).
      *
      * @param  Contact $contact
-     * @param  User    $actor
-     * @param  int     $actorId
+     * @param  User $actor
+     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -152,8 +152,8 @@ class LogService
      * Log a contact restoration event.
      *
      * @param  Contact $contact
-     * @param  User    $actor
-     * @param  int     $actorId
+     * @param  User $actor
+     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -180,8 +180,8 @@ class LogService
      * Log a contact import event.
      *
      * @param  array<int, mixed> $importData
-     * @param  User              $actor
-     * @param  int               $actorId
+     * @param  User $actor
+     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -191,9 +191,9 @@ class LogService
         int $actorId
     ): array {
         $data = [
-            'imported_at'          => now(),
-            'imported_by'          => $actor->name,
-            'imported_count'       => count($importData),
+            'imported_at' => now(),
+            'imported_by' => $actor->name,
+            'imported_count' => count($importData),
             'imported_data_sample' => array_slice($importData, 0, 5),
         ];
 
@@ -210,8 +210,8 @@ class LogService
      * Log a contact export event.
      *
      * @param  array<int, mixed> $exportData
-     * @param  User              $actor
-     * @param  int               $actorId
+     * @param  User $actor
+     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -221,9 +221,9 @@ class LogService
         int $actorId
     ): array {
         $data = [
-            'exported_at'          => now(),
-            'exported_by'          => $actor->name,
-            'exported_count'       => count($exportData),
+            'exported_at' => now(),
+            'exported_by' => $actor->name,
+            'exported_count' => count($exportData),
             'exported_data_sample' => array_slice($exportData, 0, 5),
         ];
 
