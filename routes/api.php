@@ -14,9 +14,9 @@ Route::middleware(['web', 'auth:sanctum', 'throttle:api'])->group(function () {
         return $request->user();
     });
 
-    // Company Contact Management routes
-    Route::prefix('company-contacts')->name(
-        'company-contacts.'
+    // Contact Management routes
+    Route::prefix('contacts')->name(
+        'contacts.'
     )->group(function () {
         Route::post(
             '/bulk/delete',

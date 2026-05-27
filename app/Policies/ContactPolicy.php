@@ -23,6 +23,8 @@ class ContactPolicy
     public function __construct(
         PolicyAuthorisationService $authorisationService
     ) {
+        $this->authorisationService = $authorisationService;
+
     }
 
     /**
