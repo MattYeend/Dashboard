@@ -63,6 +63,9 @@ class Log extends Model
     public const ACTION_ASSIGN_CONTACT = 41;
     public const ACTION_UNASSIGN_CONTACT = 42;
     public const ACTION_RESTORE_CONTACT = 43;
+    public const ACTION_IMPORT_CONTACT = 44;
+    public const ACTION_EXPORT_CONTACT = 45;
+    public const ACTION_CONTACT_UPDATED_BY_CRON = 46;
 
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
