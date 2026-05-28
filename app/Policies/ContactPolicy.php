@@ -167,4 +167,19 @@ class ContactPolicy
     {
         return $this->authorisationService->isUser($user);
     }
+
+    /**
+     * Determine whether the user can access the model.
+     *
+     * Alias for view, used as a secondary access gate check.
+     *
+     * @param  User $user
+     * @param  Contact $contact
+     *
+     * @return bool
+     */
+    public function access(User $user, Contact $contact): bool
+    {
+        return $this->authorisationService->canView($user, $contact);
+    }
 }

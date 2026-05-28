@@ -18,7 +18,11 @@ class UserRoleCheckerService
      */
     public function isUser(User $user): bool
     {
-        return $user->is_user || $this->isAdmin($user);
+        return $user->is_user
+            || $user->hasRole('User')
+            || $user->hasRole('Admin')
+            || $user->hasRole('Super Admin')
+            || $this->isAdmin($user);
     }
     /**
      * Check if user is admin or super admin.
@@ -29,7 +33,10 @@ class UserRoleCheckerService
      */
     public function isAdmin(User $user): bool
     {
-        return $user->is_admin || $user->is_super_admin;
+        return $user->is_admin
+            || $user->is_super_admin
+            || $user->hasRole('Admin')
+            || $user->hasRole('Super Admin');
     }
 
     /**
@@ -41,7 +48,8 @@ class UserRoleCheckerService
      */
     public function isSuperAdmin(User $user): bool
     {
-        return $user->is_super_admin;
+        return $user->is_super_admin
+            || $user->hasRole('Super Admin');
     }
 
     /**

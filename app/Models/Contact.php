@@ -21,6 +21,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $postal_code
  * @property string|null $country
  * @property Carbon|null $deleted_at
+ * @property Carbon|null $restored_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
@@ -35,6 +36,11 @@ use Illuminate\Support\Carbon;
     'city',
     'postal_code',
     'country',
+    'created_by',
+    'updated_by',
+    'deleted_by',
+    'restored_by',
+    'restored_at',
 ])]
 class Contact extends Model
 {
@@ -63,6 +69,7 @@ class Contact extends Model
     {
         return [
             'deleted_at' => 'datetime',
+            'restored_at' => 'datetime',
         ];
     }
 }
