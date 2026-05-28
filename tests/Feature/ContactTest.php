@@ -35,7 +35,6 @@
 
 // describe('index', function () {
 //     test('authenticated user with permission can list contacts', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         Contact::factory()->count(3)->forModel($superAdmin)->create();
@@ -51,7 +50,7 @@
 //     });
 
 //     test('user without permission cannot list contacts', function () {
-//         /** @var User $user */
+        
 //         $user = $this->normalUser();
 
 //         $this->actingAs($user)
@@ -62,7 +61,6 @@
 
 // describe('store', function () {
 //     test('authenticated user with permission can create a contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $payload = [
@@ -89,7 +87,6 @@
 //     });
 
 //     test('user without permission cannot create a contact', function () {
-//         /** @var User $user */
 //         $user = $this->normalUser();
 
 //         $payload = [
@@ -109,7 +106,6 @@
 //     });
 
 //     test('store fails validation when contactable_type is missing', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $this->actingAs($superAdmin)
@@ -122,7 +118,6 @@
 //     });
 
 //     test('store fails validation when contactable_id is missing', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $this->actingAs($superAdmin)
@@ -135,7 +130,6 @@
 //     });
 
 //     test('store fails validation when email is invalid', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $this->actingAs($superAdmin)
@@ -149,7 +143,6 @@
 //     });
 
 //     test('store succeeds with only required morph fields', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $this->actingAs($superAdmin)
@@ -169,7 +162,6 @@
 
 // describe('show', function () {
 //     test('authenticated user with permission can view a contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->create();
@@ -181,7 +173,6 @@
 //     });
 
 //     test('unauthenticated user cannot view a contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->create();
@@ -191,9 +182,7 @@
 //     });
 
 //     test('user without permission cannot view a contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
-//         /** @var User $user */
 //         $user = $this->normalUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->create();
@@ -204,7 +193,6 @@
 //     });
 
 //     test('show returns 404 for non-existent contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $this->actingAs($superAdmin)
@@ -215,7 +203,6 @@
 
 // describe('update', function () {
 //     test('authenticated user with permission can update a contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->create(['city' => 'London']);
@@ -232,7 +219,6 @@
 //     });
 
 //     test('patch verb also updates a contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->create(['country' => 'United Kingdom']);
@@ -244,9 +230,8 @@
 //     });
 
 //     test('user without permission cannot update a contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
-//         /** @var User $user */
+        
 //         $user = $this->normalUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->create();
@@ -257,7 +242,6 @@
 //     });
 
 //     test('update fails validation when email is invalid', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->create();
@@ -271,7 +255,6 @@
 
 // describe('destroy', function () {
 //     test('authenticated user with permission can soft delete a contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->create();
@@ -284,9 +267,7 @@
 //     });
 
 //     test('user without permission cannot soft delete a contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
-//         /** @var User $user */
 //         $user = $this->normalUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->create();
@@ -297,7 +278,6 @@
 //     });
 
 //     test('destroy returns 404 for non-existent contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $this->actingAs($superAdmin)
@@ -308,7 +288,6 @@
 
 // describe('restore', function () {
 //     test('authenticated user with permission can restore a soft-deleted contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->deleted()->create();
@@ -324,9 +303,7 @@
 //     });
 
 //     test('user without permission cannot restore a contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
-//         /** @var User $user */
 //         $user = $this->normalUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->deleted()->create();
@@ -337,7 +314,6 @@
 //     });
 
 //     test('restore returns 404 for a contact that is not soft-deleted', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->create();
@@ -350,7 +326,6 @@
 
 // describe('force delete', function () {
 //     test('authenticated user with permission can force delete a contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->deleted()->create();
@@ -363,9 +338,8 @@
 //     });
 
 //     test('user without permission cannot force delete a contact', function () {
-//         /** @var User $superAdmin */
+        
 //         $superAdmin = $this->superAdminUser();
-//         /** @var User $user */
 //         $user = $this->normalUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->deleted()->create();
@@ -376,7 +350,6 @@
 //     });
 
 //     test('force delete returns 404 for a contact that is not soft-deleted', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->create();
@@ -389,11 +362,10 @@
 
 // describe('bulk delete', function () {
 //     test('authenticated user with permission can bulk soft delete contacts', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $contacts = Contact::factory()->count(3)->forModel($superAdmin)->create();
-//         $ids      = $contacts->pluck('id')->all();
+//         $ids = $contacts->pluck('id')->all();
 
 //         $this->actingAs($superAdmin)
 //             ->postJson('/api/contacts/bulk/delete', ['ids' => $ids])
@@ -405,7 +377,7 @@
 //     });
 
 //     test('bulk delete fails validation with empty ids array', function () {
-//         /** @var User $superAdmin */
+        
 //         $superAdmin = $this->superAdminUser();
 
 //         $this->actingAs($superAdmin)
@@ -415,7 +387,6 @@
 //     });
 
 //     test('bulk delete fails validation with non-existent ids', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $this->actingAs($superAdmin)
@@ -425,9 +396,7 @@
 //     });
 
 //     test('user without permission cannot bulk delete contacts', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
-//         /** @var User $user */
 //         $user = $this->normalUser();
 
 //         $contacts = Contact::factory()->count(2)->forModel($superAdmin)->create();
@@ -442,7 +411,6 @@
 
 // describe('bulk restore', function () {
 //     test('authenticated user with permission can bulk restore contacts', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $contacts = Contact::factory()->count(3)->forModel($superAdmin)->deleted()->create();
@@ -460,8 +428,7 @@
 //         }
 //     });
 
-//     test('bulk restore fails validation with empty ids array', function () {
-//         /** @var User $superAdmin */
+//     test('bulk restore fails validation with empty ids array', function () { 
 //         $superAdmin = $this->superAdminUser();
 
 //         $this->actingAs($superAdmin)
@@ -471,7 +438,7 @@
 //     });
 
 //     test('bulk restore fails validation with non-existent ids', function () {
-//         /** @var User $superAdmin */
+        
 //         $superAdmin = $this->superAdminUser();
 
 //         $this->actingAs($superAdmin)
@@ -481,9 +448,7 @@
 //     });
 
 //     test('user without permission cannot bulk restore contacts', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
-//         /** @var User $user */
 //         $user = $this->normalUser();
 
 //         $contacts = Contact::factory()->count(2)->forModel($superAdmin)->deleted()->create();
@@ -497,8 +462,7 @@
 // });
 
 // describe('soft delete scoping', function () {
-//     test('index does not return soft-deleted contacts', function () {
-//         /** @var User $superAdmin */
+//     test('index does not return soft-deleted contacts', function () {        
 //         $superAdmin = $this->superAdminUser();
 
 //         Contact::factory()->count(2)->forModel($superAdmin)->create();
@@ -517,7 +481,6 @@
 //     });
 
 //     test('show returns 404 for a soft-deleted contact', function () {
-//         /** @var User $superAdmin */
 //         $superAdmin = $this->superAdminUser();
 
 //         $contact = Contact::factory()->forModel($superAdmin)->deleted()->create();

@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Create Super Admin User
-        $superAdmin = User::firstOrCreate(
+        $superAdmin = User::updateOrCreate(
             ['email' => 'superadmin@example.com'],
             [
                 'name' => 'Super Admin',
@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
         $superAdmin->assignRole('Super Admin');
 
         // Create Admin Users
-        $admin1 = User::firstOrCreate(
+        $admin1 = User::updateOrCreate(
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin User',
@@ -49,7 +49,7 @@ class UserSeeder extends Seeder
         );
         $admin1->assignRole('Admin');
 
-        $admin2 = User::firstOrCreate(
+        $admin2 = User::updateOrCreate(
             ['email' => 'john.admin@example.com'],
             [
                 'name' => 'John Admin',
@@ -67,7 +67,7 @@ class UserSeeder extends Seeder
         $admin2->assignRole('Admin');
 
         // Create Manager
-        $manager = User::firstOrCreate(
+        $manager = User::updateOrCreate(
             ['email' => 'manager@example.com'],
             [
                 'name' => 'Sarah Manager',
@@ -85,7 +85,7 @@ class UserSeeder extends Seeder
         $manager->assignRole('Manager');
 
         // Create Editor
-        $editor = User::firstOrCreate(
+        $editor = User::updateOrCreate(
             ['email' => 'editor@example.com'],
             [
                 'name' => 'Emily Editor',
@@ -103,7 +103,7 @@ class UserSeeder extends Seeder
         $editor->assignRole('Editor');
 
         // Create Moderator
-        $moderator = User::firstOrCreate(
+        $moderator = User::updateOrCreate(
             ['email' => 'moderator@example.com'],
             [
                 'name' => 'Mike Moderator',
@@ -121,7 +121,7 @@ class UserSeeder extends Seeder
         $moderator->assignRole('Moderator');
 
         // Create Support User
-        $support = User::firstOrCreate(
+        $support = User::updateOrCreate(
             ['email' => 'support@example.com'],
             [
                 'name' => 'Lisa Support',
@@ -139,7 +139,7 @@ class UserSeeder extends Seeder
         $support->assignRole('Support');
 
         // Create Analyst
-        $analyst = User::firstOrCreate(
+        $analyst = User::updateOrCreate(
             ['email' => 'analyst@example.com'],
             [
                 'name' => 'David Analyst',
@@ -157,7 +157,7 @@ class UserSeeder extends Seeder
         $analyst->assignRole('Analyst');
 
         // Create Viewer
-        $viewer = User::firstOrCreate(
+        $viewer = User::updateOrCreate(
             ['email' => 'viewer@example.com'],
             [
                 'name' => 'Rachel Viewer',
@@ -175,7 +175,7 @@ class UserSeeder extends Seeder
         $viewer->assignRole('Viewer');
 
         // Create Regular Users
-        $user1 = User::firstOrCreate(
+        $user1 = User::updateOrCreate(
             ['email' => 'user@example.com'],
             [
                 'name' => 'Regular User',
@@ -192,7 +192,7 @@ class UserSeeder extends Seeder
         );
         $user1->assignRole('User');
 
-        $user2 = User::firstOrCreate(
+        $user2 = User::updateOrCreate(
             ['email' => 'jane.smith@example.com'],
             [
                 'name' => 'Jane Smith',
@@ -209,7 +209,7 @@ class UserSeeder extends Seeder
         );
         $user2->assignRole('User');
 
-        $user3 = User::firstOrCreate(
+        $user3 = User::updateOrCreate(
             ['email' => 'bob.johnson@example.com'],
             [
                 'name' => 'Bob Johnson',
@@ -227,7 +227,7 @@ class UserSeeder extends Seeder
         $user3->assignRole('User');
 
         // Additional staff members
-        $contentWriter = User::firstOrCreate(
+        $contentWriter = User::updateOrCreate(
             ['email' => 'writer@example.com'],
             [
                 'name' => 'Anna Writer',
@@ -244,7 +244,7 @@ class UserSeeder extends Seeder
         );
         $contentWriter->assignRole('Editor');
 
-        $customerSupport = User::firstOrCreate(
+        $customerSupport = User::updateOrCreate(
             ['email' => 'cs@example.com'],
             [
                 'name' => 'Tom Support',
@@ -261,7 +261,7 @@ class UserSeeder extends Seeder
         );
         $customerSupport->assignRole('Support');
 
-        $dataAnalyst = User::firstOrCreate(
+        $dataAnalyst = User::updateOrCreate(
             ['email' => 'data@example.com'],
             [
                 'name' => 'Kevin Data',
@@ -278,7 +278,7 @@ class UserSeeder extends Seeder
         );
         $dataAnalyst->assignRole('Analyst');
 
-        $contentMod = User::firstOrCreate(
+        $contentMod = User::updateOrCreate(
             ['email' => 'mod@example.com'],
             [
                 'name' => 'Chris Moderator',
@@ -296,7 +296,7 @@ class UserSeeder extends Seeder
         $contentMod->assignRole('Moderator');
 
         // Create Guest User
-        $guest = User::firstOrCreate(
+        $guest = User::updateOrCreate(
             ['email' => 'guest@example.com'],
             [
                 'name' => 'Guest User',
@@ -314,7 +314,7 @@ class UserSeeder extends Seeder
         $guest->assignRole('Guest');
 
         // Unverified User
-        $unverified = User::firstOrCreate(
+        $unverified = User::updateOrCreate(
             ['email' => 'unverified@example.com'],
             [
                 'name' => 'Unverified User',
@@ -332,7 +332,7 @@ class UserSeeder extends Seeder
         $unverified->assignRole('User');
 
         // Test User
-        $testUser = User::firstOrCreate(
+        $testUser = User::updateOrCreate(
             ['email' => 'test@example.com'],
             [
                 'name' => 'Test User',

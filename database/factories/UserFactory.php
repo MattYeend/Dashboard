@@ -70,9 +70,19 @@ class UserFactory extends Factory
     }
 
     /**
+     * Indicate that the model has a user role.
+     */
+    public function normalUser(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'user',
+        ]);
+    }
+
+    /**
      * Indicate that the model has an admin role.
      */
-    public function admin(): static
+    public function adminUser(): static
     {
         return $this->state(fn (array $attributes) => [
             'role' => 'admin',
@@ -82,7 +92,7 @@ class UserFactory extends Factory
     /**
      * Indicate that the model has a super admin role.
      */
-    public function superAdmin(): static
+    public function superAdminUser(): static
     {
         return $this->state(fn (array $attributes) => [
             'role' => 'super_admin',
