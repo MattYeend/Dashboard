@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +13,56 @@ Route::middleware(['web', 'auth:sanctum', 'throttle:api'])->group(function () {
     // Authenticated user endpoint
     Route::get('/user', function (Request $request) {
         return $request->user();
+    });
+
+    // User Management routes
+    Route::prefix('users')->name(
+        'users.'
+    )->group(function () {
+        Route::post(
+            '/bulk/delete',
+            [UserController::class, 'bulkDelete']
+        )->name('bulk.delete');
+
+        Route::post(
+            '/bulk/restore',
+            [UserController::class, 'bulkRestore']
+        )->name('bulk.restore');
+
+        Route::get(
+            '/',
+            [UserController::class, 'index']
+        )->name('index');
+        Route::post(
+            '/',
+            [UserController::class, 'store']
+        )->name('store');
+        Route::get(
+            '/{user}',
+            [UserController::class, 'show']
+        )->name('show');
+        Route::put(
+            '/{user}',
+            [UserController::class, 'update']
+        )->name('update');
+        Route::patch(
+            '/{users}',
+            [UserController::class, 'update']
+        )->name('patch');
+        Route::delete(
+            '/{companyContact}',
+            [UserController::class, 'destroy']
+        )->name('destroy');
+
+        Route::post(
+            '/{id}/restore',
+            [UserController::class, 'restore']
+        )->name('restore');
+
+        Route::delete(
+            '/{id}/force',
+            [UserController::class, 'forceDelete']
+        )->name('force-delete');
     });
 
     // Contact Management routes
@@ -37,19 +88,19 @@ Route::middleware(['web', 'auth:sanctum', 'throttle:api'])->group(function () {
             [ContactController::class, 'store']
         )->name('store');
         Route::get(
-            '/{companyContact}',
+            '/{contact}',
             [ContactController::class, 'show']
         )->name('show');
         Route::put(
-            '/{companyContact}',
+            '/{contact}',
             [ContactController::class, 'update']
         )->name('update');
         Route::patch(
-            '/{companyContact}',
+            '/{contact}',
             [ContactController::class, 'update']
         )->name('patch');
         Route::delete(
-            '/{companyContact}',
+            '/{contact}',
             [ContactController::class, 'destroy']
         )->name('destroy');
 

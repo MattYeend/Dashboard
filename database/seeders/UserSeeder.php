@@ -19,8 +19,14 @@ class UserSeeder extends Seeder
             ['email' => 'superadmin@example.com'],
             [
                 'name' => 'Super Admin',
+                'role' => 'super_admin',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'meta' => json_encode([
+                    'department' => 'Management',
+                    'position' => 'Super Administrator',
+                    'phone' => '+1-555-0100',
+                ]),
             ]
         );
         $superAdmin->assignRole('Super Admin');
@@ -30,8 +36,15 @@ class UserSeeder extends Seeder
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin User',
+                'role' => 'admin',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $superAdmin->id,
+                'meta' => json_encode([
+                    'department' => 'Management',
+                    'position' => 'Administrator',
+                    'phone' => '+1-555-0101',
+                ]),
             ]
         );
         $admin1->assignRole('Admin');
@@ -40,8 +53,15 @@ class UserSeeder extends Seeder
             ['email' => 'john.admin@example.com'],
             [
                 'name' => 'John Admin',
+                'role' => 'admin',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $superAdmin->id,
+                'meta' => json_encode([
+                    'department' => 'Management',
+                    'position' => 'Administrator',
+                    'phone' => '+1-555-0102',
+                ]),
             ]
         );
         $admin2->assignRole('Admin');
@@ -51,8 +71,15 @@ class UserSeeder extends Seeder
             ['email' => 'manager@example.com'],
             [
                 'name' => 'Sarah Manager',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'Operations',
+                    'position' => 'Manager',
+                    'phone' => '+1-555-0103',
+                ]),
             ]
         );
         $manager->assignRole('Manager');
@@ -62,8 +89,15 @@ class UserSeeder extends Seeder
             ['email' => 'editor@example.com'],
             [
                 'name' => 'Emily Editor',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'Content',
+                    'position' => 'Editor',
+                    'phone' => '+1-555-0104',
+                ]),
             ]
         );
         $editor->assignRole('Editor');
@@ -73,8 +107,15 @@ class UserSeeder extends Seeder
             ['email' => 'moderator@example.com'],
             [
                 'name' => 'Mike Moderator',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'Content',
+                    'position' => 'Moderator',
+                    'phone' => '+1-555-0105',
+                ]),
             ]
         );
         $moderator->assignRole('Moderator');
@@ -84,8 +125,15 @@ class UserSeeder extends Seeder
             ['email' => 'support@example.com'],
             [
                 'name' => 'Lisa Support',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'Support',
+                    'position' => 'Support Agent',
+                    'phone' => '+1-555-0106',
+                ]),
             ]
         );
         $support->assignRole('Support');
@@ -95,8 +143,15 @@ class UserSeeder extends Seeder
             ['email' => 'analyst@example.com'],
             [
                 'name' => 'David Analyst',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'Analytics',
+                    'position' => 'Data Analyst',
+                    'phone' => '+1-555-0107',
+                ]),
             ]
         );
         $analyst->assignRole('Analyst');
@@ -106,8 +161,15 @@ class UserSeeder extends Seeder
             ['email' => 'viewer@example.com'],
             [
                 'name' => 'Rachel Viewer',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'Operations',
+                    'position' => 'Viewer',
+                    'phone' => '+1-555-0108',
+                ]),
             ]
         );
         $viewer->assignRole('Viewer');
@@ -117,8 +179,15 @@ class UserSeeder extends Seeder
             ['email' => 'user@example.com'],
             [
                 'name' => 'Regular User',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'General',
+                    'position' => 'User',
+                    'phone' => '+1-555-0109',
+                ]),
             ]
         );
         $user1->assignRole('User');
@@ -127,8 +196,15 @@ class UserSeeder extends Seeder
             ['email' => 'jane.smith@example.com'],
             [
                 'name' => 'Jane Smith',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'General',
+                    'position' => 'User',
+                    'phone' => '+1-555-0110',
+                ]),
             ]
         );
         $user2->assignRole('User');
@@ -137,8 +213,15 @@ class UserSeeder extends Seeder
             ['email' => 'bob.johnson@example.com'],
             [
                 'name' => 'Bob Johnson',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'General',
+                    'position' => 'User',
+                    'phone' => '+1-555-0111',
+                ]),
             ]
         );
         $user3->assignRole('User');
@@ -148,8 +231,15 @@ class UserSeeder extends Seeder
             ['email' => 'writer@example.com'],
             [
                 'name' => 'Anna Writer',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'Content',
+                    'position' => 'Content Writer',
+                    'phone' => '+1-555-0112',
+                ]),
             ]
         );
         $contentWriter->assignRole('Editor');
@@ -158,8 +248,15 @@ class UserSeeder extends Seeder
             ['email' => 'cs@example.com'],
             [
                 'name' => 'Tom Support',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'Support',
+                    'position' => 'Customer Support',
+                    'phone' => '+1-555-0113',
+                ]),
             ]
         );
         $customerSupport->assignRole('Support');
@@ -168,8 +265,15 @@ class UserSeeder extends Seeder
             ['email' => 'data@example.com'],
             [
                 'name' => 'Kevin Data',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'Analytics',
+                    'position' => 'Data Analyst',
+                    'phone' => '+1-555-0114',
+                ]),
             ]
         );
         $dataAnalyst->assignRole('Analyst');
@@ -178,8 +282,15 @@ class UserSeeder extends Seeder
             ['email' => 'mod@example.com'],
             [
                 'name' => 'Chris Moderator',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'Content',
+                    'position' => 'Content Moderator',
+                    'phone' => '+1-555-0115',
+                ]),
             ]
         );
         $contentMod->assignRole('Moderator');
@@ -189,8 +300,15 @@ class UserSeeder extends Seeder
             ['email' => 'guest@example.com'],
             [
                 'name' => 'Guest User',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'General',
+                    'position' => 'Guest',
+                    'phone' => null,
+                ]),
             ]
         );
         $guest->assignRole('Guest');
@@ -200,8 +318,15 @@ class UserSeeder extends Seeder
             ['email' => 'unverified@example.com'],
             [
                 'name' => 'Unverified User',
+                'role' => 'user',
                 'email_verified_at' => null,
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'General',
+                    'position' => 'User',
+                    'phone' => null,
+                ]),
             ]
         );
         $unverified->assignRole('User');
@@ -211,8 +336,15 @@ class UserSeeder extends Seeder
             ['email' => 'test@example.com'],
             [
                 'name' => 'Test User',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'created_by' => $admin1->id,
+                'meta' => json_encode([
+                    'department' => 'General',
+                    'position' => 'Tester',
+                    'phone' => null,
+                ]),
             ]
         );
         $testUser->assignRole('User');
