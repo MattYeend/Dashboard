@@ -10,6 +10,16 @@ use App\Models\User;
 class UserRoleCheckerService
 {
     /**
+     * Inject the resolver service.
+     *
+     * @param  UserRoleResolverService $resolver
+     */
+    public function __construct(
+        protected UserRoleResolverService $resolver,
+    ) {
+    }
+
+    /**
      * Check if the user is a user, admin, or super admin.
      *
      * @param  User $user
@@ -18,12 +28,9 @@ class UserRoleCheckerService
      */
     public function isUser(User $user): bool
     {
-        return $user->is_user
-            || $user->hasRole('User')
-            || $user->hasRole('Admin')
-            || $user->hasRole('Super Admin')
-            || $this->isAdmin($user);
+        return $this->resolver->hasUserRole($user) || $this->isAdmin($user);
     }
+
     /**
      * Check if user is admin or super admin.
      *
@@ -33,10 +40,8 @@ class UserRoleCheckerService
      */
     public function isAdmin(User $user): bool
     {
-        return $user->is_admin
-            || $user->is_super_admin
-            || $user->hasRole('Admin')
-            || $user->hasRole('Super Admin');
+        return $this->resolver->hasAdminRole($user) ||
+            $this->isSuperAdmin($user);
     }
 
     /**
@@ -48,8 +53,7 @@ class UserRoleCheckerService
      */
     public function isSuperAdmin(User $user): bool
     {
-        return $user->is_super_admin
-            || $user->hasRole('Super Admin');
+        return $this->resolver->hasSuperAdminRole($user);
     }
 
     /**
@@ -64,8 +68,8 @@ class UserRoleCheckerService
      */
     public function isRestrictedFromManaging(User $user, User $model): bool
     {
-        return $user->is_admin
-            && ! $user->is_super_admin
-            && $model->is_admin;
+        return $this->resolver->hasAdminRole($user)
+            && ! $this->resolver->hasSuperAdminRole($user)
+            && $this->resolver->hasAdminRole($model);
     }
 }
