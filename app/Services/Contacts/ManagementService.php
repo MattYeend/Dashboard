@@ -45,16 +45,16 @@ class ManagementService
      * Update an existing contact.
      *
      * @param  UpdateContactRequest $request
-     * @param  Contact $companyContact
+     * @param  Contact $contact
      *
      * @return Contact
      */
     public function update(
         UpdateContactRequest $request,
-        Contact $companyContact
+        Contact $contact
     ): Contact {
         return $this->updater->update(
-            $companyContact,
+            $contact,
             $request->validated(),
             $request->user()->id
         );
@@ -63,13 +63,13 @@ class ManagementService
     /**
      * Soft delete a contact.
      *
-     * @param  Contact $companyContact
+     * @param  Contact $contact
      *
      * @return void
      */
-    public function destroy(Contact $companyContact): void
+    public function destroy(Contact $contact): void
     {
-        $this->destructor->delete($companyContact, auth()->id());
+        $this->destructor->delete($contact, auth()->id());
     }
 
     /**
@@ -81,8 +81,8 @@ class ManagementService
      */
     public function restore(int $id): Contact
     {
-        $companyContact = Contact::withTrashed()->findOrFail($id);
-        return $this->restorer->restore($companyContact, auth()->id());
+        $contact = Contact::withTrashed()->findOrFail($id);
+        return $this->restorer->restore($contact, auth()->id());
     }
 
     /**
@@ -95,8 +95,8 @@ class ManagementService
      */
     public function forceDelete(int $id): void
     {
-        $companyContact = Contact::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete($companyContact, auth()->id());
+        $contact = Contact::withTrashed()->findOrFail($id);
+        $this->destructor->forceDelete($contact, auth()->id());
     }
 
     /**

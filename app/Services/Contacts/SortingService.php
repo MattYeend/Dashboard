@@ -2,6 +2,7 @@
 
 namespace App\Services\Contacts;
 
+use App\Models\Contact;
 use Illuminate\Database\Eloquent\Builder;
 
 class SortingService
@@ -9,11 +10,11 @@ class SortingService
     /**
      * Apply sorting to query.
      *
-     * @param  Builder<\App\Models\Contact>  $query
-     * @param  string|null                   $sortBy
-     * @param  string|null                   $sortDirection
+     * @param  Builder<Contact> $query
+     * @param  string|null $sortBy
+     * @param  string|null $sortDirection
      *
-     * @return Builder<\App\Models\Contact>
+     * @return Builder<Contact>
      */
     public function applySorting(
         Builder $query,

@@ -73,10 +73,8 @@ class ActiveCheckerService
      * contact based on its active status.
      *
      * @param  Contact $contact
-     * @param  string $action The action being checked, either 'modify' or
-     * 'restoreOrForceDelete'.
-     * @param  User $user The user performing the action, used for admin check
-     * in the callback.
+     * @param  string $action
+     * @param  User $user
      *
      * @return bool
      */
