@@ -34,7 +34,7 @@ class Log extends Model
     public const ACTION_PASSWORD_CHANGED = 20;
     public const ACTION_RESTORE_USER = 21;
     public const ACTION_USER_DELETED = 22;
-    public const ACTION_USER_FORCE_DELETED = 23;
+    public const ACTION_FORCE_DELETE_USER = 23;
 
     // MFA/Settings
     public const ACTION_MFA_ENABLED = 24;

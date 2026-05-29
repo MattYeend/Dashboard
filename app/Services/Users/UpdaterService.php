@@ -38,7 +38,7 @@ class UpdaterService
         return DB::transaction(function () use ($user, $data, $updatedBy) {
             $actor = User::findOrFail($updatedBy);
 
-            $this->updateContact($user, $data);
+            $this->updateUser($user, $data);
             $this->logService->logUpdate($user, $actor, $updatedBy);
 
             return $user->fresh();
@@ -53,9 +53,9 @@ class UpdaterService
      *
      * @return void
      */
-    protected function updateContact(User $user, array $data): void
+    protected function updateUser(User $user, array $data): void
     {
-        $contactData = $this->dataPreparation->prepareForUpdate($data);
-        $user->update($contactData);
+        $userData = $this->dataPreparation->prepareForUpdate($data);
+        $user->update($userData);
     }
 }

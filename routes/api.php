@@ -10,15 +10,11 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::middleware(['web', 'auth:sanctum', 'throttle:api'])->group(function () {
-    // Authenticated user endpoint
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
 
-    // User Management routes
-    Route::prefix('users')->name(
-        'users.'
-    )->group(function () {
+    Route::prefix('users')->name('users.')->group(function () {
         Route::post(
             '/bulk/delete',
             [UserController::class, 'bulkDelete']
@@ -46,11 +42,11 @@ Route::middleware(['web', 'auth:sanctum', 'throttle:api'])->group(function () {
             [UserController::class, 'update']
         )->name('update');
         Route::patch(
-            '/{users}',
+            '/{user}',
             [UserController::class, 'update']
         )->name('patch');
         Route::delete(
-            '/{companyContact}',
+            '/{user}',
             [UserController::class, 'destroy']
         )->name('destroy');
 
@@ -65,10 +61,7 @@ Route::middleware(['web', 'auth:sanctum', 'throttle:api'])->group(function () {
         )->name('force-delete');
     });
 
-    // Contact Management routes
-    Route::prefix('contacts')->name(
-        'contacts.'
-    )->group(function () {
+    Route::prefix('contacts')->name('contacts.')->group(function () {
         Route::post(
             '/bulk/delete',
             [ContactController::class, 'bulkDelete']

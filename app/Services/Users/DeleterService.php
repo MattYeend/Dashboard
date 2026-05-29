@@ -67,7 +67,7 @@ class DeleterService
     }
 
     /**
-     * Delete multiple contacts.
+     * Delete multiple users.
      *
      * @param  array $contactIds
      * @param  int|null $deletedBy
@@ -83,9 +83,9 @@ class DeleterService
         $count = 0;
 
         DB::transaction(function () use ($contactIds, $deletedBy, &$count) {
-            $contacts = User::whereIn('id', $contactIds)->get();
+            $users = User::whereIn('id', $contactIds)->get();
 
-            foreach ($contacts as $user) {
+            foreach ($users as $user) {
                 if ($this->delete($user, $deletedBy)) {
                     $count++;
                 }

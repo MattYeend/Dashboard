@@ -121,6 +121,16 @@ class UserFactory extends Factory
     }
 
     /**
+     * Indicate that the model was soft deleted at a given time.
+     */
+    public function deleted(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'deleted_at' => now(),
+        ]);
+    }
+
+    /**
      * Indicate that the model was restored by a given user.
      */
     public function restoredBy(User $user): static
