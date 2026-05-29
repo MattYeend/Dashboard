@@ -2,47 +2,237 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
+use App\Services\Users\LogService;
+use App\Services\Users\ManagementService;
+use App\Services\Users\QueryService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    use AuthorizesRequests;
+
+    /**
+     * Inject the required services into the controller.
+     *
+     * @param  LogService $logger
+     * @param  ManagementService $management
+     * @param  QueryService $query
+     */
+    public function __construct(
+        protected LogService $logger,
+        protected ManagementService $management,
+        protected QueryService $query,
+    ) {
+    }
+
     /**
      * Display a listing of the resource.
+     *
+     * Also includes the authenticated user's permissions for the User
+     * resource, so the frontend can conditionally render create/view controls.
+     *
+     * Authorises via the 'viewAny' policy before returning data.
+     *
+     * @param  Request $request.
+     *
+     * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request): JsonResponse
     {
-        //
+        $this->authorize('viewAny', User::class);
+
+        $users = $this->query->getPaginated($request->all());
+
+        return response()->json($users);
     }
 
     /**
      * Store a newly created resource in storage.
+     *
+     * Validation is handled upstream by StoreUserRequest.
+     *
+     * After storing, an audit log entry is written against the
+     * authenticated user.
+     *
+     * @param  StoreUserRequest $request
+     *
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $user = $this->management->store($request);
+        return response()->json($user, 201);
     }
 
     /**
      * Display the specified resource.
+     *
+     * Return a single user by its model binding.
+     *
+     * Authorises via the 'view' policy before returning data.
+     *
+     * @param  User $user
+     *
+     * @return JsonResponse
      */
-    public function show(string $id)
+    public function show(User $user): JsonResponse
     {
-        //
+        $this->authorize('view', $user);
+        $this->authorize('access', $user);
+
+        $user = $this->query->getById($user->id);
+
+        return response()->json($user);
     }
 
     /**
      * Update the specified resource in storage.
+     *
+     * Validation is handled upstream by UpdateUserRequest, which also
+     * implicitly authorises the operation via its authorize() method.
+     *
+     * After updating, an audit log entry is written against the authenticated
+     * user.
+     *
+     * @param  UpdateUserRequest $request
+     * @param  User $user
+     *
+     * @return JsonResponse
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(
+        UpdateUserRequest $request,
+        User $user
+    ): JsonResponse {
+        $user = $this->management->update($request, $user);
+
+        return response()->json($user);
     }
 
     /**
      * Remove the specified resource from storage.
+     *
+     * Authorises via the 'delete' policy before proceeding.
+     *
+     * The audit log entry is written before the deletion so that the
+     * user instance is still fully accessible during logging.
+     *
+     * @param  User $user
+     *
+     * @return JsonResponse
      */
-    public function destroy(string $id)
+    public function destroy(User $user): JsonResponse
     {
-        //
+        $this->authorize('delete', $user);
+
+        $this->management->destroy($user);
+
+        return response()->json(null, 204);
+    }
+
+    /**
+     * Restore a soft-deleted user.
+     *
+     * Resolves the trashed model manually since route model binding
+     * excludes soft-deleted records by default.
+     *
+     * Authorises via the 'restore' policy before proceeding.
+     *
+     * @param  int $id
+     *
+     * @return JsonResponse
+     */
+    public function restore(int $id): JsonResponse
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+
+        $this->authorize('restore', $user);
+
+        $this->management->restore($id);
+
+        return response()->json(null, 204);
+    }
+
+    /**
+     * Permanently delete a soft-deleted user.
+     *
+     * Resolves the trashed model manually since route model binding
+     * excludes soft-deleted records by default.
+     *
+     * Authorises via the 'forceDelete' policy before proceeding.
+     *
+     * @param  int $id
+     *
+     * @return JsonResponse
+     */
+    public function forceDelete(int $id): JsonResponse
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+
+        $this->authorize('forceDelete', $user);
+
+        $this->management->forceDelete($id);
+
+        return response()->json(null, 204);
+    }
+
+    /**
+     * Bulk soft-delete multiple users.
+     *
+     * Authorises each user individually via the 'delete' policy.
+     *
+     * @param  Request $request
+     *
+     * @return JsonResponse
+     */
+    public function bulkDelete(Request $request): JsonResponse
+    {
+        $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['required', 'integer', 'exists:users,id'],
+        ]);
+
+        $actor = $request->user();
+        $ids = $request->input('ids');
+
+        $this->management->bulkDelete(
+            $ids,
+            $actor,
+            fn (User $user) => $this->authorize('delete', $user)
+        );
+
+        return response()->json(null, 204);
+    }
+
+    /**
+     * Bulk restore multiple soft-deleted users.
+     *
+     * Authorises each user individually via the 'restore' policy.
+     *
+     * @param  Request $request
+     *
+     * @return JsonResponse
+     */
+    public function bulkRestore(Request $request): JsonResponse
+    {
+        $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['required', 'integer', 'exists:users,id'],
+        ]);
+
+        $actor = $request->user();
+        $ids = $request->input('ids');
+
+        $this->management->bulkRestore(
+            $ids,
+            $actor,
+            fn (User $user) => $this->authorize('restore', $user)
+        );
+
+        return response()->json(null, 204);
     }
 }
