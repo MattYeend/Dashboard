@@ -5,18 +5,14 @@ namespace App\Services\Users;
 class DataPreparationService
 {
     /**
-     * Prepare contact data for creation.
+     * Prepare user data for creation.
      *
      * @param  array<string, mixed> $data
-     * @param  string $contactableType
-     * @param  int $contactableId
      *
      * @return array<string, mixed>
      */
     public function prepareForCreation(
         array $data,
-        string $contactableType,
-        int $contactableId
     ): array {
         return [
             'name' => $data['name'],
@@ -28,7 +24,7 @@ class DataPreparationService
     }
 
     /**
-     * Prepare contact data for update.
+     * Prepare user data for update.
      *
      * @param  array<string, mixed> $data
      *
