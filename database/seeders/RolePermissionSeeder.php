@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -15,7 +15,7 @@ class RolePermissionSeeder extends Seeder
     public function run(): void
     {
         // Reset cached roles and permissions
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Create permissions
         $permissions = [
@@ -443,7 +443,7 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('9. User - Basic user permissions');
         $this->command->info('10. Guest - Minimal read-only access');
         $this->command->info('');
-        $this->command->info('Total permissions created: ' . Permission::count());
+        $this->command->info('Total permissions created: '.Permission::count());
         $this->command->info('');
         $this->command->info('Permission categories:');
         $this->command->info('- Dashboard & Statistics');

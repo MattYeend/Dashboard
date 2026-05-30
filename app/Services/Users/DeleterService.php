@@ -9,21 +9,13 @@ class DeleterService
 {
     /**
      * Inject the required services into the deleter service.
-     *
-     * @param LogService $logService
      */
     public function __construct(
         protected LogService $logService
-    ) {
-    }
+    ) {}
 
     /**
      * Soft delete a user.
-     *
-     * @param  User $user
-     * @param  int|null $deletedBy
-     *
-     * @return bool
      *
      * @throws \Exception
      */
@@ -47,11 +39,6 @@ class DeleterService
     /**
      * Force delete a user (permanent deletion).
      *
-     * @param  User $user
-     * @param  int|null $deletedBy
-     *
-     * @return bool
-     *
      * @throws \Exception
      */
     public function forceDelete(
@@ -68,11 +55,6 @@ class DeleterService
 
     /**
      * Delete multiple users.
-     *
-     * @param  array $contactIds
-     * @param  int|null $deletedBy
-     *
-     * @return int
      *
      * @throws \Exception
      */

@@ -9,20 +9,13 @@ class ActiveCheckerService
 {
     /**
      * Inject the required services into the active checker service.
-     *
-     * @param UserRoleCheckerService $roleChecker
      */
     public function __construct(
         protected UserRoleCheckerService $roleChecker
-    ) {
-    }
+    ) {}
 
     /**
      * Check if user is active (not soft-deleted).
-     *
-     * @param  User $user
-     *
-     * @return bool
      */
     public function isActive(User $user): bool
     {
@@ -31,10 +24,6 @@ class ActiveCheckerService
 
     /**
      * Check if user is soft-deleted.
-     *
-     * @param  User $user
-     *
-     * @return bool
      */
     public function isTrashed(User $user): bool
     {
@@ -44,10 +33,6 @@ class ActiveCheckerService
     /**
      * Check if user is active (not soft-deleted) and can be
      * updated/deleted.
-     *
-     * @param  User $user
-     *
-     * @return bool
      */
     public function canBeModified(User $user): bool
     {
@@ -56,10 +41,6 @@ class ActiveCheckerService
 
     /**
      * Check if user is soft-deleted and can be restored/force-deleted.
-     *
-     * @param  User $user
-     *
-     * @return bool
      */
     public function canBeRestoredOrForceDeleted(
         User $user
@@ -70,12 +51,6 @@ class ActiveCheckerService
     /**
      * Check if user can modify user (update/delete) or restore/force-delete
      * user based on its active status.
-     *
-     * @param  User $user
-     * @param  string $action
-     * @param  User $targetUser
-     *
-     * @return bool
      */
     public function canUserPerformAction(
         User $user,

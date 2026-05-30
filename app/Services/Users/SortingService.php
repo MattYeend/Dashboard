@@ -10,10 +10,7 @@ class SortingService
     /**
      * Apply sorting to query.
      *
-     * @param  Builder<User> $query
-     * @param  string|null $sortBy
-     * @param  string|null $sortDirection
-     *
+     * @param  Builder<User>  $query
      * @return Builder<User>
      */
     public function applySorting(

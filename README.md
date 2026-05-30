@@ -205,20 +205,6 @@ npm run format:check
 npm run types:check
 ```
 
-**Static analysis with PHP Insights:**
-
-[PHP Insights](https://github.com/nunomaduro/phpinsights) provides instant code quality checks covering code style, architecture, complexity, and reliability directly from the console. Run the analysis with:
-
-```bash
-php artisan insights
-```
-
-**Run all CI checks together:**
-
-```bash
-composer run ci:check
-```
-
 ---
 
 ## Scripts Reference
@@ -227,15 +213,15 @@ composer run ci:check
 |---|---|
 | `composer run setup` | Full project setup |
 | `composer run dev` | Start all dev services |
-| `composer run lint` | Fix PHP code style |
-| `composer run lint:check` | Check PHP code style |
-| `composer run test` | Run the test suite |
-| `composer run ci:check` | Run all CI checks |
 | `npm run dev` | Start Vite dev server |
 | `npm run build` | Build frontend for production |
 | `npm run lint` | Fix ESLint violations |
+| `npm run lint:check` | Check ESLint violations (no fixes applied) |
 | `npm run format` | Format with Prettier |
+| `npm run format:check` | Check formatting (no fixes applied) |
 | `npm run types:check` | Check TypeScript types |
+| `php artisan test` | Run the full Pest PHP test suite |
+| `php artisan make:service serviceName` | Scaffold a new service class |
 
 ---
 

@@ -18,17 +18,12 @@ class ContactController extends Controller
 
     /**
      * Inject the required services into the controller.
-     *
-     * @param  LogService $logger
-     * @param  ManagementService $management
-     * @param  QueryService $query
      */
     public function __construct(
         protected LogService $logger,
         protected ManagementService $management,
         protected QueryService $query,
-    ) {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -37,10 +32,6 @@ class ContactController extends Controller
      * resource, so the frontend can conditionally render create/view controls.
      *
      * Authorises via the 'viewAny' policy before returning data.
-     *
-     * @param  Request $request.
-     *
-     * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
@@ -59,13 +50,13 @@ class ContactController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      *
-     * @param  StoreContactRequest $request
      *
      * @return JsonResponse
      */
     public function store(StoreContactRequest $request)
     {
         $contact = $this->management->store($request);
+
         return response()->json($contact, 201);
     }
 
@@ -75,10 +66,6 @@ class ContactController extends Controller
      * Return a single contact by its model binding.
      *
      * Authorises via the 'view' policy before returning data.
-     *
-     * @param  Contact $contact
-     *
-     * @return JsonResponse
      */
     public function show(Contact $contact): JsonResponse
     {
@@ -98,11 +85,6 @@ class ContactController extends Controller
      *
      * After updating, an audit log entry is written against the authenticated
      * user.
-     *
-     * @param  UpdateContactRequest $request
-     * @param  Contact $contact
-     *
-     * @return JsonResponse
      */
     public function update(
         UpdateContactRequest $request,
@@ -120,10 +102,6 @@ class ContactController extends Controller
      *
      * The audit log entry is written before the deletion so that the
      * contact instance is still fully accessible during logging.
-     *
-     * @param  Contact $contact
-     *
-     * @return JsonResponse
      */
     public function destroy(Contact $contact): JsonResponse
     {
@@ -141,10 +119,6 @@ class ContactController extends Controller
      * excludes soft-deleted records by default.
      *
      * Authorises via the 'restore' policy before proceeding.
-     *
-     * @param  int $id
-     *
-     * @return JsonResponse
      */
     public function restore(int $id): JsonResponse
     {
@@ -164,10 +138,6 @@ class ContactController extends Controller
      * excludes soft-deleted records by default.
      *
      * Authorises via the 'forceDelete' policy before proceeding.
-     *
-     * @param  int $id
-     *
-     * @return JsonResponse
      */
     public function forceDelete(int $id): JsonResponse
     {
@@ -184,10 +154,6 @@ class ContactController extends Controller
      * Bulk soft-delete multiple contacts.
      *
      * Authorises each contact individually via the 'delete' policy.
-     *
-     * @param  Request $request
-     *
-     * @return JsonResponse
      */
     public function bulkDelete(Request $request): JsonResponse
     {
@@ -212,10 +178,6 @@ class ContactController extends Controller
      * Bulk restore multiple soft-deleted contacts.
      *
      * Authorises each contact individually via the 'restore' policy.
-     *
-     * @param  Request $request
-     *
-     * @return JsonResponse
      */
     public function bulkRestore(Request $request): JsonResponse
     {

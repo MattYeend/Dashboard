@@ -10,20 +10,13 @@ class ActiveCheckerService
 {
     /**
      * Inject the required services into the active checker service.
-     *
-     * @param UserRoleCheckerService $roleChecker
      */
     public function __construct(
         protected UserRoleCheckerService $roleChecker
-    ) {
-    }
+    ) {}
 
     /**
      * Check if contact is active (not soft-deleted).
-     *
-     * @param  Contact $contact
-     *
-     * @return bool
      */
     public function isActive(Contact $contact): bool
     {
@@ -32,10 +25,6 @@ class ActiveCheckerService
 
     /**
      * Check if contact is soft-deleted.
-     *
-     * @param  Contact $contact
-     *
-     * @return bool
      */
     public function isTrashed(Contact $contact): bool
     {
@@ -45,10 +34,6 @@ class ActiveCheckerService
     /**
      * Check if contact is active (not soft-deleted) and can be
      * updated/deleted.
-     *
-     * @param  Contact $contact
-     *
-     * @return bool
      */
     public function canBeModified(Contact $contact): bool
     {
@@ -57,10 +42,6 @@ class ActiveCheckerService
 
     /**
      * Check if contact is soft-deleted and can be restored/force-deleted.
-     *
-     * @param  Contact $contact
-     *
-     * @return bool
      */
     public function canBeRestoredOrForceDeleted(
         Contact $contact
@@ -71,12 +52,6 @@ class ActiveCheckerService
     /**
      * Check if user can modify contact (update/delete) or restore/force-delete
      * contact based on its active status.
-     *
-     * @param  Contact $contact
-     * @param  string $action
-     * @param  User $user
-     *
-     * @return bool
      */
     public function canUserPerformAction(
         Contact $contact,

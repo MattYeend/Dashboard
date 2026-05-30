@@ -50,7 +50,7 @@ describe('index', function () {
     });
 
     test('user without permission cannot list contacts', function () {
-        
+
         $user = $this->normalUser();
 
         $this->actingAs($user)
@@ -64,7 +64,7 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
 
         $payload = [
-            'contactable_type' => (new User())->getMorphClass(),
+            'contactable_type' => (new User)->getMorphClass(),
             'contactable_id' => $superAdmin->id,
             'phone' => '+44 20 7946 0958',
             'email' => 'james.hartley@example.co.uk',
@@ -90,7 +90,7 @@ describe('store', function () {
         $user = $this->normalUser();
 
         $payload = [
-            'contactable_type' => (new User())->getMorphClass(),
+            'contactable_type' => (new User)->getMorphClass(),
             'contactable_id' => $user->id,
             'phone' => '+44 20 7946 0958',
             'email' => 'test@example.co.uk',
@@ -122,7 +122,7 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/api/contacts', [
-                'contactable_type' => (new User())->getMorphClass(),
+                'contactable_type' => (new User)->getMorphClass(),
                 'email' => 'test@example.co.uk',
             ])
             ->assertStatus(422)
@@ -134,7 +134,7 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/api/contacts', [
-                'contactable_type' => (new User())->getMorphClass(),
+                'contactable_type' => (new User)->getMorphClass(),
                 'contactable_id' => $superAdmin->id,
                 'email' => 'not-an-email',
             ])
@@ -147,7 +147,7 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/api/contacts', [
-                'contactable_type' => (new User())->getMorphClass(),
+                'contactable_type' => (new User)->getMorphClass(),
                 'contactable_id' => $superAdmin->id,
             ])
             ->assertStatus(201);
@@ -231,7 +231,7 @@ describe('update', function () {
 
     test('user without permission cannot update a contact', function () {
         $superAdmin = $this->superAdminUser();
-        
+
         $user = $this->normalUser();
 
         $contact = Contact::factory()->forModel($superAdmin)->create();
@@ -338,7 +338,7 @@ describe('force delete', function () {
     });
 
     test('user without permission cannot force delete a contact', function () {
-        
+
         $superAdmin = $this->superAdminUser();
         $user = $this->normalUser();
 
@@ -377,7 +377,7 @@ describe('bulk delete', function () {
     });
 
     test('bulk delete fails validation with empty ids array', function () {
-        
+
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
@@ -414,7 +414,7 @@ describe('bulk restore', function () {
         $superAdmin = $this->superAdminUser();
 
         $contacts = Contact::factory()->count(3)->forModel($superAdmin)->deleted()->create();
-        $ids      = $contacts->pluck('id')->all();
+        $ids = $contacts->pluck('id')->all();
 
         $this->actingAs($superAdmin)
             ->postJson('/api/contacts/bulk/restore', ['ids' => $ids])
@@ -428,7 +428,7 @@ describe('bulk restore', function () {
         }
     });
 
-    test('bulk restore fails validation with empty ids array', function () { 
+    test('bulk restore fails validation with empty ids array', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
@@ -438,7 +438,7 @@ describe('bulk restore', function () {
     });
 
     test('bulk restore fails validation with non-existent ids', function () {
-        
+
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
@@ -462,7 +462,7 @@ describe('bulk restore', function () {
 });
 
 describe('soft delete scoping', function () {
-    test('index does not return soft-deleted contacts', function () {        
+    test('index does not return soft-deleted contacts', function () {
         $superAdmin = $this->superAdminUser();
 
         Contact::factory()->count(2)->forModel($superAdmin)->create();
@@ -476,7 +476,7 @@ describe('soft delete scoping', function () {
         $ids = collect($response->json('data'))->pluck('id')->all();
 
         Contact::onlyTrashed()->get()->each(
-            fn(Contact $c) => expect($ids)->not->toContain($c->id)
+            fn (Contact $c) => expect($ids)->not->toContain($c->id)
         );
     });
 

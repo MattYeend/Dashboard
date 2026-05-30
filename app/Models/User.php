@@ -41,18 +41,16 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory,
+    use HasApiTokens,
+        HasFactory,
+        HasRoles,
         Notifiable,
         PasskeyAuthenticatable,
-        TwoFactorAuthenticatable,
-        HasApiTokens,
-        HasRoles,
-        SoftDeletes;
+        SoftDeletes,
+        TwoFactorAuthenticatable;
 
     /**
      * Set the user's role to 'user'.
-     *
-     * @return static
      */
     public function user(): static
     {
@@ -61,8 +59,6 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
 
     /**
      * Set the user's role to 'admin'.
-     *
-     * @return static
      */
     public function admin(): static
     {
@@ -71,8 +67,6 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
 
     /**
      * Set the user's role to 'super_admin'.
-     *
-     * @return static
      */
     public function superAdmin(): static
     {

@@ -8,10 +8,6 @@ class UserRoleResolverService
 {
     /**
      * Determine if the user has the base user role by enum or Spatie role.
-     *
-     * @param  User $user
-     *
-     * @return bool
      */
     public function hasUserRole(User $user): bool
     {
@@ -20,10 +16,6 @@ class UserRoleResolverService
 
     /**
      * Determine if the user has the admin role by enum or Spatie role.
-     *
-     * @param  User $user
-     *
-     * @return bool
      */
     public function hasAdminRole(User $user): bool
     {
@@ -32,10 +24,6 @@ class UserRoleResolverService
 
     /**
      * Determine if the user has the super admin role by enum or Spatie role.
-     *
-     * @param  User $user
-     *
-     * @return bool
      */
     public function hasSuperAdminRole(User $user): bool
     {

@@ -11,9 +11,6 @@ class LogService
     /**
      * Log contact creation.
      *
-     * @param  Contact $contact
-     * @param  User $actor
-     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -39,9 +36,6 @@ class LogService
     /**
      * Log a contact show event.
      *
-     * @param  Contact $contact
-     * @param  User $actor
-     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -67,9 +61,6 @@ class LogService
     /**
      * Log a contact update event.
      *
-     * @param  Contact $contact
-     * @param  User $actor
-     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -95,9 +86,6 @@ class LogService
     /**
      * Log a contact deletion event.
      *
-     * @param  Contact $contact
-     * @param  User $actor
-     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -123,9 +111,6 @@ class LogService
     /**
      * Log contact force deletion (permanent).
      *
-     * @param  Contact $contact
-     * @param  User $actor
-     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -151,9 +136,6 @@ class LogService
     /**
      * Log a contact restoration event.
      *
-     * @param  Contact $contact
-     * @param  User $actor
-     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -179,10 +161,7 @@ class LogService
     /**
      * Log a contact import event.
      *
-     * @param  array<int, mixed> $importData
-     * @param  User $actor
-     * @param  int $actorId
-     *
+     * @param  array<int, mixed>  $importData
      * @return array<string, mixed>
      */
     public function logImport(
@@ -209,10 +188,7 @@ class LogService
     /**
      * Log a contact export event.
      *
-     * @param  array<int, mixed> $exportData
-     * @param  User $actor
-     * @param  int $actorId
-     *
+     * @param  array<int, mixed>  $exportData
      * @return array<string, mixed>
      */
     public function logExport(
@@ -239,7 +215,6 @@ class LogService
     /**
      * Log a contact update event performed by a scheduled task (cron).
      *
-     * @param  Contact $contact
      *
      * @return array<string, mixed>
      */
@@ -262,7 +237,6 @@ class LogService
     /**
      * Get base contact data for logging.
      *
-     * @param  Contact $contact
      *
      * @return array<string, mixed>
      */
@@ -295,7 +269,6 @@ class LogService
     /**
      * Get contact data for logging.
      *
-     * @param  Contact $contact
      *
      * @return array<string, mixed>
      */

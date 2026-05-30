@@ -54,11 +54,11 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
 
         $payload = [
-            'name'                  => 'James Hartley',
-            'email'                 => 'james.hartley@example.co.uk',
-            'password'              => 'password',
+            'name' => 'James Hartley',
+            'email' => 'james.hartley@example.co.uk',
+            'password' => 'password',
             'password_confirmation' => 'password',
-            'role'                  => 'user',
+            'role' => 'user',
         ];
 
         $this->actingAs($superAdmin)
@@ -68,7 +68,7 @@ describe('store', function () {
 
         $this->assertDatabaseHas('users', [
             'email' => 'james.hartley@example.co.uk',
-            'name'  => 'James Hartley',
+            'name' => 'James Hartley',
         ]);
     });
 
@@ -76,9 +76,9 @@ describe('store', function () {
         $user = $this->normalUser();
 
         $payload = [
-            'name'                  => 'Test User',
-            'email'                 => 'test@example.co.uk',
-            'password'              => 'password',
+            'name' => 'Test User',
+            'email' => 'test@example.co.uk',
+            'password' => 'password',
             'password_confirmation' => 'password',
         ];
 
@@ -92,8 +92,8 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/api/users', [
-                'email'                 => 'test@example.co.uk',
-                'password'              => 'password',
+                'email' => 'test@example.co.uk',
+                'password' => 'password',
                 'password_confirmation' => 'password',
             ])
             ->assertStatus(422)
@@ -105,7 +105,7 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/api/users', [
-                'name'  => 'Test User',
+                'name' => 'Test User',
                 'email' => 'test@example.co.uk',
             ])
             ->assertStatus(422)
@@ -117,9 +117,9 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/api/users', [
-                'name'                  => 'Test User',
-                'email'                 => 'not-an-email',
-                'password'              => 'password',
+                'name' => 'Test User',
+                'email' => 'not-an-email',
+                'password' => 'password',
                 'password_confirmation' => 'password',
             ])
             ->assertStatus(422)
@@ -131,11 +131,11 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/api/users', [
-                'name'                  => 'Test User',
-                'email'                 => 'test@example.co.uk',
-                'password'              => 'password',
+                'name' => 'Test User',
+                'email' => 'test@example.co.uk',
+                'password' => 'password',
                 'password_confirmation' => 'password',
-                'role'                  => 'invalid_role',
+                'role' => 'invalid_role',
             ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['role']);
@@ -163,7 +163,7 @@ describe('show', function () {
 
     test('user without permission cannot view a user', function () {
         $normalUser = $this->normalUser();
-        $target     = User::factory()->create();
+        $target = User::factory()->create();
 
         $this->actingAs($normalUser)
             ->getJson("/api/users/{$target->id}")
@@ -191,7 +191,7 @@ describe('update', function () {
             ->assertJsonFragment(['name' => 'New Name']);
 
         $this->assertDatabaseHas('users', [
-            'id'   => $user->id,
+            'id' => $user->id,
             'name' => 'New Name',
         ]);
     });
@@ -209,7 +209,7 @@ describe('update', function () {
 
     test('user without permission cannot update a user', function () {
         $normalUser = $this->normalUser();
-        $target     = User::factory()->create();
+        $target = User::factory()->create();
 
         $this->actingAs($normalUser)
             ->putJson("/api/users/{$target->id}", ['name' => 'Hacked'])
@@ -243,7 +243,7 @@ describe('destroy', function () {
 
     test('user without permission cannot soft delete a user', function () {
         $normalUser = $this->normalUser();
-        $target     = User::factory()->create();
+        $target = User::factory()->create();
 
         $this->actingAs($normalUser)
             ->deleteJson("/api/users/{$target->id}")
@@ -270,14 +270,14 @@ describe('restore', function () {
             ->assertStatus(204);
 
         $this->assertDatabaseHas('users', [
-            'id'         => $user->id,
+            'id' => $user->id,
             'deleted_at' => null,
         ]);
     });
 
     test('user without permission cannot restore a user', function () {
         $normalUser = $this->normalUser();
-        $target     = User::factory()->deleted()->create();
+        $target = User::factory()->deleted()->create();
 
         $this->actingAs($normalUser)
             ->postJson("/api/users/{$target->id}/restore")
@@ -310,7 +310,7 @@ describe('force delete', function () {
 
     test('user without permission cannot force delete a user', function () {
         $normalUser = $this->normalUser();
-        $target     = User::factory()->deleted()->create();
+        $target = User::factory()->deleted()->create();
 
         $this->actingAs($normalUser)
             ->deleteJson("/api/users/{$target->id}/force")
@@ -333,7 +333,7 @@ describe('bulk delete', function () {
         $superAdmin = $this->superAdminUser();
 
         $users = User::factory()->count(3)->create();
-        $ids   = $users->pluck('id')->all();
+        $ids = $users->pluck('id')->all();
 
         $this->actingAs($superAdmin)
             ->postJson('/api/users/bulk/delete', ['ids' => $ids])
@@ -364,7 +364,7 @@ describe('bulk delete', function () {
 
     test('user without permission cannot bulk delete users', function () {
         $normalUser = $this->normalUser();
-        $users      = User::factory()->count(2)->create();
+        $users = User::factory()->count(2)->create();
 
         $this->actingAs($normalUser)
             ->postJson('/api/users/bulk/delete', [
@@ -379,7 +379,7 @@ describe('bulk restore', function () {
         $superAdmin = $this->superAdminUser();
 
         $users = User::factory()->count(3)->deleted()->create();
-        $ids   = $users->pluck('id')->all();
+        $ids = $users->pluck('id')->all();
 
         $this->actingAs($superAdmin)
             ->postJson('/api/users/bulk/restore', ['ids' => $ids])
@@ -387,7 +387,7 @@ describe('bulk restore', function () {
 
         foreach ($ids as $id) {
             $this->assertDatabaseHas('users', [
-                'id'         => $id,
+                'id' => $id,
                 'deleted_at' => null,
             ]);
         }
@@ -413,7 +413,7 @@ describe('bulk restore', function () {
 
     test('user without permission cannot bulk restore users', function () {
         $normalUser = $this->normalUser();
-        $users      = User::factory()->count(2)->deleted()->create();
+        $users = User::factory()->count(2)->deleted()->create();
 
         $this->actingAs($normalUser)
             ->postJson('/api/users/bulk/restore', [

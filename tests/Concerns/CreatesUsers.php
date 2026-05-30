@@ -11,6 +11,7 @@ trait CreatesUsers
         $user = User::factory()->adminUser()->create();
         setPermissionsTeamId(1);
         $user->assignRole('Admin');
+
         return $user;
     }
 
@@ -19,6 +20,7 @@ trait CreatesUsers
         $user = User::factory()->superAdminUser()->create();
         setPermissionsTeamId(1);
         $user->assignRole('Super Admin');
+
         return $user;
     }
 
@@ -27,6 +29,7 @@ trait CreatesUsers
         $user = User::factory()->normalUser()->create();
         setPermissionsTeamId(1);
         $user->assignRole('User');
+
         return $user;
     }
 }

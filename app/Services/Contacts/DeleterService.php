@@ -10,21 +10,15 @@ class DeleterService
 {
     /**
      * Inject the required services into the deleter service.
-     *
-     * @param LogService $logService
      */
     public function __construct(
         protected LogService $logService
-    ) {
-    }
+    ) {}
 
     /**
      * Soft delete a contact.
      *
-     * @param  Contact $contact
-     * @param  int|null $deletedBy
      *
-     * @return bool
      *
      * @throws \Exception
      */
@@ -48,10 +42,7 @@ class DeleterService
     /**
      * Force delete a contact (permanent deletion).
      *
-     * @param  Contact $contact
-     * @param  int|null $deletedBy
      *
-     * @return bool
      *
      * @throws \Exception
      */
@@ -70,10 +61,7 @@ class DeleterService
     /**
      * Delete multiple contacts.
      *
-     * @param  array $contactIds
-     * @param  int|null $deletedBy
      *
-     * @return int
      *
      * @throws \Exception
      */

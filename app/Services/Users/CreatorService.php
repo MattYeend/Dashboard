@@ -10,23 +10,16 @@ class CreatorService
 {
     /**
      * Inject the required services into the creator service.
-     *
-     * @param  DataPreparationService $dataPreparation
-     * @param  LogService $logService
      */
     public function __construct(
         protected DataPreparationService $dataPreparation,
         protected LogService $logService
-    ) {
-    }
+    ) {}
 
     /**
      * Create a new user.
      *
-     * @param  array<string, mixed> $data
-     * @param  int $createdBy
-     *
-     * @return User
+     * @param  array<string, mixed>  $data
      *
      * @throws ModelNotFoundException
      */
@@ -45,9 +38,7 @@ class CreatorService
     /**
      * Create the user record.
      *
-     * @param  array<string, mixed> $data
-     *
-     * @return User
+     * @param  array<string, mixed>  $data
      */
     protected function createUser(array $data): User
     {

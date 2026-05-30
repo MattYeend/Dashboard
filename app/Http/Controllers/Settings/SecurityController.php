@@ -19,8 +19,7 @@ class SecurityController extends Controller
     public function edit(TwoFactorAuthenticationRequest $request): Response
     {
         $props = [
-            'canManageTwoFactor' => Features::
-                canManageTwoFactorAuthentication(),
+            'canManageTwoFactor' => Features::canManageTwoFactorAuthentication(),
             'canManagePasskeys' => Features::canManagePasskeys(),
             'passkeys' => $this->getFormattedPasskeys($request),
             'passwordRules' => Password::defaults()
@@ -100,7 +99,6 @@ class SecurityController extends Controller
      * Format a single passkey for the response.
      *
      * @param  mixed  $passkey
-     *
      * @return array<string, mixed>
      */
     private function formatPasskey($passkey): array

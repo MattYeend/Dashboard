@@ -9,7 +9,6 @@ class FormatterService
     /**
      * Format a single contact with all data.
      *
-     * @param  Contact $contact
      *
      * @return array<string, mixed>
      */

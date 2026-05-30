@@ -9,26 +9,16 @@ class QueryService
 {
     /**
      * Inject the required services into the query service.
-     *
-     * @param SortingService $sortingService
-     * @param TrashFilterService $trashFilterService
-     * @param FilterService $filterService
-     * @param FormatterService $formatterService
      */
     public function __construct(
         protected SortingService $sortingService,
         protected TrashFilterService $trashFilterService,
         protected FilterService $filterService,
         protected FormatterService $formatterService
-    ) {
-    }
+    ) {}
 
     /**
      * Get paginated contacts with filters.
-     *
-     * @param  array $filters
-     *
-     * @return array
      */
     public function getPaginated(array $filters = []): array
     {
@@ -44,11 +34,6 @@ class QueryService
 
     /**
      * Get a single user by ID.
-     *
-     * @param  int $id
-     * @param  bool $withTrashed
-     *
-     * @return array
      */
     public function getById(int $id, bool $withTrashed = false): array
     {
@@ -63,10 +48,6 @@ class QueryService
 
     /**
      * Build the base query with filters.
-     *
-     * @param  array $filters
-     *
-     * @return Builder
      */
     protected function buildQuery(array $filters): Builder
     {
@@ -78,11 +59,6 @@ class QueryService
 
     /**
      * Paginate the query and return as plain array.
-     *
-     * @param  Builder $query
-     * @param  int $perPage
-     *
-     * @return array
      */
     protected function paginate(Builder $query, int $perPage): array
     {
@@ -103,8 +79,6 @@ class QueryService
 
     /**
      * Get user permissions for the authenticated user.
-     *
-     * @return array
      */
     protected function getPermissions(): array
     {
@@ -125,8 +99,6 @@ class QueryService
 
     /**
      * Get base data for the view.
-     *
-     * @return array
      */
     protected function baseData(): array
     {
@@ -138,11 +110,6 @@ class QueryService
 
     /**
      * Find a user by ID with optional trashed records.
-     *
-     * @param  int $id
-     * @param  bool $withTrashed
-     *
-     * @return User
      */
     private function findContact(
         int $id,
@@ -159,11 +126,6 @@ class QueryService
 
     /**
      * Apply sorting to the query.
-     *
-     * @param  Builder $query
-     * @param  array $filters
-     *
-     * @return Builder
      */
     private function applySorting(Builder $query, array $filters): Builder
     {

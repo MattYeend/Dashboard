@@ -9,8 +9,6 @@ class FormatterService
     /**
      * Format a single user with all data.
      *
-     * @param  User $user
-     *
      * @return array<string, mixed>
      */
     public function format(User $user): array

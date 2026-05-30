@@ -10,9 +10,7 @@ class FilterService
     /**
      * Apply search filter to query.
      *
-     * @param  Builder<Contact> $query
-     * @param  string|null $search
-     *
+     * @param  Builder<Contact>  $query
      * @return Builder<Contact>
      */
     public function applySearch(Builder $query, ?string $search): Builder
@@ -34,9 +32,7 @@ class FilterService
     /**
      * Apply country filter to query.
      *
-     * @param  Builder<Contact> $query
-     * @param  string|null $country
-     *
+     * @param  Builder<Contact>  $query
      * @return Builder<Contact>
      */
     public function applyCountry(Builder $query, ?string $country): Builder
@@ -51,14 +47,14 @@ class FilterService
     /**
      * Apply all filters to query.
      *
-     * @param  Builder<Contact> $query
-     * @param  array<string,mixed> $filters
-     *
+     * @param  Builder<Contact>  $query
+     * @param  array<string,mixed>  $filters
      * @return Builder<Contact>
      */
     public function applyAll(Builder $query, array $filters): Builder
     {
         $query = $this->applySearch($query, $filters['search'] ?? null);
+
         return $query = $this->applyCountry(
             $query,
             $filters['country']

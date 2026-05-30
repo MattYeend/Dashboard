@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Contact;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Collection;
 
 class ContactSeeder extends Seeder
 {
@@ -16,6 +16,7 @@ class ContactSeeder extends Seeder
     {
         if (Contact::exists()) {
             $this->command->info('Contacts already seeded, skipping...');
+
             return;
         }
 
@@ -23,10 +24,11 @@ class ContactSeeder extends Seeder
 
         if ($users->isEmpty()) {
             $this->command->warn('No users found, skipping contact seeding...');
+
             return;
         }
 
-        $morphType = (new User())->getMorphClass();
+        $morphType = (new User)->getMorphClass();
 
         foreach ($this->getContacts($morphType, $users) as $contact) {
             Contact::create($contact);
@@ -36,11 +38,10 @@ class ContactSeeder extends Seeder
     /**
      * Get the predefined contact records to seed.
      *
-     * @param  string  $morphType
-     * @param  \Illuminate\Support\Collection<string, User>  $users
+     * @param  Collection<string, User>  $users
      * @return array<int, array<string, string|int|null>>
      */
-    private function getContacts(string $morphType, \Illuminate\Support\Collection $users): array
+    private function getContacts(string $morphType, Collection $users): array
     {
         return [
             [

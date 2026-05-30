@@ -10,21 +10,13 @@ class RestorerService
 {
     /**
      * Inject the required services into the resorer service.
-     *
-     * @param LogService $logService
      */
     public function __construct(
         protected LogService $logService
-    ) {
-    }
+    ) {}
 
     /**
      * Restore a soft-deleted user.
-     *
-     * @param  User $user
-     * @param  int|null $restoredBy
-     *
-     * @return User
      *
      * @throws \Exception
      */
@@ -49,9 +41,6 @@ class RestorerService
 
     /**
      * Restore multiple soft-deleted users.
-     *
-     * @param  array $userIds
-     * @param  int|null $restoredBy
      *
      * @return int Number of users restored
      *

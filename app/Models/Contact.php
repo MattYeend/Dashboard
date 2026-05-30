@@ -24,7 +24,6 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $restored_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- *
  * @property-read Model $contactable
  */
 #[Fillable([

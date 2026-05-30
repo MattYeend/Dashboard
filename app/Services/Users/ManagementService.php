@@ -10,26 +10,16 @@ class ManagementService
 {
     /**
      * Inject the required services into the management service.
-     *
-     * @param CreatorService $creator
-     * @param UpdaterService $updater
-     * @param DeleterService $destructor
-     * @param RestorerService $restorer
      */
     public function __construct(
         protected CreatorService $creator,
         protected UpdaterService $updater,
         protected DeleterService $destructor,
         protected RestorerService $restorer,
-    ) {
-    }
+    ) {}
 
     /**
      * Create a new company user.
-     *
-     * @param StoreUserRequest $request
-     *
-     * @return User
      */
     public function store(
         StoreUserRequest $request
@@ -42,11 +32,6 @@ class ManagementService
 
     /**
      * Update an existing user.
-     *
-     * @param  UpdateUserRequest $request
-     * @param  User $user
-     *
-     * @return User
      */
     public function update(
         UpdateUserRequest $request,
@@ -61,10 +46,6 @@ class ManagementService
 
     /**
      * Soft delete a user.
-     *
-     * @param  User $user
-     *
-     * @return void
      */
     public function destroy(User $user): void
     {
@@ -73,24 +54,17 @@ class ManagementService
 
     /**
      * Restore a soft-deleted user.
-     *
-     * @param  int $id
-     *
-     * @return User
      */
     public function restore(int $id): User
     {
         $user = User::withTrashed()->findOrFail($id);
+
         return $this->restorer->restore($user, auth()->id());
     }
 
     /**
      * Force delete a user, permanently removing it from the
      * database.
-     *
-     * @param  int $id
-     *
-     * @return void
      */
     public function forceDelete(int $id): void
     {
@@ -100,12 +74,6 @@ class ManagementService
 
     /**
      * Bulk restore contacts.
-     *
-     * @param  array $ids
-     * @param  User $actor
-     * @param  callable $authoriseCallback
-     *
-     * @return array
      */
     public function bulkRestore(
         array $ids,
@@ -129,12 +97,6 @@ class ManagementService
 
     /**
      * Bulk soft delete contacts.
-     *
-     * @param  array $ids
-     * @param  User $actor
-     * @param  callable $authoriseCallback
-     *
-     * @return array
      */
     public function bulkDelete(
         array $ids,

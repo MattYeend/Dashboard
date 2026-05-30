@@ -10,24 +10,16 @@ class UpdaterService
 {
     /**
      * Inject the required services into the updater service.
-     *
-     * @param  DataPreparationService $dataPreparation
-     * @param  LogService $logService
      */
     public function __construct(
         protected DataPreparationService $dataPreparation,
         protected LogService $logService
-    ) {
-    }
+    ) {}
 
     /**
      * Update an existing contact.
      *
-     * @param  Contact $contact
      * @param  array<string, mixed>  $data
-     * @param  int $updatedBy
-     *
-     * @return Contact
      *
      * @throws \Exception
      */
@@ -49,10 +41,7 @@ class UpdaterService
     /**
      * Update contact data.
      *
-     * @param  Contact $contact
-     * @param  array<string, mixed> $data
-     *
-     * @return void
+     * @param  array<string, mixed>  $data
      */
     protected function updateContact(Contact $contact, array $data): void
     {

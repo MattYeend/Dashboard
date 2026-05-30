@@ -13,8 +13,6 @@ class UpdateUserPassword implements UpdatesUserPasswords
      *
      * @param  mixed  $user
      * @param  array<string, string>  $input
-     *
-     * @return void
      */
     public function update($user, array $input): void
     {

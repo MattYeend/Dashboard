@@ -11,20 +11,13 @@ class UserRoleCheckerService
 {
     /**
      * Inject the resolver service.
-     *
-     * @param  UserRoleResolverService $resolver
      */
     public function __construct(
         protected UserRoleResolverService $resolver,
-    ) {
-    }
+    ) {}
 
     /**
      * Check if the user is a user, admin, or super admin.
-     *
-     * @param  User $user
-     *
-     * @return bool
      */
     public function isUser(User $user): bool
     {
@@ -33,10 +26,6 @@ class UserRoleCheckerService
 
     /**
      * Check if user is admin or super admin.
-     *
-     * @param  User $user
-     *
-     * @return bool
      */
     public function isAdmin(User $user): bool
     {
@@ -46,10 +35,6 @@ class UserRoleCheckerService
 
     /**
      * Check if the user is a super admin.
-     *
-     * @param  User $user
-     *
-     * @return bool
      */
     public function isSuperAdmin(User $user): bool
     {
@@ -60,11 +45,6 @@ class UserRoleCheckerService
      * Check if admin is restricted from managing the target user.
      *
      * Regular admins cannot manage super admins.
-     *
-     * @param  User $user
-     * @param  User $model
-     *
-     * @return bool
      */
     public function isRestrictedFromManaging(User $user, User $model): bool
     {

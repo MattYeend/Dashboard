@@ -10,9 +10,7 @@ class FilterService
     /**
      * Apply search filter to query.
      *
-     * @param  Builder<User> $query
-     * @param  string|null $search
-     *
+     * @param  Builder<User>  $query
      * @return Builder<User>
      */
     public function applySearch(Builder $query, ?string $search): Builder
@@ -30,9 +28,7 @@ class FilterService
     /**
      * Apply role filter to query.
      *
-     * @param  Builder<User> $query
-     * @param  string|null $role
-     *
+     * @param  Builder<User>  $query
      * @return Builder<User>
      */
     public function applyRole(Builder $query, ?string $role): Builder
@@ -47,9 +43,8 @@ class FilterService
     /**
      * Apply all filters to query.
      *
-     * @param  Builder<User> $query
-     * @param  array<string, mixed> $filters
-     *
+     * @param  Builder<User>  $query
+     * @param  array<string, mixed>  $filters
      * @return Builder<User>
      */
     public function applyAll(Builder $query, array $filters): Builder

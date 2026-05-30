@@ -11,23 +11,16 @@ class CreatorService
 {
     /**
      * Inject the required services into the creator service.
-     *
-     * @param  DataPreparationService $dataPreparation
-     * @param  LogService $logService
      */
     public function __construct(
         protected DataPreparationService $dataPreparation,
         protected LogService $logService
-    ) {
-    }
+    ) {}
 
     /**
      * Create a new contact.
      *
-     * @param  array<string, mixed> $data
-     * @param  int $createdBy
-     *
-     * @return Contact
+     * @param  array<string, mixed>  $data
      *
      * @throws ModelNotFoundException
      */
@@ -46,9 +39,7 @@ class CreatorService
     /**
      * Create the contact record.
      *
-     * @param  array<string, mixed> $data
-     *
-     * @return Contact
+     * @param  array<string, mixed>  $data
      */
     protected function createContact(array $data): Contact
     {

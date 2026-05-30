@@ -18,17 +18,12 @@ class UserController extends Controller
 
     /**
      * Inject the required services into the controller.
-     *
-     * @param  LogService $logger
-     * @param  ManagementService $management
-     * @param  QueryService $query
      */
     public function __construct(
         protected LogService $logger,
         protected ManagementService $management,
         protected QueryService $query,
-    ) {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -37,10 +32,6 @@ class UserController extends Controller
      * resource, so the frontend can conditionally render create/view controls.
      *
      * Authorises via the 'viewAny' policy before returning data.
-     *
-     * @param  Request $request.
-     *
-     * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
@@ -59,13 +50,13 @@ class UserController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      *
-     * @param  StoreUserRequest $request
      *
      * @return JsonResponse
      */
     public function store(StoreUserRequest $request)
     {
         $user = $this->management->store($request);
+
         return response()->json($user, 201);
     }
 
@@ -75,10 +66,6 @@ class UserController extends Controller
      * Return a single user by its model binding.
      *
      * Authorises via the 'view' policy before returning data.
-     *
-     * @param  User $user
-     *
-     * @return JsonResponse
      */
     public function show(User $user): JsonResponse
     {
@@ -98,11 +85,6 @@ class UserController extends Controller
      *
      * After updating, an audit log entry is written against the authenticated
      * user.
-     *
-     * @param  UpdateUserRequest $request
-     * @param  User $user
-     *
-     * @return JsonResponse
      */
     public function update(
         UpdateUserRequest $request,
@@ -120,10 +102,6 @@ class UserController extends Controller
      *
      * The audit log entry is written before the deletion so that the
      * user instance is still fully accessible during logging.
-     *
-     * @param  User $user
-     *
-     * @return JsonResponse
      */
     public function destroy(User $user): JsonResponse
     {
@@ -141,10 +119,6 @@ class UserController extends Controller
      * excludes soft-deleted records by default.
      *
      * Authorises via the 'restore' policy before proceeding.
-     *
-     * @param  int $id
-     *
-     * @return JsonResponse
      */
     public function restore(int $id): JsonResponse
     {
@@ -164,10 +138,6 @@ class UserController extends Controller
      * excludes soft-deleted records by default.
      *
      * Authorises via the 'forceDelete' policy before proceeding.
-     *
-     * @param  int $id
-     *
-     * @return JsonResponse
      */
     public function forceDelete(int $id): JsonResponse
     {
@@ -184,10 +154,6 @@ class UserController extends Controller
      * Bulk soft-delete multiple users.
      *
      * Authorises each user individually via the 'delete' policy.
-     *
-     * @param  Request $request
-     *
-     * @return JsonResponse
      */
     public function bulkDelete(Request $request): JsonResponse
     {
@@ -212,10 +178,6 @@ class UserController extends Controller
      * Bulk restore multiple soft-deleted users.
      *
      * Authorises each user individually via the 'restore' policy.
-     *
-     * @param  Request $request
-     *
-     * @return JsonResponse
      */
     public function bulkRestore(Request $request): JsonResponse
     {

@@ -10,10 +10,6 @@ class LogService
     /**
      * Log user creation.
      *
-     * @param  User $user
-     * @param  User $actor
-     * @param  int $actorId
-     *
      * @return array<string, mixed>
      */
     public function logCreation(
@@ -37,10 +33,6 @@ class LogService
 
     /**
      * Log a user show event.
-     *
-     * @param  User $user
-     * @param  User $actor
-     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -66,10 +58,6 @@ class LogService
     /**
      * Log a user update event.
      *
-     * @param  User $user
-     * @param  User $actor
-     * @param  int $actorId
-     *
      * @return array<string, mixed>
      */
     public function logUpdate(
@@ -93,10 +81,6 @@ class LogService
 
     /**
      * Log a user deletion event.
-     *
-     * @param  User $user
-     * @param  User $actor
-     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -122,10 +106,6 @@ class LogService
     /**
      * Log user force deletion (permanent).
      *
-     * @param  User $user
-     * @param  User $actor
-     * @param  int $actorId
-     *
      * @return array<string, mixed>
      */
     public function logForceDeletion(
@@ -149,10 +129,6 @@ class LogService
 
     /**
      * Log a user restoration event.
-     *
-     * @param  User $user
-     * @param  User $actor
-     * @param  int $actorId
      *
      * @return array<string, mixed>
      */
@@ -178,10 +154,7 @@ class LogService
     /**
      * Log a user import event.
      *
-     * @param  array<int, mixed> $importData
-     * @param  User $actor
-     * @param  int $actorId
-     *
+     * @param  array<int, mixed>  $importData
      * @return array<string, mixed>
      */
     public function logImport(
@@ -208,10 +181,7 @@ class LogService
     /**
      * Log a user export event.
      *
-     * @param  array<int, mixed> $exportData
-     * @param  User $actor
-     * @param  int $actorId
-     *
+     * @param  array<int, mixed>  $exportData
      * @return array<string, mixed>
      */
     public function logExport(
@@ -238,8 +208,6 @@ class LogService
     /**
      * Log a user update event performed by a scheduled task (cron).
      *
-     * @param  User $user
-     *
      * @return array<string, mixed>
      */
     public function logUpdateByCron(User $user): array
@@ -260,8 +228,6 @@ class LogService
 
     /**
      * Get base user data for logging.
-     *
-     * @param  User $user
      *
      * @return array<string, mixed>
      */
@@ -289,8 +255,6 @@ class LogService
 
     /**
      * Get user data for logging.
-     *
-     * @param  User $user
      *
      * @return array<string, mixed>
      */

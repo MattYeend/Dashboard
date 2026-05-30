@@ -9,24 +9,16 @@ class UpdaterService
 {
     /**
      * Inject the required services into the updater service.
-     *
-     * @param  DataPreparationService $dataPreparation
-     * @param  LogService $logService
      */
     public function __construct(
         protected DataPreparationService $dataPreparation,
         protected LogService $logService
-    ) {
-    }
+    ) {}
 
     /**
      * Update an existing user.
      *
-     * @param  User $user
      * @param  array<string, mixed>  $data
-     * @param  int $updatedBy
-     *
-     * @return User
      *
      * @throws \Exception
      */
@@ -48,10 +40,7 @@ class UpdaterService
     /**
      * Update user data.
      *
-     * @param  User $user
-     * @param  array<string, mixed> $data
-     *
-     * @return void
+     * @param  array<string, mixed>  $data
      */
     protected function updateUser(User $user, array $data): void
     {

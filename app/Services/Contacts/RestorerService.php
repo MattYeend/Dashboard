@@ -11,21 +11,15 @@ class RestorerService
 {
     /**
      * Inject the required services into the resorer service.
-     *
-     * @param LogService $logService
      */
     public function __construct(
         protected LogService $logService
-    ) {
-    }
+    ) {}
 
     /**
      * Restore a soft-deleted contact.
      *
-     * @param  Contact $contact
-     * @param  int|null $restoredBy
      *
-     * @return Contact
      *
      * @throws \Exception
      */
@@ -51,8 +45,6 @@ class RestorerService
     /**
      * Restore multiple soft-deleted contacts.
      *
-     * @param  array $contactIds
-     * @param  int|null $restoredBy
      *
      * @return int Number of contacts restored
      *

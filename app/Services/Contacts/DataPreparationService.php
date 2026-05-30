@@ -7,10 +7,7 @@ class DataPreparationService
     /**
      * Prepare contact data for creation.
      *
-     * @param  array<string, mixed> $data
-     * @param  string $contactableType
-     * @param  int $contactableId
-     *
+     * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
     public function prepareForCreation(
@@ -33,8 +30,7 @@ class DataPreparationService
     /**
      * Prepare contact data for update.
      *
-     * @param  array<string, mixed> $data
-     *
+     * @param  array<string, mixed>  $data
      * @return array<string,mixed>
      */
     public function prepareForUpdate(array $data): array

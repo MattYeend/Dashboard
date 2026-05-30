@@ -8,11 +8,6 @@ class TrashFilterService
 {
     /**
      * Apply trash filter to the query.
-     *
-     * @param  Builder $query
-     * @param  string|null $trashed
-     *
-     * @return Builder
      */
     public function applyFilter(
         Builder $query,
@@ -27,8 +22,6 @@ class TrashFilterService
 
     /**
      * Get available trash filter options.
-     *
-     * @return array
      */
     public function getFilterOptions(): array
     {
@@ -41,10 +34,6 @@ class TrashFilterService
 
     /**
      * Check if query includes trashed records.
-     *
-     * @param  string|null $trashed
-     *
-     * @return bool
      */
     public function includesTrashed(?string $trashed): bool
     {
@@ -53,10 +42,6 @@ class TrashFilterService
 
     /**
      * Check if query is only trashed records.
-     *
-     * @param  string|null $trashed
-     *
-     * @return bool
      */
     public function isOnlyTrashed(?string $trashed): bool
     {
