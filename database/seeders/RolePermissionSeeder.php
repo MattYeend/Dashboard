@@ -32,6 +32,7 @@ class RolePermissionSeeder extends Seeder
             'delete users',
             'restore users',
             'force delete users',
+            'import users',
             'export users',
 
             // Role management
@@ -110,7 +111,8 @@ class RolePermissionSeeder extends Seeder
             'create backups',
             'restore backups',
             'delete backups',
-            'download backups',
+            'import backups',
+            'export backups',
 
             // API access
             'view api keys',
@@ -131,6 +133,8 @@ class RolePermissionSeeder extends Seeder
             'delete contact information',
             'restore contact information',
             'force delete contact information',
+            'import contact information',
+            'export contact information',
         ];
 
         foreach ($permissions as $permission) {
@@ -155,6 +159,7 @@ class RolePermissionSeeder extends Seeder
             'edit users',
             'delete users',
             'restore users',
+            'import users',
             'export users',
             'view roles',
             'create roles',
@@ -198,7 +203,10 @@ class RolePermissionSeeder extends Seeder
             'export audit trail',
             'view backups',
             'create backups',
-            'download backups',
+            'restore backups',
+            'delete backups',
+            'import backups',
+            'export backups',
             'view api keys',
             'create api keys',
             'revoke api keys',
@@ -211,6 +219,8 @@ class RolePermissionSeeder extends Seeder
             'edit contact information',
             'delete contact information',
             'restore contact information',
+            'import contact information',
+            'export contact information',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -225,6 +235,7 @@ class RolePermissionSeeder extends Seeder
             'create users',
             'edit users',
             'delete users',
+            'import users',
             'export users',
             'view roles',
             'assign roles',
@@ -253,10 +264,13 @@ class RolePermissionSeeder extends Seeder
             'download files',
             'delete files',
             'view audit trail',
+            'view contact information',
             'create contact information',
             'edit contact information',
             'delete contact information',
             'restore contact information',
+            'import contact information',
+            'export contact information',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -357,6 +371,8 @@ class RolePermissionSeeder extends Seeder
             'edit contact information',
             'delete contact information',
             'restore contact information',
+            'import contact information',
+            'export contact information',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -384,6 +400,8 @@ class RolePermissionSeeder extends Seeder
             'download files',
             'view audit trail',
             'export audit trail',
+            'view contact information',
+            'export contact information',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
