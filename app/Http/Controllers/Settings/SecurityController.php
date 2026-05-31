@@ -22,8 +22,7 @@ class SecurityController extends Controller
             'canManageTwoFactor' => Features::canManageTwoFactorAuthentication(),
             'canManagePasskeys' => Features::canManagePasskeys(),
             'passkeys' => $this->getFormattedPasskeys($request),
-            'passwordRules' => Password::defaults()
-                ->toPasswordRulesString(),
+            'passwordRules' => $this->getPasswordRules(),
         ];
 
         if (Features::canManageTwoFactorAuthentication()) {
@@ -112,5 +111,31 @@ class SecurityController extends Controller
             'last_used_at_diff' => $passkey->last_used_at
                 ?->diffForHumans(),
         ];
+    }
+
+    /**
+     * Get the password rules for the frontend.
+     *
+     * @return array<string, mixed>
+     */
+    private function getPasswordRules(): array
+    {
+        return app()->isProduction()
+            ? [
+                'min' => 12,
+                'mixedCase' => true,
+                'letters' => true,
+                'numbers' => true,
+                'symbols' => true,
+                'uncompromised' => true,
+            ]
+            : [
+                'min' => 8,
+                'mixedCase' => false,
+                'letters' => false,
+                'numbers' => false,
+                'symbols' => false,
+                'uncompromised' => false,
+            ];
     }
 }
