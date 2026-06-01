@@ -2,40 +2,40 @@
 
 namespace App\Models;
 
-use Database\Factories\ContactFactory;
+use Database\Factories\TaskStatusFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property string $contactable_type
- * @property int $contactable_id
- * @property string|null $phone
- * @property string|null $email
- * @property string|null $address
- * @property string|null $city
- * @property string|null $postal_code
- * @property string|null $country
- * @property Carbon|null $deleted_at
+ * @property string $title
+ * @property string|null $description
+ * @property string $background_colour
+ * @property string $text_colour
+ * @property array<string, mixed>|null $meta
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property int|null $deleted_by
+ * @property int|null $restored_by
  * @property Carbon|null $restored_at
+ * @property Carbon|null $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property-read Model $contactable
+ * @property-read User|null $creator
+ * @property-read User|null $updater
+ * @property-read User|null $deleter
+ * @property-read User|null $restorer
  */
 #[Fillable([
-    'contactable_type',
-    'contactable_id',
-    'phone',
-    'email',
-    'address',
-    'city',
-    'postal_code',
-    'country',
+    'title',
+    'description',
+    'background_colour',
+    'text_colour',
+    'meta',
     'created_by',
     'created_at',
     'updated_by',
@@ -45,26 +45,16 @@ use Illuminate\Support\Carbon;
     'restored_by',
     'restored_at',
 ])]
-class Contact extends Model
+class TaskStatus extends Model
 {
     /**
-     * @use HasFactory<ContactFactory>
+     * @use HasFactory<TaskStatusFactory>
      */
     use HasFactory,
         SoftDeletes;
 
     /**
-     * Get the parent contactable model (e.g. User, Lead, Customer).
-     *
-     * @return MorphTo<Model,$this>
-     */
-    public function contactable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    /**
-     * Get the user who created this contact.
+     * Get the user who created this task status.
      *
      * @return BelongsTo<User, $this>
      */
@@ -74,7 +64,7 @@ class Contact extends Model
     }
 
     /**
-     * Get the user who last updated this contact.
+     * Get the user who last updated this task status.
      *
      * @return BelongsTo<User, $this>
      */
@@ -84,7 +74,7 @@ class Contact extends Model
     }
 
     /**
-     * Get the user who deleted this contact.
+     * Get the user who deleted this task status.
      *
      * @return BelongsTo<User, $this>
      */
@@ -94,7 +84,7 @@ class Contact extends Model
     }
 
     /**
-     * Get the user who restored this contact.
+     * Get the user who restored this task status.
      *
      * @return BelongsTo<User, $this>
      */
@@ -106,14 +96,14 @@ class Contact extends Model
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string,string>
+     * @return array<string, string>
      */
     protected function casts(): array
     {
         return [
             'meta' => 'array',
-            'deleted_at' => 'datetime',
             'restored_at' => 'datetime',
+            'deleted_at' => 'datetime',
         ];
     }
 }
