@@ -3,6 +3,7 @@
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
@@ -14,22 +15,13 @@ uses(
 beforeEach(function () {
     setPermissionsTeamId(1);
 
-    Role::firstOrCreate([
-        'name' => 'admin',
-    ]);
-
-    Role::firstOrCreate([
-        'name' => 'Super Admin',
-    ]);
-
-    Role::firstOrCreate([
-        'name' => 'User',
-    ]);
+    Role::firstOrCreate(['name' => 'admin']);
+    Role::firstOrCreate(['name' => 'Super Admin']);
+    Role::firstOrCreate(['name' => 'User']);
 });
 
 test('example', function () {
     $response = $this->get('/');
-
     $response->assertStatus(200);
 });
 
@@ -40,21 +32,50 @@ describe('index', function () {
         Contact::factory()->count(3)->forModel($superAdmin)->create();
 
         $this->actingAs($superAdmin)
-            ->getJson('/api/contacts')
-            ->assertStatus(200);
+            ->get('/contacts')
+            ->assertStatus(200)
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Contacts/Index')
+                ->has('contacts')
+            );
     });
 
     test('unauthenticated user cannot list contacts', function () {
-        $this->getJson('/api/contacts')
-            ->assertStatus(401);
+        $this->get('/contacts')
+            ->assertRedirect('/login');
     });
 
     test('user without permission cannot list contacts', function () {
-
         $user = $this->normalUser();
 
         $this->actingAs($user)
-            ->getJson('/api/contacts')
+            ->get('/contacts')
+            ->assertStatus(403);
+    });
+});
+
+describe('create', function () {
+    test('authenticated user with permission can view create form', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $this->actingAs($superAdmin)
+            ->get('/contacts/create')
+            ->assertStatus(200)
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Contacts/Create')
+            );
+    });
+
+    test('unauthenticated user cannot view create form', function () {
+        $this->get('/contacts/create')
+            ->assertRedirect('/login');
+    });
+
+    test('user without permission cannot view create form', function () {
+        $user = $this->normalUser();
+
+        $this->actingAs($user)
+            ->get('/contacts/create')
             ->assertStatus(403);
     });
 });
@@ -75,7 +96,7 @@ describe('store', function () {
         ];
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/contacts', $payload)
+            ->postJson('/contacts', $payload)
             ->assertStatus(201)
             ->assertJsonFragment(['email' => 'james.hartley@example.co.uk']);
 
@@ -101,7 +122,7 @@ describe('store', function () {
         ];
 
         $this->actingAs($user)
-            ->postJson('/api/contacts', $payload)
+            ->postJson('/contacts', $payload)
             ->assertStatus(403);
     });
 
@@ -109,7 +130,7 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/contacts', [
+            ->postJson('/contacts', [
                 'contactable_id' => $superAdmin->id,
                 'email' => 'test@example.co.uk',
             ])
@@ -121,7 +142,7 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/contacts', [
+            ->postJson('/contacts', [
                 'contactable_type' => (new User)->getMorphClass(),
                 'email' => 'test@example.co.uk',
             ])
@@ -133,7 +154,7 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/contacts', [
+            ->postJson('/contacts', [
                 'contactable_type' => (new User)->getMorphClass(),
                 'contactable_id' => $superAdmin->id,
                 'email' => 'not-an-email',
@@ -146,7 +167,7 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/contacts', [
+            ->postJson('/contacts', [
                 'contactable_type' => (new User)->getMorphClass(),
                 'contactable_id' => $superAdmin->id,
             ])
@@ -167,9 +188,12 @@ describe('show', function () {
         $contact = Contact::factory()->forModel($superAdmin)->create();
 
         $this->actingAs($superAdmin)
-            ->getJson("/api/contacts/{$contact->id}")
+            ->get("/contacts/{$contact->id}")
             ->assertStatus(200)
-            ->assertJsonFragment(['id' => $contact->id]);
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Contacts/Show')
+                ->has('contact')
+            );
     });
 
     test('unauthenticated user cannot view a contact', function () {
@@ -177,8 +201,8 @@ describe('show', function () {
 
         $contact = Contact::factory()->forModel($superAdmin)->create();
 
-        $this->getJson("/api/contacts/{$contact->id}")
-            ->assertStatus(401);
+        $this->get("/contacts/{$contact->id}")
+            ->assertRedirect('/login');
     });
 
     test('user without permission cannot view a contact', function () {
@@ -188,7 +212,7 @@ describe('show', function () {
         $contact = Contact::factory()->forModel($superAdmin)->create();
 
         $this->actingAs($user)
-            ->getJson("/api/contacts/{$contact->id}")
+            ->get("/contacts/{$contact->id}")
             ->assertStatus(403);
     });
 
@@ -196,8 +220,44 @@ describe('show', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->getJson('/api/contacts/99999')
+            ->get('/contacts/99999')
             ->assertStatus(404);
+    });
+});
+
+describe('edit', function () {
+    test('authenticated user with permission can view edit form', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $contact = Contact::factory()->forModel($superAdmin)->create();
+
+        $this->actingAs($superAdmin)
+            ->get("/contacts/{$contact->id}/edit")
+            ->assertStatus(200)
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Contacts/Edit')
+                ->has('contact')
+            );
+    });
+
+    test('unauthenticated user cannot view edit form', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $contact = Contact::factory()->forModel($superAdmin)->create();
+
+        $this->get("/contacts/{$contact->id}/edit")
+            ->assertRedirect('/login');
+    });
+
+    test('user without permission cannot view edit form', function () {
+        $superAdmin = $this->superAdminUser();
+        $user = $this->normalUser();
+
+        $contact = Contact::factory()->forModel($superAdmin)->create();
+
+        $this->actingAs($user)
+            ->get("/contacts/{$contact->id}/edit")
+            ->assertStatus(403);
     });
 });
 
@@ -208,7 +268,7 @@ describe('update', function () {
         $contact = Contact::factory()->forModel($superAdmin)->create(['city' => 'London']);
 
         $this->actingAs($superAdmin)
-            ->putJson("/api/contacts/{$contact->id}", ['city' => 'Manchester'])
+            ->putJson("/contacts/{$contact->id}", ['city' => 'Manchester'])
             ->assertStatus(200)
             ->assertJsonFragment(['city' => 'Manchester']);
 
@@ -224,20 +284,19 @@ describe('update', function () {
         $contact = Contact::factory()->forModel($superAdmin)->create(['country' => 'United Kingdom']);
 
         $this->actingAs($superAdmin)
-            ->patchJson("/api/contacts/{$contact->id}", ['country' => 'Germany'])
+            ->patchJson("/contacts/{$contact->id}", ['country' => 'Germany'])
             ->assertStatus(200)
             ->assertJsonFragment(['country' => 'Germany']);
     });
 
     test('user without permission cannot update a contact', function () {
         $superAdmin = $this->superAdminUser();
-
         $user = $this->normalUser();
 
         $contact = Contact::factory()->forModel($superAdmin)->create();
 
         $this->actingAs($user)
-            ->putJson("/api/contacts/{$contact->id}", ['city' => 'Manchester'])
+            ->putJson("/contacts/{$contact->id}", ['city' => 'Manchester'])
             ->assertStatus(403);
     });
 
@@ -247,7 +306,7 @@ describe('update', function () {
         $contact = Contact::factory()->forModel($superAdmin)->create();
 
         $this->actingAs($superAdmin)
-            ->putJson("/api/contacts/{$contact->id}", ['email' => 'not-an-email'])
+            ->putJson("/contacts/{$contact->id}", ['email' => 'not-an-email'])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['email']);
     });
@@ -260,7 +319,7 @@ describe('destroy', function () {
         $contact = Contact::factory()->forModel($superAdmin)->create();
 
         $this->actingAs($superAdmin)
-            ->deleteJson("/api/contacts/{$contact->id}")
+            ->deleteJson("/contacts/{$contact->id}")
             ->assertStatus(204);
 
         $this->assertSoftDeleted('contacts', ['id' => $contact->id]);
@@ -273,7 +332,7 @@ describe('destroy', function () {
         $contact = Contact::factory()->forModel($superAdmin)->create();
 
         $this->actingAs($user)
-            ->deleteJson("/api/contacts/{$contact->id}")
+            ->deleteJson("/contacts/{$contact->id}")
             ->assertStatus(403);
     });
 
@@ -281,7 +340,7 @@ describe('destroy', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->deleteJson('/api/contacts/99999')
+            ->deleteJson('/contacts/99999')
             ->assertStatus(404);
     });
 });
@@ -293,7 +352,7 @@ describe('restore', function () {
         $contact = Contact::factory()->forModel($superAdmin)->deleted()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/api/contacts/{$contact->id}/restore")
+            ->postJson("/contacts/{$contact->id}/restore")
             ->assertStatus(204);
 
         $this->assertDatabaseHas('contacts', [
@@ -309,7 +368,7 @@ describe('restore', function () {
         $contact = Contact::factory()->forModel($superAdmin)->deleted()->create();
 
         $this->actingAs($user)
-            ->postJson("/api/contacts/{$contact->id}/restore")
+            ->postJson("/contacts/{$contact->id}/restore")
             ->assertStatus(403);
     });
 
@@ -319,7 +378,7 @@ describe('restore', function () {
         $contact = Contact::factory()->forModel($superAdmin)->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/api/contacts/{$contact->id}/restore")
+            ->postJson("/contacts/{$contact->id}/restore")
             ->assertStatus(404);
     });
 });
@@ -331,21 +390,20 @@ describe('force delete', function () {
         $contact = Contact::factory()->forModel($superAdmin)->deleted()->create();
 
         $this->actingAs($superAdmin)
-            ->deleteJson("/api/contacts/{$contact->id}/force")
+            ->deleteJson("/contacts/{$contact->id}/force")
             ->assertStatus(204);
 
         $this->assertDatabaseMissing('contacts', ['id' => $contact->id]);
     });
 
     test('user without permission cannot force delete a contact', function () {
-
         $superAdmin = $this->superAdminUser();
         $user = $this->normalUser();
 
         $contact = Contact::factory()->forModel($superAdmin)->deleted()->create();
 
         $this->actingAs($user)
-            ->deleteJson("/api/contacts/{$contact->id}/force")
+            ->deleteJson("/contacts/{$contact->id}/force")
             ->assertStatus(403);
     });
 
@@ -355,7 +413,7 @@ describe('force delete', function () {
         $contact = Contact::factory()->forModel($superAdmin)->create();
 
         $this->actingAs($superAdmin)
-            ->deleteJson("/api/contacts/{$contact->id}/force")
+            ->deleteJson("/contacts/{$contact->id}/force")
             ->assertStatus(404);
     });
 });
@@ -368,7 +426,7 @@ describe('bulk delete', function () {
         $ids = $contacts->pluck('id')->all();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/contacts/bulk/delete', ['ids' => $ids])
+            ->postJson('/contacts/bulk/delete', ['ids' => $ids])
             ->assertStatus(204);
 
         foreach ($ids as $id) {
@@ -377,11 +435,10 @@ describe('bulk delete', function () {
     });
 
     test('bulk delete fails validation with empty ids array', function () {
-
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/contacts/bulk/delete', ['ids' => []])
+            ->postJson('/contacts/bulk/delete', ['ids' => []])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ids']);
     });
@@ -390,7 +447,7 @@ describe('bulk delete', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/contacts/bulk/delete', ['ids' => [99999]])
+            ->postJson('/contacts/bulk/delete', ['ids' => [99999]])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ids.0']);
     });
@@ -402,7 +459,7 @@ describe('bulk delete', function () {
         $contacts = Contact::factory()->count(2)->forModel($superAdmin)->create();
 
         $this->actingAs($user)
-            ->postJson('/api/contacts/bulk/delete', [
+            ->postJson('/contacts/bulk/delete', [
                 'ids' => $contacts->pluck('id')->all(),
             ])
             ->assertStatus(403);
@@ -417,7 +474,7 @@ describe('bulk restore', function () {
         $ids = $contacts->pluck('id')->all();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/contacts/bulk/restore', ['ids' => $ids])
+            ->postJson('/contacts/bulk/restore', ['ids' => $ids])
             ->assertStatus(204);
 
         foreach ($ids as $id) {
@@ -432,17 +489,16 @@ describe('bulk restore', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/contacts/bulk/restore', ['ids' => []])
+            ->postJson('/contacts/bulk/restore', ['ids' => []])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ids']);
     });
 
     test('bulk restore fails validation with non-existent ids', function () {
-
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/contacts/bulk/restore', ['ids' => [99999]])
+            ->postJson('/contacts/bulk/restore', ['ids' => [99999]])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ids.0']);
     });
@@ -454,7 +510,7 @@ describe('bulk restore', function () {
         $contacts = Contact::factory()->count(2)->forModel($superAdmin)->deleted()->create();
 
         $this->actingAs($user)
-            ->postJson('/api/contacts/bulk/restore', [
+            ->postJson('/contacts/bulk/restore', [
                 'ids' => $contacts->pluck('id')->all(),
             ])
             ->assertStatus(403);
@@ -469,11 +525,17 @@ describe('soft delete scoping', function () {
         Contact::factory()->forModel($superAdmin)->deleted()->create();
 
         $response = $this->actingAs($superAdmin)
-            ->getJson('/api/contacts');
+            ->get('/contacts');
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Contacts/Index')
+                ->has('contacts')
+            );
 
-        $ids = collect($response->json('data'))->pluck('id')->all();
+        $ids = collect($response->inertia()->prop('contacts')['data'] ?? [])
+            ->pluck('id')
+            ->all();
 
         Contact::onlyTrashed()->get()->each(
             fn (Contact $c) => expect($ids)->not->toContain($c->id)
@@ -486,7 +548,7 @@ describe('soft delete scoping', function () {
         $contact = Contact::factory()->forModel($superAdmin)->deleted()->create();
 
         $this->actingAs($superAdmin)
-            ->getJson("/api/contacts/{$contact->id}")
+            ->get("/contacts/{$contact->id}")
             ->assertStatus(404);
     });
 });

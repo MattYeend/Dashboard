@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
@@ -20,7 +21,6 @@ beforeEach(function () {
 
 test('example', function () {
     $response = $this->get('/');
-
     $response->assertStatus(200);
 });
 
@@ -31,20 +31,50 @@ describe('index', function () {
         User::factory()->count(3)->create();
 
         $this->actingAs($superAdmin)
-            ->getJson('/api/users')
-            ->assertStatus(200);
+            ->get('/users')
+            ->assertStatus(200)
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Users/Index')
+                ->has('users')
+            );
     });
 
     test('unauthenticated user cannot list users', function () {
-        $this->getJson('/api/users')
-            ->assertStatus(401);
+        $this->get('/users')
+            ->assertRedirect('/login');
     });
 
     test('user without permission cannot list users', function () {
         $user = $this->normalUser();
 
         $this->actingAs($user)
-            ->getJson('/api/users')
+            ->get('/users')
+            ->assertStatus(403);
+    });
+});
+
+describe('create', function () {
+    test('authenticated user with permission can view create form', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $this->actingAs($superAdmin)
+            ->get('/users/create')
+            ->assertStatus(200)
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Users/Create')
+            );
+    });
+
+    test('unauthenticated user cannot view create form', function () {
+        $this->get('/users/create')
+            ->assertRedirect('/login');
+    });
+
+    test('user without permission cannot view create form', function () {
+        $user = $this->normalUser();
+
+        $this->actingAs($user)
+            ->get('/users/create')
             ->assertStatus(403);
     });
 });
@@ -62,7 +92,7 @@ describe('store', function () {
         ];
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/users', $payload)
+            ->postJson('/users', $payload)
             ->assertStatus(201)
             ->assertJsonFragment(['email' => 'james.hartley@example.co.uk']);
 
@@ -83,7 +113,7 @@ describe('store', function () {
         ];
 
         $this->actingAs($user)
-            ->postJson('/api/users', $payload)
+            ->postJson('/users', $payload)
             ->assertStatus(403);
     });
 
@@ -91,7 +121,7 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/users', [
+            ->postJson('/users', [
                 'email' => 'test@example.co.uk',
                 'password' => 'password',
                 'password_confirmation' => 'password',
@@ -104,7 +134,7 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/users', [
+            ->postJson('/users', [
                 'name' => 'Test User',
                 'email' => 'test@example.co.uk',
             ])
@@ -116,7 +146,7 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/users', [
+            ->postJson('/users', [
                 'name' => 'Test User',
                 'email' => 'not-an-email',
                 'password' => 'password',
@@ -130,7 +160,7 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/users', [
+            ->postJson('/users', [
                 'name' => 'Test User',
                 'email' => 'test@example.co.uk',
                 'password' => 'password',
@@ -149,16 +179,19 @@ describe('show', function () {
         $user = User::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->getJson("/api/users/{$user->id}")
+            ->get("/users/{$user->id}")
             ->assertStatus(200)
-            ->assertJsonFragment(['id' => $user->id]);
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Users/Show')
+                ->has('user')
+            );
     });
 
     test('unauthenticated user cannot view a user', function () {
         $user = User::factory()->create();
 
-        $this->getJson("/api/users/{$user->id}")
-            ->assertStatus(401);
+        $this->get("/users/{$user->id}")
+            ->assertRedirect('/login');
     });
 
     test('user without permission cannot view a user', function () {
@@ -166,7 +199,7 @@ describe('show', function () {
         $target = User::factory()->create();
 
         $this->actingAs($normalUser)
-            ->getJson("/api/users/{$target->id}")
+            ->get("/users/{$target->id}")
             ->assertStatus(403);
     });
 
@@ -174,8 +207,40 @@ describe('show', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->getJson('/api/users/99999')
+            ->get('/users/99999')
             ->assertStatus(404);
+    });
+});
+
+describe('edit', function () {
+    test('authenticated user with permission can view edit form', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $user = User::factory()->create();
+
+        $this->actingAs($superAdmin)
+            ->get("/users/{$user->id}/edit")
+            ->assertStatus(200)
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Users/Edit')
+                ->has('user')
+            );
+    });
+
+    test('unauthenticated user cannot view edit form', function () {
+        $user = User::factory()->create();
+
+        $this->get("/users/{$user->id}/edit")
+            ->assertRedirect('/login');
+    });
+
+    test('user without permission cannot view edit form', function () {
+        $normalUser = $this->normalUser();
+        $target = User::factory()->create();
+
+        $this->actingAs($normalUser)
+            ->get("/users/{$target->id}/edit")
+            ->assertStatus(403);
     });
 });
 
@@ -186,7 +251,7 @@ describe('update', function () {
         $user = User::factory()->create(['name' => 'Old Name']);
 
         $this->actingAs($superAdmin)
-            ->putJson("/api/users/{$user->id}", ['name' => 'New Name'])
+            ->putJson("/users/{$user->id}", ['name' => 'New Name'])
             ->assertStatus(200)
             ->assertJsonFragment(['name' => 'New Name']);
 
@@ -202,7 +267,7 @@ describe('update', function () {
         $user = User::factory()->create(['role' => 'user']);
 
         $this->actingAs($superAdmin)
-            ->patchJson("/api/users/{$user->id}", ['role' => 'admin'])
+            ->patchJson("/users/{$user->id}", ['role' => 'admin'])
             ->assertStatus(200)
             ->assertJsonFragment(['role' => 'admin']);
     });
@@ -212,7 +277,7 @@ describe('update', function () {
         $target = User::factory()->create();
 
         $this->actingAs($normalUser)
-            ->putJson("/api/users/{$target->id}", ['name' => 'Hacked'])
+            ->putJson("/users/{$target->id}", ['name' => 'Hacked'])
             ->assertStatus(403);
     });
 
@@ -222,7 +287,7 @@ describe('update', function () {
         $user = User::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->putJson("/api/users/{$user->id}", ['email' => 'not-an-email'])
+            ->putJson("/users/{$user->id}", ['email' => 'not-an-email'])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['email']);
     });
@@ -235,7 +300,7 @@ describe('destroy', function () {
         $user = User::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->deleteJson("/api/users/{$user->id}")
+            ->deleteJson("/users/{$user->id}")
             ->assertStatus(204);
 
         $this->assertSoftDeleted('users', ['id' => $user->id]);
@@ -246,7 +311,7 @@ describe('destroy', function () {
         $target = User::factory()->create();
 
         $this->actingAs($normalUser)
-            ->deleteJson("/api/users/{$target->id}")
+            ->deleteJson("/users/{$target->id}")
             ->assertStatus(403);
     });
 
@@ -254,7 +319,7 @@ describe('destroy', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->deleteJson('/api/users/99999')
+            ->deleteJson('/users/99999')
             ->assertStatus(404);
     });
 });
@@ -266,7 +331,7 @@ describe('restore', function () {
         $user = User::factory()->deleted()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/api/users/{$user->id}/restore")
+            ->postJson("/users/{$user->id}/restore")
             ->assertStatus(204);
 
         $this->assertDatabaseHas('users', [
@@ -280,7 +345,7 @@ describe('restore', function () {
         $target = User::factory()->deleted()->create();
 
         $this->actingAs($normalUser)
-            ->postJson("/api/users/{$target->id}/restore")
+            ->postJson("/users/{$target->id}/restore")
             ->assertStatus(403);
     });
 
@@ -290,7 +355,7 @@ describe('restore', function () {
         $user = User::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/api/users/{$user->id}/restore")
+            ->postJson("/users/{$user->id}/restore")
             ->assertStatus(404);
     });
 });
@@ -302,7 +367,7 @@ describe('force delete', function () {
         $user = User::factory()->deleted()->create();
 
         $this->actingAs($superAdmin)
-            ->deleteJson("/api/users/{$user->id}/force")
+            ->deleteJson("/users/{$user->id}/force")
             ->assertStatus(204);
 
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
@@ -313,7 +378,7 @@ describe('force delete', function () {
         $target = User::factory()->deleted()->create();
 
         $this->actingAs($normalUser)
-            ->deleteJson("/api/users/{$target->id}/force")
+            ->deleteJson("/users/{$target->id}/force")
             ->assertStatus(403);
     });
 
@@ -323,7 +388,7 @@ describe('force delete', function () {
         $user = User::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->deleteJson("/api/users/{$user->id}/force")
+            ->deleteJson("/users/{$user->id}/force")
             ->assertStatus(404);
     });
 });
@@ -336,7 +401,7 @@ describe('bulk delete', function () {
         $ids = $users->pluck('id')->all();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/users/bulk/delete', ['ids' => $ids])
+            ->postJson('/users/bulk/delete', ['ids' => $ids])
             ->assertStatus(204);
 
         foreach ($ids as $id) {
@@ -348,7 +413,7 @@ describe('bulk delete', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/users/bulk/delete', ['ids' => []])
+            ->postJson('/users/bulk/delete', ['ids' => []])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ids']);
     });
@@ -357,7 +422,7 @@ describe('bulk delete', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/users/bulk/delete', ['ids' => [99999]])
+            ->postJson('/users/bulk/delete', ['ids' => [99999]])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ids.0']);
     });
@@ -367,7 +432,7 @@ describe('bulk delete', function () {
         $users = User::factory()->count(2)->create();
 
         $this->actingAs($normalUser)
-            ->postJson('/api/users/bulk/delete', [
+            ->postJson('/users/bulk/delete', [
                 'ids' => $users->pluck('id')->all(),
             ])
             ->assertStatus(403);
@@ -382,7 +447,7 @@ describe('bulk restore', function () {
         $ids = $users->pluck('id')->all();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/users/bulk/restore', ['ids' => $ids])
+            ->postJson('/users/bulk/restore', ['ids' => $ids])
             ->assertStatus(204);
 
         foreach ($ids as $id) {
@@ -397,7 +462,7 @@ describe('bulk restore', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/users/bulk/restore', ['ids' => []])
+            ->postJson('/users/bulk/restore', ['ids' => []])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ids']);
     });
@@ -406,7 +471,7 @@ describe('bulk restore', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/api/users/bulk/restore', ['ids' => [99999]])
+            ->postJson('/users/bulk/restore', ['ids' => [99999]])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ids.0']);
     });
@@ -416,7 +481,7 @@ describe('bulk restore', function () {
         $users = User::factory()->count(2)->deleted()->create();
 
         $this->actingAs($normalUser)
-            ->postJson('/api/users/bulk/restore', [
+            ->postJson('/users/bulk/restore', [
                 'ids' => $users->pluck('id')->all(),
             ])
             ->assertStatus(403);
@@ -431,11 +496,17 @@ describe('soft delete scoping', function () {
         User::factory()->deleted()->create();
 
         $response = $this->actingAs($superAdmin)
-            ->getJson('/api/users');
+            ->get('/users');
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Users/Index')
+                ->has('users')
+            );
 
-        $ids = collect($response->json('data'))->pluck('id')->all();
+        $ids = collect($response->inertia()->prop('users')['data'] ?? [])
+            ->pluck('id')
+            ->all();
 
         User::onlyTrashed()->get()->each(
             fn (User $u) => expect($ids)->not->toContain($u->id)
@@ -448,7 +519,7 @@ describe('soft delete scoping', function () {
         $user = User::factory()->deleted()->create();
 
         $this->actingAs($superAdmin)
-            ->getJson("/api/users/{$user->id}")
+            ->get("/users/{$user->id}")
             ->assertStatus(404);
     });
 });
