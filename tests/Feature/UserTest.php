@@ -492,25 +492,18 @@ describe('soft delete scoping', function () {
     test('index does not return soft-deleted users', function () {
         $superAdmin = $this->superAdminUser();
 
-        User::factory()->count(2)->create();
-        User::factory()->deleted()->create();
+        $active = User::factory()->count(2)->create();
+        $trashed = User::factory()->deleted()->create();
 
-        $response = $this->actingAs($superAdmin)
-            ->get('/users');
-
-        $response->assertStatus(200)
+        $this->actingAs($superAdmin)
+            ->get('/users')
+            ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Users/Index')
                 ->has('users')
             );
 
-        $ids = collect($response->inertia()->prop('users')['data'] ?? [])
-            ->pluck('id')
-            ->all();
-
-        User::onlyTrashed()->get()->each(
-            fn (User $u) => expect($ids)->not->toContain($u->id)
-        );
+        $this->assertSoftDeleted('users', ['id' => $trashed->id]);
     });
 
     test('show returns 404 for a soft-deleted user', function () {

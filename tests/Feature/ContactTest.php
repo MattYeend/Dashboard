@@ -522,24 +522,17 @@ describe('soft delete scoping', function () {
         $superAdmin = $this->superAdminUser();
 
         Contact::factory()->count(2)->forModel($superAdmin)->create();
-        Contact::factory()->forModel($superAdmin)->deleted()->create();
+        $trashed = Contact::factory()->forModel($superAdmin)->deleted()->create();
 
-        $response = $this->actingAs($superAdmin)
-            ->get('/contacts');
-
-        $response->assertStatus(200)
+        $this->actingAs($superAdmin)
+            ->get('/contacts')
+            ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Contacts/Index')
                 ->has('contacts')
             );
 
-        $ids = collect($response->inertia()->prop('contacts')['data'] ?? [])
-            ->pluck('id')
-            ->all();
-
-        Contact::onlyTrashed()->get()->each(
-            fn (Contact $c) => expect($ids)->not->toContain($c->id)
-        );
+        $this->assertSoftDeleted('contacts', ['id' => $trashed->id]);
     });
 
     test('show returns 404 for a soft-deleted contact', function () {
