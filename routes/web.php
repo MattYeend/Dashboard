@@ -1,11 +1,45 @@
 <?php
 
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Welcome')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::post('/bulk/delete', [UserController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [UserController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [UserController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [UserController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('/', [UserController::class, 'store'])->name('store');
+        Route::get('/{user}', [UserController::class, 'show'])->name('show');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::put('/{user}', [UserController::class, 'update'])->name('update');
+        Route::patch('/{user}', [UserController::class, 'update'])->name('patch');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('contacts')->name('contacts.')->group(function () {
+        Route::post('/bulk/delete', [ContactController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [ContactController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [ContactController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [ContactController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [ContactController::class, 'index'])->name('index');
+        Route::get('/create', [ContactController::class, 'create'])->name('create');
+        Route::post('/', [ContactController::class, 'store'])->name('store');
+        Route::get('/{contact}', [ContactController::class, 'show'])->name('show');
+        Route::get('/{contact}/edit', [ContactController::class, 'edit'])->name('edit');
+        Route::put('/{contact}', [ContactController::class, 'update'])->name('update');
+        Route::patch('/{contact}', [ContactController::class, 'update'])->name('patch');
+        Route::delete('/{contact}', [ContactController::class, 'destroy'])->name('destroy');
+    });
 });
 
 require __DIR__.'/settings.php';
