@@ -11,6 +11,8 @@ use App\Services\Users\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class UserController extends Controller
 {
@@ -28,18 +30,31 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * Also includes the authenticated user's permissions for the User
-     * resource, so the frontend can conditionally render create/view controls.
+     * Passes paginated users to the Users/Index Inertia page.
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): Response
     {
         $this->authorize('viewAny', User::class);
 
         $users = $this->query->getPaginated($request->all());
 
-        return response()->json($users);
+        return Inertia::render('Users/Index', [
+            'users' => $users,
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new user.
+     *
+     * Authorises via the 'create' policy before rendering.
+     */
+    public function create(): Response
+    {
+        $this->authorize('create', User::class);
+
+        return Inertia::render('Users/Create');
     }
 
     /**
@@ -49,11 +64,8 @@ class UserController extends Controller
      *
      * After storing, an audit log entry is written against the
      * authenticated user.
-     *
-     *
-     * @return JsonResponse
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request): JsonResponse
     {
         $user = $this->management->store($request);
 
@@ -63,18 +75,36 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * Return a single user by its model binding.
+     * Passes a single user to the Users/Show Inertia page.
      *
-     * Authorises via the 'view' policy before returning data.
+     * Authorises via the 'view' and 'access' policies before rendering.
      */
-    public function show(User $user): JsonResponse
+    public function show(User $user): Response
     {
         $this->authorize('view', $user);
         $this->authorize('access', $user);
 
         $user = $this->query->getById($user->id);
 
-        return response()->json($user);
+        return Inertia::render('Users/Show', [
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * Show the form for editing an existing user.
+     *
+     * Authorises via the 'update' policy before rendering.
+     */
+    public function edit(User $user): Response
+    {
+        $this->authorize('update', $user);
+
+        $user = $this->query->getById($user->id);
+
+        return Inertia::render('Users/Edit', [
+            'user' => $user,
+        ]);
     }
 
     /**

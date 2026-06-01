@@ -11,6 +11,8 @@ use App\Services\Contacts\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ContactController extends Controller
 {
@@ -28,18 +30,31 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * Also includes the authenticated user's permissions for the Contact
-     * resource, so the frontend can conditionally render create/view controls.
+     * Passes paginated contacts to the Contacts/Index Inertia page.
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): Response
     {
         $this->authorize('viewAny', Contact::class);
 
         $contacts = $this->query->getPaginated($request->all());
 
-        return response()->json($contacts);
+        return Inertia::render('Contacts/Index', [
+            'contacts' => $contacts,
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new contact.
+     *
+     * Authorises via the 'create' policy before rendering.
+     */
+    public function create(): Response
+    {
+        $this->authorize('create', Contact::class);
+
+        return Inertia::render('Contacts/Create');
     }
 
     /**
@@ -49,11 +64,8 @@ class ContactController extends Controller
      *
      * After storing, an audit log entry is written against the
      * authenticated user.
-     *
-     *
-     * @return JsonResponse
      */
-    public function store(StoreContactRequest $request)
+    public function store(StoreContactRequest $request): JsonResponse
     {
         $contact = $this->management->store($request);
 
@@ -63,18 +75,36 @@ class ContactController extends Controller
     /**
      * Display the specified resource.
      *
-     * Return a single contact by its model binding.
+     * Passes a single contact to the Contacts/Show Inertia page.
      *
-     * Authorises via the 'view' policy before returning data.
+     * Authorises via the 'view' and 'access' policies before rendering.
      */
-    public function show(Contact $contact): JsonResponse
+    public function show(Contact $contact): Response
     {
         $this->authorize('view', $contact);
         $this->authorize('access', $contact);
 
         $contact = $this->query->getById($contact->id);
 
-        return response()->json($contact);
+        return Inertia::render('Contacts/Show', [
+            'contact' => $contact,
+        ]);
+    }
+
+    /**
+     * Show the form for editing an existing contact.
+     *
+     * Authorises via the 'update' policy before rendering.
+     */
+    public function edit(Contact $contact): Response
+    {
+        $this->authorize('update', $contact);
+
+        $contact = $this->query->getById($contact->id);
+
+        return Inertia::render('Contacts/Edit', [
+            'contact' => $contact,
+        ]);
     }
 
     /**
