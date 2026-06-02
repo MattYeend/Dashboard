@@ -7,7 +7,10 @@ const props = defineProps<{ status: TaskStatus }>();
 const deleteForm = useForm({});
 
 function destroy() {
-    if (!confirm('Delete this task status?')) return;
+    if (!confirm('Delete this task status?')) {
+        return;
+    }
+
     deleteForm.delete(route('task-statuses.destroy', props.status.id));
 }
 </script>

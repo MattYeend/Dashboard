@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\TaskStatus;
+namespace App\Http\Requests;
 
 use App\Models\TaskStatus;
 use Illuminate\Contracts\Validation\ValidationRule;

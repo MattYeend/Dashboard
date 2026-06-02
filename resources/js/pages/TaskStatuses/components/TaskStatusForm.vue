@@ -16,7 +16,7 @@ const form = useForm({
     description: props.initial?.description ?? '',
     background_colour: props.initial?.background_colour ?? '#ffffff',
     text_colour: props.initial?.text_colour ?? '#000000',
-    meta: props.initial?.meta ?? null,
+    meta: (props.initial?.meta as any) ?? null,
 });
 
 function submit() {

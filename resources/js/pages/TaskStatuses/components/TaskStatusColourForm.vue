@@ -1,7 +1,17 @@
 <script setup lang="ts">
 import type { InertiaForm } from '@inertiajs/vue3';
 
-defineProps<{ form: InertiaForm<any> }>();
+const props = defineProps<{ form: InertiaForm<any> }>();
+const emit = defineEmits<{
+    (e: 'update:form', value: InertiaForm<any>): void;
+}>();
+
+function update(field: string, value: string): void {
+    emit('update:form', {
+        ...props.form,
+        [field]: value,
+    } as InertiaForm<any>);
+}
 </script>
 
 <template>
@@ -10,18 +20,30 @@ defineProps<{ form: InertiaForm<any> }>();
             <label class="mb-1 block text-sm font-medium"
                 >Background Colour</label
             >
-            <div class="items-centre flex gap-3">
+            <div class="flex items-center gap-3">
                 <input
-                    v-model="form.background_colour"
+                    :value="form.background_colour"
                     type="color"
                     class="h-10 w-16 cursor-pointer rounded border"
+                    @input="
+                        update(
+                            'background_colour',
+                            ($event.target as HTMLInputElement).value,
+                        )
+                    "
                 />
                 <input
-                    v-model="form.background_colour"
+                    :value="form.background_colour"
                     type="text"
                     maxlength="7"
                     class="w-32 rounded border px-3 py-2 font-mono text-sm"
                     placeholder="#ffffff"
+                    @input="
+                        update(
+                            'background_colour',
+                            ($event.target as HTMLInputElement).value,
+                        )
+                    "
                 />
             </div>
             <p
@@ -33,18 +55,30 @@ defineProps<{ form: InertiaForm<any> }>();
         </div>
         <div>
             <label class="mb-1 block text-sm font-medium">Text Colour</label>
-            <div class="items-centre flex gap-3">
+            <div class="flex items-center gap-3">
                 <input
-                    v-model="form.text_colour"
+                    :value="form.text_colour"
                     type="color"
                     class="h-10 w-16 cursor-pointer rounded border"
+                    @input="
+                        update(
+                            'text_colour',
+                            ($event.target as HTMLInputElement).value,
+                        )
+                    "
                 />
                 <input
-                    v-model="form.text_colour"
+                    :value="form.text_colour"
                     type="text"
                     maxlength="7"
                     class="w-32 rounded border px-3 py-2 font-mono text-sm"
                     placeholder="#000000"
+                    @input="
+                        update(
+                            'text_colour',
+                            ($event.target as HTMLInputElement).value,
+                        )
+                    "
                 />
             </div>
             <p v-if="form.errors.text_colour" class="mt-1 text-xs text-red-500">

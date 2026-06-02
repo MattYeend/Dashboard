@@ -26,8 +26,14 @@ declare module '@inertiajs/core' {
 
 declare module 'vue' {
     interface ComponentCustomProperties {
-        $inertia: typeof Router;
+        $inertia: unknown;
         $page: Page;
         $headManager: ReturnType<typeof createHeadManager>;
+        route: (name?: string, params?: unknown, absolute?: boolean) => string;
     }
+}
+
+declare global {
+    function route(name?: string, params?: unknown, absolute?: boolean): string;
+    const Ziggy: unknown;
 }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import type { TaskStatus } from '@/types';
 import TaskStatusRow from './components/TaskStatusRow.vue';
 
@@ -7,7 +8,7 @@ defineProps<{ taskStatuses: TaskStatus[] }>();
 
 <template>
     <div>
-        <div class="items-centre mb-4 flex justify-between">
+        <div class="mb-4 flex items-center justify-between">
             <h1 class="text-xl font-semibold">Task Statuses</h1>
             <Link :href="route('task-statuses.create')" class="btn btn-primary">
                 Add Status

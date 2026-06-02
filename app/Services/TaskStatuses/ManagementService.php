@@ -20,7 +20,7 @@ class ManagementService
     ) {}
 
     /**
-     * Create a new company task status.
+     * Create a new task status.
      */
     public function store(
         StoreTaskStatusRequest $request
