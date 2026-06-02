@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/{contact}', [ContactController::class, 'update'])->name('update');
         Route::patch('/{contact}', [ContactController::class, 'update'])->name('patch');
         Route::delete('/{contact}', [ContactController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('task-statuses')->name('task-statuses.')->group(function () {
+        Route::post('/bulk/delete', [TaskStatusController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [TaskStatusController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [TaskStatusController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [TaskStatusController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [TaskStatusController::class, 'index'])->name('index');
+        Route::get('/create', [TaskStatusController::class, 'create'])->name('create');
+        Route::post('/', [TaskStatusController::class, 'store'])->name('store');
+        Route::get('/{task_status}', [TaskStatusController::class, 'show'])->name('show');
+        Route::get('/{task_status}/edit', [TaskStatusController::class, 'edit'])->name('edit');
+        Route::put('/{task_status}', [TaskStatusController::class, 'update'])->name('update');
+        Route::patch('/{task_status}', [TaskStatusController::class, 'update'])->name('patch');
+        Route::delete('/{task_status}', [TaskStatusController::class, 'destroy'])->name('destroy');
     });
 });
 
