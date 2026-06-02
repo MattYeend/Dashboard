@@ -195,7 +195,7 @@ describe('show', function () {
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('TaskStatuses/Show')
-                ->has('task_status')
+                ->has('taskStatus')
             );
     });
 
@@ -236,7 +236,7 @@ describe('edit', function () {
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('TaskStatuses/Edit')
-                ->has('task_status')
+                ->has('taskStatus')
             );
     });
 
