@@ -12,7 +12,7 @@ class UpdateTaskStatusRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('update', $this->route('task_status'));
     }
 
     /**
@@ -23,7 +23,11 @@ class UpdateTaskStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'background_colour' => ['nullable', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'text_colour' => ['nullable', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'meta' => ['nullable', 'array'],
         ];
     }
 }

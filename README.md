@@ -41,7 +41,6 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 - [Laravel Wayfinder](https://github.com/laravel/wayfinder) -- Named route generation for TypeScript
 - [Spatie Laravel Permission v7](https://spatie.be/docs/laravel-permission) -- Role and permission management
 - [Pest PHP](https://pestphp.com) -- Testing framework
-- [PHP Insights](https://github.com/nunomaduro/phpinsights) -- Static analysis and code quality metrics
 
 **Frontend**
 
