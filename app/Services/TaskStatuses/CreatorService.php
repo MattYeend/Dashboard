@@ -44,9 +44,7 @@ class CreatorService
     protected function createContact(array $data): TaskStatus
     {
         $contactData = $this->dataPreparation->prepareForCreation(
-            $data,
-            $data['contactable_type'],
-            $data['contactable_id']
+            $data
         );
 
         return TaskStatus::create($contactData);
