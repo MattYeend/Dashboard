@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-use App\Services\Users\LogService;
 use App\Services\Users\ManagementService;
 use App\Services\Users\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
