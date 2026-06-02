@@ -41,7 +41,7 @@ class TaskStatusController extends Controller
         );
 
         return Inertia::render('TaskStatuses/Index', [
-            'taskStatuses' => $taskStatuses,
+            'task_statuses' => $taskStatuses,
         ]);
     }
 
