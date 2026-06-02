@@ -22,7 +22,6 @@ class ContactController extends Controller
      * Inject the required services into the controller.
      */
     public function __construct(
-        protected LogService $logger,
         protected ManagementService $management,
         protected QueryService $query,
     ) {}
@@ -34,11 +33,13 @@ class ContactController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
+    public function index(): Response
     {
         $this->authorize('viewAny', Contact::class);
 
-        $contacts = $this->query->getPaginated($request->all());
+        $contacts = $this->query->getPaginated(
+            request()->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+        );
 
         return Inertia::render('Contacts/Index', [
             'contacts' => $contacts,

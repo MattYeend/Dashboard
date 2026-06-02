@@ -36,9 +36,13 @@ class TaskStatusController extends Controller
     {
         $this->authorize('viewAny', TaskStatus::class);
 
-        return Inertia::render('TaskStatuses/Index', $this->query->getPaginated(
+        $taskStatuses = $this->query->getPaginated(
             request()->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
-        ));
+        );
+
+        return Inertia::render('TaskStatuses/Index', [
+            'taskStatuses' => $taskStatuses,
+        ]);
     }
 
     /**

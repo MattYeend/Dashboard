@@ -32,11 +32,13 @@ class UserController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
+    public function index(): Response
     {
         $this->authorize('viewAny', User::class);
 
-        $users = $this->query->getPaginated($request->all());
+        $users = $this->query->getPaginated(
+            request()->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+        );
 
         return Inertia::render('Users/Index', [
             'users' => $users,
