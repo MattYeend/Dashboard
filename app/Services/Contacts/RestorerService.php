@@ -19,8 +19,6 @@ class RestorerService
     /**
      * Restore a soft-deleted contact.
      *
-     *
-     *
      * @throws \Exception
      */
     public function restore(
@@ -44,7 +42,6 @@ class RestorerService
 
     /**
      * Restore multiple soft-deleted contacts.
-     *
      *
      * @return int Number of contacts restored
      *

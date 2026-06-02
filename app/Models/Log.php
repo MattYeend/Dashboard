@@ -107,6 +107,19 @@ class Log extends Model
 
     public const ACTION_CONTACT_UPDATED_BY_CRON = 46;
 
+    // Task Status Management
+    public const ACTION_CREATE_TASK_STATUS = 47;
+    public const ACTION_UPDATE_TASK_STATUS = 48;
+    public const ACTION_VIEW_TASK_STATUS = 49;
+    public const ACTION_DELETE_TASK_STATUS = 50;
+    public const ACTION_FORCE_DELETE_TASK_STATUS = 51;
+    public const ACTION_RESTORE_TASK_STATUS = 52;
+    public const ACTION_IMPORT_TASK_STATUS = 53;
+    public const ACTION_EXPORT_TASK_STATUS = 54;
+    public const ACTION_TASK_STATUS_UPDATED_BY_CRON = 55;
+    public const ACTION_ASSIGN_TASK_STATUS = 56;
+    public const ACTION_UNASSIGN_TASK_STATUS = 57;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.

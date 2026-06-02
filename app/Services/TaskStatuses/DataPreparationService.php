@@ -4,8 +4,37 @@ namespace App\Services\TaskStatuses;
 
 class DataPreparationService
 {
-    public function __construct()
+    /**
+     * Prepare task status data for creation.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    public function prepareForCreation(array $data): array
     {
-        //
+        return [
+            'title' => $data['title'],
+            'description' => $data['description'] ?? null,
+            'background_colour' => $data['background_colour'] ?? '#ffffff',
+            'text_colour' => $data['text_colour'] ?? '#000000',
+            'meta' => $data['meta'] ?? null,
+        ];
+    }
+
+    /**
+     * Prepare task status data for update.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    public function prepareForUpdate(array $data): array
+    {
+        return array_filter([
+            'title' => $data['title'] ?? null,
+            'description' => $data['description'] ?? null,
+            'background_colour' => $data['background_colour'] ?? null,
+            'text_colour' => $data['text_colour'] ?? null,
+            'meta' => $data['meta'] ?? null,
+        ], fn (mixed $value): bool => $value !== null);
     }
 }

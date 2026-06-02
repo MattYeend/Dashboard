@@ -11,7 +11,6 @@ class LogService
     /**
      * Log contact creation.
      *
-     *
      * @return array<string, mixed>
      */
     public function logCreation(
@@ -35,7 +34,6 @@ class LogService
 
     /**
      * Log a contact show event.
-     *
      *
      * @return array<string, mixed>
      */
@@ -61,7 +59,6 @@ class LogService
     /**
      * Log a contact update event.
      *
-     *
      * @return array<string, mixed>
      */
     public function logUpdate(
@@ -85,7 +82,6 @@ class LogService
 
     /**
      * Log a contact deletion event.
-     *
      *
      * @return array<string, mixed>
      */
@@ -111,7 +107,6 @@ class LogService
     /**
      * Log contact force deletion (permanent).
      *
-     *
      * @return array<string, mixed>
      */
     public function logForceDeletion(
@@ -135,7 +130,6 @@ class LogService
 
     /**
      * Log a contact restoration event.
-     *
      *
      * @return array<string, mixed>
      */
@@ -215,7 +209,6 @@ class LogService
     /**
      * Log a contact update event performed by a scheduled task (cron).
      *
-     *
      * @return array<string, mixed>
      */
     public function logUpdateByCron(Contact $contact): array
@@ -237,7 +230,6 @@ class LogService
     /**
      * Get base contact data for logging.
      *
-     *
      * @return array<string, mixed>
      */
     protected function baseContactData(Contact $contact): array
@@ -246,33 +238,11 @@ class LogService
     }
 
     /**
-     * Get null data for when no contact is available.
-     *
-     * @return array<string, mixed>
-     */
-    private function getNullData(): array
-    {
-        return [
-            'id' => null,
-            'contactable_type' => null,
-            'contactable_id' => null,
-            'phone' => null,
-            'email' => null,
-            'address' => null,
-            'city' => null,
-            'postal_code' => null,
-            'country' => null,
-            'meta' => null,
-        ];
-    }
-
-    /**
      * Get contact data for logging.
      *
-     *
      * @return array<string, mixed>
      */
-    private function getContactData(Contact $contact): array
+    protected function getContactData(Contact $contact): array
     {
         return [
             'id' => $contact->id,

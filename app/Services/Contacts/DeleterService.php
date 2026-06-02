@@ -18,8 +18,6 @@ class DeleterService
     /**
      * Soft delete a contact.
      *
-     *
-     *
      * @throws \Exception
      */
     public function delete(
@@ -42,8 +40,6 @@ class DeleterService
     /**
      * Force delete a contact (permanent deletion).
      *
-     *
-     *
      * @throws \Exception
      */
     public function forceDelete(
@@ -60,8 +56,6 @@ class DeleterService
 
     /**
      * Delete multiple contacts.
-     *
-     *
      *
      * @throws \Exception
      */

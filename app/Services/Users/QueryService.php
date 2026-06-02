@@ -65,7 +65,7 @@ class QueryService
         $paginator = $query->paginate($perPage);
 
         return [
-            'company_contacts' => $paginator->items(),
+            'users' => $paginator->items(),
             'pagination' => [
                 'current_page' => $paginator->currentPage(),
                 'last_page' => $paginator->lastPage(),

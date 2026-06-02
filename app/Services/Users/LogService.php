@@ -237,28 +237,11 @@ class LogService
     }
 
     /**
-     * Get null data for when no user is available.
-     *
-     * @return array<string, mixed>
-     */
-    private function getNullData(): array
-    {
-        return [
-            'id' => null,
-            'name' => null,
-            'email' => null,
-            'email_verified_at' => null,
-            'role' => null,
-            'meta' => null,
-        ];
-    }
-
-    /**
      * Get user data for logging.
      *
      * @return array<string, mixed>
      */
-    private function getUserData(User $user): array
+    protected function getUserData(User $user): array
     {
         return [
             'id' => $user->id,
