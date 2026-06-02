@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { TaskStatus } from '@/types'
-defineProps<{ taskStatus: TaskStatus }>()
+import type { TaskStatus } from '@/types';
+defineProps<{ taskStatus: TaskStatus }>();
 </script>
 
 <template>
     <div class="space-y-2">
-        <h2 class="font-medium text-sm uppercase tracking-wide">Audit</h2>
+        <h2 class="text-sm font-medium tracking-wide uppercase">Audit</h2>
         <dl class="grid grid-cols-2 gap-2 text-sm">
             <dt class="font-medium">Created by</dt>
             <dd>{{ taskStatus.creator?.name ?? '—' }}</dd>
