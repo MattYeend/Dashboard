@@ -24,36 +24,82 @@ function destroy(id: number): void {
     <AppLayout title="Users">
         <div class="py-6">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="mb-4 flex items-centre justify-between">
-                    <h1 class="text-2xl font-semibold text-grey-900">Users</h1>
+                <div class="items-centre mb-4 flex justify-between">
+                    <h1 class="text-grey-900 text-2xl font-semibold">Users</h1>
                     <a
                         :href="route('users.create')"
-                        class="inline-flex items-centre rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
+                        class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
                     >
                         Add User
                     </a>
                 </div>
 
-                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-                    <table class="min-w-full divide-y divide-grey-300">
+                <div
+                    class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
+                >
+                    <table class="divide-grey-300 min-w-full divide-y">
                         <thead>
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide text-grey-500">Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide text-grey-500">Email</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide text-grey-500">Role</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide text-grey-500">Created</th>
-                                <th class="relative px-6 py-3"><span class="sr-only">Actions</span></th>
+                                <th
+                                    class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                >
+                                    Name
+                                </th>
+                                <th
+                                    class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                >
+                                    Email
+                                </th>
+                                <th
+                                    class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                >
+                                    Role
+                                </th>
+                                <th
+                                    class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                >
+                                    Created
+                                </th>
+                                <th class="relative px-6 py-3">
+                                    <span class="sr-only">Actions</span>
+                                </th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-grey-200">
+                        <tbody class="divide-grey-200 divide-y">
                             <tr v-for="user in users.data" :key="user.id">
-                                <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-grey-900">{{ user.name }}</td>
-                                <td class="whitespace-nowrap px-6 py-4 text-sm text-grey-500">{{ user.email }}</td>
-                                <td class="whitespace-nowrap px-6 py-4 text-sm text-grey-500 capitalize">{{ user.role.replace('_', ' ') }}</td>
-                                <td class="whitespace-nowrap px-6 py-4 text-sm text-grey-500">{{ user.created_at }}</td>
-                                <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium space-x-2">
-                                    <a :href="route('users.show', user.id)" class="text-indigo-600 hover:text-indigo-900">View</a>
-                                    <a :href="route('users.edit', user.id)" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                <td
+                                    class="text-grey-900 px-6 py-4 text-sm font-medium whitespace-nowrap"
+                                >
+                                    {{ user.name }}
+                                </td>
+                                <td
+                                    class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                                >
+                                    {{ user.email }}
+                                </td>
+                                <td
+                                    class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap capitalize"
+                                >
+                                    {{ user.role.replace('_', ' ') }}
+                                </td>
+                                <td
+                                    class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                                >
+                                    {{ user.created_at }}
+                                </td>
+                                <td
+                                    class="space-x-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap"
+                                >
+                                    <a
+                                        :href="route('users.show', user.id)"
+                                        class="text-indigo-600 hover:text-indigo-900"
+                                        >View</a
+                                    >
+                                    <a
+                                        :href="route('users.edit', user.id)"
+                                        class="text-indigo-600 hover:text-indigo-900"
+                                        >Edit</a
+                                    >
                                     <button
                                         type="button"
                                         class="text-red-600 hover:text-red-900"
@@ -64,7 +110,12 @@ function destroy(id: number): void {
                                 </td>
                             </tr>
                             <tr v-if="users.data.length === 0">
-                                <td colspan="5" class="px-6 py-4 text-centre text-sm text-grey-500">No users found.</td>
+                                <td
+                                    colspan="5"
+                                    class="text-centre text-grey-500 px-6 py-4 text-sm"
+                                >
+                                    No users found.
+                                </td>
                             </tr>
                         </tbody>
                     </table>

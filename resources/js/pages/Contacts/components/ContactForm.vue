@@ -44,12 +44,16 @@ const country = defineModel<string>('country', { required: true });
             :errors="errors"
         />
 
-        <div class="flex items-centre justify-end space-x-3">
-            <a :href="route('contacts.index')" class="rounded-md px-4 py-2 text-sm font-medium text-grey-700">Cancel</a>
+        <div class="items-centre flex justify-end space-x-3">
+            <a
+                :href="route('contacts.index')"
+                class="text-grey-700 rounded-md px-4 py-2 text-sm font-medium"
+                >Cancel</a
+            >
             <button
                 type="submit"
                 :disabled="processing"
-                class="inline-flex items-centre rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+                class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
             >
                 {{ isEditing ? 'Update Contact' : 'Create Contact' }}
             </button>

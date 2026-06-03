@@ -21,7 +21,9 @@ function submit(): void {
     <AppLayout title="Create Contact">
         <div class="py-6">
             <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-                <h1 class="mb-6 text-2xl font-semibold text-grey-900">Create Contact</h1>
+                <h1 class="text-grey-900 mb-6 text-2xl font-semibold">
+                    Create Contact
+                </h1>
                 <ContactForm
                     v-model:email="form.email"
                     v-model:phone="form.phone"

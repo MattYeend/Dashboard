@@ -23,7 +23,9 @@ defineEmits<{ submit: [] }>();
 const name = defineModel<string>('name', { required: true });
 const email = defineModel<string>('email', { required: true });
 const password = defineModel<string>('password', { required: true });
-const passwordConfirmation = defineModel<string>('passwordConfirmation', { required: true });
+const passwordConfirmation = defineModel<string>('passwordConfirmation', {
+    required: true,
+});
 const role = defineModel<string>('role', { required: true });
 </script>
 
@@ -37,19 +39,19 @@ const role = defineModel<string>('role', { required: true });
             :is-editing="isEditing"
             :errors="errors"
         />
-        <UserRoleDetailsForm
-            v-model:role="role"
-            :errors="errors"
-        />
+        <UserRoleDetailsForm v-model:role="role" :errors="errors" />
 
-        <div class="flex items-centre justify-end space-x-3">
-            <a :href="route('users.index')" class="rounded-md px-4 py-2 text-sm font-medium text-grey-700">
+        <div class="items-centre flex justify-end space-x-3">
+            <a
+                :href="route('users.index')"
+                class="text-grey-700 rounded-md px-4 py-2 text-sm font-medium"
+            >
                 Cancel
             </a>
             <button
                 type="submit"
                 :disabled="processing"
-                class="inline-flex items-centre rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+                class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
             >
                 {{ isEditing ? 'Update User' : 'Create User' }}
             </button>
