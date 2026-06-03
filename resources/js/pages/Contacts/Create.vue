@@ -1,1 +1,29 @@
-<template><div /></template>
+<script setup lang="ts">
+import { useForm } from '@inertiajs/vue3';
+import AppLayout from '@/layouts/AppLayout.vue';
+import ContactForm from '@/pages/Contacts/components/ContactForm.vue';
+
+const form = useForm({
+    phone: '',
+    email: '',
+    address: '',
+    city: '',
+    postal_code: '',
+    country: '',
+});
+
+function submit(): void {
+    form.post(route('contacts.store'));
+}
+</script>
+
+<template>
+    <AppLayout title="Create Contact">
+        <div class="py-6">
+            <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+                <h1 class="mb-6 text-2xl font-semibold text-grey-900">Create Contact</h1>
+                <ContactForm :form="form" :is-editing="false" @submit="submit" />
+            </div>
+        </div>
+    </AppLayout>
+</template>
