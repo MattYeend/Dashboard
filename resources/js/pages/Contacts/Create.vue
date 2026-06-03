@@ -22,7 +22,18 @@ function submit(): void {
         <div class="py-6">
             <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
                 <h1 class="mb-6 text-2xl font-semibold text-grey-900">Create Contact</h1>
-                <ContactForm :form="form" :is-editing="false" @submit="submit" />
+                <ContactForm
+                    v-model:email="form.email"
+                    v-model:phone="form.phone"
+                    v-model:address="form.address"
+                    v-model:city="form.city"
+                    v-model:postal-code="form.postal_code"
+                    v-model:country="form.country"
+                    :is-editing="false"
+                    :processing="form.processing"
+                    :errors="form.errors"
+                    @submit="submit"
+                />
             </div>
         </div>
     </AppLayout>

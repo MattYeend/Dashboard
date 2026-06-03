@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import type { InertiaForm } from '@inertiajs/vue3';
-
-interface UserFormData {
-    name: string;
-    email: string;
-    password: string;
-    password_confirmation: string;
-    role: string;
-}
+const name = defineModel<string>('name', { required: true });
+const email = defineModel<string>('email', { required: true });
+const password = defineModel<string>('password', { required: true });
+const passwordConfirmation = defineModel<string>('passwordConfirmation', { required: true });
 
 interface Props {
-    form: InertiaForm<UserFormData>;
     isEditing: boolean;
+    errors: Partial<Record<'name' | 'email' | 'password' | 'password_confirmation', string>>;
 }
 
 defineProps<Props>();
@@ -23,22 +18,22 @@ defineProps<Props>();
             <label for="name" class="block text-sm font-medium text-grey-700">Name</label>
             <input
                 id="name"
-                v-model="form.name"
+                v-model="name"
                 type="text"
                 class="mt-1 block w-full rounded-md border-grey-300 shadow-sm sm:text-sm"
             />
-            <p v-if="form.errors.name" class="mt-1 text-sm text-red-600">{{ form.errors.name }}</p>
+            <p v-if="errors.name" class="mt-1 text-sm text-red-600">{{ errors.name }}</p>
         </div>
 
         <div>
             <label for="email" class="block text-sm font-medium text-grey-700">Email Address</label>
             <input
                 id="email"
-                v-model="form.email"
+                v-model="email"
                 type="email"
                 class="mt-1 block w-full rounded-md border-grey-300 shadow-sm sm:text-sm"
             />
-            <p v-if="form.errors.email" class="mt-1 text-sm text-red-600">{{ form.errors.email }}</p>
+            <p v-if="errors.email" class="mt-1 text-sm text-red-600">{{ errors.email }}</p>
         </div>
 
         <div>
@@ -47,18 +42,18 @@ defineProps<Props>();
             </label>
             <input
                 id="password"
-                v-model="form.password"
+                v-model="password"
                 type="password"
                 class="mt-1 block w-full rounded-md border-grey-300 shadow-sm sm:text-sm"
             />
-            <p v-if="form.errors.password" class="mt-1 text-sm text-red-600">{{ form.errors.password }}</p>
+            <p v-if="errors.password" class="mt-1 text-sm text-red-600">{{ errors.password }}</p>
         </div>
 
         <div>
             <label for="password_confirmation" class="block text-sm font-medium text-grey-700">Confirm Password</label>
             <input
                 id="password_confirmation"
-                v-model="form.password_confirmation"
+                v-model="passwordConfirmation"
                 type="password"
                 class="mt-1 block w-full rounded-md border-grey-300 shadow-sm sm:text-sm"
             />
