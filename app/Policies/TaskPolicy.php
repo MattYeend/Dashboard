@@ -4,63 +4,80 @@ namespace App\Policies;
 
 use App\Models\Task;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\Tasks\PolicyAuthorisationService;
 
 class TaskPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
+    /**
+     * Determine whether the user can view any tasks.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can view the task.
      */
     public function view(User $user, Task $task): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $task);
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create tasks.
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can update the task.
      */
     public function update(User $user, Task $task): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $task);
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete the task.
      */
     public function delete(User $user, Task $task): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $task);
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can restore the task.
      */
     public function restore(User $user, Task $task): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $task);
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can permanently delete the task.
      */
     public function forceDelete(User $user, Task $task): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $task);
+    }
+
+    /**
+     * Determine whether the user can access the model.
+     *
+     * Alias for view, used as a secondary access gate check.
+     */
+    public function access(User $user, Task $task): bool
+    {
+        return $this->authorisationService->canView($user, $task);
     }
 }

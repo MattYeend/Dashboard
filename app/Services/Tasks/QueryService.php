@@ -2,10 +2,170 @@
 
 namespace App\Services\Tasks;
 
+use App\Models\Task;
+use App\Models\TaskStatus;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+
 class QueryService
 {
-    public function __construct()
+    /**
+     * Inject the required services into the query service.
+     */
+    public function __construct(
+        protected SortingService $sortingService,
+        protected TrashFilterService $trashFilterService,
+        protected FilterService $filterService,
+        protected FormatterService $formatterService
+    ) {}
+
+    /**
+     * Get paginated tasks with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    public function getPaginated(array $filters = []): array
     {
-        //
+        $query     = $this->buildQuery($filters);
+        $paginated = $this->paginate($query, $filters['per_page'] ?? 15);
+
+        return array_merge(
+            $paginated,
+            $this->getPermissions(),
+            $this->baseData(),
+        );
+    }
+
+    /**
+     * Get a single task by ID.
+     */
+    public function getById(int $id, bool $withTrashed = false): array
+    {
+        $task = $this->findTask($id, $withTrashed);
+
+        return array_merge(
+            ['task' => $this->formatterService->format($task)],
+            $this->getPermissions(),
+            $this->baseData(),
+        );
+    }
+
+    /**
+     * Get data needed to populate create and edit forms.
+     *
+     * @return array<string, mixed>
+     */
+    public function getFormData(): array
+    {
+        return [
+            'statuses' => TaskStatus::orderBy('title')->get(['id', 'title', 'background_colour', 'text_colour']),
+            'users' => User::orderBy('name')->get(['id', 'name']),
+        ];
+    }
+
+    /**
+     * Build the base query with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return Builder<Task>
+     */
+    protected function buildQuery(array $filters): Builder
+    {
+        $query = Task::query()->with(['assignee', 'status']);
+        $query = $this->filterService->applyAll($query, $filters);
+
+        return $this->applySorting($query, $filters);
+    }
+
+    /**
+     * Paginate the query and return as a plain array.
+     *
+     * @param  Builder<Task>  $query
+     */
+    protected function paginate(Builder $query, int $perPage): array
+    {
+        $paginator = $query->paginate($perPage);
+
+        return [
+            'tasks'      => $paginator->items(),
+            'pagination' => [
+                'current_page' => $paginator->currentPage(),
+                'last_page' => $paginator->lastPage(),
+                'per_page' => $paginator->perPage(),
+                'total' => $paginator->total(),
+                'from' => $paginator->firstItem(),
+                'to' => $paginator->lastItem(),
+            ],
+        ];
+    }
+
+    /**
+     * Get user permissions for the authenticated user.
+     *
+     * @return array<string, mixed>
+     */
+    protected function getPermissions(): array
+    {
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (! $user) {
+            return ['permissions_meta' => []];
+        }
+
+        return [
+            'permissions_meta' => [
+                'can_create' => $user->can('create', Task::class),
+                'can_view_any' => $user->can('viewAny', Task::class),
+            ],
+        ];
+    }
+
+    /**
+     * Get base data for the view.
+     *
+     * @return array<string, mixed>
+     */
+    protected function baseData(): array
+    {
+        return [
+            'sort_fields' => $this->sortingService->getAvailableSortFields(),
+            'trash_filters' => $this->trashFilterService->getFilterOptions(),
+        ];
+    }
+
+    /**
+     * Find a task by ID with optional trashed records.
+     */
+    private function findTask(int $id, bool $withTrashed = false): Task
+    {
+        $query = Task::query()->with(['assignee', 'status']);
+
+        if ($withTrashed) {
+            $query->withTrashed();
+        }
+
+        return $query->findOrFail($id);
+    }
+
+    /**
+     * Apply sorting and trash filtering to the query.
+     *
+     * @param  Builder<Task>  $query
+     * @param  array<string, mixed>  $filters
+     * @return Builder<Task>
+     */
+    private function applySorting(Builder $query, array $filters): Builder
+    {
+        $query = $this->trashFilterService->applyFilter(
+            $query,
+            $filters['trashed'] ?? null
+        );
+
+        return $this->sortingService->applySorting(
+            $query,
+            $filters['sort_by'] ?? 'created_at',
+            $filters['sort_direction'] ?? 'desc'
+        );
     }
 }
