@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Contact;
+use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
 use App\Policies\ContactPolicy;
+use App\Policies\TaskPolicy;
 use App\Policies\TaskStatusPolicy;
 use App\Policies\UserPolicy;
 use Carbon\CarbonImmutable;
@@ -36,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
         Gate::policy(Contact::class, ContactPolicy::class);
         Gate::policy(TaskStatus::class, TaskStatusPolicy::class);
+        Gate::policy(Task::class, TaskPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
     }
 
