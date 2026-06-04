@@ -429,7 +429,7 @@ class RolePermissionSeeder extends Seeder
             'delete files',
             'view reports',
             'view task statuses',
-            'view tasks',
+            'view task',
             'view contact information',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
@@ -468,7 +468,7 @@ class RolePermissionSeeder extends Seeder
             'import task statuses',
             'export task statuses',
             'assign task statuses',
-            'view tasks',
+            'view task',
             'view any task',
             'create task',
             'update task',
