@@ -36,10 +36,16 @@ function submit(): void {
             <div class="d-flex justify-content-between align-items-center">
                 <h1 class="h4 mb-0">Edit Task</h1>
                 <div class="d-flex gap-2">
-                    <Link :href="route('tasks.show', task.id)" class="btn btn-secondary btn-sm">
+                    <Link
+                        :href="route('tasks.show', task.id)"
+                        class="btn btn-secondary btn-sm"
+                    >
                         View Task
                     </Link>
-                    <Link :href="route('tasks.index')" class="btn btn-secondary btn-sm">
+                    <Link
+                        :href="route('tasks.index')"
+                        class="btn btn-secondary btn-sm"
+                    >
                         Back to Tasks
                     </Link>
                 </div>

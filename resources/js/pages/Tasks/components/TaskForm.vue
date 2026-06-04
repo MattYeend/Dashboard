@@ -73,7 +73,11 @@ const emit = defineEmits<{
         </div>
 
         <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary" :disabled="processing">
+            <button
+                type="submit"
+                class="btn btn-primary"
+                :disabled="processing"
+            >
                 {{ submitLabel }}
             </button>
             <Link :href="route('tasks.index')" class="btn btn-secondary">

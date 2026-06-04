@@ -32,18 +32,18 @@ function updateAssignedTo(value: string): void {
                 :value="form.assigned_to"
                 class="form-select"
                 :class="{ 'is-invalid': errors.assigned_to }"
-                @change="updateAssignedTo(($event.target as HTMLSelectElement).value)"
+                @change="
+                    updateAssignedTo(($event.target as HTMLSelectElement).value)
+                "
             >
                 <option :value="null">-- Unassigned --</option>
-                <option
-                    v-for="user in users"
-                    :key="user.id"
-                    :value="user.id"
-                >
+                <option v-for="user in users" :key="user.id" :value="user.id">
                     {{ user.name }}
                 </option>
             </select>
-            <div v-if="errors.assigned_to" class="invalid-feedback">{{ errors.assigned_to }}</div>
+            <div v-if="errors.assigned_to" class="invalid-feedback">
+                {{ errors.assigned_to }}
+            </div>
         </div>
     </div>
 </template>

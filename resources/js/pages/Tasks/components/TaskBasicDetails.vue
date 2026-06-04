@@ -25,7 +25,8 @@ defineProps<{
                         v-if="task.status"
                         class="badge"
                         :style="{
-                            backgroundColor: task.status.background_colour ?? '#e2e8f0',
+                            backgroundColor:
+                                task.status.background_colour ?? '#e2e8f0',
                             color: task.status.text_colour ?? '#1a202c',
                         }"
                     >

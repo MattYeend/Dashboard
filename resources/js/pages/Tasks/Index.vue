@@ -12,7 +12,6 @@ const props = defineProps<{
     trash_filters: Record<string, string>;
 }>();
 
-
 const selectedIds = ref<number[]>([]);
 
 const filters = ref({
@@ -23,7 +22,9 @@ const filters = ref({
 });
 
 const allSelected = computed(
-    () => props.tasks.length > 0 && selectedIds.value.length === props.tasks.length,
+    () =>
+        props.tasks.length > 0 &&
+        selectedIds.value.length === props.tasks.length,
 );
 
 function toggleSelectAll(): void {
@@ -38,9 +39,13 @@ function applyFilters(): void {
 }
 
 function goToPage(page: number): void {
-    router.get(route('tasks.index'), { ...filters.value, page }, {
-        preserveState: true,
-    });
+    router.get(
+        route('tasks.index'),
+        { ...filters.value, page },
+        {
+            preserveState: true,
+        },
+    );
 }
 
 function confirmDelete(id: number): void {
@@ -56,11 +61,15 @@ function bulkDelete(): void {
         return;
     }
 
-    router.post(route('tasks.bulk.delete'), { ids: selectedIds.value }, {
-        onSuccess: () => {
-            selectedIds.value = [];
+    router.post(
+        route('tasks.bulk.delete'),
+        { ids: selectedIds.value },
+        {
+            onSuccess: () => {
+                selectedIds.value = [];
+            },
         },
-    });
+    );
 }
 
 function formatDate(value: string | null): string {
@@ -107,7 +116,11 @@ function formatDate(value: string | null): string {
                             />
                         </div>
                         <div class="col-md-3">
-                            <select v-model="filters.trashed" class="form-select" @change="applyFilters">
+                            <select
+                                v-model="filters.trashed"
+                                class="form-select"
+                                @change="applyFilters"
+                            >
                                 <option
                                     v-for="(label, value) in trash_filters"
                                     :key="value"
@@ -118,7 +131,11 @@ function formatDate(value: string | null): string {
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <select v-model="filters.sort_by" class="form-select" @change="applyFilters">
+                            <select
+                                v-model="filters.sort_by"
+                                class="form-select"
+                                @change="applyFilters"
+                            >
                                 <option
                                     v-for="(label, value) in sort_fields"
                                     :key="value"
@@ -129,24 +146,34 @@ function formatDate(value: string | null): string {
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <select v-model="filters.sort_direction" class="form-select" @change="applyFilters">
+                            <select
+                                v-model="filters.sort_direction"
+                                class="form-select"
+                                @change="applyFilters"
+                            >
                                 <option value="asc">Ascending</option>
                                 <option value="desc">Descending</option>
                             </select>
                         </div>
                     </div>
 
-                    <div v-if="selectedIds.length > 0" class="mb-3 d-flex gap-2">
-                        <button class="btn btn-danger btn-sm" @click="bulkDelete">
+                    <div
+                        v-if="selectedIds.length > 0"
+                        class="d-flex mb-3 gap-2"
+                    >
+                        <button
+                            class="btn btn-danger btn-sm"
+                            @click="bulkDelete"
+                        >
                             Delete Selected ({{ selectedIds.length }})
                         </button>
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle">
+                        <table class="table-hover table align-middle">
                             <thead>
                                 <tr>
-                                    <th style="width: 2.5rem;">
+                                    <th style="width: 2.5rem">
                                         <input
                                             type="checkbox"
                                             class="form-check-input"
@@ -163,7 +190,10 @@ function formatDate(value: string | null): string {
                             </thead>
                             <tbody>
                                 <tr v-if="tasks.length === 0">
-                                    <td colspan="6" class="text-center text-muted py-4">
+                                    <td
+                                        colspan="6"
+                                        class="py-4 text-center text-muted"
+                                    >
                                         No tasks found.
                                     </td>
                                 </tr>
@@ -182,8 +212,13 @@ function formatDate(value: string | null): string {
                                             v-if="task.status"
                                             class="badge"
                                             :style="{
-                                                backgroundColor: task.status.background_colour ?? '#e2e8f0',
-                                                color: task.status.text_colour ?? '#1a202c',
+                                                backgroundColor:
+                                                    task.status
+                                                        .background_colour ??
+                                                    '#e2e8f0',
+                                                color:
+                                                    task.status.text_colour ??
+                                                    '#1a202c',
                                             }"
                                         >
                                             {{ task.status.title }}
@@ -193,15 +228,21 @@ function formatDate(value: string | null): string {
                                     <td>{{ task.assignee?.name ?? '—' }}</td>
                                     <td>{{ formatDate(task.due_date) }}</td>
                                     <td class="text-end">
-                                        <div class="d-flex gap-1 justify-content-end">
+                                        <div
+                                            class="d-flex justify-content-end gap-1"
+                                        >
                                             <Link
-                                                :href="route('tasks.show', task.id)"
+                                                :href="
+                                                    route('tasks.show', task.id)
+                                                "
                                                 class="btn btn-outline-secondary btn-sm"
                                             >
                                                 View
                                             </Link>
                                             <Link
-                                                :href="route('tasks.edit', task.id)"
+                                                :href="
+                                                    route('tasks.edit', task.id)
+                                                "
                                                 class="btn btn-outline-primary btn-sm"
                                             >
                                                 Edit
@@ -219,18 +260,29 @@ function formatDate(value: string | null): string {
                         </table>
                     </div>
 
-                    <nav v-if="pagination.last_page > 1" class="d-flex justify-content-between align-items-center mt-3">
-                        <p class="text-muted small mb-0">
-                            Showing {{ pagination.from }}-{{ pagination.to }} of {{ pagination.total }} tasks
+                    <nav
+                        v-if="pagination.last_page > 1"
+                        class="d-flex justify-content-between align-items-center mt-3"
+                    >
+                        <p class="small mb-0 text-muted">
+                            Showing {{ pagination.from }}-{{ pagination.to }} of
+                            {{ pagination.total }} tasks
                         </p>
                         <ul class="pagination pagination-sm mb-0">
                             <li
                                 v-for="page in pagination.last_page"
                                 :key="page"
                                 class="page-item"
-                                :class="{ active: page === pagination.current_page }"
+                                :class="{
+                                    active: page === pagination.current_page,
+                                }"
                             >
-                                <button class="page-link" @click="goToPage(page)">{{ page }}</button>
+                                <button
+                                    class="page-link"
+                                    @click="goToPage(page)"
+                                >
+                                    {{ page }}
+                                </button>
                             </li>
                         </ul>
                     </nav>

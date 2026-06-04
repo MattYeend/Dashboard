@@ -27,7 +27,10 @@ defineProps<{
                     >
                         Edit
                     </Link>
-                    <Link :href="route('tasks.index')" class="btn btn-secondary btn-sm">
+                    <Link
+                        :href="route('tasks.index')"
+                        class="btn btn-secondary btn-sm"
+                    >
                         Back to Tasks
                     </Link>
                 </div>
