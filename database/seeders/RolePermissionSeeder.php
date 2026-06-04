@@ -146,6 +146,19 @@ class RolePermissionSeeder extends Seeder
             'import task statuses',
             'export task statuses',
             'assign task statuses',
+
+            // Task management
+            'view any task',
+            'view task',
+            'create task',
+            'update task',
+            'delete task',
+            'restore task',
+            'force delete task',
+            'import task',
+            'export task',
+            'assign task',
+            'change task status',
         ];
 
         foreach ($permissions as $permission) {
@@ -241,6 +254,16 @@ class RolePermissionSeeder extends Seeder
             'import task statuses',
             'export task statuses',
             'assign task statuses',
+            'view any task',
+            'view task',
+            'create task',
+            'update task',
+            'delete task',
+            'restore task',
+            'import task',
+            'export task',
+            'assign task',
+            'change task status',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -300,6 +323,16 @@ class RolePermissionSeeder extends Seeder
             'import task statuses',
             'export task statuses',
             'assign task statuses',
+            'view any task',
+            'view task',
+            'create task',
+            'update task',
+            'delete task',
+            'restore task',
+            'import task',
+            'export task',
+            'assign task',
+            'change task status',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -324,6 +357,24 @@ class RolePermissionSeeder extends Seeder
             'delete files',
             'view reports',
             'view task statuses',
+            'view contact information',
+            'create contact information',
+            'edit contact information',
+            'delete contact information',
+            'restore contact information',
+            'create task statuses',
+            'edit task statuses',
+            'delete task statuses',
+            'restore task statuses',
+            'assign task statuses',
+            'view any task',
+            'view task',
+            'create task',
+            'update task',
+            'delete task',
+            'restore task',
+            'assign task',
+            'change task status',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -344,6 +395,8 @@ class RolePermissionSeeder extends Seeder
             'download files',
             'view contact information',
             'view task statuses',
+            'view any task',
+            'view task',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -376,6 +429,7 @@ class RolePermissionSeeder extends Seeder
             'delete files',
             'view reports',
             'view task statuses',
+            'view tasks',
             'view contact information',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
@@ -414,6 +468,16 @@ class RolePermissionSeeder extends Seeder
             'import task statuses',
             'export task statuses',
             'assign task statuses',
+            'view tasks',
+            'view any task',
+            'create task',
+            'update task',
+            'delete task',
+            'restore task',
+            'import task',
+            'export task',
+            'assign task',
+            'change task status',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -445,6 +509,11 @@ class RolePermissionSeeder extends Seeder
             'export contact information',
             'view task statuses',
             'export task statuses',
+            'assign task statuses',
+            'view any task',
+            'view task',
+            'export task',
+            'assign task',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
@@ -462,6 +531,8 @@ class RolePermissionSeeder extends Seeder
             'download files',
             'view contact information',
             'view task statuses',
+            'view any task',
+            'view task',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -471,6 +542,8 @@ class RolePermissionSeeder extends Seeder
             'view dashboard',
             'view content',
             'view task statuses',
+            'view any task',
+            'view task',
         ];
         $guest->givePermissionTo($guestPermissions);
 
@@ -506,5 +579,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- System Maintenance');
         $this->command->info('- Contact Information');
         $this->command->info('- Task Statuses');
+        $this->command->info('- Tasks');
     }
 }
