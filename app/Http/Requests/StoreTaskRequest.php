@@ -24,13 +24,13 @@ class StoreTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'         => $this->titleRules(),
-            'description'   => $this->descriptionRules(),
-            'due_date'      => $this->dueDateRules(),
+            'title' => $this->titleRules(),
+            'description' => $this->descriptionRules(),
+            'due_date' => $this->dueDateRules(),
             'assigned_date' => $this->assignedDateRules(),
-            'assigned_to'   => $this->assignedToRules(),
-            'status_id'     => $this->statusIdRules(),
-            'meta'          => $this->metaRules(),
+            'assigned_to' => $this->assignedToRules(),
+            'status_id' => $this->statusIdRules(),
+            'meta' => $this->metaRules(),
         ];
     }
 
@@ -42,13 +42,13 @@ class StoreTaskRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required'      => 'The title is required.',
-            'title.string'        => 'The title must be a string.',
-            'title.max'           => 'The title may not exceed 255 characters.',
-            'due_date.date'       => 'The due date must be a valid date.',
-            'assigned_date.date'  => 'The assigned date must be a valid date.',
-            'assigned_to.exists'  => 'The selected user does not exist.',
-            'status_id.exists'    => 'The selected status does not exist.',
+            'title.required' => 'The title is required.',
+            'title.string' => 'The title must be a string.',
+            'title.max' => 'The title may not exceed 255 characters.',
+            'due_date.date' => 'The due date must be a valid date.',
+            'assigned_date.date' => 'The assigned date must be a valid date.',
+            'assigned_to.exists' => 'The selected user does not exist.',
+            'status_id.exists' => 'The selected status does not exist.',
         ];
     }
 

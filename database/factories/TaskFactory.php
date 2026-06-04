@@ -22,7 +22,7 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => 'Task ' . $this->faker->words(3, true),
+            'title' => 'Task '.$this->faker->words(3, true),
             'description' => $this->faker->optional()->sentence(),
             'due_date' => $this->faker->optional()->dateTimeBetween('now', '+30 days'),
             'assigned_date' => $this->faker->optional()->dateTimeBetween('-7 days', 'now'),
@@ -48,7 +48,7 @@ class TaskFactory extends Factory
     public function assignedTo(User $user): static
     {
         return $this->state(fn (array $attributes) => [
-            'assigned_to'   => $user->id,
+            'assigned_to' => $user->id,
             'assigned_date' => now(),
         ]);
     }

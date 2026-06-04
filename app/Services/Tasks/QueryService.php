@@ -26,7 +26,7 @@ class QueryService
      */
     public function getPaginated(array $filters = []): array
     {
-        $query     = $this->buildQuery($filters);
+        $query = $this->buildQuery($filters);
         $paginated = $this->paginate($query, $filters['per_page'] ?? 15);
 
         return array_merge(
@@ -87,7 +87,7 @@ class QueryService
         $paginator = $query->paginate($perPage);
 
         return [
-            'tasks'      => $paginator->items(),
+            'tasks' => $paginator->items(),
             'pagination' => [
                 'current_page' => $paginator->currentPage(),
                 'last_page' => $paginator->lastPage(),

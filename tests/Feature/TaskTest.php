@@ -2,7 +2,6 @@
 
 use App\Models\Task;
 use App\Models\TaskStatus;
-use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Spatie\Permission\Models\Role;
@@ -86,9 +85,9 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
 
         $payload = [
-            'title'       => 'Write unit tests',
+            'title' => 'Write unit tests',
             'description' => 'Cover all service classes with Pest tests.',
-            'due_date'    => '2025-08-01',
+            'due_date' => '2025-08-01',
         ];
 
         $this->actingAs($superAdmin)
@@ -121,7 +120,7 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/tasks', [
-                'title'    => 'Write unit tests',
+                'title' => 'Write unit tests',
                 'due_date' => 'not-a-date',
             ])
             ->assertStatus(422)
@@ -133,7 +132,7 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/tasks', [
-                'title'       => 'Write unit tests',
+                'title' => 'Write unit tests',
                 'assigned_to' => 99999,
             ])
             ->assertStatus(422)
@@ -145,7 +144,7 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/tasks', [
-                'title'     => 'Write unit tests',
+                'title' => 'Write unit tests',
                 'status_id' => 99999,
             ])
             ->assertStatus(422)
@@ -160,28 +159,28 @@ describe('store', function () {
             ->assertStatus(201);
 
         $this->assertDatabaseHas('tasks', [
-            'title'       => 'Minimal task',
+            'title' => 'Minimal task',
             'description' => null,
         ]);
     });
 
     test('store succeeds with an assigned user and status', function () {
-        $superAdmin  = $this->superAdminUser();
-        $assignee    = $this->normalUser();
-        $taskStatus  = TaskStatus::factory()->create();
+        $superAdmin = $this->superAdminUser();
+        $assignee = $this->normalUser();
+        $taskStatus = TaskStatus::factory()->create();
 
         $this->actingAs($superAdmin)
             ->postJson('/tasks', [
-                'title'       => 'Assigned task',
+                'title' => 'Assigned task',
                 'assigned_to' => $assignee->id,
-                'status_id'   => $taskStatus->id,
+                'status_id' => $taskStatus->id,
             ])
             ->assertStatus(201);
 
         $this->assertDatabaseHas('tasks', [
-            'title'       => 'Assigned task',
+            'title' => 'Assigned task',
             'assigned_to' => $assignee->id,
-            'status_id'   => $taskStatus->id,
+            'status_id' => $taskStatus->id,
         ]);
     });
 
@@ -191,7 +190,7 @@ describe('store', function () {
         $this->actingAs($superAdmin)
             ->postJson('/tasks', [
                 'title' => 'Task with meta',
-                'meta'  => ['priority' => 'high', 'tags' => ['backend']],
+                'meta' => ['priority' => 'high', 'tags' => ['backend']],
             ])
             ->assertStatus(201);
 
@@ -202,7 +201,7 @@ describe('store', function () {
 describe('show', function () {
     test('authenticated user with permission can view a task', function () {
         $superAdmin = $this->superAdminUser();
-        $task       = Task::factory()->create();
+        $task = Task::factory()->create();
 
         $this->actingAs($superAdmin)
             ->get("/tasks/{$task->id}")
@@ -241,7 +240,7 @@ describe('show', function () {
 describe('edit', function () {
     test('authenticated user with permission can view edit form', function () {
         $superAdmin = $this->superAdminUser();
-        $task       = Task::factory()->create();
+        $task = Task::factory()->create();
 
         $this->actingAs($superAdmin)
             ->get("/tasks/{$task->id}/edit")
@@ -272,7 +271,7 @@ describe('edit', function () {
 describe('update', function () {
     test('authenticated user with permission can update a task', function () {
         $superAdmin = $this->superAdminUser();
-        $task       = Task::factory()->create(['title' => 'Old title']);
+        $task = Task::factory()->create(['title' => 'Old title']);
 
         $this->actingAs($superAdmin)
             ->putJson("/tasks/{$task->id}", ['title' => 'New title'])
@@ -280,14 +279,14 @@ describe('update', function () {
             ->assertJsonFragment(['title' => 'New title']);
 
         $this->assertDatabaseHas('tasks', [
-            'id'    => $task->id,
+            'id' => $task->id,
             'title' => 'New title',
         ]);
     });
 
     test('patch verb also updates a task', function () {
         $superAdmin = $this->superAdminUser();
-        $task       = Task::factory()->create(['description' => 'Old description']);
+        $task = Task::factory()->create(['description' => 'Old description']);
 
         $this->actingAs($superAdmin)
             ->patchJson("/tasks/{$task->id}", ['description' => 'New description'])
@@ -306,7 +305,7 @@ describe('update', function () {
 
     test('update fails validation when due_date is not a valid date', function () {
         $superAdmin = $this->superAdminUser();
-        $task       = Task::factory()->create();
+        $task = Task::factory()->create();
 
         $this->actingAs($superAdmin)
             ->putJson("/tasks/{$task->id}", ['due_date' => 'not-a-date'])
@@ -316,7 +315,7 @@ describe('update', function () {
 
     test('update fails validation when assigned_to does not exist', function () {
         $superAdmin = $this->superAdminUser();
-        $task       = Task::factory()->create();
+        $task = Task::factory()->create();
 
         $this->actingAs($superAdmin)
             ->putJson("/tasks/{$task->id}", ['assigned_to' => 99999])
@@ -328,7 +327,7 @@ describe('update', function () {
 describe('destroy', function () {
     test('authenticated user with permission can soft delete a task', function () {
         $superAdmin = $this->superAdminUser();
-        $task       = Task::factory()->create();
+        $task = Task::factory()->create();
 
         $this->actingAs($superAdmin)
             ->deleteJson("/tasks/{$task->id}")
@@ -358,14 +357,14 @@ describe('destroy', function () {
 describe('restore', function () {
     test('authenticated user with permission can restore a soft-deleted task', function () {
         $superAdmin = $this->superAdminUser();
-        $task       = Task::factory()->deleted()->create();
+        $task = Task::factory()->deleted()->create();
 
         $this->actingAs($superAdmin)
             ->postJson("/tasks/{$task->id}/restore")
             ->assertStatus(204);
 
         $this->assertDatabaseHas('tasks', [
-            'id'         => $task->id,
+            'id' => $task->id,
             'deleted_at' => null,
         ]);
     });
@@ -381,7 +380,7 @@ describe('restore', function () {
 
     test('restore returns 404 for a task that is not soft-deleted', function () {
         $superAdmin = $this->superAdminUser();
-        $task       = Task::factory()->create();
+        $task = Task::factory()->create();
 
         $this->actingAs($superAdmin)
             ->postJson("/tasks/{$task->id}/restore")
@@ -392,7 +391,7 @@ describe('restore', function () {
 describe('force delete', function () {
     test('authenticated user with permission can force delete a task', function () {
         $superAdmin = $this->superAdminUser();
-        $task       = Task::factory()->deleted()->create();
+        $task = Task::factory()->deleted()->create();
 
         $this->actingAs($superAdmin)
             ->deleteJson("/tasks/{$task->id}/force")
@@ -412,7 +411,7 @@ describe('force delete', function () {
 
     test('force delete returns 404 for a task that is not soft-deleted', function () {
         $superAdmin = $this->superAdminUser();
-        $task       = Task::factory()->create();
+        $task = Task::factory()->create();
 
         $this->actingAs($superAdmin)
             ->deleteJson("/tasks/{$task->id}/force")
@@ -423,8 +422,8 @@ describe('force delete', function () {
 describe('bulk delete', function () {
     test('authenticated user with permission can bulk soft delete tasks', function () {
         $superAdmin = $this->superAdminUser();
-        $tasks      = Task::factory()->count(3)->create();
-        $ids        = $tasks->pluck('id')->all();
+        $tasks = Task::factory()->count(3)->create();
+        $ids = $tasks->pluck('id')->all();
 
         $this->actingAs($superAdmin)
             ->postJson('/tasks/bulk/delete', ['ids' => $ids])
@@ -454,7 +453,7 @@ describe('bulk delete', function () {
     });
 
     test('user without permission cannot bulk delete tasks', function () {
-        $user  = $this->normalUser();
+        $user = $this->normalUser();
         $tasks = Task::factory()->count(2)->create();
 
         $this->actingAs($user)
@@ -468,8 +467,8 @@ describe('bulk delete', function () {
 describe('bulk restore', function () {
     test('authenticated user with permission can bulk restore tasks', function () {
         $superAdmin = $this->superAdminUser();
-        $tasks      = Task::factory()->count(3)->deleted()->create();
-        $ids        = $tasks->pluck('id')->all();
+        $tasks = Task::factory()->count(3)->deleted()->create();
+        $ids = $tasks->pluck('id')->all();
 
         $this->actingAs($superAdmin)
             ->postJson('/tasks/bulk/restore', ['ids' => $ids])
@@ -477,7 +476,7 @@ describe('bulk restore', function () {
 
         foreach ($ids as $id) {
             $this->assertDatabaseHas('tasks', [
-                'id'         => $id,
+                'id' => $id,
                 'deleted_at' => null,
             ]);
         }
@@ -502,7 +501,7 @@ describe('bulk restore', function () {
     });
 
     test('user without permission cannot bulk restore tasks', function () {
-        $user  = $this->normalUser();
+        $user = $this->normalUser();
         $tasks = Task::factory()->count(2)->deleted()->create();
 
         $this->actingAs($user)
@@ -533,7 +532,7 @@ describe('soft delete scoping', function () {
 
     test('show returns 404 for a soft-deleted task', function () {
         $superAdmin = $this->superAdminUser();
-        $task       = Task::factory()->deleted()->create();
+        $task = Task::factory()->deleted()->create();
 
         $this->actingAs($superAdmin)
             ->get("/tasks/{$task->id}")

@@ -183,12 +183,12 @@ class TaskController extends Controller
     public function bulkDelete(Request $request): JsonResponse
     {
         $request->validate([
-            'ids'   => ['required', 'array'],
+            'ids' => ['required', 'array'],
             'ids.*' => ['required', 'integer', 'exists:tasks,id'],
         ]);
 
         $actor = $request->user();
-        $ids   = $request->input('ids');
+        $ids = $request->input('ids');
 
         $this->management->bulkDelete(
             $ids,
@@ -207,12 +207,12 @@ class TaskController extends Controller
     public function bulkRestore(Request $request): JsonResponse
     {
         $request->validate([
-            'ids'   => ['required', 'array'],
+            'ids' => ['required', 'array'],
             'ids.*' => ['required', 'integer', 'exists:tasks,id'],
         ]);
 
         $actor = $request->user();
-        $ids   = $request->input('ids');
+        $ids = $request->input('ids');
 
         $this->management->bulkRestore(
             $ids,

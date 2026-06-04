@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
 use App\Models\Contact;
-use App\Services\Contacts\LogService;
 use App\Services\Contacts\ManagementService;
 use App\Services\Contacts\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;

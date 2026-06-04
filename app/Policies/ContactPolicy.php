@@ -34,8 +34,6 @@ class ContactPolicy
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @param  User  $user
      */
     public function view(User $user, Contact $contact): bool
     {

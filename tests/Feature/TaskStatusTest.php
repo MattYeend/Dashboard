@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\TaskStatus;
-use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Spatie\Permission\Models\Role;
@@ -85,10 +84,10 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
 
         $payload = [
-            'title'             => 'In Progress',
-            'description'       => 'Task is actively being worked on.',
+            'title' => 'In Progress',
+            'description' => 'Task is actively being worked on.',
             'background_colour' => '#bee3f8',
-            'text_colour'       => '#2b6cb0',
+            'text_colour' => '#2b6cb0',
         ];
 
         $this->actingAs($superAdmin)
@@ -97,9 +96,9 @@ describe('store', function () {
             ->assertJsonFragment(['title' => 'In Progress']);
 
         $this->assertDatabaseHas('task_statuses', [
-            'title'             => 'In Progress',
+            'title' => 'In Progress',
             'background_colour' => '#bee3f8',
-            'text_colour'       => '#2b6cb0',
+            'text_colour' => '#2b6cb0',
         ]);
     });
 
@@ -108,9 +107,9 @@ describe('store', function () {
 
         $this->actingAs($user)
             ->postJson('/task-statuses', [
-                'title'             => 'In Progress',
+                'title' => 'In Progress',
                 'background_colour' => '#bee3f8',
-                'text_colour'       => '#2b6cb0',
+                'text_colour' => '#2b6cb0',
             ])
             ->assertStatus(403);
     });
@@ -121,7 +120,7 @@ describe('store', function () {
         $this->actingAs($superAdmin)
             ->postJson('/task-statuses', [
                 'background_colour' => '#bee3f8',
-                'text_colour'       => '#2b6cb0',
+                'text_colour' => '#2b6cb0',
             ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['title']);
@@ -132,9 +131,9 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/task-statuses', [
-                'title'             => 'In Progress',
+                'title' => 'In Progress',
                 'background_colour' => 'not-a-colour',
-                'text_colour'       => '#2b6cb0',
+                'text_colour' => '#2b6cb0',
             ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['background_colour']);
@@ -145,9 +144,9 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/task-statuses', [
-                'title'             => 'In Progress',
+                'title' => 'In Progress',
                 'background_colour' => '#bee3f8',
-                'text_colour'       => 'not-a-colour',
+                'text_colour' => 'not-a-colour',
             ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['text_colour']);
@@ -163,7 +162,7 @@ describe('store', function () {
             ->assertStatus(201);
 
         $this->assertDatabaseHas('task_statuses', [
-            'title'       => 'To Do',
+            'title' => 'To Do',
             'description' => null,
         ]);
     });
@@ -174,7 +173,7 @@ describe('store', function () {
         $this->actingAs($superAdmin)
             ->postJson('/task-statuses', [
                 'title' => 'In Review',
-                'meta'  => ['order' => 3, 'icon' => 'clock'],
+                'meta' => ['order' => 3, 'icon' => 'clock'],
             ])
             ->assertStatus(201);
 
@@ -270,7 +269,7 @@ describe('update', function () {
             ->assertJsonFragment(['title' => 'In Progress']);
 
         $this->assertDatabaseHas('task_statuses', [
-            'id'    => $taskStatus->id,
+            'id' => $taskStatus->id,
             'title' => 'In Progress',
         ]);
     });
@@ -362,7 +361,7 @@ describe('restore', function () {
             ->assertStatus(204);
 
         $this->assertDatabaseHas('task_statuses', [
-            'id'         => $taskStatus->id,
+            'id' => $taskStatus->id,
             'deleted_at' => null,
         ]);
     });
@@ -482,7 +481,7 @@ describe('bulk restore', function () {
 
         foreach ($ids as $id) {
             $this->assertDatabaseHas('task_statuses', [
-                'id'         => $id,
+                'id' => $id,
                 'deleted_at' => null,
             ]);
         }
