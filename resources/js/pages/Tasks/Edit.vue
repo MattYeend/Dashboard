@@ -1,52 +1,35 @@
 <script setup lang="ts">
-import { Head, Link, useForm } from '@inertiajs/vue3'
-import TaskForm from '@/pages/Tasks/components/TaskForm.vue'
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-
-interface TaskStatus {
-    id: number
-    title: string
-    background_colour: string | null
-    text_colour: string | null
-}
-
-interface UserOption {
-    id: number
-    name: string
-}
-
-interface Task {
-    id: number
-    title: string
-    description: string | null
-    due_date: string | null
-    assigned_date: string | null
-    assigned_to: number | null
-    status_id: number | null
-}
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import TaskForm from '@/pages/Tasks/components/TaskForm.vue';
+import type { Task, TaskFormData, TaskStatus, UserOption } from '@/types';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
 
 const props = defineProps<{
-    task: Task
-    statuses: TaskStatus[]
-    users: UserOption[]
-}>()
+    task: Task;
+    statuses: TaskStatus[];
+    users: UserOption[];
+}>();
 
-const form = useForm({
+const form = useForm<TaskFormData>({
     title: props.task.title,
     description: props.task.description,
     due_date: props.task.due_date,
     assigned_date: props.task.assigned_date,
     assigned_to: props.task.assigned_to,
     status_id: props.task.status_id,
-})
+});
+
+function onFormUpdate(updated: TaskFormData): void {
+    Object.assign(form, updated);
+}
 
 function submit(): void {
-    form.put(route('tasks.update', props.task.id))
+    form.put(route('tasks.update', props.task.id));
 }
 </script>
 
 <template>
-    <Head :title="`Edit Task - ${task.title}`" />
+    <Head :title="`Edit Task – ${task.title}`" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -73,6 +56,7 @@ function submit(): void {
                         :users="users"
                         submit-label="Update Task"
                         :processing="form.processing"
+                        @update:form="onFormUpdate"
                         @submit="submit"
                     />
                 </div>

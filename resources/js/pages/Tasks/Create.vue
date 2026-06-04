@@ -1,36 +1,29 @@
 <script setup lang="ts">
-import { Head, Link, useForm } from '@inertiajs/vue3'
-import TaskForm from '@/pages/Tasks/components/TaskForm.vue'
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
-
-interface TaskStatus {
-    id: number
-    title: string
-    background_colour: string | null
-    text_colour: string | null
-}
-
-interface UserOption {
-    id: number
-    name: string
-}
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import TaskForm from '@/pages/Tasks/components/TaskForm.vue';
+import type { TaskFormData, TaskStatus, UserOption } from '@/types';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
 
 defineProps<{
-    statuses: TaskStatus[]
-    users: UserOption[]
-}>()
+    statuses: TaskStatus[];
+    users: UserOption[];
+}>();
 
-const form = useForm({
+const form = useForm<TaskFormData>({
     title: '',
-    description: null as string | null,
-    due_date: null as string | null,
-    assigned_date: null as string | null,
-    assigned_to: null as number | null,
-    status_id: null as number | null,
-})
+    description: null,
+    due_date: null,
+    assigned_date: null,
+    assigned_to: null,
+    status_id: null,
+});
+
+function onFormUpdate(updated: TaskFormData): void {
+    Object.assign(form, updated);
+}
 
 function submit(): void {
-    form.post(route('tasks.store'))
+    form.post(route('tasks.store'));
 }
 </script>
 
@@ -57,6 +50,7 @@ function submit(): void {
                         :users="users"
                         submit-label="Create Task"
                         :processing="form.processing"
+                        @update:form="onFormUpdate"
                         @submit="submit"
                     />
                 </div>

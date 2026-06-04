@@ -1,105 +1,78 @@
 <script setup lang="ts">
-import { Head, Link, router } from '@inertiajs/vue3'
-import { ref, computed } from 'vue'
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-
-interface TaskStatus {
-    id: number
-    title: string
-    background_colour: string | null
-    text_colour: string | null
-}
-
-interface Assignee {
-    id: number
-    name: string
-}
-
-interface Task {
-    id: number
-    title: string
-    status: TaskStatus | null
-    assignee: Assignee | null
-    due_date: string | null
-}
-
-interface Pagination {
-    current_page: number
-    last_page: number
-    per_page: number
-    total: number
-    from: number | null
-    to: number | null
-}
-
-interface PermissionsMeta {
-    can_create: boolean
-    can_view_any: boolean
-}
+import { Head, Link, router } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
+import type { Task, Pagination, PermissionsMeta } from '@/types';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
 
 const props = defineProps<{
-    tasks: Task[]
-    pagination: Pagination
-    permissions_meta: PermissionsMeta
-    sort_fields: Record<string, string>
-    trash_filters: Record<string, string>
-}>()
+    tasks: Task[];
+    pagination: Pagination;
+    permissions_meta: PermissionsMeta;
+    sort_fields: Record<string, string>;
+    trash_filters: Record<string, string>;
+}>();
 
-const selectedIds = ref<number[]>([])
+
+const selectedIds = ref<number[]>([]);
 
 const filters = ref({
     search: '',
     trashed: '',
     sort_by: 'created_at',
     sort_direction: 'desc',
-})
+});
 
 const allSelected = computed(
-    () => props.tasks.length > 0 && selectedIds.value.length === props.tasks.length
-)
+    () => props.tasks.length > 0 && selectedIds.value.length === props.tasks.length,
+);
 
 function toggleSelectAll(): void {
-    selectedIds.value = allSelected.value ? [] : props.tasks.map((t) => t.id)
+    selectedIds.value = allSelected.value ? [] : props.tasks.map((t) => t.id);
 }
 
 function applyFilters(): void {
     router.get(route('tasks.index'), filters.value, {
         preserveState: true,
         replace: true,
-    })
+    });
 }
 
 function goToPage(page: number): void {
     router.get(route('tasks.index'), { ...filters.value, page }, {
         preserveState: true,
-    })
+    });
 }
 
 function confirmDelete(id: number): void {
-    if (!confirm('Are you sure you want to delete this task?')){
-        return
+    if (!confirm('Are you sure you want to delete this task?')) {
+        return;
     }
-    router.delete(route('tasks.destroy', id))
+
+    router.delete(route('tasks.destroy', id));
 }
 
 function bulkDelete(): void {
-    if (!confirm(`Delete ${selectedIds.value.length} selected tasks?`)){
-        return
+    if (!confirm(`Delete ${selectedIds.value.length} selected tasks?`)) {
+        return;
     }
+
     router.post(route('tasks.bulk.delete'), { ids: selectedIds.value }, {
-        onSuccess: () => { selectedIds.value = [] },
-    })
+        onSuccess: () => {
+            selectedIds.value = [];
+        },
+    });
 }
 
 function formatDate(value: string | null): string {
     if (!value) {
-        return '—'
+        return '—';
     }
+
     return new Date(value).toLocaleDateString('en-GB', {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
-    })
+    });
 }
 </script>
 
@@ -248,7 +221,7 @@ function formatDate(value: string | null): string {
 
                     <nav v-if="pagination.last_page > 1" class="d-flex justify-content-between align-items-center mt-3">
                         <p class="text-muted small mb-0">
-                            Showing {{ pagination.from }}–{{ pagination.to }} of {{ pagination.total }} tasks
+                            Showing {{ pagination.from }}-{{ pagination.to }} of {{ pagination.total }} tasks
                         </p>
                         <ul class="pagination pagination-sm mb-0">
                             <li

@@ -1,16 +1,9 @@
 <script setup lang="ts">
-interface Assignee {
-    id: number
-    name: string
-}
-
-interface Task {
-    assignee: Assignee | null
-}
+import type { Task } from '@/types';
 
 defineProps<{
-    task: Task
-}>()
+    task: Task;
+}>();
 </script>
 
 <template>

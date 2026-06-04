@@ -1,20 +1,9 @@
 <script setup lang="ts">
-interface TaskStatus {
-    id: number
-    title: string
-    background_colour: string | null
-    text_colour: string | null
-}
-
-interface Task {
-    title: string
-    description: string | null
-    status: TaskStatus | null
-}
+import type { Task } from '@/types';
 
 defineProps<{
-    task: Task
-}>()
+    task: Task;
+}>();
 </script>
 
 <template>

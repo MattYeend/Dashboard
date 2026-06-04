@@ -1,24 +1,20 @@
 <script setup lang="ts">
-interface Task {
-    due_date: string | null
-    assigned_date: string | null
-    created_at: string
-    updated_at: string
-    deleted_at: string | null
-    restored_at: string | null
-}
+import type { Task } from '@/types';
 
 defineProps<{
-    task: Task
-}>()
+    task: Task;
+}>();
 
 function formatDate(value: string | null): string {
-    if (!value) return '—'
+    if (!value) {
+        return '—';
+    }
+
     return new Date(value).toLocaleDateString('en-GB', {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
-    })
+    });
 }
 </script>
 

@@ -1,55 +1,36 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3'
-import TaskBasicDetailsForm from '@/Pages/Tasks/components/TaskBasicDetailsForm.vue'
-import TaskAssignmentDetailsForm from '@/Pages/Tasks/components/TaskAssignmentDetailsForm.vue'
-import TaskDateDetailsForm from '@/Pages/Tasks/components/TaskDateDetailsForm.vue'
-
-interface TaskStatus {
-    id: number
-    title: string
-    background_colour: string | null
-    text_colour: string | null
-}
-
-interface UserOption {
-    id: number
-    name: string
-}
-
-interface Form {
-    title: string
-    description: string | null
-    due_date: string | null
-    assigned_date: string | null
-    assigned_to: number | null
-    status_id: number | null
-}
+import { Link } from '@inertiajs/vue3';
+import TaskAssignmentDetailsForm from '@/pages/Tasks/components/TaskAssignmentDetailsForm.vue';
+import TaskBasicDetailsForm from '@/pages/Tasks/components/TaskBasicDetailsForm.vue';
+import TaskDateDetailsForm from '@/pages/Tasks/components/TaskDateDetailsForm.vue';
+import type { TaskFormData, TaskStatus, UserOption } from '@/types';
 
 interface Errors {
-    title?: string
-    description?: string
-    due_date?: string
-    assigned_date?: string
-    assigned_to?: string
-    status_id?: string
+    title?: string;
+    description?: string;
+    due_date?: string;
+    assigned_date?: string;
+    assigned_to?: string;
+    status_id?: string;
 }
 
 defineProps<{
-    form: Form
-    errors: Errors
-    statuses: TaskStatus[]
-    users: UserOption[]
-    submitLabel: string
-    processing: boolean
-}>()
+    form: TaskFormData;
+    errors: Errors;
+    statuses: TaskStatus[];
+    users: UserOption[];
+    submitLabel: string;
+    processing: boolean;
+}>();
 
-defineEmits<{
-    (e: 'submit'): void
-}>()
+const emit = defineEmits<{
+    (e: 'submit'): void;
+    (e: 'update:form', value: TaskFormData): void;
+}>();
 </script>
 
 <template>
-    <form @submit.prevent="$emit('submit')">
+    <form @submit.prevent="emit('submit')">
         <div class="card mb-4">
             <div class="card-header">
                 <h5 class="card-title mb-0">Basic Details</h5>
@@ -59,6 +40,7 @@ defineEmits<{
                     :form="form"
                     :errors="errors"
                     :statuses="statuses"
+                    @update:form="emit('update:form', $event)"
                 />
             </div>
         </div>
@@ -72,6 +54,7 @@ defineEmits<{
                     :form="form"
                     :errors="errors"
                     :users="users"
+                    @update:form="emit('update:form', $event)"
                 />
             </div>
         </div>
@@ -84,6 +67,7 @@ defineEmits<{
                 <TaskDateDetailsForm
                     :form="form"
                     :errors="errors"
+                    @update:form="emit('update:form', $event)"
                 />
             </div>
         </div>
