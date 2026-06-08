@@ -36,13 +36,11 @@ class ContactController extends Controller
     {
         $this->authorize('viewAny', Contact::class);
 
-        $contacts = $this->query->getPaginated(
+        $data = $this->query->getPaginated(
             request()->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
         );
 
-        return Inertia::render('Contacts/Index', [
-            'contacts' => $contacts,
-        ]);
+        return Inertia::render('Contacts/Index', $data);
     }
 
     /**
@@ -84,11 +82,9 @@ class ContactController extends Controller
         $this->authorize('view', $contact);
         $this->authorize('access', $contact);
 
-        $contact = $this->query->getById($contact->id);
+        $data = $this->query->getById($contact->id);
 
-        return Inertia::render('Contacts/Show', [
-            'contact' => $contact,
-        ]);
+        return Inertia::render('Contacts/Show', $data);
     }
 
     /**
@@ -100,11 +96,9 @@ class ContactController extends Controller
     {
         $this->authorize('update', $contact);
 
-        $contact = $this->query->getById($contact->id);
+        $data = $this->query->getById($contact->id);
 
-        return Inertia::render('Contacts/Edit', [
-            'contact' => $contact,
-        ]);
+        return Inertia::render('Contacts/Edit', $data);
     }
 
     /**

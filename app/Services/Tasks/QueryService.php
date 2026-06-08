@@ -88,6 +88,7 @@ class QueryService
 
         return [
             'tasks' => $paginator->items(),
+            'links' => $paginator->linkCollection()->toArray(),
             'pagination' => [
                 'current_page' => $paginator->currentPage(),
                 'last_page' => $paginator->lastPage(),
