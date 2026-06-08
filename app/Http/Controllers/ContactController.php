@@ -9,6 +9,7 @@ use App\Services\Contacts\ManagementService;
 use App\Services\Contacts\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -63,11 +64,15 @@ class ContactController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      */
-    public function store(StoreContactRequest $request): JsonResponse
+    public function store(StoreContactRequest $request): JsonResponse|RedirectResponse
     {
         $contact = $this->management->store($request);
 
-        return response()->json($contact, 201);
+        if ($request->wantsJson()) {
+            return response()->json($contact, 201);
+        }
+
+        return redirect()->route('contacts.show', $contact->id);
     }
 
     /**
@@ -113,10 +118,14 @@ class ContactController extends Controller
     public function update(
         UpdateContactRequest $request,
         Contact $contact
-    ): JsonResponse {
+    ): JsonResponse|RedirectResponse {
         $contact = $this->management->update($request, $contact);
 
-        return response()->json($contact);
+        if ($request->wantsJson()) {
+            return response()->json($contact);
+        }
+
+        return redirect()->route('contacts.show', $contact->id);
     }
 
     /**
@@ -127,13 +136,17 @@ class ContactController extends Controller
      * The audit log entry is written before the deletion so that the
      * contact instance is still fully accessible during logging.
      */
-    public function destroy(Contact $contact): JsonResponse
+    public function destroy(Contact $contact): JsonResponse|RedirectResponse
     {
         $this->authorize('delete', $contact);
 
         $this->management->destroy($contact);
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('contacts.index');
     }
 
     /**
@@ -144,7 +157,7 @@ class ContactController extends Controller
      *
      * Authorises via the 'restore' policy before proceeding.
      */
-    public function restore(int $id): JsonResponse
+    public function restore(int $id): JsonResponse|RedirectResponse
     {
         $contact = Contact::onlyTrashed()->findOrFail($id);
 
@@ -152,7 +165,11 @@ class ContactController extends Controller
 
         $this->management->restore($id);
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('contacts.index');
     }
 
     /**
@@ -163,7 +180,7 @@ class ContactController extends Controller
      *
      * Authorises via the 'forceDelete' policy before proceeding.
      */
-    public function forceDelete(int $id): JsonResponse
+    public function forceDelete(int $id): JsonResponse|RedirectResponse
     {
         $contact = Contact::onlyTrashed()->findOrFail($id);
 
@@ -171,7 +188,11 @@ class ContactController extends Controller
 
         $this->management->forceDelete($id);
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('contacts.index');
     }
 
     /**
@@ -179,7 +200,7 @@ class ContactController extends Controller
      *
      * Authorises each contact individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse
+    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
     {
         $request->validate([
             'ids' => ['required', 'array'],
@@ -195,7 +216,11 @@ class ContactController extends Controller
             fn (Contact $contact) => $this->authorize('delete', $contact)
         );
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('contacts.index');
     }
 
     /**
@@ -203,7 +228,7 @@ class ContactController extends Controller
      *
      * Authorises each contact individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse
+    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
     {
         $request->validate([
             'ids' => ['required', 'array'],
@@ -219,6 +244,10 @@ class ContactController extends Controller
             fn (Contact $contact) => $this->authorize('restore', $contact)
         );
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('contacts.index');
     }
 }

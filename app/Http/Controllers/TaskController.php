@@ -9,6 +9,7 @@ use App\Services\Tasks\ManagementService;
 use App\Services\Tasks\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -63,11 +64,16 @@ class TaskController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      */
-    public function store(StoreTaskRequest $request): JsonResponse
-    {
+    public function store(
+        StoreTaskRequest $request
+    ): JsonResponse|RedirectResponse {
         $task = $this->management->store($request);
 
-        return response()->json($task, 201);
+        if ($request->wantsJson()) {
+            return response()->json($task, 201);
+        }
+
+        return redirect()->route('tasks.show', $task->id);
     }
 
     /**
@@ -113,11 +119,17 @@ class TaskController extends Controller
      * After updating, an audit log entry is written against the authenticated
      * user.
      */
-    public function update(UpdateTaskRequest $request, Task $task): JsonResponse
-    {
+    public function update(
+        UpdateTaskRequest $request,
+        Task $task
+    ): JsonResponse|RedirectResponse {
         $task = $this->management->update($request, $task);
 
-        return response()->json($task);
+        if ($request->wantsJson()) {
+            return response()->json($task);
+        }
+
+        return redirect()->route('tasks.show', $task->id);
     }
 
     /**
@@ -128,13 +140,17 @@ class TaskController extends Controller
      * The audit log entry is written before the deletion so that the
      * task instance is still fully accessible during logging.
      */
-    public function destroy(Task $task): JsonResponse
+    public function destroy(Task $task): JsonResponse|RedirectResponse
     {
         $this->authorize('delete', $task);
 
         $this->management->destroy($task);
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -145,7 +161,7 @@ class TaskController extends Controller
      *
      * Authorises via the 'restore' policy before proceeding.
      */
-    public function restore(int $id): JsonResponse
+    public function restore(int $id): JsonResponse|RedirectResponse
     {
         $task = Task::onlyTrashed()->findOrFail($id);
 
@@ -153,7 +169,11 @@ class TaskController extends Controller
 
         $this->management->restore($id);
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -164,7 +184,7 @@ class TaskController extends Controller
      *
      * Authorises via the 'forceDelete' policy before proceeding.
      */
-    public function forceDelete(int $id): JsonResponse
+    public function forceDelete(int $id): JsonResponse|RedirectResponse
     {
         $task = Task::onlyTrashed()->findOrFail($id);
 
@@ -172,7 +192,11 @@ class TaskController extends Controller
 
         $this->management->forceDelete($id);
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -180,7 +204,7 @@ class TaskController extends Controller
      *
      * Authorises each task individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse
+    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
     {
         $request->validate([
             'ids' => ['required', 'array'],
@@ -196,7 +220,11 @@ class TaskController extends Controller
             fn (Task $task) => $this->authorize('delete', $task)
         );
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -204,7 +232,7 @@ class TaskController extends Controller
      *
      * Authorises each task individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse
+    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
     {
         $request->validate([
             'ids' => ['required', 'array'],
@@ -220,6 +248,10 @@ class TaskController extends Controller
             fn (Task $task) => $this->authorize('restore', $task)
         );
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('tasks.index');
     }
 }

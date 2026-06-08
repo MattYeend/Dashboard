@@ -9,9 +9,11 @@ use App\Services\Users\ManagementService;
 use App\Services\Users\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+
 
 class UserController extends Controller
 {
@@ -63,11 +65,16 @@ class UserController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      */
-    public function store(StoreUserRequest $request): JsonResponse
-    {
+    public function store(
+        StoreUserRequest $request
+    ): JsonResponse|RedirectResponse {
         $user = $this->management->store($request);
 
-        return response()->json($user, 201);
+        if ($request->wantsJson()) {
+            return response()->json($user, 201);
+        }
+
+        return redirect()->route('users.show', $user->id);
     }
 
     /**
@@ -113,10 +120,14 @@ class UserController extends Controller
     public function update(
         UpdateUserRequest $request,
         User $user
-    ): JsonResponse {
+    ): JsonResponse|RedirectResponse {
         $user = $this->management->update($request, $user);
 
-        return response()->json($user);
+        if ($request->wantsJson()) {
+            return response()->json($user);
+        }
+
+        return redirect()->route('users.show', $user->id);
     }
 
     /**
@@ -127,13 +138,19 @@ class UserController extends Controller
      * The audit log entry is written before the deletion so that the
      * user instance is still fully accessible during logging.
      */
-    public function destroy(User $user): JsonResponse
-    {
+    public function destroy(
+        User $user
+    ): JsonResponse|RedirectResponse {
+
         $this->authorize('delete', $user);
 
         $this->management->destroy($user);
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('users.index');
     }
 
     /**
@@ -144,7 +161,7 @@ class UserController extends Controller
      *
      * Authorises via the 'restore' policy before proceeding.
      */
-    public function restore(int $id): JsonResponse
+    public function restore(int $id): JsonResponse|RedirectResponse
     {
         $user = User::onlyTrashed()->findOrFail($id);
 
@@ -152,7 +169,11 @@ class UserController extends Controller
 
         $this->management->restore($id);
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('users.index');
     }
 
     /**
@@ -163,7 +184,7 @@ class UserController extends Controller
      *
      * Authorises via the 'forceDelete' policy before proceeding.
      */
-    public function forceDelete(int $id): JsonResponse
+    public function forceDelete(int $id): JsonResponse|RedirectResponse
     {
         $user = User::onlyTrashed()->findOrFail($id);
 
@@ -171,7 +192,11 @@ class UserController extends Controller
 
         $this->management->forceDelete($id);
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('users.index');
     }
 
     /**
@@ -179,7 +204,7 @@ class UserController extends Controller
      *
      * Authorises each user individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse
+    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
     {
         $request->validate([
             'ids' => ['required', 'array'],
@@ -195,7 +220,11 @@ class UserController extends Controller
             fn (User $user) => $this->authorize('delete', $user)
         );
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('users.index');
     }
 
     /**
@@ -203,7 +232,7 @@ class UserController extends Controller
      *
      * Authorises each user individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse
+    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
     {
         $request->validate([
             'ids' => ['required', 'array'],
@@ -219,6 +248,10 @@ class UserController extends Controller
             fn (User $user) => $this->authorize('restore', $user)
         );
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('users.index');
     }
 }
