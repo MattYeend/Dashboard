@@ -82,11 +82,9 @@ class UserController extends Controller
         $this->authorize('view', $user);
         $this->authorize('access', $user);
 
-        $user = $this->query->getById($user->id);
+        $data = $this->query->getById($user->id);
 
-        return Inertia::render('Users/Show', [
-            'user' => $user,
-        ]);
+        return Inertia::render('Users/Show', $data);
     }
 
     /**
@@ -98,11 +96,9 @@ class UserController extends Controller
     {
         $this->authorize('update', $user);
 
-        $user = $this->query->getById($user->id);
+        $data = $this->query->getById($user->id);
 
-        return Inertia::render('Users/Edit', [
-            'user' => $user,
-        ]);
+        return Inertia::render('Users/Edit', $data);
     }
 
     /**

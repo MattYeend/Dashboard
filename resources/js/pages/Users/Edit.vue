@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import UserForm from '@/pages/Users/components/UserForm.vue';
+import { update as usersUpdate } from '@/routes/users';
 import type { User } from '@/types';
 
 interface Props {
@@ -18,7 +19,7 @@ const form = useForm({
 });
 
 function submit(): void {
-    form.put(route('users.update', props.user.id));
+    form.put(usersUpdate.url(props.user.id));
 }
 </script>
 

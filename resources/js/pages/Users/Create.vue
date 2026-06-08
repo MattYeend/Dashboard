@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import UserForm from '@/pages/Users/components/UserForm.vue';
+import { store as usersStore } from '@/routes/users';
 
 const form = useForm({
     name: '',
@@ -11,7 +12,7 @@ const form = useForm({
 });
 
 function submit(): void {
-    form.post(route('users.store'));
+    form.post(usersStore.url());
 }
 </script>
 

@@ -2,6 +2,7 @@
 import type { InertiaFormProps } from '@inertiajs/vue3';
 import UserBasicDetailsForm from '@/pages/Users/components/UserBasicDetailsForm.vue';
 import UserRoleDetailsForm from '@/pages/Users/components/UserRoleDetailsForm.vue';
+import { index as usersIndex } from '@/routes/users';
 
 interface UserFormData {
     name: string;
@@ -43,11 +44,12 @@ const role = defineModel<string>('role', { required: true });
 
         <div class="items-centre flex justify-end space-x-3">
             <a
-                :href="route('users.index')"
+                :href="usersIndex.url()"
                 class="text-grey-700 rounded-md px-4 py-2 text-sm font-medium"
             >
                 Cancel
             </a>
+
             <button
                 type="submit"
                 :disabled="processing"
