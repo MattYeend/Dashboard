@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
-import AppLayout from '@/layouts/AppLayout.vue';
 import UserForm from '@/pages/Users/components/UserForm.vue';
 
 const form = useForm({
@@ -17,24 +16,22 @@ function submit(): void {
 </script>
 
 <template>
-    <AppLayout title="Create User">
-        <div class="py-6">
-            <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-                <h1 class="text-grey-900 mb-6 text-2xl font-semibold">
-                    Create User
-                </h1>
-                <UserForm
-                    v-model:name="form.name"
-                    v-model:email="form.email"
-                    v-model:password="form.password"
-                    v-model:password-confirmation="form.password_confirmation"
-                    v-model:role="form.role"
-                    :is-editing="false"
-                    :processing="form.processing"
-                    :errors="form.errors"
-                    @submit="submit"
-                />
-            </div>
+    <div class="py-6">
+        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+            <h1 class="text-grey-900 mb-6 text-2xl font-semibold">
+                Create User
+            </h1>
+            <UserForm
+                v-model:name="form.name"
+                v-model:email="form.email"
+                v-model:password="form.password"
+                v-model:password-confirmation="form.password_confirmation"
+                v-model:role="form.role"
+                :is-editing="false"
+                :processing="form.processing"
+                :errors="form.errors"
+                @submit="submit"
+            />
         </div>
-    </AppLayout>
+    </div>
 </template>

@@ -45,6 +45,9 @@ import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
 import { toUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
+import { index as contactsIndex } from '@/routes/contacts';
+import { index as tasksIndex } from '@/routes/tasks';
+import { index as usersIndex } from '@/routes/users';
 import type { Auth, BreadcrumbItem, NavItem } from '@/types';
 
 type Props = {
@@ -70,17 +73,17 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Contacts',
-        href: route('contacts.index'),
+        href: contactsIndex.url(),
         icon: Contact2,
     },
     {
         title: 'Tasks',
-        href: route('tasks.index'),
+        href: tasksIndex.url(),
         icon: ClipboardList,
     },
     {
         title: 'Users',
-        href: route('users.index'),
+        href: usersIndex.url(),
         icon: User2,
     },
 ];

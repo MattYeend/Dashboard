@@ -22,6 +22,9 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { index as contactsIndex } from '@/routes/contacts';
+import { index as tasksIndex } from '@/routes/tasks';
+import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -32,17 +35,17 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Contacts',
-        href: route('contacts.index'),
+        href: contactsIndex.url(),
         icon: Contact2,
     },
     {
         title: 'Tasks',
-        href: route('tasks.index'),
+        href: tasksIndex.url(),
         icon: ClipboardList,
     },
     {
         title: 'Users',
-        href: route('users.index'),
+        href: usersIndex.url(),
         icon: User2,
     },
 ];

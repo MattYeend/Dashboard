@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
-import type { User } from '@/types';
 import UserAuditDetails from '@/pages/Users/components/UserAuditDetails.vue';
 import UserBasicDetails from '@/pages/Users/components/UserBasicDetails.vue';
 import UserRoleDetails from '@/pages/Users/components/UserRoleDetails.vue';
+import type { User } from '@/types';
 
 interface Props {
     user: User;
