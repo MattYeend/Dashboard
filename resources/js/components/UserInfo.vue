@@ -2,10 +2,10 @@
 import { computed } from 'vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/composables/useInitials';
-import type { User } from '@/types';
+import type { AuthUser } from '@/types';
 
 type Props = {
-    user: User;
+    user: AuthUser;
     showEmail?: boolean;
 };
 

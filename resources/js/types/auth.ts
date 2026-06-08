@@ -1,4 +1,4 @@
-export type User = {
+export type AuthUser = {
     id: number;
     name: string;
     email: string;
@@ -11,7 +11,7 @@ export type User = {
 };
 
 export type Auth = {
-    user: User;
+    user: AuthUser;
 };
 
 /* @chisel-passkeys */

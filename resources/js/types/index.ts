@@ -122,3 +122,10 @@ export interface Pagination {
     from: number | null;
     to: number | null;
 }
+
+export interface AuthUser {
+    id: number;
+    name: string;
+    email: string;
+    avatar?: string;
+}
