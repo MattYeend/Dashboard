@@ -6,23 +6,20 @@ import {
     edit as usersEdit,
     destroy as usersDestroy,
 } from '@/routes/users';
-import type { User } from '@/types';
+import type { Pagination, PermissionsMeta, User } from '@/types';
 
 interface Props {
     users: {
         data: User[];
-        links: Record<string, string | null>;
-        meta: Record<string, unknown>;
+        links: Array<{ url: string | null; label: string; active: boolean }>;
+        meta: Pagination;
     };
+    permissions_meta: PermissionsMeta;
+    sort_fields: string[];
+    trash_filters: string[];
 }
 
-withDefaults(defineProps<Props>(), {
-    users: () => ({
-        data: [],
-        links: {},
-        meta: {},
-    }),
-});
+defineProps<Props>();
 
 function destroy(id: number): void {
     if (confirm('Are you sure you want to delete this user?')) {
@@ -131,6 +128,32 @@ function destroy(id: number): void {
                         </tr>
                     </tbody>
                 </table>
+                <div
+                    v-if="users.meta.last_page > 1"
+                    class="mt-4 flex items-center justify-between"
+                >
+                    <p class="text-grey-500 text-sm">
+                        Showing {{ users.meta.from ?? 0 }} to
+                        {{ users.meta.to ?? 0 }} of {{ users.meta.total }} users
+                    </p>
+                    <div class="flex gap-x-1">
+                        <Link
+                            v-for="link in users.links"
+                            :key="link.label"
+                            :href="link.url ?? ''"
+                            :class="[
+                                'rounded px-3 py-1 text-sm',
+                                link.url === null
+                                    ? 'pointer-events-none opacity-40'
+                                    : 'hover:bg-accent',
+                                link.active ? 'font-semibold' : '',
+                            ]"
+                            preserve-scroll
+                        >
+                            <span v-html="link.label" />
+                        </Link>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

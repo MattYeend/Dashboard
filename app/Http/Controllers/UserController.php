@@ -36,13 +36,11 @@ class UserController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        $users = $this->query->getPaginated(
+        $data = $this->query->getPaginated(
             request()->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
         );
 
-        return Inertia::render('Users/Index', [
-            'users' => $users,
-        ]);
+        return Inertia::render('Users/Index', $data);
     }
 
     /**
