@@ -18,7 +18,7 @@ class QueryService
     ) {}
 
     /**
-     * Get paginated contacts with filters.
+     * Get paginated users with filters.
      */
     public function getPaginated(array $filters = []): array
     {
@@ -37,7 +37,7 @@ class QueryService
      */
     public function getById(int $id, bool $withTrashed = false): array
     {
-        $user = $this->findContact($id, $withTrashed);
+        $user = $this->findUser($id, $withTrashed);
 
         return array_merge(
             ['user' => $this->formatterService->format($user)],
@@ -114,7 +114,7 @@ class QueryService
     /**
      * Find a user by ID with optional trashed records.
      */
-    private function findContact(
+    private function findUser(
         int $id,
         bool $withTrashed = false
     ): User {

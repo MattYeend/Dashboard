@@ -27,9 +27,8 @@ class UpdaterService
         array $data,
         int $updatedBy
     ): User {
-        return DB::transaction(function () use ($user, $data, $updatedBy) {
-            $actor = User::findOrFail($updatedBy);
-
+        $actor = User::findOrFail($updatedBy);
+        return DB::transaction(function () use ($user, $data, $actor, $updatedBy) {
             $this->updateUser($user, $data);
             $this->logService->logUpdate($user, $actor, $updatedBy);
 

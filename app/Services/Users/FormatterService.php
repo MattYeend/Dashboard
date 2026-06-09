@@ -13,6 +13,8 @@ class FormatterService
      */
     public function format(User $user): array
     {
+        $user->loadMissing(['creator', 'updater', 'deleter', 'restorer']);
+
         return [
             'id' => $user->id,
             'name' => $user->name,
@@ -24,10 +26,10 @@ class FormatterService
             'updated_at' => $user->updated_at,
             'deleted_at' => $user->deleted_at,
             'restored_at' => $user->restored_at,
-            'created_by' => $user->created_by,
-            'updated_by' => $user->updated_by,
-            'deleted_by' => $user->deleted_by,
-            'restored_by' => $user->restored_by,
+            'creator' => $user->creator ? ['id' => $user->creator->id, 'name' => $user->creator->name] : null,
+            'updater' => $user->updater ? ['id' => $user->updater->id, 'name' => $user->updater->name] : null,
+            'deleter' => $user->deleter ? ['id' => $user->deleter->id, 'name' => $user->deleter->name] : null,
+            'restorer' => $user->restorer ? ['id' => $user->restorer->id, 'name' => $user->restorer->name] : null,
         ];
     }
 }

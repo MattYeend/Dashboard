@@ -26,6 +26,18 @@ function destroy(id: number): void {
         router.delete(usersDestroy.url(id));
     }
 }
+
+function formatDate(value: string | null): string {
+    if (!value) {
+        return '—';
+    }
+
+    return new Date(value).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
+}
 </script>
 
 <template>
@@ -92,7 +104,7 @@ function destroy(id: number): void {
                             <td
                                 class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
                             >
-                                {{ user.created_at }}
+                                {{ formatDate(user.created_at) }}
                             </td>
                             <td
                                 class="space-x-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap"

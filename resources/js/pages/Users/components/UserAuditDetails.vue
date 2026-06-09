@@ -6,6 +6,18 @@ interface Props {
 }
 
 defineProps<Props>();
+
+function formatDate(value: string | null): string {
+    if (!value) {
+        return '—';
+    }
+
+    return new Date(value).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
+}
 </script>
 
 <template>
@@ -24,7 +36,7 @@ defineProps<Props>();
                     <dd
                         class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
-                        {{ user.created_at }}
+                        {{ formatDate(user.created_at) }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -44,7 +56,7 @@ defineProps<Props>();
                     <dd
                         class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
-                        {{ user.updated_at }}
+                        {{ formatDate(user.updated_at) }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -67,7 +79,7 @@ defineProps<Props>();
                         <dd
                             class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                         >
-                            {{ user.deleted_at }}
+                            {{ formatDate(user.deleted_at) }}
                         </dd>
                     </div>
                     <div
@@ -93,7 +105,7 @@ defineProps<Props>();
                         <dd
                             class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                         >
-                            {{ user.restored_at }}
+                            {{ formatDate(user.restored_at) }}
                         </dd>
                     </div>
                     <div
