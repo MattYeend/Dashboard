@@ -7,14 +7,20 @@ defineProps<{
 </script>
 
 <template>
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="card-title mb-0">Assignment</h5>
+    <div class="overflow-hidden shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-grey-900 text-lg leading-6 font-medium">
+                Assignment
+            </h3>
         </div>
-        <div class="card-body">
-            <dl class="row mb-0">
-                <dt class="col-sm-3">Assigned To</dt>
-                <dd class="col-sm-9">{{ task.assignee?.name ?? '—' }}</dd>
+        <div class="border-grey-200 border-t">
+            <dl>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-grey-500 text-sm font-medium">Assigned To</dt>
+                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                        {{ task.assignee?.name ?? '—' }}
+                    </dd>
+                </div>
             </dl>
         </div>
     </div>

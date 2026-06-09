@@ -31,59 +31,39 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <form @submit.prevent="emit('submit')">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Basic Details</h5>
-            </div>
-            <div class="card-body">
-                <TaskBasicDetailsForm
-                    :form="form"
-                    :errors="errors"
-                    :statuses="statuses"
-                    @update:form="emit('update:form', $event)"
-                />
-            </div>
-        </div>
+    <form class="space-y-6" @submit.prevent="emit('submit')">
+        <TaskBasicDetailsForm
+            :form="form"
+            :errors="errors"
+            :statuses="statuses"
+            @update:form="emit('update:form', $event)"
+        />
+        <TaskAssignmentDetailsForm
+            :form="form"
+            :errors="errors"
+            :users="users"
+            @update:form="emit('update:form', $event)"
+        />
+        <TaskDateDetailsForm
+            :form="form"
+            :errors="errors"
+            @update:form="emit('update:form', $event)"
+        />
 
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Assignment</h5>
-            </div>
-            <div class="card-body">
-                <TaskAssignmentDetailsForm
-                    :form="form"
-                    :errors="errors"
-                    :users="users"
-                    @update:form="emit('update:form', $event)"
-                />
-            </div>
-        </div>
-
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Dates</h5>
-            </div>
-            <div class="card-body">
-                <TaskDateDetailsForm
-                    :form="form"
-                    :errors="errors"
-                    @update:form="emit('update:form', $event)"
-                />
-            </div>
-        </div>
-
-        <div class="d-flex gap-2">
+        <div class="items-centre flex justify-end space-x-3">
+            <Link
+                :href="tasksIndex.url()"
+                class="text-grey-700 rounded-md px-4 py-2 text-sm font-medium"
+            >
+                Cancel
+            </Link>
             <button
                 type="submit"
-                class="btn btn-primary"
                 :disabled="processing"
+                class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
             >
                 {{ submitLabel }}
             </button>
-            <Link :href="tasksIndex.url()" class="btn btn-secondary">
-                Cancel
-            </Link>
         </div>
     </form>
 </template>

@@ -7,33 +7,42 @@ defineProps<{
 </script>
 
 <template>
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="card-title mb-0">Basic Details</h5>
+    <div class="overflow-hidden shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-grey-900 text-lg leading-6 font-medium">
+                Basic Details
+            </h3>
         </div>
-        <div class="card-body">
-            <dl class="row mb-0">
-                <dt class="col-sm-3">Title</dt>
-                <dd class="col-sm-9">{{ task.title }}</dd>
-
-                <dt class="col-sm-3">Description</dt>
-                <dd class="col-sm-9">{{ task.description ?? '—' }}</dd>
-
-                <dt class="col-sm-3">Status</dt>
-                <dd class="col-sm-9">
-                    <span
-                        v-if="task.status"
-                        class="badge"
-                        :style="{
-                            backgroundColor:
-                                task.status.background_colour ?? '#e2e8f0',
-                            color: task.status.text_colour ?? '#1a202c',
-                        }"
-                    >
-                        {{ task.status.title }}
-                    </span>
-                    <span v-else>—</span>
-                </dd>
+        <div class="border-grey-200 border-t">
+            <dl>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-grey-500 text-sm font-medium">Title</dt>
+                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                        {{ task.title }}
+                    </dd>
+                </div>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-grey-500 text-sm font-medium">Description</dt>
+                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                        {{ task.description ?? '—' }}
+                    </dd>
+                </div>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-grey-500 text-sm font-medium">Status</dt>
+                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                        <span
+                            v-if="task.status"
+                            :style="{
+                                backgroundColor: task.status.background_colour ?? '#e2e8f0',
+                                color: task.status.text_colour ?? '#1a202c',
+                            }"
+                            class="rounded px-2 py-0.5 text-xs font-medium"
+                        >
+                            {{ task.status.title }}
+                        </span>
+                        <span v-else>—</span>
+                    </dd>
+                </div>
             </dl>
         </div>
     </div>

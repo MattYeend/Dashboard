@@ -24,26 +24,25 @@ function updateAssignedTo(value: string): void {
 </script>
 
 <template>
-    <div>
-        <div class="mb-3">
-            <label for="assigned_to" class="form-label">Assigned To</label>
+    <div class="space-y-4">
+        <div>
+            <label for="assigned_to" class="text-grey-700 block text-sm font-medium">
+                Assigned To
+            </label>
             <select
                 id="assigned_to"
                 :value="form.assigned_to"
-                class="form-select"
-                :class="{ 'is-invalid': errors.assigned_to }"
-                @change="
-                    updateAssignedTo(($event.target as HTMLSelectElement).value)
-                "
+                class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                @change="updateAssignedTo(($event.target as HTMLSelectElement).value)"
             >
                 <option :value="null">-- Unassigned --</option>
                 <option v-for="user in users" :key="user.id" :value="user.id">
                     {{ user.name }}
                 </option>
             </select>
-            <div v-if="errors.assigned_to" class="invalid-feedback">
+            <p v-if="errors.assigned_to" class="mt-1 text-sm text-red-600">
                 {{ errors.assigned_to }}
-            </div>
+            </p>
         </div>
     </div>
 </template>

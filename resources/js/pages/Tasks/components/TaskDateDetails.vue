@@ -19,32 +19,53 @@ function formatDate(value: string | null): string {
 </script>
 
 <template>
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="card-title mb-0">Dates</h5>
+    <div class="overflow-hidden shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-grey-900 text-lg leading-6 font-medium">
+                Dates
+            </h3>
         </div>
-        <div class="card-body">
-            <dl class="row mb-0">
-                <dt class="col-sm-3">Due Date</dt>
-                <dd class="col-sm-9">{{ formatDate(task.due_date) }}</dd>
-
-                <dt class="col-sm-3">Assigned Date</dt>
-                <dd class="col-sm-9">{{ formatDate(task.assigned_date) }}</dd>
-
-                <dt class="col-sm-3">Created At</dt>
-                <dd class="col-sm-9">{{ formatDate(task.created_at) }}</dd>
-
-                <dt class="col-sm-3">Updated At</dt>
-                <dd class="col-sm-9">{{ formatDate(task.updated_at) }}</dd>
-
+        <div class="border-grey-200 border-t">
+            <dl>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-grey-500 text-sm font-medium">Due Date</dt>
+                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                        {{ formatDate(task.due_date) }}
+                    </dd>
+                </div>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-grey-500 text-sm font-medium">Assigned Date</dt>
+                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                        {{ formatDate(task.assigned_date) }}
+                    </dd>
+                </div>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-grey-500 text-sm font-medium">Created At</dt>
+                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                        {{ formatDate(task.created_at) }}
+                    </dd>
+                </div>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-grey-500 text-sm font-medium">Updated At</dt>
+                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                        {{ formatDate(task.updated_at) }}
+                    </dd>
+                </div>
                 <template v-if="task.deleted_at">
-                    <dt class="col-sm-3">Deleted At</dt>
-                    <dd class="col-sm-9">{{ formatDate(task.deleted_at) }}</dd>
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-grey-500 text-sm font-medium">Deleted At</dt>
+                        <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                            {{ formatDate(task.deleted_at) }}
+                        </dd>
+                    </div>
                 </template>
-
                 <template v-if="task.restored_at">
-                    <dt class="col-sm-3">Restored At</dt>
-                    <dd class="col-sm-9">{{ formatDate(task.restored_at) }}</dd>
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-grey-500 text-sm font-medium">Restored At</dt>
+                        <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                            {{ formatDate(task.restored_at) }}
+                        </dd>
+                    </div>
                 </template>
             </dl>
         </div>

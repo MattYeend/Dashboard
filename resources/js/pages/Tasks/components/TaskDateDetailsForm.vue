@@ -21,45 +21,37 @@ function updateDate(field: 'due_date' | 'assigned_date', value: string): void {
 </script>
 
 <template>
-    <div>
-        <div class="mb-3">
-            <label for="due_date" class="form-label">Due Date</label>
+    <div class="space-y-4">
+        <div>
+            <label for="due_date" class="text-grey-700 block text-sm font-medium">
+                Due Date
+            </label>
             <input
                 id="due_date"
                 :value="form.due_date ?? ''"
                 type="date"
-                class="form-control"
-                :class="{ 'is-invalid': errors.due_date }"
-                @change="
-                    updateDate(
-                        'due_date',
-                        ($event.target as HTMLInputElement).value,
-                    )
-                "
+                class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                @change="updateDate('due_date', ($event.target as HTMLInputElement).value)"
             />
-            <div v-if="errors.due_date" class="invalid-feedback">
+            <p v-if="errors.due_date" class="mt-1 text-sm text-red-600">
                 {{ errors.due_date }}
-            </div>
+            </p>
         </div>
 
-        <div class="mb-3">
-            <label for="assigned_date" class="form-label">Assigned Date</label>
+        <div>
+            <label for="assigned_date" class="text-grey-700 block text-sm font-medium">
+                Assigned Date
+            </label>
             <input
                 id="assigned_date"
                 :value="form.assigned_date ?? ''"
                 type="date"
-                class="form-control"
-                :class="{ 'is-invalid': errors.assigned_date }"
-                @change="
-                    updateDate(
-                        'assigned_date',
-                        ($event.target as HTMLInputElement).value,
-                    )
-                "
+                class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                @change="updateDate('assigned_date', ($event.target as HTMLInputElement).value)"
             />
-            <div v-if="errors.assigned_date" class="invalid-feedback">
+            <p v-if="errors.assigned_date" class="mt-1 text-sm text-red-600">
                 {{ errors.assigned_date }}
-            </div>
+            </p>
         </div>
     </div>
 </template>

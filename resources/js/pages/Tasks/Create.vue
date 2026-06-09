@@ -28,8 +28,11 @@ function submit(): void {
 </script>
 
 <template>
-    <div>
-        <h1 class="mb-4 text-xl font-semibold">Create Task</h1>
+    <div class="py-6">
+        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <h1 class="text-grey-900 mb-6 text-2xl font-semibold">
+            Create Task
+        </h1>
         <TaskForm
             :form="form"
             :errors="form.errors"
@@ -40,5 +43,6 @@ function submit(): void {
             @update:form="onFormUpdate"
             @submit="submit"
         />
+    </div>
     </div>
 </template>
