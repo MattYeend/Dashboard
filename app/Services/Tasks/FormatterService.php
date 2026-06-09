@@ -26,10 +26,9 @@ class FormatterService
             'updated_at' => $task->updated_at,
             'deleted_at' => $task->deleted_at,
             'restored_at' => $task->restored_at,
-            'created_by' => $task->created_by,
-            'updated_by' => $task->updated_by,
-            'deleted_by' => $task->deleted_by,
-            'restored_by' => $task->restored_by,
+            'updater' => $task->updater ? ['id' => $task->updater->id, 'name' => $task->updater->name] : null,
+            'deleter' => $task->deleter ? ['id' => $task->deleter->id, 'name' => $task->deleter->name] : null,
+            'restorer' => $task->restorer ? ['id' => $task->restorer->id, 'name' => $task->restorer->name] : null,
             'assignee' => $task->assignee ? [
                 'id' => $task->assignee->id,
                 'name' => $task->assignee->name,

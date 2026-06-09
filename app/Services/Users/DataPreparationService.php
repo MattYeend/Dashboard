@@ -35,6 +35,7 @@ class DataPreparationService
             'email' => $data['email'] ?? null,
             'role' => $data['role'] ?? null,
             'meta' => $data['meta'] ?? null,
+            'updated_by' => $data['updated_by'] ?? null,
         ], fn (mixed $value): bool => $value !== null);
     }
 }

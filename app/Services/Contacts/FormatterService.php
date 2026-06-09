@@ -29,10 +29,9 @@ class FormatterService
             'updated_at' => $contact->updated_at,
             'deleted_at' => $contact->deleted_at,
             'restored_at' => $contact->restored_at,
-            'created_by' => $contact->created_by,
-            'updated_by' => $contact->updated_by,
-            'deleted_by' => $contact->deleted_by,
-            'restored_by' => $contact->restored_by,
+            'updater' => $contact->updater ? ['id' => $contact->updater->id, 'name' => $contact->updater->name] : null,
+            'deleter' => $contact->deleter ? ['id' => $contact->deleter->id, 'name' => $contact->deleter->name] : null,
+            'restorer' => $contact->restorer ? ['id' => $contact->restorer->id, 'name' => $contact->restorer->name] : null,
         ];
     }
 }

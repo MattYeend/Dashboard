@@ -28,8 +28,10 @@ class UpdaterService
         int $updatedBy
     ): User {
         $actor = User::findOrFail($updatedBy);
+
         return DB::transaction(function () use ($user, $data, $actor, $updatedBy) {
-            $this->updateUser($user, $data);
+            $this->updateUser($user, array_merge($data, ['updated_by' => $updatedBy]));
+
             $this->logService->logUpdate($user, $actor, $updatedBy);
 
             return $user->fresh();
@@ -44,6 +46,7 @@ class UpdaterService
     protected function updateUser(User $user, array $data): void
     {
         $userData = $this->dataPreparation->prepareForUpdate($data);
+
         $user->update($userData);
     }
 }
