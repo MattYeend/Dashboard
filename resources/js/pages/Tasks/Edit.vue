@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import { update as tasksUpdate } from '@/routes/tasks';
 import type { Task, TaskFormData, TaskStatus, UserOption } from '@/types';
 import TaskForm from './components/TaskForm.vue';
 
@@ -23,7 +24,7 @@ function onFormUpdate(updated: TaskFormData): void {
 }
 
 function submit(): void {
-    form.put(route('tasks.update', props.task.id));
+    form.put(tasksUpdate.url(props.task.id));
 }
 </script>
 

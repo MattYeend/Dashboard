@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import { store as tasksStore } from '@/routes/tasks';
 import type { TaskFormData, TaskStatus, UserOption } from '@/types';
 import TaskForm from './components/TaskForm.vue';
 
@@ -22,7 +23,7 @@ function onFormUpdate(updated: TaskFormData): void {
 }
 
 function submit(): void {
-    form.post(route('tasks.store'));
+    form.post(tasksStore.url());
 }
 </script>
 

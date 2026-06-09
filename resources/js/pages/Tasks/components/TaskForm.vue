@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/vue3';
 import TaskAssignmentDetailsForm from '@/pages/Tasks/components/TaskAssignmentDetailsForm.vue';
 import TaskBasicDetailsForm from '@/pages/Tasks/components/TaskBasicDetailsForm.vue';
 import TaskDateDetailsForm from '@/pages/Tasks/components/TaskDateDetailsForm.vue';
+import { index as tasksIndex } from '@/routes/tasks';
 import type { TaskFormData, TaskStatus, UserOption } from '@/types';
 
 interface Errors {
@@ -80,7 +81,7 @@ const emit = defineEmits<{
             >
                 {{ submitLabel }}
             </button>
-            <Link :href="route('tasks.index')" class="btn btn-secondary">
+            <Link :href="tasksIndex.url()" class="btn btn-secondary">
                 Cancel
             </Link>
         </div>

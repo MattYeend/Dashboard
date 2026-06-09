@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import { index as tasksIndex, edit as tasksEdit } from '@/routes/tasks';
 import type { Task, PermissionsMeta } from '@/types';
 import TaskAssignmentDetails from './components/TaskAssignmentDetails.vue';
 import TaskBasicDetails from './components/TaskBasicDetails.vue';
@@ -18,11 +19,11 @@ defineProps<{
             <div class="flex gap-2">
                 <Link
                     v-if="permissions_meta.can_create"
-                    :href="route('tasks.edit', task.id)"
+                    :href="tasksEdit.url(task.id)"
                 >
                     Edit
                 </Link>
-                <Link :href="route('tasks.index')">Back</Link>
+                <Link :href="tasksIndex.url()">Back</Link>
             </div>
         </div>
 

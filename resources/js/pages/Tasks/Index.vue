@@ -1,18 +1,27 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
+import {
+    index as tasksIndex,
+    create as tasksCreate,
+    show as tasksShow,
+    edit as tasksEdit,
+    destroy as tasksDestroy,
+} from '@/routes/tasks';
 import type { Task, Pagination, PermissionsMeta } from '@/types';
-import TaskRow from './components/TaskRow.vue';
 
-const props = defineProps<{
-    tasks: Task[];
-    pagination: Pagination;
+interface Props {
+    tasks: {
+        data: Task[];
+        links: Array<{ url: string | null; label: string; active: boolean }>;
+        meta: Pagination;
+    };
     permissions_meta: PermissionsMeta;
     sort_fields: Record<string, string>;
     trash_filters: Record<string, string>;
-}>();
+}
 
-const selectedIds = ref<number[]>([]);
+defineProps<Props>();
 
 const filters = ref({
     search: '',
@@ -21,172 +30,219 @@ const filters = ref({
     sort_direction: 'desc',
 });
 
-const allSelected = computed(
-    () =>
-        props.tasks.length > 0 &&
-        selectedIds.value.length === props.tasks.length,
-);
-
-function toggleSelectAll(): void {
-    selectedIds.value = allSelected.value ? [] : props.tasks.map((t) => t.id);
-}
-
 function applyFilters(): void {
-    router.get(route('tasks.index'), filters.value, {
+    router.get(tasksIndex.url(), filters.value, {
         preserveState: true,
         replace: true,
     });
 }
 
-function goToPage(page: number): void {
-    router.get(
-        route('tasks.index'),
-        { ...filters.value, page },
-        { preserveState: true },
-    );
+function destroy(id: number): void {
+    if (confirm('Are you sure you want to delete this task?')) {
+        router.delete(tasksDestroy.url(id));
+    }
 }
 
-function bulkDelete(): void {
-    if (!confirm(`Delete ${selectedIds.value.length} selected tasks?`)) {
-        return;
+function formatDate(value: string | null): string {
+    if (!value) {
+        return '—';
     }
 
-    router.post(
-        route('tasks.bulk.delete'),
-        { ids: selectedIds.value },
-        {
-            onSuccess: () => {
-                selectedIds.value = [];
-            },
-        },
-    );
+    return new Date(value).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
 }
 </script>
 
 <template>
-    <div>
-        <div class="mb-4 flex items-center justify-between">
-            <h1 class="text-xl font-semibold">Tasks</h1>
-            <Link
-                v-if="permissions_meta.can_create"
-                :href="route('tasks.create')"
-                class="btn btn-primary"
-            >
-                Add Task
-            </Link>
-        </div>
-
-        <div class="mb-3 flex flex-wrap gap-2">
-            <input
-                v-model="filters.search"
-                type="text"
-                class="form-control w-auto"
-                placeholder="Search tasks…"
-                @input="applyFilters"
-            />
-            <select
-                v-model="filters.trashed"
-                class="form-select w-auto"
-                @change="applyFilters"
-            >
-                <option
-                    v-for="(label, value) in trash_filters"
-                    :key="value"
-                    :value="value"
+    <div class="py-6">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="items-centre mb-4 flex justify-between">
+                <h1 class="text-grey-900 text-2xl font-semibold">Tasks</h1>
+                <Link
+                    v-if="permissions_meta.can_create"
+                    :href="tasksCreate.url()"
+                    class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
                 >
-                    {{ label }}
-                </option>
-            </select>
-            <select
-                v-model="filters.sort_by"
-                class="form-select w-auto"
-                @change="applyFilters"
-            >
-                <option
-                    v-for="(label, value) in sort_fields"
-                    :key="value"
-                    :value="value"
-                >
-                    Sort by {{ label }}
-                </option>
-            </select>
-            <select
-                v-model="filters.sort_direction"
-                class="form-select w-auto"
-                @change="applyFilters"
-            >
-                <option value="asc">Ascending</option>
-                <option value="desc">Descending</option>
-            </select>
-        </div>
+                    Add Task
+                </Link>
+            </div>
 
-        <div v-if="selectedIds.length > 0" class="mb-3">
-            <button class="btn btn-danger btn-sm" @click="bulkDelete">
-                Delete Selected ({{ selectedIds.length }})
-            </button>
-        </div>
-
-        <table class="w-full text-sm">
-            <thead>
-                <tr>
-                    <th class="p-2 text-left" style="width: 2.5rem">
-                        <input
-                            type="checkbox"
-                            class="form-check-input"
-                            :checked="allSelected"
-                            @change="toggleSelectAll"
-                        />
-                    </th>
-                    <th class="p-2 text-left">Title</th>
-                    <th class="p-2 text-left">Status</th>
-                    <th class="p-2 text-left">Assigned To</th>
-                    <th class="p-2 text-left">Due Date</th>
-                    <th class="p-2 text-left">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-if="tasks.length === 0">
-                    <td colspan="6" class="p-4 text-center text-muted">
-                        No tasks found.
-                    </td>
-                </tr>
-                <TaskRow
-                    v-for="task in tasks"
-                    :key="task.id"
-                    :task="task"
-                    :selected-ids="selectedIds"
-                    @toggle-select="
-                        (id) => {
-                            const idx = selectedIds.indexOf(id);
-                            idx === -1
-                                ? selectedIds.push(id)
-                                : selectedIds.splice(idx, 1);
-                        }
-                    "
+            <div class="mb-4 flex flex-wrap gap-2">
+                <input
+                    v-model="filters.search"
+                    type="text"
+                    class="rounded-md border px-3 py-1.5 text-sm"
+                    placeholder="Search tasks…"
+                    @input="applyFilters"
                 />
-            </tbody>
-        </table>
-
-        <nav
-            v-if="pagination.last_page > 1"
-            class="mt-3 flex items-center justify-between"
-        >
-            <p class="text-sm text-muted">
-                Showing {{ pagination.from }}–{{ pagination.to }} of
-                {{ pagination.total }} tasks
-            </p>
-            <ul class="pagination pagination-sm mb-0">
-                <li
-                    v-for="page in pagination.last_page"
-                    :key="page"
-                    class="page-item"
-                    :class="{ active: page === pagination.current_page }"
+                <select
+                    v-model="filters.trashed"
+                    class="rounded-md border px-3 py-1.5 text-sm"
+                    @change="applyFilters"
                 >
-                    <button class="page-link" @click="goToPage(page)">
-                        {{ page }}
-                    </button>
-                </li>
-            </ul>
-        </nav>
+                    <option
+                        v-for="(label, value) in trash_filters"
+                        :key="value"
+                        :value="value"
+                    >
+                        {{ label }}
+                    </option>
+                </select>
+                <select
+                    v-model="filters.sort_by"
+                    class="rounded-md border px-3 py-1.5 text-sm"
+                    @change="applyFilters"
+                >
+                    <option
+                        v-for="(label, value) in sort_fields"
+                        :key="value"
+                        :value="value"
+                    >
+                        Sort by {{ label }}
+                    </option>
+                </select>
+                <select
+                    v-model="filters.sort_direction"
+                    class="rounded-md border px-3 py-1.5 text-sm"
+                    @change="applyFilters"
+                >
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </div>
+
+            <div
+                class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
+            >
+                <table class="divide-grey-300 min-w-full divide-y">
+                    <thead>
+                        <tr>
+                            <th
+                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                            >
+                                Title
+                            </th>
+                            <th
+                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                            >
+                                Status
+                            </th>
+                            <th
+                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                            >
+                                Assigned To
+                            </th>
+                            <th
+                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                            >
+                                Due Date
+                            </th>
+                            <th class="relative px-6 py-3">
+                                <span class="sr-only">Actions</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-grey-200 divide-y">
+                        <tr v-if="!tasks.data?.length">
+                            <td
+                                colspan="5"
+                                class="text-centre text-grey-500 px-6 py-4 text-sm"
+                            >
+                                No tasks found.
+                            </td>
+                        </tr>
+                        <tr v-for="task in tasks.data ?? []" :key="task.id">
+                            <td
+                                class="text-grey-900 px-6 py-4 text-sm font-medium whitespace-nowrap"
+                            >
+                                {{ task.title }}
+                            </td>
+                            <td
+                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                            >
+                                <span
+                                    v-if="task.status"
+                                    :style="{
+                                        backgroundColor:
+                                            task.status.background_colour ??
+                                            '#e2e8f0',
+                                        color:
+                                            task.status.text_colour ??
+                                            '#1a202c',
+                                    }"
+                                    class="rounded px-2 py-0.5 text-xs font-medium"
+                                >
+                                    {{ task.status.title }}
+                                </span>
+                                <span v-else>—</span>
+                            </td>
+                            <td
+                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                            >
+                                {{ task.assignee?.name ?? '—' }}
+                            </td>
+                            <td
+                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                            >
+                                {{ formatDate(task.due_date) }}
+                            </td>
+                            <td
+                                class="space-x-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap"
+                            >
+                                <Link
+                                    :href="tasksShow.url(task.id)"
+                                    class="text-indigo-600 hover:text-indigo-900"
+                                >
+                                    View
+                                </Link>
+                                <Link
+                                    :href="tasksEdit.url(task.id)"
+                                    class="text-indigo-600 hover:text-indigo-900"
+                                >
+                                    Edit
+                                </Link>
+                                <button
+                                    type="button"
+                                    class="text-red-600 hover:text-red-900"
+                                    @click="destroy(task.id)"
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div
+                v-if="tasks.meta.last_page > 1"
+                class="mt-4 flex items-center justify-between"
+            >
+                <p class="text-grey-500 text-sm">
+                    Showing {{ tasks.meta.from ?? 0 }} to
+                    {{ tasks.meta.to ?? 0 }} of {{ tasks.meta.total }} tasks
+                </p>
+                <div class="flex gap-x-1">
+                    <Link
+                        v-for="link in tasks.links"
+                        :key="link.label"
+                        :href="link.url ?? ''"
+                        :class="[
+                            'rounded px-3 py-1 text-sm',
+                            link.url === null
+                                ? 'pointer-events-none opacity-40'
+                                : 'hover:bg-accent',
+                            link.active ? 'font-semibold' : '',
+                        ]"
+                        preserve-scroll
+                    >
+                        <span v-html="link.label" />
+                    </Link>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
