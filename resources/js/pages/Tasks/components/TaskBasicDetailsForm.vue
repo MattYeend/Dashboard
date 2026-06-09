@@ -17,7 +17,10 @@ const emit = defineEmits<{
     (e: 'update:form', value: TaskFormData): void;
 }>();
 
-function update<K extends keyof TaskFormData>(field: K, value: TaskFormData[K]): void {
+function update<K extends keyof TaskFormData>(
+    field: K,
+    value: TaskFormData[K],
+): void {
     emit('update:form', { ...props.form, [field]: value });
 }
 </script>
@@ -34,7 +37,9 @@ function update<K extends keyof TaskFormData>(field: K, value: TaskFormData[K]):
                 type="text"
                 class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
                 placeholder="Enter task title"
-                @input="update('title', ($event.target as HTMLInputElement).value)"
+                @input="
+                    update('title', ($event.target as HTMLInputElement).value)
+                "
             />
             <p v-if="errors.title" class="mt-1 text-sm text-red-600">
                 {{ errors.title }}
@@ -42,7 +47,10 @@ function update<K extends keyof TaskFormData>(field: K, value: TaskFormData[K]):
         </div>
 
         <div>
-            <label for="description" class="text-grey-700 block text-sm font-medium">
+            <label
+                for="description"
+                class="text-grey-700 block text-sm font-medium"
+            >
                 Description
             </label>
             <textarea
@@ -51,7 +59,12 @@ function update<K extends keyof TaskFormData>(field: K, value: TaskFormData[K]):
                 class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
                 rows="4"
                 placeholder="Enter task description"
-                @input="update('description', ($event.target as HTMLTextAreaElement).value || null)"
+                @input="
+                    update(
+                        'description',
+                        ($event.target as HTMLTextAreaElement).value || null,
+                    )
+                "
             ></textarea>
             <p v-if="errors.description" class="mt-1 text-sm text-red-600">
                 {{ errors.description }}
@@ -59,14 +72,24 @@ function update<K extends keyof TaskFormData>(field: K, value: TaskFormData[K]):
         </div>
 
         <div>
-            <label for="status_id" class="text-grey-700 block text-sm font-medium">
+            <label
+                for="status_id"
+                class="text-grey-700 block text-sm font-medium"
+            >
                 Status
             </label>
             <select
                 id="status_id"
                 :value="form.status_id"
                 class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
-                @change="update('status_id', ($event.target as HTMLSelectElement).value ? Number(($event.target as HTMLSelectElement).value) : null)"
+                @change="
+                    update(
+                        'status_id',
+                        ($event.target as HTMLSelectElement).value
+                            ? Number(($event.target as HTMLSelectElement).value)
+                            : null,
+                    )
+                "
             >
                 <option :value="null">-- Select a status --</option>
                 <option

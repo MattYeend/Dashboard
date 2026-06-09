@@ -3,10 +3,7 @@ import { Link, router } from '@inertiajs/vue3';
 import TaskAssignmentDetails from '@/pages/Tasks/components/TaskAssignmentDetails.vue';
 import TaskBasicDetails from '@/pages/Tasks/components/TaskBasicDetails.vue';
 import TaskDateDetails from '@/pages/Tasks/components/TaskDateDetails.vue';
-import {
-    edit as tasksEdit,
-    destroy as tasksDestroy,
-} from '@/routes/tasks';
+import { edit as tasksEdit, destroy as tasksDestroy } from '@/routes/tasks';
 import type { Task, PermissionsMeta } from '@/types';
 
 interface Props {

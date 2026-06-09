@@ -26,14 +26,19 @@ function updateAssignedTo(value: string): void {
 <template>
     <div class="space-y-4">
         <div>
-            <label for="assigned_to" class="text-grey-700 block text-sm font-medium">
+            <label
+                for="assigned_to"
+                class="text-grey-700 block text-sm font-medium"
+            >
                 Assigned To
             </label>
             <select
                 id="assigned_to"
                 :value="form.assigned_to"
                 class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
-                @change="updateAssignedTo(($event.target as HTMLSelectElement).value)"
+                @change="
+                    updateAssignedTo(($event.target as HTMLSelectElement).value)
+                "
             >
                 <option :value="null">-- Unassigned --</option>
                 <option v-for="user in users" :key="user.id" :value="user.id">
