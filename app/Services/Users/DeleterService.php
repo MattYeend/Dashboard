@@ -21,10 +21,11 @@ class DeleterService
      */
     public function delete(
         User $user,
-        ?int $deletedBy = null
+        int $deletedBy
     ): bool {
-        return DB::transaction(function () use ($user, $deletedBy) {
-            $actor = User::findOrFail($deletedBy);
+        $actor = User::findOrFail($deletedBy);
+
+        return DB::transaction(function () use ($user, $deletedBy, $actor) {
             $user->deleted_by = $deletedBy;
             $user->save();
 
@@ -43,10 +44,11 @@ class DeleterService
      */
     public function forceDelete(
         User $user,
-        ?int $deletedBy = null
+        int $deletedBy
     ): bool {
-        return DB::transaction(function () use ($user, $deletedBy) {
-            $actor = User::findOrFail($deletedBy);
+        $actor = User::findOrFail($deletedBy);
+
+        return DB::transaction(function () use ($user, $deletedBy, $actor) {
             $this->logService->logForceDeletion($user, $actor, $deletedBy);
 
             return $user->forceDelete();
@@ -59,13 +61,13 @@ class DeleterService
      * @throws \Exception
      */
     public function deleteMultiple(
-        array $contactIds,
-        ?int $deletedBy = null
+        array $userIds,
+        int $deletedBy
     ): int {
         $count = 0;
 
-        DB::transaction(function () use ($contactIds, $deletedBy, &$count) {
-            $users = User::whereIn('id', $contactIds)->get();
+        DB::transaction(function () use ($userIds, $deletedBy, &$count) {
+            $users = User::whereIn('id', $userIds)->get();
 
             foreach ($users as $user) {
                 if ($this->delete($user, $deletedBy)) {

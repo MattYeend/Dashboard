@@ -30,7 +30,7 @@ class UpdaterService
         $actor = User::findOrFail($updatedBy);
 
         return DB::transaction(function () use ($user, $data, $actor, $updatedBy) {
-            $this->updateUser($user, array_merge($data, ['updated_by' => $updatedBy]));
+            $this->updateUser($user, $data, $updatedBy);
 
             $this->logService->logUpdate($user, $actor, $updatedBy);
 
@@ -43,9 +43,9 @@ class UpdaterService
      *
      * @param  array<string, mixed>  $data
      */
-    protected function updateUser(User $user, array $data): void
+    protected function updateUser(User $user, array $data, int $updatedBy): void
     {
-        $userData = $this->dataPreparation->prepareForUpdate($data);
+        $userData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
 
         $user->update($userData);
     }

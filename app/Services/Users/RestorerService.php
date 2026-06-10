@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class RestorerService
 {
     /**
-     * Inject the required services into the resorer service.
+     * Inject the required services into the restorer service.
      */
     public function __construct(
         protected LogService $logService
@@ -22,11 +22,11 @@ class RestorerService
      */
     public function restore(
         User $user,
-        ?int $restoredBy = null
+        int $restoredBy
     ): User {
-        return DB::transaction(function () use ($user, $restoredBy) {
-            $actor = User::findOrFail($restoredBy);
+        $actor = User::findOrFail($restoredBy);
 
+        return DB::transaction(function () use ($user, $restoredBy, $actor) {
             $user->restored_by = $restoredBy;
             $user->restored_at = now();
             $user->save();
@@ -48,7 +48,7 @@ class RestorerService
      */
     public function restoreMultiple(
         array $userIds,
-        ?int $restoredBy = null
+        int $restoredBy
     ): int {
         $count = 0;
 

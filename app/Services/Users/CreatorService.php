@@ -28,7 +28,7 @@ class CreatorService
         $actor = User::findOrFail($createdBy);
 
         return DB::transaction(function () use ($data, $createdBy, $actor) {
-            $user = $this->createUser($data);
+            $user = $this->createUser($data, $createdBy);
             $this->logService->logCreation($user, $actor, $createdBy);
 
             return $user;
@@ -40,9 +40,9 @@ class CreatorService
      *
      * @param  array<string, mixed>  $data
      */
-    protected function createUser(array $data): User
+    protected function createUser(array $data, int $createdBy): User
     {
-        $userData = $this->dataPreparation->prepareForCreation($data);
+        $userData = $this->dataPreparation->prepareForCreation($data, $createdBy);
 
         return User::create($userData);
     }

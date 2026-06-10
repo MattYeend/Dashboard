@@ -8,10 +8,12 @@ class DataPreparationService
      * Prepare user data for creation.
      *
      * @param  array<string, mixed>  $data
+     * @param  int  $createdBy
      * @return array<string, mixed>
      */
     public function prepareForCreation(
         array $data,
+        int $createdBy
     ): array {
         return [
             'name' => $data['name'],
@@ -19,6 +21,7 @@ class DataPreparationService
             'password' => $data['password'],
             'role' => $data['role'] ?? 'user',
             'meta' => $data['meta'] ?? null,
+            'created_by' => $createdBy,
         ];
     }
 
@@ -26,16 +29,18 @@ class DataPreparationService
      * Prepare user data for update.
      *
      * @param  array<string, mixed>  $data
+     * @param  int  $updatedBy
      * @return array<string,mixed>
      */
-    public function prepareForUpdate(array $data): array
+    public function prepareForUpdate(array $data, int $updatedBy): array
     {
         return array_filter([
             'name' => $data['name'] ?? null,
             'email' => $data['email'] ?? null,
+            'password' => $data['password'] ?? null,
             'role' => $data['role'] ?? null,
             'meta' => $data['meta'] ?? null,
-            'updated_by' => $data['updated_by'] ?? null,
+            'updated_by' => $updatedBy,
         ], fn (mixed $value): bool => $value !== null);
     }
 }
