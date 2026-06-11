@@ -8,7 +8,6 @@ class DataPreparationService
      * Prepare task data for creation.
      *
      * @param  array<string, mixed>  $data
-     * @param  int  $createdBy
      * @return array<string, mixed>
      */
     public function prepareForCreation(array $data, int $createdBy): array

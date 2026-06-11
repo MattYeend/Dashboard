@@ -40,7 +40,6 @@ class CreatorService
      * Create the task record.
      *
      * @param  array<string, mixed>  $data
-     * @param  int  $createdBy
      */
     protected function createTask(array $data, int $createdBy): Task
     {
