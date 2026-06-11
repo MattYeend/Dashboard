@@ -45,7 +45,7 @@ class DeleterService
      */
     public function forceDelete(
         Contact $contact,
-        ?int $deletedBy
+        int $deletedBy
     ): bool {
         $actor = User::findOrFail($deletedBy);
 
