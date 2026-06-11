@@ -13,7 +13,8 @@ class DataPreparationService
     public function prepareForCreation(
         array $data,
         string $contactableType,
-        int $contactableId
+        int $contactableId,
+        int $createdBy
     ): array {
         return [
             'contactable_type' => $contactableType,
@@ -24,6 +25,7 @@ class DataPreparationService
             'city' => $data['city'] ?? null,
             'postal_code' => $data['postal_code'] ?? null,
             'country' => $data['country'] ?? null,
+            'created_by' => $createdBy,
         ];
     }
 
@@ -33,7 +35,7 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string,mixed>
      */
-    public function prepareForUpdate(array $data): array
+    public function prepareForUpdate(array $data, int $updatedBy): array
     {
         return array_filter([
             'phone' => $data['phone'] ?? null,
@@ -42,6 +44,7 @@ class DataPreparationService
             'city' => $data['city'] ?? null,
             'postal_code' => $data['postal_code'] ?? null,
             'country' => $data['country'] ?? null,
+            'updated_by' => $updatedBy,
         ], fn (mixed $value): bool => $value !== null);
     }
 }

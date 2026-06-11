@@ -25,9 +25,9 @@ class RestorerService
         Contact $contact,
         ?int $restoredBy = null
     ): Contact {
-        return DB::transaction(function () use ($contact, $restoredBy) {
-            $actor = User::findOrFail($restoredBy);
+        $actor = User::findOrFail($restoredBy);
 
+        return DB::transaction(function () use ($contact, $restoredBy, $actor) {
             $contact->restored_by = $restoredBy;
             $contact->restored_at = now();
             $contact->save();

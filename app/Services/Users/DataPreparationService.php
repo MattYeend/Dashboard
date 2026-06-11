@@ -8,7 +8,6 @@ class DataPreparationService
      * Prepare user data for creation.
      *
      * @param  array<string, mixed>  $data
-     * @param  int  $createdBy
      * @return array<string, mixed>
      */
     public function prepareForCreation(
@@ -29,7 +28,6 @@ class DataPreparationService
      * Prepare user data for update.
      *
      * @param  array<string, mixed>  $data
-     * @param  int  $updatedBy
      * @return array<string,mixed>
      */
     public function prepareForUpdate(array $data, int $updatedBy): array

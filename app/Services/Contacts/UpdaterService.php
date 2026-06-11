@@ -28,10 +28,10 @@ class UpdaterService
         array $data,
         int $updatedBy
     ): Contact {
-        return DB::transaction(function () use ($contact, $data, $updatedBy) {
-            $actor = User::findOrFail($updatedBy);
+        $actor = User::findOrFail($updatedBy);
 
-            $this->updateContact($contact, $data);
+        return DB::transaction(function () use ($contact, $data, $updatedBy, $actor) {
+            $this->updateContact($contact, $data, $updatedBy);
             $this->logService->logUpdate($contact, $actor, $updatedBy);
 
             return $contact->fresh();
@@ -43,9 +43,9 @@ class UpdaterService
      *
      * @param  array<string, mixed>  $data
      */
-    protected function updateContact(Contact $contact, array $data): void
+    protected function updateContact(Contact $contact, array $data, int $updatedBy): void
     {
-        $contactData = $this->dataPreparation->prepareForUpdate($data);
+        $contactData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
         $contact->update($contactData);
     }
 }

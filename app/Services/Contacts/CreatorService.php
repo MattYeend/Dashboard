@@ -29,7 +29,7 @@ class CreatorService
         $actor = User::findOrFail($createdBy);
 
         return DB::transaction(function () use ($data, $createdBy, $actor) {
-            $contact = $this->createContact($data);
+            $contact = $this->createContact($data, $createdBy);
             $this->logService->logCreation($contact, $actor, $createdBy);
 
             return $contact;
@@ -41,12 +41,13 @@ class CreatorService
      *
      * @param  array<string, mixed>  $data
      */
-    protected function createContact(array $data): Contact
+    protected function createContact(array $data, int $createdBy): Contact
     {
         $contactData = $this->dataPreparation->prepareForCreation(
             $data,
             $data['contactable_type'],
-            $data['contactable_id']
+            $data['contactable_id'],
+            $createdBy,
         );
 
         return Contact::create($contactData);

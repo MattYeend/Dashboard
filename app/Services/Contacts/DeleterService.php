@@ -22,10 +22,11 @@ class DeleterService
      */
     public function delete(
         Contact $contact,
-        ?int $deletedBy = null
+        ?int $deletedBy
     ): bool {
-        return DB::transaction(function () use ($contact, $deletedBy) {
-            $actor = User::findOrFail($deletedBy);
+        $actor = User::findOrFail($deletedBy);
+
+        return DB::transaction(function () use ($contact, $deletedBy, $actor) {
             $contact->deleted_by = $deletedBy;
             $contact->save();
 
@@ -44,10 +45,11 @@ class DeleterService
      */
     public function forceDelete(
         Contact $contact,
-        ?int $deletedBy = null
+        ?int $deletedBy
     ): bool {
-        return DB::transaction(function () use ($contact, $deletedBy) {
-            $actor = User::findOrFail($deletedBy);
+        $actor = User::findOrFail($deletedBy);
+
+        return DB::transaction(function () use ($contact, $deletedBy, $actor) {
             $this->logService->logForceDeletion($contact, $actor, $deletedBy);
 
             return $contact->forceDelete();
