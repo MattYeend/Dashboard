@@ -29,7 +29,7 @@ class CreatorService
         $actor = User::findOrFail($createdBy);
 
         return DB::transaction(function () use ($data, $createdBy, $actor) {
-            $task = $this->createTask($data);
+            $task = $this->createTask($data, $createdBy);
             $this->logService->logCreation($task, $actor, $createdBy);
 
             return $task;
@@ -40,10 +40,11 @@ class CreatorService
      * Create the task record.
      *
      * @param  array<string, mixed>  $data
+     * @param  int  $createdBy
      */
-    protected function createTask(array $data): Task
+    protected function createTask(array $data, int $createdBy): Task
     {
-        $taskData = $this->dataPreparation->prepareForCreation($data);
+        $taskData = $this->dataPreparation->prepareForCreation($data, $createdBy);
 
         return Task::create($taskData);
     }

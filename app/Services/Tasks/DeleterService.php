@@ -20,10 +20,11 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function delete(Task $task, ?int $deletedBy = null): bool
+    public function delete(Task $task, int $deletedBy): bool
     {
-        return DB::transaction(function () use ($task, $deletedBy) {
-            $actor = User::findOrFail($deletedBy);
+        $actor = User::findOrFail($deletedBy);
+
+        return DB::transaction(function () use ($task, $deletedBy, $actor) {
             $task->deleted_by = $deletedBy;
             $task->save();
 
@@ -40,10 +41,11 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function forceDelete(Task $task, ?int $deletedBy = null): bool
+    public function forceDelete(Task $task, int $deletedBy): bool
     {
-        return DB::transaction(function () use ($task, $deletedBy) {
-            $actor = User::findOrFail($deletedBy);
+        $actor = User::findOrFail($deletedBy);
+
+        return DB::transaction(function () use ($task, $deletedBy, $actor) {
             $this->logService->logForceDeletion($task, $actor, $deletedBy);
 
             return $task->forceDelete();
@@ -55,7 +57,7 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function deleteMultiple(array $taskIds, ?int $deletedBy = null): int
+    public function deleteMultiple(array $taskIds, int $deletedBy): int
     {
         $count = 0;
 

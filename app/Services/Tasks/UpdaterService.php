@@ -23,12 +23,15 @@ class UpdaterService
      *
      * @throws \Exception
      */
-    public function update(Task $task, array $data, int $updatedBy): Task
-    {
-        return DB::transaction(function () use ($task, $data, $updatedBy) {
-            $actor = User::findOrFail($updatedBy);
+    public function update(
+        Task $task,
+        array $data,
+        int $updatedBy
+    ): Task {
+        $actor = User::findOrFail($updatedBy);
 
-            $this->updateTask($task, $data);
+        return DB::transaction(function () use ($task, $data, $updatedBy, $actor) {
+            $this->updateTask($task, $data, $updatedBy);
             $this->logService->logUpdate($task, $actor, $updatedBy);
 
             return $task->fresh();
@@ -40,9 +43,9 @@ class UpdaterService
      *
      * @param  array<string, mixed>  $data
      */
-    protected function updateTask(Task $task, array $data): void
+    protected function updateTask(Task $task, array $data, int $updatedBy): void
     {
-        $taskData = $this->dataPreparation->prepareForUpdate($data);
+        $taskData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
         $task->update($taskData);
     }
 }

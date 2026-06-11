@@ -8,9 +8,10 @@ class DataPreparationService
      * Prepare task data for creation.
      *
      * @param  array<string, mixed>  $data
+     * @param  int  $createdBy
      * @return array<string, mixed>
      */
-    public function prepareForCreation(array $data): array
+    public function prepareForCreation(array $data, int $createdBy): array
     {
         return [
             'title' => $data['title'],
@@ -20,6 +21,7 @@ class DataPreparationService
             'assigned_to' => $data['assigned_to'] ?? null,
             'status_id' => $data['status_id'] ?? null,
             'meta' => $data['meta'] ?? null,
+            'created_by' => $createdBy,
         ];
     }
 
@@ -29,7 +31,7 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForUpdate(array $data): array
+    public function prepareForUpdate(array $data, int $updatedBy): array
     {
         return array_filter([
             'title' => $data['title'] ?? null,
@@ -39,6 +41,7 @@ class DataPreparationService
             'assigned_to' => $data['assigned_to'] ?? null,
             'status_id' => $data['status_id'] ?? null,
             'meta' => $data['meta'] ?? null,
+            'updated_by' => $updatedBy,
         ], fn (mixed $value): bool => $value !== null);
     }
 }

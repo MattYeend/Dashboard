@@ -21,11 +21,11 @@ class RestorerService
      *
      * @throws \Exception
      */
-    public function restore(Task $task, ?int $restoredBy = null): Task
+    public function restore(Task $task, int $restoredBy): Task
     {
-        return DB::transaction(function () use ($task, $restoredBy) {
-            $actor = User::findOrFail($restoredBy);
+        $actor = User::findOrFail($restoredBy);
 
+        return DB::transaction(function () use ($task, $restoredBy, $actor) {
             $task->restored_by = $restoredBy;
             $task->restored_at = now();
             $task->save();
@@ -45,7 +45,7 @@ class RestorerService
      *
      * @throws \Exception
      */
-    public function restoreMultiple(array $taskIds, ?int $restoredBy = null): int
+    public function restoreMultiple(array $taskIds, int $restoredBy): int
     {
         $count = 0;
 
