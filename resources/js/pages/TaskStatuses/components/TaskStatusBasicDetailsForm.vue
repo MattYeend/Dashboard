@@ -35,14 +35,19 @@ function update<K extends keyof TaskStatusFormData>(
                 type="text"
                 class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
                 placeholder="Enter status title"
-                @input="update('title', ($event.target as HTMLInputElement).value)"
+                @input="
+                    update('title', ($event.target as HTMLInputElement).value)
+                "
             />
             <p v-if="errors.title" class="mt-1 text-sm text-red-600">
                 {{ errors.title }}
             </p>
         </div>
         <div>
-            <label for="description" class="text-grey-700 block text-sm font-medium">
+            <label
+                for="description"
+                class="text-grey-700 block text-sm font-medium"
+            >
                 Description
             </label>
             <textarea
@@ -51,7 +56,12 @@ function update<K extends keyof TaskStatusFormData>(
                 rows="3"
                 class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
                 placeholder="Enter status description"
-                @input="update('description', ($event.target as HTMLTextAreaElement).value || null)"
+                @input="
+                    update(
+                        'description',
+                        ($event.target as HTMLTextAreaElement).value || null,
+                    )
+                "
             />
             <p v-if="errors.description" class="mt-1 text-sm text-red-600">
                 {{ errors.description }}

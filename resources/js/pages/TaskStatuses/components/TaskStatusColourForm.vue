@@ -26,7 +26,10 @@ function update<K extends keyof TaskStatusFormData>(
 <template>
     <div class="space-y-4">
         <div>
-            <label for="background_colour" class="text-grey-700 block text-sm font-medium">
+            <label
+                for="background_colour"
+                class="text-grey-700 block text-sm font-medium"
+            >
                 Background Colour
             </label>
             <div class="mt-1 flex items-center gap-3">
@@ -34,7 +37,12 @@ function update<K extends keyof TaskStatusFormData>(
                     :value="form.background_colour"
                     type="color"
                     class="h-10 w-16 cursor-pointer rounded border"
-                    @input="update('background_colour', ($event.target as HTMLInputElement).value)"
+                    @input="
+                        update(
+                            'background_colour',
+                            ($event.target as HTMLInputElement).value,
+                        )
+                    "
                 />
                 <input
                     id="background_colour"
@@ -43,15 +51,26 @@ function update<K extends keyof TaskStatusFormData>(
                     maxlength="7"
                     class="border-grey-300 block w-32 rounded-md font-mono shadow-sm sm:text-sm"
                     placeholder="#ffffff"
-                    @input="update('background_colour', ($event.target as HTMLInputElement).value)"
+                    @input="
+                        update(
+                            'background_colour',
+                            ($event.target as HTMLInputElement).value,
+                        )
+                    "
                 />
             </div>
-            <p v-if="errors.background_colour" class="mt-1 text-sm text-red-600">
+            <p
+                v-if="errors.background_colour"
+                class="mt-1 text-sm text-red-600"
+            >
                 {{ errors.background_colour }}
             </p>
         </div>
         <div>
-            <label for="text_colour" class="text-grey-700 block text-sm font-medium">
+            <label
+                for="text_colour"
+                class="text-grey-700 block text-sm font-medium"
+            >
                 Text Colour
             </label>
             <div class="mt-1 flex items-center gap-3">
@@ -59,7 +78,12 @@ function update<K extends keyof TaskStatusFormData>(
                     :value="form.text_colour"
                     type="color"
                     class="h-10 w-16 cursor-pointer rounded border"
-                    @input="update('text_colour', ($event.target as HTMLInputElement).value)"
+                    @input="
+                        update(
+                            'text_colour',
+                            ($event.target as HTMLInputElement).value,
+                        )
+                    "
                 />
                 <input
                     id="text_colour"
@@ -68,7 +92,12 @@ function update<K extends keyof TaskStatusFormData>(
                     maxlength="7"
                     class="border-grey-300 block w-32 rounded-md font-mono shadow-sm sm:text-sm"
                     placeholder="#000000"
-                    @input="update('text_colour', ($event.target as HTMLInputElement).value)"
+                    @input="
+                        update(
+                            'text_colour',
+                            ($event.target as HTMLInputElement).value,
+                        )
+                    "
                 />
             </div>
             <p v-if="errors.text_colour" class="mt-1 text-sm text-red-600">
@@ -76,7 +105,9 @@ function update<K extends keyof TaskStatusFormData>(
             </p>
         </div>
         <div>
-            <label class="text-grey-700 block text-sm font-medium">Preview</label>
+            <label class="text-grey-700 block text-sm font-medium"
+                >Preview</label
+            >
             <div class="mt-1">
                 <span
                     class="inline-block rounded px-3 py-1 text-sm font-medium"

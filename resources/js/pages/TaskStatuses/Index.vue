@@ -48,7 +48,9 @@ function destroy(id: number): void {
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="items-centre mb-4 flex justify-between">
-                <h1 class="text-grey-900 text-2xl font-semibold">Task Statuses</h1>
+                <h1 class="text-grey-900 text-2xl font-semibold">
+                    Task Statuses
+                </h1>
                 <Link
                     v-if="permissions_meta.can_create"
                     :href="taskStatusesCreate.url()"
@@ -102,17 +104,25 @@ function destroy(id: number): void {
                 </select>
             </div>
 
-            <div class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg">
+            <div
+                class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
+            >
                 <table class="divide-grey-300 min-w-full divide-y">
                     <thead>
                         <tr>
-                            <th class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase">
+                            <th
+                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                            >
                                 Title
                             </th>
-                            <th class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase">
+                            <th
+                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                            >
                                 Description
                             </th>
-                            <th class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase">
+                            <th
+                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                            >
                                 Preview
                             </th>
                             <th class="relative px-6 py-3">
@@ -133,24 +143,33 @@ function destroy(id: number): void {
                             v-for="status in taskStatuses.data ?? []"
                             :key="status.id"
                         >
-                            <td class="text-grey-900 px-6 py-4 text-sm font-medium whitespace-nowrap">
+                            <td
+                                class="text-grey-900 px-6 py-4 text-sm font-medium whitespace-nowrap"
+                            >
                                 {{ status.title }}
                             </td>
-                            <td class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap">
+                            <td
+                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                            >
                                 {{ status.description ?? '—' }}
                             </td>
-                            <td class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap">
+                            <td
+                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                            >
                                 <span
                                     class="rounded px-2 py-0.5 text-xs font-medium"
                                     :style="{
-                                        backgroundColor: status.background_colour,
+                                        backgroundColor:
+                                            status.background_colour,
                                         color: status.text_colour,
                                     }"
                                 >
                                     {{ status.title }}
                                 </span>
                             </td>
-                            <td class="space-x-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
+                            <td
+                                class="space-x-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap"
+                            >
                                 <Link
                                     :href="taskStatusesShow.url(status.id)"
                                     class="text-indigo-600 hover:text-indigo-900"

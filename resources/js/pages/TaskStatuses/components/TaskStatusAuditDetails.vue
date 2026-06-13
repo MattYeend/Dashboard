@@ -26,33 +26,55 @@ function formatDate(value: string | null): string {
         <div class="border-grey-200 border-t">
             <dl>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">Created by</dt>
-                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                    <dt class="text-grey-500 text-sm font-medium">
+                        Created by
+                    </dt>
+                    <dd
+                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                    >
                         {{ taskStatus.creator?.name ?? '—' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">Updated by</dt>
-                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                    <dt class="text-grey-500 text-sm font-medium">
+                        Updated by
+                    </dt>
+                    <dd
+                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                    >
                         {{ taskStatus.updater?.name ?? '—' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">Deleted by</dt>
-                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                    <dt class="text-grey-500 text-sm font-medium">
+                        Deleted by
+                    </dt>
+                    <dd
+                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                    >
                         {{ taskStatus.deleter?.name ?? '—' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">Restored by</dt>
-                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                    <dt class="text-grey-500 text-sm font-medium">
+                        Restored by
+                    </dt>
+                    <dd
+                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                    >
                         {{ taskStatus.restorer?.name ?? '—' }}
                     </dd>
                 </div>
                 <template v-if="taskStatus.restored_at">
-                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-grey-500 text-sm font-medium">Restored at</dt>
-                        <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                    <div
+                        class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
+                    >
+                        <dt class="text-grey-500 text-sm font-medium">
+                            Restored at
+                        </dt>
+                        <dd
+                            class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        >
                             {{ formatDate(taskStatus.restored_at) }}
                         </dd>
                     </div>
