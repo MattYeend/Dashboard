@@ -22,8 +22,8 @@ class TaskController extends Controller
      * Inject the required services into the controller.
      */
     public function __construct(
-        private QueryService $query,
-        private ManagementService $management,
+        private readonly QueryService $query,
+        private readonly ManagementService $management,
     ) {}
 
     /**

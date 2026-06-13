@@ -12,7 +12,7 @@ class DeleterService
      * Inject the required services into the deleter service.
      */
     public function __construct(
-        protected LogService $logService
+        protected readonly LogService $logService
     ) {}
 
     /**
@@ -22,10 +22,11 @@ class DeleterService
      */
     public function delete(
         TaskStatus $taskStatus,
-        ?int $deletedBy = null
+        int $deletedBy
     ): bool {
-        return DB::transaction(function () use ($taskStatus, $deletedBy) {
-            $actor = User::findOrFail($deletedBy);
+        
+        $actor = User::findOrFail($deletedBy);
+        return DB::transaction(function () use ($taskStatus, $deletedBy, $actor) {
             $taskStatus->deleted_by = $deletedBy;
             $taskStatus->save();
 
@@ -44,10 +45,10 @@ class DeleterService
      */
     public function forceDelete(
         TaskStatus $taskStatus,
-        ?int $deletedBy = null
+        int $deletedBy
     ): bool {
-        return DB::transaction(function () use ($taskStatus, $deletedBy) {
-            $actor = User::findOrFail($deletedBy);
+        $actor = User::findOrFail($deletedBy);
+        return DB::transaction(function () use ($taskStatus, $deletedBy, $actor) {
             $this->logService->logForceDeletion($taskStatus, $actor, $deletedBy);
 
             return $taskStatus->forceDelete();
@@ -61,7 +62,7 @@ class DeleterService
      */
     public function deleteMultiple(
         array $taskStatusIds,
-        ?int $deletedBy = null
+        int $deletedBy
     ): int {
         $count = 0;
 

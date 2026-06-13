@@ -13,7 +13,7 @@ class RestorerService
      * Inject the required services into the resorer service.
      */
     public function __construct(
-        protected LogService $logService
+        protected readonly LogService $logService
     ) {}
 
     /**
@@ -23,11 +23,10 @@ class RestorerService
      */
     public function restore(
         TaskStatus $taskStatus,
-        ?int $restoredBy = null
+        int $restoredBy
     ): TaskStatus {
-        return DB::transaction(function () use ($taskStatus, $restoredBy) {
-            $actor = User::findOrFail($restoredBy);
-
+        $actor = User::findOrFail($restoredBy);
+        return DB::transaction(function () use ($taskStatus, $restoredBy, $actor) {
             $taskStatus->restored_by = $restoredBy;
             $taskStatus->restored_at = now();
             $taskStatus->save();
@@ -49,7 +48,7 @@ class RestorerService
      */
     public function restoreMultiple(
         array $taskStatusIds,
-        ?int $restoredBy = null
+        int $restoredBy
     ): int {
         $count = 0;
 

@@ -12,10 +12,10 @@ class QueryService
      * Inject the required services into the query service.
      */
     public function __construct(
-        protected SortingService $sortingService,
-        protected TrashFilterService $trashFilterService,
-        protected FilterService $filterService,
-        protected FormatterService $formatterService
+        protected readonly SortingService $sortingService,
+        protected readonly TrashFilterService $trashFilterService,
+        protected readonly FilterService $filterService,
+        protected readonly FormatterService $formatterService
     ) {}
 
     /**
@@ -63,11 +63,12 @@ class QueryService
      */
     protected function paginate(Builder $query, int $perPage): array
     {
-        $paginator = $query->paginate($perPage);
+        $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
             'task_statuses' => $paginator->items(),
-            'pagination' => [
+            'links' => $paginator->linkCollection()->toArray(),
+            'meta' => [
                 'current_page' => $paginator->currentPage(),
                 'last_page' => $paginator->lastPage(),
                 'per_page' => $paginator->perPage(),

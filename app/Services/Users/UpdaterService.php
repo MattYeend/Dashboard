@@ -11,8 +11,8 @@ class UpdaterService
      * Inject the required services into the updater service.
      */
     public function __construct(
-        protected DataPreparationService $dataPreparation,
-        protected LogService $logService
+        protected readonly DataPreparationService $dataPreparation,
+        protected readonly LogService $logService
     ) {}
 
     /**

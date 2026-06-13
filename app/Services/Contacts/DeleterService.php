@@ -12,7 +12,7 @@ class DeleterService
      * Inject the required services into the deleter service.
      */
     public function __construct(
-        protected LogService $logService
+        protected readonly LogService $logService
     ) {}
 
     /**

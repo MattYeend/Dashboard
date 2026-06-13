@@ -28,6 +28,10 @@ class FormatterService
             'updated_by' => $taskStatus->updated_by,
             'deleted_by' => $taskStatus->deleted_by,
             'restored_by' => $taskStatus->restored_by,
+            'creator' => $taskStatus->creator ? ['id' => $taskStatus->creator->id, 'name' => $taskStatus->creator->name] : null,
+            'updater' => $taskStatus->updater ? ['id' => $taskStatus->updater->id, 'name' => $taskStatus->updater->name] : null,
+            'deleter' => $taskStatus->deleter ? ['id' => $taskStatus->deleter->id, 'name' => $taskStatus->deleter->name] : null,
+            'restorer' => $taskStatus->restorer ? ['id' => $taskStatus->restorer->id, 'name' => $taskStatus->restorer->name] : null,
         ];
     }
 }

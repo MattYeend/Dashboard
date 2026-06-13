@@ -12,7 +12,7 @@ class ActiveCheckerService
      * Inject the required services into the active checker service.
      */
     public function __construct(
-        protected UserRoleCheckerService $roleChecker
+        protected readonly UserRoleCheckerService $roleChecker
     ) {}
 
     /**

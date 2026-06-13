@@ -12,8 +12,8 @@ class PolicyAuthorisationService
      * Inject the required services into the policy authorisation service.
      */
     public function __construct(
-        protected ActiveCheckerService $activeChecker,
-        protected UserRoleCheckerService $roleChecker
+        protected readonly ActiveCheckerService $activeChecker,
+        protected readonly UserRoleCheckerService $roleChecker
     ) {}
 
     /**

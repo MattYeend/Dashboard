@@ -13,8 +13,8 @@ class CreatorService
      * Inject the required services into the creator service.
      */
     public function __construct(
-        protected DataPreparationService $dataPreparation,
-        protected LogService $logService
+        protected readonly DataPreparationService $dataPreparation,
+        protected readonly LogService $logService
     ) {}
 
     /**
@@ -29,7 +29,7 @@ class CreatorService
         $actor = User::findOrFail($createdBy);
 
         return DB::transaction(function () use ($data, $createdBy, $actor) {
-            $taskStatus = $this->createContact($data);
+            $taskStatus = $this->createContact($data, $createdBy);
             $this->logService->logCreation($taskStatus, $actor, $createdBy);
 
             return $taskStatus;
@@ -41,10 +41,10 @@ class CreatorService
      *
      * @param  array<string, mixed>  $data
      */
-    protected function createContact(array $data): TaskStatus
+    protected function createContact(array $data, int $createdBy): TaskStatus
     {
         $contactData = $this->dataPreparation->prepareForCreation(
-            $data
+            $data, $createdBy
         );
 
         return TaskStatus::create($contactData);

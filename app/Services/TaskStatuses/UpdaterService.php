@@ -12,8 +12,8 @@ class UpdaterService
      * Inject the required services into the updater service.
      */
     public function __construct(
-        protected DataPreparationService $dataPreparation,
-        protected LogService $logService
+        protected readonly DataPreparationService $dataPreparation,
+        protected readonly LogService $logService
     ) {}
 
     /**
@@ -28,10 +28,9 @@ class UpdaterService
         array $data,
         int $updatedBy
     ): TaskStatus {
-        return DB::transaction(function () use ($taskStatus, $data, $updatedBy) {
-            $actor = User::findOrFail($updatedBy);
-
-            $this->updateContact($taskStatus, $data);
+        $actor = User::findOrFail($updatedBy);
+        return DB::transaction(function () use ($taskStatus, $data, $updatedBy, $actor) {
+            $this->updateContact($taskStatus, $data, $updatedBy);
             $this->logService->logUpdate($taskStatus, $actor, $updatedBy);
 
             return $taskStatus->fresh();
@@ -43,9 +42,9 @@ class UpdaterService
      *
      * @param  array<string, mixed>  $data
      */
-    protected function updateContact(TaskStatus $taskStatus, array $data): void
+    protected function updateContact(TaskStatus $taskStatus, array $data, int $updatedBy): void
     {
-        $taskStatusData = $this->dataPreparation->prepareForUpdate($data);
+        $taskStatusData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
         $taskStatus->update($taskStatusData);
     }
 }

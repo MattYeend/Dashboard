@@ -13,10 +13,10 @@ class ManagementService
      * Inject the required services into the management service.
      */
     public function __construct(
-        protected CreatorService $creator,
-        protected UpdaterService $updater,
-        protected DeleterService $destructor,
-        protected RestorerService $restorer,
+        protected readonly CreatorService $creator,
+        protected readonly UpdaterService $updater,
+        protected readonly DeleterService $destructor,
+        protected readonly RestorerService $restorer,
     ) {}
 
     /**

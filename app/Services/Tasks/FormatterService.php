@@ -26,6 +26,7 @@ class FormatterService
             'updated_at' => $task->updated_at,
             'deleted_at' => $task->deleted_at,
             'restored_at' => $task->restored_at,
+            'creator' => $task->creator ? ['id' => $task->creator->id, 'name' => $task->creator->name] : null,
             'updater' => $task->updater ? ['id' => $task->updater->id, 'name' => $task->updater->name] : null,
             'deleter' => $task->deleter ? ['id' => $task->deleter->id, 'name' => $task->deleter->name] : null,
             'restorer' => $task->restorer ? ['id' => $task->restorer->id, 'name' => $task->restorer->name] : null,

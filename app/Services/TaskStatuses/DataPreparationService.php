@@ -10,7 +10,7 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForCreation(array $data): array
+    public function prepareForCreation(array $data, int $createdBy): array
     {
         return [
             'title' => $data['title'],
@@ -18,6 +18,7 @@ class DataPreparationService
             'background_colour' => $data['background_colour'] ?? '#ffffff',
             'text_colour' => $data['text_colour'] ?? '#000000',
             'meta' => $data['meta'] ?? null,
+            'created_by' => $createdBy,
         ];
     }
 
@@ -27,7 +28,7 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForUpdate(array $data): array
+    public function prepareForUpdate(array $data, int $updatedBy): array
     {
         return array_filter([
             'title' => $data['title'] ?? null,
@@ -35,6 +36,7 @@ class DataPreparationService
             'background_colour' => $data['background_colour'] ?? null,
             'text_colour' => $data['text_colour'] ?? null,
             'meta' => $data['meta'] ?? null,
+            'updated_by' => $updatedBy,
         ], fn (mixed $value): bool => $value !== null);
     }
 }

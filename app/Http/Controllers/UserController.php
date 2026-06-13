@@ -22,8 +22,8 @@ class UserController extends Controller
      * Inject the required services into the controller.
      */
     public function __construct(
-        protected ManagementService $management,
-        protected QueryService $query,
+        protected readonly ManagementService $management,
+        protected readonly   QueryService $query,
     ) {}
 
     /**

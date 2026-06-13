@@ -13,7 +13,7 @@ class UserRoleCheckerService
      * Inject the resolver service.
      */
     public function __construct(
-        protected UserRoleResolverService $resolver,
+        protected readonly UserRoleResolverService $resolver,
     ) {}
 
     /**

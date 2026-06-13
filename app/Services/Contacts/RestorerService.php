@@ -13,7 +13,7 @@ class RestorerService
      * Inject the required services into the resorer service.
      */
     public function __construct(
-        protected LogService $logService
+        protected readonly LogService $logService
     ) {}
 
     /**

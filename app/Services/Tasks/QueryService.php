@@ -13,10 +13,10 @@ class QueryService
      * Inject the required services into the query service.
      */
     public function __construct(
-        protected SortingService $sortingService,
-        protected TrashFilterService $trashFilterService,
-        protected FilterService $filterService,
-        protected FormatterService $formatterService
+        protected readonly SortingService $sortingService,
+        protected readonly TrashFilterService $trashFilterService,
+        protected readonly FilterService $filterService,
+        protected readonly FormatterService $formatterService
     ) {}
 
     /**
