@@ -1,22 +1,63 @@
 <script setup lang="ts">
 import type { TaskStatus } from '@/types';
-defineProps<{ taskStatus: TaskStatus }>();
+
+defineProps<{
+    taskStatus: TaskStatus;
+}>();
+
+function formatDate(value: string | null): string {
+    if (!value) {
+        return '—';
+    }
+
+    return new Date(value).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
+}
 </script>
 
 <template>
-    <div class="space-y-2">
-        <h2 class="text-sm font-medium tracking-wide uppercase">Audit</h2>
-        <dl class="grid grid-cols-2 gap-2 text-sm">
-            <dt class="font-medium">Created by</dt>
-            <dd>{{ taskStatus.creator?.name ?? '—' }}</dd>
-            <dt class="font-medium">Updated by</dt>
-            <dd>{{ taskStatus.updater?.name ?? '—' }}</dd>
-            <dt class="font-medium">Deleted by</dt>
-            <dd>{{ taskStatus.deleter?.name ?? '—' }}</dd>
-            <dt class="font-medium">Restored by</dt>
-            <dd>{{ taskStatus.restorer?.name ?? '—' }}</dd>
-            <dt class="font-medium">Restored at</dt>
-            <dd>{{ taskStatus.restored_at ?? '—' }}</dd>
-        </dl>
+    <div class="overflow-hidden shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-grey-900 text-lg leading-6 font-medium">Audit</h3>
+        </div>
+        <div class="border-grey-200 border-t">
+            <dl>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-grey-500 text-sm font-medium">Created by</dt>
+                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                        {{ taskStatus.creator?.name ?? '—' }}
+                    </dd>
+                </div>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-grey-500 text-sm font-medium">Updated by</dt>
+                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                        {{ taskStatus.updater?.name ?? '—' }}
+                    </dd>
+                </div>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-grey-500 text-sm font-medium">Deleted by</dt>
+                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                        {{ taskStatus.deleter?.name ?? '—' }}
+                    </dd>
+                </div>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-grey-500 text-sm font-medium">Restored by</dt>
+                    <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                        {{ taskStatus.restorer?.name ?? '—' }}
+                    </dd>
+                </div>
+                <template v-if="taskStatus.restored_at">
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-grey-500 text-sm font-medium">Restored at</dt>
+                        <dd class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0">
+                            {{ formatDate(taskStatus.restored_at) }}
+                        </dd>
+                    </div>
+                </template>
+            </dl>
+        </div>
     </div>
 </template>

@@ -1,44 +1,63 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
-import type { TaskStatus } from '@/types';
+import { Link } from '@inertiajs/vue3';
+import { index as taskStatusesIndex } from '@/routes/task-statuses';
 import TaskStatusBasicDetailsForm from './TaskStatusBasicDetailsForm.vue';
 import TaskStatusColourForm from './TaskStatusColourForm.vue';
-import TaskStatusMetaForm from './TaskStatusMetaForm.vue';
 
-const props = defineProps<{
-    action: string;
-    method: 'post' | 'put';
-    initial?: Partial<TaskStatus>;
+export interface TaskStatusFormData {
+    title: string;
+    description: string | null;
+    background_colour: string;
+    text_colour: string;
+}
+
+interface Errors {
+    title?: string;
+    description?: string;
+    background_colour?: string;
+    text_colour?: string;
+}
+
+defineProps<{
+    form: TaskStatusFormData;
+    errors: Errors;
+    submitLabel: string;
+    processing: boolean;
 }>();
 
-const form = useForm({
-    title: props.initial?.title ?? '',
-    description: props.initial?.description ?? '',
-    background_colour: props.initial?.background_colour ?? '#ffffff',
-    text_colour: props.initial?.text_colour ?? '#000000',
-    meta: (props.initial?.meta as any) ?? null,
-});
-
-function submit() {
-    if (props.method === 'put') {
-        form.put(props.action);
-    } else {
-        form.post(props.action);
-    }
-}
+const emit = defineEmits<{
+    (e: 'submit'): void;
+    (e: 'update:form', value: TaskStatusFormData): void;
+}>();
 </script>
 
 <template>
-    <div class="space-y-6">
-        <TaskStatusBasicDetailsForm :form="form" />
-        <TaskStatusColourForm :form="form" />
-        <TaskStatusMetaForm :form="form" />
+    <form class="space-y-6" @submit.prevent="emit('submit')">
+        <TaskStatusBasicDetailsForm
+            :form="form"
+            :errors="errors"
+            @update:form="emit('update:form', { ...form, ...$event })"
+        />
+        <TaskStatusColourForm
+            :form="form"
+            :errors="errors"
+            @update:form="emit('update:form', { ...form, ...$event })"
+        />
 
-        <div class="flex gap-2">
-            <button type="button" @click="submit" :disabled="form.processing">
-                Save
+        <div class="items-centre flex justify-end space-x-3">
+            <Link
+                :href="taskStatusesIndex.url()"
+                class="text-grey-700 rounded-md px-4 py-2 text-sm font-medium"
+            >
+                Cancel
+            </Link>
+            <button
+                type="submit"
+                :disabled="processing"
+                class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+            >
+                {{ submitLabel }}
             </button>
-            <Link :href="route('task-statuses.index')">Cancel</Link>
         </div>
-    </div>
+    </form>
 </template>

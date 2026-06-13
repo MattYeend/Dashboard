@@ -1,50 +1,60 @@
 <script setup lang="ts">
-import type { InertiaForm } from '@inertiajs/vue3';
+import type { TaskStatusFormData } from './TaskStatusForm.vue';
 
-const props = defineProps<{ form: InertiaForm<any> }>();
-const emit = defineEmits<{
-    (e: 'update:form', value: InertiaForm<any>): void;
+interface Errors {
+    title?: string;
+    description?: string;
+}
+
+const props = defineProps<{
+    form: TaskStatusFormData;
+    errors: Errors;
 }>();
 
-function update(field: string, value: string): void {
-    emit('update:form', {
-        ...props.form,
-        [field]: value,
-    } as InertiaForm<any>);
+const emit = defineEmits<{
+    (e: 'update:form', value: TaskStatusFormData): void;
+}>();
+
+function update<K extends keyof TaskStatusFormData>(
+    field: K,
+    value: TaskStatusFormData[K],
+): void {
+    emit('update:form', { ...props.form, [field]: value });
 }
 </script>
 
 <template>
     <div class="space-y-4">
         <div>
-            <label class="mb-1 block text-sm font-medium">Title</label>
+            <label for="title" class="text-grey-700 block text-sm font-medium">
+                Title <span class="text-red-600">*</span>
+            </label>
             <input
+                id="title"
                 :value="form.title"
                 type="text"
-                class="w-full rounded border px-3 py-2"
-                @input="
-                    update('title', ($event.target as HTMLInputElement).value)
-                "
+                class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                placeholder="Enter status title"
+                @input="update('title', ($event.target as HTMLInputElement).value)"
             />
-            <p v-if="form.errors.title" class="mt-1 text-xs text-red-500">
-                {{ form.errors.title }}
+            <p v-if="errors.title" class="mt-1 text-sm text-red-600">
+                {{ errors.title }}
             </p>
         </div>
         <div>
-            <label class="mb-1 block text-sm font-medium">Description</label>
+            <label for="description" class="text-grey-700 block text-sm font-medium">
+                Description
+            </label>
             <textarea
-                :value="form.description"
+                id="description"
+                :value="form.description ?? ''"
                 rows="3"
-                class="w-full rounded border px-3 py-2"
-                @input="
-                    update(
-                        'description',
-                        ($event.target as HTMLTextAreaElement).value,
-                    )
-                "
+                class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                placeholder="Enter status description"
+                @input="update('description', ($event.target as HTMLTextAreaElement).value || null)"
             />
-            <p v-if="form.errors.description" class="mt-1 text-xs text-red-500">
-                {{ form.errors.description }}
+            <p v-if="errors.description" class="mt-1 text-sm text-red-600">
+                {{ errors.description }}
             </p>
         </div>
     </div>
