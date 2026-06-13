@@ -9,6 +9,7 @@ use App\Services\TaskStatuses\ManagementService;
 use App\Services\TaskStatuses\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -21,8 +22,8 @@ class TaskStatusController extends Controller
      * Inject the required services into the controller.
      */
     public function __construct(
-        private QueryService $query,
-        private ManagementService $management,
+        private readonly QueryService $query,
+        private readonly ManagementService $management,
     ) {}
 
     /**
@@ -40,9 +41,7 @@ class TaskStatusController extends Controller
             request()->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
         );
 
-        return Inertia::render('TaskStatuses/Index', [
-            'task_statuses' => $taskStatuses,
-        ]);
+        return Inertia::render('TaskStatuses/Index', $taskStatuses);
     }
 
     /**
@@ -65,11 +64,16 @@ class TaskStatusController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      */
-    public function store(StoreTaskStatusRequest $request): JsonResponse
-    {
+    public function store(
+        StoreTaskStatusRequest $request
+    ): JsonResponse|RedirectResponse {
         $taskStatus = $this->management->store($request);
 
-        return response()->json($taskStatus, 201);
+        if ($request->wantsJson()) {
+            return response()->json($taskStatus, 201);
+        }
+
+        return redirect()->route('TaskStatus.index', $taskStatus->id);
     }
 
     /**
@@ -86,9 +90,7 @@ class TaskStatusController extends Controller
 
         $taskStatus = $this->query->getById($taskStatus->id);
 
-        return Inertia::render('TaskStatuses/Show', [
-            'taskStatus' => $taskStatus,
-        ]);
+        return Inertia::render('TaskStatuses/Show', $taskStatus);
     }
 
     /**
@@ -102,9 +104,7 @@ class TaskStatusController extends Controller
 
         $taskStatus = $this->query->getById($taskStatus->id);
 
-        return Inertia::render('TaskStatuses/Edit', [
-            'taskStatus' => $taskStatus,
-        ]);
+        return Inertia::render('TaskStatuses/Edit', $taskStatus);
     }
 
     /**
@@ -119,10 +119,14 @@ class TaskStatusController extends Controller
     public function update(
         UpdateTaskStatusRequest $request,
         TaskStatus $taskStatus
-    ): JsonResponse {
+    ): JsonResponse|RedirectResponse {
         $taskStatus = $this->management->update($request, $taskStatus);
 
-        return response()->json($taskStatus);
+        if ($request->wantsJson()) {
+            return response()->json($taskStatus);
+        }
+
+        return redirect()->route('TaskStatus.index', $taskStatus->id);
     }
 
     /**
@@ -133,13 +137,17 @@ class TaskStatusController extends Controller
      * The audit log entry is written before the deletion so that the
      * taskStatus instance is still fully accessible during logging.
      */
-    public function destroy(TaskStatus $taskStatus)
+    public function destroy(TaskStatus $taskStatus): JsonResponse|RedirectResponse
     {
         $this->authorize('delete', $taskStatus);
 
         $this->management->destroy($taskStatus);
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('TaskStatus.index');
     }
 
     /**
@@ -150,7 +158,7 @@ class TaskStatusController extends Controller
      *
      * Authorises via the 'restore' policy before proceeding.
      */
-    public function restore(int $id): JsonResponse
+    public function restore(int $id): JsonResponse|RedirectResponse
     {
         $taskStatus = TaskStatus::onlyTrashed()->findOrFail($id);
 
@@ -158,7 +166,11 @@ class TaskStatusController extends Controller
 
         $this->management->restore($id);
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('TaskStatus.index');
     }
 
     /**
@@ -169,7 +181,7 @@ class TaskStatusController extends Controller
      *
      * Authorises via the 'forceDelete' policy before proceeding.
      */
-    public function forceDelete(int $id): JsonResponse
+    public function forceDelete(int $id): JsonResponse|RedirectResponse
     {
         $taskStatus = TaskStatus::onlyTrashed()->findOrFail($id);
 
@@ -177,7 +189,11 @@ class TaskStatusController extends Controller
 
         $this->management->forceDelete($id);
 
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('TaskStatus.index');
     }
 
     /**
@@ -185,7 +201,7 @@ class TaskStatusController extends Controller
      *
      * Authorises each task status individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse
+    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
     {
         $request->validate([
             'ids' => ['required', 'array'],
@@ -201,7 +217,11 @@ class TaskStatusController extends Controller
             fn (TaskStatus $taskStatus) => $this->authorize('delete', $taskStatus)
         );
 
-        return response()->json(null, 204);
+        if ($request->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('TaskStatus.index');
     }
 
     /**
@@ -209,7 +229,7 @@ class TaskStatusController extends Controller
      *
      * Authorises each task status individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse
+    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
     {
         $request->validate([
             'ids' => ['required', 'array'],
@@ -225,6 +245,10 @@ class TaskStatusController extends Controller
             fn (TaskStatus $taskStatus) => $this->authorize('restore', $taskStatus)
         );
 
-        return response()->json(null, 204);
+        if ($request->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('TaskStatus.index');
     }
 }
