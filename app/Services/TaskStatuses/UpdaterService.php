@@ -29,6 +29,7 @@ class UpdaterService
         int $updatedBy
     ): TaskStatus {
         $actor = User::findOrFail($updatedBy);
+
         return DB::transaction(function () use ($taskStatus, $data, $updatedBy, $actor) {
             $this->updateContact($taskStatus, $data, $updatedBy);
             $this->logService->logUpdate($taskStatus, $actor, $updatedBy);

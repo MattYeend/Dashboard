@@ -26,6 +26,7 @@ class RestorerService
         int $restoredBy
     ): TaskStatus {
         $actor = User::findOrFail($restoredBy);
+
         return DB::transaction(function () use ($taskStatus, $restoredBy, $actor) {
             $taskStatus->restored_by = $restoredBy;
             $taskStatus->restored_at = now();

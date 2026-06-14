@@ -23,7 +23,7 @@ class UserController extends Controller
      */
     public function __construct(
         protected readonly ManagementService $management,
-        protected readonly   QueryService $query,
+        protected readonly QueryService $query,
     ) {}
 
     /**

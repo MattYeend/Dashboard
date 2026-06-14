@@ -24,8 +24,9 @@ class DeleterService
         TaskStatus $taskStatus,
         int $deletedBy
     ): bool {
-        
+
         $actor = User::findOrFail($deletedBy);
+
         return DB::transaction(function () use ($taskStatus, $deletedBy, $actor) {
             $taskStatus->deleted_by = $deletedBy;
             $taskStatus->save();
@@ -48,6 +49,7 @@ class DeleterService
         int $deletedBy
     ): bool {
         $actor = User::findOrFail($deletedBy);
+
         return DB::transaction(function () use ($taskStatus, $deletedBy, $actor) {
             $this->logService->logForceDeletion($taskStatus, $actor, $deletedBy);
 
