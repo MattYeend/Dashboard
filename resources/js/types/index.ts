@@ -100,15 +100,6 @@ export interface Task {
     } | null;
 }
 
-export interface TaskFormData {
-    title: string;
-    description: string | null;
-    due_date: string | null;
-    assigned_date: string | null;
-    assigned_to: number | null;
-    status_id: number | null;
-}
-
 export interface PermissionsMeta {
     can_create: boolean;
     can_view_any: boolean;
