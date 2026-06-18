@@ -28,9 +28,13 @@ defineProps<Props>();
 defineEmits<{ submit: [] }>();
 
 const title = defineModel<string>('title', { required: true });
-const description = defineModel<string | null>('description', { default: null });
+const description = defineModel<string | null>('description', {
+    default: null,
+});
 const dueDate = defineModel<string | null>('dueDate', { default: null });
-const assignedDate = defineModel<string | null>('assignedDate', { default: null });
+const assignedDate = defineModel<string | null>('assignedDate', {
+    default: null,
+});
 const assignedTo = defineModel<number | null>('assignedTo', { default: null });
 const statusId = defineModel<number | null>('statusId', { default: null });
 </script>
