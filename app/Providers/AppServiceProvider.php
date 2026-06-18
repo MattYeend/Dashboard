@@ -12,7 +12,9 @@ use App\Policies\TaskStatusPolicy;
 use App\Policies\UserPolicy;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Console\Command;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -22,6 +24,14 @@ use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
+    private const DESTRUCTIVE_COMMANDS = [
+        'migrate:fresh', // Drops all tables
+        'migrate:refresh', // Rolls back all migrations and re-runs them
+        'migrate:reset', // Rolls back all migrations
+        'migrate:rollback', // Rolls back a batch of migrations
+        'db:wipe', // Drops all databases
+    ];
+
     /**
      * Register any application services.
      */
@@ -68,6 +78,43 @@ class AppServiceProvider extends ServiceProvider
             $userId = $request->user()?->id;
 
             return Limit::perMinute(60)->by($userId ?? $request->ip());
+        });
+
+        $this->preventDestructiveCommandsInProtectedEnvironments();
+    }
+
+    /**
+     * Conditionally prevent destructive commands in protected environments.
+     *
+     * @return void
+     */
+    protected function preventDestructiveCommandsInProtectedEnvironments(): void
+    {
+        if (! app()->environment('production', 'staging', 'qa')) {
+            return;
+        }
+
+        array_map(
+            fn ($command) => $this->disableDestructiveCommand($command),
+            self::DESTRUCTIVE_COMMANDS
+        );
+    }
+
+    /**
+     * Disable a specific destructive command.
+     *
+     * @param string $command
+     *
+     * @return void
+     */
+    private function disableDestructiveCommand(string $command): void
+    {
+        Artisan::command($command, function () use ($command) {
+            /** @var Command $this */
+            $this->error(
+                "The '{$command}' command is disabled in this
+                environment for safety."
+            );
         });
     }
 }
