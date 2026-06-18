@@ -16,7 +16,6 @@ use Illuminate\Console\Command;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -59,10 +58,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Date::use(CarbonImmutable::class);
 
-        DB::prohibitDestructiveCommands(
-            app()->isProduction(),
-        );
-
         Password::defaults(
             fn (): ?Password => app()->isProduction()
             ? Password::min(12)
@@ -85,8 +80,6 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Conditionally prevent destructive commands in protected environments.
-     *
-     * @return void
      */
     protected function preventDestructiveCommandsInProtectedEnvironments(): void
     {
@@ -102,10 +95,6 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Disable a specific destructive command.
-     *
-     * @param string $command
-     *
-     * @return void
      */
     private function disableDestructiveCommand(string $command): void
     {
