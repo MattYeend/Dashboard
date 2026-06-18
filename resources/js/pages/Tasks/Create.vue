@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { store as tasksStore } from '@/routes/tasks';
-import type { TaskFormData, TaskStatus, UserOption } from '@/types';
+import type { TaskStatus, UserOption } from '@/types';
 import TaskForm from './components/TaskForm.vue';
 
 defineProps<{
@@ -9,7 +9,7 @@ defineProps<{
     users: UserOption[];
 }>();
 
-const form = useForm<TaskFormData>({
+const form = useForm({
     title: '',
     description: null,
     due_date: null,
@@ -17,10 +17,6 @@ const form = useForm<TaskFormData>({
     assigned_to: null,
     status_id: null,
 });
-
-function onFormUpdate(updated: TaskFormData): void {
-    Object.assign(form, updated);
-}
 
 function submit(): void {
     form.post(tasksStore.url());
@@ -34,13 +30,17 @@ function submit(): void {
                 Create Task
             </h1>
             <TaskForm
-                :form="form"
-                :errors="form.errors"
+                v-model:title="form.title"
+                v-model:description="form.description"
+                v-model:due-date="form.due_date"
+                v-model:assigned-date="form.assigned_date"
+                v-model:assigned-to="form.assigned_to"
+                v-model:status-id="form.status_id"
+                :is-editing="false"
+                :processing="form.processing"
                 :statuses="statuses"
                 :users="users"
-                submit-label="Create Task"
-                :processing="form.processing"
-                @update:form="onFormUpdate"
+                :errors="form.errors"
                 @submit="submit"
             />
         </div>

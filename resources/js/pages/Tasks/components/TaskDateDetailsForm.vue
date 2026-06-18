@@ -1,45 +1,37 @@
 <script setup lang="ts">
-import type { TaskFormData } from '@/types';
+import type { InertiaFormProps } from '@inertiajs/vue3';
 
-interface Errors {
-    due_date?: string;
-    assigned_date?: string;
+interface TaskFormData {
+    title: string;
+    description: string | null;
+    due_date: string | null;
+    assigned_date: string | null;
+    assigned_to: number | null;
+    status_id: number | null;
 }
 
-const props = defineProps<{
-    form: TaskFormData;
-    errors: Errors;
-}>();
-
-const emit = defineEmits<{
-    (e: 'update:form', value: TaskFormData): void;
-}>();
-
-function updateDate(field: 'due_date' | 'assigned_date', value: string): void {
-    emit('update:form', { ...props.form, [field]: value || null });
+interface Props {
+    errors: Partial<InertiaFormProps<TaskFormData>['errors']>;
 }
+
+defineProps<Props>();
+
+const dueDate = defineModel<string | null>('dueDate', { default: null });
+const assignedDate = defineModel<string | null>('assignedDate', { default: null });
 </script>
 
 <template>
     <div class="space-y-4">
         <div>
-            <label
-                for="due_date"
-                class="text-grey-700 block text-sm font-medium"
-            >
+            <label for="due_date" class="text-grey-700 block text-sm font-medium">
                 Due Date
             </label>
             <input
                 id="due_date"
-                :value="form.due_date ?? ''"
+                :value="dueDate ?? ''"
                 type="date"
                 class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
-                @change="
-                    updateDate(
-                        'due_date',
-                        ($event.target as HTMLInputElement).value,
-                    )
-                "
+                @change="dueDate = ($event.target as HTMLInputElement).value || null"
             />
             <p v-if="errors.due_date" class="mt-1 text-sm text-red-600">
                 {{ errors.due_date }}
@@ -47,23 +39,15 @@ function updateDate(field: 'due_date' | 'assigned_date', value: string): void {
         </div>
 
         <div>
-            <label
-                for="assigned_date"
-                class="text-grey-700 block text-sm font-medium"
-            >
+            <label for="assigned_date" class="text-grey-700 block text-sm font-medium">
                 Assigned Date
             </label>
             <input
                 id="assigned_date"
-                :value="form.assigned_date ?? ''"
+                :value="assignedDate ?? ''"
                 type="date"
                 class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
-                @change="
-                    updateDate(
-                        'assigned_date',
-                        ($event.target as HTMLInputElement).value,
-                    )
-                "
+                @change="assignedDate = ($event.target as HTMLInputElement).value || null"
             />
             <p v-if="errors.assigned_date" class="mt-1 text-sm text-red-600">
                 {{ errors.assigned_date }}
