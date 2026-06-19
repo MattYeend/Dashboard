@@ -1,25 +1,88 @@
 <script setup lang="ts">
-import { Link, router } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import EmptyRow from '@/components/table/EmptyRow.vue';
+import FilterBar from '@/components/table/FilterBar.vue';
+import IndexHeader from '@/components/table/IndexHeader.vue';
+import Pagination from '@/components/table/Pagination.vue';
 import {
+    index as usersIndex,
     show as usersShow,
     create as usersCreate,
     edit as usersEdit,
     destroy as usersDestroy,
 } from '@/routes/users';
-import type { Pagination, PermissionsMeta, User } from '@/types';
+import type {
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+    User,
+} from '@/types';
 
 interface Props {
     users: {
         data: User[];
         links: Array<{ url: string | null; label: string; active: boolean }>;
-        meta: Pagination;
+        meta: PaginationMeta;
     };
     permissions_meta: PermissionsMeta;
-    sort_fields: string[];
-    trash_filters: string[];
+    sort_fields: Record<string, string>;
+    trash_filters: Record<string, string>;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const filters = ref({
+    search: '',
+    trashed: '',
+    sort_by: 'created_at',
+    sort_direction: 'desc',
+});
+
+const filterFields = [
+    {
+        key: 'search',
+        type: 'text' as const,
+        placeholder: 'Search users…',
+    },
+    {
+        key: 'trashed',
+        type: 'select' as const,
+        get options() {
+            return Object.entries(props.trash_filters).map(
+                ([value, label]) => ({
+                    value,
+                    label,
+                }),
+            );
+        },
+    },
+    {
+        key: 'sort_by',
+        type: 'select' as const,
+        get options() {
+            return Object.entries(props.sort_fields).map(([value, label]) => ({
+                value,
+                label: `Sort by ${label}`,
+            }));
+        },
+    },
+    {
+        key: 'sort_direction',
+        type: 'select' as const,
+        options: [
+            { value: 'asc', label: 'Ascending' },
+            { value: 'desc', label: 'Descending' },
+        ],
+    },
+];
+
+function applyFilters(): void {
+    router.get(usersIndex.url(), filters.value, {
+        preserveState: true,
+        replace: true,
+    });
+}
 
 function destroy(id: number): void {
     if (confirm('Are you sure you want to delete this user?')) {
@@ -43,15 +106,18 @@ function formatDate(value: string | null): string {
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="items-centre mb-4 flex justify-between">
-                <h1 class="text-grey-900 text-2xl font-semibold">Users</h1>
-                <Link
-                    :href="usersCreate.url()"
-                    class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
-                >
-                    Add User
-                </Link>
-            </div>
+            <IndexHeader
+                title="Users"
+                :create-href="usersCreate.url()"
+                create-label="Add User"
+                :can-create="permissions_meta.can_create"
+            />
+
+            <FilterBar
+                v-model="filters"
+                :fields="filterFields"
+                @change="applyFilters"
+            />
 
             <div
                 class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
@@ -85,6 +151,11 @@ function formatDate(value: string | null): string {
                         </tr>
                     </thead>
                     <tbody class="divide-grey-200 divide-y">
+                        <EmptyRow
+                            v-if="!users.data?.length"
+                            :colspan="5"
+                            message="No users found."
+                        />
                         <tr v-for="user in users.data ?? []" :key="user.id">
                             <td
                                 class="text-grey-900 px-6 py-4 text-sm font-medium whitespace-nowrap"
@@ -130,43 +201,15 @@ function formatDate(value: string | null): string {
                                 </button>
                             </td>
                         </tr>
-                        <tr v-if="!users.data?.length">
-                            <td
-                                colspan="5"
-                                class="text-centre text-grey-500 px-6 py-4 text-sm"
-                            >
-                                No users found.
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
-                <div
-                    v-if="users.meta.last_page > 1"
-                    class="mt-4 flex items-center justify-between"
-                >
-                    <p class="text-grey-500 text-sm">
-                        Showing {{ users.meta.from ?? 0 }} to
-                        {{ users.meta.to ?? 0 }} of {{ users.meta.total }} users
-                    </p>
-                    <div class="flex gap-x-1">
-                        <Link
-                            v-for="link in users.links"
-                            :key="link.label"
-                            :href="link.url ?? ''"
-                            :class="[
-                                'rounded px-3 py-1 text-sm',
-                                link.url === null
-                                    ? 'pointer-events-none opacity-40'
-                                    : 'hover:bg-accent',
-                                link.active ? 'font-semibold' : '',
-                            ]"
-                            preserve-scroll
-                        >
-                            <span v-html="link.label" />
-                        </Link>
-                    </div>
-                </div>
             </div>
+
+            <Pagination
+                :meta="users.meta"
+                :links="users.links"
+                resource-label="users"
+            />
         </div>
     </div>
 </template>
