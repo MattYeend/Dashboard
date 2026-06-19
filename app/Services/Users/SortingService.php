@@ -16,11 +16,11 @@ class SortingService
     public function applySorting(
         Builder $query,
         ?string $sortBy = 'created_at',
-        ?string $sortDirection = 'desc'
+        ?string $sortDirection = 'asc'
     ): Builder {
         $sortBy = $sortBy ?? 'created_at';
         $sortDirection = strtolower(
-            $sortDirection ?? 'desc'
+            $sortDirection ?? 'asc'
         ) === 'asc' ? 'asc' : 'desc';
 
         return match ($sortBy) {

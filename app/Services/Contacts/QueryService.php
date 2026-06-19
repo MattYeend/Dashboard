@@ -20,11 +20,17 @@ class QueryService
 
     /**
      * Get paginated contacts with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return array<string, mixed>
      */
     public function getPaginated(array $filters = []): array
     {
         $query = $this->buildQuery($filters);
-        $paginated = $this->paginate($query, $filters['per_page'] ?? 15);
+        $paginated = $this->paginate(
+            $query,
+            min((int) ($filters['per_page'] ?? 15), 100)
+        );
 
         return array_merge(
             $paginated,
@@ -35,6 +41,8 @@ class QueryService
 
     /**
      * Get a single contact by ID.
+     *
+     * @return array<string, mixed>
      */
     public function getById(int $id, bool $withTrashed = false): array
     {
@@ -49,10 +57,15 @@ class QueryService
 
     /**
      * Build the base query with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return Builder<Contact>
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Contact::query();
+        $query = Contact::query()
+            ->with(['creator', 'updater', 'deleter', 'restorer']);
+
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
@@ -60,6 +73,9 @@ class QueryService
 
     /**
      * Paginate the query and return as plain array.
+     *
+     * @param  Builder<Contact>  $query
+     * @return array<string, mixed>
      */
     protected function paginate(Builder $query, int $perPage): array
     {
@@ -83,6 +99,8 @@ class QueryService
 
     /**
      * Get user permissions for the authenticated user.
+     *
+     * @return array<string, mixed>
      */
     protected function getPermissions(): array
     {
@@ -103,6 +121,8 @@ class QueryService
 
     /**
      * Get base data for the view.
+     *
+     * @return array<string, mixed>
      */
     protected function baseData(): array
     {
@@ -115,11 +135,10 @@ class QueryService
     /**
      * Find a contact by ID with optional trashed records.
      */
-    private function findContact(
-        int $id,
-        bool $withTrashed = false
-    ): Contact {
-        $query = Contact::query();
+    private function findContact(int $id, bool $withTrashed = false): Contact
+    {
+        $query = Contact::query()
+            ->with(['creator', 'updater', 'deleter', 'restorer']);
 
         if ($withTrashed) {
             $query->withTrashed();
@@ -129,7 +148,11 @@ class QueryService
     }
 
     /**
-     * Apply sorting to the query.
+     * Apply trash filtering and sorting to the query.
+     *
+     * @param  Builder<Contact>  $query
+     * @param  array<string, mixed>  $filters
+     * @return Builder<Contact>
      */
     private function applySorting(Builder $query, array $filters): Builder
     {
@@ -140,8 +163,8 @@ class QueryService
 
         return $this->sortingService->applySorting(
             $query,
-            $filters['sort_by'] ?? 'created_at',
-            $filters['sort_direction'] ?? 'desc'
+            $filters['sort_by'] ?? 'email',
+            $filters['sort_direction'] ?? 'asc'
         );
     }
 }

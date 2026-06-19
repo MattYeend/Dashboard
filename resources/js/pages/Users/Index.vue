@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
-import { Link } from '@inertiajs/vue3';
+import { router, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import EmptyRow from '@/components/table/EmptyRow.vue';
 import FilterBar from '@/components/table/FilterBar.vue';
@@ -35,8 +34,8 @@ const props = defineProps<Props>();
 const filters = ref({
     search: '',
     trashed: '',
-    sort_by: 'created_at',
-    sort_direction: 'desc',
+    sort_by: 'name',
+    sort_direction: 'asc',
 });
 
 const filterFields = [

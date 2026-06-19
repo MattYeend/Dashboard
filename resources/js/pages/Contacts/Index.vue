@@ -34,8 +34,8 @@ const props = defineProps<Props>();
 const filters = ref({
     search: '',
     trashed: '',
-    sort_by: 'created_at',
-    sort_direction: 'desc',
+    sort_by: 'email',
+    sort_direction: 'asc',
 });
 
 const filterFields = [

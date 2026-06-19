@@ -19,11 +19,17 @@ class QueryService
 
     /**
      * Get paginated users with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return array<string, mixed>
      */
     public function getPaginated(array $filters = []): array
     {
         $query = $this->buildQuery($filters);
-        $paginated = $this->paginate($query, $filters['per_page'] ?? 15);
+        $paginated = $this->paginate(
+            $query,
+            min((int) ($filters['per_page'] ?? 15), 100)
+        );
 
         return array_merge(
             $paginated,
@@ -34,6 +40,8 @@ class QueryService
 
     /**
      * Get a single user by ID.
+     *
+     * @return array<string, mixed>
      */
     public function getById(int $id, bool $withTrashed = false): array
     {
@@ -48,10 +56,15 @@ class QueryService
 
     /**
      * Build the base query with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return Builder<User>
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = User::query();
+        $query = User::query()
+            ->with(['creator', 'updater', 'deleter', 'restorer']);
+
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
@@ -59,6 +72,9 @@ class QueryService
 
     /**
      * Paginate the query and return as plain array.
+     *
+     * @param  Builder<User>  $query
+     * @return array<string, mixed>
      */
     protected function paginate(Builder $query, int $perPage): array
     {
@@ -82,6 +98,8 @@ class QueryService
 
     /**
      * Get user permissions for the authenticated user.
+     *
+     * @return array<string, mixed>
      */
     protected function getPermissions(): array
     {
@@ -102,6 +120,8 @@ class QueryService
 
     /**
      * Get base data for the view.
+     *
+     * @return array<string, mixed>
      */
     protected function baseData(): array
     {
@@ -114,11 +134,10 @@ class QueryService
     /**
      * Find a user by ID with optional trashed records.
      */
-    private function findUser(
-        int $id,
-        bool $withTrashed = false
-    ): User {
-        $query = User::query();
+    private function findUser(int $id, bool $withTrashed = false): User
+    {
+        $query = User::query()
+            ->with(['creator', 'updater', 'deleter', 'restorer']);
 
         if ($withTrashed) {
             $query->withTrashed();
@@ -128,7 +147,11 @@ class QueryService
     }
 
     /**
-     * Apply sorting to the query.
+     * Apply trash filtering and sorting to the query.
+     *
+     * @param  Builder<User>  $query
+     * @param  array<string, mixed>  $filters
+     * @return Builder<User>
      */
     private function applySorting(Builder $query, array $filters): Builder
     {
@@ -139,8 +162,8 @@ class QueryService
 
         return $this->sortingService->applySorting(
             $query,
-            $filters['sort_by'] ?? 'created_at',
-            $filters['sort_direction'] ?? 'desc'
+            $filters['sort_by'] ?? 'name',
+            $filters['sort_direction'] ?? 'asc'
         );
     }
 }

@@ -23,11 +23,15 @@ class QueryService
      * Get paginated tasks with filters.
      *
      * @param  array<string, mixed>  $filters
+     * @return array<string, mixed>
      */
     public function getPaginated(array $filters = []): array
     {
         $query = $this->buildQuery($filters);
-        $paginated = $this->paginate($query, $filters['per_page'] ?? 15);
+        $paginated = $this->paginate(
+            $query,
+            min((int) ($filters['per_page'] ?? 15), 100)
+        );
 
         return array_merge(
             $paginated,
@@ -38,6 +42,8 @@ class QueryService
 
     /**
      * Get a single task by ID.
+     *
+     * @return array<string, mixed>
      */
     public function getById(int $id, bool $withTrashed = false): array
     {
@@ -81,6 +87,7 @@ class QueryService
      * Paginate the query and return as a plain array.
      *
      * @param  Builder<Task>  $query
+     * @return array<string, mixed>
      */
     protected function paginate(Builder $query, int $perPage): array
     {
@@ -167,8 +174,8 @@ class QueryService
 
         return $this->sortingService->applySorting(
             $query,
-            $filters['sort_by'] ?? 'created_at',
-            $filters['sort_direction'] ?? 'desc'
+            $filters['sort_by'] ?? 'due_date',
+            $filters['sort_direction'] ?? 'asc'
         );
     }
 }
