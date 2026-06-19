@@ -64,7 +64,7 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = Contact::query()
-            ->with(['creator', 'updater', 'deleter', 'restorer']);
+            ->with(['contactable', 'creator', 'updater', 'deleter', 'restorer']);
 
         $query = $this->filterService->applyAll($query, $filters);
 
@@ -83,7 +83,10 @@ class QueryService
 
         return [
             'contacts' => [
-                'data' => $paginator->items(),
+                'data' => array_map(
+                    fn (Contact $contact) => $this->formatterService->format($contact),
+                    $paginator->items()
+                ),
                 'links' => $paginator->linkCollection()->toArray(),
                 'meta' => [
                     'current_page' => $paginator->currentPage(),
@@ -138,7 +141,7 @@ class QueryService
     private function findContact(int $id, bool $withTrashed = false): Contact
     {
         $query = Contact::query()
-            ->with(['creator', 'updater', 'deleter', 'restorer']);
+            ->with(['contactable', 'creator', 'updater', 'deleter', 'restorer']);
 
         if ($withTrashed) {
             $query->withTrashed();

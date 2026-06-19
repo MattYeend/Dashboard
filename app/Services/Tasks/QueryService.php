@@ -95,7 +95,10 @@ class QueryService
 
         return [
             'tasks' => [
-                'data' => $paginator->items(),
+                'data' => array_map(
+                    fn (Task $task) => $this->formatterService->format($task),
+                    $paginator->items()
+                ),
                 'links' => $paginator->linkCollection()->toArray(),
                 'meta' => [
                     'current_page' => $paginator->currentPage(),

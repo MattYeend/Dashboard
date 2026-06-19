@@ -31,11 +31,13 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const urlParams = new URLSearchParams(window.location.search);
+
 const filters = ref({
-    search: '',
-    trashed: '',
-    sort_by: 'name',
-    sort_direction: 'asc',
+    search: urlParams.get('search') ?? '',
+    trashed: urlParams.get('trashed') ?? '',
+    sort_by: urlParams.get('sort_by') ?? 'name',
+    sort_direction: urlParams.get('sort_direction') ?? 'asc',
 });
 
 const filterFields = [

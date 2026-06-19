@@ -67,6 +67,8 @@ export interface Contact {
     updater?: { name: string };
     deleter?: { name: string };
     restorer?: { name: string };
+    contactable_type_label: string | null;
+    contactable_name: string | null;
 }
 
 export interface UserOption {

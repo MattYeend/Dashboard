@@ -31,11 +31,13 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const urlParams = new URLSearchParams(window.location.search);
+
 const filters = ref({
-    search: '',
-    trashed: '',
-    sort_by: 'email',
-    sort_direction: 'asc',
+    search: urlParams.get('search') ?? '',
+    trashed: urlParams.get('trashed') ?? '',
+    sort_by: urlParams.get('sort_by') ?? 'email',
+    sort_direction: urlParams.get('sort_direction') ?? 'asc',
 });
 
 const filterFields = [
@@ -115,6 +117,16 @@ function destroy(id: number): void {
                             <th
                                 class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
+                                Type<!-- ADD column -->
+                            </th>
+                            <th
+                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                            >
+                                Contact Of<!-- ADD column -->
+                            </th>
+                            <th
+                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                            >
                                 Email
                             </th>
                             <th
@@ -140,13 +152,25 @@ function destroy(id: number): void {
                     <tbody class="divide-grey-200 divide-y">
                         <EmptyRow
                             v-if="!contacts.data?.length"
-                            :colspan="5"
+                            :colspan="7"
                             message="No contacts found."
                         />
                         <tr
                             v-for="contact in contacts.data ?? []"
                             :key="contact.id"
                         >
+                            <td
+                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                            >
+                                {{ contact.contactable_type_label ?? '—'
+                                }}<!-- ADD -->
+                            </td>
+                            <td
+                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                            >
+                                {{ contact.contactable_name ?? '—'
+                                }}<!-- ADD -->
+                            </td>
                             <td
                                 class="text-grey-900 px-6 py-4 text-sm whitespace-nowrap"
                             >

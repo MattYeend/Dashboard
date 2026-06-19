@@ -82,7 +82,10 @@ class QueryService
 
         return [
             'users' => [
-                'data' => $paginator->items(),
+                'data' => array_map(
+                    fn (User $user) => $this->formatterService->format($user),
+                    $paginator->items()
+                ),
                 'links' => $paginator->linkCollection()->toArray(),
                 'meta' => [
                     'current_page' => $paginator->currentPage(),

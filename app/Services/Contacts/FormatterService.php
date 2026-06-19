@@ -32,6 +32,15 @@ class FormatterService
             'updater' => $contact->updater ? ['id' => $contact->updater->id, 'name' => $contact->updater->name] : null,
             'deleter' => $contact->deleter ? ['id' => $contact->deleter->id, 'name' => $contact->deleter->name] : null,
             'restorer' => $contact->restorer ? ['id' => $contact->restorer->id, 'name' => $contact->restorer->name] : null,
+            'contactable_type_label' => $contact->contactable_type
+                ? class_basename($contact->contactable_type)
+                : null,
+
+            'contactable_name' => $contact->contactable
+                ? ($contact->contactable->name
+                    ?? $contact->contactable->title
+                    ?? '#'.$contact->contactable->id)
+                : null,
         ];
     }
 }
