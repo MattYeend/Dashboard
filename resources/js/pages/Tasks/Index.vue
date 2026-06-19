@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { Link, router } from '@inertiajs/vue3';
+import { router, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import EmptyRow from '@/components/table/EmptyRow.vue';
+import FilterBar from '@/components/table/FilterBar.vue';
+import IndexHeader from '@/components/table/IndexHeader.vue';
+import Pagination from '@/components/table/Pagination.vue';
 import {
     index as tasksIndex,
     create as tasksCreate,
@@ -8,20 +12,24 @@ import {
     edit as tasksEdit,
     destroy as tasksDestroy,
 } from '@/routes/tasks';
-import type { Task, Pagination, PermissionsMeta } from '@/types';
+import type {
+    Task,
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+} from '@/types';
 
 interface Props {
     tasks: {
         data: Task[];
         links: Array<{ url: string | null; label: string; active: boolean }>;
-        meta: Pagination;
+        meta: PaginationMeta;
     };
     permissions_meta: PermissionsMeta;
     sort_fields: Record<string, string>;
     trash_filters: Record<string, string>;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const filters = ref({
     search: '',
@@ -29,6 +37,44 @@ const filters = ref({
     sort_by: 'created_at',
     sort_direction: 'desc',
 });
+
+const filterFields = [
+    {
+        key: 'search',
+        type: 'text' as const,
+        placeholder: 'Search tasks…',
+    },
+    {
+        key: 'trashed',
+        type: 'select' as const,
+        get options() {
+            return Object.entries(props.trash_filters).map(
+                ([value, label]) => ({
+                    value,
+                    label,
+                }),
+            );
+        },
+    },
+    {
+        key: 'sort_by',
+        type: 'select' as const,
+        get options() {
+            return Object.entries(props.sort_fields).map(([value, label]) => ({
+                value,
+                label: `Sort by ${label}`,
+            }));
+        },
+    },
+    {
+        key: 'sort_direction',
+        type: 'select' as const,
+        options: [
+            { value: 'asc', label: 'Ascending' },
+            { value: 'desc', label: 'Descending' },
+        ],
+    },
+];
 
 function applyFilters(): void {
     router.get(tasksIndex.url(), filters.value, {
@@ -59,60 +105,18 @@ function formatDate(value: string | null): string {
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="items-centre mb-4 flex justify-between">
-                <h1 class="text-grey-900 text-2xl font-semibold">Tasks</h1>
-                <Link
-                    v-if="permissions_meta.can_create"
-                    :href="tasksCreate.url()"
-                    class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
-                >
-                    Add Task
-                </Link>
-            </div>
+            <IndexHeader
+                title="Tasks"
+                :create-href="tasksCreate.url()"
+                create-label="Add Task"
+                :can-create="permissions_meta.can_create"
+            />
 
-            <div class="mb-4 flex flex-wrap gap-2">
-                <input
-                    v-model="filters.search"
-                    type="text"
-                    class="rounded-md border px-3 py-1.5 text-sm"
-                    placeholder="Search tasks…"
-                    @input="applyFilters"
-                />
-                <select
-                    v-model="filters.trashed"
-                    class="rounded-md border px-3 py-1.5 text-sm"
-                    @change="applyFilters"
-                >
-                    <option
-                        v-for="(label, value) in trash_filters"
-                        :key="value"
-                        :value="value"
-                    >
-                        {{ label }}
-                    </option>
-                </select>
-                <select
-                    v-model="filters.sort_by"
-                    class="rounded-md border px-3 py-1.5 text-sm"
-                    @change="applyFilters"
-                >
-                    <option
-                        v-for="(label, value) in sort_fields"
-                        :key="value"
-                        :value="value"
-                    >
-                        Sort by {{ label }}
-                    </option>
-                </select>
-                <select
-                    v-model="filters.sort_direction"
-                    class="rounded-md border px-3 py-1.5 text-sm"
-                    @change="applyFilters"
-                >
-                    <option value="asc">Ascending</option>
-                    <option value="desc">Descending</option>
-                </select>
-            </div>
+            <FilterBar
+                v-model="filters"
+                :fields="filterFields"
+                @change="applyFilters"
+            />
 
             <div
                 class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
@@ -146,14 +150,11 @@ function formatDate(value: string | null): string {
                         </tr>
                     </thead>
                     <tbody class="divide-grey-200 divide-y">
-                        <tr v-if="!tasks.data?.length">
-                            <td
-                                colspan="5"
-                                class="text-centre text-grey-500 px-6 py-4 text-sm"
-                            >
-                                No tasks found.
-                            </td>
-                        </tr>
+                        <EmptyRow
+                            v-if="!tasks.data?.length"
+                            :colspan="5"
+                            message="No tasks found."
+                        />
                         <tr v-for="task in tasks.data ?? []" :key="task.id">
                             <td
                                 class="text-grey-900 px-6 py-4 text-sm font-medium whitespace-nowrap"
@@ -217,32 +218,11 @@ function formatDate(value: string | null): string {
                 </table>
             </div>
 
-            <div
-                v-if="tasks.meta.last_page > 1"
-                class="mt-4 flex items-center justify-between"
-            >
-                <p class="text-grey-500 text-sm">
-                    Showing {{ tasks.meta.from ?? 0 }} to
-                    {{ tasks.meta.to ?? 0 }} of {{ tasks.meta.total }} tasks
-                </p>
-                <div class="flex gap-x-1">
-                    <Link
-                        v-for="link in tasks.links"
-                        :key="link.label"
-                        :href="link.url ?? ''"
-                        :class="[
-                            'rounded px-3 py-1 text-sm',
-                            link.url === null
-                                ? 'pointer-events-none opacity-40'
-                                : 'hover:bg-accent',
-                            link.active ? 'font-semibold' : '',
-                        ]"
-                        preserve-scroll
-                    >
-                        <span v-html="link.label" />
-                    </Link>
-                </div>
-            </div>
+            <Pagination
+                :meta="tasks.meta"
+                :links="tasks.links"
+                resource-label="tasks"
+            />
         </div>
     </div>
 </template>
