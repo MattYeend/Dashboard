@@ -1,25 +1,87 @@
 <script setup lang="ts">
-import { Link, router } from '@inertiajs/vue3';
+import { router, Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import EmptyRow from '@/components/table/EmptyRow.vue';
+import FilterBar from '@/components/table/FilterBar.vue';
+import IndexHeader from '@/components/table/IndexHeader.vue';
+import Pagination from '@/components/table/Pagination.vue';
 import {
+    index as contactsIndex,
     show as contactsShow,
     create as contactsCreate,
     edit as contactsEdit,
     destroy as contactsDestroy,
 } from '@/routes/contacts';
-import type { Pagination, PermissionsMeta, Contact } from '@/types';
+import type {
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+    Contact,
+} from '@/types';
 
 interface Props {
     contacts: {
         data: Contact[];
         links: Array<{ url: string | null; label: string; active: boolean }>;
-        meta: Pagination;
+        meta: PaginationMeta;
     };
     permissions_meta: PermissionsMeta;
-    sort_fields: string[];
-    trash_filters: string[];
+    sort_fields: Record<string, string>;
+    trash_filters: Record<string, string>;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const filters = ref({
+    search: '',
+    trashed: '',
+    sort_by: 'created_at',
+    sort_direction: 'desc',
+});
+
+const filterFields = [
+    {
+        key: 'search',
+        type: 'text' as const,
+        placeholder: 'Search contacts…',
+    },
+    {
+        key: 'trashed',
+        type: 'select' as const,
+        get options() {
+            return Object.entries(props.trash_filters).map(
+                ([value, label]) => ({
+                    value,
+                    label,
+                }),
+            );
+        },
+    },
+    {
+        key: 'sort_by',
+        type: 'select' as const,
+        get options() {
+            return Object.entries(props.sort_fields).map(([value, label]) => ({
+                value,
+                label: `Sort by ${label}`,
+            }));
+        },
+    },
+    {
+        key: 'sort_direction',
+        type: 'select' as const,
+        options: [
+            { value: 'asc', label: 'Ascending' },
+            { value: 'desc', label: 'Descending' },
+        ],
+    },
+];
+
+function applyFilters(): void {
+    router.get(contactsIndex.url(), filters.value, {
+        preserveState: true,
+        replace: true,
+    });
+}
 
 function destroy(id: number): void {
     if (confirm('Are you sure you want to delete this contact?')) {
@@ -31,15 +93,18 @@ function destroy(id: number): void {
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="items-centre mb-4 flex justify-between">
-                <h1 class="text-grey-900 text-2xl font-semibold">Contacts</h1>
-                <Link
-                    :href="contactsCreate.url()"
-                    class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
-                >
-                    Add Contact
-                </Link>
-            </div>
+            <IndexHeader
+                title="Contacts"
+                :create-href="contactsCreate.url()"
+                create-label="Add Contact"
+                :can-create="permissions_meta.can_create"
+            />
+
+            <FilterBar
+                v-model="filters"
+                :fields="filterFields"
+                @change="applyFilters"
+            />
 
             <div
                 class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
@@ -73,6 +138,11 @@ function destroy(id: number): void {
                         </tr>
                     </thead>
                     <tbody class="divide-grey-200 divide-y">
+                        <EmptyRow
+                            v-if="!contacts.data?.length"
+                            :colspan="5"
+                            message="No contacts found."
+                        />
                         <tr
                             v-for="contact in contacts.data ?? []"
                             :key="contact.id"
@@ -121,44 +191,15 @@ function destroy(id: number): void {
                                 </button>
                             </td>
                         </tr>
-                        <tr v-if="!contacts.data?.length">
-                            <td
-                                colspan="5"
-                                class="text-centre text-grey-500 px-6 py-4 text-sm"
-                            >
-                                No contacts found.
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
-            <div
-                v-if="contacts.meta.last_page > 1"
-                class="mt-4 flex items-center justify-between"
-            >
-                <p class="text-grey-500 text-sm">
-                    Showing {{ contacts.meta.from ?? 0 }} to
-                    {{ contacts.meta.to ?? 0 }} of
-                    {{ contacts.meta.total }} contacts
-                </p>
-                <div class="flex gap-x-1">
-                    <Link
-                        v-for="link in contacts.links"
-                        :key="link.label"
-                        :href="link.url ?? ''"
-                        :class="[
-                            'rounded px-3 py-1 text-sm',
-                            link.url === null
-                                ? 'pointer-events-none opacity-40'
-                                : 'hover:bg-accent',
-                            link.active ? 'font-semibold' : '',
-                        ]"
-                        preserve-scroll
-                    >
-                        <span v-html="link.label" />
-                    </Link>
-                </div>
-            </div>
+
+            <Pagination
+                :meta="contacts.meta"
+                :links="contacts.links"
+                resource-label="contacts"
+            />
         </div>
     </div>
 </template>
