@@ -3,6 +3,7 @@
 namespace App\Services\Users;
 
 use App\Models\User;
+use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
 
 class QueryService

@@ -5,6 +5,7 @@ namespace App\Services\Tasks;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
+use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
 
 class QueryService

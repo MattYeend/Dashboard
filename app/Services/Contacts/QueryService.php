@@ -4,6 +4,7 @@ namespace App\Services\Contacts;
 
 use App\Models\Contact;
 use App\Models\User;
+use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
 
 class QueryService
