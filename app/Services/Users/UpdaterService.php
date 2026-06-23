@@ -46,7 +46,12 @@ class UpdaterService
     protected function updateUser(User $user, array $data, int $updatedBy): void
     {
         $userData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $displayRole = $userData['role'] ?? null;
 
         $user->update($userData);
+
+        if ($displayRole !== null) {
+            $user->assignApplicationRole($displayRole);
+        }
     }
 }

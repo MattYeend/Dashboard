@@ -15,7 +15,7 @@ uses(
 beforeEach(function () {
     setPermissionsTeamId(1);
 
-    Role::firstOrCreate(['name' => 'admin']);
+    Role::firstOrCreate(['name' => 'Admin']);
     Role::firstOrCreate(['name' => 'Super Admin']);
     Role::firstOrCreate(['name' => 'User']);
 });
