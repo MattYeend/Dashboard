@@ -11,7 +11,9 @@ class UserRoleResolverService
      */
     public function hasUserRole(User $user): bool
     {
-        return $user->is_user || $user->hasRole('User');
+        return $user->hasRole('User')
+            || $this->hasAdminRole($user)
+            || $this->hasSuperAdminRole($user);
     }
 
     /**
@@ -19,7 +21,7 @@ class UserRoleResolverService
      */
     public function hasAdminRole(User $user): bool
     {
-        return $user->is_admin || $user->hasRole('Admin');
+        return $user->hasRole('Admin') || $this->hasSuperAdminRole($user);
     }
 
     /**
@@ -27,6 +29,6 @@ class UserRoleResolverService
      */
     public function hasSuperAdminRole(User $user): bool
     {
-        return $user->is_super_admin || $user->hasRole('Super Admin');
+        return $user->hasRole('Super Admin');
     }
 }
