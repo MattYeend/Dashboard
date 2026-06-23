@@ -37,6 +37,6 @@ class DataPreparationService
             'text_colour' => $data['text_colour'] ?? null,
             'meta' => $data['meta'] ?? null,
             'updated_by' => $updatedBy,
-        ], fn (mixed $value): bool => $value !== null);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

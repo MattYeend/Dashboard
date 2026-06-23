@@ -41,6 +41,6 @@ class DataPreparationService
             'status_id' => $data['status_id'] ?? null,
             'meta' => $data['meta'] ?? null,
             'updated_by' => $updatedBy,
-        ], fn (mixed $value): bool => $value !== null);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }
