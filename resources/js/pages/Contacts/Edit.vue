@@ -16,7 +16,7 @@ const props = defineProps<Props>();
 
 const form = useForm({
     contactable_type: props.contact.contactable_type,
-    contactable_id: props.contact.contactable_id,
+    contactable_id: props.contact.contactable_id as number | null,
 
     phone: props.contact.phone ?? '',
     email: props.contact.email ?? '',
