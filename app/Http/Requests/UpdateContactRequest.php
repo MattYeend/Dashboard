@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use App\Services\Contacts\ContactableTypeRegistryService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Http\FormRequest;
@@ -74,7 +75,9 @@ class UpdateContactRequest extends FormRequest
             'sometimes',
             'required',
             'string',
-            Rule::in(array_keys(Relation::morphMap())),
+            Rule::in(array_keys(
+            app(ContactableTypeRegistryService::class)->all()
+        )),
         ];
     }
 

@@ -33,6 +33,7 @@ class FormatterService
             'updated_at' => $contact->updated_at,
             'deleted_at' => $contact->deleted_at,
             'restored_at' => $contact->restored_at,
+            'creator' => $contact->creator ? ['id' => $contact->creator->id, 'name' => $contact->creator->name] : null,
             'updater' => $contact->updater ? ['id' => $contact->updater->id, 'name' => $contact->updater->name] : null,
             'deleter' => $contact->deleter ? ['id' => $contact->deleter->id, 'name' => $contact->deleter->name] : null,
             'restorer' => $contact->restorer ? ['id' => $contact->restorer->id, 'name' => $contact->restorer->name] : null,

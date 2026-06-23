@@ -2,6 +2,7 @@
 import type { InertiaFormProps } from '@inertiajs/vue3';
 import ContactAddressDetailsForm from '@/pages/Contacts/components/ContactAddressDetailsForm.vue';
 import ContactBasicDetailsForm from '@/pages/Contacts/components/ContactBasicDetailsForm.vue';
+import ContactTypeForm from '@/pages/Contacts/components/ContactTypeForm.vue';
 import { index as contactsIndex } from '@/routes/contacts';
 
 interface ContactFormData {
@@ -60,45 +61,14 @@ const contactableId = defineModel<number | null>('contactableId', {
             :errors="errors"
         />
 
-        <!-- TYPE -->
-        <div>
-            <label class="block text-sm font-medium"> Contact type </label>
-
-            <select v-model="contactableType" required>
-                <option value="" disabled>Select type</option>
-                <option
-                    v-for="type in contactableTypes"
-                    :key="type.value"
-                    :value="type.value"
-                >
-                    {{ type.label }}
-                </option>
-            </select>
-            <p v-if="errors.contactable_type" class="text-red-600">
-                {{ errors.contactable_type }}
-            </p>
-        </div>
-
-        <!-- OWNER -->
-        <div>
-            <label class="block text-sm font-medium"> Contact owner </label>
-
-            <select v-model="contactableId" :disabled="!contactableType">
-                <option :value="null" disabled>Select owner</option>
-
-                <option
-                    v-for="option in contactableOptions"
-                    :key="option.value"
-                    :value="option.value"
-                >
-                    {{ option.label }}
-                </option>
-            </select>
-
-            <p v-if="errors.contactable_id" class="text-red-600">
-                {{ errors.contactable_id }}
-            </p>
-        </div>
+        <!-- Type & Owner -->
+        <ContactTypeForm
+            v-model:contactable-type="contactableType"
+            v-model:contactable-id="contactableId"
+            :contactable-types="contactableTypes"
+            :contactable-options="contactableOptions"
+            :errors="errors"
+        />
 
         <!-- ACTIONS -->
         <div class="flex justify-end space-x-3">

@@ -98,9 +98,6 @@ class ContactableTypeRegistryService
             }
         }
 
-        // No match in the allow-list — return empty rather than the raw
-        // class string, so the <select> shows "no type selected" instead
-        // of a value that can never match any <option>.
         return '';
     }
 
