@@ -253,6 +253,9 @@ class ContactController extends Controller
         return redirect()->route('contacts.index');
     }
 
+    /**
+ * Get the list of selectable "owner" options for a given contactable type.
+ */
     public function contactableOptions(Request $request): JsonResponse
     {
         $type = $request->query('type', '');

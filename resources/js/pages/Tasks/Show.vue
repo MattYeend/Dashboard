@@ -3,7 +3,11 @@ import { Link, router } from '@inertiajs/vue3';
 import TaskAssignmentDetails from '@/pages/Tasks/components/TaskAssignmentDetails.vue';
 import TaskBasicDetails from '@/pages/Tasks/components/TaskBasicDetails.vue';
 import TaskDateDetails from '@/pages/Tasks/components/TaskDateDetails.vue';
-import { edit as tasksEdit, destroy as tasksDestroy } from '@/routes/tasks';
+import {
+    edit as tasksEdit,
+    destroy as tasksDestroy,
+    index as tasksIndex,
+} from '@/routes/tasks';
 import type { Task, PermissionsMeta } from '@/types';
 
 interface Props {
@@ -32,6 +36,12 @@ function destroy(): void {
                     {{ task.title }}
                 </h1>
                 <div class="space-x-2">
+                    <Link
+                        :href="tasksIndex.url()"
+                        class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium"
+                    >
+                        Back
+                    </Link>
                     <Link
                         :href="tasksEdit.url(task.id)"
                         class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium"

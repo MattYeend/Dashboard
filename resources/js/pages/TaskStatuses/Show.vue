@@ -3,6 +3,7 @@ import { Link, router } from '@inertiajs/vue3';
 import {
     edit as taskStatusesEdit,
     destroy as taskStatusesDestroy,
+    index as taskStatusIndex,
 } from '@/routes/task-statuses';
 import type { TaskStatus, PermissionsMeta } from '@/types';
 import TaskStatusAuditDetails from './components/TaskStatusAuditDetails.vue';
@@ -35,6 +36,12 @@ function destroy(): void {
                     {{ taskStatus.title }}
                 </h1>
                 <div class="space-x-2">
+                    <Link
+                        :href="taskStatusIndex.url()"
+                        class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium"
+                    >
+                        Back
+                    </Link>
                     <Link
                         :href="taskStatusesEdit.url(taskStatus.id)"
                         class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium"

@@ -6,6 +6,7 @@ import ContactBasicDetails from '@/pages/Contacts/components/ContactBasicDetails
 import {
     edit as contactsEdit,
     destroy as contactsDestroy,
+    index as contactsIndex,
 } from '@/routes/contacts';
 import type { Contact } from '@/types';
 
@@ -28,6 +29,12 @@ function destroy(): void {
             <div class="items-centre mb-6 flex justify-between">
                 <h1 class="text-grey-900 text-2xl font-semibold">Contact</h1>
                 <div class="space-x-2">
+                    <Link
+                        :href="contactsIndex.url()"
+                        class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium"
+                    >
+                        Back
+                    </Link>
                     <Link
                         :href="contactsEdit.url(props.contact.id)"
                         class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium"

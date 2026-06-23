@@ -195,10 +195,6 @@ class StoreContactRequest extends FormRequest
 
     /**
      * Perform additional validation after the standard rules have passed.
-     *
-     * When the contact owner type is "user", this ensures the supplied
-     * contactable_id references an existing User record. If the user
-     * cannot be found, a validation error is added to the contactable_id field.
      */
     public function after(): array
     {

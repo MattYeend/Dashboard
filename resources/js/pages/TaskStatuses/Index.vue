@@ -172,13 +172,11 @@ function destroy(id: number): void {
                             >
                                 <Link
                                     :href="taskStatusesShow.url(status.id)"
-                                    class="text-indigo-600 hover:text-indigo-900"
                                 >
                                     View
                                 </Link>
                                 <Link
                                     :href="taskStatusesEdit.url(status.id)"
-                                    class="text-indigo-600 hover:text-indigo-900"
                                 >
                                     Edit
                                 </Link>

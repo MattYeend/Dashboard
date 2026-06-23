@@ -122,7 +122,7 @@ function destroy(id: number): void {
                             <th
                                 class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
-                                Contact Of<!-- ADD column -->
+                                Contact Of
                             </th>
                             <th
                                 class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
@@ -162,14 +162,12 @@ function destroy(id: number): void {
                             <td
                                 class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
                             >
-                                {{ contact.contactable_type_label ?? '—'
-                                }}<!-- ADD -->
+                                {{ contact.contactable_type_label ?? '—' }}
                             </td>
                             <td
                                 class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
                             >
-                                {{ contact.contactable_name ?? '—'
-                                }}<!-- ADD -->
+                                {{ contact.contactable_name ?? '—' }}
                             </td>
                             <td
                                 class="text-grey-900 px-6 py-4 text-sm whitespace-nowrap"
@@ -196,13 +194,11 @@ function destroy(id: number): void {
                             >
                                 <Link
                                     :href="contactsShow.url(contact.id)"
-                                    class="text-indigo-600 hover:text-indigo-900"
                                 >
                                     View
                                 </Link>
                                 <Link
                                     :href="contactsEdit.url(contact.id)"
-                                    class="text-indigo-600 hover:text-indigo-900"
                                 >
                                     Edit
                                 </Link>

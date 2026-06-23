@@ -183,13 +183,11 @@ function formatDate(value: string | null): string {
                             >
                                 <Link
                                     :href="usersShow.url(user.id)"
-                                    class="text-indigo-600 hover:text-indigo-900"
                                 >
                                     View
                                 </Link>
                                 <Link
                                     :href="usersEdit.url(user.id)"
-                                    class="text-indigo-600 hover:text-indigo-900"
                                 >
                                     Edit
                                 </Link>

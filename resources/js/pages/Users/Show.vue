@@ -3,7 +3,11 @@ import { Link, router } from '@inertiajs/vue3';
 import UserAuditDetails from '@/pages/Users/components/UserAuditDetails.vue';
 import UserBasicDetails from '@/pages/Users/components/UserBasicDetails.vue';
 import UserRoleDetails from '@/pages/Users/components/UserRoleDetails.vue';
-import { edit as usersEdit, destroy as usersDestroy } from '@/routes/users';
+import {
+    edit as usersEdit,
+    destroy as usersDestroy,
+    index as usersIndex,
+} from '@/routes/users';
 import type { User } from '@/types';
 
 interface Props {
@@ -31,6 +35,12 @@ function destroy(): void {
                     {{ user.name }}
                 </h1>
                 <div class="space-x-2">
+                    <Link
+                        :href="usersIndex.url()"
+                        class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium"
+                    >
+                        Back
+                    </Link>
                     <Link
                         :href="usersEdit.url(user.id)"
                         class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium"

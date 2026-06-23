@@ -13,7 +13,6 @@ class FormatterService
     /**
      * Format a single contact with all data.
      *
-     *
      * @return array<string, mixed>
      */
     public function format(Contact $contact): array
