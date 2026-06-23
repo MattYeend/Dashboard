@@ -192,14 +192,10 @@ function destroy(id: number): void {
                             <td
                                 class="space-x-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap"
                             >
-                                <Link
-                                    :href="contactsShow.url(contact.id)"
-                                >
+                                <Link :href="contactsShow.url(contact.id)">
                                     View
                                 </Link>
-                                <Link
-                                    :href="contactsEdit.url(contact.id)"
-                                >
+                                <Link :href="contactsEdit.url(contact.id)">
                                     Edit
                                 </Link>
                                 <button

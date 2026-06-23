@@ -58,20 +58,20 @@ class QueryService
     }
 
     /**
- * Get the data needed to render the "Create Contact" form.
- *
- * @return array<string, mixed>
- */
+     * Get the data needed to render the "Create Contact" form.
+     *
+     * @return array<string, mixed>
+     */
     public function getCreateData(): array
     {
         return $this->baseData();
     }
 
     /**
- * Get the "owner" options for a given contactable type, for the dependent dropdown on the Create/Edit contact form.
- *
- * @return array<int, array{value: int, label: string}>
- */
+     * Get the "owner" options for a given contactable type, for the dependent dropdown on the Create/Edit contact form.
+     *
+     * @return array<int, array{value: int, label: string}>
+     */
     public function getContactableOptions(string $type): array
     {
         return $this->registry->optionsFor($type);

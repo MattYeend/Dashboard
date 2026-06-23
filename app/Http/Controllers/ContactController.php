@@ -254,8 +254,8 @@ class ContactController extends Controller
     }
 
     /**
- * Get the list of selectable "owner" options for a given contactable type.
- */
+     * Get the list of selectable "owner" options for a given contactable type.
+     */
     public function contactableOptions(Request $request): JsonResponse
     {
         $type = $request->query('type', '');

@@ -195,14 +195,10 @@ function formatDate(value: string | null): string {
                             <td
                                 class="space-x-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap"
                             >
-                                <Link
-                                    :href="tasksShow.url(task.id)"
-                                >
+                                <Link :href="tasksShow.url(task.id)">
                                     View
                                 </Link>
-                                <Link
-                                    :href="tasksEdit.url(task.id)"
-                                >
+                                <Link :href="tasksEdit.url(task.id)">
                                     Edit
                                 </Link>
                                 <button

@@ -170,14 +170,10 @@ function destroy(id: number): void {
                             <td
                                 class="space-x-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap"
                             >
-                                <Link
-                                    :href="taskStatusesShow.url(status.id)"
-                                >
+                                <Link :href="taskStatusesShow.url(status.id)">
                                     View
                                 </Link>
-                                <Link
-                                    :href="taskStatusesEdit.url(status.id)"
-                                >
+                                <Link :href="taskStatusesEdit.url(status.id)">
                                     Edit
                                 </Link>
                                 <button
