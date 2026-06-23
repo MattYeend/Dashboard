@@ -33,7 +33,7 @@ class FilterService
      */
     public function applyRole(Builder $query, ?string $role): Builder
     {
-        if ($role === null) {
+        if ($role === null || $role === '') {
             return $query;
         }
 
