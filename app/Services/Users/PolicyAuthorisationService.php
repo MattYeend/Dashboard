@@ -52,9 +52,11 @@ class PolicyAuthorisationService
      */
     public function canView(User $actor, User $target): bool
     {
-        return $this->isAdmin($actor) && $this->activeChecker->isActive(
-            $target
-        );
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -62,9 +64,11 @@ class PolicyAuthorisationService
      */
     public function canUpdate(User $actor, User $target): bool
     {
-        return $this->isAdmin($actor) && $this->activeChecker->isActive(
-            $target
-        );
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -72,9 +76,11 @@ class PolicyAuthorisationService
      */
     public function canDelete(User $actor, User $target): bool
     {
-        return $this->isAdmin($actor) && $this->activeChecker->canBeModified(
-            $target
-        );
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -82,6 +88,10 @@ class PolicyAuthorisationService
      */
     public function canRestore(User $actor, User $target): bool
     {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
         return $this->isAdmin($actor) &&
             $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
@@ -91,10 +101,28 @@ class PolicyAuthorisationService
      */
     public function canForceDelete(User $actor, User $target): bool
     {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
         return $this->activeChecker->canUserPerformAction(
             $actor,
             'restoreOrForceDelete',
             $target
         );
+    }
+
+    /**
+     * Determine whether the target user outranks the acting user.
+     *
+     * A Super Admin cannot be managed by anyone other than another Super Admin.
+     */
+    private function targetOutranksActor(User $actor, User $target): bool
+    {
+        if ($this->roleChecker->isSuperAdmin($actor)) {
+            return false;
+        }
+
+        return $this->roleChecker->isSuperAdmin($target);
     }
 }
