@@ -6,7 +6,7 @@ use App\Models\User;
 // use App\Models\Company;
 use App\Models\Task;
 
-class ContactableTypeRegistry
+class ContactableTypeRegistryService
 {
     public function all(): array
     {
@@ -76,6 +76,20 @@ public function keyForModel(string $modelClass): string
     }
 
     return $modelClass;
+}
+
+/**
+ * Resolve the human-readable label for a fully-qualified model class.
+ */
+public function labelForModel(string $modelClass): ?string
+{
+    foreach ($this->all() as $config) {
+        if ($config['model'] === $modelClass) {
+            return $config['label'];
+        }
+    }
+
+    return null;
 }
 
 /**

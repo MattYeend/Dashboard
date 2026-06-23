@@ -7,15 +7,14 @@ import ContactForm from '@/pages/Contacts/components/ContactForm.vue';
 import { store as contactsStore } from '@/routes/contacts';
 
 interface Props {
-    contactable_types: { value: string; label: string }[];
+    contactableTypes: { value: string; label: string }[];
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const form = useForm({
-    contactable_type: 'user',
+    contactable_type: '',
     contactable_id: null as number | null,
-
     phone: '',
     email: '',
     address: '',
@@ -34,14 +33,20 @@ const contactableOptions = ref<ContactableOption[]>([]);
 watch(
     () => form.contactable_type,
     async (type: string) => {
+        if (!type) {
+            contactableOptions.value = [];
+            form.contactable_id = null;
+            
+            return;
+        }
+
         const res = await axios.get('/contacts/contactable-options', {
             params: { type },
         });
 
         contactableOptions.value = res.data;
         form.contactable_id = null;
-    },
-    { immediate: true }
+    }
 );
 
 function submit(): void {
@@ -60,7 +65,7 @@ function submit(): void {
                 v-model:contactable-type="form.contactable_type"
                 v-model:contactable-id="form.contactable_id"
 
-                :contactable-types="contactable_types"
+                :contactable-types="props.contactableTypes"
                 :contactable-options="contactableOptions"
 
                 v-model:email="form.email"

@@ -8,14 +8,14 @@ import { update as contactsUpdate } from '@/routes/contacts';
 import type { Contact } from '@/types';
 
 interface Props {
-    contact: Contact & { contactable_type_key: string };
+    contact: Contact;
     contactableTypes: { value: string; label: string }[];
 }
 
 const props = defineProps<Props>();
 
 const form = useForm({
-    contactable_type: props.contact.contactable_type_key ?? props.contact.contactable_type,
+    contactable_type: props.contact.contactable_type_key,
     contactable_id: props.contact.contactable_id as number | null,
     phone: props.contact.phone ?? '',
     email: props.contact.email ?? '',
@@ -34,13 +34,17 @@ const contactableOptions = ref<ContactableOption[]>([]);
 
 watch(
     () => form.contactable_type,
-    async (type: string) => {
+    async (type: string, previousType: string | undefined) => {
         const res = await axios.get('/contacts/contactable-options', {
             params: { type },
         });
 
         contactableOptions.value = res.data;
-        form.contactable_id = null;
+
+        // Only reset the owner when the user changes type, not on initial load
+        if (previousType !== undefined) {
+            form.contactable_id = null;
+        }
     },
     { immediate: true }
 );

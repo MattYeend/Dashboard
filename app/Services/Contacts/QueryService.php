@@ -17,7 +17,7 @@ class QueryService
         protected readonly TrashFilterService $trashFilterService,
         protected readonly FilterService $filterService,
         protected readonly FormatterService $formatterService,
-        protected readonly ContactableTypeRegistry $registry,
+        protected readonly ContactableTypeRegistryService $registry,
     ) {}
 
     /**

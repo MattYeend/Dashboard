@@ -48,6 +48,9 @@ export interface Contact {
     id: number;
     contactable_id: number;
     contactable_type: string;
+    contactable_type_key: string;
+    contactable_type_label: string | null;
+    contactable_name: string | null;
     phone: string | null;
     email: string | null;
     address: string | null;
@@ -67,8 +70,6 @@ export interface Contact {
     updater?: { name: string };
     deleter?: { name: string };
     restorer?: { name: string };
-    contactable_type_label: string | null;
-    contactable_name: string | null;
 }
 
 export interface UserOption {

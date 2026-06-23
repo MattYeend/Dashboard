@@ -63,15 +63,19 @@ const contactableId = defineModel<number | null>('contactableId', { required: tr
                 Contact type
             </label>
 
-            <select v-model="contactableType">
-                <option
-                    v-for="type in contactableTypes"
-                    :key="type.value"
-                    :value="type.value"
-                >
-                    {{ type.label }}
-                </option>
-            </select>
+            <select v-model="contactableType" required>
+    <option value="" disabled>Select type</option>
+    <option
+        v-for="type in contactableTypes"
+        :key="type.value"
+        :value="type.value"
+    >
+        {{ type.label }}
+    </option>
+</select>
+<p v-if="errors.contactable_type" class="text-red-600">
+    {{ errors.contactable_type }}
+</p>
         </div>
 
         <!-- OWNER -->
@@ -81,7 +85,7 @@ const contactableId = defineModel<number | null>('contactableId', { required: tr
             </label>
 
             <select v-model.number="contactableId">
-                <option :value="null">Select</option>
+                <option value="" disabled>Select owner</option>
 
                 <option
                     v-for="option in contactableOptions"

@@ -7,7 +7,7 @@ use App\Models\Contact;
 class FormatterService
 {
     public function __construct(
-    private readonly ContactableTypeRegistry $registry,
+    private readonly ContactableTypeRegistryService $registry,
 ) {}
 
     /**
@@ -37,9 +37,8 @@ class FormatterService
             'deleter' => $contact->deleter ? ['id' => $contact->deleter->id, 'name' => $contact->deleter->name] : null,
             'restorer' => $contact->restorer ? ['id' => $contact->restorer->id, 'name' => $contact->restorer->name] : null,
             'contactable_type_label' => $contact->contactable_type
-                ? class_basename($contact->contactable_type)
+                ? ($this->registry->labelForModel($contact->contactable_type) ?? class_basename($contact->contactable_type))
                 : null,
-
             'contactable_name' => $contact->contactable
                 ? ($contact->contactable->name
                     ?? $contact->contactable->title
