@@ -85,7 +85,7 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
 
         $payload = [
-            'contactable_type' => (new User)->getMorphClass(),
+            'contactable_type' => 'user',
             'contactable_id' => $superAdmin->id,
             'phone' => '+44 20 7946 0958',
             'email' => 'james.hartley@example.co.uk',
@@ -111,7 +111,7 @@ describe('store', function () {
         $user = $this->normalUser();
 
         $payload = [
-            'contactable_type' => (new User)->getMorphClass(),
+            'contactable_type' => 'user',
             'contactable_id' => $user->id,
             'phone' => '+44 20 7946 0958',
             'email' => 'test@example.co.uk',
@@ -143,7 +143,7 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/contacts', [
-                'contactable_type' => (new User)->getMorphClass(),
+                'contactable_type' => 'user',
                 'email' => 'test@example.co.uk',
             ])
             ->assertStatus(422)
@@ -155,7 +155,7 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/contacts', [
-                'contactable_type' => (new User)->getMorphClass(),
+                'contactable_type' => 'user',
                 'contactable_id' => $superAdmin->id,
                 'email' => 'not-an-email',
             ])
@@ -168,7 +168,7 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/contacts', [
-                'contactable_type' => (new User)->getMorphClass(),
+                'contactable_type' => 'user',
                 'contactable_id' => $superAdmin->id,
             ])
             ->assertStatus(201);
