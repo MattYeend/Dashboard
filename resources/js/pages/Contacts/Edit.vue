@@ -8,16 +8,15 @@ import { update as contactsUpdate } from '@/routes/contacts';
 import type { Contact } from '@/types';
 
 interface Props {
-    contact: Contact;
-    contactable_types: { value: string; label: string }[];
+    contact: Contact & { contactable_type_key: string };
+    contactableTypes: { value: string; label: string }[];
 }
 
 const props = defineProps<Props>();
 
 const form = useForm({
-    contactable_type: props.contact.contactable_type,
+    contactable_type: props.contact.contactable_type_key ?? props.contact.contactable_type,
     contactable_id: props.contact.contactable_id as number | null,
-
     phone: props.contact.phone ?? '',
     email: props.contact.email ?? '',
     address: props.contact.address ?? '',
@@ -54,24 +53,21 @@ function submit(): void {
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <h1 class="mb-6 text-2xl font-semibold text-gray-900">
+            <h1 class="mb-6 text-2xl font-semibold">
                 Edit Contact
             </h1>
 
             <ContactForm
                 v-model:contactable-type="form.contactable_type"
                 v-model:contactable-id="form.contactable_id"
-
-                :contactable-types="contactable_types"
+                :contactable-types="contactableTypes"
                 :contactable-options="contactableOptions"
-
                 v-model:email="form.email"
                 v-model:phone="form.phone"
                 v-model:address="form.address"
                 v-model:city="form.city"
                 v-model:postal-code="form.postal_code"
                 v-model:country="form.country"
-
                 :is-editing="true"
                 :processing="form.processing"
                 :errors="form.errors"

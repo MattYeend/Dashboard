@@ -59,7 +59,7 @@ const contactableId = defineModel<number | null>('contactableId', { required: tr
 
         <!-- TYPE -->
         <div>
-            <label class="block text-sm font-medium text-gray-700">
+            <label class="block text-sm font-medium">
                 Contact type
             </label>
 
@@ -76,7 +76,7 @@ const contactableId = defineModel<number | null>('contactableId', { required: tr
 
         <!-- OWNER -->
         <div>
-            <label class="block text-sm font-medium text-gray-700">
+            <label class="block text-sm font-medium">
                 Contact owner
             </label>
 
@@ -101,7 +101,7 @@ const contactableId = defineModel<number | null>('contactableId', { required: tr
         <div class="flex justify-end space-x-3">
             <a
                 :href="contactsIndex.url()"
-                class="rounded-md px-4 py-2 text-sm font-medium text-gray-700"
+                class="rounded-md px-4 py-2 text-sm font-medium"
             >
                 Cancel
             </a>

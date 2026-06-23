@@ -3,7 +3,11 @@
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
+use App\Models\User;
 
 class UpdateContactRequest extends FormRequest
 {
@@ -23,6 +27,8 @@ class UpdateContactRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'contactable_type' => $this->contactableTypeRules(),
+            'contactable_id' => $this->contactableIdRules(),
             'phone' => $this->phoneRules(),
             'email' => $this->emailRules(),
             'address' => $this->addressRules(),
@@ -49,8 +55,43 @@ class UpdateContactRequest extends FormRequest
             'postal_code.max' => 'The postal code may not exceed 255
                  characters.',
             'country.max' => 'The country may not exceed 255 characters.',
+            'contactable_type.required' => 'The contactable type is required.',
+            'contactable_type.string' => 'The contactable type must be a string.',
+            'contactable_id.required' => 'The contactable ID is required.',
+            'contactable_id.integer' => 'The contactable ID must be an integer.',
+            'contactable_id.min' => 'The contactable ID must be at least 1.',
         ];
     }
+
+    /**
+ * Get validation rules for the contactable_type field.
+ *
+ * @return array<mixed>
+ */
+protected function contactableTypeRules(): array
+{
+    return [
+        'sometimes',
+        'required',
+        'string',
+        Rule::in(array_keys(Relation::morphMap())),
+    ];
+}
+
+/**
+ * Get validation rules for the contactable_id field.
+ *
+ * @return array<mixed>
+ */
+protected function contactableIdRules(): array
+{
+    return [
+        'sometimes',
+        'required',
+        'integer',
+        'min:1',
+    ];
+}
 
     /**
      * Get validation rules for the phone field.
@@ -155,4 +196,25 @@ class UpdateContactRequest extends FormRequest
             'array',
         ];
     }
+
+    /**
+ * Perform additional validation after the standard rules have passed.
+ */
+public function after(): array
+{
+    return [
+        function (Validator $validator): void {
+            if ($this->input('contactable_type') !== 'user') {
+                return;
+            }
+
+            if (! User::whereKey($this->input('contactable_id'))->exists()) {
+                $validator->errors()->add(
+                    'contactable_id',
+                    'The selected contact owner does not exist.'
+                );
+            }
+        },
+    ];
+}
 }

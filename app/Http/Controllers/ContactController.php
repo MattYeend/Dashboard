@@ -250,4 +250,13 @@ class ContactController extends Controller
 
         return redirect()->route('contacts.index');
     }
+
+    public function contactableOptions(Request $request): JsonResponse
+{
+    $type = $request->query('type', '');
+
+    $options = $this->query->getContactableOptions($type);
+
+    return response()->json($options);
+}
 }

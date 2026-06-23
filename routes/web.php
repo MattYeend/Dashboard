@@ -27,6 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('contacts')->name('contacts.')->group(function () {
+        Route::get('/contactable-options', [ContactController::class, 'contactableOptions'])->name('contactable-options');
+
         Route::post('/bulk/delete', [ContactController::class, 'bulkDelete'])->name('bulk.delete');
         Route::post('/bulk/restore', [ContactController::class, 'bulkRestore'])->name('bulk.restore');
         Route::post('/{id}/restore', [ContactController::class, 'restore'])->name('restore');

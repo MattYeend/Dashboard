@@ -6,6 +6,10 @@ use App\Models\Contact;
 
 class FormatterService
 {
+    public function __construct(
+    private readonly ContactableTypeRegistry $registry,
+) {}
+
     /**
      * Format a single contact with all data.
      *
@@ -41,6 +45,7 @@ class FormatterService
                     ?? $contact->contactable->title
                     ?? '#'.$contact->contactable->id)
                 : null,
+            'contactable_type_key' => $this->registry->keyForModel($contact->contactable_type),
         ];
     }
 }
