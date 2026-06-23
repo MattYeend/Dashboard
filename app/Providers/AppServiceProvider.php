@@ -53,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
 
         Relation::morphMap([
             'App\Models\User' => User::class,
+            'App\Models\Task' => Task::class,
         ]);
     }
 

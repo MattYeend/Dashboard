@@ -83,8 +83,8 @@ const contactableId = defineModel<number | null>('contactableId', {
         <div>
             <label class="block text-sm font-medium"> Contact owner </label>
 
-            <select v-model.number="contactableId">
-                <option value="" disabled>Select owner</option>
+            <select v-model="contactableId" :disabled="!contactableType">
+                <option :value="null" disabled>Select owner</option>
 
                 <option
                     v-for="option in contactableOptions"

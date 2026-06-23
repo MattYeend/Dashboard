@@ -8,6 +8,11 @@ use App\Models\User;
 
 class ContactableTypeRegistryService
 {
+    /**
+     * Allow-list of contactable types. Keys are short, UI-facing identifiers.
+     * 'model' is the fully-qualified class name actually stored in the
+     * contacts.contactable_type column (no morph map aliasing is used).
+     */
     public function all(): array
     {
         return [
@@ -29,6 +34,11 @@ class ContactableTypeRegistryService
         ];
     }
 
+    /**
+     * Short keys + labels for populating the "contact type" <select>.
+     *
+     * @return array<int, array{value: string, label: string}>
+     */
     public function types(): array
     {
         return collect($this->all())
@@ -40,11 +50,16 @@ class ContactableTypeRegistryService
             ->all();
     }
 
+    /**
+     * Options for the "contact owner" <select>, keyed by short type.
+     *
+     * @return array<int, array{value: int, label: string}>
+     */
     public function optionsFor(string $type): array
     {
         $allowed = $this->all();
 
-        // Normalise fully-qualified class names back to short keys
+        // Normalise either a short key or a stored FQCN back to a short key
         $resolvedType = $this->resolveTypeKey($type, $allowed);
 
         $config = $allowed[$resolvedType] ?? null;
@@ -67,22 +82,37 @@ class ContactableTypeRegistryService
             ->all();
     }
 
-    public function keyForModel(string $modelClass): string
+    /**
+     * Resolve a stored FQCN (e.g. "App\Models\User") to its short UI key
+     * (e.g. "user"). Used when hydrating the edit form.
+     */
+    public function keyForModel(?string $modelClass): string
     {
+        if (! $modelClass) {
+            return '';
+        }
+
         foreach ($this->all() as $key => $config) {
             if ($config['model'] === $modelClass) {
                 return $key;
             }
         }
 
-        return $modelClass;
+        // No match in the allow-list — return empty rather than the raw
+        // class string, so the <select> shows "no type selected" instead
+        // of a value that can never match any <option>.
+        return '';
     }
 
     /**
-     * Resolve the human-readable label for a fully-qualified model class.
+     * Resolve the human-readable label for a stored FQCN.
      */
-    public function labelForModel(string $modelClass): ?string
+    public function labelForModel(?string $modelClass): ?string
     {
+        if (! $modelClass) {
+            return null;
+        }
+
         foreach ($this->all() as $config) {
             if ($config['model'] === $modelClass) {
                 return $config['label'];
@@ -90,6 +120,17 @@ class ContactableTypeRegistryService
         }
 
         return null;
+    }
+
+    /**
+     * Resolve the FQCN that should actually be persisted to
+     * contacts.contactable_type, given a short key submitted by the form
+     * (e.g. "user" -> "App\Models\User"). Returns null if the key isn't
+     * in the allow-list.
+     */
+    public function modelClassForKey(string $key): ?string
+    {
+        return $this->all()[$key]['model'] ?? null;
     }
 
     /**
