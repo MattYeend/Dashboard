@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import axios from 'axios';
+import { ref, watch } from 'vue';
+
 import ContactForm from '@/pages/Contacts/components/ContactForm.vue';
 import { update as contactsUpdate } from '@/routes/contacts';
 import type { Contact } from '@/types';
 
 interface Props {
     contact: Contact;
+    contactable_types: { value: string; label: string }[];
 }
 
 const props = defineProps<Props>();
 
 const form = useForm({
+    contactable_type: props.contact.contactable_type,
+    contactable_id: props.contact.contactable_id,
+
     phone: props.contact.phone ?? '',
     email: props.contact.email ?? '',
     address: props.contact.address ?? '',
@@ -18,6 +25,26 @@ const form = useForm({
     postal_code: props.contact.postal_code ?? '',
     country: props.contact.country ?? '',
 });
+
+interface ContactableOption {
+    value: number;
+    label: string;
+}
+
+const contactableOptions = ref<ContactableOption[]>([]);
+
+watch(
+    () => form.contactable_type,
+    async (type: string) => {
+        const res = await axios.get('/contacts/contactable-options', {
+            params: { type },
+        });
+
+        contactableOptions.value = res.data;
+        form.contactable_id = null;
+    },
+    { immediate: true }
+);
 
 function submit(): void {
     form.put(contactsUpdate.url(props.contact.id));
@@ -27,16 +54,24 @@ function submit(): void {
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <h1 class="text-grey-900 mb-6 text-2xl font-semibold">
+            <h1 class="mb-6 text-2xl font-semibold text-gray-900">
                 Edit Contact
             </h1>
+
             <ContactForm
+                v-model:contactable-type="form.contactable_type"
+                v-model:contactable-id="form.contactable_id"
+
+                :contactable-types="contactable_types"
+                :contactable-options="contactableOptions"
+
                 v-model:email="form.email"
                 v-model:phone="form.phone"
                 v-model:address="form.address"
                 v-model:city="form.city"
                 v-model:postal-code="form.postal_code"
                 v-model:country="form.country"
+
                 :is-editing="true"
                 :processing="form.processing"
                 :errors="form.errors"

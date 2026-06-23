@@ -16,7 +16,8 @@ class QueryService
         protected readonly SortingService $sortingService,
         protected readonly TrashFilterService $trashFilterService,
         protected readonly FilterService $filterService,
-        protected readonly FormatterService $formatterService
+        protected readonly FormatterService $formatterService,
+        protected readonly ContactableTypeRegistry $registry,
     ) {}
 
     /**
@@ -54,6 +55,16 @@ class QueryService
             $this->getPermissions(),
             $this->baseData(),
         );
+    }
+
+    public function getCreateData(): array
+    {
+        return $this->baseData();
+    }
+
+    public function getContactableOptions(string $type): array
+    {
+        return $this->registry->optionsFor($type);
     }
 
     /**
@@ -133,6 +144,7 @@ class QueryService
         return [
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
+            'contactable_types' => $this->registry->types(),
         ];
     }
 

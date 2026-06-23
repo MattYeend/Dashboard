@@ -11,12 +11,17 @@ interface ContactFormData {
     city: string;
     postal_code: string;
     country: string;
+    contactable_type: string;
+    contactable_id: number | null;
 }
 
 interface Props {
     isEditing: boolean;
     processing: boolean;
     errors: Partial<InertiaFormProps<ContactFormData>['errors']>;
+
+    contactableTypes: { value: string; label: string }[];
+    contactableOptions: { value: number; label: string }[];
 }
 
 defineProps<Props>();
@@ -28,15 +33,22 @@ const address = defineModel<string>('address', { required: true });
 const city = defineModel<string>('city', { required: true });
 const postalCode = defineModel<string>('postalCode', { required: true });
 const country = defineModel<string>('country', { required: true });
+
+const contactableType = defineModel<string>('contactableType', { required: true });
+const contactableId = defineModel<number | null>('contactableId', { required: true });
 </script>
 
 <template>
     <form class="space-y-6" @submit.prevent="$emit('submit')">
+
+        <!-- Basic -->
         <ContactBasicDetailsForm
             v-model:email="email"
             v-model:phone="phone"
             :errors="errors"
         />
+
+        <!-- Address -->
         <ContactAddressDetailsForm
             v-model:address="address"
             v-model:city="city"
@@ -45,20 +57,63 @@ const country = defineModel<string>('country', { required: true });
             :errors="errors"
         />
 
-        <div class="items-centre flex justify-end space-x-3">
+        <!-- TYPE -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700">
+                Contact type
+            </label>
+
+            <select v-model="contactableType">
+                <option
+                    v-for="type in contactableTypes"
+                    :key="type.value"
+                    :value="type.value"
+                >
+                    {{ type.label }}
+                </option>
+            </select>
+        </div>
+
+        <!-- OWNER -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700">
+                Contact owner
+            </label>
+
+            <select v-model.number="contactableId">
+                <option :value="null">Select</option>
+
+                <option
+                    v-for="option in contactableOptions"
+                    :key="option.value"
+                    :value="option.value"
+                >
+                    {{ option.label }}
+                </option>
+            </select>
+
+            <p v-if="errors.contactable_id" class="text-red-600">
+                {{ errors.contactable_id }}
+            </p>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="flex justify-end space-x-3">
             <a
                 :href="contactsIndex.url()"
-                class="text-grey-700 rounded-md px-4 py-2 text-sm font-medium"
+                class="rounded-md px-4 py-2 text-sm font-medium text-gray-700"
             >
                 Cancel
             </a>
+
             <button
                 type="submit"
                 :disabled="processing"
-                class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+                class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
             >
                 {{ isEditing ? 'Update Contact' : 'Create Contact' }}
             </button>
         </div>
+
     </form>
 </template>
