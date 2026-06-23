@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -49,6 +50,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(TaskStatus::class, TaskStatusPolicy::class);
         Gate::policy(Task::class, TaskPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
+
+        Relation::enforceMorphMap([
+            'user' => User::class,
+        ]);
     }
 
     /**
