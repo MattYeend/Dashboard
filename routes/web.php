@@ -23,7 +23,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{user}', [UserController::class, 'show'])->name('show');
         Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
         Route::put('/{user}', [UserController::class, 'update'])->name('update');
-        Route::patch('/{user}', [UserController::class, 'update'])->name('patch');
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
     });
 
@@ -39,7 +38,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{contact}', [ContactController::class, 'show'])->name('show');
         Route::get('/{contact}/edit', [ContactController::class, 'edit'])->name('edit');
         Route::put('/{contact}', [ContactController::class, 'update'])->name('update');
-        Route::patch('/{contact}', [ContactController::class, 'update'])->name('patch');
         Route::delete('/{contact}', [ContactController::class, 'destroy'])->name('destroy');
     });
 
@@ -55,7 +53,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{task_status}', [TaskStatusController::class, 'show'])->name('show');
         Route::get('/{task_status}/edit', [TaskStatusController::class, 'edit'])->name('edit');
         Route::put('/{task_status}', [TaskStatusController::class, 'update'])->name('update');
-        Route::patch('/{task_status}', [TaskStatusController::class, 'update'])->name('patch');
         Route::delete('/{task_status}', [TaskStatusController::class, 'destroy'])->name('destroy');
     });
 
@@ -71,7 +68,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{task}', [TaskController::class, 'show'])->name('show');
         Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('edit');
         Route::put('/{task}', [TaskController::class, 'update'])->name('update');
-        Route::patch('/{task}', [TaskController::class, 'update'])->name('patch');
         Route::delete('/{task}', [TaskController::class, 'destroy'])->name('destroy');
     });
 });
