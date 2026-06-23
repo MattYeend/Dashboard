@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -75,7 +76,7 @@ class StoreContactRequest extends FormRequest
         return [
             'required',
             'string',
-            Rule::in(['user']),
+            Rule::in(array_keys(Relation::morphMap())),
         ];
     }
 

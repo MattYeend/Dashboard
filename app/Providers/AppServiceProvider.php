@@ -51,8 +51,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Task::class, TaskPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
 
-        Relation::enforceMorphMap([
-            'user' => User::class,
+        Relation::morphMap([
+            'App\Models\User' => User::class,
         ]);
     }
 
