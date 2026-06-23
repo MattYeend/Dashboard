@@ -7,8 +7,8 @@ use App\Models\Contact;
 class FormatterService
 {
     public function __construct(
-    private readonly ContactableTypeRegistryService $registry,
-) {}
+        private readonly ContactableTypeRegistryService $registry,
+    ) {}
 
     /**
      * Format a single contact with all data.

@@ -36,7 +36,7 @@ watch(
         if (!type) {
             contactableOptions.value = [];
             form.contactable_id = null;
-            
+
             return;
         }
 
@@ -46,7 +46,7 @@ watch(
 
         contactableOptions.value = res.data;
         form.contactable_id = null;
-    }
+    },
 );
 
 function submit(): void {
@@ -57,24 +57,19 @@ function submit(): void {
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <h1 class="mb-6 text-2xl font-semibold">
-                Create Contact
-            </h1>
+            <h1 class="mb-6 text-2xl font-semibold">Create Contact</h1>
 
             <ContactForm
                 v-model:contactable-type="form.contactable_type"
                 v-model:contactable-id="form.contactable_id"
-
                 :contactable-types="props.contactableTypes"
                 :contactable-options="contactableOptions"
-
                 v-model:email="form.email"
                 v-model:phone="form.phone"
                 v-model:address="form.address"
                 v-model:city="form.city"
                 v-model:postal-code="form.postal_code"
                 v-model:country="form.country"
-
                 :is-editing="false"
                 :processing="form.processing"
                 :errors="form.errors"

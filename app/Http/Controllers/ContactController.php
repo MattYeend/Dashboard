@@ -55,7 +55,7 @@ class ContactController extends Controller
 
         $data = $this->query->getCreateData();
 
-    return Inertia::render('Contacts/Create', $data);
+        return Inertia::render('Contacts/Create', $data);
     }
 
     /**
@@ -254,11 +254,11 @@ class ContactController extends Controller
     }
 
     public function contactableOptions(Request $request): JsonResponse
-{
-    $type = $request->query('type', '');
+    {
+        $type = $request->query('type', '');
 
-    $options = $this->query->getContactableOptions($type);
+        $options = $this->query->getContactableOptions($type);
 
-    return response()->json($options);
-}
+        return response()->json($options);
+    }
 }

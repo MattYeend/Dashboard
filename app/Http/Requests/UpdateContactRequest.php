@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
-use App\Models\User;
 
 class UpdateContactRequest extends FormRequest
 {
@@ -64,34 +64,34 @@ class UpdateContactRequest extends FormRequest
     }
 
     /**
- * Get validation rules for the contactable_type field.
- *
- * @return array<mixed>
- */
-protected function contactableTypeRules(): array
-{
-    return [
-        'sometimes',
-        'required',
-        'string',
-        Rule::in(array_keys(Relation::morphMap())),
-    ];
-}
+     * Get validation rules for the contactable_type field.
+     *
+     * @return array<mixed>
+     */
+    protected function contactableTypeRules(): array
+    {
+        return [
+            'sometimes',
+            'required',
+            'string',
+            Rule::in(array_keys(Relation::morphMap())),
+        ];
+    }
 
-/**
- * Get validation rules for the contactable_id field.
- *
- * @return array<mixed>
- */
-protected function contactableIdRules(): array
-{
-    return [
-        'sometimes',
-        'required',
-        'integer',
-        'min:1',
-    ];
-}
+    /**
+     * Get validation rules for the contactable_id field.
+     *
+     * @return array<mixed>
+     */
+    protected function contactableIdRules(): array
+    {
+        return [
+            'sometimes',
+            'required',
+            'integer',
+            'min:1',
+        ];
+    }
 
     /**
      * Get validation rules for the phone field.
@@ -198,23 +198,23 @@ protected function contactableIdRules(): array
     }
 
     /**
- * Perform additional validation after the standard rules have passed.
- */
-public function after(): array
-{
-    return [
-        function (Validator $validator): void {
-            if ($this->input('contactable_type') !== 'user') {
-                return;
-            }
+     * Perform additional validation after the standard rules have passed.
+     */
+    public function after(): array
+    {
+        return [
+            function (Validator $validator): void {
+                if ($this->input('contactable_type') !== 'user') {
+                    return;
+                }
 
-            if (! User::whereKey($this->input('contactable_id'))->exists()) {
-                $validator->errors()->add(
-                    'contactable_id',
-                    'The selected contact owner does not exist.'
-                );
-            }
-        },
-    ];
-}
+                if (! User::whereKey($this->input('contactable_id'))->exists()) {
+                    $validator->errors()->add(
+                        'contactable_id',
+                        'The selected contact owner does not exist.'
+                    );
+                }
+            },
+        ];
+    }
 }

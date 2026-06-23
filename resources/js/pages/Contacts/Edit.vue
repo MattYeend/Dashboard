@@ -46,7 +46,7 @@ watch(
             form.contactable_id = null;
         }
     },
-    { immediate: true }
+    { immediate: true },
 );
 
 function submit(): void {
@@ -57,9 +57,7 @@ function submit(): void {
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <h1 class="mb-6 text-2xl font-semibold">
-                Edit Contact
-            </h1>
+            <h1 class="mb-6 text-2xl font-semibold">Edit Contact</h1>
 
             <ContactForm
                 v-model:contactable-type="form.contactable_type"

@@ -34,13 +34,16 @@ const city = defineModel<string>('city', { required: true });
 const postalCode = defineModel<string>('postalCode', { required: true });
 const country = defineModel<string>('country', { required: true });
 
-const contactableType = defineModel<string>('contactableType', { required: true });
-const contactableId = defineModel<number | null>('contactableId', { required: true });
+const contactableType = defineModel<string>('contactableType', {
+    required: true,
+});
+const contactableId = defineModel<number | null>('contactableId', {
+    required: true,
+});
 </script>
 
 <template>
     <form class="space-y-6" @submit.prevent="$emit('submit')">
-
         <!-- Basic -->
         <ContactBasicDetailsForm
             v-model:email="email"
@@ -59,30 +62,26 @@ const contactableId = defineModel<number | null>('contactableId', { required: tr
 
         <!-- TYPE -->
         <div>
-            <label class="block text-sm font-medium">
-                Contact type
-            </label>
+            <label class="block text-sm font-medium"> Contact type </label>
 
             <select v-model="contactableType" required>
-    <option value="" disabled>Select type</option>
-    <option
-        v-for="type in contactableTypes"
-        :key="type.value"
-        :value="type.value"
-    >
-        {{ type.label }}
-    </option>
-</select>
-<p v-if="errors.contactable_type" class="text-red-600">
-    {{ errors.contactable_type }}
-</p>
+                <option value="" disabled>Select type</option>
+                <option
+                    v-for="type in contactableTypes"
+                    :key="type.value"
+                    :value="type.value"
+                >
+                    {{ type.label }}
+                </option>
+            </select>
+            <p v-if="errors.contactable_type" class="text-red-600">
+                {{ errors.contactable_type }}
+            </p>
         </div>
 
         <!-- OWNER -->
         <div>
-            <label class="block text-sm font-medium">
-                Contact owner
-            </label>
+            <label class="block text-sm font-medium"> Contact owner </label>
 
             <select v-model.number="contactableId">
                 <option value="" disabled>Select owner</option>
@@ -118,6 +117,5 @@ const contactableId = defineModel<number | null>('contactableId', { required: tr
                 {{ isEditing ? 'Update Contact' : 'Create Contact' }}
             </button>
         </div>
-
     </form>
 </template>
