@@ -150,8 +150,6 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
      * maps it to the corresponding Spatie role name, and syncs it via Spatie's
      * `syncRoles()`. After the Spatie role has been assigned, the local `role`
      * column is updated to reflect the change via {@see syncDisplayRoleFromSpatie()}.
-     *
-     * @param  string  $role 
      */
     public function assignApplicationRole(string $role): void
     {

@@ -43,7 +43,11 @@ class CreatorService
     protected function createUser(array $data, int $createdBy): User
     {
         $userData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+        $displayRole = $userData['role'] ?? 'user';
 
-        return User::create($userData);
+        $user = User::create($userData);
+        $user->assignApplicationRole($displayRole);
+
+        return $user->fresh();
     }
 }
