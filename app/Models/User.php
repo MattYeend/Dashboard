@@ -125,6 +125,46 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     }
 
     /**
+     * Sync the local display role column from the user's Spatie permission role.
+     *
+     * Reads the user's currently assigned Spatie role and maps it to the
+     * corresponding display role string stored in the `role` column. This
+     * ensures the denormalised `role` column stays consistent with Spatie's
+     * role assignments after any role change.
+     */
+    public function syncDisplayRoleFromSpatie(): void
+    {
+        $role = match (true) {
+            $this->hasRole('Super Admin') => 'super_admin',
+            $this->hasRole('Admin') => 'admin',
+            default => 'user',
+        };
+
+        $this->forceFill(['role' => $role])->save();
+    }
+
+    /**
+     * Assign a Spatie role to the user based on the given application role string.
+     *
+     * Accepts a display role string (e.g. `'super_admin'`, `'admin'`, `'user'`),
+     * maps it to the corresponding Spatie role name, and syncs it via Spatie's
+     * `syncRoles()`. After the Spatie role has been assigned, the local `role`
+     * column is updated to reflect the change via {@see syncDisplayRoleFromSpatie()}.
+     *
+     * @param  string  $role 
+     */
+    public function assignApplicationRole(string $role): void
+    {
+        $this->syncRoles(match ($role) {
+            'super_admin' => ['Super Admin'],
+            'admin' => ['Admin'],
+            default => ['User'],
+        });
+
+        $this->syncDisplayRoleFromSpatie();
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
