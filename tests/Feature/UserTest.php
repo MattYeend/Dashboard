@@ -291,6 +291,27 @@ describe('update', function () {
             ->assertStatus(422)
             ->assertJsonValidationErrors(['email']);
     });
+
+    test('admin cannot update a super admin', function () {
+        $admin = $this->adminUser();
+
+        $superAdmin = $this->superAdminUser();
+
+        $this->actingAs($admin)
+            ->putJson("/users/{$superAdmin->id}", ['name' => 'Blocked'])
+            ->assertStatus(403);
+    });
+
+    test('super admin can update an admin', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $admin = $this->adminUser();
+
+        $this->actingAs($superAdmin)
+            ->putJson("/users/{$admin->id}", ['name' => 'Updated'])
+            ->assertStatus(200)
+            ->assertJsonFragment(['name' => 'Updated']);
+    });
 });
 
 describe('destroy', function () {
@@ -514,5 +535,88 @@ describe('soft delete scoping', function () {
         $this->actingAs($superAdmin)
             ->get("/users/{$user->id}")
             ->assertStatus(404);
+    });
+});
+
+describe('role hierarchy', function () {
+    test('admin cannot view a super admin', function () {
+        $admin = $this->adminUser();
+        $superAdmin = $this->superAdminUser();
+
+        $this->actingAs($admin)
+            ->get("/users/{$superAdmin->id}")
+            ->assertStatus(403);
+    });
+
+    test('admin cannot edit a super admin', function () {
+        $admin = $this->adminUser();
+        $superAdmin = $this->superAdminUser();
+
+        $this->actingAs($admin)
+            ->get("/users/{$superAdmin->id}/edit")
+            ->assertStatus(403);
+    });
+
+    test('admin cannot delete a super admin', function () {
+        $admin = $this->adminUser();
+        $superAdmin = $this->superAdminUser();
+
+        $this->actingAs($admin)
+            ->deleteJson("/users/{$superAdmin->id}")
+            ->assertStatus(403);
+    });
+
+    test('admin cannot force delete a super admin', function () {
+        $admin = $this->adminUser();
+        $superAdmin = $this->superAdminUser();
+
+        $superAdmin->delete();
+
+        $this->actingAs($admin)
+            ->deleteJson("/users/{$superAdmin->id}/force")
+            ->assertStatus(403);
+    });
+
+    test('admin cannot restore a super admin', function () {
+        $admin = $this->adminUser();
+        $superAdmin = $this->superAdminUser();
+
+        $superAdmin->delete();
+
+        $this->actingAs($admin)
+            ->postJson("/users/{$superAdmin->id}/restore")
+            ->assertStatus(403);
+    });
+
+    test('admin cannot bulk delete when ids include a super admin', function () {
+        $admin = $this->adminUser();
+        $superAdmin = $this->superAdminUser();
+
+        $this->actingAs($admin)
+            ->postJson('/users/bulk/delete', ['ids' => [$superAdmin->id]])
+            ->assertStatus(403);
+    });
+
+    test('admin cannot bulk restore when ids include a super admin', function () {
+        $admin = $this->adminUser();
+        $superAdmin = $this->superAdminUser();
+
+        $superAdmin->delete();
+
+        $this->actingAs($admin)
+            ->postJson('/users/bulk/restore', ['ids' => [$superAdmin->id]])
+            ->assertStatus(403);
+    });
+
+    test('regular user cannot access any user management action', function () {
+        $normalUser = $this->normalUser();
+        $target = User::factory()->create();
+
+        $this->actingAs($normalUser)->get('/users')->assertStatus(403);
+        $this->actingAs($normalUser)->get('/users/create')->assertStatus(403);
+        $this->actingAs($normalUser)->get("/users/{$target->id}")->assertStatus(403);
+        $this->actingAs($normalUser)->get("/users/{$target->id}/edit")->assertStatus(403);
+        $this->actingAs($normalUser)->putJson("/users/{$target->id}", ['name' => 'X'])->assertStatus(403);
+        $this->actingAs($normalUser)->deleteJson("/users/{$target->id}")->assertStatus(403);
     });
 });

@@ -8,7 +8,7 @@ trait CreatesUsers
 {
     public function adminUser(): User
     {
-        $user = User::factory()->adminUser()->create();
+        $user = User::factory()->create();
         setPermissionsTeamId(1);
         $user->assignRole('Admin');
 
@@ -17,7 +17,7 @@ trait CreatesUsers
 
     public function superAdminUser(): User
     {
-        $user = User::factory()->superAdminUser()->create();
+        $user = User::factory()->create();
         setPermissionsTeamId(1);
         $user->assignRole('Super Admin');
 
@@ -26,7 +26,7 @@ trait CreatesUsers
 
     public function normalUser(): User
     {
-        $user = User::factory()->normalUser()->create();
+        $user = User::factory()->create();
         setPermissionsTeamId(1);
         $user->assignRole('User');
 
