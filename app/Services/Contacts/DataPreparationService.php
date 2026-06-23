@@ -25,6 +25,7 @@ class DataPreparationService
             'city' => $data['city'] ?? null,
             'postal_code' => $data['postal_code'] ?? null,
             'country' => $data['country'] ?? null,
+            'meta' => $data['meta'] ?? null,
             'created_by' => $createdBy,
         ];
     }
