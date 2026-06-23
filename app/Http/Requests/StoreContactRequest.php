@@ -3,8 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Models\Contact;
+use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class StoreContactRequest extends FormRequest
 {
@@ -72,7 +75,7 @@ class StoreContactRequest extends FormRequest
         return [
             'required',
             'string',
-            'max:255',
+            Rule::in(['user']),
         ];
     }
 
@@ -184,6 +187,31 @@ class StoreContactRequest extends FormRequest
         return [
             'nullable',
             'array',
+        ];
+    }
+
+    /**
+     * Perform additional validation after the standard rules have passed.
+     *
+     * When the contact owner type is "user", this ensures the supplied
+     * contactable_id references an existing User record. If the user
+     * cannot be found, a validation error is added to the contactable_id field.
+     */
+    public function after(): array
+    {
+        return [
+            function (Validator $validator): void {
+                if ($this->input('contactable_type') !== 'user') {
+                    return;
+                }
+
+                if (! User::whereKey($this->input('contactable_id'))->exists()) {
+                    $validator->errors()->add(
+                        'contactable_id',
+                        'The selected contact owner does not exist.'
+                    );
+                }
+            },
         ];
     }
 }
