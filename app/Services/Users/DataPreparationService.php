@@ -32,13 +32,24 @@ class DataPreparationService
      */
     public function prepareForUpdate(array $data, int $updatedBy): array
     {
-        return array_filter([
-            'name' => $data['name'] ?? null,
-            'email' => $data['email'] ?? null,
-            'password' => $data['password'] ?? null,
-            'role' => $data['role'] ?? null,
-            'meta' => $data['meta'] ?? null,
-            'updated_by' => $updatedBy,
-        ], fn (mixed $value): bool => ! is_null($value));
+        $allowed = [
+            'name',
+            'email',
+            'password',
+            'role',
+            'meta',
+        ];
+
+        $payload = [];
+
+        foreach ($allowed as $field) {
+            if (array_key_exists($field, $data)) {
+                $payload[$field] = $data[$field];
+            }
+        }
+
+        $payload['updated_by'] = $updatedBy;
+
+        return $payload;
     }
 }

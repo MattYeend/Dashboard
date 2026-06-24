@@ -32,15 +32,26 @@ class DataPreparationService
      */
     public function prepareForUpdate(array $data, int $updatedBy): array
     {
-        return array_filter([
-            'title' => $data['title'] ?? null,
-            'description' => $data['description'] ?? null,
-            'due_date' => $data['due_date'] ?? null,
-            'assigned_date' => $data['assigned_date'] ?? null,
-            'assigned_to' => $data['assigned_to'] ?? null,
-            'status_id' => $data['status_id'] ?? null,
-            'meta' => $data['meta'] ?? null,
-            'updated_by' => $updatedBy,
-        ], fn (mixed $value): bool => ! is_null($value));
+        $allowed = [
+            'title',
+            'description',
+            'due_date',
+            'assigned_date',
+            'assigned_to',
+            'status_id',
+            'meta',
+        ];
+
+        $payload = [];
+
+        foreach ($allowed as $field) {
+            if (array_key_exists($field, $data)) {
+                $payload[$field] = $data[$field];
+            }
+        }
+
+        $payload['updated_by'] = $updatedBy;
+
+        return $payload;
     }
 }
