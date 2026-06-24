@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Contact;
-use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Spatie\Permission\Models\Role;
@@ -309,6 +308,101 @@ describe('update', function () {
             ->putJson("/contacts/{$contact->id}", ['email' => 'not-an-email'])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['email']);
+    });
+
+    test('nullable fields can be cleared by passing null on update', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $contact = Contact::factory()->forModel($superAdmin)->create([
+            'phone' => '+44 20 7946 0958',
+            'email' => 'james.hartley@example.co.uk',
+            'address' => '12 Baker Street',
+            'city' => 'London',
+            'postal_code' => 'W1U 3BH',
+            'country' => 'United Kingdom',
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->putJson("/contacts/{$contact->id}", [
+                'phone' => null,
+                'email' => null,
+                'address' => null,
+                'city' => null,
+                'postal_code' => null,
+                'country' => null,
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'phone' => null,
+            'email' => null,
+            'address' => null,
+            'city' => null,
+            'postal_code' => null,
+            'country' => null,
+        ]);
+    });
+
+    test('omitted fields are not cleared on update', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $contact = Contact::factory()->forModel($superAdmin)->create([
+            'phone' => '+44 20 7946 0958',
+            'city' => 'London',
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->putJson("/contacts/{$contact->id}", [
+                'country' => 'United Kingdom',
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'phone' => '+44 20 7946 0958',
+            'city' => 'London',
+            'country' => 'United Kingdom',
+        ]);
+    });
+
+    test('patch verb can clear nullable fields', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $contact = Contact::factory()->forModel($superAdmin)->create([
+            'phone' => '+44 20 7946 0958',
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->patchJson("/contacts/{$contact->id}", [
+                'phone' => null,
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'phone' => null,
+        ]);
+    });
+
+    test('contactable type and id can be updated', function () {
+        $superAdmin = $this->superAdminUser();
+        $otherUser = $this->normalUser();
+
+        $contact = Contact::factory()->forModel($superAdmin)->create();
+
+        $this->actingAs($superAdmin)
+            ->putJson("/contacts/{$contact->id}", [
+                'contactable_type' => 'user',
+                'contactable_id' => $otherUser->id,
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'contactable_type' => 'App\\Models\\User',
+            'contactable_id' => $otherUser->id,
+        ]);
     });
 });
 
