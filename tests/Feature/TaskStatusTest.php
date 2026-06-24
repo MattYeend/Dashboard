@@ -316,6 +316,89 @@ describe('update', function () {
             ->assertStatus(422)
             ->assertJsonValidationErrors(['text_colour']);
     });
+
+    test('description can be cleared by passing null on update', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $taskStatus = TaskStatus::factory()->create([
+            'description' => 'Task is actively being worked on.',
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->putJson("/task-statuses/{$taskStatus->id}", [
+                'description' => null,
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('task_statuses', [
+            'id' => $taskStatus->id,
+            'description' => null,
+        ]);
+    });
+
+    test('background_colour and text_colour cannot be nulled and fail validation', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $taskStatus = TaskStatus::factory()->create([
+            'background_colour' => '#bee3f8',
+            'text_colour' => '#2b6cb0',
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->putJson("/task-statuses/{$taskStatus->id}", [
+                'background_colour' => null,
+                'text_colour' => null,
+            ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['background_colour', 'text_colour']);
+
+        $this->assertDatabaseHas('task_statuses', [
+            'id' => $taskStatus->id,
+            'background_colour' => '#bee3f8',
+            'text_colour' => '#2b6cb0',
+        ]);
+    });
+
+    test('omitted fields are not cleared on update', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $taskStatus = TaskStatus::factory()->create([
+            'description' => 'Original description.',
+            'background_colour' => '#bee3f8',
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->putJson("/task-statuses/{$taskStatus->id}", [
+                'title' => 'Updated Title',
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('task_statuses', [
+            'id' => $taskStatus->id,
+            'title' => 'Updated Title',
+            'description' => 'Original description.',
+            'background_colour' => '#bee3f8',
+        ]);
+    });
+
+    test('patch verb can clear nullable fields', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $taskStatus = TaskStatus::factory()->create([
+            'description' => 'Some description.',
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->patchJson("/task-statuses/{$taskStatus->id}", [
+                'description' => null,
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('task_statuses', [
+            'id' => $taskStatus->id,
+            'description' => null,
+        ]);
+    });
 });
 
 describe('destroy', function () {

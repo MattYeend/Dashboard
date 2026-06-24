@@ -322,6 +322,75 @@ describe('update', function () {
             ->assertStatus(422)
             ->assertJsonValidationErrors(['assigned_to']);
     });
+
+    test('nullable fields can be cleared by passing null on update', function () {
+        $superAdmin = $this->superAdminUser();
+        $task = Task::factory()->create([
+            'description' => 'Some description.',
+            'due_date' => '2025-08-01',
+            'assigned_date' => '2025-07-01',
+            'assigned_to' => $this->normalUser()->id,
+            'status_id' => TaskStatus::factory()->create()->id,
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->putJson("/tasks/{$task->id}", [
+                'description' => null,
+                'due_date' => null,
+                'assigned_date' => null,
+                'assigned_to' => null,
+                'status_id' => null,
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('tasks', [
+            'id' => $task->id,
+            'description' => null,
+            'due_date' => null,
+            'assigned_date' => null,
+            'assigned_to' => null,
+            'status_id' => null,
+        ]);
+    });
+
+    test('omitted fields are not cleared on update', function () {
+        $superAdmin = $this->superAdminUser();
+        $task = Task::factory()->create([
+            'description' => 'Original description.',
+            'due_date' => '2025-08-01',
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->putJson("/tasks/{$task->id}", [
+                'title' => 'Updated title',
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('tasks', [
+            'id' => $task->id,
+            'title' => 'Updated title',
+            'description' => 'Original description.',
+            'due_date' => '2025-08-01 00:00:00',
+        ]);
+    });
+
+    test('patch verb can clear nullable fields', function () {
+        $superAdmin = $this->superAdminUser();
+        $task = Task::factory()->create([
+            'description' => 'Some description.',
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->patchJson("/tasks/{$task->id}", [
+                'description' => null,
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('tasks', [
+            'id' => $task->id,
+            'description' => null,
+        ]);
+    });
 });
 
 describe('destroy', function () {

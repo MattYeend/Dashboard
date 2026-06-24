@@ -87,7 +87,6 @@ class UpdateTaskStatusRequest extends FormRequest
     {
         return [
             'sometimes',
-            'nullable',
             'string',
             'max:7',
             'regex:/^#[0-9A-Fa-f]{6}$/',
@@ -103,7 +102,6 @@ class UpdateTaskStatusRequest extends FormRequest
     {
         return [
             'sometimes',
-            'nullable',
             'string',
             'max:7',
             'regex:/^#[0-9A-Fa-f]{6}$/',

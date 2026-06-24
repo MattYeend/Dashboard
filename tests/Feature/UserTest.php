@@ -294,7 +294,6 @@ describe('update', function () {
 
     test('admin cannot update a super admin', function () {
         $admin = $this->adminUser();
-
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($admin)
@@ -304,13 +303,72 @@ describe('update', function () {
 
     test('super admin can update an admin', function () {
         $superAdmin = $this->superAdminUser();
-
         $admin = $this->adminUser();
 
         $this->actingAs($superAdmin)
             ->putJson("/users/{$admin->id}", ['name' => 'Updated'])
             ->assertStatus(200)
             ->assertJsonFragment(['name' => 'Updated']);
+    });
+
+    test('nullable meta field can be cleared by passing null on update', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $user = User::factory()->create([
+            'meta' => ['department' => 'Engineering'],
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->putJson("/users/{$user->id}", [
+                'meta' => null,
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'meta' => null,
+        ]);
+    });
+
+    test('omitted fields are not cleared on update', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $user = User::factory()->create([
+            'name' => 'Original Name',
+            'email' => 'original@example.co.uk',
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->putJson("/users/{$user->id}", [
+                'role' => 'admin',
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'name' => 'Original Name',
+            'email' => 'original@example.co.uk',
+            'role' => 'admin',
+        ]);
+    });
+
+    test('patch verb can clear nullable meta field', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $user = User::factory()->create([
+            'meta' => ['department' => 'Engineering'],
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->patchJson("/users/{$user->id}", [
+                'meta' => null,
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'meta' => null,
+        ]);
     });
 });
 
@@ -513,7 +571,7 @@ describe('soft delete scoping', function () {
     test('index does not return soft-deleted users', function () {
         $superAdmin = $this->superAdminUser();
 
-        $active = User::factory()->count(2)->create();
+        User::factory()->count(2)->create();
         $trashed = User::factory()->deleted()->create();
 
         $this->actingAs($superAdmin)
