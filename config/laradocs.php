@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'enabled' => env('LARADOCS_ENABLED', true),
+    'enabled' => env('LARADOCS_ENABLED', ! app()->isProduction()),
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return [
     */
 
     'route' => [
-        'register' => env('LARADOCS_ROUTE_REGISTER', true),
+        'register' => env('LARADOCS_ROUTE_REGISTER', ! app()->isProduction()),
         'prefix' => env('LARADOCS_ROUTE_PREFIX', 'docs'),
         'domain' => env('LARADOCS_ROUTE_DOMAIN'),
         'middleware' => ['web'],
