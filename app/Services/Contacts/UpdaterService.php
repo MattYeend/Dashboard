@@ -30,9 +30,11 @@ class UpdaterService
     ): Contact {
         $actor = User::findOrFail($updatedBy);
 
-        return DB::transaction(function () use ($contact, $data, $updatedBy, $actor) {
+        $before = $this->logService->captureSnapshot($contact);
+
+        return DB::transaction(function () use ($contact, $data, $updatedBy, $actor, $before) {
             $this->updateContact($contact, $data, $updatedBy);
-            $this->logService->logUpdate($contact, $actor, $updatedBy);
+            $this->logService->logUpdate($contact, $actor, $updatedBy, $before);
 
             return $contact->fresh();
         });

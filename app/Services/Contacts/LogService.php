@@ -64,10 +64,13 @@ class LogService
     public function logUpdate(
         Contact $contact,
         User $actor,
-        int $actorId
+        int $actorId,
+        array $before
     ): array {
-        $data = $this->baseContactData($contact) + [
-            'updated_at' => now(),
+        $data = [
+            'before' => $before,
+            'after' => $this->baseContactData($contact),
+            'updated_at' => now()->toDateTimeString(),
             'updated_by' => $actor->name,
         ];
 
@@ -225,6 +228,16 @@ class LogService
         );
 
         return $data;
+    }
+
+    /**
+     * Capture a snapshot of the contact's current state for before/after logging.
+     *
+     * @return array<string, mixed>
+     */
+    public function captureSnapshot(Contact $contact): array
+    {
+        return $this->baseContactData($contact);
     }
 
     /**

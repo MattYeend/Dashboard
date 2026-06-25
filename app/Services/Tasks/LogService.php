@@ -47,14 +47,24 @@ class LogService
      *
      * @return array<string, mixed>
      */
-    public function logUpdate(Task $task, User $actor, int $actorId): array
-    {
-        $data = $this->baseTaskData($task) + [
-            'updated_at' => now(),
+    public function logUpdate(
+        Task $task,
+        User $actor,
+        int $actorId,
+        array $before
+    ): array {
+        $data = [
+            'before' => $before,
+            'after' => $this->baseTaskData($task),
+            'updated_at' => now()->toDateTimeString(),
             'updated_by' => $actor->name,
         ];
 
-        Log::log(Log::ACTION_UPDATE_TASK, $data, $actorId);
+        Log::log(
+            Log::ACTION_UPDATE_TASK,
+            $data,
+            $actorId
+        );
 
         return $data;
     }
@@ -165,6 +175,16 @@ class LogService
         Log::log(Log::ACTION_TASK_UPDATED_BY_CRON, $data, null);
 
         return $data;
+    }
+
+    /**
+     * Capture a snapshot of the task's current state for before/after logging.
+     *
+     * @return array<string, mixed>
+     */
+    public function captureSnapshot(Task $task): array
+    {
+        return $this->baseTaskData($task);
     }
 
     /**

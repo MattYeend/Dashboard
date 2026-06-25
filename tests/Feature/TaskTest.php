@@ -402,11 +402,13 @@ describe('update', function () {
             ->putJson("/tasks/{$task->id}", ['title' => 'New Title'])
             ->assertOk();
 
-        expect(Log::query()
+        $log = Log::query()
             ->where('action_id', Log::ACTION_UPDATE_TASK)
             ->where('logged_in_user_id', $actor->id)
-            ->exists()
-        )->toBeTrue();
+            ->first();
+
+        expect($log)->not->toBeNull()
+            ->and($log->data)->toHaveKeys(['before', 'after']);
     });
 });
 

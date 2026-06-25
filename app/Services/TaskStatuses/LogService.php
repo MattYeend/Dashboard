@@ -18,7 +18,7 @@ class LogService
         User $actor,
         int $actorId
     ): array {
-        $data = $this->baseContactData($taskStatus) + [
+        $data = $this->baseTaskStatusData($taskStatus) + [
             'created_at' => now(),
             'created_by' => $actor->name,
         ];
@@ -42,7 +42,7 @@ class LogService
         User $actor,
         int $actorId
     ): array {
-        $data = $this->baseContactData($taskStatus) + [
+        $data = $this->baseTaskStatusData($taskStatus) + [
             'shown_at' => now(),
             'shown_by' => $actor->name,
         ];
@@ -64,10 +64,13 @@ class LogService
     public function logUpdate(
         TaskStatus $taskStatus,
         User $actor,
-        int $actorId
+        int $actorId,
+        array $before
     ): array {
-        $data = $this->baseContactData($taskStatus) + [
-            'updated_at' => now(),
+        $data = [
+            'before' => $before,
+            'after' => $this->baseTaskStatusData($taskStatus),
+            'updated_at' => now()->toDateTimeString(),
             'updated_by' => $actor->name,
         ];
 
@@ -90,7 +93,7 @@ class LogService
         User $actor,
         int $actorId
     ): array {
-        $data = $this->baseContactData($taskStatus) + [
+        $data = $this->baseTaskStatusData($taskStatus) + [
             'deleted_at' => now(),
             'deleted_by' => $actor->name,
         ];
@@ -114,7 +117,7 @@ class LogService
         User $actor,
         int $actorId
     ): array {
-        $data = $this->baseContactData($taskStatus) + [
+        $data = $this->baseTaskStatusData($taskStatus) + [
             'force_deleted_at' => now(),
             'force_deleted_by' => $actor->name,
         ];
@@ -138,7 +141,7 @@ class LogService
         User $actor,
         int $actorId
     ): array {
-        $data = $this->baseContactData($taskStatus) + [
+        $data = $this->baseTaskStatusData($taskStatus) + [
             'restored_at' => now(),
             'restored_by' => $actor->name,
         ];
@@ -213,7 +216,7 @@ class LogService
      */
     public function logUpdateByCron(TaskStatus $taskStatus): array
     {
-        $data = $this->baseContactData($taskStatus) + [
+        $data = $this->baseTaskStatusData($taskStatus) + [
             'updated_at' => now(),
             'updated_by' => 'System (Cron)',
         ];
@@ -228,13 +231,23 @@ class LogService
     }
 
     /**
+     * Capture a snapshot of the task status' current state for before/after logging.
+     *
+     * @return array<string, mixed>
+     */
+    public function captureSnapshot(TaskStatus $taskStatus): array
+    {
+        return $this->baseTaskStatusData($taskStatus);
+    }
+
+    /**
      * Get base task status data for logging.
      *
      * @return array<string, mixed>
      */
-    protected function baseContactData(TaskStatus $taskStatus): array
+    protected function baseTaskStatusData(TaskStatus $taskStatus): array
     {
-        return $this->getContactData($taskStatus);
+        return $this->getTaskStatusData($taskStatus);
     }
 
     /**
@@ -242,7 +255,7 @@ class LogService
      *
      * @return array<string, mixed>
      */
-    protected function getContactData(TaskStatus $taskStatus): array
+    protected function getTaskStatusData(TaskStatus $taskStatus): array
     {
         return [
             'id' => $taskStatus->id,
