@@ -17,3 +17,13 @@ test('authenticated users can visit the dashboard', function () {
     $response = $this->get(route('dashboard'));
     $response->assertOk();
 });
+
+test('shows the dashboard to verified users', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $this->actingAs($user)
+        ->get('/dashboard')
+        ->assertOk();
+});
