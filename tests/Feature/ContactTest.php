@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Contact;
+use App\Models\Log;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Spatie\Permission\Models\Role;
@@ -403,6 +404,22 @@ describe('update', function () {
             'contactable_type' => 'App\\Models\\User',
             'contactable_id' => $otherUser->id,
         ]);
+    });
+
+    test('logs contact updates with actor id', function () {
+        $actor = $this->adminUser();
+
+        $contact = Contact::factory()->forModel($actor)->create(['city' => 'London']);
+
+        $this->actingAs($actor)
+            ->putJson("/contacts/{$contact->id}", ['city' => 'Paris'])
+            ->assertOk();
+
+        expect(Log::query()
+            ->where('action_id', Log::ACTION_UPDATE_CONTACT)
+            ->where('logged_in_user_id', $actor->id)
+            ->exists()
+        )->toBeTrue();
     });
 });
 

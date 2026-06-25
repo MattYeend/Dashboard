@@ -63,10 +63,13 @@ class LogService
     public function logUpdate(
         User $user,
         User $actor,
-        int $actorId
+        int $actorId,
+        array $before
     ): array {
-        $data = $this->baseUserData($user) + [
-            'updated_at' => now(),
+        $data = [
+            'before' => $before,
+            'after' => $this->baseUserData($user),
+            'updated_at' => now()->toDateTimeString(),
             'updated_by' => $actor->name,
         ];
 
@@ -74,6 +77,7 @@ class LogService
             Log::ACTION_UPDATE_USER,
             $data,
             $actorId,
+            $user->id,
         );
 
         return $data;
@@ -224,6 +228,16 @@ class LogService
         );
 
         return $data;
+    }
+
+    /**
+     * Capture a snapshot of the user's current state for before/after logging.
+     *
+     * @return array<string, mixed>
+     */
+    public function captureSnapshot(User $user): array
+    {
+        return $this->baseUserData($user);
     }
 
     /**

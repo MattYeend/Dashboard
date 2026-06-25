@@ -29,10 +29,12 @@ class UpdaterService
     ): User {
         $actor = User::findOrFail($updatedBy);
 
-        return DB::transaction(function () use ($user, $data, $actor, $updatedBy) {
+        $before = $this->logService->captureSnapshot($user);
+
+        return DB::transaction(function () use ($user, $data, $actor, $updatedBy, $before) {
             $this->updateUser($user, $data, $updatedBy);
 
-            $this->logService->logUpdate($user, $actor, $updatedBy);
+            $this->logService->logUpdate($user, $actor, $updatedBy, $before);
 
             return $user->fresh();
         });

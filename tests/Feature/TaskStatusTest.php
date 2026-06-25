@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Log;
 use App\Models\TaskStatus;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -398,6 +399,22 @@ describe('update', function () {
             'id' => $taskStatus->id,
             'description' => null,
         ]);
+    });
+
+    test('logs task status updates with actor id', function () {
+        $actor = $this->adminUser();
+
+        $taskStatus = TaskStatus::factory()->create(['title' => 'Old Title']);
+
+        $this->actingAs($actor)
+            ->putJson("/task-statuses/{$taskStatus->id}", ['title' => 'New Title'])
+            ->assertOk();
+
+        expect(Log::query()
+            ->where('action_id', Log::ACTION_UPDATE_TASK_STATUS)
+            ->where('logged_in_user_id', $actor->id)
+            ->exists()
+        )->toBeTrue();
     });
 });
 

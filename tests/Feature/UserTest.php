@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Log;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -369,6 +370,25 @@ describe('update', function () {
             'id' => $user->id,
             'meta' => null,
         ]);
+    });
+
+    test('logs user updates with actor and related user ids', function () {
+        $actor = $this->adminUser();
+
+        $target = User::factory()->create(['name' => 'Old Name']);
+
+        $this->actingAs($actor)
+            ->putJson("/users/{$target->id}", ['name' => 'New Name'])
+            ->assertOk();
+
+        $log = Log::query()
+            ->where('action_id', Log::ACTION_UPDATE_USER)
+            ->where('logged_in_user_id', $actor->id)
+            ->where('related_to_user_id', $target->id)
+            ->first();
+
+        expect($log)->not->toBeNull()
+            ->and($log->data)->toHaveKeys(['before', 'after']);
     });
 });
 

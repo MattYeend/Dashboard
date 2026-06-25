@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Log;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -390,6 +391,22 @@ describe('update', function () {
             'id' => $task->id,
             'description' => null,
         ]);
+    });
+
+    test('logs task updates with actor id', function () {
+        $actor = $this->adminUser();
+
+        $task = Task::factory()->create(['title' => 'Old Title']);
+
+        $this->actingAs($actor)
+            ->putJson("/tasks/{$task->id}", ['title' => 'New Title'])
+            ->assertOk();
+
+        expect(Log::query()
+            ->where('action_id', Log::ACTION_UPDATE_TASK)
+            ->where('logged_in_user_id', $actor->id)
+            ->exists()
+        )->toBeTrue();
     });
 });
 
