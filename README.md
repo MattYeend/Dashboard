@@ -15,6 +15,9 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 - [Testing](#testing)
 - [Code Quality](#code-quality)
 - [Scripts Reference](#scripts-reference)
+- [Generated Frontend Routes](#generated-frontend-routes)
+- [Local Quality Checks](#local-quality-checks)
+- [Further Reading](#further-reading)
 - [Contributing](#contributing)
 - [Licence](#licence)
 - [Funding](#funding)
@@ -221,6 +224,41 @@ npm run types:check
 | `npm run types:check` | Check TypeScript types |
 | `php artisan test` | Run the full Pest PHP test suite |
 | `php artisan make:service serviceName` | Scaffold a new service class |
+
+---
+
+## Generated Frontend Routes
+
+After changing Laravel routes or controllers, regenerate frontend route/action files:
+
+```bash
+php artisan wayfinder:generate
+npm run types:check
+```
+
+Generated files live in:
+
+- `resources/js/actions`
+- `resources/js/routes`
+
+---
+
+## Local Quality Checks
+
+Run before opening a PR:
+
+```bash
+composer test
+npm run lint:check
+npm run types:check
+npm run build
+```
+
+---
+
+## Further Reading
+
+More artisan commands can be found <a href="https://artisan.page/" target="_blank">here</a>
 
 ---
 
