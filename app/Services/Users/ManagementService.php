@@ -89,6 +89,7 @@ class ManagementService
         $restored = [];
 
         foreach ($users as $user) {
+            /** @var User $user */
             $authoriseCallback($user);
             $this->restorer->restore($user, $actor->id);
             $restored[] = $user->id;

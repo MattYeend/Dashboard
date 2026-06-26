@@ -90,6 +90,7 @@ class ManagementService
         $restored = [];
 
         foreach ($contacts as $contact) {
+            /** @var Contact $contact */
             $authoriseCallback($contact);
             $this->restorer->restore($contact, $actor->id);
             $restored[] = $contact->id;

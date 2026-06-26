@@ -86,6 +86,7 @@ class ManagementService
         $restored = [];
 
         foreach ($tasks as $task) {
+            /** @var Task $task */
             $authoriseCallback($task);
             $this->restorer->restore($task, $actor->id);
             $restored[] = $task->id;
