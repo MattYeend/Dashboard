@@ -51,46 +51,84 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can view the task.
      */
-    public function canView(User $user, Task $task): bool
+    public function canView(User $actor, Task $target): bool
     {
-        return $this->isAdmin($user) && $this->activeChecker->isActive($task);
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can update the task.
      */
-    public function canUpdate(User $user, Task $task): bool
+    public function canUpdate(User $actor, Task $target): bool
     {
-        return $this->isAdmin($user) && $this->activeChecker->isActive($task);
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can delete the task.
      */
-    public function canDelete(User $user, Task $task): bool
+    public function canDelete(User $actor, Task $target): bool
     {
-        return $this->isAdmin($user) && $this->activeChecker->canBeModified($task);
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
     }
 
     /**
      * Determine whether the user can restore the task.
      */
-    public function canRestore(User $user, Task $task): bool
+    public function canRestore(User $actor, Task $target): bool
     {
-        return $this->isAdmin($user) &&
-            $this->activeChecker->canBeRestoredOrForceDeleted($task);
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
      * Determine whether the user can permanently delete the task.
      */
-    public function canForceDelete(User $user, Task $task): bool
+    public function canForceDelete(User $actor, Task $target): bool
     {
-        return $this->isAdmin($user)
-            && $this->activeChecker->canUserPerformAction(
-                $user,
-                'restoreOrForceDelete',
-                $task
-            );
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->activeChecker->canUserPerformAction(
+            $actor,
+            'restoreOrForceDelete',
+            $target
+        );
+    }
+
+    /**
+     * Determine whether the task was created by a user who outranks the actor.
+     *
+     * Prevents admins from managing tasks created by super admins.
+     */
+    private function targetOutranksActor(User $actor, Task $target): bool
+    {
+        if ($this->roleChecker->isSuperAdmin($actor)) {
+            return false;
+        }
+
+        $creator = $target->creator;
+
+        if (! $creator instanceof User) {
+            return false;
+        }
+
+        return $this->roleChecker->isSuperAdmin($creator);
     }
 }
