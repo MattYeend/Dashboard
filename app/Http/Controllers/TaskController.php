@@ -86,7 +86,6 @@ class TaskController extends Controller
     public function show(Task $task): Response
     {
         $this->authorize('view', $task);
-        $this->authorize('access', $task);
 
         $data = $this->query->getById($task->id);
 

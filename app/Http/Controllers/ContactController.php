@@ -87,7 +87,6 @@ class ContactController extends Controller
     public function show(Contact $contact): Response
     {
         $this->authorize('view', $contact);
-        $this->authorize('access', $contact);
 
         $data = $this->query->getById($contact->id);
 
