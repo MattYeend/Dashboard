@@ -81,19 +81,27 @@ class ManagementService
         User $actor,
         callable $authoriseCallback
     ): array {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $contacts = Contact::onlyTrashed()
+            ->whereIn('id', $requestedIds)
+            ->get();
+
         $restored = [];
 
-        foreach ($ids as $id) {
-            $contact = Contact::withTrashed()->findOrFail($id);
+        foreach ($contacts as $contact) {
             $authoriseCallback($contact);
-
-            if ($contact->trashed()) {
-                $this->restorer->restore($contact, $actor->id);
-                $restored[] = $id;
-            }
+            $this->restorer->restore($contact, $actor->id);
+            $restored[] = $contact->id;
         }
 
-        return $restored;
+        return [
+            'restored' => $restored,
+            'skipped' => $requestedIds
+                ->diff($contacts->pluck('id'))
+                ->values()
+                ->all(),
+        ];
     }
 
     /**

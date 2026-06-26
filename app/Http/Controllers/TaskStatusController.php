@@ -197,7 +197,7 @@ class TaskStatusController extends Controller
     }
 
     /**
-     * Bulk soft-delete multiple contacts.
+     * Bulk soft-delete multiple task statuses.
      *
      * Authorises each task status individually via the 'delete' policy.
      */
@@ -225,23 +225,20 @@ class TaskStatusController extends Controller
     }
 
     /**
-     * Bulk restore multiple soft-deleted contacts.
+     * Bulk restore multiple soft-deleted task statuses.
      *
      * Authorises each task status individually via the 'restore' policy.
      */
     public function bulkRestore(Request $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'ids' => ['required', 'array'],
             'ids.*' => ['required', 'integer', 'exists:task_statuses,id'],
         ]);
 
-        $actor = $request->user();
-        $ids = $request->input('ids');
-
-        $this->management->bulkRestore(
-            $ids,
-            $actor,
+        $result = $this->management->bulkRestore(
+            $validated['ids'],
+            $request->user(),
             fn (TaskStatus $taskStatus) => $this->authorize('restore', $taskStatus)
         );
 

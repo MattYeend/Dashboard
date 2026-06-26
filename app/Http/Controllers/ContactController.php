@@ -232,21 +232,18 @@ class ContactController extends Controller
      */
     public function bulkRestore(Request $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'ids' => ['required', 'array'],
             'ids.*' => ['required', 'integer', 'exists:contacts,id'],
         ]);
 
-        $actor = $request->user();
-        $ids = $request->input('ids');
-
-        $this->management->bulkRestore(
-            $ids,
-            $actor,
+        $result = $this->management->bulkRestore(
+            $validated['ids'],
+            $request->user(),
             fn (Contact $contact) => $this->authorize('restore', $contact)
         );
 
-        if (request()->wantsJson()) {
+        if ($request->wantsJson()) {
             return response()->json(null, 204);
         }
 

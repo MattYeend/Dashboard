@@ -81,19 +81,27 @@ class ManagementService
         User $actor,
         callable $authoriseCallback
     ): array {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $taskStatuses = TaskStatus::onlyTrashed()
+            ->whereIn('id', $requestedIds)
+            ->get();
+
         $restored = [];
 
-        foreach ($ids as $id) {
-            $taskStatus = TaskStatus::withTrashed()->findOrFail($id);
+        foreach ($taskStatuses as $taskStatus) {
             $authoriseCallback($taskStatus);
-
-            if ($taskStatus->trashed()) {
-                $this->restorer->restore($taskStatus, $actor->id);
-                $restored[] = $id;
-            }
+            $this->restorer->restore($taskStatus, $actor->id);
+            $restored[] = $taskStatus->id;
         }
 
-        return $restored;
+        return [
+            'restored' => $restored,
+            'skipped' => $requestedIds
+                ->diff($taskStatuses->pluck('id'))
+                ->values()
+                ->all(),
+        ];
     }
 
     /**

@@ -73,26 +73,34 @@ class ManagementService
     }
 
     /**
-     * Bulk restore contacts.
+     * Bulk restore users.
      */
     public function bulkRestore(
         array $ids,
         User $actor,
         callable $authoriseCallback
     ): array {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $users = User::onlyTrashed()
+            ->whereIn('id', $requestedIds)
+            ->get();
+
         $restored = [];
 
-        foreach ($ids as $id) {
-            $user = User::withTrashed()->findOrFail($id);
+        foreach ($users as $user) {
             $authoriseCallback($user);
-
-            if ($user->trashed()) {
-                $this->restorer->restore($user, $actor->id);
-                $restored[] = $id;
-            }
+            $this->restorer->restore($user, $actor->id);
+            $restored[] = $user->id;
         }
 
-        return $restored;
+        return [
+            'restored' => $restored,
+            'skipped' => $requestedIds
+                ->diff($users->pluck('id'))
+                ->values()
+                ->all(),
+        ];
     }
 
     /**

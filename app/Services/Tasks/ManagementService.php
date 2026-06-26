@@ -72,21 +72,32 @@ class ManagementService
     /**
      * Bulk restore tasks.
      */
-    public function bulkRestore(array $ids, User $actor, callable $authoriseCallback): array
-    {
+    public function bulkRestore(
+        array $ids,
+        User $actor,
+        callable $authoriseCallback
+    ): array {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $tasks = Task::onlyTrashed()
+            ->whereIn('id', $requestedIds)
+            ->get();
+
         $restored = [];
 
-        foreach ($ids as $id) {
-            $task = Task::withTrashed()->findOrFail($id);
+        foreach ($tasks as $task) {
             $authoriseCallback($task);
-
-            if ($task->trashed()) {
-                $this->restorer->restore($task, $actor->id);
-                $restored[] = $id;
-            }
+            $this->restorer->restore($task, $actor->id);
+            $restored[] = $task->id;
         }
 
-        return $restored;
+        return [
+            'restored' => $restored,
+            'skipped' => $requestedIds
+                ->diff($tasks->pluck('id'))
+                ->values()
+                ->all(),
+        ];
     }
 
     /**
