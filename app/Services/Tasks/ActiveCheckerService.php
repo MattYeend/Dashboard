@@ -51,19 +51,14 @@ class ActiveCheckerService
      * Check if the user can perform an action on the task.
      */
     public function canUserPerformAction(
-        Task $task,
+        User $actor,
         string $action,
-        User $user
+        Task $target
     ): bool {
-        if ($action === 'modify') {
-            return $this->roleChecker->isAdmin($user) && $this->canBeModified($task);
-        }
-
-        if ($action === 'restoreOrForceDelete') {
-            return $this->roleChecker->isAdmin($user) &&
-                $this->canBeRestoredOrForceDeleted($task);
-        }
-
-        throw new \InvalidArgumentException("Invalid action: {$action}");
+        return match ($action) {
+            'modify' => $this->roleChecker->isAdmin($actor) && $this->canBeModified($target),
+            'restoreOrForceDelete' => $this->roleChecker->isAdmin($actor) && $this->canBeRestoredOrForceDeleted($target),
+            default => false,
+        };
     }
 }

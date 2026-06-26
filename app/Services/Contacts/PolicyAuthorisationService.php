@@ -52,51 +52,85 @@ class PolicyAuthorisationService
      * Determine whether the user can view the model.
      * Only admins can view company contacts.
      */
-    public function canView(User $user, Contact $contact): bool
+    public function canView(User $actor, Contact $target): bool
     {
-        return $this->isAdmin($user) && $this->activeChecker->isActive(
-            $contact
-        );
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function canUpdate(User $user, Contact $contact): bool
+    public function canUpdate(User $actor, Contact $target): bool
     {
-        return $this->isAdmin($user) && $this->activeChecker->isActive(
-            $contact
-        );
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function canDelete(User $user, Contact $contact): bool
+    public function canDelete(User $actor, Contact $target): bool
     {
-        return $this->isAdmin($user) && $this->activeChecker->canBeModified(
-            $contact
-        );
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function canRestore(User $user, Contact $contact): bool
+    public function canRestore(User $actor, Contact $target): bool
     {
-        return $this->isAdmin($user) &&
-            $this->activeChecker->canBeRestoredOrForceDeleted($contact);
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor)
+            && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function canForceDelete(User $user, Contact $contact): bool
+    public function canForceDelete(User $actor, Contact $target): bool
     {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
         return $this->activeChecker->canUserPerformAction(
-            $contact,
+            $actor,
             'restoreOrForceDelete',
-            $user
+            $target
         );
+    }
+
+    /**
+     * Determine whether the target user outranks the acting user.
+     *
+     * A Super Admin cannot be managed by anyone other than another Super Admin.
+     */
+    private function targetOutranksActor(User $actor, Contact $target): bool
+    {
+        if ($this->roleChecker->isSuperAdmin($actor)) {
+            return false;
+        }
+
+        $owner = $target->contactable;
+
+        if (! $owner instanceof User) {
+            return false;
+        }
+
+        return $this->roleChecker->isSuperAdmin($owner);
     }
 }

@@ -49,54 +49,86 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can view the model.
-     * Only admins can view company contacts.
+     * Determine whether the user can view the task status.
      */
-    public function canView(User $user, TaskStatus $taskStatus): bool
+    public function canView(User $actor, TaskStatus $target): bool
     {
-        return $this->isAdmin($user) && $this->activeChecker->isActive(
-            $taskStatus
-        );
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can update the task status.
      */
-    public function canUpdate(User $user, TaskStatus $taskStatus): bool
+    public function canUpdate(User $actor, TaskStatus $target): bool
     {
-        return $this->isAdmin($user) && $this->activeChecker->isActive(
-            $taskStatus
-        );
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete the task status.
      */
-    public function canDelete(User $user, TaskStatus $taskStatus): bool
+    public function canDelete(User $actor, TaskStatus $target): bool
     {
-        return $this->isAdmin($user) && $this->activeChecker->canBeModified(
-            $taskStatus
-        );
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can restore the task status.
      */
-    public function canRestore(User $user, TaskStatus $taskStatus): bool
+    public function canRestore(User $actor, TaskStatus $target): bool
     {
-        return $this->isAdmin($user) &&
-            $this->activeChecker->canBeRestoredOrForceDeleted($taskStatus);
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can permanently delete the task status.
      */
-    public function canForceDelete(User $user, TaskStatus $taskStatus): bool
+    public function canForceDelete(User $actor, TaskStatus $target): bool
     {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
         return $this->activeChecker->canUserPerformAction(
-            $taskStatus,
+            $actor,
             'restoreOrForceDelete',
-            $user
+            $target
         );
+    }
+
+    /**
+     * Determine whether the task status was created by a user who outranks the actor.
+     *
+     * Prevents admins from managing task statuses created by super admins.
+     */
+    private function targetOutranksActor(User $actor, TaskStatus $target): bool
+    {
+        if ($this->roleChecker->isSuperAdmin($actor)) {
+            return false;
+        }
+
+        $creator = $target->creator;
+
+        if (! $creator instanceof User) {
+            return false;
+        }
+
+        return $this->roleChecker->isSuperAdmin($creator);
     }
 }
