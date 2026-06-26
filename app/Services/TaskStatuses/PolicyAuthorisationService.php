@@ -93,10 +93,11 @@ class PolicyAuthorisationService
      */
     public function canForceDelete(User $user, TaskStatus $taskStatus): bool
     {
-        return $this->activeChecker->canUserPerformAction(
-            $taskStatus,
-            'restoreOrForceDelete',
-            $user
-        );
+        return $this->isAdmin($user)
+            && $this->activeChecker->canUserPerformAction(
+                $user,
+                'restoreOrForceDelete',
+                $taskStatus
+            );
     }
 }

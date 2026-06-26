@@ -54,21 +54,14 @@ class ActiveCheckerService
      * taskStatus based on its active status.
      */
     public function canUserPerformAction(
-        TaskStatus $taskStatus,
+        User $actor,
         string $action,
-        User $user
+        TaskStatus $target
     ): bool {
-        if ($action === 'modify') {
-            return $this->roleChecker->isAdmin($user) && $this->canBeModified(
-                $taskStatus
-            );
-        }
-
-        if ($action === 'restoreOrForceDelete') {
-            return $this->roleChecker->isAdmin($user) &&
-                $this->canBeRestoredOrForceDeleted($taskStatus);
-        }
-
-        throw new \InvalidArgumentException("Invalid action: {$action}");
+        return match ($action) {
+            'modify' => $this->roleChecker->isAdmin($actor) && $this->canBeModified($target),
+            'restoreOrForceDelete' => $this->roleChecker->isAdmin($actor) && $this->canBeRestoredOrForceDeleted($target),
+            default => false,
+        };
     }
 }
