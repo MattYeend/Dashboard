@@ -110,14 +110,4 @@ class UserPolicy
     {
         return $this->authorisationService->isUser($user);
     }
-
-    /**
-     * Determine whether the user can access the model.
-     *
-     * Alias for view, used as a secondary access gate check.
-     */
-    public function access(User $user, User $target): bool
-    {
-        return $this->authorisationService->canView($user, $target);
-    }
 }

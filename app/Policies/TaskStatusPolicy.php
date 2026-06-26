@@ -70,14 +70,4 @@ class TaskStatusPolicy
     {
         return $this->authorisationService->canForceDelete($user, $taskStatus);
     }
-
-    /**
-     * Determine whether the user can access the model.
-     *
-     * Alias for view, used as a secondary access gate check.
-     */
-    public function access(User $user, TaskStatus $taskStatus): bool
-    {
-        return $this->authorisationService->canView($user, $taskStatus);
-    }
 }
