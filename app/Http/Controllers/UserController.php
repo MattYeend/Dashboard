@@ -86,7 +86,6 @@ class UserController extends Controller
     public function show(User $user): Response
     {
         $this->authorize('view', $user);
-        $this->authorize('access', $user);
 
         $data = $this->query->getById($user->id);
 

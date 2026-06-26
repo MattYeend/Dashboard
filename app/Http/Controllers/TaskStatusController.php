@@ -86,7 +86,6 @@ class TaskStatusController extends Controller
     public function show(TaskStatus $taskStatus): Response
     {
         $this->authorize('view', $taskStatus);
-        $this->authorize('access', $taskStatus);
 
         $taskStatus = $this->query->getById($taskStatus->id);
 
