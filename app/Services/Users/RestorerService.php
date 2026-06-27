@@ -2,7 +2,9 @@
 
 namespace App\Services\Users;
 
+use App\Models\Log;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -12,7 +14,7 @@ class RestorerService
      * Inject the required services into the restorer service.
      */
     public function __construct(
-        protected readonly LogService $logService
+        protected readonly AuditLogService $auditLogService
     ) {}
 
     /**
@@ -33,7 +35,13 @@ class RestorerService
 
             $user->restore();
 
-            $this->logService->logRestoration($user, $actor, $restoredBy);
+            $this->auditLogService->record(
+                Log::ACTION_RESTORE_USER,
+                $actor,
+                $user,
+                ['before' => $user->toArray()],
+                relatedUser: $user,
+            );
 
             return $user->fresh();
         });

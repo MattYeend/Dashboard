@@ -14,7 +14,6 @@ class UpdaterService
      */
     public function __construct(
         protected readonly DataPreparationService $dataPreparation,
-        protected readonly LogService $logService,
         protected readonly AuditLogService $auditLogService,
     ) {}
 
@@ -45,7 +44,7 @@ class UpdaterService
                 $fresh,
                 [
                     'before' => $before,
-                    'after'  => $this->auditLogService->snapshot($fresh),
+                    'after' => $this->auditLogService->snapshot($fresh),
                 ],
                 relatedUser: $fresh,
             );

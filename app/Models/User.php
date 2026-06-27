@@ -40,7 +40,7 @@ use Spatie\Permission\Traits\HasRoles;
     'two_factor_recovery_codes',
     'remember_token',
 ])]
-class User extends Authenticatable implements MustVerifyEmail, PasskeyUser, Auditable
+class User extends Authenticatable implements Auditable, MustVerifyEmail, PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens,
