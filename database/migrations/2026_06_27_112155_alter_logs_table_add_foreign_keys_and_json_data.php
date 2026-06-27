@@ -16,21 +16,21 @@ return new class extends Migration
 
         Schema::table('logs', function (Blueprint $table) {
             $table->unsignedBigInteger('action_id')
-                  ->change();
+                ->change();
 
             $table->json('data')
-                  ->nullable()
-                  ->change();
+                ->nullable()
+                ->change();
 
             $table->foreign('logged_in_user_id')
-                  ->references('id')
-                  ->on('users')
-                  ->nullOnDelete();
+                ->references('id')
+                ->on('users')
+                ->nullOnDelete();
 
             $table->foreign('related_to_user_id')
-                  ->references('id')
-                  ->on('users')
-                  ->nullOnDelete();
+                ->references('id')
+                ->on('users')
+                ->nullOnDelete();
 
             $table->index('action_id');
         });
