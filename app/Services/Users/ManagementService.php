@@ -21,9 +21,8 @@ class ManagementService
     /**
      * Create a new company user.
      */
-    public function store(
-        StoreUserRequest $request
-    ): User {
+    public function store(StoreUserRequest $request): User
+    {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -47,29 +46,35 @@ class ManagementService
     /**
      * Soft delete a user.
      */
-    public function destroy(User $user): void
-    {
-        $this->destructor->delete($user, auth()->id());
+    public function destroy(
+        User $user,
+        User $actor
+    ): void {
+        $this->destructor->delete($user, $actor->id);
     }
 
     /**
      * Restore a soft-deleted user.
      */
-    public function restore(int $id): User
-    {
+    public function restore(
+        int $id,
+        User $actor
+    ): User {
         $user = User::withTrashed()->findOrFail($id);
 
-        return $this->restorer->restore($user, auth()->id());
+        return $this->restorer->restore($user, $actor->id);
     }
 
     /**
      * Force delete a user, permanently removing it from the
      * database.
      */
-    public function forceDelete(int $id): void
-    {
+    public function forceDelete(
+        int $id,
+        User $actor
+    ): void {
         $user = User::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete($user, auth()->id());
+        $this->destructor->forceDelete($user, $actor->id);
     }
 
     /**

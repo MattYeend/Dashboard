@@ -33,11 +33,12 @@ class TaskController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->authorize('viewAny', Task::class);
 
         $data = $this->query->getPaginated(
+            $request->user(),
             request()->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page', 'status_id', 'assigned_to'])
         );
 
@@ -83,11 +84,16 @@ class TaskController extends Controller
      *
      * Authorises via the 'view' and 'access' policies before rendering.
      */
-    public function show(Task $task): Response
-    {
+    public function show(
+        Task $task,
+        Request $request
+    ): Response {
         $this->authorize('view', $task);
 
-        $data = $this->query->getById($task->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $task->id
+        );
 
         return Inertia::render('Tasks/Show', $data);
     }
@@ -97,12 +103,17 @@ class TaskController extends Controller
      *
      * Authorises via the 'update' policy before rendering.
      */
-    public function edit(Task $task): Response
-    {
+    public function edit(
+        Task $task,
+        Request $request
+    ): Response {
         $this->authorize('update', $task);
 
         $data = array_merge(
-            $this->query->getById($task->id),
+            $this->query->getById(
+                $request->user(),
+                $task->id
+            ),
             $this->query->getFormData()
         );
 
@@ -122,7 +133,10 @@ class TaskController extends Controller
         UpdateTaskRequest $request,
         Task $task
     ): JsonResponse|RedirectResponse {
-        $task = $this->management->update($request, $task);
+        $task = $this->management->update(
+            $request,
+            $task
+        );
 
         if ($request->wantsJson()) {
             return response()->json($task);
@@ -139,11 +153,16 @@ class TaskController extends Controller
      * The audit log entry is written before the deletion so that the
      * task instance is still fully accessible during logging.
      */
-    public function destroy(Task $task): JsonResponse|RedirectResponse
-    {
+    public function destroy(
+        Request $request,
+        Task $task
+    ): JsonResponse|RedirectResponse {
         $this->authorize('delete', $task);
 
-        $this->management->destroy($task);
+        $this->management->destroy(
+            $task,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -160,13 +179,18 @@ class TaskController extends Controller
      *
      * Authorises via the 'restore' policy before proceeding.
      */
-    public function restore(int $id): JsonResponse|RedirectResponse
-    {
+    public function restore(
+        int $id,
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $task = Task::onlyTrashed()->findOrFail($id);
 
         $this->authorize('restore', $task);
 
-        $this->management->restore($id);
+        $this->management->restore(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -183,13 +207,18 @@ class TaskController extends Controller
      *
      * Authorises via the 'forceDelete' policy before proceeding.
      */
-    public function forceDelete(int $id): JsonResponse|RedirectResponse
-    {
+    public function forceDelete(
+        int $id,
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $task = Task::onlyTrashed()->findOrFail($id);
 
         $this->authorize('forceDelete', $task);
 
-        $this->management->forceDelete($id);
+        $this->management->forceDelete(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -238,7 +267,7 @@ class TaskController extends Controller
             'ids.*' => ['required', 'integer', 'exists:tasks,id'],
         ]);
 
-        $result = $this->management->bulkRestore(
+        $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
             fn (Task $task) => $this->authorize('restore', $task)

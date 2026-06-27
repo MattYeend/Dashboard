@@ -33,12 +33,13 @@ class ContactController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->authorize('viewAny', Contact::class);
 
         $data = $this->query->getPaginated(
-            request()->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->user(),
+            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
         );
 
         return Inertia::render('Contacts/Index', $data);
@@ -84,11 +85,16 @@ class ContactController extends Controller
      *
      * Authorises via the 'view' and 'access' policies before rendering.
      */
-    public function show(Contact $contact): Response
-    {
+    public function show(
+        Contact $contact,
+        Request $request
+    ): Response {
         $this->authorize('view', $contact);
 
-        $data = $this->query->getById($contact->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $contact->id
+        );
 
         return Inertia::render('Contacts/Show', $data);
     }
@@ -98,11 +104,16 @@ class ContactController extends Controller
      *
      * Authorises via the 'update' policy before rendering.
      */
-    public function edit(Contact $contact): Response
-    {
+    public function edit(
+        Contact $contact,
+        Request $request
+    ): Response {
         $this->authorize('update', $contact);
 
-        $data = $this->query->getById($contact->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $contact->id
+        );
 
         return Inertia::render('Contacts/Edit', $data);
     }
@@ -137,11 +148,13 @@ class ContactController extends Controller
      * The audit log entry is written before the deletion so that the
      * contact instance is still fully accessible during logging.
      */
-    public function destroy(Contact $contact): JsonResponse|RedirectResponse
-    {
+    public function destroy(
+        Request $request,
+        Contact $contact
+    ): JsonResponse|RedirectResponse {
         $this->authorize('delete', $contact);
 
-        $this->management->destroy($contact);
+        $this->management->destroy($contact, $request->user());
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -158,13 +171,15 @@ class ContactController extends Controller
      *
      * Authorises via the 'restore' policy before proceeding.
      */
-    public function restore(int $id): JsonResponse|RedirectResponse
-    {
+    public function restore(
+        int $id,
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $contact = Contact::onlyTrashed()->findOrFail($id);
 
         $this->authorize('restore', $contact);
 
-        $this->management->restore($id);
+        $this->management->restore($id, $request->user());
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -181,13 +196,15 @@ class ContactController extends Controller
      *
      * Authorises via the 'forceDelete' policy before proceeding.
      */
-    public function forceDelete(int $id): JsonResponse|RedirectResponse
-    {
+    public function forceDelete(
+        int $id,
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $contact = Contact::onlyTrashed()->findOrFail($id);
 
         $this->authorize('forceDelete', $contact);
 
-        $this->management->forceDelete($id);
+        $this->management->forceDelete($id, $request->user());
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -236,7 +253,7 @@ class ContactController extends Controller
             'ids.*' => ['required', 'integer', 'exists:contacts,id'],
         ]);
 
-        $result = $this->management->bulkRestore(
+        $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
             fn (Contact $contact) => $this->authorize('restore', $contact)

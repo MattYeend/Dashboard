@@ -22,12 +22,11 @@ class QueryService
 
     /**
      * Get paginated contacts with filters.
-     *
-     * @param  array<string, mixed>  $filters
-     * @return array<string, mixed>
      */
-    public function getPaginated(array $filters = []): array
-    {
+    public function getPaginated(
+        User $actor,
+        array $filters = []
+    ): array {
         $query = $this->buildQuery($filters);
         $paginated = $this->paginate(
             $query,
@@ -36,31 +35,30 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions(),
+            $this->getPermissions($actor),
             $this->baseData(),
         );
     }
 
     /**
      * Get a single contact by ID.
-     *
-     * @return array<string, mixed>
      */
-    public function getById(int $id, bool $withTrashed = false): array
-    {
+    public function getById(
+        User $user,
+        int $id,
+        bool $withTrashed = false
+    ): array {
         $contact = $this->findContact($id, $withTrashed);
 
         return array_merge(
             ['contact' => $this->formatterService->format($contact)],
-            $this->getPermissions(),
+            $this->getPermissions($user),
             $this->baseData(),
         );
     }
 
     /**
      * Get the data needed to render the "Create Contact" form.
-     *
-     * @return array<string, mixed>
      */
     public function getCreateData(): array
     {
@@ -69,8 +67,6 @@ class QueryService
 
     /**
      * Get the "owner" options for a given contactable type, for the dependent dropdown on the Create/Edit contact form.
-     *
-     * @return array<int, array{value: int, label: string}>
      */
     public function getContactableOptions(string $type): array
     {
@@ -79,9 +75,6 @@ class QueryService
 
     /**
      * Build the base query with filters.
-     *
-     * @param  array<string, mixed>  $filters
-     * @return Builder<Contact>
      */
     protected function buildQuery(array $filters): Builder
     {
@@ -95,12 +88,11 @@ class QueryService
 
     /**
      * Paginate the query and return as plain array.
-     *
-     * @param  Builder<Contact>  $query
-     * @return array<string, mixed>
      */
-    protected function paginate(Builder $query, int $perPage): array
-    {
+    protected function paginate(
+        Builder $query,
+        int $perPage
+    ): array {
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
@@ -124,14 +116,9 @@ class QueryService
 
     /**
      * Get user permissions for the authenticated user.
-     *
-     * @return array<string, mixed>
      */
-    protected function getPermissions(): array
+    protected function getPermissions(User $user): array
     {
-        /** @var User $user */
-        $user = auth()->user();
-
         if (! $user) {
             return ['permissions_meta' => []];
         }
@@ -146,8 +133,6 @@ class QueryService
 
     /**
      * Get base data for the view.
-     *
-     * @return array<string, mixed>
      */
     protected function baseData(): array
     {
@@ -161,8 +146,10 @@ class QueryService
     /**
      * Find a contact by ID with optional trashed records.
      */
-    private function findContact(int $id, bool $withTrashed = false): Contact
-    {
+    private function findContact(
+        int $id,
+        bool $withTrashed = false
+    ): Contact {
         $query = Contact::query()
             ->with(['contactable', 'creator', 'updater', 'deleter', 'restorer']);
 
@@ -175,13 +162,11 @@ class QueryService
 
     /**
      * Apply trash filtering and sorting to the query.
-     *
-     * @param  Builder<Contact>  $query
-     * @param  array<string, mixed>  $filters
-     * @return Builder<Contact>
      */
-    private function applySorting(Builder $query, array $filters): Builder
-    {
+    private function applySorting(
+        Builder $query,
+        array $filters
+    ): Builder {
         $query = $this->trashFilterService->applyFilter(
             $query,
             $filters['trashed'] ?? null
