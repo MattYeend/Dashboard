@@ -84,11 +84,16 @@ class TaskStatusController extends Controller
      *
      * Authorises via the 'view' and 'access' policies before rendering.
      */
-    public function show(TaskStatus $taskStatus, Request $request): Response
-    {
+    public function show(
+        TaskStatus $taskStatus,
+        Request $request
+    ): Response {
         $this->authorize('view', $taskStatus);
 
-        $data = $this->query->getById($request->user(), $taskStatus->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $taskStatus->id
+        );
 
         return Inertia::render('TaskStatuses/Show', $data);
     }
@@ -120,7 +125,10 @@ class TaskStatusController extends Controller
         UpdateTaskStatusRequest $request,
         TaskStatus $taskStatus
     ): JsonResponse|RedirectResponse {
-        $taskStatus = $this->management->update($request, $taskStatus);
+        $taskStatus = $this->management->update(
+            $request,
+            $taskStatus
+        );
 
         if ($request->wantsJson()) {
             return response()->json($taskStatus);
@@ -143,7 +151,10 @@ class TaskStatusController extends Controller
     ): JsonResponse|RedirectResponse {
         $this->authorize('delete', $taskStatus);
 
-        $this->management->destroy($taskStatus, $request->user());
+        $this->management->destroy(
+            $taskStatus,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -168,7 +179,10 @@ class TaskStatusController extends Controller
 
         $this->authorize('restore', $taskStatus);
 
-        $this->management->restore($id, $request->user());
+        $this->management->restore(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -193,7 +207,10 @@ class TaskStatusController extends Controller
 
         $this->authorize('forceDelete', $taskStatus);
 
-        $this->management->forceDelete($id, $request->user());
+        $this->management->forceDelete(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);

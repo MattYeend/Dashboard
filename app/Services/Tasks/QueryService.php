@@ -26,8 +26,10 @@ class QueryService
      * @param  array<string, mixed>  $filters
      * @return array<string, mixed>
      */
-    public function getPaginated(array $filters = []): array
-    {
+    public function getPaginated(
+        User $user,
+        array $filters = []
+    ): array {
         $query = $this->buildQuery($filters);
         $paginated = $this->paginate(
             $query,
@@ -36,7 +38,7 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions(),
+            $this->getPermissions($user),
             $this->baseData(),
         );
     }
@@ -46,13 +48,16 @@ class QueryService
      *
      * @return array<string, mixed>
      */
-    public function getById(int $id, bool $withTrashed = false): array
-    {
+    public function getById(
+        User $user,
+        int $id,
+        bool $withTrashed = false
+    ): array {
         $task = $this->findTask($id, $withTrashed);
 
         return array_merge(
             ['task' => $this->formatterService->format($task)],
-            $this->getPermissions(),
+            $this->getPermissions($user),
             $this->baseData(),
         );
     }
@@ -118,11 +123,8 @@ class QueryService
      *
      * @return array<string, mixed>
      */
-    protected function getPermissions(): array
+    protected function getPermissions(User $user): array
     {
-        /** @var User $user */
-        $user = auth()->user();
-
         if (! $user) {
             return ['permissions_meta' => []];
         }
