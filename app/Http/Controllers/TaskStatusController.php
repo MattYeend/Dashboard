@@ -33,15 +33,16 @@ class TaskStatusController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->authorize('viewAny', TaskStatus::class);
 
-        $taskStatuses = $this->query->getPaginated(
-            request()->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+        $data = $this->query->getPaginated(
+            $request->user(),
+            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
         );
 
-        return Inertia::render('TaskStatuses/Index', $taskStatuses);
+        return Inertia::render('TaskStatuses/Index', $data);
     }
 
     /**
@@ -73,7 +74,7 @@ class TaskStatusController extends Controller
             return response()->json($taskStatus, 201);
         }
 
-        return redirect()->route('TaskStatus.index', $taskStatus->id);
+        return redirect()->route('task-statuses.index', $taskStatus->id);
     }
 
     /**
@@ -83,13 +84,13 @@ class TaskStatusController extends Controller
      *
      * Authorises via the 'view' and 'access' policies before rendering.
      */
-    public function show(TaskStatus $taskStatus): Response
+    public function show(TaskStatus $taskStatus, Request $request): Response
     {
         $this->authorize('view', $taskStatus);
 
-        $taskStatus = $this->query->getById($taskStatus->id);
+        $data = $this->query->getById($request->user(), $taskStatus->id);
 
-        return Inertia::render('TaskStatuses/Show', $taskStatus);
+        return Inertia::render('TaskStatuses/Show', $data);
     }
 
     /**
@@ -97,13 +98,13 @@ class TaskStatusController extends Controller
      *
      * Authorises via the 'update' policy before rendering.
      */
-    public function edit(TaskStatus $taskStatus): Response
+    public function edit(TaskStatus $taskStatus, Request $request): Response
     {
         $this->authorize('update', $taskStatus);
 
-        $taskStatus = $this->query->getById($taskStatus->id);
+        $data = $this->query->getById($request->user(), $taskStatus->id);
 
-        return Inertia::render('TaskStatuses/Edit', $taskStatus);
+        return Inertia::render('TaskStatuses/Edit', $data);
     }
 
     /**
@@ -125,7 +126,7 @@ class TaskStatusController extends Controller
             return response()->json($taskStatus);
         }
 
-        return redirect()->route('TaskStatus.index', $taskStatus->id);
+        return redirect()->route('task-statuses.index', $taskStatus->id);
     }
 
     /**
@@ -136,17 +137,19 @@ class TaskStatusController extends Controller
      * The audit log entry is written before the deletion so that the
      * taskStatus instance is still fully accessible during logging.
      */
-    public function destroy(TaskStatus $taskStatus): JsonResponse|RedirectResponse
-    {
+    public function destroy(
+        Request $request,
+        TaskStatus $taskStatus
+    ): JsonResponse|RedirectResponse {
         $this->authorize('delete', $taskStatus);
 
-        $this->management->destroy($taskStatus);
+        $this->management->destroy($taskStatus, $request->user());
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
         }
 
-        return redirect()->route('TaskStatus.index');
+        return redirect()->route('task-statuses.index');
     }
 
     /**
@@ -157,19 +160,21 @@ class TaskStatusController extends Controller
      *
      * Authorises via the 'restore' policy before proceeding.
      */
-    public function restore(int $id): JsonResponse|RedirectResponse
-    {
+    public function restore(
+        int $id,
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $taskStatus = TaskStatus::onlyTrashed()->findOrFail($id);
 
         $this->authorize('restore', $taskStatus);
 
-        $this->management->restore($id);
+        $this->management->restore($id, $request->user());
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
         }
 
-        return redirect()->route('TaskStatus.index');
+        return redirect()->route('task-statuses.index');
     }
 
     /**
@@ -180,19 +185,21 @@ class TaskStatusController extends Controller
      *
      * Authorises via the 'forceDelete' policy before proceeding.
      */
-    public function forceDelete(int $id): JsonResponse|RedirectResponse
-    {
+    public function forceDelete(
+        int $id,
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $taskStatus = TaskStatus::onlyTrashed()->findOrFail($id);
 
         $this->authorize('forceDelete', $taskStatus);
 
-        $this->management->forceDelete($id);
+        $this->management->forceDelete($id, $request->user());
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
         }
 
-        return redirect()->route('TaskStatus.index');
+        return redirect()->route('task-statuses.index');
     }
 
     /**
@@ -220,7 +227,7 @@ class TaskStatusController extends Controller
             return response()->json(null, 204);
         }
 
-        return redirect()->route('TaskStatus.index');
+        return redirect()->route('task-statuses.index');
     }
 
     /**
@@ -245,6 +252,6 @@ class TaskStatusController extends Controller
             return response()->json(null, 204);
         }
 
-        return redirect()->route('TaskStatus.index');
+        return redirect()->route('task-statuses.index');
     }
 }

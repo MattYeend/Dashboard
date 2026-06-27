@@ -22,14 +22,19 @@ class QueryService
     /**
      * Get paginated task statuses with filters.
      */
-    public function getPaginated(array $filters = []): array
-    {
+    public function getPaginated(
+        User $actor,
+        array $filters = []
+    ): array {
         $query = $this->buildQuery($filters);
-        $paginated = $this->paginate($query, $filters['per_page'] ?? 15);
+        $paginated = $this->paginate(
+            $query,
+            min((int) ($filters['per_page'] ?? 15), 100)
+        );
 
         return array_merge(
             $paginated,
-            $this->getPermissions(),
+            $this->getPermissions($actor),
             $this->baseData(),
         );
     }
@@ -37,13 +42,16 @@ class QueryService
     /**
      * Get a single taskStatus by ID.
      */
-    public function getById(int $id, bool $withTrashed = false): array
-    {
-        $taskStatus = $this->findContact($id, $withTrashed);
+    public function getById(
+        User $user,
+        int $id,
+        bool $withTrashed = false
+    ): array {
+        $taskStatus = $this->findTaskStatus($id, $withTrashed);
 
         return array_merge(
             ['taskStatus' => $this->formatterService->format($taskStatus)],
-            $this->getPermissions(),
+            $this->getPermissions($user),
             $this->baseData(),
         );
     }
@@ -67,15 +75,20 @@ class QueryService
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
-            'task_statuses' => $paginator->items(),
-            'links' => $paginator->linkCollection()->toArray(),
-            'meta' => [
-                'current_page' => $paginator->currentPage(),
-                'last_page' => $paginator->lastPage(),
-                'per_page' => $paginator->perPage(),
-                'total' => $paginator->total(),
-                'from' => $paginator->firstItem(),
-                'to' => $paginator->lastItem(),
+            'task_statuses' => [
+                'data' => array_map(
+                    fn (TaskStatus $taskStatus) => $this->formatterService->format($taskStatus),
+                    $paginator->items()
+                ),
+                'links' => $paginator->linkCollection()->toArray(),
+                'meta' => [
+                    'current_page' => $paginator->currentPage(),
+                    'last_page' => $paginator->lastPage(),
+                    'per_page' => $paginator->perPage(),
+                    'total' => $paginator->total(),
+                    'from' => $paginator->firstItem(),
+                    'to' => $paginator->lastItem(),
+                ],
             ],
         ];
     }
@@ -83,11 +96,8 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(): array
+    protected function getPermissions(User $user): array
     {
-        /** @var User $user */
-        $user = auth()->user();
-
         if (! $user) {
             return ['permissions_meta' => []];
         }
@@ -114,7 +124,7 @@ class QueryService
     /**
      * Find a taskStatus by ID with optional trashed records.
      */
-    private function findContact(
+    private function findTaskStatus(
         int $id,
         bool $withTrashed = false
     ): TaskStatus {
