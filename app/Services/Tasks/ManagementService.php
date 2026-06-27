@@ -33,8 +33,10 @@ class ManagementService
     /**
      * Update an existing task.
      */
-    public function update(UpdateTaskRequest $request, Task $task): Task
-    {
+    public function update(
+        UpdateTaskRequest $request,
+        Task $task
+    ): Task {
         return $this->updater->update(
             $task,
             $request->validated(),
@@ -45,16 +47,20 @@ class ManagementService
     /**
      * Soft delete a task.
      */
-    public function destroy(Task $task, User $actor): void
-    {
+    public function destroy(
+        Task $task,
+        User $actor
+    ): void {
         $this->destructor->delete($task, $actor->id);
     }
 
     /**
      * Restore a soft-deleted task.
      */
-    public function restore(int $id, User $actor): Task
-    {
+    public function restore(
+        int $id,
+        User $actor
+    ): Task {
         $task = Task::withTrashed()->findOrFail($id);
 
         return $this->restorer->restore($task, $actor->id);
@@ -63,8 +69,10 @@ class ManagementService
     /**
      * Force delete a task, permanently removing it from the database.
      */
-    public function forceDelete(int $id, User $actor): void
-    {
+    public function forceDelete(
+        int $id,
+        User $actor
+    ): void {
         $task = Task::withTrashed()->findOrFail($id);
         $this->destructor->forceDelete($task, $actor->id);
     }
@@ -104,8 +112,11 @@ class ManagementService
     /**
      * Bulk soft delete tasks.
      */
-    public function bulkDelete(array $ids, User $actor, callable $authoriseCallback): array
-    {
+    public function bulkDelete(
+        array $ids,
+        User $actor,
+        callable $authoriseCallback
+    ): array {
         $deleted = [];
 
         foreach ($ids as $id) {

@@ -20,9 +20,6 @@ class QueryService
 
     /**
      * Get paginated users with filters.
-     *
-     * @param  array<string, mixed>  $filters
-     * @return array<string, mixed>
      */
     public function getPaginated(
         User $actor,
@@ -43,8 +40,6 @@ class QueryService
 
     /**
      * Get a single user by ID.
-     *
-     * @return array<string, mixed>
      */
     public function getById(
         User $actor,
@@ -62,9 +57,6 @@ class QueryService
 
     /**
      * Build the base query with filters.
-     *
-     * @param  array<string, mixed>  $filters
-     * @return Builder<User>
      */
     protected function buildQuery(array $filters): Builder
     {
@@ -78,12 +70,11 @@ class QueryService
 
     /**
      * Paginate the query and return as plain array.
-     *
-     * @param  Builder<User>  $query
-     * @return array<string, mixed>
      */
-    protected function paginate(Builder $query, int $perPage): array
-    {
+    protected function paginate(
+        Builder $query,
+        int $perPage
+    ): array {
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
@@ -107,8 +98,6 @@ class QueryService
 
     /**
      * Get user permissions for the authenticated user.
-     *
-     * @return array<string, mixed>
      */
     protected function getPermissions(User $user): array
     {
@@ -140,8 +129,10 @@ class QueryService
     /**
      * Find a user by ID with optional trashed records.
      */
-    private function findUser(int $id, bool $withTrashed = false): User
-    {
+    private function findUser(
+        int $id,
+        bool $withTrashed = false
+    ): User {
         $query = User::query()
             ->with(['creator', 'updater', 'deleter', 'restorer']);
 
@@ -154,13 +145,11 @@ class QueryService
 
     /**
      * Apply trash filtering and sorting to the query.
-     *
-     * @param  Builder<User>  $query
-     * @param  array<string, mixed>  $filters
-     * @return Builder<User>
      */
-    private function applySorting(Builder $query, array $filters): Builder
-    {
+    private function applySorting(
+        Builder $query,
+        array $filters
+    ): Builder {
         $query = $this->trashFilterService->applyFilter(
             $query,
             $filters['trashed'] ?? null

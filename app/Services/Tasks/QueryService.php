@@ -22,9 +22,6 @@ class QueryService
 
     /**
      * Get paginated tasks with filters.
-     *
-     * @param  array<string, mixed>  $filters
-     * @return array<string, mixed>
      */
     public function getPaginated(
         User $user,
@@ -45,8 +42,6 @@ class QueryService
 
     /**
      * Get a single task by ID.
-     *
-     * @return array<string, mixed>
      */
     public function getById(
         User $user,
@@ -64,8 +59,6 @@ class QueryService
 
     /**
      * Get data needed to populate create and edit forms.
-     *
-     * @return array<string, mixed>
      */
     public function getFormData(): array
     {
@@ -77,9 +70,6 @@ class QueryService
 
     /**
      * Build the base query with filters.
-     *
-     * @param  array<string, mixed>  $filters
-     * @return Builder<Task>
      */
     protected function buildQuery(array $filters): Builder
     {
@@ -91,12 +81,11 @@ class QueryService
 
     /**
      * Paginate the query and return as a plain array.
-     *
-     * @param  Builder<Task>  $query
-     * @return array<string, mixed>
      */
-    protected function paginate(Builder $query, int $perPage): array
-    {
+    protected function paginate(
+        Builder $query,
+        int $perPage
+    ): array {
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
@@ -120,8 +109,6 @@ class QueryService
 
     /**
      * Get user permissions for the authenticated user.
-     *
-     * @return array<string, mixed>
      */
     protected function getPermissions(User $user): array
     {
@@ -139,8 +126,6 @@ class QueryService
 
     /**
      * Get base data for the view.
-     *
-     * @return array<string, mixed>
      */
     protected function baseData(): array
     {
@@ -153,8 +138,10 @@ class QueryService
     /**
      * Find a task by ID with optional trashed records.
      */
-    private function findTask(int $id, bool $withTrashed = false): Task
-    {
+    private function findTask(
+        int $id,
+        bool $withTrashed = false
+    ): Task {
         $query = Task::query()->with(['assignee', 'status']);
 
         if ($withTrashed) {
@@ -166,13 +153,11 @@ class QueryService
 
     /**
      * Apply sorting and trash filtering to the query.
-     *
-     * @param  Builder<Task>  $query
-     * @param  array<string, mixed>  $filters
-     * @return Builder<Task>
      */
-    private function applySorting(Builder $query, array $filters): Builder
-    {
+    private function applySorting(
+        Builder $query,
+        array $filters
+    ): Builder {
         $query = $this->trashFilterService->applyFilter(
             $query,
             $filters['trashed'] ?? null

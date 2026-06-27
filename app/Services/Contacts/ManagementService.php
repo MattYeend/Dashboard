@@ -22,9 +22,8 @@ class ManagementService
     /**
      * Create a new company contact.
      */
-    public function store(
-        StoreContactRequest $request
-    ): Contact {
+    public function store(StoreContactRequest $request): Contact
+    {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -48,16 +47,20 @@ class ManagementService
     /**
      * Soft delete a contact.
      */
-    public function destroy(Contact $contact, User $actor): void
-    {
+    public function destroy(
+        Contact $contact,
+        User $actor
+    ): void {
         $this->destructor->delete($contact, $actor->id);
     }
 
     /**
      * Restore a soft-deleted contact.
      */
-    public function restore(int $id, User $actor): Contact
-    {
+    public function restore(
+        int $id,
+        User $actor
+    ): Contact {
         $contact = Contact::withTrashed()->findOrFail($id);
 
         return $this->restorer->restore($contact, $actor->id);
@@ -67,8 +70,10 @@ class ManagementService
      * Force delete a contact, permanently removing it from the
      * database.
      */
-    public function forceDelete(int $id, User $actor): void
-    {
+    public function forceDelete(
+        int $id,
+        User $actor
+    ): void {
         $contact = Contact::withTrashed()->findOrFail($id);
         $this->destructor->forceDelete($contact, $actor->id);
     }
