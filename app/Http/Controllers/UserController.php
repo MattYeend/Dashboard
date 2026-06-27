@@ -33,11 +33,12 @@ class UserController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->authorize('viewAny', User::class);
 
         $data = $this->query->getPaginated(
+            $request->user(),
             request()->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
         );
 
@@ -83,11 +84,16 @@ class UserController extends Controller
      *
      * Authorises via the 'view' and 'access' policies before rendering.
      */
-    public function show(User $user): Response
-    {
+    public function show(
+        User $user,
+        Request $request
+    ): Response {
         $this->authorize('view', $user);
 
-        $data = $this->query->getById($user->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $user->id
+        );
 
         return Inertia::render('Users/Show', $data);
     }
@@ -97,11 +103,16 @@ class UserController extends Controller
      *
      * Authorises via the 'update' policy before rendering.
      */
-    public function edit(User $user): Response
-    {
+    public function edit(
+        User $user,
+        Request $request
+    ): Response {
         $this->authorize('update', $user);
 
-        $data = $this->query->getById($user->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $user->id
+        );
 
         return Inertia::render('Users/Edit', $data);
     }
@@ -137,12 +148,13 @@ class UserController extends Controller
      * user instance is still fully accessible during logging.
      */
     public function destroy(
-        User $user
+        User $user,
+        Request $request
     ): JsonResponse|RedirectResponse {
 
         $this->authorize('delete', $user);
 
-        $this->management->destroy($user);
+        $this->management->destroy($user, $request->user());
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -159,13 +171,15 @@ class UserController extends Controller
      *
      * Authorises via the 'restore' policy before proceeding.
      */
-    public function restore(int $id): JsonResponse|RedirectResponse
-    {
+    public function restore(
+        int $id,
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $user = User::onlyTrashed()->findOrFail($id);
 
         $this->authorize('restore', $user);
 
-        $this->management->restore($id);
+        $this->management->restore($id, $request->user());
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -182,13 +196,15 @@ class UserController extends Controller
      *
      * Authorises via the 'forceDelete' policy before proceeding.
      */
-    public function forceDelete(int $id): JsonResponse|RedirectResponse
-    {
+    public function forceDelete(
+        int $id,
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $user = User::onlyTrashed()->findOrFail($id);
 
         $this->authorize('forceDelete', $user);
 
-        $this->management->forceDelete($id);
+        $this->management->forceDelete($id, $request->user());
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
