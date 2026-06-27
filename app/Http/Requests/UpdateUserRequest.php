@@ -2,12 +2,15 @@
 
 namespace App\Http\Requests;
 
+use App\Concerns\PasswordValidationRules;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends FormRequest
 {
+    use PasswordValidationRules;
+
     /**
      * Determine if the user is authorised to make this request.
      */
@@ -26,6 +29,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => $this->nameRules(),
             'email' => $this->emailRules(),
+            'password' => $this->optionalPasswordRules(),
             'role' => $this->roleRules(),
             'meta' => $this->metaRules(),
         ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Concerns\PasswordValidationRules;
 use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -9,6 +10,8 @@ use Illuminate\Validation\Rule;
 
 class StoreUserRequest extends FormRequest
 {
+    use PasswordValidationRules;
+
     /**
      * Determine if the user is authorised to make this request.
      */
@@ -48,10 +51,6 @@ class StoreUserRequest extends FormRequest
             'email.email' => 'The email address must be a valid email.',
             'email.max' => 'The email address may not exceed 255 characters.',
             'email.unique' => 'The email address is already taken.',
-            'password.required' => 'The password is required.',
-            'password.string' => 'The password must be a string.',
-            'password.min' => 'The password must be at least 8 characters.',
-            'password.confirmed' => 'The password confirmation does not match.',
             'role.in' => 'The selected role is invalid.',
         ];
     }
@@ -82,21 +81,6 @@ class StoreUserRequest extends FormRequest
             'email',
             'max:255',
             Rule::unique('users', 'email'),
-        ];
-    }
-
-    /**
-     * Get validation rules for the password field.
-     *
-     * @return array<mixed>
-     */
-    protected function passwordRules(): array
-    {
-        return [
-            'required',
-            'string',
-            'min:8',
-            'confirmed',
         ];
     }
 
