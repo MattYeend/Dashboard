@@ -253,7 +253,7 @@ class UserController extends Controller
             'ids.*' => ['required', 'integer', 'exists:users,id'],
         ]);
 
-        $result = $this->management->bulkRestore(
+        $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
             fn (User $user) => $this->authorize('restore', $user)

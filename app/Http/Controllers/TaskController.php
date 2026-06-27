@@ -238,7 +238,7 @@ class TaskController extends Controller
             'ids.*' => ['required', 'integer', 'exists:tasks,id'],
         ]);
 
-        $result = $this->management->bulkRestore(
+        $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
             fn (Task $task) => $this->authorize('restore', $task)

@@ -253,7 +253,7 @@ class ContactController extends Controller
             'ids.*' => ['required', 'integer', 'exists:contacts,id'],
         ]);
 
-        $result = $this->management->bulkRestore(
+        $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
             fn (Contact $contact) => $this->authorize('restore', $contact)

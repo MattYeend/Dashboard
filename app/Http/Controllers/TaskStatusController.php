@@ -235,7 +235,7 @@ class TaskStatusController extends Controller
             'ids.*' => ['required', 'integer', 'exists:task_statuses,id'],
         ]);
 
-        $result = $this->management->bulkRestore(
+        $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
             fn (TaskStatus $taskStatus) => $this->authorize('restore', $taskStatus)
