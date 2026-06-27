@@ -36,13 +36,18 @@ return new class extends Migration
             ");
         }
 
-        Schema::table('logs', function (Blueprint $table) {
+        Schema::table('logs', function (Blueprint $table) use ($driver) {
             $table->unsignedBigInteger('action_id')
                 ->change();
 
-            $table->json('data')
-                ->nullable()
-                ->change();
+            if ($driver === 'pgsql') {
+                DB::statement('ALTER TABLE logs ALTER COLUMN data TYPE json USING data::json');
+                DB::statement('ALTER TABLE logs ALTER COLUMN data DROP NOT NULL');
+            } else {
+                $table->json('data')
+                    ->nullable()
+                    ->change();
+            }
 
             $table->foreign('logged_in_user_id')
                 ->references('id')
@@ -63,13 +68,21 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('logs', function (Blueprint $table) {
+        $driver = DB::getDriverName();
+
+        Schema::table('logs', function (Blueprint $table) use ($driver) {
             $table->dropForeign(['logged_in_user_id']);
             $table->dropForeign(['related_to_user_id']);
             $table->dropIndex(['action_id']);
 
             $table->bigInteger('action_id')->change();
-            $table->text('data')->nullable()->change();
+
+            if ($driver === 'pgsql') {
+                DB::statement('ALTER TABLE logs ALTER COLUMN data TYPE text USING data::text');
+                DB::statement('ALTER TABLE logs ALTER COLUMN data DROP NOT NULL');
+            } else {
+                $table->text('data')->nullable()->change();
+            }
         });
     }
 };
