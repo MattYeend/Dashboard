@@ -48,29 +48,29 @@ class ManagementService
     /**
      * Soft delete a contact.
      */
-    public function destroy(Contact $contact): void
+    public function destroy(Contact $contact, User $actor): void
     {
-        $this->destructor->delete($contact, auth()->id());
+        $this->destructor->delete($contact, $actor->id);
     }
 
     /**
      * Restore a soft-deleted contact.
      */
-    public function restore(int $id): Contact
+    public function restore(int $id, User $actor): Contact
     {
         $contact = Contact::withTrashed()->findOrFail($id);
 
-        return $this->restorer->restore($contact, auth()->id());
+        return $this->restorer->restore($contact, $actor->id);
     }
 
     /**
      * Force delete a contact, permanently removing it from the
      * database.
      */
-    public function forceDelete(int $id): void
+    public function forceDelete(int $id, User $actor): void
     {
         $contact = Contact::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete($contact, auth()->id());
+        $this->destructor->forceDelete($contact, $actor->id);
     }
 
     /**
