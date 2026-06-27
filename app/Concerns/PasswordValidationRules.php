@@ -26,4 +26,14 @@ trait PasswordValidationRules
     {
         return ['required', 'string', 'current_password'];
     }
+
+    /**
+     * Get the validation rules used to validate an optional password update.
+     *
+     * @return array<int, ValidationRule|array<mixed>|string>
+     */
+    protected function optionalPasswordRules(): array
+    {
+        return ['sometimes', 'nullable', 'string', Password::default(), 'confirmed'];
+    }
 }
