@@ -12,7 +12,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::statement('UPDATE logs SET data = NULL WHERE data IS NOT NULL AND JSON_VALID(data) = 0');
+        $driver = DB::getDriverName();
+
+        if ($driver === 'mysql') {
+            DB::statement(
+                'UPDATE logs SET data = NULL WHERE data IS NOT NULL AND JSON_VALID(data) = 0'
+            );
+        } elseif ($driver === 'pgsql') {
+            DB::statement("
+                DO \$\$
+                DECLARE
+                    r RECORD;
+                BEGIN
+                    FOR r IN SELECT id, data FROM logs WHERE data IS NOT NULL LOOP
+                        BEGIN
+                            PERFORM r.data::jsonb;
+                        EXCEPTION WHEN others THEN
+                            UPDATE logs SET data = NULL WHERE id = r.id;
+                        END;
+                    END LOOP;
+                END;
+                \$\$;
+            ");
+        }
 
         Schema::table('logs', function (Blueprint $table) {
             $table->unsignedBigInteger('action_id')
