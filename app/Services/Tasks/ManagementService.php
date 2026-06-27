@@ -45,28 +45,28 @@ class ManagementService
     /**
      * Soft delete a task.
      */
-    public function destroy(Task $task): void
+    public function destroy(Task $task, User $actor): void
     {
-        $this->destructor->delete($task, auth()->id());
+        $this->destructor->delete($task, $actor->id);
     }
 
     /**
      * Restore a soft-deleted task.
      */
-    public function restore(int $id): Task
+    public function restore(int $id, User $actor): Task
     {
         $task = Task::withTrashed()->findOrFail($id);
 
-        return $this->restorer->restore($task, auth()->id());
+        return $this->restorer->restore($task, $actor->id);
     }
 
     /**
      * Force delete a task, permanently removing it from the database.
      */
-    public function forceDelete(int $id): void
+    public function forceDelete(int $id, User $actor): void
     {
         $task = Task::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete($task, auth()->id());
+        $this->destructor->forceDelete($task, $actor->id);
     }
 
     /**
