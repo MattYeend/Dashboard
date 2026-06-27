@@ -2,7 +2,9 @@
 
 namespace App\Services\Users;
 
+use App\Models\Log;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Support\Facades\DB;
 
 class UpdaterService
@@ -12,7 +14,8 @@ class UpdaterService
      */
     public function __construct(
         protected readonly DataPreparationService $dataPreparation,
-        protected readonly LogService $logService
+        protected readonly LogService $logService,
+        protected readonly AuditLogService $auditLogService,
     ) {}
 
     /**
@@ -29,12 +32,23 @@ class UpdaterService
     ): User {
         $actor = User::findOrFail($updatedBy);
 
-        $before = $this->logService->captureSnapshot($user);
+        $before = $this->auditLogService->snapshot($user);
 
         return DB::transaction(function () use ($user, $data, $actor, $updatedBy, $before) {
             $this->updateUser($user, $data, $updatedBy);
 
-            $this->logService->logUpdate($user, $actor, $updatedBy, $before);
+            $fresh = $user->fresh();
+
+            $this->auditLogService->record(
+                Log::ACTION_UPDATE_USER,
+                $actor,
+                $fresh,
+                [
+                    'before' => $before,
+                    'after'  => $this->auditLogService->snapshot($fresh),
+                ],
+                relatedUser: $fresh,
+            );
 
             return $user->fresh();
         });

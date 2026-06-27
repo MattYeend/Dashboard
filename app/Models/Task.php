@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\Auditable;
 use Database\Factories\TaskFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,7 +50,7 @@ use Illuminate\Support\Carbon;
     'restored_at',
     'deleted_at',
 ])]
-class Task extends Model
+class Task extends Model implements Auditable
 {
     /**
      * @use HasFactory<TaskFactory>
@@ -115,6 +116,20 @@ class Task extends Model
     public function restorer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'restored_by');
+    }
+
+    public function auditSnapshot(): array
+    {
+        return $this->only([
+            'id',
+            'title',
+            'description',
+            'due_date',
+            'assigned_date',
+            'assigned_to',
+            'status_id',
+            'meta',
+        ]);
     }
 
     /**

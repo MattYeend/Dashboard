@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\Auditable;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -39,7 +40,7 @@ use Spatie\Permission\Traits\HasRoles;
     'two_factor_recovery_codes',
     'remember_token',
 ])]
-class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
+class User extends Authenticatable implements MustVerifyEmail, PasskeyUser, Auditable
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens,
@@ -160,6 +161,18 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
         });
 
         $this->syncDisplayRoleFromSpatie();
+    }
+
+    public function auditSnapshot(): array
+    {
+        return $this->only([
+            'id',
+            'name',
+            'email',
+            'email_verified_at',
+            'role',
+            'meta',
+        ]);
     }
 
     /**

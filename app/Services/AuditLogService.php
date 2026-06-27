@@ -2,12 +2,18 @@
 
 namespace App\Services;
 
+use App\Contracts\Auditable;
 use App\Models\Log;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class AuditLogService
 {
+    /**
+     * Record an audit log entry.
+     *
+     * @param  array<string, mixed>  $data
+     */
     public function record(
         int $actionId,
         ?User $actor,
@@ -25,5 +31,15 @@ class AuditLogService
                 'occurred_at' => now()->toISOString(),
             ], $data),
         ]);
+    }
+
+    /**
+     * Capture a snapshot from any model implementing Auditable.
+     *
+     * @return array<string, mixed>
+     */
+    public function snapshot(Auditable $model): array
+    {
+        return $model->auditSnapshot();
     }
 }
