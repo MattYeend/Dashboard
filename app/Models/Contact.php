@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\Auditable;
 use Database\Factories\ContactFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,7 +46,7 @@ use Illuminate\Support\Carbon;
     'restored_by',
     'restored_at',
 ])]
-class Contact extends Model
+class Contact extends Model implements Auditable
 {
     /**
      * @use HasFactory<ContactFactory>
@@ -101,6 +102,22 @@ class Contact extends Model
     public function restorer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'restored_by');
+    }
+
+    public function auditSnapshot(): array
+    {
+        return $this->only([
+            'id',
+            'contactable_id',
+            'contactable_type',
+            'phone',
+            'email',
+            'address',
+            'city',
+            'postal_code',
+            'country',
+            'meta',
+        ]);
     }
 
     /**

@@ -222,34 +222,19 @@ class Log extends Model
 
     /**
      * Log an action.
-     *
-     * @param  int  $action
-     * @param  array|null  $data
-     * @param  int|null  $logged_in_user_id
-     * @param  int|null  $related_to_user_id
      */
     public static function log(
-        $action = 0,
-        $data = null,
-        $logged_in_user_id = null,
-        $related_to_user_id = null
-    ) {
-        if (isset($action)) {
-            $logged_in_user_id = $logged_in_user_id ?? Auth::id();
-
-            if (! is_null($data) && ! is_array($data)) {
-                throw new \InvalidArgumentException(
-                    'Data must be an array or null.'
-                );
-            }
-
-            $log = new self;
-            $log->logged_in_user_id = $logged_in_user_id;
-            $log->action_id = $action;
-            $log->related_to_user_id = $related_to_user_id;
-            $log->data = $data;
-            $log->save();
-        }
+        int $action = self::ACTION_NONE,
+        ?array $data = null,
+        ?int $loggedInUserId = null,
+        ?int $relatedToUserId = null
+    ): self {
+        return self::create([
+            'action_id' => $action,
+            'data' => $data,
+            'logged_in_user_id' => $loggedInUserId ?? Auth::id(),
+            'related_to_user_id' => $relatedToUserId,
+        ]);
     }
 
     /**
