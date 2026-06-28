@@ -23,7 +23,7 @@ defineProps<Props>();
                 id="address"
                 v-model="address"
                 type="text"
-                class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
             />
             <p v-if="errors.address" class="mt-1 text-sm text-red-600">
                 {{ errors.address }}
@@ -40,7 +40,7 @@ defineProps<Props>();
                     id="city"
                     v-model="city"
                     type="text"
-                    class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                    class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
                 />
                 <p v-if="errors.city" class="mt-1 text-sm text-red-600">
                     {{ errors.city }}
@@ -56,7 +56,7 @@ defineProps<Props>();
                     id="postal_code"
                     v-model="postalCode"
                     type="text"
-                    class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                    class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
                 />
                 <p v-if="errors.postal_code" class="mt-1 text-sm text-red-600">
                     {{ errors.postal_code }}
@@ -71,7 +71,7 @@ defineProps<Props>();
                 id="country"
                 v-model="country"
                 type="text"
-                class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
             />
             <p v-if="errors.country" class="mt-1 text-sm text-red-600">
                 {{ errors.country }}

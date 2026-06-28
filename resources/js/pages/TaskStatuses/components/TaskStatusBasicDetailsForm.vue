@@ -33,7 +33,7 @@ function update<K extends keyof TaskStatusFormData>(
                 id="title"
                 :value="form.title"
                 type="text"
-                class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
                 placeholder="Enter status title"
                 @input="
                     update('title', ($event.target as HTMLInputElement).value)
@@ -54,7 +54,7 @@ function update<K extends keyof TaskStatusFormData>(
                 id="description"
                 :value="form.description ?? ''"
                 rows="3"
-                class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
                 placeholder="Enter status description"
                 @input="
                     update(

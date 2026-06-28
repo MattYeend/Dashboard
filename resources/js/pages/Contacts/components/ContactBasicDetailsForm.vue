@@ -19,7 +19,7 @@ defineProps<Props>();
                 id="email"
                 v-model="email"
                 type="email"
-                class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
             />
             <p v-if="errors.email" class="mt-1 text-sm text-red-600">
                 {{ errors.email }}
@@ -33,7 +33,7 @@ defineProps<Props>();
                 id="phone"
                 v-model="phone"
                 type="text"
-                class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
             />
             <p v-if="errors.phone" class="mt-1 text-sm text-red-600">
                 {{ errors.phone }}

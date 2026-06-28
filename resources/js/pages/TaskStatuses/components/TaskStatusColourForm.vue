@@ -49,7 +49,7 @@ function update<K extends keyof TaskStatusFormData>(
                     :value="form.background_colour"
                     type="text"
                     maxlength="7"
-                    class="border-grey-300 block w-32 rounded-md font-mono shadow-sm sm:text-sm"
+                    class="border-gray-300 block w-32 rounded-md font-mono shadow-sm sm:text-sm"
                     placeholder="#ffffff"
                     @input="
                         update(
@@ -90,7 +90,7 @@ function update<K extends keyof TaskStatusFormData>(
                     :value="form.text_colour"
                     type="text"
                     maxlength="7"
-                    class="border-grey-300 block w-32 rounded-md font-mono shadow-sm sm:text-sm"
+                    class="border-gray-300 block w-32 rounded-md font-mono shadow-sm sm:text-sm"
                     placeholder="#000000"
                     @input="
                         update(

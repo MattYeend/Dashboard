@@ -33,7 +33,7 @@ const assignedTo = defineModel<number | null>('assignedTo', { default: null });
             <select
                 id="assigned_to"
                 :value="assignedTo"
-                class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
                 @change="
                     assignedTo = ($event.target as HTMLSelectElement).value
                         ? Number(($event.target as HTMLSelectElement).value)

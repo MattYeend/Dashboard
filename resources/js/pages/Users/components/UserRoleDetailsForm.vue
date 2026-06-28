@@ -22,7 +22,7 @@ const roles = [
         <select
             id="role"
             v-model="role"
-            class="border-grey-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+            class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
         >
             <option
                 v-for="roleOption in roles"
