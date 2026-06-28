@@ -16,7 +16,7 @@ defineProps<Props>();
 <template>
     <div class="space-y-4">
         <div>
-            <label for="address" class="text-grey-700 block text-sm font-medium"
+            <label for="address" class="text-gray-700 block text-sm font-medium"
                 >Address</label
             >
             <input
@@ -33,7 +33,7 @@ defineProps<Props>();
             <div>
                 <label
                     for="city"
-                    class="text-grey-700 block text-sm font-medium"
+                    class="text-gray-700 block text-sm font-medium"
                     >City</label
                 >
                 <input
@@ -49,7 +49,7 @@ defineProps<Props>();
             <div>
                 <label
                     for="postal_code"
-                    class="text-grey-700 block text-sm font-medium"
+                    class="text-gray-700 block text-sm font-medium"
                     >Postal Code</label
                 >
                 <input
@@ -64,7 +64,7 @@ defineProps<Props>();
             </div>
         </div>
         <div>
-            <label for="country" class="text-grey-700 block text-sm font-medium"
+            <label for="country" class="text-gray-700 block text-sm font-medium"
                 >Country</label
             >
             <input

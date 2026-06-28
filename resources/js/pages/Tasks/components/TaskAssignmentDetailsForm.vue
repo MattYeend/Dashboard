@@ -26,7 +26,7 @@ const assignedTo = defineModel<number | null>('assignedTo', { default: null });
         <div>
             <label
                 for="assigned_to"
-                class="text-grey-700 block text-sm font-medium"
+                class="text-gray-700 block text-sm font-medium"
             >
                 Assigned To
             </label>

@@ -28,7 +28,7 @@ const statusId = defineModel<number | null>('statusId', { default: null });
 <template>
     <div class="space-y-4">
         <div>
-            <label for="title" class="text-grey-700 block text-sm font-medium">
+            <label for="title" class="text-gray-700 block text-sm font-medium">
                 Title <span class="text-red-600">*</span>
             </label>
             <input
@@ -46,7 +46,7 @@ const statusId = defineModel<number | null>('statusId', { default: null });
         <div>
             <label
                 for="description"
-                class="text-grey-700 block text-sm font-medium"
+                class="text-gray-700 block text-sm font-medium"
             >
                 Description
             </label>
@@ -69,7 +69,7 @@ const statusId = defineModel<number | null>('statusId', { default: null });
         <div>
             <label
                 for="status_id"
-                class="text-grey-700 block text-sm font-medium"
+                class="text-gray-700 block text-sm font-medium"
             >
                 Status
             </label>

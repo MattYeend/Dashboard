@@ -19,7 +19,7 @@ defineProps<Props>();
 <template>
     <div class="space-y-4">
         <div>
-            <label for="name" class="text-grey-700 block text-sm font-medium"
+            <label for="name" class="text-gray-700 block text-sm font-medium"
                 >Name</label
             >
             <input
@@ -34,7 +34,7 @@ defineProps<Props>();
         </div>
 
         <div>
-            <label for="email" class="text-grey-700 block text-sm font-medium"
+            <label for="email" class="text-gray-700 block text-sm font-medium"
                 >Email Address</label
             >
             <input
@@ -51,7 +51,7 @@ defineProps<Props>();
         <div>
             <label
                 for="password"
-                class="text-grey-700 block text-sm font-medium"
+                class="text-gray-700 block text-sm font-medium"
             >
                 {{
                     isEditing
@@ -73,7 +73,7 @@ defineProps<Props>();
         <div>
             <label
                 for="password_confirmation"
-                class="text-grey-700 block text-sm font-medium"
+                class="text-gray-700 block text-sm font-medium"
                 >Confirm Password</label
             >
             <input
