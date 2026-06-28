@@ -19,8 +19,8 @@ return new class extends Migration
                 'UPDATE logs SET data = NULL WHERE data IS NOT NULL AND JSON_VALID(data) = 0'
             );
         } elseif ($driver === 'pgsql') {
-            DB::statement("
-                DO \$\$
+            DB::statement('
+                DO $$
                 DECLARE
                     r RECORD;
                 BEGIN
@@ -32,8 +32,8 @@ return new class extends Migration
                         END;
                     END LOOP;
                 END;
-                \$\$;
-            ");
+                $$;
+            ');
         }
 
         Schema::table('logs', function (Blueprint $table) use ($driver) {
