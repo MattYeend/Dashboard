@@ -15,7 +15,7 @@ class UpdaterService
      */
     public function __construct(
         protected readonly DataPreparationService $dataPreparation,
-        protected readonly AuditLogService $auditLogService,
+        protected readonly AuditLogService $auditLogService
     ) {}
 
     /**

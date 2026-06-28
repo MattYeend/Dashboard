@@ -3,7 +3,9 @@
 namespace App\Services\Contacts;
 
 use App\Models\Contact;
+use App\Models\Log;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -13,7 +15,7 @@ class RestorerService
      * Inject the required services into the resorer service.
      */
     public function __construct(
-        protected readonly LogService $logService
+        protected readonly AuditLogService $auditLogService
     ) {}
 
     /**
@@ -34,7 +36,12 @@ class RestorerService
 
             $contact->restore();
 
-            $this->logService->logRestoration($contact, $actor, $restoredBy);
+            $this->auditLogService->record(
+                Log::ACTION_RESTORE_CONTACT,
+                $actor,
+                $contact,
+                ['before' => $contact->toArray()],
+            );
 
             return $contact->fresh();
         });
