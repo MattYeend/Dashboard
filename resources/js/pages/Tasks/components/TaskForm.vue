@@ -59,7 +59,7 @@ const statusId = defineModel<number | null>('statusId', { default: null });
             :errors="errors"
         />
 
-        <div class="items-centre flex justify-end space-x-3">
+        <div class="items-center flex justify-end space-x-3">
             <Link
                 :href="tasksIndex.url()"
                 class="text-gray-700 rounded-md px-4 py-2 text-sm font-medium"
@@ -69,7 +69,7 @@ const statusId = defineModel<number | null>('statusId', { default: null });
             <button
                 type="submit"
                 :disabled="processing"
-                class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+                class="items-center inline-flex rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
             >
                 {{ isEditing ? 'Update Task' : 'Create Task' }}
             </button>

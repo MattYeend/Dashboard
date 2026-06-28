@@ -14,12 +14,12 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-    <div class="items-centre mb-4 flex justify-between">
+    <div class="items-center mb-4 flex justify-between">
         <h1 class="text-gray-900 text-2xl font-semibold">{{ title }}</h1>
         <Link
             v-if="canCreate"
             :href="createHref"
-            class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
+            class="items-center inline-flex rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
         >
             {{ createLabel }}
         </Link>

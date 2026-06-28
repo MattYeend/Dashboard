@@ -30,26 +30,26 @@ function destroy(): void {
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <div class="items-centre mb-6 flex justify-between">
+            <div class="items-center mb-6 flex justify-between">
                 <h1 class="text-gray-900 text-2xl font-semibold">
                     {{ user.name }}
                 </h1>
                 <div class="space-x-2">
                     <Link
                         :href="usersIndex.url()"
-                        class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium"
+                        class="items-center inline-flex rounded-md px-4 py-2 text-sm font-medium"
                     >
                         Back
                     </Link>
                     <Link
                         :href="usersEdit.url(user.id)"
-                        class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium"
+                        class="items-center inline-flex rounded-md px-4 py-2 text-sm font-medium"
                     >
                         Edit
                     </Link>
                     <button
                         type="button"
-                        class="items-centre inline-flex rounded-md px-4 py-2 text-sm font-medium text-red-600"
+                        class="items-center inline-flex rounded-md px-4 py-2 text-sm font-medium text-red-600"
                         @click="destroy"
                     >
                         Delete
