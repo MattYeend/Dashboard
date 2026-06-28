@@ -2,8 +2,10 @@
 
 namespace App\Services\TaskStatuses;
 
+use App\Models\Log;
 use App\Models\TaskStatus;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Support\Facades\DB;
 
 class UpdaterService
@@ -13,7 +15,7 @@ class UpdaterService
      */
     public function __construct(
         protected readonly DataPreparationService $dataPreparation,
-        protected readonly LogService $logService
+        protected readonly AuditLogService $auditLogService,
     ) {}
 
     /**
@@ -30,11 +32,20 @@ class UpdaterService
     ): TaskStatus {
         $actor = User::findOrFail($updatedBy);
 
-        $before = $this->logService->captureSnapshot($taskStatus);
+        $before = $this->auditLogService->snapshot($taskStatus);
 
         return DB::transaction(function () use ($taskStatus, $data, $actor, $updatedBy, $before) {
-            $this->updateContact($taskStatus, $data, $updatedBy);
-            $this->logService->logUpdate($taskStatus, $actor, $updatedBy, $before);
+            $this->updateTaskStatus($taskStatus, $data, $updatedBy);
+
+            $this->auditLogService->record(
+                Log::ACTION_UPDATE_TASK_STATUS,
+                $actor,
+                $taskStatus,
+                [
+                    'before' => $before,
+                    'after' => $this->auditLogService->snapshot($taskStatus),
+                ],
+            );
 
             return $taskStatus->fresh();
         });
@@ -45,7 +56,7 @@ class UpdaterService
      *
      * @param  array<string, mixed>  $data
      */
-    protected function updateContact(TaskStatus $taskStatus, array $data, int $updatedBy): void
+    protected function updateTaskStatus(TaskStatus $taskStatus, array $data, int $updatedBy): void
     {
         $taskStatusData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
         $taskStatus->update($taskStatusData);
