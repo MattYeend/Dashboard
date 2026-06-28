@@ -23,7 +23,7 @@ function formatDate(value: string | null): string {
 <template>
     <div class="overflow-hidden shadow sm:rounded-lg">
         <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-grey-900 text-lg leading-6 font-medium">
+            <h3 class="text-gray-900 text-lg leading-6 font-medium">
                 Audit Details
             </h3>
         </div>
@@ -34,7 +34,7 @@ function formatDate(value: string | null): string {
                         Created At
                     </dt>
                     <dd
-                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ formatDate(user.created_at) }}
                     </dd>
@@ -44,7 +44,7 @@ function formatDate(value: string | null): string {
                         Created By
                     </dt>
                     <dd
-                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ user.creator?.name ?? '—' }}
                     </dd>
@@ -54,7 +54,7 @@ function formatDate(value: string | null): string {
                         Last Updated At
                     </dt>
                     <dd
-                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ formatDate(user.updated_at) }}
                     </dd>
@@ -64,7 +64,7 @@ function formatDate(value: string | null): string {
                         Last Updated By
                     </dt>
                     <dd
-                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ user.updater?.name ?? '—' }}
                     </dd>
@@ -77,7 +77,7 @@ function formatDate(value: string | null): string {
                             Deleted At
                         </dt>
                         <dd
-                            class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                            class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                         >
                             {{ formatDate(user.deleted_at) }}
                         </dd>
@@ -89,7 +89,7 @@ function formatDate(value: string | null): string {
                             Deleted By
                         </dt>
                         <dd
-                            class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                            class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                         >
                             {{ user.deleter?.name ?? '—' }}
                         </dd>
@@ -103,7 +103,7 @@ function formatDate(value: string | null): string {
                             Restored At
                         </dt>
                         <dd
-                            class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                            class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                         >
                             {{ formatDate(user.restored_at) }}
                         </dd>
@@ -115,7 +115,7 @@ function formatDate(value: string | null): string {
                             Restored By
                         </dt>
                         <dd
-                            class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                            class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                         >
                             {{ user.restorer?.name ?? '—' }}
                         </dd>

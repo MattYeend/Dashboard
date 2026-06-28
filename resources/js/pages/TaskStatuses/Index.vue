@@ -48,7 +48,7 @@ function destroy(id: number): void {
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="items-centre mb-4 flex justify-between">
-                <h1 class="text-grey-900 text-2xl font-semibold">
+                <h1 class="text-gray-900 text-2xl font-semibold">
                     Task Statuses
                 </h1>
                 <Link
@@ -144,7 +144,7 @@ function destroy(id: number): void {
                             :key="status.id"
                         >
                             <td
-                                class="text-grey-900 px-6 py-4 text-sm font-medium whitespace-nowrap"
+                                class="text-gray-900 px-6 py-4 text-sm font-medium whitespace-nowrap"
                             >
                                 {{ status.title }}
                             </td>

@@ -27,7 +27,7 @@ function destroy(): void {
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <div class="items-centre mb-6 flex justify-between">
-                <h1 class="text-grey-900 text-2xl font-semibold">Contact</h1>
+                <h1 class="text-gray-900 text-2xl font-semibold">Contact</h1>
                 <div class="space-x-2">
                     <Link
                         :href="contactsIndex.url()"

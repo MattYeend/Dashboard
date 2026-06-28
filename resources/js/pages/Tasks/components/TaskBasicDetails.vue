@@ -9,7 +9,7 @@ defineProps<{
 <template>
     <div class="overflow-hidden shadow sm:rounded-lg">
         <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-grey-900 text-lg leading-6 font-medium">
+            <h3 class="text-gray-900 text-lg leading-6 font-medium">
                 Basic Details
             </h3>
         </div>
@@ -18,7 +18,7 @@ defineProps<{
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-grey-500 text-sm font-medium">Title</dt>
                     <dd
-                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ task.title }}
                     </dd>
@@ -28,7 +28,7 @@ defineProps<{
                         Description
                     </dt>
                     <dd
-                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ task.description ?? '—' }}
                     </dd>
@@ -36,7 +36,7 @@ defineProps<{
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-grey-500 text-sm font-medium">Status</dt>
                     <dd
-                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         <span
                             v-if="task.status"

@@ -159,7 +159,7 @@ function formatDate(value: string | null): string {
                         />
                         <tr v-for="task in tasks.data ?? []" :key="task.id">
                             <td
-                                class="text-grey-900 px-6 py-4 text-sm font-medium whitespace-nowrap"
+                                class="text-gray-900 px-6 py-4 text-sm font-medium whitespace-nowrap"
                             >
                                 {{ task.title }}
                             </td>

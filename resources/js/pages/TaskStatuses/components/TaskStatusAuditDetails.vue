@@ -21,7 +21,7 @@ function formatDate(value: string | null): string {
 <template>
     <div class="overflow-hidden shadow sm:rounded-lg">
         <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-grey-900 text-lg leading-6 font-medium">Audit</h3>
+            <h3 class="text-gray-900 text-lg leading-6 font-medium">Audit</h3>
         </div>
         <div class="border-grey-200 border-t">
             <dl>
@@ -30,7 +30,7 @@ function formatDate(value: string | null): string {
                         Created by
                     </dt>
                     <dd
-                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ taskStatus.creator?.name ?? '—' }}
                     </dd>
@@ -40,7 +40,7 @@ function formatDate(value: string | null): string {
                         Updated by
                     </dt>
                     <dd
-                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ taskStatus.updater?.name ?? '—' }}
                     </dd>
@@ -50,7 +50,7 @@ function formatDate(value: string | null): string {
                         Deleted by
                     </dt>
                     <dd
-                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ taskStatus.deleter?.name ?? '—' }}
                     </dd>
@@ -60,7 +60,7 @@ function formatDate(value: string | null): string {
                         Restored by
                     </dt>
                     <dd
-                        class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ taskStatus.restorer?.name ?? '—' }}
                     </dd>
@@ -73,7 +73,7 @@ function formatDate(value: string | null): string {
                             Restored at
                         </dt>
                         <dd
-                            class="text-grey-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                            class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                         >
                             {{ formatDate(taskStatus.restored_at) }}
                         </dd>

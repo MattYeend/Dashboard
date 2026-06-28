@@ -26,7 +26,7 @@ function submit(): void {
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <h1 class="text-grey-900 mb-6 text-2xl font-semibold">Edit User</h1>
+            <h1 class="text-gray-900 mb-6 text-2xl font-semibold">Edit User</h1>
             <UserForm
                 v-model:name="form.name"
                 v-model:email="form.email"

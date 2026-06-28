@@ -15,7 +15,7 @@ withDefaults(defineProps<Props>(), {
 
 <template>
     <div class="items-centre mb-4 flex justify-between">
-        <h1 class="text-grey-900 text-2xl font-semibold">{{ title }}</h1>
+        <h1 class="text-gray-900 text-2xl font-semibold">{{ title }}</h1>
         <Link
             v-if="canCreate"
             :href="createHref"

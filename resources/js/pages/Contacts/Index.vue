@@ -170,7 +170,7 @@ function destroy(id: number): void {
                                 {{ contact.contactable_name ?? '—' }}
                             </td>
                             <td
-                                class="text-grey-900 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-900 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ contact.email ?? '—' }}
                             </td>
