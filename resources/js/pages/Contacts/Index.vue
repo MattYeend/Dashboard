@@ -111,36 +111,36 @@ function destroy(id: number): void {
             <div
                 class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
             >
-                <table class="divide-gray-300 min-w-full divide-y">
+                <table class="divide-gray-500 min-w-full divide-y">
                     <thead>
                         <tr>
                             <th
-                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Type<!-- ADD column -->
                             </th>
                             <th
-                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Contact Of
                             </th>
                             <th
-                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Email
                             </th>
                             <th
-                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Phone
                             </th>
                             <th
-                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 City
                             </th>
                             <th
-                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Country
                             </th>
@@ -149,7 +149,7 @@ function destroy(id: number): void {
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="divide-gray-200 divide-y">
+                    <tbody class="divide-gray-500 divide-y">
                         <EmptyRow
                             v-if="!contacts.data?.length"
                             :colspan="7"
@@ -160,32 +160,32 @@ function destroy(id: number): void {
                             :key="contact.id"
                         >
                             <td
-                                class="text-gray-500 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-400 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ contact.contactable_type_label ?? '—' }}
                             </td>
                             <td
-                                class="text-gray-500 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-400 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ contact.contactable_name ?? '—' }}
                             </td>
                             <td
-                                class="text-gray-900 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-300 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ contact.email ?? '—' }}
                             </td>
                             <td
-                                class="text-gray-500 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-400 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ contact.phone ?? '—' }}
                             </td>
                             <td
-                                class="text-gray-500 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-400 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ contact.city ?? '—' }}
                             </td>
                             <td
-                                class="text-gray-500 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-400 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ contact.country ?? '—' }}
                             </td>

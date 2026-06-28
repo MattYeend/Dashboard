@@ -22,7 +22,7 @@ defineProps<Props>();
         v-if="meta.last_page > 1"
         class="mt-4 flex items-center justify-between"
     >
-        <p class="text-gray-500 text-sm">
+        <p class="text-gray-400 text-sm">
             Showing {{ meta.from ?? 0 }} to {{ meta.to ?? 0 }} of
             {{ meta.total }} {{ resourceLabel }}
         </p>

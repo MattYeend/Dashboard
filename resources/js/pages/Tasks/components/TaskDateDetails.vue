@@ -21,44 +21,44 @@ function formatDate(value: string | null): string {
 <template>
     <div class="overflow-hidden shadow sm:rounded-lg">
         <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-gray-900 text-lg leading-6 font-medium">Dates</h3>
+            <h3 class="text-gray-300 text-lg leading-6 font-medium">Dates</h3>
         </div>
-        <div class="border-grey-200 border-t">
+        <div class="border-gray-500 border-t">
             <dl>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-gray-500 text-sm font-medium">Due Date</dt>
+                    <dt class="text-gray-400 text-sm font-medium">Due Date</dt>
                     <dd
-                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-300 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ formatDate(task.due_date) }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-gray-500 text-sm font-medium">
+                    <dt class="text-gray-400 text-sm font-medium">
                         Assigned Date
                     </dt>
                     <dd
-                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-300 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ formatDate(task.assigned_date) }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-gray-500 text-sm font-medium">
+                    <dt class="text-gray-400 text-sm font-medium">
                         Created At
                     </dt>
                     <dd
-                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-300 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ formatDate(task.created_at) }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-gray-500 text-sm font-medium">
+                    <dt class="text-gray-400 text-sm font-medium">
                         Updated At
                     </dt>
                     <dd
-                        class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="text-gray-300 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
                         {{ formatDate(task.updated_at) }}
                     </dd>
@@ -67,11 +67,11 @@ function formatDate(value: string | null): string {
                     <div
                         class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
                     >
-                        <dt class="text-gray-500 text-sm font-medium">
+                        <dt class="text-gray-400 text-sm font-medium">
                             Deleted At
                         </dt>
                         <dd
-                            class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                            class="text-gray-300 mt-1 text-sm sm:col-span-2 sm:mt-0"
                         >
                             {{ formatDate(task.deleted_at) }}
                         </dd>
@@ -81,11 +81,11 @@ function formatDate(value: string | null): string {
                     <div
                         class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
                     >
-                        <dt class="text-gray-500 text-sm font-medium">
+                        <dt class="text-gray-400 text-sm font-medium">
                             Restored At
                         </dt>
                         <dd
-                            class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                            class="text-gray-300 mt-1 text-sm sm:col-span-2 sm:mt-0"
                         >
                             {{ formatDate(task.restored_at) }}
                         </dd>
