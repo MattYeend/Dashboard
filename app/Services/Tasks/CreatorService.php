@@ -2,8 +2,10 @@
 
 namespace App\Services\Tasks;
 
+use App\Models\Log;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +16,7 @@ class CreatorService
      */
     public function __construct(
         protected readonly DataPreparationService $dataPreparation,
-        protected readonly LogService $logService
+        protected readonly AuditLogService $auditLogService
     ) {}
 
     /**
@@ -30,7 +32,12 @@ class CreatorService
 
         return DB::transaction(function () use ($data, $createdBy, $actor) {
             $task = $this->createTask($data, $createdBy);
-            $this->logService->logCreation($task, $actor, $createdBy);
+            $this->auditLogService->record(
+                Log::ACTION_CREATE_TASK,
+                $actor,
+                $task,
+                ['before' => $task->toArray()],
+            );
 
             return $task;
         });

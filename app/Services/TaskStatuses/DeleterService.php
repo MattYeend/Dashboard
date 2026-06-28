@@ -29,7 +29,7 @@ class DeleterService
 
         $actor = User::findOrFail($deletedBy);
 
-        return DB::transaction(function () use ($taskStatus, $actor) {
+        return DB::transaction(function () use ($taskStatus, $deletedBy, $actor) {
             $this->auditLogService->record(
                 Log::ACTION_DELETE_TASK_STATUS,
                 $actor,
@@ -37,7 +37,11 @@ class DeleterService
                 ['before' => $taskStatus->toArray()],
             );
 
+            $taskStatus->deleted_by = $deletedBy;
+            $taskStatus->save();
+
             return $taskStatus->delete();
+
         });
     }
 
