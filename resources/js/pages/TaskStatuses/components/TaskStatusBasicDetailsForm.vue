@@ -26,7 +26,7 @@ function update<K extends keyof TaskStatusFormData>(
 <template>
     <div class="space-y-4">
         <div>
-            <label for="title" class="block text-sm font-medium text-gray-700">
+            <label for="title" class="block text-sm font-medium text-gray-400">
                 Title <span class="text-red-600">*</span>
             </label>
             <input
@@ -46,7 +46,7 @@ function update<K extends keyof TaskStatusFormData>(
         <div>
             <label
                 for="description"
-                class="block text-sm font-medium text-gray-700"
+                class="block text-sm font-medium text-gray-400"
             >
                 Description
             </label>

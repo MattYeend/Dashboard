@@ -16,7 +16,7 @@ const roles = [
 
 <template>
     <div>
-        <label for="role" class="block text-sm font-medium text-gray-700"
+        <label for="role" class="block text-sm font-medium text-gray-400"
             >Role</label
         >
         <select

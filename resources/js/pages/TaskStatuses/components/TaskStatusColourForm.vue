@@ -28,7 +28,7 @@ function update<K extends keyof TaskStatusFormData>(
         <div>
             <label
                 for="background_colour"
-                class="block text-sm font-medium text-gray-700"
+                class="block text-sm font-medium text-gray-400"
             >
                 Background Colour
             </label>
@@ -69,7 +69,7 @@ function update<K extends keyof TaskStatusFormData>(
         <div>
             <label
                 for="text_colour"
-                class="block text-sm font-medium text-gray-700"
+                class="block text-sm font-medium text-gray-400"
             >
                 Text Colour
             </label>
@@ -105,7 +105,7 @@ function update<K extends keyof TaskStatusFormData>(
             </p>
         </div>
         <div>
-            <label class="block text-sm font-medium text-gray-700"
+            <label class="block text-sm font-medium text-gray-400"
                 >Preview</label
             >
             <div class="mt-1">

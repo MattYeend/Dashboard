@@ -12,7 +12,7 @@ defineProps<Props>();
 <template>
     <div class="space-y-4">
         <div>
-            <label for="email" class="block text-sm font-medium text-gray-700"
+            <label for="email" class="block text-sm font-medium text-gray-400"
                 >Email Address</label
             >
             <input
@@ -26,7 +26,7 @@ defineProps<Props>();
             </p>
         </div>
         <div>
-            <label for="phone" class="block text-sm font-medium text-gray-700"
+            <label for="phone" class="block text-sm font-medium text-gray-400"
                 >Phone</label
             >
             <input

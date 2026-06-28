@@ -47,7 +47,7 @@ const emit = defineEmits<{
         <div class="flex items-center justify-end space-x-3">
             <Link
                 :href="taskStatusesIndex.url()"
-                class="rounded-md px-4 py-2 text-sm font-medium text-gray-700"
+                class="rounded-md px-4 py-2 text-sm font-medium text-gray-400"
             >
                 Cancel
             </Link>

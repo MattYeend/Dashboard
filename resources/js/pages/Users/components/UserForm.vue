@@ -45,7 +45,7 @@ const role = defineModel<string>('role', { required: true });
         <div class="flex items-center justify-end space-x-3">
             <a
                 :href="usersIndex.url()"
-                class="rounded-md px-4 py-2 text-sm font-medium text-gray-700"
+                class="rounded-md px-4 py-2 text-sm font-medium text-gray-400"
             >
                 Cancel
             </a>

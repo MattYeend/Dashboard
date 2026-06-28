@@ -27,7 +27,7 @@ const assignedDate = defineModel<string | null>('assignedDate', {
         <div>
             <label
                 for="due_date"
-                class="block text-sm font-medium text-gray-700"
+                class="block text-sm font-medium text-gray-400"
             >
                 Due Date
             </label>
@@ -48,7 +48,7 @@ const assignedDate = defineModel<string | null>('assignedDate', {
         <div>
             <label
                 for="assigned_date"
-                class="block text-sm font-medium text-gray-700"
+                class="block text-sm font-medium text-gray-400"
             >
                 Assigned Date
             </label>
