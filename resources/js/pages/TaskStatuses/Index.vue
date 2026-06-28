@@ -107,7 +107,7 @@ function destroy(id: number): void {
             <div
                 class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
             >
-                <table class="divide-grey-300 min-w-full divide-y">
+                <table class="divide-gray-300 min-w-full divide-y">
                     <thead>
                         <tr>
                             <th
@@ -130,7 +130,7 @@ function destroy(id: number): void {
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="divide-grey-200 divide-y">
+                    <tbody class="divide-gray-200 divide-y">
                         <tr v-if="!taskStatuses.data?.length">
                             <td
                                 colspan="4"

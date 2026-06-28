@@ -123,7 +123,7 @@ function formatDate(value: string | null): string {
             <div
                 class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
             >
-                <table class="divide-grey-300 min-w-full divide-y">
+                <table class="divide-gray-300 min-w-full divide-y">
                     <thead>
                         <tr>
                             <th
@@ -151,7 +151,7 @@ function formatDate(value: string | null): string {
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="divide-grey-200 divide-y">
+                    <tbody class="divide-gray-200 divide-y">
                         <EmptyRow
                             v-if="!users.data?.length"
                             :colspan="5"
