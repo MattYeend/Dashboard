@@ -18,7 +18,7 @@ defineProps<Props>();
         <div class="border-grey-200 border-t">
             <dl>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">Role</dt>
+                    <dt class="text-gray-500 text-sm font-medium">Role</dt>
                     <dd
                         class="text-gray-900 mt-1 text-sm capitalize sm:col-span-2 sm:mt-0"
                     >

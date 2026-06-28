@@ -11,7 +11,7 @@ defineProps<Props>();
     <tr>
         <td
             :colspan="colspan"
-            class="text-centre text-grey-500 px-6 py-4 text-sm"
+            class="text-centre text-gray-500 px-6 py-4 text-sm"
         >
             {{ message }}
         </td>

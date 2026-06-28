@@ -13,7 +13,7 @@ defineProps<{ contact: Contact }>();
         <div class="border-grey-200 border-t">
             <dl>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Email Address
                     </dt>
                     <dd
@@ -23,7 +23,7 @@ defineProps<{ contact: Contact }>();
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">Phone</dt>
+                    <dt class="text-gray-500 text-sm font-medium">Phone</dt>
                     <dd
                         class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >

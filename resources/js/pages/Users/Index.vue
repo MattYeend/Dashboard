@@ -127,22 +127,22 @@ function formatDate(value: string | null): string {
                     <thead>
                         <tr>
                             <th
-                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Name
                             </th>
                             <th
-                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Email
                             </th>
                             <th
-                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Role
                             </th>
                             <th
-                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Created
                             </th>
@@ -164,17 +164,17 @@ function formatDate(value: string | null): string {
                                 {{ user.name }}
                             </td>
                             <td
-                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-500 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ user.email }}
                             </td>
                             <td
-                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap capitalize"
+                                class="text-gray-500 px-6 py-4 text-sm whitespace-nowrap capitalize"
                             >
                                 {{ user.role.replace('_', ' ') }}
                             </td>
                             <td
-                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-500 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ formatDate(user.created_at) }}
                             </td>

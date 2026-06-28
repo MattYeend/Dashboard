@@ -30,7 +30,7 @@ function formatDate(value: string | null): string {
         <div class="border-grey-200 border-t">
             <dl>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Created At
                     </dt>
                     <dd
@@ -40,7 +40,7 @@ function formatDate(value: string | null): string {
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Created By
                     </dt>
                     <dd
@@ -50,7 +50,7 @@ function formatDate(value: string | null): string {
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Last Updated At
                     </dt>
                     <dd
@@ -60,7 +60,7 @@ function formatDate(value: string | null): string {
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Last Updated By
                     </dt>
                     <dd
@@ -73,7 +73,7 @@ function formatDate(value: string | null): string {
                     <div
                         class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
                     >
-                        <dt class="text-grey-500 text-sm font-medium">
+                        <dt class="text-gray-500 text-sm font-medium">
                             Deleted At
                         </dt>
                         <dd
@@ -85,7 +85,7 @@ function formatDate(value: string | null): string {
                     <div
                         class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
                     >
-                        <dt class="text-grey-500 text-sm font-medium">
+                        <dt class="text-gray-500 text-sm font-medium">
                             Deleted By
                         </dt>
                         <dd
@@ -99,7 +99,7 @@ function formatDate(value: string | null): string {
                     <div
                         class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
                     >
-                        <dt class="text-grey-500 text-sm font-medium">
+                        <dt class="text-gray-500 text-sm font-medium">
                             Restored At
                         </dt>
                         <dd
@@ -111,7 +111,7 @@ function formatDate(value: string | null): string {
                     <div
                         class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
                     >
-                        <dt class="text-grey-500 text-sm font-medium">
+                        <dt class="text-gray-500 text-sm font-medium">
                             Restored By
                         </dt>
                         <dd

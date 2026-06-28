@@ -26,7 +26,7 @@ function formatDate(value: string | null): string {
         <div class="border-grey-200 border-t">
             <dl>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Created by
                     </dt>
                     <dd
@@ -36,7 +36,7 @@ function formatDate(value: string | null): string {
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Updated by
                     </dt>
                     <dd
@@ -46,7 +46,7 @@ function formatDate(value: string | null): string {
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Deleted by
                     </dt>
                     <dd
@@ -56,7 +56,7 @@ function formatDate(value: string | null): string {
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Restored by
                     </dt>
                     <dd
@@ -69,7 +69,7 @@ function formatDate(value: string | null): string {
                     <div
                         class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
                     >
-                        <dt class="text-grey-500 text-sm font-medium">
+                        <dt class="text-gray-500 text-sm font-medium">
                             Restored at
                         </dt>
                         <dd

@@ -18,7 +18,7 @@ defineProps<Props>();
         <div class="border-grey-200 border-t">
             <dl>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">Name</dt>
+                    <dt class="text-gray-500 text-sm font-medium">Name</dt>
                     <dd
                         class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
@@ -26,7 +26,7 @@ defineProps<Props>();
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Email Address
                     </dt>
                     <dd
@@ -36,7 +36,7 @@ defineProps<Props>();
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Email Verified
                     </dt>
                     <dd

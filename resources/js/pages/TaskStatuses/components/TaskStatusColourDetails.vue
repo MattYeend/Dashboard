@@ -14,7 +14,7 @@ defineProps<{
         <div class="border-grey-200 border-t">
             <dl>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Background
                     </dt>
                     <dd
@@ -30,7 +30,7 @@ defineProps<{
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">Text</dt>
+                    <dt class="text-gray-500 text-sm font-medium">Text</dt>
                     <dd
                         class="text-gray-900 mt-1 flex items-center gap-2 text-sm sm:col-span-2 sm:mt-0"
                     >
@@ -42,7 +42,7 @@ defineProps<{
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">Preview</dt>
+                    <dt class="text-gray-500 text-sm font-medium">Preview</dt>
                     <dd
                         class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >

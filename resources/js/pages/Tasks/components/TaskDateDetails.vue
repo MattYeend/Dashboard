@@ -26,7 +26,7 @@ function formatDate(value: string | null): string {
         <div class="border-grey-200 border-t">
             <dl>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">Due Date</dt>
+                    <dt class="text-gray-500 text-sm font-medium">Due Date</dt>
                     <dd
                         class="text-gray-900 mt-1 text-sm sm:col-span-2 sm:mt-0"
                     >
@@ -34,7 +34,7 @@ function formatDate(value: string | null): string {
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Assigned Date
                     </dt>
                     <dd
@@ -44,7 +44,7 @@ function formatDate(value: string | null): string {
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Created At
                     </dt>
                     <dd
@@ -54,7 +54,7 @@ function formatDate(value: string | null): string {
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-grey-500 text-sm font-medium">
+                    <dt class="text-gray-500 text-sm font-medium">
                         Updated At
                     </dt>
                     <dd
@@ -67,7 +67,7 @@ function formatDate(value: string | null): string {
                     <div
                         class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
                     >
-                        <dt class="text-grey-500 text-sm font-medium">
+                        <dt class="text-gray-500 text-sm font-medium">
                             Deleted At
                         </dt>
                         <dd
@@ -81,7 +81,7 @@ function formatDate(value: string | null): string {
                     <div
                         class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
                     >
-                        <dt class="text-grey-500 text-sm font-medium">
+                        <dt class="text-gray-500 text-sm font-medium">
                             Restored At
                         </dt>
                         <dd

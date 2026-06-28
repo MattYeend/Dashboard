@@ -115,32 +115,32 @@ function destroy(id: number): void {
                     <thead>
                         <tr>
                             <th
-                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Type<!-- ADD column -->
                             </th>
                             <th
-                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Contact Of
                             </th>
                             <th
-                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Email
                             </th>
                             <th
-                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Phone
                             </th>
                             <th
-                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 City
                             </th>
                             <th
-                                class="text-grey-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="text-gray-500 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
                             >
                                 Country
                             </th>
@@ -160,12 +160,12 @@ function destroy(id: number): void {
                             :key="contact.id"
                         >
                             <td
-                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-500 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ contact.contactable_type_label ?? '—' }}
                             </td>
                             <td
-                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-500 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ contact.contactable_name ?? '—' }}
                             </td>
@@ -175,17 +175,17 @@ function destroy(id: number): void {
                                 {{ contact.email ?? '—' }}
                             </td>
                             <td
-                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-500 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ contact.phone ?? '—' }}
                             </td>
                             <td
-                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-500 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ contact.city ?? '—' }}
                             </td>
                             <td
-                                class="text-grey-500 px-6 py-4 text-sm whitespace-nowrap"
+                                class="text-gray-500 px-6 py-4 text-sm whitespace-nowrap"
                             >
                                 {{ contact.country ?? '—' }}
                             </td>
