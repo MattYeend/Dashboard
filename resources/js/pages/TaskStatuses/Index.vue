@@ -134,7 +134,7 @@ function destroy(id: number): void {
                         <tr v-if="!taskStatuses.data?.length">
                             <td
                                 colspan="4"
-                                class="text-centre text-gray-500 px-6 py-4 text-sm"
+                                class="text-center text-gray-500 px-6 py-4 text-sm"
                             >
                                 No task statuses found.
                             </td>
