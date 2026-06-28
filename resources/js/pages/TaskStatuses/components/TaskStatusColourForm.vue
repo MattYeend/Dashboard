@@ -28,7 +28,7 @@ function update<K extends keyof TaskStatusFormData>(
         <div>
             <label
                 for="background_colour"
-                class="text-gray-700 block text-sm font-medium"
+                class="block text-sm font-medium text-gray-700"
             >
                 Background Colour
             </label>
@@ -49,7 +49,7 @@ function update<K extends keyof TaskStatusFormData>(
                     :value="form.background_colour"
                     type="text"
                     maxlength="7"
-                    class="border-gray-300 block w-32 rounded-md font-mono shadow-sm sm:text-sm"
+                    class="block w-32 rounded-md border-gray-300 font-mono shadow-sm sm:text-sm"
                     placeholder="#ffffff"
                     @input="
                         update(
@@ -69,7 +69,7 @@ function update<K extends keyof TaskStatusFormData>(
         <div>
             <label
                 for="text_colour"
-                class="text-gray-700 block text-sm font-medium"
+                class="block text-sm font-medium text-gray-700"
             >
                 Text Colour
             </label>
@@ -90,7 +90,7 @@ function update<K extends keyof TaskStatusFormData>(
                     :value="form.text_colour"
                     type="text"
                     maxlength="7"
-                    class="border-gray-300 block w-32 rounded-md font-mono shadow-sm sm:text-sm"
+                    class="block w-32 rounded-md border-gray-300 font-mono shadow-sm sm:text-sm"
                     placeholder="#000000"
                     @input="
                         update(
@@ -105,7 +105,7 @@ function update<K extends keyof TaskStatusFormData>(
             </p>
         </div>
         <div>
-            <label class="text-gray-700 block text-sm font-medium"
+            <label class="block text-sm font-medium text-gray-700"
                 >Preview</label
             >
             <div class="mt-1">

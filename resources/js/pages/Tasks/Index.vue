@@ -123,26 +123,26 @@ function formatDate(value: string | null): string {
             <div
                 class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
             >
-                <table class="divide-gray-500 min-w-full divide-y">
+                <table class="min-w-full divide-y divide-gray-500">
                     <thead>
                         <tr>
                             <th
-                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
                             >
                                 Title
                             </th>
                             <th
-                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
                             >
                                 Status
                             </th>
                             <th
-                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
                             >
                                 Assigned To
                             </th>
                             <th
-                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
                             >
                                 Due Date
                             </th>
@@ -151,7 +151,7 @@ function formatDate(value: string | null): string {
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="divide-gray-500 divide-y">
+                    <tbody class="divide-y divide-gray-500">
                         <EmptyRow
                             v-if="!tasks.data?.length"
                             :colspan="5"
@@ -159,12 +159,12 @@ function formatDate(value: string | null): string {
                         />
                         <tr v-for="task in tasks.data ?? []" :key="task.id">
                             <td
-                                class="text-gray-300 px-6 py-4 text-sm font-medium whitespace-nowrap"
+                                class="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-300"
                             >
                                 {{ task.title }}
                             </td>
                             <td
-                                class="text-gray-400 px-6 py-4 text-sm whitespace-nowrap"
+                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
                             >
                                 <span
                                     v-if="task.status"
@@ -183,12 +183,12 @@ function formatDate(value: string | null): string {
                                 <span v-else>—</span>
                             </td>
                             <td
-                                class="text-gray-400 px-6 py-4 text-sm whitespace-nowrap"
+                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
                             >
                                 {{ task.assignee?.name ?? '—' }}
                             </td>
                             <td
-                                class="text-gray-400 px-6 py-4 text-sm whitespace-nowrap"
+                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
                             >
                                 {{ formatDate(task.due_date) }}
                             </td>

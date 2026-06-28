@@ -16,13 +16,13 @@ const roles = [
 
 <template>
     <div>
-        <label for="role" class="text-gray-700 block text-sm font-medium"
+        <label for="role" class="block text-sm font-medium text-gray-700"
             >Role</label
         >
         <select
             id="role"
             v-model="role"
-            class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
         >
             <option
                 v-for="roleOption in roles"

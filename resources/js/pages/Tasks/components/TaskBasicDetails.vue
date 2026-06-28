@@ -9,34 +9,34 @@ defineProps<{
 <template>
     <div class="overflow-hidden shadow sm:rounded-lg">
         <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-gray-300 text-lg leading-6 font-medium">
+            <h3 class="text-lg leading-6 font-medium text-gray-300">
                 Basic Details
             </h3>
         </div>
-        <div class="border-gray-500 border-t">
+        <div class="border-t border-gray-500">
             <dl>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-gray-400 text-sm font-medium">Title</dt>
+                    <dt class="text-sm font-medium text-gray-400">Title</dt>
                     <dd
-                        class="text-gray-300 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
                         {{ task.title }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-gray-400 text-sm font-medium">
+                    <dt class="text-sm font-medium text-gray-400">
                         Description
                     </dt>
                     <dd
-                        class="text-gray-300 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
                         {{ task.description ?? '—' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-gray-400 text-sm font-medium">Status</dt>
+                    <dt class="text-sm font-medium text-gray-400">Status</dt>
                     <dd
-                        class="text-gray-300 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
                         <span
                             v-if="task.status"

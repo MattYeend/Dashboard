@@ -47,14 +47,14 @@ function destroy(id: number): void {
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="items-center mb-4 flex justify-between">
-                <h1 class="text-gray-300 text-2xl font-semibold">
+            <div class="mb-4 flex items-center justify-between">
+                <h1 class="text-2xl font-semibold text-gray-300">
                     Task Statuses
                 </h1>
                 <Link
                     v-if="permissions_meta.can_create"
                     :href="taskStatusesCreate.url()"
-                    class="items-center inline-flex rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
+                    class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
                 >
                     Add Task Status
                 </Link>
@@ -107,21 +107,21 @@ function destroy(id: number): void {
             <div
                 class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
             >
-                <table class="divide-gray-500 min-w-full divide-y">
+                <table class="min-w-full divide-y divide-gray-500">
                     <thead>
                         <tr>
                             <th
-                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
                             >
                                 Title
                             </th>
                             <th
-                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
                             >
                                 Description
                             </th>
                             <th
-                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
                             >
                                 Preview
                             </th>
@@ -130,11 +130,11 @@ function destroy(id: number): void {
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="divide-gray-500 divide-y">
+                    <tbody class="divide-y divide-gray-500">
                         <tr v-if="!taskStatuses.data?.length">
                             <td
                                 colspan="4"
-                                class="text-center text-gray-400 px-6 py-4 text-sm"
+                                class="px-6 py-4 text-center text-sm text-gray-400"
                             >
                                 No task statuses found.
                             </td>
@@ -144,17 +144,17 @@ function destroy(id: number): void {
                             :key="status.id"
                         >
                             <td
-                                class="text-gray-300 px-6 py-4 text-sm font-medium whitespace-nowrap"
+                                class="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-300"
                             >
                                 {{ status.title }}
                             </td>
                             <td
-                                class="text-gray-400 px-6 py-4 text-sm whitespace-nowrap"
+                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
                             >
                                 {{ status.description ?? '—' }}
                             </td>
                             <td
-                                class="text-gray-400 px-6 py-4 text-sm whitespace-nowrap"
+                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
                             >
                                 <span
                                     class="rounded px-2 py-0.5 text-xs font-medium"
@@ -193,7 +193,7 @@ function destroy(id: number): void {
                 v-if="taskStatuses.meta.last_page > 1"
                 class="mt-4 flex items-center justify-between"
             >
-                <p class="text-gray-400 text-sm">
+                <p class="text-sm text-gray-400">
                     Showing {{ taskStatuses.meta.from ?? 0 }} to
                     {{ taskStatuses.meta.to ?? 0 }} of
                     {{ taskStatuses.meta.total }} task statuses

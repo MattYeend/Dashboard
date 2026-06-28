@@ -28,14 +28,14 @@ const statusId = defineModel<number | null>('statusId', { default: null });
 <template>
     <div class="space-y-4">
         <div>
-            <label for="title" class="text-gray-700 block text-sm font-medium">
+            <label for="title" class="block text-sm font-medium text-gray-700">
                 Title <span class="text-red-600">*</span>
             </label>
             <input
                 id="title"
                 v-model="title"
                 type="text"
-                class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
                 placeholder="Enter task title"
             />
             <p v-if="errors.title" class="mt-1 text-sm text-red-600">
@@ -46,14 +46,14 @@ const statusId = defineModel<number | null>('statusId', { default: null });
         <div>
             <label
                 for="description"
-                class="text-gray-700 block text-sm font-medium"
+                class="block text-sm font-medium text-gray-700"
             >
                 Description
             </label>
             <textarea
                 id="description"
                 :value="description ?? ''"
-                class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
                 rows="4"
                 placeholder="Enter task description"
                 @input="
@@ -69,14 +69,14 @@ const statusId = defineModel<number | null>('statusId', { default: null });
         <div>
             <label
                 for="status_id"
-                class="text-gray-700 block text-sm font-medium"
+                class="block text-sm font-medium text-gray-700"
             >
                 Status
             </label>
             <select
                 id="status_id"
                 :value="statusId"
-                class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
                 @change="
                     statusId = ($event.target as HTMLSelectElement).value
                         ? Number(($event.target as HTMLSelectElement).value)

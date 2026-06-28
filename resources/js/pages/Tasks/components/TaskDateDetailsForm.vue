@@ -27,7 +27,7 @@ const assignedDate = defineModel<string | null>('assignedDate', {
         <div>
             <label
                 for="due_date"
-                class="text-gray-700 block text-sm font-medium"
+                class="block text-sm font-medium text-gray-700"
             >
                 Due Date
             </label>
@@ -35,7 +35,7 @@ const assignedDate = defineModel<string | null>('assignedDate', {
                 id="due_date"
                 :value="dueDate ?? ''"
                 type="date"
-                class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
                 @change="
                     dueDate = ($event.target as HTMLInputElement).value || null
                 "
@@ -48,7 +48,7 @@ const assignedDate = defineModel<string | null>('assignedDate', {
         <div>
             <label
                 for="assigned_date"
-                class="text-gray-700 block text-sm font-medium"
+                class="block text-sm font-medium text-gray-700"
             >
                 Assigned Date
             </label>
@@ -56,7 +56,7 @@ const assignedDate = defineModel<string | null>('assignedDate', {
                 id="assigned_date"
                 :value="assignedDate ?? ''"
                 type="date"
-                class="border-gray-300 mt-1 block w-full rounded-md shadow-sm sm:text-sm"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
                 @change="
                     assignedDate =
                         ($event.target as HTMLInputElement).value || null

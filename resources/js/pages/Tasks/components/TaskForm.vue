@@ -59,17 +59,17 @@ const statusId = defineModel<number | null>('statusId', { default: null });
             :errors="errors"
         />
 
-        <div class="items-center flex justify-end space-x-3">
+        <div class="flex items-center justify-end space-x-3">
             <Link
                 :href="tasksIndex.url()"
-                class="text-gray-700 rounded-md px-4 py-2 text-sm font-medium"
+                class="rounded-md px-4 py-2 text-sm font-medium text-gray-700"
             >
                 Cancel
             </Link>
             <button
                 type="submit"
                 :disabled="processing"
-                class="items-center inline-flex rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+                class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
             >
                 {{ isEditing ? 'Update Task' : 'Create Task' }}
             </button>

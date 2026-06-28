@@ -23,7 +23,7 @@ function submit(): void {
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <h1 class="text-gray-300 mb-6 text-2xl font-semibold">
+            <h1 class="mb-6 text-2xl font-semibold text-gray-300">
                 Create Task Status
             </h1>
             <TaskStatusForm

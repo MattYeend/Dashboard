@@ -9,16 +9,16 @@ defineProps<{
 <template>
     <div class="overflow-hidden shadow sm:rounded-lg">
         <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-gray-300 text-lg leading-6 font-medium">Colours</h3>
+            <h3 class="text-lg leading-6 font-medium text-gray-300">Colours</h3>
         </div>
-        <div class="border-gray-500 border-t">
+        <div class="border-t border-gray-500">
             <dl>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-gray-400 text-sm font-medium">
+                    <dt class="text-sm font-medium text-gray-400">
                         Background
                     </dt>
                     <dd
-                        class="text-gray-300 mt-1 flex items-center gap-2 text-sm sm:col-span-2 sm:mt-0"
+                        class="mt-1 flex items-center gap-2 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
                         <span
                             class="inline-block h-4 w-4 rounded border"
@@ -30,9 +30,9 @@ defineProps<{
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-gray-400 text-sm font-medium">Text</dt>
+                    <dt class="text-sm font-medium text-gray-400">Text</dt>
                     <dd
-                        class="text-gray-300 mt-1 flex items-center gap-2 text-sm sm:col-span-2 sm:mt-0"
+                        class="mt-1 flex items-center gap-2 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
                         <span
                             class="inline-block h-4 w-4 rounded border"
@@ -42,9 +42,9 @@ defineProps<{
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-gray-400 text-sm font-medium">Preview</dt>
+                    <dt class="text-sm font-medium text-gray-400">Preview</dt>
                     <dd
-                        class="text-gray-300 mt-1 text-sm sm:col-span-2 sm:mt-0"
+                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
                         <span
                             class="inline-block rounded px-2 py-1 text-xs font-medium"

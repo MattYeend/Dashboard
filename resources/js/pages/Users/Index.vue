@@ -123,26 +123,26 @@ function formatDate(value: string | null): string {
             <div
                 class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
             >
-                <table class="divide-gray-500 min-w-full divide-y">
+                <table class="min-w-full divide-y divide-gray-500">
                     <thead>
                         <tr>
                             <th
-                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
                             >
                                 Name
                             </th>
                             <th
-                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
                             >
                                 Email
                             </th>
                             <th
-                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
                             >
                                 Role
                             </th>
                             <th
-                                class="text-gray-400 px-6 py-3 text-left text-xs font-medium tracking-wide uppercase"
+                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
                             >
                                 Created
                             </th>
@@ -151,7 +151,7 @@ function formatDate(value: string | null): string {
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="divide-gray-500 divide-y">
+                    <tbody class="divide-y divide-gray-500">
                         <EmptyRow
                             v-if="!users.data?.length"
                             :colspan="5"
@@ -159,22 +159,22 @@ function formatDate(value: string | null): string {
                         />
                         <tr v-for="user in users.data ?? []" :key="user.id">
                             <td
-                                class="text-gray-300 px-6 py-4 text-sm font-medium whitespace-nowrap"
+                                class="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-300"
                             >
                                 {{ user.name }}
                             </td>
                             <td
-                                class="text-gray-400 px-6 py-4 text-sm whitespace-nowrap"
+                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
                             >
                                 {{ user.email }}
                             </td>
                             <td
-                                class="text-gray-400 px-6 py-4 text-sm whitespace-nowrap capitalize"
+                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400 capitalize"
                             >
                                 {{ user.role.replace('_', ' ') }}
                             </td>
                             <td
-                                class="text-gray-400 px-6 py-4 text-sm whitespace-nowrap"
+                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
                             >
                                 {{ formatDate(user.created_at) }}
                             </td>
