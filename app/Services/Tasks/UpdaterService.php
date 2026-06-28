@@ -2,8 +2,10 @@
 
 namespace App\Services\Tasks;
 
+use App\Models\Log;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Support\Facades\DB;
 
 class UpdaterService
@@ -13,7 +15,7 @@ class UpdaterService
      */
     public function __construct(
         protected readonly DataPreparationService $dataPreparation,
-        protected readonly LogService $logService
+        protected readonly AuditLogService $auditLogService
     ) {}
 
     /**
@@ -30,11 +32,19 @@ class UpdaterService
     ): Task {
         $actor = User::findOrFail($updatedBy);
 
-        $before = $this->logService->captureSnapshot($task);
+        $before = $this->auditLogService->snapshot($task);
 
         return DB::transaction(function () use ($task, $data, $updatedBy, $actor, $before) {
             $this->updateTask($task, $data, $updatedBy);
-            $this->logService->logUpdate($task, $actor, $updatedBy, $before);
+            $this->auditLogService->record(
+                Log::ACTION_UPDATE_TASK,
+                $actor,
+                $task,
+                [
+                    'before' => $before,
+                    'after' => $this->auditLogService->snapshot($task),
+                ],
+            );
 
             return $task->fresh();
         });

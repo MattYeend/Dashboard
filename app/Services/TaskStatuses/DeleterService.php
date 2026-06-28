@@ -2,8 +2,10 @@
 
 namespace App\Services\TaskStatuses;
 
+use App\Models\Log;
 use App\Models\TaskStatus;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Support\Facades\DB;
 
 class DeleterService
@@ -12,7 +14,7 @@ class DeleterService
      * Inject the required services into the deleter service.
      */
     public function __construct(
-        protected readonly LogService $logService
+        protected readonly AuditLogService $auditLogService
     ) {}
 
     /**
@@ -28,14 +30,18 @@ class DeleterService
         $actor = User::findOrFail($deletedBy);
 
         return DB::transaction(function () use ($taskStatus, $deletedBy, $actor) {
+            $this->auditLogService->record(
+                Log::ACTION_DELETE_TASK_STATUS,
+                $actor,
+                $taskStatus,
+                ['before' => $taskStatus->toArray()],
+            );
+
             $taskStatus->deleted_by = $deletedBy;
             $taskStatus->save();
 
-            $result = $taskStatus->delete();
+            return $taskStatus->delete();
 
-            $this->logService->logDeletion($taskStatus, $actor, $deletedBy);
-
-            return $result;
         });
     }
 
@@ -50,8 +56,13 @@ class DeleterService
     ): bool {
         $actor = User::findOrFail($deletedBy);
 
-        return DB::transaction(function () use ($taskStatus, $deletedBy, $actor) {
-            $this->logService->logForceDeletion($taskStatus, $actor, $deletedBy);
+        return DB::transaction(function () use ($taskStatus, $actor) {
+            $this->auditLogService->record(
+                Log::ACTION_FORCE_DELETE_TASK_STATUS,
+                $actor,
+                $taskStatus,
+                ['before' => $taskStatus->toArray()],
+            );
 
             return $taskStatus->forceDelete();
         });

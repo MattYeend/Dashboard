@@ -3,7 +3,9 @@
 namespace App\Services\Contacts;
 
 use App\Models\Contact;
+use App\Models\Log;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +16,7 @@ class CreatorService
      */
     public function __construct(
         protected readonly DataPreparationService $dataPreparation,
-        protected readonly LogService $logService
+        protected readonly AuditLogService $auditLogService
     ) {}
 
     /**
@@ -30,7 +32,12 @@ class CreatorService
 
         return DB::transaction(function () use ($data, $createdBy, $actor) {
             $contact = $this->createContact($data, $createdBy);
-            $this->logService->logCreation($contact, $actor, $createdBy);
+            $this->auditLogService->record(
+                Log::ACTION_CREATE_CONTACT,
+                $actor,
+                $contact,
+                ['before' => $contact->toArray()],
+            );
 
             return $contact;
         });

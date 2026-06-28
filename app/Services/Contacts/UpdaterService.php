@@ -3,7 +3,9 @@
 namespace App\Services\Contacts;
 
 use App\Models\Contact;
+use App\Models\Log;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Support\Facades\DB;
 
 class UpdaterService
@@ -13,7 +15,7 @@ class UpdaterService
      */
     public function __construct(
         protected readonly DataPreparationService $dataPreparation,
-        protected readonly LogService $logService
+        protected readonly AuditLogService $auditLogService
     ) {}
 
     /**
@@ -30,11 +32,19 @@ class UpdaterService
     ): Contact {
         $actor = User::findOrFail($updatedBy);
 
-        $before = $this->logService->captureSnapshot($contact);
+        $before = $this->auditLogService->snapshot($contact);
 
         return DB::transaction(function () use ($contact, $data, $updatedBy, $actor, $before) {
             $this->updateContact($contact, $data, $updatedBy);
-            $this->logService->logUpdate($contact, $actor, $updatedBy, $before);
+            $this->auditLogService->record(
+                Log::ACTION_UPDATE_CONTACT,
+                $actor,
+                $contact,
+                [
+                    'before' => $before,
+                    'after' => $this->auditLogService->snapshot($contact),
+                ],
+            );
 
             return $contact->fresh();
         });

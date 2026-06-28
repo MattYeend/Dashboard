@@ -2,8 +2,10 @@
 
 namespace App\Services\TaskStatuses;
 
+use App\Models\Log;
 use App\Models\TaskStatus;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -13,7 +15,7 @@ class RestorerService
      * Inject the required services into the resorer service.
      */
     public function __construct(
-        protected readonly LogService $logService
+        protected readonly AuditLogService $auditLogService
     ) {}
 
     /**
@@ -34,7 +36,12 @@ class RestorerService
 
             $taskStatus->restore();
 
-            $this->logService->logRestoration($taskStatus, $actor, $restoredBy);
+            $this->auditLogService->record(
+                Log::ACTION_RESTORE_TASK_STATUS,
+                $actor,
+                $taskStatus,
+                ['before' => $taskStatus->toArray()],
+            );
 
             return $taskStatus->fresh();
         });

@@ -3,7 +3,9 @@
 namespace App\Services\Contacts;
 
 use App\Models\Contact;
+use App\Models\Log;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Support\Facades\DB;
 
 class DeleterService
@@ -12,7 +14,7 @@ class DeleterService
      * Inject the required services into the deleter service.
      */
     public function __construct(
-        protected readonly LogService $logService
+        protected readonly AuditLogService $auditLogService
     ) {}
 
     /**
@@ -27,12 +29,17 @@ class DeleterService
         $actor = User::findOrFail($deletedBy);
 
         return DB::transaction(function () use ($contact, $deletedBy, $actor) {
+            $this->auditLogService->record(
+                Log::ACTION_DELETE_CONTACT,
+                $actor,
+                $contact,
+                ['before' => $contact->toArray()],
+            );
+
             $contact->deleted_by = $deletedBy;
             $contact->save();
 
             $result = $contact->delete();
-
-            $this->logService->logDeletion($contact, $actor, $deletedBy);
 
             return $result;
         });
@@ -49,8 +56,13 @@ class DeleterService
     ): bool {
         $actor = User::findOrFail($deletedBy);
 
-        return DB::transaction(function () use ($contact, $deletedBy, $actor) {
-            $this->logService->logForceDeletion($contact, $actor, $deletedBy);
+        return DB::transaction(function () use ($contact, $actor) {
+            $this->auditLogService->record(
+                Log::ACTION_DELETE_CONTACT,
+                $actor,
+                $contact,
+                ['before' => $contact->toArray()],
+            );
 
             return $contact->forceDelete();
         });

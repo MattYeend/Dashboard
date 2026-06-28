@@ -27,7 +27,7 @@ class DeleterService
     ): bool {
         $actor = User::findOrFail($deletedBy);
 
-        return DB::transaction(function () use ($user, $actor) {
+        return DB::transaction(function () use ($user, $deletedBy, $actor) {
             $this->auditLogService->record(
                 Log::ACTION_DELETE_USER,
                 $actor,
@@ -35,6 +35,9 @@ class DeleterService
                 ['before' => $user->toArray()],
                 relatedUser: $user,
             );
+
+            $user->deleted_by = $deletedBy;
+            $user->save();
 
             return $user->delete();
         });
