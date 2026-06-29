@@ -2,12 +2,12 @@
 
 namespace App\Services\Contacts;
 
+use App\Actions\CreateResource;
 use App\Models\Contact;
 use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
 
 class CreatorService
 {
@@ -16,7 +16,8 @@ class CreatorService
      */
     public function __construct(
         protected readonly DataPreparationService $dataPreparation,
-        protected readonly AuditLogService $auditLogService
+        protected readonly AuditLogService $auditLogService,
+        protected readonly CreateResource $createResource,
     ) {}
 
     /**
@@ -30,33 +31,30 @@ class CreatorService
     {
         $actor = User::findOrFail($createdBy);
 
-        return DB::transaction(function () use ($data, $createdBy, $actor) {
-            $contact = $this->createContact($data, $createdBy);
-            $this->auditLogService->record(
-                Log::ACTION_CREATE_CONTACT,
-                $actor,
-                $contact,
-                ['before' => $contact->toArray()],
-            );
-
-            return $contact;
-        });
-    }
-
-    /**
-     * Create the contact record.
-     *
-     * @param  array<string, mixed>  $data
-     */
-    protected function createContact(array $data, int $createdBy): Contact
-    {
-        $contactData = $this->dataPreparation->prepareForCreation(
+        return $this->createResource->handle(
             $data,
-            $data['contactable_type'],
-            $data['contactable_id'],
-            $createdBy,
-        );
+            function (array $data) use ($createdBy, $actor): Contact {
+                $contactData = $this->dataPreparation->prepareForCreation(
+                    $data,
+                    $data['contactable_type'],
+                    $data['contactable_id'],
+                    $createdBy,
+                );
 
-        return Contact::create($contactData);
+                $newContact = Contact::create($contactData);
+
+                $newContact->created_by = $createdBy;
+                $newContact->created_at = now();
+                $newContact->save();
+
+                $this->auditLogService->record(
+                    Log::ACTION_CREATE_CONTACT,
+                    $actor,
+                    $newContact,
+                    ['after' => $newContact->toArray()],
+                );
+
+                return $newContact;
+            });
     }
 }

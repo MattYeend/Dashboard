@@ -2,6 +2,7 @@
 
 namespace App\Services\Contacts;
 
+use App\Actions\RestoreResource;
 use App\Models\Contact;
 use App\Models\Log;
 use App\Models\User;
@@ -15,7 +16,8 @@ class RestorerService
      * Inject the required services into the resorer service.
      */
     public function __construct(
-        protected readonly AuditLogService $auditLogService
+        protected readonly AuditLogService $auditLogService,
+        protected readonly RestoreResource $restoreResource,
     ) {}
 
     /**
@@ -25,26 +27,24 @@ class RestorerService
      */
     public function restore(
         Contact $contact,
-        ?int $restoredBy = null
+        int $restoredBy
     ): Contact {
         $actor = User::findOrFail($restoredBy);
 
-        return DB::transaction(function () use ($contact, $restoredBy, $actor) {
-            $contact->restored_by = $restoredBy;
-            $contact->restored_at = now();
-            $contact->save();
+        return $this->restoreResource->handle(
+            $contact,
+            function (Contact $contact) use ($actor, $restoredBy): void {
+                $contact->restored_by = $restoredBy;
+                $contact->restored_at = now();
+                $contact->save();
 
-            $contact->restore();
-
-            $this->auditLogService->record(
-                Log::ACTION_RESTORE_CONTACT,
-                $actor,
-                $contact,
-                ['before' => $contact->toArray()],
-            );
-
-            return $contact->fresh();
-        });
+                $this->auditLogService->record(
+                    Log::ACTION_RESTORE_CONTACT,
+                    $actor,
+                    $contact,
+                    ['before' => $contact->toArray()],
+                );
+            });
     }
 
     /**
@@ -56,7 +56,7 @@ class RestorerService
      */
     public function restoreMultiple(
         array $contactIds,
-        ?int $restoredBy = null
+        int $restoredBy
     ): int {
         $count = 0;
 
