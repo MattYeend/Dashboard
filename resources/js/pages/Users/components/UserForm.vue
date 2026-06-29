@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import type { InertiaFormProps } from '@inertiajs/vue3';
 import UserBasicDetailsForm from '@/pages/Users/components/UserBasicDetailsForm.vue';
 import UserRoleDetailsForm from '@/pages/Users/components/UserRoleDetailsForm.vue';
@@ -43,12 +44,12 @@ const role = defineModel<string>('role', { required: true });
         <UserRoleDetailsForm v-model:role="role" :errors="errors" />
 
         <div class="flex items-center justify-end space-x-3">
-            <a
+            <Link
                 :href="usersIndex.url()"
                 class="rounded-md px-4 py-2 text-sm font-medium text-gray-400"
             >
                 Cancel
-            </a>
+            </Link>
 
             <button
                 type="submit"

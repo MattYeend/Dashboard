@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { InertiaFormProps } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
+import type { InertiaFormProps } from '@inertiajs/vue3';
 import ContactAddressDetailsForm from '@/pages/Contacts/components/ContactAddressDetailsForm.vue';
 import ContactBasicDetailsForm from '@/pages/Contacts/components/ContactBasicDetailsForm.vue';
 import ContactTypeForm from '@/pages/Contacts/components/ContactTypeForm.vue';
@@ -75,7 +75,7 @@ const contactableId = defineModel<number | null>('contactableId', {
         <div class="flex justify-end space-x-3">
             <Link
                 :href="contactsIndex.url()"
-                class="rounded-md px-4 py-2 text-sm font-medium text-gray-600"
+                class="rounded-md px-4 py-2 text-sm font-medium text-gray-400"
             >
                 Cancel
             </Link>
