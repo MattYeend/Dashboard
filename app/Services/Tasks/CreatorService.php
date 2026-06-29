@@ -2,12 +2,12 @@
 
 namespace App\Services\Tasks;
 
+use App\Actions\CreateResource;
 use App\Models\Log;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\AuditLogService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
 
 class CreatorService
 {
@@ -16,7 +16,8 @@ class CreatorService
      */
     public function __construct(
         protected readonly DataPreparationService $dataPreparation,
-        protected readonly AuditLogService $auditLogService
+        protected readonly AuditLogService $auditLogService,
+        protected readonly CreateResource $createResource,
     ) {}
 
     /**
@@ -30,17 +31,26 @@ class CreatorService
     {
         $actor = User::findOrFail($createdBy);
 
-        return DB::transaction(function () use ($data, $createdBy, $actor) {
-            $task = $this->createTask($data, $createdBy);
-            $this->auditLogService->record(
-                Log::ACTION_CREATE_TASK,
-                $actor,
-                $task,
-                ['before' => $task->toArray()],
-            );
+        return $this->createResource->handle(
+            $data,
+            function (array $data) use ($createdBy, $actor): Task {
+                $taskData = $this->dataPreparation->prepareForCreation($data, $createdBy);
 
-            return $task;
-        });
+                $newTask = Task::create($taskData);
+
+                $newTask->created_by = $createdBy;
+                $newTask->created_at = now();
+                $newTask->save();
+
+                $this->auditLogService->record(
+                    Log::ACTION_CREATE_TASK,
+                    $actor,
+                    $newTask,
+                    ['after' => $newTask->toArray()],
+                );
+
+                return $newTask;
+            });
     }
 
     /**

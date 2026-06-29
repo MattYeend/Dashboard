@@ -2,6 +2,7 @@
 
 namespace App\Services\Contacts;
 
+use App\Actions\DeleteResource;
 use App\Models\Contact;
 use App\Models\Log;
 use App\Models\User;
@@ -14,7 +15,8 @@ class DeleterService
      * Inject the required services into the deleter service.
      */
     public function __construct(
-        protected readonly AuditLogService $auditLogService
+        protected readonly AuditLogService $auditLogService,
+        protected readonly DeleteResource $deleteResource,
     ) {}
 
     /**
@@ -24,25 +26,24 @@ class DeleterService
      */
     public function delete(
         Contact $contact,
-        ?int $deletedBy
+        int $deletedBy
     ): bool {
         $actor = User::findOrFail($deletedBy);
 
-        return DB::transaction(function () use ($contact, $deletedBy, $actor) {
-            $this->auditLogService->record(
-                Log::ACTION_DELETE_CONTACT,
-                $actor,
-                $contact,
-                ['before' => $contact->toArray()],
-            );
+        return $this->deleteResource->handle(
+            $contact,
+            function (Contact $contact) use ($actor, $deletedBy): void {
+                $contact->deleted_by = $deletedBy;
+                $contact->deleted_at = now();
+                $contact->save();
 
-            $contact->deleted_by = $deletedBy;
-            $contact->save();
-
-            $result = $contact->delete();
-
-            return $result;
-        });
+                $this->auditLogService->record(
+                    Log::ACTION_DELETE_CONTACT,
+                    $actor,
+                    $contact,
+                    ['before' => $contact->toArray()],
+                );
+            });
     }
 
     /**
@@ -56,16 +57,16 @@ class DeleterService
     ): bool {
         $actor = User::findOrFail($deletedBy);
 
-        return DB::transaction(function () use ($contact, $actor) {
-            $this->auditLogService->record(
-                Log::ACTION_DELETE_CONTACT,
-                $actor,
-                $contact,
-                ['before' => $contact->toArray()],
-            );
-
-            return $contact->forceDelete();
-        });
+        return $this->deleteResource->forceHandle(
+            $contact,
+            function (Contact $contact) use ($actor): void {
+                $this->auditLogService->record(
+                    Log::ACTION_FORCE_DELETE_CONTACT,
+                    $actor,
+                    $contact,
+                    ['before' => $contact->toArray()],
+                );
+            });
     }
 
     /**
@@ -75,7 +76,7 @@ class DeleterService
      */
     public function deleteMultiple(
         array $contactIds,
-        ?int $deletedBy = null
+        int $deletedBy
     ): int {
         $count = 0;
 

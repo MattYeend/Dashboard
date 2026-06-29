@@ -2,10 +2,10 @@
 
 namespace App\Services\Users;
 
+use App\Actions\UpdateResource;
 use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
-use Illuminate\Support\Facades\DB;
 
 class UpdaterService
 {
@@ -14,7 +14,8 @@ class UpdaterService
      */
     public function __construct(
         protected readonly DataPreparationService $dataPreparation,
-        protected readonly AuditLogService $auditLogService
+        protected readonly AuditLogService $auditLogService,
+        protected readonly UpdateResource $updateResource,
     ) {}
 
     /**
@@ -33,40 +34,32 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($user);
 
-        return DB::transaction(function () use ($user, $data, $actor, $updatedBy, $before) {
-            $this->updateUser($user, $data, $updatedBy);
-
-            $fresh = $user->fresh();
-
-            $this->auditLogService->record(
-                Log::ACTION_UPDATE_USER,
-                $actor,
-                $fresh,
-                [
-                    'before' => $before,
-                    'after' => $this->auditLogService->snapshot($fresh),
-                ],
-                relatedUser: $fresh,
-            );
-
-            return $user->fresh();
-        });
-    }
-
-    /**
-     * Update user data.
-     *
-     * @param  array<string, mixed>  $data
-     */
-    protected function updateUser(User $user, array $data, int $updatedBy): void
-    {
         $userData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
-        $displayRole = $userData['role'] ?? null;
 
-        $user->update($userData);
+        return $this->updateResource->handle(
+            $user,
+            $userData,
+            function (User $user) use ($actor, $before, $userData, $updatedBy): void {
+                if (isset($userData['role'])) {
+                    $user->assignApplicationRole($userData['role']);
+                }
 
-        if ($displayRole !== null) {
-            $user->assignApplicationRole($displayRole);
-        }
+                $fresh = $user->fresh();
+
+                $user->updated_by = $updatedBy;
+                $user->updated_at = now();
+                $user->save();
+
+                $this->auditLogService->record(
+                    Log::ACTION_UPDATE_USER,
+                    $actor,
+                    $fresh,
+                    [
+                        'before' => $before,
+                        'after' => $this->auditLogService->snapshot($fresh),
+                    ],
+                    relatedUser: $fresh,
+                );
+            });
     }
 }

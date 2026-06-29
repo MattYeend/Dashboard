@@ -2,6 +2,7 @@
 
 namespace App\Services\Tasks;
 
+use App\Actions\DeleteResource;
 use App\Models\Log;
 use App\Models\Task;
 use App\Models\User;
@@ -14,7 +15,8 @@ class DeleterService
      * Inject the required services into the deleter service.
      */
     public function __construct(
-        protected readonly AuditLogService $auditLogService
+        protected readonly AuditLogService $auditLogService,
+        protected readonly DeleteResource $deleteResource,
     ) {}
 
     /**
@@ -26,19 +28,20 @@ class DeleterService
     {
         $actor = User::findOrFail($deletedBy);
 
-        return DB::transaction(function () use ($task, $deletedBy, $actor) {
-            $this->auditLogService->record(
-                Log::ACTION_DELETE_TASK,
-                $actor,
-                $task,
-                ['before' => $task->toArray()],
-            );
+        return $this->deleteResource->handle(
+            $task,
+            function (Task $task) use ($actor, $deletedBy): void {
+                $task->deleted_by = $deletedBy;
+                $task->deleted_at = now();
+                $task->save();
 
-            $task->deleted_by = $deletedBy;
-            $task->save();
-
-            return $task->delete();
-        });
+                $this->auditLogService->record(
+                    Log::ACTION_DELETE_TASK,
+                    $actor,
+                    $task,
+                    ['before' => $task->toArray()],
+                );
+            });
     }
 
     /**
@@ -50,17 +53,16 @@ class DeleterService
     {
         $actor = User::findOrFail($deletedBy);
 
-        return DB::transaction(function () use ($task, $actor) {
-
-            $this->auditLogService->record(
-                Log::ACTION_FORCE_DELETE_TASK,
-                $actor,
-                $task,
-                ['before' => $task->toArray()],
-            );
-
-            return $task->forceDelete();
-        });
+        return $this->deleteResource->forceHandle(
+            $task,
+            function (Task $task) use ($actor): void {
+                $this->auditLogService->record(
+                    Log::ACTION_FORCE_DELETE_TASK,
+                    $actor,
+                    $task,
+                    ['before' => $task->toArray()],
+                );
+            });
     }
 
     /**

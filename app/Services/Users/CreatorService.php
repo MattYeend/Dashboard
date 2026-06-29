@@ -2,11 +2,11 @@
 
 namespace App\Services\Users;
 
+use App\Actions\CreateResource;
 use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
 
 class CreatorService
 {
@@ -15,7 +15,8 @@ class CreatorService
      */
     public function __construct(
         protected readonly DataPreparationService $dataPreparation,
-        protected readonly AuditLogService $auditLogService
+        protected readonly AuditLogService $auditLogService,
+        protected readonly CreateResource $createResource,
     ) {}
 
     /**
@@ -29,33 +30,29 @@ class CreatorService
     {
         $actor = User::findOrFail($createdBy);
 
-        return DB::transaction(function () use ($data, $createdBy, $actor) {
-            $user = $this->createUser($data, $createdBy);
-            $this->auditLogService->record(
-                Log::ACTION_CREATE_USER,
-                $actor,
-                $user,
-                ['before' => $user->toArray()],
-                relatedUser: $user,
-            );
+        /** @var User $user */
+        return $this->createResource->handle(
+            $data,
+            function (array $data) use ($createdBy, $actor): User {
+                $userData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $displayRole = $userData['role'] ?? 'user';
 
-            return $user;
-        });
-    }
+                $newUser = User::create($userData);
+                $newUser->assignApplicationRole($displayRole);
 
-    /**
-     * Create the user record.
-     *
-     * @param  array<string, mixed>  $data
-     */
-    protected function createUser(array $data, int $createdBy): User
-    {
-        $userData = $this->dataPreparation->prepareForCreation($data, $createdBy);
-        $displayRole = $userData['role'] ?? 'user';
+                $newUser->created_by = $createdBy;
+                $newUser->created_at = now();
+                $newUser->save();
 
-        $user = User::create($userData);
-        $user->assignApplicationRole($displayRole);
+                $this->auditLogService->record(
+                    Log::ACTION_CREATE_USER,
+                    $actor,
+                    $newUser,
+                    ['after' => $newUser->toArray()],
+                    relatedUser: $newUser,
+                );
 
-        return $user->fresh();
+                return $newUser;
+            });
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\TaskStatuses;
 
+use App\Actions\DeleteResource;
 use App\Models\Log;
 use App\Models\TaskStatus;
 use App\Models\User;
@@ -14,7 +15,8 @@ class DeleterService
      * Inject the required services into the deleter service.
      */
     public function __construct(
-        protected readonly AuditLogService $auditLogService
+        protected readonly AuditLogService $auditLogService,
+        protected readonly DeleteResource $deleteResource,
     ) {}
 
     /**
@@ -29,20 +31,20 @@ class DeleterService
 
         $actor = User::findOrFail($deletedBy);
 
-        return DB::transaction(function () use ($taskStatus, $deletedBy, $actor) {
-            $this->auditLogService->record(
-                Log::ACTION_DELETE_TASK_STATUS,
-                $actor,
-                $taskStatus,
-                ['before' => $taskStatus->toArray()],
-            );
+        return $this->deleteResource->handle(
+            $taskStatus,
+            function (TaskStatus $taskStatus) use ($actor, $deletedBy): void {
+                $taskStatus->deleted_by = $deletedBy;
+                $taskStatus->deleted_at = now();
+                $taskStatus->save();
 
-            $taskStatus->deleted_by = $deletedBy;
-            $taskStatus->save();
-
-            return $taskStatus->delete();
-
-        });
+                $this->auditLogService->record(
+                    Log::ACTION_DELETE_TASK_STATUS,
+                    $actor,
+                    $taskStatus,
+                    ['before' => $taskStatus->toArray()],
+                );
+            });
     }
 
     /**
@@ -56,16 +58,16 @@ class DeleterService
     ): bool {
         $actor = User::findOrFail($deletedBy);
 
-        return DB::transaction(function () use ($taskStatus, $actor) {
-            $this->auditLogService->record(
-                Log::ACTION_FORCE_DELETE_TASK_STATUS,
-                $actor,
-                $taskStatus,
-                ['before' => $taskStatus->toArray()],
-            );
-
-            return $taskStatus->forceDelete();
-        });
+        return $this->deleteResource->forceHandle(
+            $taskStatus,
+            function (TaskStatus $taskStatus) use ($actor): void {
+                $this->auditLogService->record(
+                    Log::ACTION_FORCE_DELETE_TASK_STATUS,
+                    $actor,
+                    $taskStatus,
+                    ['before' => $taskStatus->toArray()],
+                );
+            });
     }
 
     /**
