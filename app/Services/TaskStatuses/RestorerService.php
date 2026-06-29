@@ -2,6 +2,7 @@
 
 namespace App\Services\TaskStatuses;
 
+use App\Actions\RestoreResource;
 use App\Models\Log;
 use App\Models\TaskStatus;
 use App\Models\User;
@@ -15,7 +16,8 @@ class RestorerService
      * Inject the required services into the resorer service.
      */
     public function __construct(
-        protected readonly AuditLogService $auditLogService
+        protected readonly AuditLogService $auditLogService,
+        protected readonly RestoreResource $restoreResource,
     ) {}
 
     /**
@@ -29,22 +31,20 @@ class RestorerService
     ): TaskStatus {
         $actor = User::findOrFail($restoredBy);
 
-        return DB::transaction(function () use ($taskStatus, $restoredBy, $actor) {
-            $taskStatus->restored_by = $restoredBy;
-            $taskStatus->restored_at = now();
-            $taskStatus->save();
+        return $this->restoreResource->handle(
+            $taskStatus,
+            function (TaskStatus $taskStatus) use ($actor, $restoredBy): void {
+                $taskStatus->restored_by = $restoredBy;
+                $taskStatus->restored_at = now();
+                $taskStatus->save();
 
-            $taskStatus->restore();
-
-            $this->auditLogService->record(
-                Log::ACTION_RESTORE_TASK_STATUS,
-                $actor,
-                $taskStatus,
-                ['before' => $taskStatus->toArray()],
-            );
-
-            return $taskStatus->fresh();
-        });
+                $this->auditLogService->record(
+                    Log::ACTION_RESTORE_TASK_STATUS,
+                    $actor,
+                    $taskStatus,
+                    ['before' => $taskStatus->toArray()],
+                );
+            });
     }
 
     /**

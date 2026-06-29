@@ -57,17 +57,17 @@ class DeleterService
     ): bool {
         $actor = User::findOrFail($deletedBy);
 
-        return DB::transaction(function () use ($user, $actor) {
-            $this->auditLogService->record(
-                Log::ACTION_FORCE_DELETE_USER,
-                $actor,
-                $user,
-                ['before' => $user->toArray()],
-                relatedUser: $user,
-            );
-
-            return $user->forceDelete();
-        });
+        return $this->deleteResource->forceHandle(
+            $user,
+            function (User $user) use ($actor): void {
+                $this->auditLogService->record(
+                    Log::ACTION_FORCE_DELETE_USER,
+                    $actor,
+                    $user,
+                    ['before' => $user->toArray()],
+                    relatedUser: $user,
+                );
+            });
     }
 
     /**
