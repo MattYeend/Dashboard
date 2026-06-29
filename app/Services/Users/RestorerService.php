@@ -2,6 +2,7 @@
 
 namespace App\Services\Users;
 
+use App\Actions\RestoreResource;
 use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
@@ -14,7 +15,8 @@ class RestorerService
      * Inject the required services into the restorer service.
      */
     public function __construct(
-        protected readonly AuditLogService $auditLogService
+        protected readonly AuditLogService $auditLogService,
+        protected readonly RestoreResource $restoreResource,
     ) {}
 
     /**
@@ -28,23 +30,20 @@ class RestorerService
     ): User {
         $actor = User::findOrFail($restoredBy);
 
-        return DB::transaction(function () use ($user, $restoredBy, $actor) {
-            $user->restored_by = $restoredBy;
-            $user->restored_at = now();
-            $user->save();
-
-            $user->restore();
-
-            $this->auditLogService->record(
-                Log::ACTION_RESTORE_USER,
-                $actor,
-                $user,
-                ['before' => $user->toArray()],
-                relatedUser: $user,
-            );
-
-            return $user->fresh();
-        });
+        return $this->restoreResource->handle(
+            $user,
+            function (User $user) use ($actor, $restoredBy): void {
+                $user->restored_by = $restoredBy;
+                $user->restored_at = now();
+                $user->save();
+                $this->auditLogService->record(
+                    Log::ACTION_RESTORE_USER,
+                    $actor,
+                    $user,
+                    ['before' => $user->toArray()],
+                    relatedUser: $user,
+                );
+            });
     }
 
     /**

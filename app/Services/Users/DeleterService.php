@@ -2,6 +2,7 @@
 
 namespace App\Services\Users;
 
+use App\Actions\DeleteResource;
 use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
@@ -13,7 +14,8 @@ class DeleterService
      * Inject the required services into the deleter service.
      */
     public function __construct(
-        protected readonly AuditLogService $auditLogService
+        protected readonly AuditLogService $auditLogService,
+        protected readonly DeleteResource $deleteResource,
     ) {}
 
     /**
@@ -27,20 +29,21 @@ class DeleterService
     ): bool {
         $actor = User::findOrFail($deletedBy);
 
-        return DB::transaction(function () use ($user, $deletedBy, $actor) {
-            $this->auditLogService->record(
-                Log::ACTION_DELETE_USER,
-                $actor,
-                $user,
-                ['before' => $user->toArray()],
-                relatedUser: $user,
-            );
+        return $this->deleteResource->handle(
+            $user,
+            function (User $user) use ($actor, $deletedBy): void {
+                $user->deleted_by = $deletedBy;
+                $user->deleted_at = now();
+                $user->save();
 
-            $user->deleted_by = $deletedBy;
-            $user->save();
-
-            return $user->delete();
-        });
+                $this->auditLogService->record(
+                    Log::ACTION_DELETE_USER,
+                    $actor,
+                    $user,
+                    ['before' => $user->toArray()],
+                    relatedUser: $user,
+                );
+            });
     }
 
     /**
