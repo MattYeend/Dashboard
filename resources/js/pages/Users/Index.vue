@@ -12,8 +12,8 @@ import {
     create as usersCreate,
     edit as usersEdit,
     destroy as usersDestroy,
-    bulkDelete as usersBulkDelete,
 } from '@/routes/users';
+import usersBulk from '@/routes/users/bulk';
 import type {
     Pagination as PaginationMeta,
     PermissionsMeta,
@@ -109,7 +109,7 @@ function bulkDelete(ids: Array<number | string>): void {
 
     if (confirm(`Are you sure you want to delete ${ids.length} user(s)?`)) {
         router.post(
-            usersBulkDelete.url(),
+            usersBulk.delete.url(),
             { ids },
             {
                 preserveScroll: true,

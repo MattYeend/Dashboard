@@ -12,8 +12,8 @@ import {
     create as contactsCreate,
     edit as contactsEdit,
     destroy as contactsDestroy,
-    bulkDelete as contactsBulkDelete,
 } from '@/routes/contacts';
+import contactsBulk from '@/routes/contacts/bulk';
 import type {
     Pagination as PaginationMeta,
     PermissionsMeta,
@@ -111,7 +111,7 @@ function bulkDelete(ids: Array<number | string>): void {
 
     if (confirm(`Are you sure you want to delete ${ids.length} contact(s)?`)) {
         router.post(
-            contactsBulkDelete.url(),
+            contactsBulk.delete.url(),
             { ids },
             {
                 preserveScroll: true,

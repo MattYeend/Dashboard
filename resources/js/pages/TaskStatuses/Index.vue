@@ -12,8 +12,8 @@ import {
     show as taskStatusesShow,
     edit as taskStatusesEdit,
     destroy as taskStatusesDestroy,
-    bulkDelete as taskStatusesBulkDelete,
 } from '@/routes/task-statuses';
+import taskStatusesBulk from '@/routes/task-statuses/bulk';
 import type {
     TaskStatus,
     Pagination as PaginationMeta,
@@ -110,7 +110,7 @@ function bulkDelete(ids: Array<number | string>): void {
         )
     ) {
         router.post(
-            taskStatusesBulkDelete.url(),
+            taskStatusesBulk.delete.url(),
             { ids },
             {
                 preserveScroll: true,
