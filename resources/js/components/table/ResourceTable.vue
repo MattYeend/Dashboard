@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends Record<string, unknown>">
+<script setup lang="ts" generic="T extends { id: number | string }">
 import { computed } from 'vue';
 import EmptyRow from '@/components/table/EmptyRow.vue';
 
@@ -22,6 +22,15 @@ const props = withDefaults(defineProps<Props>(), {
     selectable: false,
 });
 
+defineSlots<
+    {
+        'bulk-actions'?: (props: {
+            selected: Array<number | string>;
+        }) => unknown;
+        actions?: (props: { row: T }) => unknown;
+    } & Record<`cell-${string}`, (props: { row: T }) => unknown>
+>();
+
 const selected = defineModel<Array<number | string>>('selected', {
     default: () => [],
 });
@@ -30,22 +39,22 @@ const colspan = computed(
     () => props.columns.length + (props.selectable ? 1 : 0) + 1,
 );
 
+function getRowKey(row: T): number | string {
+    return (row as Record<string, unknown>)[props.rowKey] as number | string;
+}
+
+function getCellValue(row: T, key: string): unknown {
+    return (row as Record<string, unknown>)[key];
+}
+
 const allSelected = computed({
     get: () =>
         props.rows.length > 0 &&
-        props.rows.every((row) =>
-            selected.value.includes(row[props.rowKey] as number | string),
-        ),
+        props.rows.every((row) => selected.value.includes(getRowKey(row))),
     set: (value: boolean) => {
-        selected.value = value
-            ? props.rows.map((row) => row[props.rowKey] as number | string)
-            : [];
+        selected.value = value ? props.rows.map((row) => getRowKey(row)) : [];
     },
 });
-
-function getRowKey(row: T): number | string {
-    return row[props.rowKey] as number | string;
-}
 
 function isSelected(row: T): boolean {
     return selected.value.includes(getRowKey(row));
@@ -108,7 +117,7 @@ function toggleRow(row: T): void {
                             <input
                                 :checked="isSelected(row)"
                                 type="checkbox"
-                                :aria-label="`Select row ${row[rowKey]}`"
+                                :aria-label="`Select row ${getRowKey(row)}`"
                                 @change="toggleRow(row)"
                             />
                         </td>
@@ -118,7 +127,7 @@ function toggleRow(row: T): void {
                             class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
                         >
                             <slot :name="`cell-${column.key}`" :row="row">
-                                {{ row[column.key] ?? '—' }}
+                                {{ getCellValue(row, column.key) ?? '—' }}
                             </slot>
                         </td>
                         <td

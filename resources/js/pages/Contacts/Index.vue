@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { router, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import EmptyRow from '@/components/table/EmptyRow.vue';
 import FilterBar from '@/components/table/FilterBar.vue';
 import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
+import ResourceTable from '@/components/table/ResourceTable.vue';
+import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import {
     index as contactsIndex,
     show as contactsShow,
     create as contactsCreate,
     edit as contactsEdit,
     destroy as contactsDestroy,
+    bulkDelete as contactsBulkDelete,
 } from '@/routes/contacts';
 import type {
     Pagination as PaginationMeta,
@@ -39,6 +41,17 @@ const filters = ref({
     sort_by: urlParams.get('sort_by') ?? 'email',
     sort_direction: urlParams.get('sort_direction') ?? 'asc',
 });
+
+const selectedIds = ref<Array<number | string>>([]);
+
+const columns: ResourceTableColumn[] = [
+    { key: 'contactable_type_label', label: 'Type' },
+    { key: 'contactable_name', label: 'Contact Of' },
+    { key: 'email', label: 'Email' },
+    { key: 'phone', label: 'Phone' },
+    { key: 'city', label: 'City' },
+    { key: 'country', label: 'Country' },
+];
 
 const filterFields = [
     {
@@ -90,6 +103,25 @@ function destroy(id: number): void {
         router.delete(contactsDestroy.url(id));
     }
 }
+
+function bulkDelete(ids: Array<number | string>): void {
+    if (!ids.length) {
+        return;
+    }
+
+    if (confirm(`Are you sure you want to delete ${ids.length} contact(s)?`)) {
+        router.post(
+            contactsBulkDelete.url(),
+            { ids },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    selectedIds.value = [];
+                },
+            },
+        );
+    }
+}
 </script>
 
 <template>
@@ -108,108 +140,36 @@ function destroy(id: number): void {
                 @change="applyFilters"
             />
 
-            <div
-                class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
+            <ResourceTable
+                v-model:selected="selectedIds"
+                :rows="contacts.data"
+                :columns="columns"
+                row-key="id"
+                selectable
+                empty-message="No contacts found."
             >
-                <table class="min-w-full divide-y divide-gray-500">
-                    <thead>
-                        <tr>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
-                            >
-                                Type<!-- ADD column -->
-                            </th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
-                            >
-                                Contact Of
-                            </th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
-                            >
-                                Email
-                            </th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
-                            >
-                                Phone
-                            </th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
-                            >
-                                City
-                            </th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
-                            >
-                                Country
-                            </th>
-                            <th class="relative px-6 py-3">
-                                <span class="sr-only">Actions</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-500">
-                        <EmptyRow
-                            v-if="!contacts.data?.length"
-                            :colspan="7"
-                            message="No contacts found."
-                        />
-                        <tr
-                            v-for="contact in contacts.data ?? []"
-                            :key="contact.id"
-                        >
-                            <td
-                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
-                            >
-                                {{ contact.contactable_type_label ?? '—' }}
-                            </td>
-                            <td
-                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
-                            >
-                                {{ contact.contactable_name ?? '—' }}
-                            </td>
-                            <td
-                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-300"
-                            >
-                                {{ contact.email ?? '—' }}
-                            </td>
-                            <td
-                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
-                            >
-                                {{ contact.phone ?? '—' }}
-                            </td>
-                            <td
-                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
-                            >
-                                {{ contact.city ?? '—' }}
-                            </td>
-                            <td
-                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
-                            >
-                                {{ contact.country ?? '—' }}
-                            </td>
-                            <td
-                                class="space-x-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap"
-                            >
-                                <Link :href="contactsShow.url(contact.id)">
-                                    View
-                                </Link>
-                                <Link :href="contactsEdit.url(contact.id)">
-                                    Edit
-                                </Link>
-                                <button
-                                    type="button"
-                                    class="text-red-600 hover:text-red-900"
-                                    @click="destroy(contact.id)"
-                                >
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <template #bulk-actions="{ selected }">
+                    <button
+                        type="button"
+                        class="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-500"
+                        @click="bulkDelete(selected)"
+                    >
+                        Delete selected
+                    </button>
+                </template>
+
+                <template #actions="{ row }">
+                    <Link :href="contactsShow.url(row.id)">View</Link>
+                    <Link :href="contactsEdit.url(row.id)">Edit</Link>
+                    <button
+                        type="button"
+                        class="text-red-600 hover:text-red-900"
+                        @click="destroy(row.id)"
+                    >
+                        Delete
+                    </button>
+                </template>
+            </ResourceTable>
 
             <Pagination
                 :meta="contacts.meta"
