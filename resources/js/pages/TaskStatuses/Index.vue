@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import FilterBar from '@/components/table/FilterBar.vue';
+import IndexHeader from '@/components/table/IndexHeader.vue';
+import Pagination from '@/components/table/Pagination.vue';
+import ResourceTable from '@/components/table/ResourceTable.vue';
+import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import {
     index as taskStatusesIndex,
     create as taskStatusesCreate,
@@ -8,20 +13,25 @@ import {
     edit as taskStatusesEdit,
     destroy as taskStatusesDestroy,
 } from '@/routes/task-statuses';
-import type { TaskStatus, Pagination, PermissionsMeta } from '@/types';
+import taskStatusesBulk from '@/routes/task-statuses/bulk';
+import type {
+    TaskStatus,
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+} from '@/types';
 
 interface Props {
     taskStatuses: {
         data: TaskStatus[];
         links: Array<{ url: string | null; label: string; active: boolean }>;
-        meta: Pagination;
+        meta: PaginationMeta;
     };
     permissions_meta: PermissionsMeta;
     sort_fields: Record<string, string>;
     trash_filters: Record<string, string>;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const filters = ref({
     search: '',
@@ -29,6 +39,52 @@ const filters = ref({
     sort_by: 'created_at',
     sort_direction: 'desc',
 });
+
+const selectedIds = ref<Array<number | string>>([]);
+
+const columns: ResourceTableColumn[] = [
+    { key: 'title', label: 'Title' },
+    { key: 'description', label: 'Description' },
+    { key: 'preview', label: 'Preview' },
+];
+
+const filterFields = [
+    {
+        key: 'search',
+        type: 'text' as const,
+        placeholder: 'Search task statuses…',
+    },
+    {
+        key: 'trashed',
+        type: 'select' as const,
+        get options() {
+            return Object.entries(props.trash_filters).map(
+                ([value, label]) => ({
+                    value,
+                    label,
+                }),
+            );
+        },
+    },
+    {
+        key: 'sort_by',
+        type: 'select' as const,
+        get options() {
+            return Object.entries(props.sort_fields).map(([value, label]) => ({
+                value,
+                label: `Sort by ${label}`,
+            }));
+        },
+    },
+    {
+        key: 'sort_direction',
+        type: 'select' as const,
+        options: [
+            { value: 'asc', label: 'Ascending' },
+            { value: 'desc', label: 'Descending' },
+        ],
+    },
+];
 
 function applyFilters(): void {
     router.get(taskStatusesIndex.url(), filters.value, {
@@ -42,180 +98,105 @@ function destroy(id: number): void {
         router.delete(taskStatusesDestroy.url(id));
     }
 }
+
+function bulkDelete(ids: Array<number | string>): void {
+    if (!ids.length) {
+        return;
+    }
+
+    if (
+        confirm(
+            `Are you sure you want to delete ${ids.length} task status(es)?`,
+        )
+    ) {
+        router.post(
+            taskStatusesBulk.delete.url(),
+            { ids },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    selectedIds.value = [];
+                },
+            },
+        );
+    }
+}
 </script>
 
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="mb-4 flex items-center justify-between">
-                <h1 class="text-2xl font-semibold text-gray-300">
-                    Task Statuses
-                </h1>
-                <Link
-                    v-if="permissions_meta.can_create"
-                    :href="taskStatusesCreate.url()"
-                    class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
-                >
-                    Add Task Status
-                </Link>
-            </div>
+            <IndexHeader
+                title="Task Statuses"
+                :create-href="taskStatusesCreate.url()"
+                create-label="Add Task Status"
+                :can-create="permissions_meta.can_create"
+            />
 
-            <div class="mb-4 flex flex-wrap gap-2">
-                <input
-                    v-model="filters.search"
-                    type="text"
-                    class="rounded-md border px-3 py-1.5 text-sm"
-                    placeholder="Search task statuses…"
-                    @input="applyFilters"
-                />
-                <select
-                    v-model="filters.trashed"
-                    class="rounded-md border px-3 py-1.5 text-sm"
-                    @change="applyFilters"
-                >
-                    <option
-                        v-for="(label, value) in trash_filters"
-                        :key="value"
-                        :value="value"
-                    >
-                        {{ label }}
-                    </option>
-                </select>
-                <select
-                    v-model="filters.sort_by"
-                    class="rounded-md border px-3 py-1.5 text-sm"
-                    @change="applyFilters"
-                >
-                    <option
-                        v-for="(label, value) in sort_fields"
-                        :key="value"
-                        :value="value"
-                    >
-                        Sort by {{ label }}
-                    </option>
-                </select>
-                <select
-                    v-model="filters.sort_direction"
-                    class="rounded-md border px-3 py-1.5 text-sm"
-                    @change="applyFilters"
-                >
-                    <option value="asc">Ascending</option>
-                    <option value="desc">Descending</option>
-                </select>
-            </div>
+            <FilterBar
+                v-model="filters"
+                :fields="filterFields"
+                @change="applyFilters"
+            />
 
-            <div
-                class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
+            <ResourceTable
+                v-model:selected="selectedIds"
+                :rows="taskStatuses.data"
+                :columns="columns"
+                row-key="id"
+                selectable
+                empty-message="No task statuses found."
             >
-                <table class="min-w-full divide-y divide-gray-500">
-                    <thead>
-                        <tr>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
-                            >
-                                Title
-                            </th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
-                            >
-                                Description
-                            </th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
-                            >
-                                Preview
-                            </th>
-                            <th class="relative px-6 py-3">
-                                <span class="sr-only">Actions</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-500">
-                        <tr v-if="!taskStatuses.data?.length">
-                            <td
-                                colspan="4"
-                                class="px-6 py-4 text-center text-sm text-gray-400"
-                            >
-                                No task statuses found.
-                            </td>
-                        </tr>
-                        <tr
-                            v-for="status in taskStatuses.data ?? []"
-                            :key="status.id"
-                        >
-                            <td
-                                class="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-300"
-                            >
-                                {{ status.title }}
-                            </td>
-                            <td
-                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
-                            >
-                                {{ status.description ?? '—' }}
-                            </td>
-                            <td
-                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
-                            >
-                                <span
-                                    class="rounded px-2 py-0.5 text-xs font-medium"
-                                    :style="{
-                                        backgroundColor:
-                                            status.background_colour,
-                                        color: status.text_colour,
-                                    }"
-                                >
-                                    {{ status.title }}
-                                </span>
-                            </td>
-                            <td
-                                class="space-x-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap"
-                            >
-                                <Link :href="taskStatusesShow.url(status.id)">
-                                    View
-                                </Link>
-                                <Link :href="taskStatusesEdit.url(status.id)">
-                                    Edit
-                                </Link>
-                                <button
-                                    type="button"
-                                    class="text-red-600 hover:text-red-900"
-                                    @click="destroy(status.id)"
-                                >
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div
-                v-if="taskStatuses.meta.last_page > 1"
-                class="mt-4 flex items-center justify-between"
-            >
-                <p class="text-sm text-gray-400">
-                    Showing {{ taskStatuses.meta.from ?? 0 }} to
-                    {{ taskStatuses.meta.to ?? 0 }} of
-                    {{ taskStatuses.meta.total }} task statuses
-                </p>
-                <div class="flex gap-x-1">
-                    <Link
-                        v-for="link in taskStatuses.links"
-                        :key="link.label"
-                        :href="link.url ?? ''"
-                        :class="[
-                            'rounded px-3 py-1 text-sm',
-                            link.url === null
-                                ? 'pointer-events-none opacity-40'
-                                : 'hover:bg-accent',
-                            link.active ? 'font-semibold' : '',
-                        ]"
-                        preserve-scroll
+                <template #bulk-actions="{ selected }">
+                    <button
+                        type="button"
+                        class="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-500"
+                        @click="bulkDelete(selected)"
                     >
-                        <span v-html="link.label" />
-                    </Link>
-                </div>
-            </div>
+                        Delete selected
+                    </button>
+                </template>
+
+                <template #cell-title="{ row }">
+                    <span class="font-medium text-gray-300">
+                        {{ row.title }}
+                    </span>
+                </template>
+
+                <template #cell-description="{ row }">
+                    {{ row.description ?? '—' }}
+                </template>
+
+                <template #cell-preview="{ row }">
+                    <span
+                        class="rounded px-2 py-0.5 text-xs font-medium"
+                        :style="{
+                            backgroundColor: row.background_colour,
+                            color: row.text_colour,
+                        }"
+                    >
+                        {{ row.title }}
+                    </span>
+                </template>
+
+                <template #actions="{ row }">
+                    <Link :href="taskStatusesShow.url(row.id)">View</Link>
+                    <Link :href="taskStatusesEdit.url(row.id)">Edit</Link>
+                    <button
+                        type="button"
+                        class="text-red-600 hover:text-red-900"
+                        @click="destroy(row.id)"
+                    >
+                        Delete
+                    </button>
+                </template>
+            </ResourceTable>
+
+            <Pagination
+                :meta="taskStatuses.meta"
+                :links="taskStatuses.links"
+                resource-label="task statuses"
+            />
         </div>
     </div>
 </template>

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { router, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import EmptyRow from '@/components/table/EmptyRow.vue';
 import FilterBar from '@/components/table/FilterBar.vue';
 import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
+import ResourceTable from '@/components/table/ResourceTable.vue';
+import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import {
     index as usersIndex,
     show as usersShow,
@@ -12,6 +13,7 @@ import {
     edit as usersEdit,
     destroy as usersDestroy,
 } from '@/routes/users';
+import usersBulk from '@/routes/users/bulk';
 import type {
     Pagination as PaginationMeta,
     PermissionsMeta,
@@ -39,6 +41,15 @@ const filters = ref({
     sort_by: urlParams.get('sort_by') ?? 'name',
     sort_direction: urlParams.get('sort_direction') ?? 'asc',
 });
+
+const selectedIds = ref<Array<number | string>>([]);
+
+const columns: ResourceTableColumn[] = [
+    { key: 'name', label: 'Name' },
+    { key: 'email', label: 'Email' },
+    { key: 'role', label: 'Role' },
+    { key: 'created_at', label: 'Created' },
+];
 
 const filterFields = [
     {
@@ -91,6 +102,25 @@ function destroy(id: number): void {
     }
 }
 
+function bulkDelete(ids: Array<number | string>): void {
+    if (!ids.length) {
+        return;
+    }
+
+    if (confirm(`Are you sure you want to delete ${ids.length} user(s)?`)) {
+        router.post(
+            usersBulk.delete.url(),
+            { ids },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    selectedIds.value = [];
+                },
+            },
+        );
+    }
+}
+
 function formatDate(value: string | null): string {
     if (!value) {
         return '—';
@@ -120,85 +150,52 @@ function formatDate(value: string | null): string {
                 @change="applyFilters"
             />
 
-            <div
-                class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black sm:rounded-lg"
+            <ResourceTable
+                v-model:selected="selectedIds"
+                :rows="users.data"
+                :columns="columns"
+                row-key="id"
+                selectable
+                empty-message="No users found."
             >
-                <table class="min-w-full divide-y divide-gray-500">
-                    <thead>
-                        <tr>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
-                            >
-                                Name
-                            </th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
-                            >
-                                Email
-                            </th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
-                            >
-                                Role
-                            </th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase"
-                            >
-                                Created
-                            </th>
-                            <th class="relative px-6 py-3">
-                                <span class="sr-only">Actions</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-500">
-                        <EmptyRow
-                            v-if="!users.data?.length"
-                            :colspan="5"
-                            message="No users found."
-                        />
-                        <tr v-for="user in users.data ?? []" :key="user.id">
-                            <td
-                                class="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-300"
-                            >
-                                {{ user.name }}
-                            </td>
-                            <td
-                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
-                            >
-                                {{ user.email }}
-                            </td>
-                            <td
-                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400 capitalize"
-                            >
-                                {{ user.role.replace('_', ' ') }}
-                            </td>
-                            <td
-                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
-                            >
-                                {{ formatDate(user.created_at) }}
-                            </td>
-                            <td
-                                class="space-x-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap"
-                            >
-                                <Link :href="usersShow.url(user.id)">
-                                    View
-                                </Link>
-                                <Link :href="usersEdit.url(user.id)">
-                                    Edit
-                                </Link>
-                                <button
-                                    type="button"
-                                    class="text-red-600 hover:text-red-900"
-                                    @click="destroy(user.id)"
-                                >
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <template #bulk-actions="{ selected }">
+                    <button
+                        type="button"
+                        class="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-500"
+                        @click="bulkDelete(selected)"
+                    >
+                        Delete selected
+                    </button>
+                </template>
+
+                <template #cell-name="{ row }">
+                    <span class="font-medium text-gray-300">
+                        {{ row.name }}
+                    </span>
+                </template>
+
+                <template #cell-role="{ row }">
+                    <span class="capitalize">
+                        {{ row.role.replace('_', ' ') }}
+                    </span>
+                </template>
+
+                <template #cell-created_at="{ row }">
+                    {{ formatDate(row.created_at) }}
+                </template>
+
+                <template #actions="{ row }">
+                    <Link :href="usersShow.url(row.id)">View</Link>
+                    <Link :href="usersEdit.url(row.id)">Edit</Link>
+                    <button
+                        type="button"
+                        class="text-red-600 hover:text-red-900"
+                        @click="destroy(row.id)"
+                    >
+                        Delete
+                    </button>
+                </template>
+            </ResourceTable>
 
             <Pagination
                 :meta="users.meta"
