@@ -3,6 +3,7 @@ import { useForm } from '@inertiajs/vue3';
 import axios from 'axios';
 import { ref, watch } from 'vue';
 
+import { nullIfBlank } from '@/lib/forms';
 import ContactForm from '@/pages/Contacts/components/ContactForm.vue';
 import { update as contactsUpdate } from '@/routes/contacts';
 import type { Contact } from '@/types';
@@ -50,7 +51,15 @@ watch(
 );
 
 function submit(): void {
-    form.put(contactsUpdate.url(props.contact.id));
+    form.transform((data) => ({
+        ...data,
+        phone: nullIfBlank(data.phone),
+        email: nullIfBlank(data.email),
+        address: nullIfBlank(data.address),
+        city: nullIfBlank(data.city),
+        postal_code: nullIfBlank(data.postal_code),
+        country: nullIfBlank(data.country),
+    })).put(contactsUpdate.url(props.contact.id));
 }
 </script>
 
