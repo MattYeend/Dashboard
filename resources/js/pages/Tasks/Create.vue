@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import { nullIfBlank, numberOrNull } from '@/lib/forms';
 import { store as tasksStore } from '@/routes/tasks';
 import type { TaskStatus, UserOption } from '@/types';
 import TaskForm from './components/TaskForm.vue';
@@ -19,7 +20,14 @@ const form = useForm({
 });
 
 function submit(): void {
-    form.post(tasksStore.url());
+    form.transform((data) => ({
+        ...data,
+        description: nullIfBlank(data.description),
+        due_date: nullIfBlank(data.due_date),
+        assigned_date: nullIfBlank(data.assigned_date),
+        assigned_to: numberOrNull(data.assigned_to),
+        status_id: numberOrNull(data.status_id),
+    })).post(tasksStore.url());
 }
 </script>
 

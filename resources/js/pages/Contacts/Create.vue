@@ -2,7 +2,6 @@
 import { useForm } from '@inertiajs/vue3';
 import axios from 'axios';
 import { ref, watch } from 'vue';
-
 import { nullIfBlank } from '@/lib/forms';
 import ContactForm from '@/pages/Contacts/components/ContactForm.vue';
 import { store as contactsStore } from '@/routes/contacts';
