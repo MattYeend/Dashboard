@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import { nullIfBlank } from '@/lib/forms';
 import { update as taskStatusesUpdate } from '@/routes/task-statuses';
 import type { TaskStatus } from '@/types';
 import TaskStatusForm from './components/TaskStatusForm.vue';
@@ -21,7 +22,10 @@ function onFormUpdate(updated: TaskStatusFormData): void {
 }
 
 function submit(): void {
-    form.put(taskStatusesUpdate.url(props.taskStatus.id));
+    form.transform((data) => ({
+        ...data,
+        description: nullIfBlank(data.description),
+    })).put(taskStatusesUpdate.url(props.taskStatus.id));
 }
 </script>
 
