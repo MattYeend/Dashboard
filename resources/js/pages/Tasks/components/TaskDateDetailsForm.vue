@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import InputError from '@/components/InputError.vue';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import type { InertiaFormProps } from '@inertiajs/vue3';
 
 interface TaskFormData {
@@ -25,46 +28,27 @@ const assignedDate = defineModel<string | null>('assignedDate', {
 <template>
     <div class="space-y-4">
         <div>
-            <label
-                for="due_date"
-                class="block text-sm font-medium text-gray-400"
-            >
-                Due Date
-            </label>
-            <input
+            <Label for="due_date">Due Date</Label>
+            <Input
                 id="due_date"
-                :value="dueDate ?? ''"
+                :model-value="dueDate ?? ''"
                 type="date"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
-                @change="
-                    dueDate = ($event.target as HTMLInputElement).value || null
-                "
+                class="mt-1 block w-full"
+                @update:model-value="dueDate = ($event as string) || null"
             />
-            <p v-if="errors.due_date" class="mt-1 text-sm text-red-600">
-                {{ errors.due_date }}
-            </p>
+            <InputError :message="errors.due_date" />
         </div>
 
         <div>
-            <label
-                for="assigned_date"
-                class="block text-sm font-medium text-gray-400"
-            >
-                Assigned Date
-            </label>
-            <input
+            <Label for="assigned_date">Assigned Date</Label>
+            <Input
                 id="assigned_date"
-                :value="assignedDate ?? ''"
+                :model-value="assignedDate ?? ''"
                 type="date"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
-                @change="
-                    assignedDate =
-                        ($event.target as HTMLInputElement).value || null
-                "
+                class="mt-1 block w-full"
+                @update:model-value="assignedDate = ($event as string) || null"
             />
-            <p v-if="errors.assigned_date" class="mt-1 text-sm text-red-600">
-                {{ errors.assigned_date }}
-            </p>
+            <InputError :message="errors.assigned_date" />
         </div>
     </div>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import type { InertiaFormProps } from '@inertiajs/vue3';
+import { Button } from '@/components/ui/button';
 import TaskAssignmentDetailsForm from '@/pages/Tasks/components/TaskAssignmentDetailsForm.vue';
 import TaskBasicDetailsForm from '@/pages/Tasks/components/TaskBasicDetailsForm.vue';
 import TaskDateDetailsForm from '@/pages/Tasks/components/TaskDateDetailsForm.vue';
@@ -60,19 +61,12 @@ const statusId = defineModel<number | null>('statusId', { default: null });
         />
 
         <div class="flex items-center justify-end space-x-3">
-            <Link
-                :href="tasksIndex.url()"
-                class="rounded-md px-4 py-2 text-sm font-medium text-gray-400"
-            >
+            <Link :href="tasksIndex.url()" class="text-sm font-medium">
                 Cancel
             </Link>
-            <button
-                type="submit"
-                :disabled="processing"
-                class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-            >
+            <Button type="submit" :disabled="processing">
                 {{ isEditing ? 'Update Task' : 'Create Task' }}
-            </button>
+            </Button>
         </div>
     </form>
 </template>
