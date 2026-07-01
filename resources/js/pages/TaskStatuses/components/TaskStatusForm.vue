@@ -46,9 +46,9 @@ const emit = defineEmits<{
         />
 
         <div class="flex items-center justify-end space-x-3">
-            <Link :href="taskStatusesIndex.url()" class="text-sm font-medium">
-                Cancel
-            </Link>
+            <Button as-child variant="outline">
+                <Link :href="taskStatusesIndex.url()">Cancel</Link>
+            </Button>
             <Button type="submit" :disabled="processing">
                 {{ submitLabel }}
             </Button>

@@ -68,9 +68,9 @@ const contactableId = defineModel<number | null>('contactableId', {
         />
 
         <div class="flex justify-end space-x-3">
-            <Link :href="contactsIndex.url()" class="text-sm font-medium">
-                Cancel
-            </Link>
+            <Button as-child variant="outline">
+                <Link :href="contactsIndex.url()">Cancel</Link>
+            </Button>
             <Button type="submit" :disabled="processing">
                 {{ isEditing ? 'Update Contact' : 'Create Contact' }}
             </Button>

@@ -61,9 +61,9 @@ const statusId = defineModel<number | null>('statusId', { default: null });
         />
 
         <div class="flex items-center justify-end space-x-3">
-            <Link :href="tasksIndex.url()" class="text-sm font-medium">
-                Cancel
-            </Link>
+            <Button as-child variant="outline">
+                <Link :href="tasksIndex.url()">Cancel</Link>
+            </Button>
             <Button type="submit" :disabled="processing">
                 {{ isEditing ? 'Update Task' : 'Create Task' }}
             </Button>

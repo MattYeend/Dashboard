@@ -45,9 +45,9 @@ const role = defineModel<string>('role', { required: true });
         <UserRoleDetailsForm v-model:role="role" :errors="errors" />
 
         <div class="flex items-center justify-end space-x-3">
-            <Link :href="usersIndex.url()" class="text-sm font-medium">
-                Cancel
-            </Link>
+            <Button as-child variant="outline">
+                <Link :href="usersIndex.url()">Cancel</Link>
+            </Button>
             <Button type="submit" :disabled="processing">
                 {{ isEditing ? 'Update User' : 'Create User' }}
             </Button>
