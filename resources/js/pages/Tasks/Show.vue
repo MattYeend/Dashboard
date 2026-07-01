@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import TaskAssignmentDetails from '@/pages/Tasks/components/TaskAssignmentDetails.vue';
 import TaskBasicDetails from '@/pages/Tasks/components/TaskBasicDetails.vue';
 import TaskDateDetails from '@/pages/Tasks/components/TaskDateDetails.vue';
@@ -17,14 +19,30 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const deleteDialogOpen = ref(false);
+const deleteProcessing = ref(false);
+
+function requestDestroy(): void {
+    if (!props.task?.id) {
+        return;
+    }
+
+    deleteDialogOpen.value = true;
+}
+
 function destroy(): void {
     if (!props.task?.id) {
         return;
     }
 
-    if (confirm('Are you sure you want to delete this task?')) {
-        router.delete(tasksDestroy.url(props.task.id));
-    }
+    deleteProcessing.value = true;
+
+    router.delete(tasksDestroy.url(props.task.id), {
+        onFinish: () => {
+            deleteProcessing.value = false;
+            deleteDialogOpen.value = false;
+        },
+    });
 }
 </script>
 
@@ -51,7 +69,7 @@ function destroy(): void {
                     <button
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
-                        @click="destroy"
+                        @click="requestDestroy"
                     >
                         Delete
                     </button>
@@ -64,5 +82,14 @@ function destroy(): void {
                 <TaskDateDetails :task="task" />
             </div>
         </div>
+
+        <ConfirmDialog
+            v-model:open="deleteDialogOpen"
+            title="Delete task"
+            description="This task will be moved to trash."
+            confirm-label="Delete"
+            :processing="deleteProcessing"
+            @confirm="destroy"
+        />
     </div>
 </template>
