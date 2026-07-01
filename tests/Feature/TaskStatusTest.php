@@ -36,7 +36,7 @@ describe('index', function () {
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('TaskStatuses/Index')
-                ->has('task_statuses')
+                ->has('taskStatuses')
             );
     });
 
@@ -632,7 +632,7 @@ describe('soft delete scoping', function () {
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('TaskStatuses/Index')
-                ->has('task_statuses')
+                ->has('taskStatuses')
             );
 
         $this->assertSoftDeleted('task_statuses', ['id' => $trashed->id]);
