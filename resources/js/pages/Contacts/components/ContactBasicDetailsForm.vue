@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import InputError from '@/components/InputError.vue';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+
 const email = defineModel<string>('email', { required: true });
 const phone = defineModel<string>('phone', { required: true });
 
@@ -12,32 +16,24 @@ defineProps<Props>();
 <template>
     <div class="space-y-4">
         <div>
-            <label for="email" class="block text-sm font-medium text-gray-400"
-                >Email Address</label
-            >
-            <input
+            <Label for="email">Email Address</Label>
+            <Input
                 id="email"
                 v-model="email"
                 type="email"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                class="mt-1 block w-full"
             />
-            <p v-if="errors.email" class="mt-1 text-sm text-red-600">
-                {{ errors.email }}
-            </p>
+            <InputError :message="errors.email" />
         </div>
         <div>
-            <label for="phone" class="block text-sm font-medium text-gray-400"
-                >Phone</label
-            >
-            <input
+            <Label for="phone">Phone</Label>
+            <Input
                 id="phone"
                 v-model="phone"
                 type="text"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                class="mt-1 block w-full"
             />
-            <p v-if="errors.phone" class="mt-1 text-sm text-red-600">
-                {{ errors.phone }}
-            </p>
+            <InputError :message="errors.phone" />
         </div>
     </div>
 </template>

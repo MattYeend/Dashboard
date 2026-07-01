@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import InputError from '@/components/InputError.vue';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import type { TaskStatusFormData } from './TaskStatusForm.vue';
+import { Textarea } from '@/components/ui/textarea';
 
 interface Errors {
     title?: string;
@@ -26,46 +30,32 @@ function update<K extends keyof TaskStatusFormData>(
 <template>
     <div class="space-y-4">
         <div>
-            <label for="title" class="block text-sm font-medium text-gray-400">
-                Title <span class="text-red-600">*</span>
-            </label>
-            <input
+            <Label for="title"
+                >Title <span class="text-destructive">*</span></Label
+            >
+            <Input
                 id="title"
-                :value="form.title"
+                :model-value="form.title"
                 type="text"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                class="mt-1 block w-full"
                 placeholder="Enter status title"
-                @input="
-                    update('title', ($event.target as HTMLInputElement).value)
-                "
+                @update:model-value="update('title', $event as string)"
             />
-            <p v-if="errors.title" class="mt-1 text-sm text-red-600">
-                {{ errors.title }}
-            </p>
+            <InputError :message="errors.title" />
         </div>
         <div>
-            <label
-                for="description"
-                class="block text-sm font-medium text-gray-400"
-            >
-                Description
-            </label>
-            <textarea
+            <Label for="description">Description</Label>
+            <Textarea
                 id="description"
-                :value="form.description ?? ''"
+                :model-value="form.description ?? ''"
                 rows="3"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                class="mt-1 block w-full"
                 placeholder="Enter status description"
-                @input="
-                    update(
-                        'description',
-                        ($event.target as HTMLTextAreaElement).value || null,
-                    )
+                @update:model-value="
+                    update('description', ($event as string) || null)
                 "
             />
-            <p v-if="errors.description" class="mt-1 text-sm text-red-600">
-                {{ errors.description }}
-            </p>
+            <InputError :message="errors.description" />
         </div>
     </div>
 </template>

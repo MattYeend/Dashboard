@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import { Button } from '@/components/ui/button';
 import { index as taskStatusesIndex } from '@/routes/task-statuses';
 import TaskStatusBasicDetailsForm from './TaskStatusBasicDetailsForm.vue';
 import TaskStatusColourForm from './TaskStatusColourForm.vue';
@@ -45,19 +46,12 @@ const emit = defineEmits<{
         />
 
         <div class="flex items-center justify-end space-x-3">
-            <Link
-                :href="taskStatusesIndex.url()"
-                class="rounded-md px-4 py-2 text-sm font-medium text-gray-400"
-            >
-                Cancel
-            </Link>
-            <button
-                type="submit"
-                :disabled="processing"
-                class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-            >
+            <Button as-child variant="outline">
+                <Link :href="taskStatusesIndex.url()">Cancel</Link>
+            </Button>
+            <Button type="submit" :disabled="processing">
                 {{ submitLabel }}
-            </button>
+            </Button>
         </div>
     </form>
 </template>

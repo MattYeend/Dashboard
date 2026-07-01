@@ -1,6 +1,17 @@
 <script setup lang="ts">
 import type { InertiaFormProps } from '@inertiajs/vue3';
+import InputError from '@/components/InputError.vue';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import type { TaskStatus } from '@/types';
+import { Textarea } from '@/components/ui/textarea';
 
 interface TaskFormData {
     title: string;
@@ -28,73 +39,49 @@ const statusId = defineModel<number | null>('statusId', { default: null });
 <template>
     <div class="space-y-4">
         <div>
-            <label for="title" class="block text-sm font-medium text-gray-400">
-                Title <span class="text-red-600">*</span>
-            </label>
-            <input
+            <Label for="title"
+                >Title <span class="text-destructive">*</span></Label
+            >
+            <Input
                 id="title"
                 v-model="title"
                 type="text"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                class="mt-1 block w-full"
                 placeholder="Enter task title"
             />
-            <p v-if="errors.title" class="mt-1 text-sm text-red-600">
-                {{ errors.title }}
-            </p>
+            <InputError :message="errors.title" />
         </div>
 
         <div>
-            <label
-                for="description"
-                class="block text-sm font-medium text-gray-400"
-            >
-                Description
-            </label>
-            <textarea
+            <Label for="description">Description</Label>
+            <Textarea
                 id="description"
-                :value="description ?? ''"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                :model-value="description ?? ''"
+                class="mt-1 block w-full"
                 rows="4"
                 placeholder="Enter task description"
-                @input="
-                    description =
-                        ($event.target as HTMLTextAreaElement).value || null
-                "
-            ></textarea>
-            <p v-if="errors.description" class="mt-1 text-sm text-red-600">
-                {{ errors.description }}
-            </p>
+                @update:model-value="description = ($event as string) || null"
+            />
+            <InputError :message="errors.description" />
         </div>
 
         <div>
-            <label
-                for="status_id"
-                class="block text-sm font-medium text-gray-400"
-            >
-                Status
-            </label>
-            <select
-                id="status_id"
-                :value="statusId"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
-                @change="
-                    statusId = ($event.target as HTMLSelectElement).value
-                        ? Number(($event.target as HTMLSelectElement).value)
-                        : null
-                "
-            >
-                <option :value="null">-- Select a status --</option>
-                <option
-                    v-for="status in statuses"
-                    :key="status.id"
-                    :value="status.id"
-                >
-                    {{ status.title }}
-                </option>
-            </select>
-            <p v-if="errors.status_id" class="mt-1 text-sm text-red-600">
-                {{ errors.status_id }}
-            </p>
+            <Label for="status_id">Status</Label>
+            <Select v-model="statusId">
+                <SelectTrigger id="status_id" class="mt-1 w-full">
+                    <SelectValue placeholder="Select a status" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem
+                        v-for="status in statuses"
+                        :key="status.id"
+                        :value="status.id"
+                    >
+                        {{ status.title }}
+                    </SelectItem>
+                </SelectContent>
+            </Select>
+            <InputError :message="errors.status_id" />
         </div>
     </div>
 </template>

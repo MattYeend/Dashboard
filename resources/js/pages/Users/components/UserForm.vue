@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import type { InertiaFormProps } from '@inertiajs/vue3';
+import { Button } from '@/components/ui/button';
 import UserBasicDetailsForm from '@/pages/Users/components/UserBasicDetailsForm.vue';
 import UserRoleDetailsForm from '@/pages/Users/components/UserRoleDetailsForm.vue';
 import { index as usersIndex } from '@/routes/users';
@@ -44,20 +45,12 @@ const role = defineModel<string>('role', { required: true });
         <UserRoleDetailsForm v-model:role="role" :errors="errors" />
 
         <div class="flex items-center justify-end space-x-3">
-            <Link
-                :href="usersIndex.url()"
-                class="rounded-md px-4 py-2 text-sm font-medium text-gray-400"
-            >
-                Cancel
-            </Link>
-
-            <button
-                type="submit"
-                :disabled="processing"
-                class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-            >
+            <Button as-child variant="outline">
+                <Link :href="usersIndex.url()">Cancel</Link>
+            </Button>
+            <Button type="submit" :disabled="processing">
                 {{ isEditing ? 'Update User' : 'Create User' }}
-            </button>
+            </Button>
         </div>
     </form>
 </template>
