@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import ContactAddressDetails from '@/pages/Contacts/components/ContactAddressDetails.vue';
 import ContactAuditDetails from '@/pages/Contacts/components/ContactAuditDetails.vue';
 import ContactBasicDetails from '@/pages/Contacts/components/ContactBasicDetails.vue';
@@ -16,10 +18,22 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const deleteDialogOpen = ref(false);
+const deleteProcessing = ref(false);
+
+function requestDestroy(): void {
+    deleteDialogOpen.value = true;
+}
+
 function destroy(): void {
-    if (confirm('Are you sure you want to delete this contact?')) {
-        router.delete(contactsDestroy.url(props.contact.id));
-    }
+    deleteProcessing.value = true;
+
+    router.delete(contactsDestroy.url(props.contact.id), {
+        onFinish: () => {
+            deleteProcessing.value = false;
+            deleteDialogOpen.value = false;
+        },
+    });
 }
 </script>
 
@@ -44,7 +58,7 @@ function destroy(): void {
                     <button
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
-                        @click="destroy"
+                        @click="requestDestroy"
                     >
                         Delete
                     </button>
@@ -57,5 +71,14 @@ function destroy(): void {
                 <ContactAuditDetails :contact="contact" />
             </div>
         </div>
+
+        <ConfirmDialog
+            v-model:open="deleteDialogOpen"
+            title="Delete contact"
+            description="This contact will be moved to trash."
+            confirm-label="Delete"
+            :processing="deleteProcessing"
+            @confirm="destroy"
+        />
     </div>
 </template>
