@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import {
     edit as taskStatusesEdit,
     destroy as taskStatusesDestroy,
@@ -17,14 +19,30 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const deleteDialogOpen = ref(false);
+const deleteProcessing = ref(false);
+
+function requestDestroy(): void {
+    if (!props.taskStatus?.id) {
+        return;
+    }
+
+    deleteDialogOpen.value = true;
+}
+
 function destroy(): void {
     if (!props.taskStatus?.id) {
         return;
     }
 
-    if (confirm('Are you sure you want to delete this task status?')) {
-        router.delete(taskStatusesDestroy.url(props.taskStatus.id));
-    }
+    deleteProcessing.value = true;
+
+    router.delete(taskStatusesDestroy.url(props.taskStatus.id), {
+        onFinish: () => {
+            deleteProcessing.value = false;
+            deleteDialogOpen.value = false;
+        },
+    });
 }
 </script>
 
@@ -52,7 +70,7 @@ function destroy(): void {
                         v-if="permissions_meta.can_create"
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
-                        @click="destroy"
+                        @click="requestDestroy"
                     >
                         Delete
                     </button>
@@ -65,5 +83,14 @@ function destroy(): void {
                 <TaskStatusAuditDetails :task-status="taskStatus" />
             </div>
         </div>
+
+        <ConfirmDialog
+            v-model:open="deleteDialogOpen"
+            title="Delete task status"
+            description="This task status will be moved to trash."
+            confirm-label="Delete"
+            :processing="deleteProcessing"
+            @confirm="destroy"
+        />
     </div>
 </template>

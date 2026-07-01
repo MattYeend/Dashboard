@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import FilterBar from '@/components/table/FilterBar.vue';
 import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
@@ -41,6 +42,14 @@ const filters = ref({
 });
 
 const selectedIds = ref<Array<number | string>>([]);
+
+const deleteDialogOpen = ref(false);
+const selectedTaskStatusId = ref<number | null>(null);
+const deleteProcessing = ref(false);
+
+const bulkDeleteDialogOpen = ref(false);
+const pendingBulkIds = ref<Array<number | string>>([]);
+const bulkDeleteProcessing = ref(false);
 
 const columns: ResourceTableColumn[] = [
     { key: 'title', label: 'Title' },
@@ -93,33 +102,59 @@ function applyFilters(): void {
     });
 }
 
-function destroy(id: number): void {
-    if (confirm('Are you sure you want to delete this task status?')) {
-        router.delete(taskStatusesDestroy.url(id));
-    }
+function requestDestroy(id: number): void {
+    selectedTaskStatusId.value = id;
+    deleteDialogOpen.value = true;
 }
 
-function bulkDelete(ids: Array<number | string>): void {
+function destroy(): void {
+    if (selectedTaskStatusId.value === null) {
+        return;
+    }
+
+    deleteProcessing.value = true;
+
+    router.delete(taskStatusesDestroy.url(selectedTaskStatusId.value), {
+        preserveScroll: true,
+        onFinish: () => {
+            deleteProcessing.value = false;
+            deleteDialogOpen.value = false;
+            selectedTaskStatusId.value = null;
+        },
+    });
+}
+
+function requestBulkDelete(ids: Array<number | string>): void {
     if (!ids.length) {
         return;
     }
 
-    if (
-        confirm(
-            `Are you sure you want to delete ${ids.length} task status(es)?`,
-        )
-    ) {
-        router.post(
-            taskStatusesBulk.delete.url(),
-            { ids },
-            {
-                preserveScroll: true,
-                onSuccess: () => {
-                    selectedIds.value = [];
-                },
-            },
-        );
+    pendingBulkIds.value = ids;
+    bulkDeleteDialogOpen.value = true;
+}
+
+function bulkDelete(): void {
+    if (!pendingBulkIds.value.length) {
+        return;
     }
+
+    bulkDeleteProcessing.value = true;
+
+    router.post(
+        taskStatusesBulk.delete.url(),
+        { ids: pendingBulkIds.value },
+        {
+            preserveScroll: true,
+            onSuccess: () => {
+                selectedIds.value = [];
+            },
+            onFinish: () => {
+                bulkDeleteProcessing.value = false;
+                bulkDeleteDialogOpen.value = false;
+                pendingBulkIds.value = [];
+            },
+        },
+    );
 }
 </script>
 
@@ -151,7 +186,7 @@ function bulkDelete(ids: Array<number | string>): void {
                     <button
                         type="button"
                         class="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-500"
-                        @click="bulkDelete(selected)"
+                        @click="requestBulkDelete(selected)"
                     >
                         Delete selected
                     </button>
@@ -185,7 +220,7 @@ function bulkDelete(ids: Array<number | string>): void {
                     <button
                         type="button"
                         class="text-red-600 hover:text-red-900"
-                        @click="destroy(row.id)"
+                        @click="requestDestroy(row.id)"
                     >
                         Delete
                     </button>
@@ -198,5 +233,23 @@ function bulkDelete(ids: Array<number | string>): void {
                 resource-label="task statuses"
             />
         </div>
+
+        <ConfirmDialog
+            v-model:open="deleteDialogOpen"
+            title="Delete task status"
+            description="This task status will be moved to trash."
+            confirm-label="Delete"
+            :processing="deleteProcessing"
+            @confirm="destroy"
+        />
+
+        <ConfirmDialog
+            v-model:open="bulkDeleteDialogOpen"
+            title="Delete task statuses"
+            :description="`${pendingBulkIds.length} task status(es) will be moved to trash.`"
+            confirm-label="Delete"
+            :processing="bulkDeleteProcessing"
+            @confirm="bulkDelete"
+        />
     </div>
 </template>
