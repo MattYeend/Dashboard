@@ -1,4 +1,14 @@
 <script setup lang="ts">
+import InputError from '@/components/InputError.vue';
+import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+
 const role = defineModel<string>('role', { required: true });
 
 interface Props {
@@ -16,24 +26,21 @@ const roles = [
 
 <template>
     <div>
-        <label for="role" class="block text-sm font-medium text-gray-400"
-            >Role</label
-        >
-        <select
-            id="role"
-            v-model="role"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
-        >
-            <option
-                v-for="roleOption in roles"
-                :key="roleOption.value"
-                :value="roleOption.value"
-            >
-                {{ roleOption.label }}
-            </option>
-        </select>
-        <p v-if="errors.role" class="mt-1 text-sm text-red-600">
-            {{ errors.role }}
-        </p>
+        <Label for="role">Role</Label>
+        <Select v-model="role">
+            <SelectTrigger id="role" class="mt-1 w-full">
+                <SelectValue placeholder="Select a role" />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectItem
+                    v-for="roleOption in roles"
+                    :key="roleOption.value"
+                    :value="roleOption.value"
+                >
+                    {{ roleOption.label }}
+                </SelectItem>
+            </SelectContent>
+        </Select>
+        <InputError :message="errors.role" />
     </div>
 </template>

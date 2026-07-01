@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import InputError from '@/components/InputError.vue';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+
 const name = defineModel<string>('name', { required: true });
 const email = defineModel<string>('email', { required: true });
 const password = defineModel<string>('password', { required: true });
@@ -8,7 +12,7 @@ const passwordConfirmation = defineModel<string>('passwordConfirmation', {
 
 interface Props {
     isEditing: boolean;
-    errors: Partial<
+    errors: Partial
         Record<'name' | 'email' | 'password' | 'password_confirmation', string>
     >;
 }
@@ -19,68 +23,51 @@ defineProps<Props>();
 <template>
     <div class="space-y-4">
         <div>
-            <label for="name" class="block text-sm font-medium text-gray-400"
-                >Name</label
-            >
-            <input
+            <Label for="name">Name</Label>
+            <Input
                 id="name"
                 v-model="name"
                 type="text"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                class="mt-1 block w-full"
             />
-            <p v-if="errors.name" class="mt-1 text-sm text-red-600">
-                {{ errors.name }}
-            </p>
+            <InputError :message="errors.name" />
         </div>
 
         <div>
-            <label for="email" class="block text-sm font-medium text-gray-400"
-                >Email Address</label
-            >
-            <input
+            <Label for="email">Email Address</Label>
+            <Input
                 id="email"
                 v-model="email"
                 type="email"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                class="mt-1 block w-full"
             />
-            <p v-if="errors.email" class="mt-1 text-sm text-red-600">
-                {{ errors.email }}
-            </p>
+            <InputError :message="errors.email" />
         </div>
 
         <div>
-            <label
-                for="password"
-                class="block text-sm font-medium text-gray-400"
-            >
+            <Label for="password">
                 {{
                     isEditing
                         ? 'New Password (leave blank to keep current)'
                         : 'Password'
                 }}
-            </label>
-            <input
+            </Label>
+            <Input
                 id="password"
                 v-model="password"
                 type="password"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                class="mt-1 block w-full"
             />
-            <p v-if="errors.password" class="mt-1 text-sm text-red-600">
-                {{ errors.password }}
-            </p>
+            <InputError :message="errors.password" />
         </div>
 
         <div>
-            <label
-                for="password_confirmation"
-                class="block text-sm font-medium text-gray-400"
-                >Confirm Password</label
-            >
-            <input
+            <Label for="password_confirmation">Confirm Password</Label>
+            <Input
                 id="password_confirmation"
                 v-model="passwordConfirmation"
                 type="password"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                class="mt-1 block w-full"
             />
         </div>
     </div>
