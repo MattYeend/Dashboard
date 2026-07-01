@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import UserAuditDetails from '@/pages/Users/components/UserAuditDetails.vue';
 import UserBasicDetails from '@/pages/Users/components/UserBasicDetails.vue';
 import UserRoleDetails from '@/pages/Users/components/UserRoleDetails.vue';
@@ -16,14 +18,30 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const deleteDialogOpen = ref(false);
+const deleteProcessing = ref(false);
+
+function requestDestroy(): void {
+    if (!props.user?.id) {
+        return;
+    }
+
+    deleteDialogOpen.value = true;
+}
+
 function destroy(): void {
     if (!props.user?.id) {
         return;
     }
 
-    if (confirm('Are you sure you want to delete this user?')) {
-        router.delete(usersDestroy.url(props.user.id));
-    }
+    deleteProcessing.value = true;
+
+    router.delete(usersDestroy.url(props.user.id), {
+        onFinish: () => {
+            deleteProcessing.value = false;
+            deleteDialogOpen.value = false;
+        },
+    });
 }
 </script>
 
@@ -50,7 +68,7 @@ function destroy(): void {
                     <button
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
-                        @click="destroy"
+                        @click="requestDestroy"
                     >
                         Delete
                     </button>
@@ -63,5 +81,14 @@ function destroy(): void {
                 <UserAuditDetails :user="user" />
             </div>
         </div>
+
+        <ConfirmDialog
+            v-model:open="deleteDialogOpen"
+            title="Delete user"
+            description="This user will be moved to trash."
+            confirm-label="Delete"
+            :processing="deleteProcessing"
+            @confirm="destroy"
+        />
     </div>
 </template>
