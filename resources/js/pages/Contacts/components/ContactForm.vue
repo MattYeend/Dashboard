@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import type { InertiaFormProps } from '@inertiajs/vue3';
+import { Button } from '@/components/ui/button';
 import ContactAddressDetailsForm from '@/pages/Contacts/components/ContactAddressDetailsForm.vue';
 import ContactBasicDetailsForm from '@/pages/Contacts/components/ContactBasicDetailsForm.vue';
 import ContactTypeForm from '@/pages/Contacts/components/ContactTypeForm.vue';
@@ -21,7 +22,6 @@ interface Props {
     isEditing: boolean;
     processing: boolean;
     errors: Partial<InertiaFormProps<ContactFormData>['errors']>;
-
     contactableTypes: { value: string; label: string }[];
     contactableOptions: { value: number; label: string }[];
 }
@@ -35,7 +35,6 @@ const address = defineModel<string>('address', { required: true });
 const city = defineModel<string>('city', { required: true });
 const postalCode = defineModel<string>('postalCode', { required: true });
 const country = defineModel<string>('country', { required: true });
-
 const contactableType = defineModel<string>('contactableType', {
     required: true,
 });
@@ -46,14 +45,12 @@ const contactableId = defineModel<number | null>('contactableId', {
 
 <template>
     <form class="space-y-6" @submit.prevent="$emit('submit')">
-        <!-- Basic -->
         <ContactBasicDetailsForm
             v-model:email="email"
             v-model:phone="phone"
             :errors="errors"
         />
 
-        <!-- Address -->
         <ContactAddressDetailsForm
             v-model:address="address"
             v-model:city="city"
@@ -62,7 +59,6 @@ const contactableId = defineModel<number | null>('contactableId', {
             :errors="errors"
         />
 
-        <!-- Type & Owner -->
         <ContactTypeForm
             v-model:contactable-type="contactableType"
             v-model:contactable-id="contactableId"
@@ -71,22 +67,13 @@ const contactableId = defineModel<number | null>('contactableId', {
             :errors="errors"
         />
 
-        <!-- ACTIONS -->
         <div class="flex justify-end space-x-3">
-            <Link
-                :href="contactsIndex.url()"
-                class="rounded-md px-4 py-2 text-sm font-medium text-gray-400"
-            >
+            <Link :href="contactsIndex.url()" class="text-sm font-medium">
                 Cancel
             </Link>
-
-            <button
-                type="submit"
-                :disabled="processing"
-                class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-            >
+            <Button type="submit" :disabled="processing">
                 {{ isEditing ? 'Update Contact' : 'Create Contact' }}
-            </button>
+            </Button>
         </div>
     </form>
 </template>

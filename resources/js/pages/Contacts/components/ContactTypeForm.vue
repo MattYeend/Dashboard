@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import InputError from '@/components/InputError.vue';
+import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import type { InertiaFormProps } from '@inertiajs/vue3';
 
 interface ContactTypeFormData {
@@ -8,7 +17,6 @@ interface ContactTypeFormData {
 
 interface Props {
     errors: Partial<InertiaFormProps<ContactTypeFormData>['errors']>;
-
     contactableTypes: { value: string; label: string }[];
     contactableOptions: { value: number; label: string }[];
 }
@@ -24,43 +32,41 @@ const contactableId = defineModel<number | null>('contactableId', {
 </script>
 
 <template>
-    <!-- TYPE -->
     <div>
-        <label class="block text-sm font-medium"> Contact type </label>
-
-        <select v-model="contactableType" required>
-            <option value="" disabled>Select type</option>
-            <option
-                v-for="type in contactableTypes"
-                :key="type.value"
-                :value="type.value"
-            >
-                {{ type.label }}
-            </option>
-        </select>
-        <p v-if="errors.contactable_type" class="text-red-600">
-            {{ errors.contactable_type }}
-        </p>
+        <Label for="contactable_type">Contact type</Label>
+        <Select v-model="contactableType">
+            <SelectTrigger id="contactable_type" class="mt-1 w-full">
+                <SelectValue placeholder="Select type" />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectItem
+                    v-for="type in contactableTypes"
+                    :key="type.value"
+                    :value="type.value"
+                >
+                    {{ type.label }}
+                </SelectItem>
+            </SelectContent>
+        </Select>
+        <InputError :message="errors.contactable_type" />
     </div>
 
-    <!-- OWNER -->
     <div>
-        <label class="block text-sm font-medium"> Contact owner </label>
-
-        <select v-model="contactableId" :disabled="!contactableType">
-            <option :value="null" disabled>Select owner</option>
-
-            <option
-                v-for="option in contactableOptions"
-                :key="option.value"
-                :value="option.value"
-            >
-                {{ option.label }}
-            </option>
-        </select>
-
-        <p v-if="errors.contactable_id" class="text-red-600">
-            {{ errors.contactable_id }}
-        </p>
+        <Label for="contactable_id">Contact owner</Label>
+        <Select v-model="contactableId" :disabled="!contactableType">
+            <SelectTrigger id="contactable_id" class="mt-1 w-full">
+                <SelectValue placeholder="Select owner" />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectItem
+                    v-for="option in contactableOptions"
+                    :key="option.value"
+                    :value="option.value"
+                >
+                    {{ option.label }}
+                </SelectItem>
+            </SelectContent>
+        </Select>
+        <InputError :message="errors.contactable_id" />
     </div>
 </template>

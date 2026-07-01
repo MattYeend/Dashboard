@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import InputError from '@/components/InputError.vue';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+
 const address = defineModel<string>('address', { required: true });
 const city = defineModel<string>('city', { required: true });
 const postalCode = defineModel<string>('postalCode', { required: true });
 const country = defineModel<string>('country', { required: true });
 
 interface Props {
-    errors: Partial<
+    errors: Partial
         Record<'address' | 'city' | 'postal_code' | 'country', string>
     >;
 }
@@ -16,66 +20,46 @@ defineProps<Props>();
 <template>
     <div class="space-y-4">
         <div>
-            <label for="address" class="block text-sm font-medium text-gray-400"
-                >Address</label
-            >
-            <input
+            <Label for="address">Address</Label>
+            <Input
                 id="address"
                 v-model="address"
                 type="text"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                class="mt-1 block w-full"
             />
-            <p v-if="errors.address" class="mt-1 text-sm text-red-600">
-                {{ errors.address }}
-            </p>
+            <InputError :message="errors.address" />
         </div>
         <div class="grid grid-cols-2 gap-4">
             <div>
-                <label
-                    for="city"
-                    class="block text-sm font-medium text-gray-400"
-                    >City</label
-                >
-                <input
+                <Label for="city">City</Label>
+                <Input
                     id="city"
                     v-model="city"
                     type="text"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                    class="mt-1 block w-full"
                 />
-                <p v-if="errors.city" class="mt-1 text-sm text-red-600">
-                    {{ errors.city }}
-                </p>
+                <InputError :message="errors.city" />
             </div>
             <div>
-                <label
-                    for="postal_code"
-                    class="block text-sm font-medium text-gray-400"
-                    >Postal Code</label
-                >
-                <input
+                <Label for="postal_code">Postal Code</Label>
+                <Input
                     id="postal_code"
                     v-model="postalCode"
                     type="text"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                    class="mt-1 block w-full"
                 />
-                <p v-if="errors.postal_code" class="mt-1 text-sm text-red-600">
-                    {{ errors.postal_code }}
-                </p>
+                <InputError :message="errors.postal_code" />
             </div>
         </div>
         <div>
-            <label for="country" class="block text-sm font-medium text-gray-400"
-                >Country</label
-            >
-            <input
+            <Label for="country">Country</Label>
+            <Input
                 id="country"
                 v-model="country"
                 type="text"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                class="mt-1 block w-full"
             />
-            <p v-if="errors.country" class="mt-1 text-sm text-red-600">
-                {{ errors.country }}
-            </p>
+            <InputError :message="errors.country" />
         </div>
     </div>
 </template>
