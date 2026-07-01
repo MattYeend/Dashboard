@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import InputError from '@/components/InputError.vue';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import type { TaskStatusFormData } from './TaskStatusForm.vue';
 
 interface Errors {
@@ -26,12 +29,7 @@ function update<K extends keyof TaskStatusFormData>(
 <template>
     <div class="space-y-4">
         <div>
-            <label
-                for="background_colour"
-                class="block text-sm font-medium text-gray-400"
-            >
-                Background Colour
-            </label>
+            <Label for="background_colour">Background Colour</Label>
             <div class="mt-1 flex items-center gap-3">
                 <input
                     :value="form.background_colour"
@@ -44,35 +42,22 @@ function update<K extends keyof TaskStatusFormData>(
                         )
                     "
                 />
-                <input
+                <Input
                     id="background_colour"
-                    :value="form.background_colour"
+                    :model-value="form.background_colour"
                     type="text"
                     maxlength="7"
-                    class="block w-32 rounded-md border-gray-300 font-mono shadow-sm sm:text-sm"
+                    class="w-32 font-mono"
                     placeholder="#ffffff"
-                    @input="
-                        update(
-                            'background_colour',
-                            ($event.target as HTMLInputElement).value,
-                        )
+                    @update:model-value="
+                        update('background_colour', $event as string)
                     "
                 />
             </div>
-            <p
-                v-if="errors.background_colour"
-                class="mt-1 text-sm text-red-600"
-            >
-                {{ errors.background_colour }}
-            </p>
+            <InputError :message="errors.background_colour" />
         </div>
         <div>
-            <label
-                for="text_colour"
-                class="block text-sm font-medium text-gray-400"
-            >
-                Text Colour
-            </label>
+            <Label for="text_colour">Text Colour</Label>
             <div class="mt-1 flex items-center gap-3">
                 <input
                     :value="form.text_colour"
@@ -85,29 +70,22 @@ function update<K extends keyof TaskStatusFormData>(
                         )
                     "
                 />
-                <input
+                <Input
                     id="text_colour"
-                    :value="form.text_colour"
+                    :model-value="form.text_colour"
                     type="text"
                     maxlength="7"
-                    class="block w-32 rounded-md border-gray-300 font-mono shadow-sm sm:text-sm"
+                    class="w-32 font-mono"
                     placeholder="#000000"
-                    @input="
-                        update(
-                            'text_colour',
-                            ($event.target as HTMLInputElement).value,
-                        )
+                    @update:model-value="
+                        update('text_colour', $event as string)
                     "
                 />
             </div>
-            <p v-if="errors.text_colour" class="mt-1 text-sm text-red-600">
-                {{ errors.text_colour }}
-            </p>
+            <InputError :message="errors.text_colour" />
         </div>
         <div>
-            <label class="block text-sm font-medium text-gray-400"
-                >Preview</label
-            >
+            <Label>Preview</Label>
             <div class="mt-1">
                 <span
                     class="inline-block rounded px-3 py-1 text-sm font-medium"
