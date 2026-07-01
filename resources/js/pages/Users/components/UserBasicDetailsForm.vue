@@ -12,7 +12,7 @@ const passwordConfirmation = defineModel<string>('passwordConfirmation', {
 
 interface Props {
     isEditing: boolean;
-    errors: Partial
+    errors: Partial<
         Record<'name' | 'email' | 'password' | 'password_confirmation', string>
     >;
 }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { InertiaFormProps } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,9 +10,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import type { InertiaFormProps } from '@inertiajs/vue3';
 import type { TaskStatus } from '@/types';
+import { Textarea } from '@/components/ui/textarea';
 
 interface TaskFormData {
     title: string;

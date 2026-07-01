@@ -9,7 +9,7 @@ const postalCode = defineModel<string>('postalCode', { required: true });
 const country = defineModel<string>('country', { required: true });
 
 interface Props {
-    errors: Partial
+    errors: Partial<
         Record<'address' | 'city' | 'postal_code' | 'country', string>
     >;
 }

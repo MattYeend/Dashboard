@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
 import type { InertiaFormProps } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import TaskAssignmentDetailsForm from '@/pages/Tasks/components/TaskAssignmentDetailsForm.vue';
 import TaskBasicDetailsForm from '@/pages/Tasks/components/TaskBasicDetailsForm.vue';

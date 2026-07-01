@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { InertiaFormProps } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
 import { Label } from '@/components/ui/label';
 import {
@@ -8,7 +9,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import type { InertiaFormProps } from '@inertiajs/vue3';
 
 interface ContactTypeFormData {
     contactable_type: string;
