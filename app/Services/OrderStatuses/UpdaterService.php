@@ -20,7 +20,7 @@ class UpdaterService
     ) {}
 
     /**
-     * Update an existing task status.
+     * Update an existing order status.
      *
      * @param  array<string, mixed>  $data
      *
