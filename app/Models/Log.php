@@ -167,13 +167,21 @@ class Log extends Model
 
     // Order Status Management
     public const ACTION_CREATE_ORDER_STATUS = 75;
+
     public const ACTION_UPDATE_ORDER_STATUS = 76;
+
     public const ACTION_VIEW_ORDER_STATUS = 77;
+
     public const ACTION_DELETE_ORDER_STATUS = 78;
+
     public const ACTION_FORCE_DELETE_ORDER_STATUS = 79;
+
     public const ACTION_RESTORE_ORDER_STATUS = 80;
+
     public const ACTION_IMPORT_ORDER_STATUS = 81;
+
     public const ACTION_EXPORT_ORDER_STATUS = 82;
+
     public const ACTION_ORDER_STATUS_UPDATED_BY_CRON = 83;
 
     // New Logging Actions should go here to be reviewed

@@ -67,8 +67,7 @@ class OrderStatusController extends Controller
      */
     public function store(
         StoreOrderStatusRequest $request
-    ): JsonResponse|RedirectResponse
-    {
+    ): JsonResponse|RedirectResponse {
         $orderStatus = $this->management->store($request);
 
         if ($request->wantsJson()) {
