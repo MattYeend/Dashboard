@@ -2,8 +2,8 @@
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import type { TaskStatusFormData } from './TaskStatusForm.vue';
 import { Textarea } from '@/components/ui/textarea';
+import type { TaskStatusFormData } from './TaskStatusForm.vue';
 
 interface Errors {
     title?: string;

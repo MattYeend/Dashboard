@@ -10,8 +10,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import type { TaskStatus } from '@/types';
 import { Textarea } from '@/components/ui/textarea';
+import type { TaskStatus } from '@/types';
 
 interface TaskFormData {
     title: string;
