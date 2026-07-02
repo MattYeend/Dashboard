@@ -29,7 +29,7 @@ class TaskStatusController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * Passes paginated contacts to the Contacts/Index Inertia page.
+     * Passes paginated task statuses to the TaskStatuses/Index Inertia page.
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
@@ -60,7 +60,7 @@ class TaskStatusController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * Validation is handled upstream by StoreContactRequest.
+     * Validation is handled upstream by StoreTaskStatusRequest.
      *
      * After storing, an audit log entry is written against the
      * authenticated user.
@@ -80,7 +80,7 @@ class TaskStatusController extends Controller
     /**
      * Display the specified resource.
      *
-     * Passes a single taskStatus to the Contacts/Show Inertia page.
+     * Passes a single taskStatus to the TaskStatuses/Show Inertia page.
      *
      * Authorises via the 'view' and 'access' policies before rendering.
      */
