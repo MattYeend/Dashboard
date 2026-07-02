@@ -75,7 +75,7 @@ class QueryService
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
-            'order_statuses' => [
+            'orderStatuses' => [
                 'data' => array_map(
                     fn (OrderStatus $orderStatus) => $this->formatterService->format($orderStatus),
                     $paginator->items()

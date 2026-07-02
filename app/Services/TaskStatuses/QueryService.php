@@ -75,7 +75,7 @@ class QueryService
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
-            'task_statuses' => [
+            'taskStatuses' => [
                 'data' => array_map(
                     fn (TaskStatus $taskStatus) => $this->formatterService->format($taskStatus),
                     $paginator->items()

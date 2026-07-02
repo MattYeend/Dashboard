@@ -19,7 +19,7 @@ class SortingService
         ?string $sortDirection = 'desc'
     ): Builder {
         $sortBy = $sortBy ?? 'created_at';
-        $sortDirection = strtolower($sortDirection ?? 'desc') === 'asc' ? 'asc' : 'desc';
+        $sortDirection = strtolower($sortDirection ?? 'asc') === 'asc' ? 'asc' : 'desc';
 
         return match ($sortBy) {
             'title' => $query->orderBy('title', $sortDirection),
