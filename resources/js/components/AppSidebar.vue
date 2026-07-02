@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as contactsIndex } from '@/routes/contacts';
+import { index as taskStatusesIndex } from '@/routes/task-statuses';
 import { index as tasksIndex } from '@/routes/tasks';
 import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
@@ -42,6 +43,12 @@ const mainNavItems: NavItem[] = [
         title: 'Tasks',
         href: tasksIndex.url(),
         icon: ClipboardList,
+        children: [
+            {
+                title: 'Task Statuses',
+                href: taskStatusesIndex.url(),
+            },
+        ],
     },
     {
         title: 'Users',
