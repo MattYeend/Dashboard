@@ -118,6 +118,14 @@ class Task extends Model implements Auditable
         return $this->belongsTo(User::class, 'restored_by');
     }
 
+    /**
+     * Get a snapshot of the task's auditable attributes.
+     *
+     * Used by the audit log to capture before/after state on create,
+     * update, delete and restore actions.
+     *
+     * @return array<string, mixed>
+     */
     public function auditSnapshot(): array
     {
         return $this->only([
