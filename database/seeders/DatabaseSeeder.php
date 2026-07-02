@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             TaskStatusSeeder::class,
             TaskSeeder::class,
+            OrderStatusSeeder::class,
         ]);
     }
 }
