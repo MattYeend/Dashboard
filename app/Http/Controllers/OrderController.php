@@ -16,8 +16,7 @@ use Inertia\Response;
 
 class OrderController extends Controller
 {
-
-use AuthorizesRequests;
+    use AuthorizesRequests;
 
     /**
      * Inject the required services into the controller.

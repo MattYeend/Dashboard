@@ -203,7 +203,7 @@ class StoreOrderRequest extends FormRequest
         ];
     }
 
-     /**
+    /**
      * Get validation rules for the total_amount field.
      *
      * @return array<mixed>

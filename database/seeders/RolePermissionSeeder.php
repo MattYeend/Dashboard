@@ -641,7 +641,7 @@ class RolePermissionSeeder extends Seeder
             'view task',
             'view order statuses',
             'view any order',
-            'view order'
+            'view order',
         ];
         $user->givePermissionTo($userPermissions);
 
