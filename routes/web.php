@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
@@ -87,6 +88,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{order_status}/edit', [OrderStatusController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{order_status}', [OrderStatusController::class, 'update'])->name('update');
         Route::delete('/{order_status}', [OrderStatusController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('orders')->name('orders.')->group(function () {
+        Route::post('/bulk/delete', [OrderController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [OrderController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [OrderController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [OrderController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [OrderController::class, 'index'])->name('index');
+        Route::get('/create', [OrderController::class, 'create'])->name('create');
+        Route::post('/', [OrderController::class, 'store'])->name('store');
+        Route::get('/{order}', [OrderController::class, 'show'])->name('show');
+        Route::get('/{order}/edit', [OrderController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{order}', [OrderController::class, 'update'])->name('update');
+        Route::delete('/{order}', [OrderController::class, 'destroy'])->name('destroy');
     });
 });
 
