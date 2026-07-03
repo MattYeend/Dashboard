@@ -40,7 +40,7 @@ const filters = ref({
     search: urlParams.get('search') ?? '',
     trashed: urlParams.get('trashed') ?? '',
     sort_by: urlParams.get('sort_by') ?? 'ordered_at',
-    sort_direction: urlParams.get('sort_direction') ?? 'desc',
+    sort_direction: urlParams.get('sort_direction') ?? 'asc',
 });
 
 const selectedIds = ref<Array<number | string>>([]);

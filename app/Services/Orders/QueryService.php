@@ -178,7 +178,7 @@ class QueryService
 
         return $this->sortingService->applySorting(
             $query,
-            $filters['sort_by'] ?? 'email',
+            $filters['sort_by'] ?? 'ordered_at',
             $filters['sort_direction'] ?? 'asc'
         );
     }

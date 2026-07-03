@@ -15,10 +15,10 @@ class SortingService
      */
     public function applySorting(
         Builder $query,
-        ?string $sortBy = 'created_at',
+        ?string $sortBy = 'ordered_at',
         ?string $sortDirection = 'asc'
     ): Builder {
-        $sortBy = $sortBy ?? 'created_at';
+        $sortBy = $sortBy ?? 'ordered_at';
         $sortDirection = strtolower(
             $sortDirection ?? 'asc'
         ) === 'asc' ? 'asc' : 'desc';
