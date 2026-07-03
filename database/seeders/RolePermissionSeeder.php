@@ -159,6 +159,30 @@ class RolePermissionSeeder extends Seeder
             'export task',
             'assign task',
             'change task status',
+
+            // Order status management
+            'view order statuses',
+            'create order statuses',
+            'edit order statuses',
+            'delete order statuses',
+            'restore order statuses',
+            'force delete order statuses',
+            'import order statuses',
+            'export order statuses',
+            'assign order statuses',
+
+            // Order management
+            'view any order',
+            'view order',
+            'create order',
+            'update order',
+            'delete order',
+            'restore order',
+            'force delete order',
+            'import order',
+            'export order',
+            'assign order',
+            'change order status',
         ];
 
         foreach ($permissions as $permission) {
@@ -264,6 +288,25 @@ class RolePermissionSeeder extends Seeder
             'export task',
             'assign task',
             'change task status',
+            'view order statuses',
+            'create order statuses',
+            'edit order statuses',
+            'delete order statuses',
+            'restore order statuses',
+            'force delete order statuses',
+            'import order statuses',
+            'export order statuses',
+            'assign order statuses',
+            'view any order',
+            'view order',
+            'create order',
+            'update order',
+            'delete order',
+            'restore order',
+            'import order',
+            'export order',
+            'assign order',
+            'change order status',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -333,6 +376,25 @@ class RolePermissionSeeder extends Seeder
             'export task',
             'assign task',
             'change task status',
+            'view order statuses',
+            'create order statuses',
+            'edit order statuses',
+            'delete order statuses',
+            'restore order statuses',
+            'force delete order statuses',
+            'import order statuses',
+            'export order statuses',
+            'assign order statuses',
+            'view any order',
+            'view order',
+            'create order',
+            'update order',
+            'delete order',
+            'restore order',
+            'import order',
+            'export order',
+            'assign order',
+            'change order status',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -375,6 +437,19 @@ class RolePermissionSeeder extends Seeder
             'restore task',
             'assign task',
             'change task status',
+            'create order statuses',
+            'edit order statuses',
+            'delete order statuses',
+            'restore order statuses',
+            'assign order statuses',
+            'view any order',
+            'view order',
+            'create order',
+            'update order',
+            'delete order',
+            'restore order',
+            'assign order',
+            'change order status',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -397,6 +472,9 @@ class RolePermissionSeeder extends Seeder
             'view task statuses',
             'view any task',
             'view task',
+            'view order statuses',
+            'view any order',
+            'view order',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -430,6 +508,8 @@ class RolePermissionSeeder extends Seeder
             'view reports',
             'view task statuses',
             'view task',
+            'view order statuses',
+            'view order',
             'view contact information',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
@@ -478,6 +558,25 @@ class RolePermissionSeeder extends Seeder
             'export task',
             'assign task',
             'change task status',
+            'view order statuses',
+            'create order statuses',
+            'edit order statuses',
+            'delete order statuses',
+            'restore order statuses',
+            'force delete order statuses',
+            'import order statuses',
+            'export order statuses',
+            'assign order statuses',
+            'view order',
+            'view any order',
+            'create order',
+            'update order',
+            'delete order',
+            'restore order',
+            'import order',
+            'export order',
+            'assign order',
+            'change order status',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -514,6 +613,13 @@ class RolePermissionSeeder extends Seeder
             'view task',
             'export task',
             'assign task',
+            'view order statuses',
+            'export order statuses',
+            'assign order statuses',
+            'view any order',
+            'view order',
+            'export order',
+            'assign order',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
@@ -533,6 +639,9 @@ class RolePermissionSeeder extends Seeder
             'view task statuses',
             'view any task',
             'view task',
+            'view order statuses',
+            'view any order',
+            'view order'
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -544,6 +653,9 @@ class RolePermissionSeeder extends Seeder
             'view task statuses',
             'view any task',
             'view task',
+            'view order statuses',
+            'view any order',
+            'view order',
         ];
         $guest->givePermissionTo($guestPermissions);
 
@@ -580,5 +692,7 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Contact Information');
         $this->command->info('- Task Statuses');
         $this->command->info('- Tasks');
+        $this->command->info('- Order Statuses');
+        $this->command->info('- Orders');
     }
 }

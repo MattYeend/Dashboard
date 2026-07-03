@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Order;
 use App\Models\OrderStatus;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -73,10 +74,11 @@ class OrderFactory extends Factory
     /**
      * State for a soft-deleted order.
      */
-    public function deleted(): static
+    public function deleted(?User $deletedBy = null): static
     {
         return $this->state(fn (array $attributes) => [
             'deleted_at' => now(),
+            'deleted_by' => $deletedBy?->id,
         ]);
     }
 
