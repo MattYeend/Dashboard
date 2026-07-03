@@ -86,34 +86,34 @@ describe('store', function () {
         $superAdmin = $this->superAdminUser();
         $orderStatus = OrderStatus::factory()->create();
 
-       $payload = [
-    'orderable_type' => 'user',
-    'orderable_id' => $superAdmin->id,
-    'title' => 'Office supplies restock',
-    'description' => 'Quarterly stationery and consumables order.',
-    'notes' => 'Deliver to reception desk.',
-    'subtotal' => 120.00,
-    'discount_amount' => 10.00,
-    'tax_amount' => 22.00,
-    'total_amount' => 132.00,
-    'ordered_at' => '2025-07-01 09:00:00',
-    'due_at' => '2025-07-15 17:00:00',
-    'status_id' => $orderStatus->id,
-];
+        $payload = [
+            'orderable_type' => 'user',
+            'orderable_id' => $superAdmin->id,
+            'title' => 'Office supplies restock',
+            'description' => 'Quarterly stationery and consumables order.',
+            'notes' => 'Deliver to reception desk.',
+            'subtotal' => 120.00,
+            'discount_amount' => 10.00,
+            'tax_amount' => 22.00,
+            'total_amount' => 132.00,
+            'ordered_at' => '2025-07-01 09:00:00',
+            'due_at' => '2025-07-15 17:00:00',
+            'status_id' => $orderStatus->id,
+        ];
 
         $this->actingAs($superAdmin)
-    ->postJson('/orders', $payload)
-    ->assertStatus(201)
-    ->assertJsonFragment(['title' => 'Office supplies restock']);
+            ->postJson('/orders', $payload)
+            ->assertStatus(201)
+            ->assertJsonFragment(['title' => 'Office supplies restock']);
 
-$order = Order::where('title', 'Office supplies restock')->firstOrFail();
+        $order = Order::where('title', 'Office supplies restock')->firstOrFail();
 
-expect($order->order_number)->toMatch('/^ORD-[A-Z0-9]{8}$/');
+        expect($order->order_number)->toMatch('/^ORD-[A-Z0-9]{8}$/');
 
-$this->assertDatabaseHas('orders', [
-    'title' => 'Office supplies restock',
-    'status_id' => $orderStatus->id,
-]);
+        $this->assertDatabaseHas('orders', [
+            'title' => 'Office supplies restock',
+            'status_id' => $orderStatus->id,
+        ]);
     });
 
     test('user without permission cannot create an order', function () {
@@ -158,57 +158,57 @@ $this->assertDatabaseHas('orders', [
     });
 
     test('store fails validation when subtotal is missing', function () {
-    $superAdmin = $this->superAdminUser();
+        $superAdmin = $this->superAdminUser();
 
-    $this->actingAs($superAdmin)
-        ->postJson('/orders', [
-            'orderable_type' => 'user',
-            'orderable_id' => $superAdmin->id,
-            'title' => 'Missing subtotal',
-            'total_amount' => 100.00,
-        ])
-        ->assertStatus(422)
-        ->assertJsonValidationErrors(['subtotal']);
-});
+        $this->actingAs($superAdmin)
+            ->postJson('/orders', [
+                'orderable_type' => 'user',
+                'orderable_id' => $superAdmin->id,
+                'title' => 'Missing subtotal',
+                'total_amount' => 100.00,
+            ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['subtotal']);
+    });
 
-test('store fails validation when total_amount is missing', function () {
-    $superAdmin = $this->superAdminUser();
+    test('store fails validation when total_amount is missing', function () {
+        $superAdmin = $this->superAdminUser();
 
-    $this->actingAs($superAdmin)
-        ->postJson('/orders', [
-            'orderable_type' => 'user',
-            'orderable_id' => $superAdmin->id,
-            'title' => 'Missing total amount',
-            'subtotal' => 100.00,
-        ])
-        ->assertStatus(422)
-        ->assertJsonValidationErrors(['total_amount']);
-});
+        $this->actingAs($superAdmin)
+            ->postJson('/orders', [
+                'orderable_type' => 'user',
+                'orderable_id' => $superAdmin->id,
+                'title' => 'Missing total amount',
+                'subtotal' => 100.00,
+            ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['total_amount']);
+    });
 
     test('client-supplied order_number is ignored and a new one is always generated', function () {
-    $superAdmin = $this->superAdminUser();
+        $superAdmin = $this->superAdminUser();
 
-    $existing = Order::factory()->forModel($superAdmin)->create(['order_number' => 'ORD-2001']);
+        $existing = Order::factory()->forModel($superAdmin)->create(['order_number' => 'ORD-2001']);
 
-    $this->actingAs($superAdmin)
-        ->postJson('/orders', [
-            'orderable_type' => 'user',
-            'orderable_id' => $superAdmin->id,
-            'order_number' => 'ORD-2001',
-            'title' => 'Attempted order number spoof',
-            'subtotal' => 50.00,
-            'total_amount' => 50.00,
-        ])
-        ->assertStatus(201);
+        $this->actingAs($superAdmin)
+            ->postJson('/orders', [
+                'orderable_type' => 'user',
+                'orderable_id' => $superAdmin->id,
+                'order_number' => 'ORD-2001',
+                'title' => 'Attempted order number spoof',
+                'subtotal' => 50.00,
+                'total_amount' => 50.00,
+            ])
+            ->assertStatus(201);
 
-    $created = Order::where('title', 'Attempted order number spoof')->firstOrFail();
+        $created = Order::where('title', 'Attempted order number spoof')->firstOrFail();
 
-    expect($created->order_number)
-        ->not->toBe('ORD-2001')
-        ->and($created->order_number)->toMatch('/^ORD-[A-Z0-9]{8}$/');
+        expect($created->order_number)
+            ->not->toBe('ORD-2001')
+            ->and($created->order_number)->toMatch('/^ORD-[A-Z0-9]{8}$/');
 
-    $this->assertDatabaseHas('orders', ['id' => $existing->id, 'order_number' => 'ORD-2001']);
-});
+        $this->assertDatabaseHas('orders', ['id' => $existing->id, 'order_number' => 'ORD-2001']);
+    });
 
     test('store fails validation when title is missing', function () {
         $superAdmin = $this->superAdminUser();
@@ -257,37 +257,37 @@ test('store fails validation when total_amount is missing', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-    ->postJson('/orders', [
-        'orderable_type' => 'user',
-        'orderable_id' => $superAdmin->id,
-        'title' => 'Minimal order',
-        'subtotal' => 0,
-        'total_amount' => 0,
-    ])
-    ->assertStatus(201);
+            ->postJson('/orders', [
+                'orderable_type' => 'user',
+                'orderable_id' => $superAdmin->id,
+                'title' => 'Minimal order',
+                'subtotal' => 0,
+                'total_amount' => 0,
+            ])
+            ->assertStatus(201);
 
-$this->assertDatabaseHas('orders', [
-    'title' => 'Minimal order',
-    'description' => null,
-    'status_id' => null,
-]);
+        $this->assertDatabaseHas('orders', [
+            'title' => 'Minimal order',
+            'description' => null,
+            'status_id' => null,
+        ]);
     });
 
     test('store succeeds with meta data', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-    ->postJson('/orders', [
-        'orderable_type' => 'user',
-        'orderable_id' => $superAdmin->id,
-        'title' => 'Order with meta',
-        'subtotal' => 10.00,
-        'total_amount' => 10.00,
-        'meta' => ['channel' => 'web', 'tags' => ['priority']],
-    ])
-    ->assertStatus(201);
+            ->postJson('/orders', [
+                'orderable_type' => 'user',
+                'orderable_id' => $superAdmin->id,
+                'title' => 'Order with meta',
+                'subtotal' => 10.00,
+                'total_amount' => 10.00,
+                'meta' => ['channel' => 'web', 'tags' => ['priority']],
+            ])
+            ->assertStatus(201);
 
-$this->assertDatabaseHas('orders', ['title' => 'Order with meta']);
+        $this->assertDatabaseHas('orders', ['title' => 'Order with meta']);
     });
 });
 
@@ -411,24 +411,24 @@ describe('update', function () {
     });
 
     test('order_number cannot be changed via update', function () {
-    $superAdmin = $this->superAdminUser();
+        $superAdmin = $this->superAdminUser();
 
-    $order = Order::factory()->forModel($superAdmin)->create();
-    $originalOrderNumber = $order->order_number;
+        $order = Order::factory()->forModel($superAdmin)->create();
+        $originalOrderNumber = $order->order_number;
 
-    $this->actingAs($superAdmin)
-        ->putJson("/orders/{$order->id}", [
-            'order_number' => 'ORD-SPOOFED1',
+        $this->actingAs($superAdmin)
+            ->putJson("/orders/{$order->id}", [
+                'order_number' => 'ORD-SPOOFED1',
+                'title' => 'Renamed order',
+            ])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('orders', [
+            'id' => $order->id,
+            'order_number' => $originalOrderNumber,
             'title' => 'Renamed order',
-        ])
-        ->assertStatus(200);
-
-    $this->assertDatabaseHas('orders', [
-        'id' => $order->id,
-        'order_number' => $originalOrderNumber,
-        'title' => 'Renamed order',
-    ]);
-});
+        ]);
+    });
 
     test('update fails validation when ordered_at is not a valid date', function () {
         $superAdmin = $this->superAdminUser();
