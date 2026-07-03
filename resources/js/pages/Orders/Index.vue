@@ -162,6 +162,18 @@ function bulkDelete(): void {
         },
     );
 }
+
+function formatDate(value: string | null): string {
+    if (!value) {
+        return '—';
+    }
+
+    return new Date(value).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
+}
 </script>
 
 <template>
@@ -188,6 +200,9 @@ function bulkDelete(): void {
                 selectable
                 empty-message="No orders found."
             >
+                <template #cell-ordered_at="{ row }">
+                    {{ formatDate(row.ordered_at) }}
+                </template>
                 <template #cell-status="{ row }">
                     <span
                         v-if="row.status"

@@ -23,10 +23,12 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as contactsIndex } from '@/routes/contacts';
+import { index as orderStatusesIndex } from '@/routes/order-statuses';
 import { index as taskStatusesIndex } from '@/routes/task-statuses';
 import { index as tasksIndex } from '@/routes/tasks';
 import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
+import { index as ordersIndex } from '@/routes/orders';
 
 const mainNavItems: NavItem[] = [
     {
@@ -40,10 +42,29 @@ const mainNavItems: NavItem[] = [
         icon: Contact2,
     },
     {
-        title: 'Tasks',
-        href: tasksIndex.url(),
+        title: 'Orders',
+        href: '#',
         icon: ClipboardList,
         children: [
+            {
+                title: 'All Orders',
+                href: ordersIndex.url(),
+            },
+            {
+                title: 'Order Statuses',
+                href: orderStatusesIndex.url(),
+            },
+        ],
+    },
+    {
+        title: 'Tasks',
+        href: '#',
+        icon: ClipboardList,
+        children: [
+            {
+                title: 'All Tasks',
+                href: tasksIndex.url(),
+            },
             {
                 title: 'Task Statuses',
                 href: taskStatusesIndex.url(),

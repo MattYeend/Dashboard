@@ -3,6 +3,7 @@
 namespace App\Services\Orders;
 
 use App\Models\Order;
+use App\Models\OrderStatus;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -52,6 +53,7 @@ class QueryService
 
         return array_merge(
             ['order' => $this->formatterService->format($order)],
+            $this->getFormData(),
             $this->getPermissions($user),
             $this->baseData(),
         );
@@ -60,9 +62,12 @@ class QueryService
     /**
      * Get the data needed to render the "Create Order" form.
      */
-    public function getCreateData(): array
+    public function getFormData(): array
     {
-        return $this->baseData();
+        return [
+            'statuses' => OrderStatus::orderBy('title')->get(['id', 'title', 'background_colour', 'text_colour']),
+            'orderableTypes' => $this->registry->types(),
+        ];
     }
 
     /**
@@ -139,7 +144,6 @@ class QueryService
         return [
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
-            'contactableTypes' => $this->registry->types(),
         ];
     }
 

@@ -30,7 +30,6 @@ class StoreOrderRequest extends FormRequest
         return [
             'orderable_type' => $this->orderableTypeRules(),
             'orderable_id' => $this->orderableIdRules(),
-            'order_number' => $this->orderNumberRules(),
             'title' => $this->titleRules(),
             'description' => $this->descriptionRules(),
             'notes' => $this->notesRules(),
@@ -100,21 +99,6 @@ class StoreOrderRequest extends FormRequest
             'required',
             'integer',
             'min:1',
-        ];
-    }
-
-    /**
-     * Get validation rules for the order_number field.
-     *
-     * @return array<mixed>
-     */
-    protected function orderNumberRules(): array
-    {
-        return [
-            'required',
-            'string',
-            'max:255',
-            Rule::unique('orders', 'order_number'),
         ];
     }
 

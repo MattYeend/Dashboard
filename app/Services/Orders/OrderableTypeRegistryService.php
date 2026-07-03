@@ -142,6 +142,6 @@ class OrderableTypeRegistryService
             }
         }
 
-        return $type;
+        return '';
     }
 }

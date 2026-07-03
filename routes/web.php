@@ -91,6 +91,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('orders')->name('orders.')->group(function () {
+        Route::get('/orderable-options', [OrderController::class, 'orderableOptions'])->name('orderable-options');
+
         Route::post('/bulk/delete', [OrderController::class, 'bulkDelete'])->name('bulk.delete');
         Route::post('/bulk/restore', [OrderController::class, 'bulkRestore'])->name('bulk.restore');
         Route::post('/{id}/restore', [OrderController::class, 'restore'])->name('restore');

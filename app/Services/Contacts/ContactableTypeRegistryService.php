@@ -148,6 +148,6 @@ class ContactableTypeRegistryService
             }
         }
 
-        return $type;
+        return '';
     }
 }

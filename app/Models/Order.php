@@ -185,4 +185,31 @@ class Order extends Model implements Auditable
             'deleted_at' => 'datetime',
         ];
     }
+
+    /**
+     * The "booted" method of the model.
+     *
+     * This method is called when the model is booted, and is used to
+     * register model event listeners.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (Order $order): void {
+            if (empty($order->order_number)) {
+                $order->order_number = static::generateOrderNumber();
+            }
+        });
+    }
+
+    /**
+     * Generate a unique order number.
+     */
+    protected static function generateOrderNumber(): string
+    {
+        do {
+            $number = 'ORD-'.strtoupper(str()->random(8));
+        } while (static::withTrashed()->where('order_number', $number)->exists());
+
+        return $number;
+    }
 }
