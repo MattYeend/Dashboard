@@ -5,7 +5,7 @@ namespace App\Services\Orders;
 // use App\Models\Company;
 use App\Models\User;
 
-class OrderableTypeRegisteryService
+class OrderableTypeRegistryService
 {
     /**
      * Allow-list of contactable types. Keys are short, UI-facing identifiers.
