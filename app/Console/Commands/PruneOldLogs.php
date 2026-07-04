@@ -7,8 +7,8 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use App\Services\Log\DeleterService;
 
-#[Signature('app:prune-old-logs')]
-#[Description('Command description')]
+#[Signature('logs:prune {--days=30 : Number of days to retain logs}')]
+#[Description('Delete log records older than the specified number of days (default 30).')]
 class PruneOldLogs extends Command
 {
     public function __construct(private readonly DeleterService $deleterService)
@@ -19,7 +19,7 @@ class PruneOldLogs extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         $days = (int) $this->option('days');
 
