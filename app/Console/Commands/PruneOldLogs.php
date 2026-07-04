@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Services\Log\DeleterService;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
-use App\Services\Log\DeleterService;
 
 #[Signature('logs:prune {--days=30 : Number of days to retain logs}')]
 #[Description('Delete log records older than the specified number of days (default 30).')]
