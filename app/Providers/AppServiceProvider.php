@@ -3,10 +3,16 @@
 namespace App\Providers;
 
 use App\Models\Contact;
+use App\Models\Industry;
+use App\Models\Order;
+use App\Models\OrderStatus;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
 use App\Policies\ContactPolicy;
+use App\Policies\IndustryPolicy;
+use App\Policies\OrderPolicy;
+use App\Policies\OrderStatusPolicy;
 use App\Policies\TaskPolicy;
 use App\Policies\TaskStatusPolicy;
 use App\Policies\UserPolicy;
@@ -50,6 +56,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(TaskStatus::class, TaskStatusPolicy::class);
         Gate::policy(Task::class, TaskPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(OrderStatus::class, OrderStatusPolicy::class);
+        Gate::policy(Order::class, OrderPolicy::class);
+        Gate::policy(Industry::class, IndustryPolicy::class);
 
         Relation::morphMap([
             'App\Models\User' => User::class,
