@@ -184,6 +184,27 @@ class Log extends Model
 
     public const ACTION_ORDER_STATUS_UPDATED_BY_CRON = 83;
 
+    // Order Management
+    public const ACTION_CREATE_ORDER = 84;
+
+    public const ACTION_UPDATE_ORDER = 85;
+
+    public const ACTION_VIEW_ORDER = 86;
+
+    public const ACTION_DELETE_ORDER = 87;
+
+    public const ACTION_FORCE_DELETE_ORDER = 88;
+
+    public const ACTION_RESTORE_ORDER = 89;
+
+    public const ACTION_IMPORT_ORDER = 90;
+
+    public const ACTION_EXPORT_ORDER = 91;
+
+    public const ACTION_ORDER_UPDATED_BY_CRON = 92;
+
+    public const ACTION_CHANGE_ORDER_STATUS = 93;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.

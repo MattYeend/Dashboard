@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Services\Contacts;
+namespace App\Services\Orders;
 
-use App\Models\Task;
 // use App\Models\Company;
 use App\Models\User;
 
-class ContactableTypeRegistryService
+class OrderableTypeRegistryService
 {
     /**
-     * Allow-list of contactable types. Keys are short, UI-facing identifiers.
+     * Allow-list of orderable types. Keys are short, UI-facing identifiers.
      * 'model' is the fully-qualified class name actually stored in the
-     * contacts.contactable_type column (no morph map aliasing is used).
+     * orders.orderable_type column (no morph map aliasing is used).
      */
     public function all(): array
     {
@@ -26,16 +25,11 @@ class ContactableTypeRegistryService
             //     'model' => Company::class,
             //     'label_field' => 'name',
             // ],
-            'task' => [
-                'label' => 'Task',
-                'model' => Task::class,
-                'label_field' => 'title',
-            ],
         ];
     }
 
     /**
-     * Short keys + labels for populating the "contact type" <select>.
+     * Short keys + labels for populating the "order type" <select>.
      *
      * @return array<int, array{value: string, label: string}>
      */
@@ -51,7 +45,7 @@ class ContactableTypeRegistryService
     }
 
     /**
-     * Options for the "contact owner" <select>, keyed by short type.
+     * Options for the "order owner" <select>, keyed by short type.
      *
      * @return array<int, array{value: int, label: string}>
      */
@@ -121,7 +115,7 @@ class ContactableTypeRegistryService
 
     /**
      * Resolve the FQCN that should actually be persisted to
-     * contacts.contactable_type, given a short key submitted by the form
+     * orders.orderable_type, given a short key submitted by the form
      * (e.g. "user" -> "App\Models\User"). Returns null if the key isn't
      * in the allow-list.
      */

@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Contact;
+use App\Models\Order;
 use App\Models\User;
-use App\Services\Contacts\PolicyAuthorisationService;
+use App\Services\Orders\PolicyAuthorisationService;
 
-class ContactPolicy
+class OrderPolicy
 {
     /**
      * The authorisation service handling permission checks.
@@ -25,7 +25,7 @@ class ContactPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * Only admins can view the list of contacts.
+     * Only admins can view the list of orders.
      */
     public function viewAny(User $user): bool
     {
@@ -35,9 +35,9 @@ class ContactPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Contact $contact): bool
+    public function view(User $user, Order $order): bool
     {
-        return $this->authorisationService->canView($user, $contact);
+        return $this->authorisationService->canView($user, $order);
     }
 
     /**
@@ -51,35 +51,35 @@ class ContactPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Contact $contact): bool
+    public function update(User $user, Order $order): bool
     {
-        return $this->authorisationService->canUpdate($user, $contact);
+        return $this->authorisationService->canUpdate($user, $order);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Contact $contact): bool
+    public function delete(User $user, Order $order): bool
     {
-        return $this->authorisationService->canDelete($user, $contact);
+        return $this->authorisationService->canDelete($user, $order);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Contact $contact): bool
+    public function restore(User $user, Order $order): bool
     {
-        return $this->authorisationService->canRestore($user, $contact);
+        return $this->authorisationService->canRestore($user, $order);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Contact $contact): bool
+    public function forceDelete(User $user, Order $order): bool
     {
         return $this->authorisationService->canForceDelete(
             $user,
-            $contact
+            $order
         );
     }
 

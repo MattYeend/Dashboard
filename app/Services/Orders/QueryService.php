@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Services\TaskStatuses;
+namespace App\Services\Orders;
 
-use App\Models\TaskStatus;
+use App\Models\Order;
+use App\Models\OrderStatus;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,11 +17,12 @@ class QueryService
         protected readonly SortingService $sortingService,
         protected readonly TrashFilterService $trashFilterService,
         protected readonly FilterService $filterService,
-        protected readonly FormatterService $formatterService
+        protected readonly FormatterService $formatterService,
+        protected readonly OrderableTypeRegistryService $registry,
     ) {}
 
     /**
-     * Get paginated task statuses with filters.
+     * Get paginated orders with filters.
      */
     public function getPaginated(
         User $actor,
@@ -40,20 +42,40 @@ class QueryService
     }
 
     /**
-     * Get a single taskStatus by ID.
+     * Get a single order by ID.
      */
     public function getById(
         User $user,
         int $id,
         bool $withTrashed = false
     ): array {
-        $taskStatus = $this->findTaskStatus($id, $withTrashed);
+        $order = $this->findOrder($id, $withTrashed);
 
         return array_merge(
-            ['taskStatus' => $this->formatterService->format($taskStatus)],
+            ['order' => $this->formatterService->format($order)],
+            $this->getFormData(),
             $this->getPermissions($user),
             $this->baseData(),
         );
+    }
+
+    /**
+     * Get the data needed to render the "Create Order" form.
+     */
+    public function getFormData(): array
+    {
+        return [
+            'statuses' => OrderStatus::orderBy('title')->get(['id', 'title', 'background_colour', 'text_colour']),
+            'orderableTypes' => $this->registry->types(),
+        ];
+    }
+
+    /**
+     * Get the "owner" options for a given contactable type, for the dependent dropdown on the Create/Edit order form.
+     */
+    public function getOrderableOptions(string $type): array
+    {
+        return $this->registry->optionsFor($type);
     }
 
     /**
@@ -61,7 +83,9 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = TaskStatus::query();
+        $query = Order::query()
+            ->with(['orderable', 'creator', 'updater', 'deleter', 'restorer']);
+
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
@@ -70,14 +94,16 @@ class QueryService
     /**
      * Paginate the query and return as plain array.
      */
-    protected function paginate(Builder $query, int $perPage): array
-    {
+    protected function paginate(
+        Builder $query,
+        int $perPage
+    ): array {
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
-            'taskStatuses' => [
+            'orders' => [
                 'data' => array_map(
-                    fn (TaskStatus $taskStatus) => $this->formatterService->format($taskStatus),
+                    fn (Order $order) => $this->formatterService->format($order),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -104,8 +130,8 @@ class QueryService
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can('create', TaskStatus::class),
-                'can_view_any' => $user->can('viewAny', TaskStatus::class),
+                'can_create' => $user->can('create', Order::class),
+                'can_view_any' => $user->can('viewAny', Order::class),
             ],
         ];
     }
@@ -122,13 +148,14 @@ class QueryService
     }
 
     /**
-     * Find a taskStatus by ID with optional trashed records.
+     * Find a order by ID with optional trashed records.
      */
-    private function findTaskStatus(
+    private function findOrder(
         int $id,
         bool $withTrashed = false
-    ): TaskStatus {
-        $query = TaskStatus::query();
+    ): Order {
+        $query = Order::query()
+            ->with(['orderable', 'creator', 'updater', 'deleter', 'restorer']);
 
         if ($withTrashed) {
             $query->withTrashed();
@@ -138,10 +165,12 @@ class QueryService
     }
 
     /**
-     * Apply sorting to the query.
+     * Apply trash filtering and sorting to the query.
      */
-    private function applySorting(Builder $query, array $filters): Builder
-    {
+    private function applySorting(
+        Builder $query,
+        array $filters
+    ): Builder {
         $query = $this->trashFilterService->applyFilter(
             $query,
             $filters['trashed'] ?? null
@@ -149,7 +178,7 @@ class QueryService
 
         return $this->sortingService->applySorting(
             $query,
-            $filters['sort_by'] ?? 'title',
+            $filters['sort_by'] ?? 'ordered_at',
             $filters['sort_direction'] ?? 'asc'
         );
     }

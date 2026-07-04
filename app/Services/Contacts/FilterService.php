@@ -55,7 +55,7 @@ class FilterService
     {
         $query = $this->applySearch($query, $filters['search'] ?? null);
 
-        return $query = $this->applyCountry(
+        return $this->applyCountry(
             $query,
             $filters['country']
             ?? null

@@ -50,6 +50,8 @@ jobs:
         run: php artisan key:generate
 
       - name: Build Assets
+        env:
+          CI: true
         run: npm run build
 
       - name: Tests

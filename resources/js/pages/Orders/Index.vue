@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link, router } from '@inertiajs/vue3';
+import { router, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import FilterBar from '@/components/table/FilterBar.vue';
@@ -7,23 +7,23 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import {
-    index as taskStatusesIndex,
-    create as taskStatusesCreate,
-    show as taskStatusesShow,
-    edit as taskStatusesEdit,
-    destroy as taskStatusesDestroy,
-} from '@/routes/task-statuses';
-import taskStatusesBulk from '@/routes/task-statuses/bulk';
 import type {
-    TaskStatus,
     Pagination as PaginationMeta,
     PermissionsMeta,
+    Order,
 } from '@/types';
+import {
+    index as ordersIndex,
+    show as ordersShow,
+    create as ordersCreate,
+    edit as ordersEdit,
+    destroy as ordersDestroy,
+} from '@/routes/orders';
+import ordersBulk from '@/routes/orders/bulk';
 
 interface Props {
-    taskStatuses: {
-        data: TaskStatus[];
+    orders: {
+        data: Order[];
         links: Array<{ url: string | null; label: string; active: boolean }>;
         meta: PaginationMeta;
     };
@@ -34,17 +34,19 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const urlParams = new URLSearchParams(window.location.search);
+
 const filters = ref({
-    search: '',
-    trashed: '',
-    sort_by: 'title',
-    sort_direction: 'asc',
+    search: urlParams.get('search') ?? '',
+    trashed: urlParams.get('trashed') ?? '',
+    sort_by: urlParams.get('sort_by') ?? 'ordered_at',
+    sort_direction: urlParams.get('sort_direction') ?? 'asc',
 });
 
 const selectedIds = ref<Array<number | string>>([]);
 
 const deleteDialogOpen = ref(false);
-const selectedTaskStatusId = ref<number | null>(null);
+const selectedOrderId = ref<number | null>(null);
 const deleteProcessing = ref(false);
 
 const bulkDeleteDialogOpen = ref(false);
@@ -52,16 +54,20 @@ const pendingBulkIds = ref<Array<number | string>>([]);
 const bulkDeleteProcessing = ref(false);
 
 const columns: ResourceTableColumn[] = [
+    { key: 'order_number', label: 'Order Number' },
     { key: 'title', label: 'Title' },
-    { key: 'description', label: 'Description' },
-    { key: 'preview', label: 'Preview' },
+    { key: 'orderable_type_label', label: 'Type' },
+    { key: 'orderable_name', label: 'Order Of' },
+    { key: 'total_amount', label: 'Total' },
+    { key: 'status', label: 'Status' },
+    { key: 'ordered_at', label: 'Ordered At' },
 ];
 
 const filterFields = [
     {
         key: 'search',
         type: 'text' as const,
-        placeholder: 'Search task statuses…',
+        placeholder: 'Search orders…',
     },
     {
         key: 'trashed',
@@ -96,30 +102,30 @@ const filterFields = [
 ];
 
 function applyFilters(): void {
-    router.get(taskStatusesIndex.url(), filters.value, {
+    router.get(ordersIndex.url(), filters.value, {
         preserveState: true,
         replace: true,
     });
 }
 
 function requestDestroy(id: number): void {
-    selectedTaskStatusId.value = id;
+    selectedOrderId.value = id;
     deleteDialogOpen.value = true;
 }
 
 function destroy(): void {
-    if (selectedTaskStatusId.value === null) {
+    if (selectedOrderId.value === null) {
         return;
     }
 
     deleteProcessing.value = true;
 
-    router.delete(taskStatusesDestroy.url(selectedTaskStatusId.value), {
+    router.delete(ordersDestroy.url(selectedOrderId.value), {
         preserveScroll: true,
         onFinish: () => {
             deleteProcessing.value = false;
             deleteDialogOpen.value = false;
-            selectedTaskStatusId.value = null;
+            selectedOrderId.value = null;
         },
     });
 }
@@ -141,7 +147,7 @@ function bulkDelete(): void {
     bulkDeleteProcessing.value = true;
 
     router.post(
-        taskStatusesBulk.delete.url(),
+        ordersBulk.delete.url(),
         { ids: pendingBulkIds.value },
         {
             preserveScroll: true,
@@ -156,15 +162,27 @@ function bulkDelete(): void {
         },
     );
 }
+
+function formatDate(value: string | null): string {
+    if (!value) {
+        return '—';
+    }
+
+    return new Date(value).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
+}
 </script>
 
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <IndexHeader
-                title="Task Statuses"
-                :create-href="taskStatusesCreate.url()"
-                create-label="Add Task Status"
+                title="Orders"
+                :create-href="ordersCreate.url()"
+                create-label="Add Order"
                 :can-create="permissions_meta.can_create"
             />
 
@@ -176,12 +194,30 @@ function bulkDelete(): void {
 
             <ResourceTable
                 v-model:selected="selectedIds"
-                :rows="taskStatuses.data"
+                :rows="orders.data"
                 :columns="columns"
                 row-key="id"
                 selectable
-                empty-message="No task statuses found."
+                empty-message="No orders found."
             >
+                <template #cell-ordered_at="{ row }">
+                    {{ formatDate(row.ordered_at) }}
+                </template>
+                <template #cell-status="{ row }">
+                    <span
+                        v-if="row.status"
+                        :style="{
+                            backgroundColor:
+                                row.status.background_colour ?? '#e2e8f0',
+                            color: row.status.text_colour ?? '#1a202c',
+                        }"
+                        class="rounded px-2 py-0.5 text-xs font-medium"
+                    >
+                        {{ row.status.title }}
+                    </span>
+                    <span v-else>—</span>
+                </template>
+
                 <template #bulk-actions="{ selected }">
                     <button
                         type="button"
@@ -192,31 +228,9 @@ function bulkDelete(): void {
                     </button>
                 </template>
 
-                <template #cell-title="{ row }">
-                    <span class="font-medium text-gray-300">
-                        {{ row.title }}
-                    </span>
-                </template>
-
-                <template #cell-description="{ row }">
-                    {{ row.description ?? '—' }}
-                </template>
-
-                <template #cell-preview="{ row }">
-                    <span
-                        class="rounded px-2 py-0.5 text-xs font-medium"
-                        :style="{
-                            backgroundColor: row.background_colour,
-                            color: row.text_colour,
-                        }"
-                    >
-                        {{ row.title }}
-                    </span>
-                </template>
-
                 <template #actions="{ row }">
-                    <Link :href="taskStatusesShow.url(row.id)">View</Link>
-                    <Link :href="taskStatusesEdit.url(row.id)">Edit</Link>
+                    <Link :href="ordersShow.url(row.id)">View</Link>
+                    <Link :href="ordersEdit.url(row.id)">Edit</Link>
                     <button
                         type="button"
                         class="text-red-600 hover:text-red-900"
@@ -228,16 +242,16 @@ function bulkDelete(): void {
             </ResourceTable>
 
             <Pagination
-                :meta="taskStatuses.meta"
-                :links="taskStatuses.links"
-                resource-label="task statuses"
+                :meta="orders.meta"
+                :links="orders.links"
+                resource-label="orders"
             />
         </div>
 
         <ConfirmDialog
             v-model:open="deleteDialogOpen"
-            title="Delete task status"
-            description="This task status will be moved to trash."
+            title="Delete order"
+            description="This order will be moved to trash."
             confirm-label="Delete"
             :processing="deleteProcessing"
             @confirm="destroy"
@@ -245,8 +259,8 @@ function bulkDelete(): void {
 
         <ConfirmDialog
             v-model:open="bulkDeleteDialogOpen"
-            title="Delete task statuses"
-            :description="`${pendingBulkIds.length} task status(es) will be moved to trash.`"
+            title="Delete orders"
+            :description="`${pendingBulkIds.length} order(s) will be moved to trash.`"
             confirm-label="Delete"
             :processing="bulkDeleteProcessing"
             @confirm="bulkDelete"
