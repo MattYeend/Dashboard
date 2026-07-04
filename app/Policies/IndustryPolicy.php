@@ -4,16 +4,32 @@ namespace App\Policies;
 
 use App\Models\Industry;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\Industries\PolicyAuthorisationService;
 
 class IndustryPolicy
 {
     /**
+     * The authorisation service handling permission checks.
+     */
+    protected PolicyAuthorisationService $authorisationService;
+
+    /**
+     * Inject the required service into the policy.
+     */
+    public function __construct(
+        PolicyAuthorisationService $authorisationService
+    ) {
+        $this->authorisationService = $authorisationService;
+    }
+
+    /**
      * Determine whether the user can view any models.
+     *
+     * Only admins can view the list of industries.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
@@ -21,7 +37,7 @@ class IndustryPolicy
      */
     public function view(User $user, Industry $industry): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $industry);
     }
 
     /**
@@ -29,7 +45,7 @@ class IndustryPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
@@ -37,7 +53,7 @@ class IndustryPolicy
      */
     public function update(User $user, Industry $industry): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $industry);
     }
 
     /**
@@ -45,7 +61,7 @@ class IndustryPolicy
      */
     public function delete(User $user, Industry $industry): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $industry);
     }
 
     /**
@@ -53,7 +69,7 @@ class IndustryPolicy
      */
     public function restore(User $user, Industry $industry): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $industry);
     }
 
     /**
@@ -61,6 +77,41 @@ class IndustryPolicy
      */
     public function forceDelete(User $user, Industry $industry): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete(
+            $user,
+            $industry
+        );
+    }
+
+    /**
+     * Determine whether the user can bulk delete models.
+     */
+    public function bulkDelete(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can bulk restore models.
+     */
+    public function bulkRestore(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can import models.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can export models.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->isUser($user);
     }
 }
