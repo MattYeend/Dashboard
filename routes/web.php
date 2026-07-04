@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\TaskController;
@@ -105,6 +106,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{order}/edit', [OrderController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{order}', [OrderController::class, 'update'])->name('update');
         Route::delete('/{order}', [OrderController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('industries')->name('industries.')->group(function () {
+        Route::post('/bulk/delete', [IndustryController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [IndustryController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [IndustryController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [IndustryController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [IndustryController::class, 'index'])->name('index');
+        Route::get('/create', [IndustryController::class, 'create'])->name('create');
+        Route::post('/', [IndustryController::class, 'store'])->name('store');
+        Route::get('/{industry}', [IndustryController::class, 'show'])->name('show');
+        Route::get('/{industry}/edit', [IndustryController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{industry}', [IndustryController::class, 'update'])->name('update');
+        Route::delete('/{industry}', [IndustryController::class, 'destroy'])->name('destroy');
     });
 });
 
