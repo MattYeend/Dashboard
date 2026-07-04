@@ -1,13 +1,14 @@
 <?php
 
 use App\Models\Log;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 
 uses(RefreshDatabase::class);
 
-it('deletes log records older than 30 days by default', function () {
-    $user = \App\Models\User::factory()->create();
+test('deletes log records older than 30 days by default', function () {
+    $user = User::factory()->create();
 
     Log::insert([
         [
@@ -35,8 +36,8 @@ it('deletes log records older than 30 days by default', function () {
     expect(Log::count())->toBe(1);
 });
 
-it('accepts a custom retention period via the --days option', function () {
-    $user = \App\Models\User::factory()->create();
+test('accepts a custom retention period via the --days option', function () {
+    $user = User::factory()->create();
 
     Log::insert([
         [
