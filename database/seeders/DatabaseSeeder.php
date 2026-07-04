@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             TaskSeeder::class,
             OrderStatusSeeder::class,
             OrderSeeder::class,
+            IndustrySeeder::class,
         ]);
     }
 }
