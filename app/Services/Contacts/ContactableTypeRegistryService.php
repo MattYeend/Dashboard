@@ -3,7 +3,7 @@
 namespace App\Services\Contacts;
 
 use App\Models\Task;
-// use App\Models\Company;
+use App\Models\Company;
 use App\Models\User;
 
 class ContactableTypeRegistryService
@@ -21,11 +21,11 @@ class ContactableTypeRegistryService
                 'model' => User::class,
                 'label_field' => 'name',
             ],
-            // 'company' => [
-            //     'label' => 'Company',
-            //     'model' => Company::class,
-            //     'label_field' => 'name',
-            // ],
+            'company' => [
+                'label' => 'Company',
+                'model' => Company::class,
+                'label_field' => 'name',
+            ],
             'task' => [
                 'label' => 'Task',
                 'model' => Task::class,

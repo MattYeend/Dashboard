@@ -2,7 +2,7 @@
 
 namespace App\Services\Orders;
 
-// use App\Models\Company;
+use App\Models\Company;
 use App\Models\User;
 
 class OrderableTypeRegistryService
@@ -20,11 +20,11 @@ class OrderableTypeRegistryService
                 'model' => User::class,
                 'label_field' => 'name',
             ],
-            // 'company' => [
-            //     'label' => 'Company',
-            //     'model' => Company::class,
-            //     'label_field' => 'name',
-            // ],
+            'company' => [
+                'label' => 'Company',
+                'model' => Company::class,
+                'label_field' => 'name',
+            ],
         ];
     }
 

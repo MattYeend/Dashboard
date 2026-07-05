@@ -194,6 +194,17 @@ class RolePermissionSeeder extends Seeder
             'import industries',
             'export industries',
             'assign industries',
+
+            // Company management
+            'view companies',
+            'create companies',
+            'edit companies',
+            'delete companies',
+            'restore companies',
+            'force delete companies',
+            'import companies',
+            'export companies',
+            'change company industry',
         ];
 
         foreach ($permissions as $permission) {
@@ -327,6 +338,15 @@ class RolePermissionSeeder extends Seeder
             'import industries',
             'export industries',
             'assign industries',
+            'view companies',
+            'create companies',
+            'edit companies',
+            'delete companies',
+            'restore companies',
+            'force delete companies',
+            'import companies',
+            'export companies',
+            'change company industry',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -424,6 +444,15 @@ class RolePermissionSeeder extends Seeder
             'import industries',
             'export industries',
             'assign industries',
+            'view companies',
+            'create companies',
+            'edit companies',
+            'delete companies',
+            'restore companies',
+            'force delete companies',
+            'import companies',
+            'export companies',
+            'change company industry',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -485,6 +514,12 @@ class RolePermissionSeeder extends Seeder
             'delete industries',
             'restore industries',
             'assign industries',
+            'view companies',
+            'create companies',
+            'edit companies',
+            'delete companies',
+            'restore companies',
+            'change company industry',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -511,6 +546,7 @@ class RolePermissionSeeder extends Seeder
             'view any order',
             'view order',
             'view industries',
+            'view companies',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -548,6 +584,7 @@ class RolePermissionSeeder extends Seeder
             'view order',
             'view contact information',
             'view industries',
+            'view companies',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
 
@@ -623,6 +660,15 @@ class RolePermissionSeeder extends Seeder
             'import industries',
             'export industries',
             'assign industries',
+            'view companies',
+            'create companies',
+            'edit companies',
+            'delete companies',
+            'restore companies',
+            'force delete companies',
+            'import companies',
+            'export companies',
+            'change company industry',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -669,6 +715,9 @@ class RolePermissionSeeder extends Seeder
             'view industries',
             'export industries',
             'assign industries',
+            'view companies',
+            'export companies',
+            'change company industry',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
@@ -692,6 +741,7 @@ class RolePermissionSeeder extends Seeder
             'view any order',
             'view order',
             'view industries',
+            'view companies',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -707,6 +757,7 @@ class RolePermissionSeeder extends Seeder
             'view any order',
             'view order',
             'view industries',
+            'view companies'
         ];
         $guest->givePermissionTo($guestPermissions);
 
@@ -746,5 +797,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Order Statuses');
         $this->command->info('- Orders');
         $this->command->info('- Industries');
+        $this->command->info('- Companies');
     }
 }
