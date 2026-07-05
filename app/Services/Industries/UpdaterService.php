@@ -3,8 +3,8 @@
 namespace App\Services\Industries;
 
 use App\Actions\UpdateResource;
-use App\Models\Log;
 use App\Models\Industry;
+use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
 

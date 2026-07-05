@@ -50,9 +50,7 @@ function update<K extends keyof IndustryFormData>(
                 type="text"
                 class="mt-1 block w-full"
                 placeholder="Enter UK SIC 2007 code"
-                @update:model-value="
-                    update('code', ($event as string) || null)
-                "
+                @update:model-value="update('code', ($event as string) || null)"
             />
             <InputError :message="errors.code" />
         </div>

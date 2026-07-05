@@ -207,14 +207,23 @@ class Log extends Model
 
     // Industry Management
     public const ACTION_CREATE_INDUSTRY = 94;
+
     public const ACTION_UPDATE_INDUSTRY = 95;
+
     public const ACTION_VIEW_INDUSTRY = 96;
+
     public const ACTION_DELETE_INDUSTRY = 97;
+
     public const ACTION_FORCE_DELETE_INDUSTRY = 98;
+
     public const ACTION_RESTORE_INDUSTRY = 99;
+
     public const ACTION_IMPORT_INDUSTRY = 100;
+
     public const ACTION_EXPORT_INDUSTRY = 101;
+
     public const ACTION_INDUSTRY_UPDATED_BY_CRON = 102;
+
     public const ACTION_ASSIGN_INDUSTRY = 103;
 
     // New Logging Actions should go here to be reviewed

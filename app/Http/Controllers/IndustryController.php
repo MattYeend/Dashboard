@@ -25,7 +25,7 @@ class IndustryController extends Controller
         protected readonly ManagementService $management,
         protected readonly QueryService $query,
     ) {}
-    
+
     /**
      * Display a listing of the resource.
      *
