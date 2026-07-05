@@ -84,7 +84,7 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = Order::query()
-            ->with(['orderable', 'creator', 'updater', 'deleter', 'restorer']);
+            ->with(['orderable', 'creator', 'updater', 'deleter', 'restorer', 'status']);
 
         $query = $this->filterService->applyAll($query, $filters);
 
@@ -155,7 +155,7 @@ class QueryService
         bool $withTrashed = false
     ): Order {
         $query = Order::query()
-            ->with(['orderable', 'creator', 'updater', 'deleter', 'restorer']);
+            ->with(['orderable', 'creator', 'updater', 'deleter', 'restorer', 'status']);
 
         if ($withTrashed) {
             $query->withTrashed();
