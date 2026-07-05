@@ -27,36 +27,6 @@ class FilterService
     }
 
     /**
-     * Apply status filter to the query.
-     *
-     * @param  Builder<Industry>  $query
-     * @return Builder<Industry>
-     */
-    public function applyStatusFilter(Builder $query, ?int $statusId): Builder
-    {
-        if ($statusId === null) {
-            return $query;
-        }
-
-        return $query->where('status_id', $statusId);
-    }
-
-    /**
-     * Apply assignee filter to the query.
-     *
-     * @param  Builder<Industry>  $query
-     * @return Builder<Industry>
-     */
-    public function applyAssigneeFilter(Builder $query, ?int $assignedTo): Builder
-    {
-        if ($assignedTo === null) {
-            return $query;
-        }
-
-        return $query->where('assigned_to', $assignedTo);
-    }
-
-    /**
      * Apply all filters to the query.
      *
      * @param  Builder<Industry>  $query
@@ -66,8 +36,6 @@ class FilterService
     public function applyAll(Builder $query, array $filters): Builder
     {
         $query = $this->applySearch($query, $filters['search'] ?? null);
-        $query = $this->applyStatusFilter($query, isset($filters['status_id']) ? (int) $filters['status_id'] : null);
-        $query = $this->applyAssigneeFilter($query, isset($filters['assigned_to']) ? (int) $filters['assigned_to'] : null);
 
         return $query;
     }

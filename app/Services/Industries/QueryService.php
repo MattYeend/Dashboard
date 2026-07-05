@@ -71,7 +71,7 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Industry::query()->with(['assignee', 'status']);
+        $query = Industry::query()->with(['creator', 'updater', 'deleter', 'restorer']);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
@@ -140,7 +140,7 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Industry {
-        $query = Industry::query()->with(['assignee', 'status']);
+        $query = Industry::query()->with(['creator', 'updater', 'deleter', 'restorer']);
 
         if ($withTrashed) {
             $query->withTrashed();
@@ -163,7 +163,7 @@ class QueryService
 
         return $this->sortingService->applySorting(
             $query,
-            $filters['sort_by'] ?? 'due_date',
+            $filters['sort_by'] ?? 'title',
             $filters['sort_direction'] ?? 'asc'
         );
     }
