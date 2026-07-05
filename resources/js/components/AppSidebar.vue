@@ -24,11 +24,13 @@ import {
 import { dashboard } from '@/routes';
 import { index as contactsIndex } from '@/routes/contacts';
 import { index as orderStatusesIndex } from '@/routes/order-statuses';
+import { index as ordersIndex } from '@/routes/orders';
 import { index as taskStatusesIndex } from '@/routes/task-statuses';
 import { index as tasksIndex } from '@/routes/tasks';
 import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
-import { index as ordersIndex } from '@/routes/orders';
+import { index as companiesIndex } from '@/routes/companies';
+import { index as industriesIndex } from '@/routes/industries';
 
 const mainNavItems: NavItem[] = [
     {
@@ -40,6 +42,21 @@ const mainNavItems: NavItem[] = [
         title: 'Contacts',
         href: contactsIndex.url(),
         icon: Contact2,
+    },
+    {
+        title: 'Companies',
+        href: '#',
+        icon: FolderGit2,
+        children: [
+            {
+                title: 'All Companies',
+                href: companiesIndex.url(),
+            },
+            {
+                title: 'Industries',
+                href: industriesIndex.url(),
+            },
+        ],
     },
     {
         title: 'Orders',

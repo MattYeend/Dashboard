@@ -29,7 +29,7 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * Passes paginated companies to the Contacts/Index Inertia page.
+     * Passes paginated companies to the Companies/Index Inertia page.
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
@@ -42,7 +42,7 @@ class CompanyController extends Controller
             $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
         );
 
-        return Inertia::render('Contacts/Index', $data);
+        return Inertia::render('Companies/Index', $data);
     }
 
     /**
@@ -56,7 +56,7 @@ class CompanyController extends Controller
 
         $data = $this->query->getCreateData();
 
-        return Inertia::render('Contacts/Create', $data);
+        return Inertia::render('Companies/Create', $data);
     }
 
     /**
@@ -81,7 +81,7 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      *
-     * Passes a single company to the Contacts/Show Inertia page.
+     * Passes a single company to the Companies/Show Inertia page.
      *
      * Authorises via the 'view' and 'access' policies before rendering.
      */
@@ -96,7 +96,7 @@ class CompanyController extends Controller
             $company->id
         );
 
-        return Inertia::render('Contacts/Show', $data);
+        return Inertia::render('Companies/Show', $data);
     }
 
     /**
@@ -115,7 +115,7 @@ class CompanyController extends Controller
             $company->id
         );
 
-        return Inertia::render('Contacts/Edit', $data);
+        return Inertia::render('Companies/Edit', $data);
     }
 
     /**

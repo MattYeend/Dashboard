@@ -157,6 +157,14 @@ function bulkDelete(): void {
         },
     );
 }
+
+function truncate(value: string | null | undefined, length = 30): string {
+    if (!value) {
+        return '—';
+    }
+
+    return value.length > length ? `${value.slice(0, length)}…` : value;
+}
 </script>
 
 <template>
@@ -200,7 +208,7 @@ function bulkDelete(): void {
                 </template>
 
                 <template #cell-industry="{ row }">
-                    {{ row.industry?.title ?? '—' }}
+                    {{ truncate(row.industry?.title, 30) }}
                 </template>
 
                 <template #cell-email="{ row }">
