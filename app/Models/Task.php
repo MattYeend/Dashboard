@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -57,6 +58,16 @@ class Task extends Model implements Auditable
      */
     use HasFactory,
         SoftDeletes;
+
+    /**
+     * Get the contacts associated with this company.
+     *
+     * @return MorphMany<Contact, $this>
+     */
+    public function contacts(): MorphMany
+    {
+        return $this->morphMany(Contact::class, 'contactable');
+    }
 
     /**
      * Get the user this task is assigned to.
