@@ -30,7 +30,8 @@ export const errorMessages: Record<number, ErrorMessage> = {
     },
     406: {
         title: 'Not Acceptable',
-        description: 'The server cannot produce a response matching your request.',
+        description:
+            'The server cannot produce a response matching your request.',
     },
     407: {
         title: 'Proxy Authentication Required',
@@ -42,7 +43,8 @@ export const errorMessages: Record<number, ErrorMessage> = {
     },
     409: {
         title: 'Conflict',
-        description: 'This request conflicts with the current state of the resource.',
+        description:
+            'This request conflicts with the current state of the resource.',
     },
     410: {
         title: 'Gone',
@@ -50,11 +52,13 @@ export const errorMessages: Record<number, ErrorMessage> = {
     },
     429: {
         title: 'Too Many Requests',
-        description: 'You have made too many requests. Please wait and try again.',
+        description:
+            'You have made too many requests. Please wait and try again.',
     },
     500: {
         title: 'Internal Server Error',
-        description: 'Something went wrong on our end. Please try again shortly.',
+        description:
+            'Something went wrong on our end. Please try again shortly.',
     },
     501: {
         title: 'Not Implemented',
@@ -62,11 +66,13 @@ export const errorMessages: Record<number, ErrorMessage> = {
     },
     502: {
         title: 'Bad Gateway',
-        description: 'The server received an invalid response from an upstream server.',
+        description:
+            'The server received an invalid response from an upstream server.',
     },
     503: {
         title: 'Service Unavailable',
-        description: 'The service is temporarily unavailable. Please try again shortly.',
+        description:
+            'The service is temporarily unavailable. Please try again shortly.',
     },
     504: {
         title: 'Gateway Timeout',
@@ -74,11 +80,13 @@ export const errorMessages: Record<number, ErrorMessage> = {
     },
     505: {
         title: 'HTTP Version Not Supported',
-        description: 'The server does not support the HTTP protocol version used in the request.',
+        description:
+            'The server does not support the HTTP protocol version used in the request.',
     },
     508: {
         title: 'Loop Detected',
-        description: 'The server detected an infinite loop while processing your request.',
+        description:
+            'The server detected an infinite loop while processing your request.',
     },
 };
 
