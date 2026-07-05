@@ -9,7 +9,6 @@ use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
-use Throwable;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -36,7 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 409, 410, 429, 500, 501, 502, 503, 504, 505, 508,
             ];
 
-            if (! app()->environment(['local', 'testing']) && in_array($status, $renderableStatuses, true)) {
+            if (in_array($status, $renderableStatuses, true)) {
                 return Inertia::render('Errors/Error', [
                     'status' => $status,
                 ])
