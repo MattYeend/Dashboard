@@ -23,7 +23,7 @@ class SortingService
 
         return match ($sortBy) {
             'title' => $query->orderBy('title', $sortDirection),
-            'due_date' => $query->orderBy('due_date', $sortDirection),
+            'code' => $query->orderBy('code', $sortDirection),
             'updated_at' => $query->orderBy('updated_at', $sortDirection),
             default => $query->orderBy('created_at', $sortDirection),
         };
@@ -38,7 +38,7 @@ class SortingService
     {
         return [
             'title' => 'Title',
-            'due_date' => 'Due Date',
+            'code' => 'Code',
             'created_at' => 'Created Date',
             'updated_at' => 'Updated Date',
         ];

@@ -757,7 +757,7 @@ class RolePermissionSeeder extends Seeder
             'view any order',
             'view order',
             'view industries',
-            'view companies'
+            'view companies',
         ];
         $guest->givePermissionTo($guestPermissions);
 

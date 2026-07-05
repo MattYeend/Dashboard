@@ -228,13 +228,21 @@ class Log extends Model
 
     // Company Management
     public const ACTION_CREATE_COMPANY = 104;
+
     public const ACTION_UPDATE_COMPANY = 105;
+
     public const ACTION_VIEW_COMPANY = 106;
+
     public const ACTION_DELETE_COMPANY = 107;
+
     public const ACTION_FORCE_DELETE_COMPANY = 108;
+
     public const ACTION_RESTORE_COMPANY = 109;
+
     public const ACTION_IMPORT_COMPANY = 110;
+
     public const ACTION_EXPORT_COMPANY = 111;
+
     public const ACTION_COMPANY_UPDATED_BY_CRON = 112;
 
     // New Logging Actions should go here to be reviewed

@@ -2,8 +2,8 @@
 
 namespace App\Services\Contacts;
 
-use App\Models\Task;
 use App\Models\Company;
+use App\Models\Task;
 use App\Models\User;
 
 class ContactableTypeRegistryService

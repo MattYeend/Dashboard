@@ -265,16 +265,4 @@ class CompanyController extends Controller
 
         return redirect()->route('companies.index');
     }
-
-    /**
-     * Get the list of selectable "owner" options for a given contactable type.
-     */
-    public function contactableOptions(Request $request): JsonResponse
-    {
-        $type = $request->query('type', '');
-
-        $options = $this->query->getContactableOptions($type);
-
-        return response()->json($options);
-    }
 }
