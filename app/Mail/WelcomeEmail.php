@@ -20,8 +20,7 @@ class WelcomeEmail extends Mailable implements ShouldQueue
     public function __construct(
         public User $user,
         public ?string $password = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Get the message envelope.
@@ -29,7 +28,7 @@ class WelcomeEmail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Welcome to ' . config('app.name') . '!',
+            subject: 'Welcome to '.config('app.name').'!',
         );
     }
 
@@ -39,7 +38,7 @@ class WelcomeEmail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.welcome',
             with: [
                 'name' => $this->user->name,
                 'email' => $this->user->email,
