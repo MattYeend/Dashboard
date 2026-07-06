@@ -38,6 +38,7 @@ class CreatorService
                 $displayRole = $userData['role'] ?? 'user';
 
                 $newUser = User::create($userData);
+                $newUser->plainPassword = $userData['password'];
                 $newUser->assignApplicationRole($displayRole);
 
                 $newUser->created_by = $createdBy;

@@ -9,6 +9,7 @@ use App\Models\OrderStatus;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
+use App\Observers\UserObserver;
 use App\Policies\ContactPolicy;
 use App\Policies\IndustryPolicy;
 use App\Policies\OrderPolicy;
@@ -64,6 +65,8 @@ class AppServiceProvider extends ServiceProvider
             'App\Models\User' => User::class,
             'App\Models\Task' => Task::class,
         ]);
+
+        User::observe(UserObserver::class);
     }
 
     /**

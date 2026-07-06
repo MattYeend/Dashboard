@@ -52,6 +52,17 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
         TwoFactorAuthenticatable;
 
     /**
+     * Plaintext password, held in memory only for the lifetime of the request.
+     *
+     * This is a real declared property, not a magic Eloquent attribute, so it
+     * is never added to $attributes and never persisted to the database. It
+     * exists purely so the welcome email can include the password that was
+     * used to create the account (set explicitly wherever the user is created,
+     * e.g. an admin-creation form controller).
+     */
+    public ?string $plainPassword = null;
+
+    /**
      * Set the user's role to 'user'.
      */
     public function user(): static
