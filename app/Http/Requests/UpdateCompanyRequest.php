@@ -155,7 +155,7 @@ class UpdateCompanyRequest extends FormRequest
             'integer',
             'digits:4',
             'min:1800',
-            'max:' . date('Y'),
+            'max:'.date('Y'),
         ];
     }
 
