@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Industries;
+namespace App\Services\Companies;
 
-use App\Models\Industry;
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Builder;
 
 class SortingService
@@ -10,8 +10,8 @@ class SortingService
     /**
      * Apply sorting to the query.
      *
-     * @param  Builder<Industry>  $query
-     * @return Builder<Industry>
+     * @param  Builder<Company>  $query
+     * @return Builder<Company>
      */
     public function applySorting(
         Builder $query,
@@ -22,8 +22,8 @@ class SortingService
         $sortDirection = strtolower($sortDirection ?? 'asc') === 'asc' ? 'asc' : 'desc';
 
         return match ($sortBy) {
-            'title' => $query->orderBy('title', $sortDirection),
-            'code' => $query->orderBy('code', $sortDirection),
+            'name' => $query->orderBy('name', $sortDirection),
+            'email' => $query->orderBy('email', $sortDirection),
             'updated_at' => $query->orderBy('updated_at', $sortDirection),
             default => $query->orderBy('created_at', $sortDirection),
         };
@@ -37,8 +37,8 @@ class SortingService
     public function getAvailableSortFields(): array
     {
         return [
-            'title' => 'Title',
-            'code' => 'Code',
+            'name' => 'Name',
+            'email' => 'Email',
             'created_at' => 'Created Date',
             'updated_at' => 'Updated Date',
         ];

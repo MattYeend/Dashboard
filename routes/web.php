@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\OrderController;
@@ -121,6 +122,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{industry}/edit', [IndustryController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{industry}', [IndustryController::class, 'update'])->name('update');
         Route::delete('/{industry}', [IndustryController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('companies')->name('companies.')->group(function () {
+        Route::post('/bulk/delete', [CompanyController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [CompanyController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [CompanyController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [CompanyController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [CompanyController::class, 'index'])->name('index');
+        Route::get('/create', [CompanyController::class, 'create'])->name('create');
+        Route::post('/', [CompanyController::class, 'store'])->name('store');
+        Route::get('/{company}', [CompanyController::class, 'show'])->name('show');
+        Route::get('/{company}/edit', [CompanyController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{company}', [CompanyController::class, 'update'])->name('update');
+        Route::delete('/{company}', [CompanyController::class, 'destroy'])->name('destroy');
     });
 });
 

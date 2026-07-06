@@ -184,6 +184,35 @@ export interface Industry {
     restorer?: { name: string };
 }
 
+export interface Company {
+    id: number;
+    name: string;
+    slug: string | null;
+    email: string | null;
+    phone: string | null;
+    website: string | null;
+    registration_number: string | null;
+    vat_number: string | null;
+    description: string | null;
+    industry_id: number | null;
+    employee_count: number | null;
+    founded_year: number | null;
+    meta: Record<string, unknown> | null;
+    created_by: number | null;
+    updated_by: number | null;
+    deleted_by: number | null;
+    restored_by: number | null;
+    restored_at: string | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    industry?: { id: number; title: string } | null;
+    creator?: { name: string };
+    updater?: { name: string };
+    deleter?: { name: string };
+    restorer?: { name: string };
+}
+
 export interface PermissionsMeta {
     can_create: boolean;
     can_view_any: boolean;

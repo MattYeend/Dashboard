@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
-use Database\Factories\TaskFactory;
+use Database\Factories\CompanyFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,50 +14,61 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property string $title
+ * @property string $name
+ * @property string|null $slug
+ * @property string|null $email
+ * @property string|null $phone
+ * @property string|null $website
+ * @property string|null $registration_number
+ * @property string|null $vat_number
  * @property string|null $description
- * @property Carbon|null $due_date
- * @property Carbon|null $assigned_date
- * @property int|null $assigned_to
- * @property int|null $status_id
- * @property array|null $meta
- * @property int|null $created_by
- * @property int|null $updated_by
- * @property int|null $deleted_by
- * @property int|null $restored_by
- * @property Carbon|null $restored_at
+ * @property int|null $industry_id
+ * @property int|null $employee_count
+ * @property int|null $founded_year
  * @property Carbon|null $deleted_at
+ * @property Carbon|null $restored_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property-read User|null $assignee
- * @property-read TaskStatus|null $status
- * @property-read User|null $creator
- * @property-read User|null $updater
- * @property-read User|null $deleter
- * @property-read User|null $restorer
+ * @property-read Industry|null $industry
  */
 #[Fillable([
-    'title',
+    'name',
+    'slug',
+    'email',
+    'phone',
+    'website',
+    'registration_number',
+    'vat_number',
     'description',
-    'due_date',
-    'assigned_date',
-    'assigned_to',
-    'status_id',
-    'meta',
+    'industry_id',
+    'employee_count',
+    'founded_year',
     'created_by',
+    'created_at',
     'updated_by',
+    'updated_at',
     'deleted_by',
+    'deleted_at',
     'restored_by',
     'restored_at',
-    'deleted_at',
 ])]
-class Task extends Model implements Auditable
+class Company extends Model implements Auditable
 {
     /**
-     * @use HasFactory<TaskFactory>
+     * @use HasFactory<CompanyFactory>
      */
     use HasFactory,
         SoftDeletes;
+
+    /**
+     * Get the industry this company belongs to.
+     *
+     * @return BelongsTo<Industry, $this>
+     */
+    public function industry(): BelongsTo
+    {
+        return $this->belongsTo(Industry::class);
+    }
 
     /**
      * Get the contacts associated with this company.
@@ -70,27 +81,17 @@ class Task extends Model implements Auditable
     }
 
     /**
-     * Get the user this task is assigned to.
+     * Get the orders associated with this company.
      *
-     * @return BelongsTo<User, $this>
+     * @return MorphMany<Order, $this>
      */
-    public function assignee(): BelongsTo
+    public function orders(): MorphMany
     {
-        return $this->belongsTo(User::class, 'assigned_to');
+        return $this->morphMany(Order::class, 'orderable');
     }
 
     /**
-     * Get the status of this task.
-     *
-     * @return BelongsTo<TaskStatus, $this>
-     */
-    public function status(): BelongsTo
-    {
-        return $this->belongsTo(TaskStatus::class, 'status_id');
-    }
-
-    /**
-     * Get the user who created this task.
+     * Get the user who created this company.
      *
      * @return BelongsTo<User, $this>
      */
@@ -100,7 +101,7 @@ class Task extends Model implements Auditable
     }
 
     /**
-     * Get the user who last updated this task.
+     * Get the user who last updated this company.
      *
      * @return BelongsTo<User, $this>
      */
@@ -110,7 +111,7 @@ class Task extends Model implements Auditable
     }
 
     /**
-     * Get the user who deleted this task.
+     * Get the user who deleted this company.
      *
      * @return BelongsTo<User, $this>
      */
@@ -120,7 +121,7 @@ class Task extends Model implements Auditable
     }
 
     /**
-     * Get the user who restored this task.
+     * Get the user who restored this company.
      *
      * @return BelongsTo<User, $this>
      */
@@ -130,7 +131,7 @@ class Task extends Model implements Auditable
     }
 
     /**
-     * Get a snapshot of the task's auditable attributes.
+     * Get a snapshot of the company's auditable attributes.
      *
      * Used by the audit log to capture before/after state on create,
      * update, delete and restore actions.
@@ -141,12 +142,17 @@ class Task extends Model implements Auditable
     {
         return $this->only([
             'id',
-            'title',
+            'name',
+            'slug',
+            'email',
+            'phone',
+            'website',
+            'registration_number',
+            'vat_number',
             'description',
-            'due_date',
-            'assigned_date',
-            'assigned_to',
-            'status_id',
+            'industry_id',
+            'employee_count',
+            'founded_year',
             'meta',
         ]);
     }
@@ -154,14 +160,14 @@ class Task extends Model implements Auditable
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string, string>
+     * @return array<string,string>
      */
     protected function casts(): array
     {
         return [
-            'due_date' => 'date',
-            'assigned_date' => 'date',
             'meta' => 'array',
+            'founded_year' => 'integer',
+            'employee_count' => 'integer',
             'deleted_at' => 'datetime',
             'restored_at' => 'datetime',
         ];

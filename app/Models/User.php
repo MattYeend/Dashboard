@@ -97,6 +97,16 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
     }
 
     /**
+     * Get the orders associated with this company.
+     *
+     * @return MorphMany<Order, $this>
+     */
+    public function orders(): MorphMany
+    {
+        return $this->morphMany(Order::class, 'orderable');
+    }
+
+    /**
      * Get the user who created this user.
      *
      * @return BelongsTo<User, $this>

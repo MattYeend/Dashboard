@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Orders;
+namespace App\Services\Companies;
 
-use App\Models\Order;
-use App\Models\OrderStatus;
+use App\Models\Company;
+use App\Models\Industry;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,15 +17,14 @@ class QueryService
         protected readonly SortingService $sortingService,
         protected readonly TrashFilterService $trashFilterService,
         protected readonly FilterService $filterService,
-        protected readonly FormatterService $formatterService,
-        protected readonly OrderableTypeRegistryService $registry,
+        protected readonly FormatterService $formatterService
     ) {}
 
     /**
-     * Get paginated orders with filters.
+     * Get paginated companies with filters.
      */
     public function getPaginated(
-        User $actor,
+        User $user,
         array $filters = []
     ): array {
         $query = $this->buildQuery($filters);
@@ -36,46 +35,37 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions($actor),
-            $this->baseData(),
-        );
-    }
-
-    /**
-     * Get a single order by ID.
-     */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $order = $this->findOrder($id, $withTrashed);
-
-        return array_merge(
-            ['order' => $this->formatterService->format($order)],
-            $this->getFormData(),
             $this->getPermissions($user),
             $this->baseData(),
         );
     }
 
     /**
-     * Get the data needed to render the "Create Order" form.
+     * Get a single company by ID.
      */
-    public function getFormData(): array
-    {
-        return [
-            'statuses' => OrderStatus::orderBy('title')->get(['id', 'title', 'background_colour', 'text_colour']),
-            'orderableTypes' => $this->registry->types(),
-        ];
+    public function getById(
+        User $user,
+        int $id,
+        bool $withTrashed = false
+    ): array {
+        $company = $this->findCompany($id, $withTrashed);
+
+        return array_merge(
+            ['company' => $this->formatterService->format($company)],
+            $this->getPermissions($user),
+            $this->baseData(),
+        );
     }
 
     /**
-     * Get the "owner" options for a given contactable type, for the dependent dropdown on the Create/Edit order form.
+     * Get data needed to populate create and edit forms.
      */
-    public function getOrderableOptions(string $type): array
+    public function getCreateData(): array
     {
-        return $this->registry->optionsFor($type);
+        return [
+            'industries' => Industry::orderBy('title')->get(['id', 'title']),
+            'users' => User::orderBy('name')->get(['id', 'name']),
+        ];
     }
 
     /**
@@ -83,16 +73,14 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Order::query()
-            ->with(['orderable', 'creator', 'updater', 'deleter', 'restorer', 'status']);
-
+        $query = Company::query()->with(['creator', 'updater', 'deleter', 'restorer', 'industry']);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
     }
 
     /**
-     * Paginate the query and return as plain array.
+     * Paginate the query and return as a plain array.
      */
     protected function paginate(
         Builder $query,
@@ -101,9 +89,9 @@ class QueryService
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
-            'orders' => [
+            'companies' => [
                 'data' => array_map(
-                    fn (Order $order) => $this->formatterService->format($order),
+                    fn (Company $company) => $this->formatterService->format($company),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -130,8 +118,8 @@ class QueryService
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can('create', Order::class),
-                'can_view_any' => $user->can('viewAny', Order::class),
+                'can_create' => $user->can('create', Company::class),
+                'can_view_any' => $user->can('viewAny', Company::class),
             ],
         ];
     }
@@ -148,14 +136,13 @@ class QueryService
     }
 
     /**
-     * Find a order by ID with optional trashed records.
+     * Find a company by ID with optional trashed records.
      */
-    private function findOrder(
+    private function findCompany(
         int $id,
         bool $withTrashed = false
-    ): Order {
-        $query = Order::query()
-            ->with(['orderable', 'creator', 'updater', 'deleter', 'restorer', 'status']);
+    ): Company {
+        $query = Company::query()->with(['creator', 'updater', 'deleter', 'restorer', 'industry']);
 
         if ($withTrashed) {
             $query->withTrashed();
@@ -165,7 +152,7 @@ class QueryService
     }
 
     /**
-     * Apply trash filtering and sorting to the query.
+     * Apply sorting and trash filtering to the query.
      */
     private function applySorting(
         Builder $query,
@@ -178,7 +165,7 @@ class QueryService
 
         return $this->sortingService->applySorting(
             $query,
-            $filters['sort_by'] ?? 'ordered_at',
+            $filters['sort_by'] ?? 'name',
             $filters['sort_direction'] ?? 'asc'
         );
     }

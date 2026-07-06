@@ -8,22 +8,22 @@ import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import type {
-    Industry,
+    Company,
     Pagination as PaginationMeta,
     PermissionsMeta,
 } from '@/types';
 import {
-    index as industriesIndex,
-    create as industriesCreate,
-    show as industriesShow,
-    edit as industriesEdit,
-    destroy as industriesDestroy,
-} from '@/routes/industries';
-import industriesBulk from '@/routes/industries/bulk';
+    index as companiesIndex,
+    create as companiesCreate,
+    show as companiesShow,
+    edit as companiesEdit,
+    destroy as companiesDestroy,
+} from '@/routes/companies';
+import companiesBulk from '@/routes/companies/bulk';
 
 interface Props {
-    industries: {
-        data: Industry[];
+    companies: {
+        data: Company[];
         links: Array<{ url: string | null; label: string; active: boolean }>;
         meta: PaginationMeta;
     };
@@ -37,14 +37,14 @@ const props = defineProps<Props>();
 const filters = ref({
     search: '',
     trashed: '',
-    sort_by: 'title',
+    sort_by: 'name',
     sort_direction: 'asc',
 });
 
 const selectedIds = ref<Array<number | string>>([]);
 
 const deleteDialogOpen = ref(false);
-const selectedIndustryId = ref<number | null>(null);
+const selectedCompanyId = ref<number | null>(null);
 const deleteProcessing = ref(false);
 
 const bulkDeleteDialogOpen = ref(false);
@@ -52,16 +52,17 @@ const pendingBulkIds = ref<Array<number | string>>([]);
 const bulkDeleteProcessing = ref(false);
 
 const columns: ResourceTableColumn[] = [
-    { key: 'title', label: 'Title' },
-    { key: 'code', label: 'SIC Code' },
-    { key: 'description', label: 'Description' },
+    { key: 'name', label: 'Name' },
+    { key: 'industry', label: 'Industry' },
+    { key: 'email', label: 'Email' },
+    { key: 'phone', label: 'Phone' },
 ];
 
 const filterFields = [
     {
         key: 'search',
         type: 'text' as const,
-        placeholder: 'Search industries…',
+        placeholder: 'Search companies…',
     },
     {
         key: 'trashed',
@@ -96,30 +97,30 @@ const filterFields = [
 ];
 
 function applyFilters(): void {
-    router.get(industriesIndex.url(), filters.value, {
+    router.get(companiesIndex.url(), filters.value, {
         preserveState: true,
         replace: true,
     });
 }
 
 function requestDestroy(id: number): void {
-    selectedIndustryId.value = id;
+    selectedCompanyId.value = id;
     deleteDialogOpen.value = true;
 }
 
 function destroy(): void {
-    if (selectedIndustryId.value === null) {
+    if (selectedCompanyId.value === null) {
         return;
     }
 
     deleteProcessing.value = true;
 
-    router.delete(industriesDestroy.url(selectedIndustryId.value), {
+    router.delete(companiesDestroy.url(selectedCompanyId.value), {
         preserveScroll: true,
         onFinish: () => {
             deleteProcessing.value = false;
             deleteDialogOpen.value = false;
-            selectedIndustryId.value = null;
+            selectedCompanyId.value = null;
         },
     });
 }
@@ -141,7 +142,7 @@ function bulkDelete(): void {
     bulkDeleteProcessing.value = true;
 
     router.post(
-        industriesBulk.delete.url(),
+        companiesBulk.delete.url(),
         { ids: pendingBulkIds.value },
         {
             preserveScroll: true,
@@ -170,9 +171,9 @@ function truncate(value: string | null | undefined, length = 30): string {
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <IndexHeader
-                title="Industries"
-                :create-href="industriesCreate.url()"
-                create-label="Add Industry"
+                title="Companies"
+                :create-href="companiesCreate.url()"
+                create-label="Add Company"
                 :can-create="permissions_meta.can_create"
             />
 
@@ -184,11 +185,11 @@ function truncate(value: string | null | undefined, length = 30): string {
 
             <ResourceTable
                 v-model:selected="selectedIds"
-                :rows="industries.data"
+                :rows="companies.data"
                 :columns="columns"
                 row-key="id"
                 selectable
-                empty-message="No industries found."
+                empty-message="No companies found."
             >
                 <template #bulk-actions="{ selected }">
                     <button
@@ -200,23 +201,27 @@ function truncate(value: string | null | undefined, length = 30): string {
                     </button>
                 </template>
 
-                <template #cell-title="{ row }">
+                <template #cell-name="{ row }">
                     <span class="font-medium text-gray-300">
-                        {{ truncate(row.title, 30) }}
+                        {{ row.name }}
                     </span>
                 </template>
 
-                <template #cell-code="{ row }">
-                    {{ row.code ?? '—' }}
+                <template #cell-industry="{ row }">
+                    {{ truncate(row.industry?.title, 30) }}
                 </template>
 
-                <template #cell-description="{ row }">
-                    {{ truncate(row.description, 30) }}
+                <template #cell-email="{ row }">
+                    {{ row.email ?? '—' }}
+                </template>
+
+                <template #cell-phone="{ row }">
+                    {{ row.phone ?? '—' }}
                 </template>
 
                 <template #actions="{ row }">
-                    <Link :href="industriesShow.url(row.id)">View</Link>
-                    <Link :href="industriesEdit.url(row.id)">Edit</Link>
+                    <Link :href="companiesShow.url(row.id)">View</Link>
+                    <Link :href="companiesEdit.url(row.id)">Edit</Link>
                     <button
                         type="button"
                         class="text-red-600 hover:text-red-900"
@@ -228,16 +233,16 @@ function truncate(value: string | null | undefined, length = 30): string {
             </ResourceTable>
 
             <Pagination
-                :meta="industries.meta"
-                :links="industries.links"
-                resource-label="industries"
+                :meta="companies.meta"
+                :links="companies.links"
+                resource-label="companies"
             />
         </div>
 
         <ConfirmDialog
             v-model:open="deleteDialogOpen"
-            title="Delete industry"
-            description="This industry will be moved to trash."
+            title="Delete company"
+            description="This company will be moved to trash."
             confirm-label="Delete"
             :processing="deleteProcessing"
             @confirm="destroy"
@@ -245,8 +250,8 @@ function truncate(value: string | null | undefined, length = 30): string {
 
         <ConfirmDialog
             v-model:open="bulkDeleteDialogOpen"
-            title="Delete industries"
-            :description="`${pendingBulkIds.length} industry(ies) will be moved to trash.`"
+            title="Delete companies"
+            :description="`${pendingBulkIds.length} company(ies) will be moved to trash.`"
             confirm-label="Delete"
             :processing="bulkDeleteProcessing"
             @confirm="bulkDelete"

@@ -353,6 +353,11 @@ class IndustrySeeder extends Seeder
                 'description' => 'Educational activities not classified elsewhere, such as training courses.',
             ],
             [
+                'title' => 'General medical practice activities',
+                'code' => '86210',
+                'description' => 'Provision of outpatient medical consultation and treatment by general practitioners.',
+            ],
+            [
                 'title' => 'Dental practice activities',
                 'code' => '86230',
                 'description' => 'Provision of dental treatment and oral healthcare services.',
