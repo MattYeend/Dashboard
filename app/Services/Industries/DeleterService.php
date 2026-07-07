@@ -24,9 +24,12 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function delete(Industry $industry, int $deletedBy): bool
-    {
-        $actor = User::findOrFail($deletedBy);
+    public function delete(
+        Industry $industry,
+        int $deletedBy,
+        ?User $actor = null
+    ): bool {
+        $actor ??= User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
             $industry,
@@ -39,7 +42,7 @@ class DeleterService
                     Log::ACTION_DELETE_INDUSTRY,
                     $actor,
                     $industry,
-                    ['before' => $industry->toArray()],
+                    ['before' => $this->auditLogService->snapshot($industry)],
                 );
             });
     }
@@ -60,7 +63,7 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_INDUSTRY,
                     $actor,
                     $industry,
-                    ['before' => $industry->toArray()],
+                    ['before' => $this->auditLogService->snapshot($industry)],
                 );
             });
     }
@@ -75,10 +78,11 @@ class DeleterService
         $count = 0;
 
         DB::transaction(function () use ($industryIds, $deletedBy, &$count) {
+            $actor = User::findOrFail($deletedBy);
             $industries = Industry::whereIn('id', $industryIds)->get();
 
             foreach ($industries as $industry) {
-                if ($this->delete($industry, $deletedBy)) {
+                if ($this->delete($industry, $deletedBy, $actor)) {
                     $count++;
                 }
             }

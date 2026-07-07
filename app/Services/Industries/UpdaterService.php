@@ -35,17 +35,13 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($industry);
 
-        $taskData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $industryData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
 
         return $this->updateResource->handle(
             $industry,
-            $taskData,
-            function (Industry $industry) use ($actor, $before, $updatedBy): void {
+            $industryData,
+            function (Industry $industry) use ($actor, $before): void {
                 $fresh = $industry->fresh();
-
-                $industry->updated_by = $updatedBy;
-                $industry->updated_at = now();
-                $industry->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_UPDATE_INDUSTRY,

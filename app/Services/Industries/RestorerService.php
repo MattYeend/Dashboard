@@ -25,9 +25,12 @@ class RestorerService
      *
      * @throws \Exception
      */
-    public function restore(Industry $industry, int $restoredBy): Industry
-    {
-        $actor = User::findOrFail($restoredBy);
+    public function restore(
+        Industry $industry,
+        int $restoredBy,
+        ?User $actor = null
+    ): Industry {
+        $actor ??= User::findOrFail($restoredBy);
 
         return $this->restoreResource->handle(
             $industry,
@@ -40,7 +43,7 @@ class RestorerService
                     Log::ACTION_RESTORE_INDUSTRY,
                     $actor,
                     $industry,
-                    ['before' => $industry->toArray()],
+                    ['before' => $this->auditLogService->snapshot($industry)],
                 );
             });
     }
@@ -57,6 +60,8 @@ class RestorerService
         $count = 0;
 
         DB::transaction(function () use ($industryIds, $restoredBy, &$count) {
+            $actor = User::findOrFail($restoredBy);
+
             /** @var Collection<int, Industry> $industries */
             $industries = Industry::withTrashed()
                 ->whereIn('id', $industryIds)
@@ -64,7 +69,7 @@ class RestorerService
 
             foreach ($industries as $industry) {
                 if ($industry->trashed()) {
-                    $this->restore($industry, $restoredBy);
+                    $this->restore($industry, $restoredBy, $actor);
                     $count++;
                 }
             }

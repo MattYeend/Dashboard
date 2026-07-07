@@ -34,34 +34,18 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Industry {
-                $taskData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $industryData = $this->dataPreparation->prepareForCreation($data, $createdBy);
 
-                $newIndustry = Industry::create($taskData);
-
-                $newIndustry->created_by = $createdBy;
-                $newIndustry->created_at = now();
-                $newIndustry->save();
+                $newIndustry = Industry::create($industryData);
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_INDUSTRY,
                     $actor,
                     $newIndustry,
-                    ['after' => $newIndustry->toArray()],
+                    ['after' => $this->auditLogService->snapshot($newIndustry)],
                 );
 
                 return $newIndustry;
             });
-    }
-
-    /**
-     * Create the industry record.
-     *
-     * @param  array<string, mixed>  $data
-     */
-    protected function createIndustry(array $data, int $createdBy): Industry
-    {
-        $industryData = $this->dataPreparation->prepareForCreation($data, $createdBy);
-
-        return Industry::create($industryData);
     }
 }
