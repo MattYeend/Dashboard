@@ -27,9 +27,10 @@ class RestorerService
      */
     public function restore(
         Contact $contact,
-        int $restoredBy
+        int $restoredBy,
+        ?User $actor = null
     ): Contact {
-        $actor = User::findOrFail($restoredBy);
+        $actor ??= User::findOrFail($restoredBy);
 
         return $this->restoreResource->handle(
             $contact,
@@ -42,7 +43,7 @@ class RestorerService
                     Log::ACTION_RESTORE_CONTACT,
                     $actor,
                     $contact,
-                    ['before' => $contact->toArray()],
+                    ['before' => $this->auditLogService->snapshot($contact)],
                 );
             });
     }
@@ -61,6 +62,8 @@ class RestorerService
         $count = 0;
 
         DB::transaction(function () use ($contactIds, $restoredBy, &$count) {
+            $actor = User::findOrFail($restoredBy);
+
             /** @var Collection<int,Contact> $contacts */
             $contacts = Contact::withTrashed()
                 ->whereIn('id', $contactIds)
@@ -68,7 +71,7 @@ class RestorerService
 
             foreach ($contacts as $contact) {
                 if ($contact->trashed()) {
-                    $this->restore($contact, $restoredBy);
+                    $this->restore($contact, $restoredBy, $actor);
                     $count++;
                 }
             }

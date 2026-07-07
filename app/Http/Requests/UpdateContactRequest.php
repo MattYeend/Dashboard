@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
 use App\Services\Contacts\ContactableTypeRegistryService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -206,11 +205,21 @@ class UpdateContactRequest extends FormRequest
     {
         return [
             function (Validator $validator): void {
-                if ($this->input('contactable_type') !== 'user') {
+                $type = $this->input('contactable_type');
+                $id = $this->input('contactable_id');
+
+                if (! $type || ! $id) {
                     return;
                 }
 
-                if (! User::whereKey($this->input('contactable_id'))->exists()) {
+                $modelClass = app(ContactableTypeRegistryService::class)
+                    ->modelClassForKey($type);
+
+                if (! $modelClass) {
+                    return;
+                }
+
+                if (! $modelClass::whereKey($id)->exists()) {
                     $validator->errors()->add(
                         'contactable_id',
                         'The selected contact owner does not exist.'

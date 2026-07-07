@@ -40,12 +40,8 @@ class UpdaterService
         return $this->updateResource->handle(
             $contact,
             $contactData,
-            function (Contact $contact) use ($actor, $before, $updatedBy): void {
+            function (Contact $contact) use ($actor, $before): void {
                 $fresh = $contact->fresh();
-
-                $contact->updated_by = $updatedBy;
-                $contact->updated_at = now();
-                $contact->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_UPDATE_CONTACT,
