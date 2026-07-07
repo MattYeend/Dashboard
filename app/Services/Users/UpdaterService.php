@@ -39,16 +39,12 @@ class UpdaterService
         return $this->updateResource->handle(
             $user,
             $userData,
-            function (User $user) use ($actor, $before, $userData, $updatedBy): void {
+            function (User $user) use ($actor, $before, $userData): void {
                 if (isset($userData['role'])) {
                     $user->assignApplicationRole($userData['role']);
                 }
 
                 $fresh = $user->fresh();
-
-                $user->updated_by = $updatedBy;
-                $user->updated_at = now();
-                $user->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_UPDATE_USER,

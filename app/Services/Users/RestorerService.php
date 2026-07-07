@@ -26,9 +26,10 @@ class RestorerService
      */
     public function restore(
         User $user,
-        int $restoredBy
+        int $restoredBy,
+        ?User $actor = null
     ): User {
-        $actor = User::findOrFail($restoredBy);
+        $actor ??= User::findOrFail($restoredBy);
 
         return $this->restoreResource->handle(
             $user,
@@ -36,11 +37,12 @@ class RestorerService
                 $user->restored_by = $restoredBy;
                 $user->restored_at = now();
                 $user->save();
+
                 $this->auditLogService->record(
                     Log::ACTION_RESTORE_USER,
                     $actor,
                     $user,
-                    ['before' => $user->toArray()],
+                    ['before' => $this->auditLogService->snapshot($user)],
                     relatedUser: $user,
                 );
             });
