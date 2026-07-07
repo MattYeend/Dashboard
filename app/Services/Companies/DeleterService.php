@@ -24,9 +24,12 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function delete(Company $company, int $deletedBy): bool
-    {
-        $actor = User::findOrFail($deletedBy);
+    public function delete(
+        Company $company,
+        int $deletedBy,
+        ?User $actor = null
+    ): bool {
+        $actor ??= User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
             $company,
@@ -39,7 +42,7 @@ class DeleterService
                     Log::ACTION_DELETE_COMPANY,
                     $actor,
                     $company,
-                    ['before' => $company->toArray()],
+                    ['before' => $this->auditLogService->snapshot($company)],
                 );
             });
     }
@@ -60,7 +63,7 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_COMPANY,
                     $actor,
                     $company,
-                    ['before' => $company->toArray()],
+                    ['before' => $this->auditLogService->snapshot($company)],
                 );
             });
     }
@@ -75,10 +78,11 @@ class DeleterService
         $count = 0;
 
         DB::transaction(function () use ($companyIds, $deletedBy, &$count) {
+            $actor = User::findOrFail($deletedBy);
             $companies = Company::whereIn('id', $companyIds)->get();
 
             foreach ($companies as $company) {
-                if ($this->delete($company, $deletedBy)) {
+                if ($this->delete($company, $deletedBy, $actor)) {
                     $count++;
                 }
             }
