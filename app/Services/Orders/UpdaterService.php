@@ -35,17 +35,13 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($order);
 
-        $contactData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $orderData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
 
         return $this->updateResource->handle(
             $order,
-            $contactData,
-            function (Order $order) use ($actor, $before, $updatedBy): void {
+            $orderData,
+            function (Order $order) use ($actor, $before): void {
                 $fresh = $order->fresh();
-
-                $order->updated_by = $updatedBy;
-                $order->updated_at = now();
-                $order->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_UPDATE_ORDER,
