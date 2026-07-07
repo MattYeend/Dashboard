@@ -38,32 +38,14 @@ class CreatorService
 
                 $newOrderStatus = OrderStatus::create($orderStatusData);
 
-                $newOrderStatus->created_by = $createdBy;
-                $newOrderStatus->created_at = now();
-                $newOrderStatus->save();
-
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_ORDER_STATUS,
                     $actor,
                     $newOrderStatus,
-                    ['after' => $newOrderStatus->toArray()],
+                    ['after' => $this->auditLogService->snapshot($newOrderStatus)],
                 );
 
                 return $newOrderStatus;
             });
-    }
-
-    /**
-     * Create the orderStatus record.
-     *
-     * @param  array<string, mixed>  $data
-     */
-    protected function createContact(array $data, int $createdBy): OrderStatus
-    {
-        $contactData = $this->dataPreparation->prepareForCreation(
-            $data, $createdBy
-        );
-
-        return OrderStatus::create($contactData);
     }
 }
