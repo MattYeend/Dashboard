@@ -40,12 +40,8 @@ class UpdaterService
         return $this->updateResource->handle(
             $task,
             $taskData,
-            function (Task $task) use ($actor, $before, $updatedBy): void {
+            function (Task $task) use ($actor, $before): void {
                 $fresh = $task->fresh();
-
-                $task->updated_by = $updatedBy;
-                $task->updated_at = now();
-                $task->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_UPDATE_TASK,

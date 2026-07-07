@@ -40,7 +40,7 @@ class UpdaterService
         return $this->updateResource->handle(
             $taskStatus,
             $taskStatusData,
-            function (TaskStatus $taskStatus) use ($actor, $before, $updatedBy): void {
+            function (TaskStatus $taskStatus) use ($actor, $before): void {
                 $fresh = $taskStatus->fresh();
 
                 $this->auditLogService->record(

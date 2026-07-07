@@ -24,9 +24,9 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function delete(Task $task, int $deletedBy): bool
+    public function delete(Task $task, int $deletedBy, ?User $actor = null): bool
     {
-        $actor = User::findOrFail($deletedBy);
+        $actor ??= User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
             $task,
@@ -39,7 +39,7 @@ class DeleterService
                     Log::ACTION_DELETE_TASK,
                     $actor,
                     $task,
-                    ['before' => $task->toArray()],
+                    ['before' => $this->auditLogService->snapshot($task)],
                 );
             });
     }
@@ -60,7 +60,7 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_TASK,
                     $actor,
                     $task,
-                    ['before' => $task->toArray()],
+                    ['before' => $this->auditLogService->snapshot($task)],
                 );
             });
     }
@@ -75,10 +75,11 @@ class DeleterService
         $count = 0;
 
         DB::transaction(function () use ($taskIds, $deletedBy, &$count) {
+            $actor = User::findOrFail($deletedBy);
             $tasks = Task::whereIn('id', $taskIds)->get();
 
             foreach ($tasks as $task) {
-                if ($this->delete($task, $deletedBy)) {
+                if ($this->delete($task, $deletedBy, $actor)) {
                     $count++;
                 }
             }

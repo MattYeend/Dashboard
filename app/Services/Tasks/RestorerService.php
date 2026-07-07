@@ -25,9 +25,12 @@ class RestorerService
      *
      * @throws \Exception
      */
-    public function restore(Task $task, int $restoredBy): Task
-    {
-        $actor = User::findOrFail($restoredBy);
+    public function restore(
+        Task $task,
+        int $restoredBy,
+        ?User $actor = null
+    ): Task {
+        $actor ??= User::findOrFail($restoredBy);
 
         return $this->restoreResource->handle(
             $task,
@@ -40,7 +43,7 @@ class RestorerService
                     Log::ACTION_RESTORE_TASK,
                     $actor,
                     $task,
-                    ['before' => $task->toArray()],
+                    ['before' => $this->auditLogService->snapshot($task)],
                 );
             });
     }
@@ -57,6 +60,8 @@ class RestorerService
         $count = 0;
 
         DB::transaction(function () use ($taskIds, $restoredBy, &$count) {
+            $actor = User::findOrFail($restoredBy);
+
             /** @var Collection<int, Task> $tasks */
             $tasks = Task::withTrashed()
                 ->whereIn('id', $taskIds)
@@ -64,7 +69,7 @@ class RestorerService
 
             foreach ($tasks as $task) {
                 if ($task->trashed()) {
-                    $this->restore($task, $restoredBy);
+                    $this->restore($task, $restoredBy, $actor);
                     $count++;
                 }
             }
