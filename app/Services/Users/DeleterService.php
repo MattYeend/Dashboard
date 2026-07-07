@@ -83,10 +83,11 @@ class DeleterService
         $count = 0;
 
         DB::transaction(function () use ($userIds, $deletedBy, &$count) {
+            $actor = User::findOrFail($deletedBy);
             $users = User::whereIn('id', $userIds)->get();
 
             foreach ($users as $user) {
-                if ($this->delete($user, $deletedBy)) {
+                if ($this->delete($user, $deletedBy, $actor)) {
                     $count++;
                 }
             }

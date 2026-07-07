@@ -62,6 +62,8 @@ class RestorerService
         $count = 0;
 
         DB::transaction(function () use ($userIds, $restoredBy, &$count) {
+            $actor = User::findOrFail($restoredBy);
+
             /** @var Collection<int,User> $users */
             $users = User::withTrashed()
                 ->whereIn('id', $userIds)
@@ -69,7 +71,7 @@ class RestorerService
 
             foreach ($users as $user) {
                 if ($user->trashed()) {
-                    $this->restore($user, $restoredBy);
+                    $this->restore($user, $restoredBy, $actor);
                     $count++;
                 }
             }

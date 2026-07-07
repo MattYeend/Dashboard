@@ -38,32 +38,14 @@ class CreatorService
 
                 $newTaskStatus = TaskStatus::create($taskStatusData);
 
-                $newTaskStatus->created_by = $createdBy;
-                $newTaskStatus->created_at = now();
-                $newTaskStatus->save();
-
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_TASK_STATUS,
                     $actor,
                     $newTaskStatus,
-                    ['after' => $newTaskStatus->toArray()],
+                    ['after' => $this->auditLogService->snapshot($newTaskStatus)],
                 );
 
                 return $newTaskStatus;
             });
-    }
-
-    /**
-     * Create the taskStatus record.
-     *
-     * @param  array<string, mixed>  $data
-     */
-    protected function createContact(array $data, int $createdBy): TaskStatus
-    {
-        $contactData = $this->dataPreparation->prepareForCreation(
-            $data, $createdBy
-        );
-
-        return TaskStatus::create($contactData);
     }
 }

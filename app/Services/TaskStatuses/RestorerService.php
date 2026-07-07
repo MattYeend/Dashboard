@@ -27,9 +27,10 @@ class RestorerService
      */
     public function restore(
         TaskStatus $taskStatus,
-        int $restoredBy
+        int $restoredBy,
+        ?User $actor = null,
     ): TaskStatus {
-        $actor = User::findOrFail($restoredBy);
+        $actor ??= User::findOrFail($restoredBy);
 
         return $this->restoreResource->handle(
             $taskStatus,
@@ -42,7 +43,7 @@ class RestorerService
                     Log::ACTION_RESTORE_TASK_STATUS,
                     $actor,
                     $taskStatus,
-                    ['before' => $taskStatus->toArray()],
+                    ['before' => $this->auditLogService->snapshot($taskStatus)],
                 );
             });
     }
@@ -61,6 +62,8 @@ class RestorerService
         $count = 0;
 
         DB::transaction(function () use ($taskStatusIds, $restoredBy, &$count) {
+            $actor = User::findOrFail($restoredBy);
+
             /** @var Collection<int,TaskStatus> $taskStatuses */
             $taskStatuses = TaskStatus::withTrashed()
                 ->whereIn('id', $taskStatusIds)
@@ -68,7 +71,7 @@ class RestorerService
 
             foreach ($taskStatuses as $taskStatus) {
                 if ($taskStatus->trashed()) {
-                    $this->restore($taskStatus, $restoredBy);
+                    $this->restore($taskStatus, $restoredBy, $actor);
                     $count++;
                 }
             }
