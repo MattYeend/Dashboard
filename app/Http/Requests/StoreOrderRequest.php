@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Models\Order;
-use App\Models\User;
 use App\Services\Orders\OrderableTypeRegistryService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -54,8 +53,7 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'orderable_type.required' => 'The orderable type is required.',
-            'orderable_type.string' => 'The orderable type must be a
-                 string.',
+            'orderable_type.string' => 'The orderable type must be a string.',
             'orderable_id.required' => 'The orderable ID is required.',
             'orderable_id.integer' => 'The orderable ID must be an integer.',
             'orderable_id.min' => 'The orderable ID must be at least 1.',
@@ -64,8 +62,7 @@ class StoreOrderRequest extends FormRequest
             'title.required' => 'The title is required.',
             'title.max' => 'The title may not exceed 255 characters.',
             'subtotal.min' => 'The subtotal cannot be negative.',
-            'discount_amount.min' => 'The discount amount cannot be
-                 negative.',
+            'discount_amount.min' => 'The discount amount cannot be negative.',
             'tax_amount.min' => 'The tax amount cannot be negative.',
             'total_amount.min' => 'The total amount cannot be negative.',
             'status_id.exists' => 'The selected status does not exist.',
@@ -252,7 +249,7 @@ class StoreOrderRequest extends FormRequest
         return [
             'nullable',
             'integer',
-            Rule::exists('order_statuses', 'id'),
+            Rule::exists('order_statuses', 'id')->whereNull('deleted_at'),
         ];
     }
 
@@ -276,11 +273,21 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             function (Validator $validator): void {
-                if ($this->input('orderable_type') !== 'user') {
+                $type = $this->input('orderable_type');
+                $id = $this->input('orderable_id');
+
+                if (! $type || ! $id) {
                     return;
                 }
 
-                if (! User::whereKey($this->input('orderable_id'))->exists()) {
+                $modelClass = app(OrderableTypeRegistryService::class)
+                    ->modelClassForKey($type);
+
+                if (! $modelClass) {
+                    return;
+                }
+
+                if (! $modelClass::whereKey($id)->exists()) {
                     $validator->errors()->add(
                         'orderable_id',
                         'The selected order owner does not exist.'
