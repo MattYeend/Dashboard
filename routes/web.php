@@ -5,12 +5,17 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
+use App\Http\Controllers\PlanController;
+use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Welcome')->name('home');
+
+Route::post('stripe/webhook', [StripeWebhookController::class, 'handleWebhook'])
+    ->name('stripe.webhook');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
@@ -137,6 +142,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{company}/edit', [CompanyController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{company}', [CompanyController::class, 'update'])->name('update');
         Route::delete('/{company}', [CompanyController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('plans')->name('plans.')->group(function () {
+        Route::post('/bulk/delete', [PlanController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [PlanController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [PlanController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [PlanController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [PlanController::class, 'index'])->name('index');
+        Route::get('/create', [PlanController::class, 'create'])->name('create');
+        Route::post('/', [PlanController::class, 'store'])->name('store');
+        Route::get('/{plan}', [PlanController::class, 'show'])->name('show');
+        Route::get('/{plan}/edit', [PlanController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{plan}', [PlanController::class, 'update'])->name('update');
+        Route::delete('/{plan}', [PlanController::class, 'destroy'])->name('destroy');
     });
 });
 
