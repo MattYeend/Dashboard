@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Laravel\Cashier\Billable;
 
 /**
  * @property int $id
@@ -58,7 +59,8 @@ class Company extends Model implements Auditable
      * @use HasFactory<CompanyFactory>
      */
     use HasFactory,
-        SoftDeletes;
+        SoftDeletes,
+        Billable;
 
     /**
      * Get the industry this company belongs to.
