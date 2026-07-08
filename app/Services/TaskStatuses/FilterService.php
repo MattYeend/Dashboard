@@ -3,10 +3,13 @@
 namespace App\Services\TaskStatuses;
 
 use App\Models\TaskStatus;
+use App\Services\EscapesLikeValues;
 use Illuminate\Database\Eloquent\Builder;
 
 class FilterService
 {
+    use EscapesLikeValues;
+
     /**
      * Apply a search filter to the query.
      *
@@ -18,6 +21,8 @@ class FilterService
         if ($search === null) {
             return $query;
         }
+
+        $search = $this->escapeLikeValue($search);
 
         return $query->where(function (Builder $q) use ($search): void {
             $q->where('title', 'like', "%{$search}%")
