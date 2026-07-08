@@ -40,12 +40,8 @@ class UpdaterService
         return $this->updateResource->handle(
             $industry,
             $taskData,
-            function (Industry $industry) use ($actor, $before, $updatedBy): void {
+            function (Industry $industry) use ($actor, $before): void {
                 $fresh = $industry->fresh();
-
-                $industry->updated_by = $updatedBy;
-                $industry->updated_at = now();
-                $industry->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_UPDATE_INDUSTRY,

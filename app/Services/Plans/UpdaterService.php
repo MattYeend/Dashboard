@@ -40,12 +40,8 @@ class UpdaterService
         return $this->updateResource->handle(
             $plan,
             $planData,
-            function (Plan $plan) use ($actor, $before, $updatedBy): void {
+            function (Plan $plan) use ($actor, $before): void {
                 $fresh = $plan->fresh();
-
-                $plan->updated_by = $updatedBy;
-                $plan->updated_at = now();
-                $plan->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_UPDATE_PLAN,

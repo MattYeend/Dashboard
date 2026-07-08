@@ -40,12 +40,8 @@ class UpdaterService
         return $this->updateResource->handle(
             $order,
             $contactData,
-            function (Order $order) use ($actor, $before, $updatedBy): void {
+            function (Order $order) use ($actor, $before): void {
                 $fresh = $order->fresh();
-
-                $order->updated_by = $updatedBy;
-                $order->updated_at = now();
-                $order->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_UPDATE_ORDER,
