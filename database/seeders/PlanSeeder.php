@@ -14,12 +14,18 @@ class PlanSeeder extends Seeder
      */
     public function run(): void
     {
+        if (Plan::exists()) {
+            $this->command->info('Plans already seeded, skipping...');
+
+            return;
+        }
+
         $stripeService = app(StripeService::class);
 
         $plans = [
             [
                 'name' => 'Starter',
-                'description' => 'Essential features for small teams getting started. Includes core dashboard access, up to 5 projects, and email support.', 
+                'description' => 'Essential features for small teams getting started. Includes core dashboard access, up to 5 projects, and email support.',
                 'price_per_user_per_month' => 2500,
                 'is_active' => true,
             ],

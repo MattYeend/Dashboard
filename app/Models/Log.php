@@ -249,19 +249,19 @@ class Log extends Model
     public const ACTION_CREATE_PLAN = 113;
 
     public const ACTION_UPDATE_PLAN = 114;
-    
+
     public const ACTION_VIEW_PLAN = 115;
-    
+
     public const ACTION_DELETE_PLAN = 116;
-    
+
     public const ACTION_FORCE_DELETE_PLAN = 117;
-    
+
     public const ACTION_RESTORE_PLAN = 118;
-    
+
     public const ACTION_IMPORT_PLAN = 119;
-    
+
     public const ACTION_EXPORT_PLAN = 120;
-    
+
     public const ACTION_PLAN_UPDATED_BY_CRON = 121;
 
     // New Logging Actions should go here to be reviewed

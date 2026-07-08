@@ -2,8 +2,8 @@
 
 namespace App\Services\Plans;
 
-use App\Services\EscapesLikeValues;
 use App\Models\Plan;
+use App\Services\EscapesLikeValues;
 use Illuminate\Database\Eloquent\Builder;
 
 class FilterService

@@ -24,7 +24,6 @@ class FilterService
 
         $search = $this->escapeLikeValue($search);
 
-
         return $query->where(function (Builder $q) use ($search): void {
             $q->where('phone', 'like', "%{$search}%")
                 ->orWhere('email', 'like', "%{$search}%")

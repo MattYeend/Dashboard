@@ -18,7 +18,7 @@ class PlanFactory extends Factory
      */
     public function definition(): array
     {
-        $name = 'Plan ' . strtoupper(Str::random(4));
+        $name = 'Plan '.strtoupper(Str::random(4));
 
         return [
             'name' => $name,

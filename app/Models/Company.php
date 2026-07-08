@@ -58,9 +58,9 @@ class Company extends Model implements Auditable
     /**
      * @use HasFactory<CompanyFactory>
      */
-    use HasFactory,
-        SoftDeletes,
-        Billable;
+    use Billable,
+        HasFactory,
+        SoftDeletes;
 
     /**
      * Get the industry this company belongs to.
