@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
+import { index as industriesIndex } from '@/routes/industries';
 import IndustryBasicDetailsForm from './IndustryBasicDetailsForm.vue';
 import IndustryDescriptionForm from './IndustryDescriptionForm.vue';
-import { index as industriesIndex } from '@/routes/industries';
 
 export interface IndustryFormData {
     title: string;

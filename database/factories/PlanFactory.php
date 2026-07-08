@@ -30,4 +30,14 @@ class PlanFactory extends Factory
             'is_active' => true,
         ];
     }
+
+    /**
+     * Indicate that the plan is soft-deleted.
+     */
+    public function deleted(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'deleted_at' => now(),
+        ]);
+    }
 }

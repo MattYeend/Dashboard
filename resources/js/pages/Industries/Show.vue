@@ -2,14 +2,14 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import type { Industry, PermissionsMeta } from '@/types';
-import IndustryAuditDetails from './components/IndustryAuditDetails.vue';
-import IndustryBasicDetails from './components/IndustryBasicDetails.vue';
 import {
     edit as industriesEdit,
     destroy as industriesDestroy,
     index as industriesIndex,
 } from '@/routes/industries';
+import type { Industry, PermissionsMeta } from '@/types';
+import IndustryAuditDetails from './components/IndustryAuditDetails.vue';
+import IndustryBasicDetails from './components/IndustryBasicDetails.vue';
 
 interface Props {
     industry: Industry;

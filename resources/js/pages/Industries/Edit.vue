@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
+import { update as industriesUpdate } from '@/routes/industries';
 import type { Industry } from '@/types';
 import IndustryForm from './components/IndustryForm.vue';
 import type { IndustryFormData } from './components/IndustryForm.vue';
-import { update as industriesUpdate } from '@/routes/industries';
 
 const props = defineProps<{
     industry: Industry;

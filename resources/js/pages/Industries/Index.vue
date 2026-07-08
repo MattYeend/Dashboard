@@ -7,11 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import type {
-    Industry,
-    Pagination as PaginationMeta,
-    PermissionsMeta,
-} from '@/types';
 import {
     index as industriesIndex,
     create as industriesCreate,
@@ -20,6 +15,11 @@ import {
     destroy as industriesDestroy,
 } from '@/routes/industries';
 import industriesBulk from '@/routes/industries/bulk';
+import type {
+    Industry,
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+} from '@/types';
 
 interface Props {
     industries: {
