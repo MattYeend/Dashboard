@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Plan;
+namespace App\Services\Plans;
 
-class QueryService
+class ActiveCheckerService
 {
     public function __construct()
     {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Plan;
+namespace App\Services\Plans;
 
-class FormatterService
+class PolicyAuthorisationService
 {
     public function __construct()
     {

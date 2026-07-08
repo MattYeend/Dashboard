@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Plan;
+namespace App\Services\Plans;
 
-class StripeService
+class CreatorService
 {
     public function __construct()
     {

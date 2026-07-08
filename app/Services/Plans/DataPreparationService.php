@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Plan;
+namespace App\Services\Plans;
 
-class ManagementService
+class DataPreparationService
 {
     public function __construct()
     {

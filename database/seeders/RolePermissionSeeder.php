@@ -205,6 +205,15 @@ class RolePermissionSeeder extends Seeder
             'import companies',
             'export companies',
             'change company industry',
+
+            // Plan management
+            'view any plans',
+            'view plans',
+            'create plans',
+            'edit plans',
+            'delete plans',
+            'restore plans',
+            'force delete plans',
         ];
 
         foreach ($permissions as $permission) {
@@ -347,6 +356,13 @@ class RolePermissionSeeder extends Seeder
             'import companies',
             'export companies',
             'change company industry',
+            'view any plans',
+            'view plans',
+            'create plans',
+            'edit plans',
+            'delete plans',
+            'restore plans',
+            'force delete plans',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -453,6 +469,10 @@ class RolePermissionSeeder extends Seeder
             'import companies',
             'export companies',
             'change company industry',
+            'view any plans',
+            'view plans',
+            'create plans',
+            'edit plans',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -742,6 +762,8 @@ class RolePermissionSeeder extends Seeder
             'view order',
             'view industries',
             'view companies',
+            'view any plans',
+            'view plans',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -798,5 +820,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Orders');
         $this->command->info('- Industries');
         $this->command->info('- Companies');
+        $this->command->info('- Plans');
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Plan;
+namespace App\Services\Plans;
 
-class UpdaterService
+class RestorerService
 {
     public function __construct()
     {

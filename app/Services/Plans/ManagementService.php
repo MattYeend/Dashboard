@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Plan;
+namespace App\Services\Plans;
 
-class ActiveCheckerService
+class ManagementService
 {
     public function __construct()
     {
