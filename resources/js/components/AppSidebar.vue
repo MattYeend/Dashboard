@@ -4,6 +4,7 @@ import {
     BookOpen,
     ClipboardList,
     Contact2,
+    CreditCard,
     FolderGit2,
     LayoutGrid,
     User2,
@@ -22,15 +23,16 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { index as companiesIndex } from '@/routes/companies';
 import { index as contactsIndex } from '@/routes/contacts';
+import { index as industriesIndex } from '@/routes/industries';
+import { index as plansIndex } from '@/routes/plans';
 import { index as orderStatusesIndex } from '@/routes/order-statuses';
 import { index as ordersIndex } from '@/routes/orders';
 import { index as taskStatusesIndex } from '@/routes/task-statuses';
 import { index as tasksIndex } from '@/routes/tasks';
 import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
-import { index as companiesIndex } from '@/routes/companies';
-import { index as industriesIndex } from '@/routes/industries';
 
 const mainNavItems: NavItem[] = [
     {
@@ -57,6 +59,11 @@ const mainNavItems: NavItem[] = [
                 href: industriesIndex.url(),
             },
         ],
+    },
+    {
+        title: 'Plans',
+        href: plansIndex.url(),
+        icon: CreditCard,
     },
     {
         title: 'Orders',
