@@ -32,6 +32,10 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
+            if ($request->is('stripe/webhook')) {
+                return $response;
+            }
+
             $status = $response->getStatusCode();
 
             $renderableStatuses = [

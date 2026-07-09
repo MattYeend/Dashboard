@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use Laravel\Cashier\Http\Controllers\WebhookController as CashierWebhookController;
 use Symfony\Component\HttpFoundation\Response;
 
-class StripeWebhookController extends Controller
+class StripeWebhookController extends CashierWebhookController
 {
     /**
      * Handle a Stripe 'price.updated' webhook event.
