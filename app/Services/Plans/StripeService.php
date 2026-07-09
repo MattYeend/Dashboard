@@ -24,7 +24,7 @@ class StripeService
         $product = $stripe->products->create([
             'name' => $plan->name,
             'description' => $plan->description,
-            'active' => $plan->is_active,
+            'active' => (bool) $plan->is_active,
         ]);
 
         $price = $stripe->prices->create([
