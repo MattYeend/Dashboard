@@ -25,9 +25,10 @@ class DeleterService
      */
     public function delete(
         User $user,
-        int $deletedBy
+        int $deletedBy,
+        ?User $actor = null
     ): bool {
-        $actor = User::findOrFail($deletedBy);
+        $actor ??= User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
             $user,
@@ -40,7 +41,7 @@ class DeleterService
                     Log::ACTION_DELETE_USER,
                     $actor,
                     $user,
-                    ['before' => $user->toArray()],
+                    ['before' => $this->auditLogService->snapshot($user)],
                     relatedUser: $user,
                 );
             });
@@ -82,10 +83,11 @@ class DeleterService
         $count = 0;
 
         DB::transaction(function () use ($userIds, $deletedBy, &$count) {
+            $actor = User::findOrFail($deletedBy);
             $users = User::whereIn('id', $userIds)->get();
 
             foreach ($users as $user) {
-                if ($this->delete($user, $deletedBy)) {
+                if ($this->delete($user, $deletedBy, $actor)) {
                     $count++;
                 }
             }

@@ -41,15 +41,11 @@ class CreatorService
                 $newUser->plainPassword = $userData['password'];
                 $newUser->assignApplicationRole($displayRole);
 
-                $newUser->created_by = $createdBy;
-                $newUser->created_at = now();
-                $newUser->save();
-
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_USER,
                     $actor,
                     $newUser,
-                    ['after' => $newUser->toArray()],
+                    ['after' => $this->auditLogService->snapshot($newUser)],
                     relatedUser: $newUser,
                 );
 

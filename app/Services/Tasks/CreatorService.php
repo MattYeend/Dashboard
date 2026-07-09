@@ -38,30 +38,14 @@ class CreatorService
 
                 $newTask = Task::create($taskData);
 
-                $newTask->created_by = $createdBy;
-                $newTask->created_at = now();
-                $newTask->save();
-
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_TASK,
                     $actor,
                     $newTask,
-                    ['after' => $newTask->toArray()],
+                    ['after' => $this->auditLogService->snapshot($newTask)],
                 );
 
                 return $newTask;
             });
-    }
-
-    /**
-     * Create the task record.
-     *
-     * @param  array<string, mixed>  $data
-     */
-    protected function createTask(array $data, int $createdBy): Task
-    {
-        $taskData = $this->dataPreparation->prepareForCreation($data, $createdBy);
-
-        return Task::create($taskData);
     }
 }

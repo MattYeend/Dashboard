@@ -26,9 +26,10 @@ class DeleterService
      */
     public function delete(
         Contact $contact,
-        int $deletedBy
+        int $deletedBy,
+        ?User $actor = null
     ): bool {
-        $actor = User::findOrFail($deletedBy);
+        $actor ??= User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
             $contact,
@@ -41,7 +42,7 @@ class DeleterService
                     Log::ACTION_DELETE_CONTACT,
                     $actor,
                     $contact,
-                    ['before' => $contact->toArray()],
+                    ['before' => $this->auditLogService->snapshot($contact)],
                 );
             });
     }
@@ -64,7 +65,7 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_CONTACT,
                     $actor,
                     $contact,
-                    ['before' => $contact->toArray()],
+                    ['before' => $this->auditLogService->snapshot($contact)],
                 );
             });
     }
@@ -81,10 +82,11 @@ class DeleterService
         $count = 0;
 
         DB::transaction(function () use ($contactIds, $deletedBy, &$count) {
+            $actor = User::findOrFail($deletedBy);
             $contacts = Contact::whereIn('id', $contactIds)->get();
 
             foreach ($contacts as $contact) {
-                if ($this->delete($contact, $deletedBy)) {
+                if ($this->delete($contact, $deletedBy, $actor)) {
                     $count++;
                 }
             }

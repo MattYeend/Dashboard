@@ -35,11 +35,11 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($orderStatus);
 
-        $taskStatusData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $orderStatusData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
 
         return $this->updateResource->handle(
             $orderStatus,
-            $taskStatusData,
+            $orderStatusData,
             function (OrderStatus $orderStatus) use ($actor, $before): void {
                 $fresh = $orderStatus->fresh();
 

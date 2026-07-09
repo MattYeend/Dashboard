@@ -79,6 +79,6 @@ class DataPreparationService
     private function resolveContactableType(string $contactableType): string
     {
         return $this->registry->modelClassForKey($contactableType)
-            ?? $contactableType;
+        ?? throw new \InvalidArgumentException("Unrecognised contactable type: {$contactableType}");
     }
 }

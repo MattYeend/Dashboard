@@ -26,10 +26,11 @@ class DeleterService
      */
     public function delete(
         TaskStatus $taskStatus,
-        int $deletedBy
+        int $deletedBy,
+        ?User $actor = null
     ): bool {
 
-        $actor = User::findOrFail($deletedBy);
+        $actor ??= User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
             $taskStatus,
@@ -42,7 +43,7 @@ class DeleterService
                     Log::ACTION_DELETE_TASK_STATUS,
                     $actor,
                     $taskStatus,
-                    ['before' => $taskStatus->toArray()],
+                    ['before' => $this->auditLogService->snapshot($taskStatus)],
                 );
             });
     }
@@ -65,7 +66,7 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_TASK_STATUS,
                     $actor,
                     $taskStatus,
-                    ['before' => $taskStatus->toArray()],
+                    ['before' => $this->auditLogService->snapshot($taskStatus)],
                 );
             });
     }

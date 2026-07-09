@@ -35,11 +35,11 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($company);
 
-        $taskData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $companyData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
 
         return $this->updateResource->handle(
             $company,
-            $taskData,
+            $companyData,
             function (Company $company) use ($actor, $before): void {
                 $fresh = $company->fresh();
 

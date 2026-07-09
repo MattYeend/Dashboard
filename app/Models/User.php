@@ -63,30 +63,6 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
     public ?string $plainPassword = null;
 
     /**
-     * Set the user's role to 'user'.
-     */
-    public function user(): static
-    {
-        return $this->state(fn () => ['role' => 'user']);
-    }
-
-    /**
-     * Set the user's role to 'admin'.
-     */
-    public function admin(): static
-    {
-        return $this->state(fn () => ['role' => 'admin']);
-    }
-
-    /**
-     * Set the user's role to 'super_admin'.
-     */
-    public function superAdmin(): static
-    {
-        return $this->state(fn () => ['role' => 'super_admin']);
-    }
-
-    /**
      * Get all contacts associated with this user.
      *
      * @return MorphMany<Contact, $this>

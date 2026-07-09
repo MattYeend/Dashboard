@@ -43,15 +43,11 @@ class CreatorService
 
                 $newContact = Contact::create($contactData);
 
-                $newContact->created_by = $createdBy;
-                $newContact->created_at = now();
-                $newContact->save();
-
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_CONTACT,
                     $actor,
                     $newContact,
-                    ['after' => $newContact->toArray()],
+                    ['after' => $this->auditLogService->snapshot($newContact)],
                 );
 
                 return $newContact;

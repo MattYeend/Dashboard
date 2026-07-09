@@ -34,24 +34,20 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Order {
-                $contactData = $this->dataPreparation->prepareForCreation(
+                $orderData = $this->dataPreparation->prepareForCreation(
                     $data,
                     $data['orderable_type'],
                     $data['orderable_id'],
                     $createdBy,
                 );
 
-                $newOrder = Order::create($contactData);
-
-                $newOrder->created_by = $createdBy;
-                $newOrder->created_at = now();
-                $newOrder->save();
+                $newOrder = Order::create($orderData);
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_ORDER,
                     $actor,
                     $newOrder,
-                    ['after' => $newOrder->toArray()],
+                    ['after' => $this->auditLogService->snapshot($newOrder)],
                 );
 
                 return $newOrder;

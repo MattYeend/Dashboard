@@ -89,6 +89,6 @@ class DataPreparationService
     private function resolveOrderableType(string $orderableType): string
     {
         return $this->registry->modelClassForKey($orderableType)
-            ?? $orderableType;
+            ?? throw new \InvalidArgumentException("Unrecognised orderable type: {$orderableType}");
     }
 }
