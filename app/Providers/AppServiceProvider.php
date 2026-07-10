@@ -8,6 +8,7 @@ use App\Models\Industry;
 use App\Models\Order;
 use App\Models\OrderStatus;
 use App\Models\Plan;
+use App\Models\Subscription;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
@@ -32,6 +33,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -74,6 +76,8 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         User::observe(UserObserver::class);
+
+        Cashier::useSubscriptionModel(Subscription::class);
     }
 
     /**
