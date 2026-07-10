@@ -2,10 +2,19 @@
 
 namespace App\Services\Plans;
 
+use App\Models\Log;
 use App\Models\Plan;
+use App\Services\AuditLogService;
 
 class StripeSyncService
 {
+    /**
+     * Inject the required services into the Stripe sync service.
+     */
+    public function __construct(
+        protected readonly AuditLogService $auditLogService,
+    ) {}
+
     /**
      * Sync a Plan's stored price from a Stripe 'price.updated' payload.
      */
@@ -17,10 +26,22 @@ class StripeSyncService
             return;
         }
 
+        $before = $this->auditLogService->snapshot($plan);
+
         $plan->update([
             'price_per_user_per_month' => $price['unit_amount'],
-            'updated_by' => null,
         ]);
+
+        $this->auditLogService->record(
+            Log::ACTION_UPDATE_PLAN,
+            null,
+            $plan,
+            [
+                'before' => $before,
+                'after' => $this->auditLogService->snapshot($plan->fresh()),
+                'source' => 'stripe_webhook',
+            ],
+        );
     }
 
     /**
@@ -34,9 +55,21 @@ class StripeSyncService
             return;
         }
 
+        $before = $this->auditLogService->snapshot($plan);
+
         $plan->update([
             'is_active' => $product['active'],
-            'updated_by' => null,
         ]);
+
+        $this->auditLogService->record(
+            Log::ACTION_UPDATE_PLAN,
+            null,
+            $plan,
+            [
+                'before' => $before,
+                'after' => $this->auditLogService->snapshot($plan->fresh()),
+                'source' => 'stripe_webhook',
+            ],
+        );
     }
 }
