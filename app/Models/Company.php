@@ -23,6 +23,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $vat_number
  * @property string|null $description
  * @property int|null $industry_id
+ * @property int|null $account_manager_id
  * @property int|null $employee_count
  * @property int|null $founded_year
  * @property Carbon|null $deleted_at
@@ -30,6 +31,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Industry|null $industry
+ * @property-read User|null $accountManager
  */
 #[Fillable([
     'name',
@@ -41,6 +43,7 @@ use Illuminate\Support\Carbon;
     'vat_number',
     'description',
     'industry_id',
+    'account_manager_id',
     'employee_count',
     'founded_year',
     'created_by',
@@ -68,6 +71,16 @@ class Company extends Model implements Auditable
     public function industry(): BelongsTo
     {
         return $this->belongsTo(Industry::class);
+    }
+
+    /**
+     * Get the internal user who manages this company account.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function accountManager(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'account_manager_id');
     }
 
     /**
@@ -151,6 +164,7 @@ class Company extends Model implements Auditable
             'vat_number',
             'description',
             'industry_id',
+            'account_manager_id',
             'employee_count',
             'founded_year',
             'meta',
