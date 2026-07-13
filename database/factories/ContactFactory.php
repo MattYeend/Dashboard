@@ -30,10 +30,6 @@ class ContactFactory extends Factory
             'contactable_id' => null,
             'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
-            'address' => $this->faker->streetAddress(),
-            'city' => $this->faker->city(),
-            'postal_code' => $this->faker->postcode(),
-            'country' => $this->faker->country(),
         ];
     }
 
@@ -64,26 +60,6 @@ class ContactFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'deleted_at' => now(),
-        ]);
-    }
-
-    /**
-     * State for a UK-based contact.
-     */
-    public function uk(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'country' => 'United Kingdom',
-        ]);
-    }
-
-    /**
-     * State for a US-based contact.
-     */
-    public function us(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'country' => 'United States',
         ]);
     }
 
