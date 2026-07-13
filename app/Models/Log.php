@@ -283,6 +283,8 @@ class Log extends Model
 
     public const ACTION_ADDRESS_UPDATED_BY_CRON = 130;
 
+    public const ACTION_ASSIGN_ADDRESS = 131;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
