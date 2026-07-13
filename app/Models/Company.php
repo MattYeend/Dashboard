@@ -168,6 +168,7 @@ class Company extends Model implements Auditable
             'meta' => 'array',
             'founded_year' => 'integer',
             'employee_count' => 'integer',
+            'industry_id' => 'integer',
             'deleted_at' => 'datetime',
             'restored_at' => 'datetime',
         ];

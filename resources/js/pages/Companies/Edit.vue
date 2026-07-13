@@ -20,7 +20,7 @@ const form = useForm({
     registration_number: props.company.registration_number,
     vat_number: props.company.vat_number,
     description: props.company.description,
-    industry_id: props.company.industry_id,
+    industry_id: numberOrNull(props.company.industry_id),
     employee_count: props.company.employee_count,
     founded_year: props.company.founded_year,
 });

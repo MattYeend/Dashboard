@@ -52,6 +52,7 @@ class QueryService
 
         return array_merge(
             ['company' => $this->formatterService->format($company)],
+            $this->getFormData(),
             $this->getPermissions($user),
             $this->baseData(),
         );
@@ -60,7 +61,7 @@ class QueryService
     /**
      * Get data needed to populate create and edit forms.
      */
-    public function getCreateData(): array
+    public function getFormData(): array
     {
         return [
             'industries' => Industry::orderBy('title')->get(['id', 'title']),
