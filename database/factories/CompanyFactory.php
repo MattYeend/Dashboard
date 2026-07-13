@@ -39,6 +39,7 @@ class CompanyFactory extends Factory
             'vat_number' => 'GB'.$this->faker->numerify('#########'),
             'description' => $this->faker->paragraph(),
             'industry_id' => null,
+            'account_manager_id' => null,
             'employee_count' => $this->faker->numberBetween(1, 5000),
             'founded_year' => $this->faker->numberBetween(1900, (int) date('Y')),
             'meta' => null,
@@ -73,6 +74,16 @@ class CompanyFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'industry_id' => $industry->id,
+        ]);
+    }
+
+    /**
+     * Associate the company with a given account manager.
+     */
+    public function withAccountManager(User $accountManager): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'account_manager_id' => $accountManager->id,
         ]);
     }
 }

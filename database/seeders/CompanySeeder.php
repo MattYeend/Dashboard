@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Company;
 use App\Models\Industry;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 
@@ -26,7 +27,17 @@ class CompanySeeder extends Seeder
             $this->command->warn('No industries found, companies will be seeded without an industry...');
         }
 
-        foreach ($this->getCompanies($industries) as $company) {
+        $accountManagers = User::inRandomOrder()->pluck('id');
+
+        if ($accountManagers->isEmpty()) {
+            $this->command->warn('No users found, companies will be seeded without an account manager...');
+        }
+
+        foreach ($this->getCompanies($industries) as $index => $company) {
+            $company['account_manager_id'] = $accountManagers->isNotEmpty()
+                ? $accountManagers[$index % $accountManagers->count()]
+                : null;
+
             Company::create($company);
         }
     }
