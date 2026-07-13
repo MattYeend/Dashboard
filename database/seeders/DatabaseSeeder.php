@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             IndustrySeeder::class,
             CompanySeeder::class,
             PlanSeeder::class,
+            AddressSeeder::class,
         ]);
     }
 }
