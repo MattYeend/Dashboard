@@ -2,12 +2,12 @@
 import type { InertiaFormProps } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
-import type { Industry } from '@/types';
 import CompanyBasicDetailsForm from '@/pages/Companies/components/CompanyBasicDetailsForm.vue';
 import CompanyContactDetailsForm from '@/pages/Companies/components/CompanyContactDetailsForm.vue';
 import CompanyDescriptionForm from '@/pages/Companies/components/CompanyDescriptionForm.vue';
 import CompanyRegistrationDetailsForm from '@/pages/Companies/components/CompanyRegistrationDetailsForm.vue';
 import { index as companiesIndex } from '@/routes/companies';
+import type { Industry } from '@/types';
 
 interface CompanyFormData {
     name: string;

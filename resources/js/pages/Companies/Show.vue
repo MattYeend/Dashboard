@@ -2,16 +2,16 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import type { Company, PermissionsMeta } from '@/types';
-import CompanyAuditDetails from './components/CompanyAuditDetails.vue';
-import CompanyBasicDetails from './components/CompanyBasicDetails.vue';
-import CompanyContactDetails from './components/CompanyContactDetails.vue';
-import CompanyRegistrationDetails from './components/CompanyRegistrationDetails.vue';
 import {
     edit as companiesEdit,
     destroy as companiesDestroy,
     index as companiesIndex,
 } from '@/routes/companies';
+import type { Company, PermissionsMeta } from '@/types';
+import CompanyAuditDetails from './components/CompanyAuditDetails.vue';
+import CompanyBasicDetails from './components/CompanyBasicDetails.vue';
+import CompanyContactDetails from './components/CompanyContactDetails.vue';
+import CompanyRegistrationDetails from './components/CompanyRegistrationDetails.vue';
 
 interface Props {
     company: Company;
