@@ -19,10 +19,6 @@ const form = useForm({
     contactable_id: props.contact.contactable_id as number | null,
     phone: props.contact.phone ?? '',
     email: props.contact.email ?? '',
-    address: props.contact.address ?? '',
-    city: props.contact.city ?? '',
-    postal_code: props.contact.postal_code ?? '',
-    country: props.contact.country ?? '',
 });
 
 interface ContactableOption {
@@ -54,10 +50,6 @@ function submit(): void {
         ...data,
         phone: nullIfBlank(data.phone),
         email: nullIfBlank(data.email),
-        address: nullIfBlank(data.address),
-        city: nullIfBlank(data.city),
-        postal_code: nullIfBlank(data.postal_code),
-        country: nullIfBlank(data.country),
     })).put(contactsUpdate.url(props.contact.id));
 }
 </script>
@@ -74,10 +66,6 @@ function submit(): void {
                 :contactable-options="contactableOptions"
                 v-model:email="form.email"
                 v-model:phone="form.phone"
-                v-model:address="form.address"
-                v-model:city="form.city"
-                v-model:postal-code="form.postal_code"
-                v-model:country="form.country"
                 :is-editing="true"
                 :processing="form.processing"
                 :errors="form.errors"

@@ -2,7 +2,6 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import ContactAddressDetails from '@/pages/Contacts/components/ContactAddressDetails.vue';
 import ContactAuditDetails from '@/pages/Contacts/components/ContactAuditDetails.vue';
 import ContactBasicDetails from '@/pages/Contacts/components/ContactBasicDetails.vue';
 import {
@@ -67,7 +66,6 @@ function destroy(): void {
 
             <div class="space-y-6">
                 <ContactBasicDetails :contact="contact" />
-                <ContactAddressDetails :contact="contact" />
                 <ContactAuditDetails :contact="contact" />
             </div>
         </div>

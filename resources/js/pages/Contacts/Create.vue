@@ -17,10 +17,6 @@ const form = useForm({
     contactable_id: null as number | null,
     phone: '',
     email: '',
-    address: '',
-    city: '',
-    postal_code: '',
-    country: '',
 });
 
 interface ContactableOption {
@@ -54,10 +50,6 @@ function submit(): void {
         ...data,
         phone: nullIfBlank(data.phone),
         email: nullIfBlank(data.email),
-        address: nullIfBlank(data.address),
-        city: nullIfBlank(data.city),
-        postal_code: nullIfBlank(data.postal_code),
-        country: nullIfBlank(data.country),
     })).post(contactsStore.url());
 }
 </script>
@@ -74,10 +66,6 @@ function submit(): void {
                 :contactable-options="contactableOptions"
                 v-model:email="form.email"
                 v-model:phone="form.phone"
-                v-model:address="form.address"
-                v-model:city="form.city"
-                v-model:postal-code="form.postal_code"
-                v-model:country="form.country"
                 :is-editing="false"
                 :processing="form.processing"
                 :errors="form.errors"

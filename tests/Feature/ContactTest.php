@@ -89,10 +89,6 @@ describe('store', function () {
             'contactable_id' => $superAdmin->id,
             'phone' => '+44 20 7946 0958',
             'email' => 'james.hartley@example.co.uk',
-            'address' => '12 Baker Street',
-            'city' => 'London',
-            'postal_code' => 'W1U 3BH',
-            'country' => 'United Kingdom',
         ];
 
         $this->actingAs($superAdmin)
@@ -102,8 +98,6 @@ describe('store', function () {
 
         $this->assertDatabaseHas('contacts', [
             'email' => 'james.hartley@example.co.uk',
-            'city' => 'London',
-            'country' => 'United Kingdom',
         ]);
     });
 
@@ -115,10 +109,6 @@ describe('store', function () {
             'contactable_id' => $user->id,
             'phone' => '+44 20 7946 0958',
             'email' => 'test@example.co.uk',
-            'address' => '12 Baker Street',
-            'city' => 'London',
-            'postal_code' => 'W1U 3BH',
-            'country' => 'United Kingdom',
         ];
 
         $this->actingAs($user)
@@ -265,28 +255,28 @@ describe('update', function () {
     test('authenticated user with permission can update a contact', function () {
         $superAdmin = $this->superAdminUser();
 
-        $contact = Contact::factory()->forModel($superAdmin)->create(['city' => 'London']);
+        $contact = Contact::factory()->forModel($superAdmin)->create(['phone' => '1234']);
 
         $this->actingAs($superAdmin)
-            ->putJson("/contacts/{$contact->id}", ['city' => 'Manchester'])
+            ->putJson("/contacts/{$contact->id}", ['phone' => '012345'])
             ->assertStatus(200)
-            ->assertJsonFragment(['city' => 'Manchester']);
+            ->assertJsonFragment(['phone' => '012345']);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'city' => 'Manchester',
+            'phone' => '012345',
         ]);
     });
 
     test('patch verb also updates a contact', function () {
         $superAdmin = $this->superAdminUser();
 
-        $contact = Contact::factory()->forModel($superAdmin)->create(['country' => 'United Kingdom']);
+        $contact = Contact::factory()->forModel($superAdmin)->create(['phone' => '01234']);
 
         $this->actingAs($superAdmin)
-            ->patchJson("/contacts/{$contact->id}", ['country' => 'Germany'])
+            ->patchJson("/contacts/{$contact->id}", ['phone' => '2345'])
             ->assertStatus(200)
-            ->assertJsonFragment(['country' => 'Germany']);
+            ->assertJsonFragment(['phone' => '2345']);
     });
 
     test('user without permission cannot update a contact', function () {
@@ -317,20 +307,12 @@ describe('update', function () {
         $contact = Contact::factory()->forModel($superAdmin)->create([
             'phone' => '+44 20 7946 0958',
             'email' => 'james.hartley@example.co.uk',
-            'address' => '12 Baker Street',
-            'city' => 'London',
-            'postal_code' => 'W1U 3BH',
-            'country' => 'United Kingdom',
         ]);
 
         $this->actingAs($superAdmin)
             ->putJson("/contacts/{$contact->id}", [
                 'phone' => null,
                 'email' => null,
-                'address' => null,
-                'city' => null,
-                'postal_code' => null,
-                'country' => null,
             ])
             ->assertStatus(200);
 
@@ -338,10 +320,6 @@ describe('update', function () {
             'id' => $contact->id,
             'phone' => null,
             'email' => null,
-            'address' => null,
-            'city' => null,
-            'postal_code' => null,
-            'country' => null,
         ]);
     });
 
@@ -350,20 +328,15 @@ describe('update', function () {
 
         $contact = Contact::factory()->forModel($superAdmin)->create([
             'phone' => '+44 20 7946 0958',
-            'city' => 'London',
         ]);
 
         $this->actingAs($superAdmin)
-            ->putJson("/contacts/{$contact->id}", [
-                'country' => 'United Kingdom',
-            ])
+            ->putJson("/contacts/{$contact->id}")
             ->assertStatus(200);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
             'phone' => '+44 20 7946 0958',
-            'city' => 'London',
-            'country' => 'United Kingdom',
         ]);
     });
 
@@ -409,10 +382,10 @@ describe('update', function () {
     test('logs contact updates with actor id', function () {
         $actor = $this->adminUser();
 
-        $contact = Contact::factory()->forModel($actor)->create(['city' => 'London']);
+        $contact = Contact::factory()->forModel($actor)->create(['phone' => '0123']);
 
         $this->actingAs($actor)
-            ->putJson("/contacts/{$contact->id}", ['city' => 'Paris'])
+            ->putJson("/contacts/{$contact->id}", ['phone' => '1234'])
             ->assertOk();
 
         $log = Log::query()

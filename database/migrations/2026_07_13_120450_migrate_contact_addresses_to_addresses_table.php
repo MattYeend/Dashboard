@@ -37,6 +37,7 @@ return new class extends Migration
             });
 
         Schema::table('contacts', function (Blueprint $table) {
+            $table->dropIndex(['country']);
             $table->dropColumn(['address', 'city', 'postal_code', 'country']);
         });
     }
@@ -44,6 +45,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('contacts', function (Blueprint $table) {
+            $table->index('country');
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->string('postal_code')->nullable();

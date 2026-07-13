@@ -25,10 +25,6 @@ class DataPreparationService
             'contactable_id' => $contactableId,
             'phone' => $data['phone'] ?? null,
             'email' => $data['email'] ?? null,
-            'address' => $data['address'] ?? null,
-            'city' => $data['city'] ?? null,
-            'postal_code' => $data['postal_code'] ?? null,
-            'country' => $data['country'] ?? null,
             'meta' => $data['meta'] ?? null,
             'created_by' => $createdBy,
         ];
@@ -47,10 +43,6 @@ class DataPreparationService
             'contactable_id',
             'phone',
             'email',
-            'address',
-            'city',
-            'postal_code',
-            'country',
             'meta',
         ];
 
