@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
@@ -54,6 +55,16 @@ class Contact extends Model implements Auditable
     public function contactable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Get the addresses associated with this contact's owning model.
+     *
+     * @return MorphMany<Address, $this>
+     */
+    public function addresses(): MorphMany
+    {
+        return $this->morphMany(Address::class, 'addressable');
     }
 
     /**

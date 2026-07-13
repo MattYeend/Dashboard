@@ -26,11 +26,7 @@ class FilterService
 
         return $query->where(function (Builder $q) use ($search): void {
             $q->where('phone', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%")
-                ->orWhere('address', 'like', "%{$search}%")
-                ->orWhere('city', 'like', "%{$search}%")
-                ->orWhere('postal_code', 'like', "%{$search}%")
-                ->orWhere('country', 'like', "%{$search}%");
+                ->orWhere('email', 'like', "%{$search}%");
         });
     }
 
@@ -58,12 +54,6 @@ class FilterService
      */
     public function applyAll(Builder $query, array $filters): Builder
     {
-        $query = $this->applySearch($query, $filters['search'] ?? null);
-
-        return $this->applyCountry(
-            $query,
-            $filters['country']
-            ?? null
-        );
+        return $this->applySearch($query, $filters['search'] ?? null);
     }
 }

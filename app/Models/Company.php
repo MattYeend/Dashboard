@@ -94,6 +94,16 @@ class Company extends Model implements Auditable
     }
 
     /**
+     * Get the addresses associated with this company's owning model.
+     *
+     * @return MorphMany<Address, $this>
+     */
+    public function addresses(): MorphMany
+    {
+        return $this->morphMany(Address::class, 'addressable');
+    }
+
+    /**
      * Get the orders associated with this company.
      *
      * @return MorphMany<Order, $this>
