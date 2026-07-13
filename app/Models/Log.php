@@ -264,6 +264,25 @@ class Log extends Model
 
     public const ACTION_PLAN_UPDATED_BY_CRON = 121;
 
+    // Address Management
+    public const ACTION_CREATE_ADDRESS = 122;
+    
+    public const ACTION_UPDATE_ADDRESS = 123;
+
+    public const ACTION_VIEW_ADDRESS = 124;
+
+    public const ACTION_DELETE_ADDRESS = 125;
+
+    public const ACTION_FORCE_DELETE_ADDRESS = 126;
+
+    public const ACTION_RESTORE_ADDRESS = 127;
+
+    public const ACTION_IMPORT_ADDRESS = 128;
+
+    public const ACTION_EXPORT_ADDRESS = 129;
+
+    public const ACTION_ADDRESS_UPDATED_BY_CRON = 130;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
