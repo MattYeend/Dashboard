@@ -39,6 +39,16 @@ defineProps<{
                         {{ company.industry?.title ?? '—' }}
                     </dd>
                 </div>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-400">
+                        Account Manager
+                    </dt>
+                    <dd
+                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
+                    >
+                        {{ company.account_manager?.name ?? '—' }}
+                    </dd>
+                </div>
             </dl>
         </div>
     </div>

@@ -29,6 +29,7 @@ class UpdateCompanyRequest extends FormRequest
             'registration_number' => $this->registrationNumberRules(),
             'vat_number' => $this->vatNumberRules(),
             'industry_id' => $this->industryIdRules(),
+            'account_manager_id' => $this->accountManagerIdRules(),
             'email' => $this->emailRules(),
             'phone' => $this->phoneRules(),
             'website' => $this->websiteRules(),
@@ -59,6 +60,7 @@ class UpdateCompanyRequest extends FormRequest
             'registration_number.max' => 'The registration number may not exceed 255 characters.',
             'registration_number.unique' => 'This registration number is already in use.',
             'industry_id.exists' => 'The selected industry does not exist.',
+            'account_manager_id.exists' => 'The selected account manager does not exist.',
             'email.email' => 'Please provide a valid email address.',
             'website.url' => 'Please provide a valid website URL.',
         ];
@@ -171,6 +173,21 @@ class UpdateCompanyRequest extends FormRequest
             'nullable',
             'integer',
             'exists:industries,id',
+        ];
+    }
+
+    /**
+     * Get validation rules for the account_manager_id field.
+     *
+     * @return array<mixed>
+     */
+    protected function accountManagerIdRules(): array
+    {
+        return [
+            'sometimes',
+            'nullable',
+            'integer',
+            'exists:users,id',
         ];
     }
 

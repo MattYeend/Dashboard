@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank, numberOrNull } from '@/lib/forms';
-import type { Company, Industry } from '@/types';
+import type { Company, Industry, UserOption } from '@/types';
 import CompanyForm from './components/CompanyForm.vue';
 import { update as companiesUpdate } from '@/routes/companies';
 
 interface Props {
     company: Company;
     industries: Industry[];
+    users: UserOption[];
 }
 
 const props = defineProps<Props>();
@@ -21,6 +22,7 @@ const form = useForm({
     vat_number: props.company.vat_number,
     description: props.company.description,
     industry_id: props.company.industry_id,
+    account_manager_id: props.company.account_manager_id,
     employee_count: props.company.employee_count,
     founded_year: props.company.founded_year,
 });
@@ -35,6 +37,7 @@ function submit(): void {
         vat_number: nullIfBlank(data.vat_number),
         description: nullIfBlank(data.description),
         industry_id: numberOrNull(data.industry_id),
+        account_manager_id: numberOrNull(data.account_manager_id),
         employee_count: numberOrNull(data.employee_count),
         founded_year: numberOrNull(data.founded_year),
     })).put(companiesUpdate.url(props.company.id));
@@ -50,6 +53,7 @@ function submit(): void {
             <CompanyForm
                 v-model:name="form.name"
                 v-model:industry-id="form.industry_id"
+                v-model:account-manager-id="form.account_manager_id"
                 v-model:email="form.email"
                 v-model:phone="form.phone"
                 v-model:website="form.website"
@@ -61,6 +65,7 @@ function submit(): void {
                 :is-editing="true"
                 :processing="form.processing"
                 :industries="industries"
+                :users="users"
                 :errors="form.errors"
                 @submit="submit"
             />

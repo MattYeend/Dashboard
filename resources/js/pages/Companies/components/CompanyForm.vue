@@ -2,12 +2,12 @@
 import type { InertiaFormProps } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
-import type { Industry } from '@/types';
 import CompanyBasicDetailsForm from '@/pages/Companies/components/CompanyBasicDetailsForm.vue';
 import CompanyContactDetailsForm from '@/pages/Companies/components/CompanyContactDetailsForm.vue';
 import CompanyDescriptionForm from '@/pages/Companies/components/CompanyDescriptionForm.vue';
 import CompanyRegistrationDetailsForm from '@/pages/Companies/components/CompanyRegistrationDetailsForm.vue';
 import { index as companiesIndex } from '@/routes/companies';
+import type { Industry, UserOption } from '@/types';
 
 interface CompanyFormData {
     name: string;
@@ -19,6 +19,7 @@ interface CompanyFormData {
     vat_number: string | null;
     description: string | null;
     industry_id: number | null;
+    account_manager_id: number | null;
     employee_count: number | null;
     founded_year: number | null;
 }
@@ -27,6 +28,7 @@ interface Props {
     isEditing: boolean;
     processing: boolean;
     industries: Industry[];
+    users: UserOption[];
     errors: Partial<InertiaFormProps<CompanyFormData>['errors']>;
 }
 
@@ -35,6 +37,9 @@ defineEmits<{ submit: [] }>();
 
 const name = defineModel<string>('name', { required: true });
 const industryId = defineModel<number | null>('industryId', { default: null });
+const accountManagerId = defineModel<number | null>('accountManagerId', {
+    default: null,
+});
 const email = defineModel<string | null>('email', { default: null });
 const phone = defineModel<string | null>('phone', { default: null });
 const website = defineModel<string | null>('website', { default: null });
@@ -58,7 +63,9 @@ const description = defineModel<string | null>('description', {
         <CompanyBasicDetailsForm
             v-model:name="name"
             v-model:industry-id="industryId"
+            v-model:account-manager-id="accountManagerId"
             :industries="industries"
+            :users="users"
             :errors="errors"
         />
         <CompanyContactDetailsForm

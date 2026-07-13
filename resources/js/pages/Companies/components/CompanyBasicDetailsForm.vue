@@ -10,7 +10,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import type { Industry } from '@/types';
+import type { Industry, UserOption } from '@/types';
 
 interface CompanyFormData {
     name: string;
@@ -22,12 +22,14 @@ interface CompanyFormData {
     vat_number: string | null;
     description: string | null;
     industry_id: number | null;
+    account_manager_id: number | null;
     employee_count: number | null;
     founded_year: number | null;
 }
 
 interface Props {
     industries: Industry[];
+    users: UserOption[];
     errors: Partial<InertiaFormProps<CompanyFormData>['errors']>;
 }
 
@@ -35,6 +37,9 @@ defineProps<Props>();
 
 const name = defineModel<string>('name', { required: true });
 const industryId = defineModel<number | null>('industryId', { default: null });
+const accountManagerId = defineModel<number | null>('accountManagerId', {
+    default: null,
+});
 </script>
 
 <template>
@@ -70,6 +75,24 @@ const industryId = defineModel<number | null>('industryId', { default: null });
                 </SelectContent>
             </Select>
             <InputError :message="errors.industry_id" />
+        </div>
+        <div>
+            <Label for="account_manager_id">Account Manager</Label>
+            <Select v-model="accountManagerId">
+                <SelectTrigger id="account_manager_id" class="mt-1 w-full">
+                    <SelectValue placeholder="Select an account manager" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem
+                        v-for="user in users"
+                        :key="user.id"
+                        :value="user.id"
+                    >
+                        {{ user.name }}
+                    </SelectItem>
+                </SelectContent>
+            </Select>
+            <InputError :message="errors.account_manager_id" />
         </div>
     </div>
 </template>

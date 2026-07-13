@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank, numberOrNull } from '@/lib/forms';
-import type { Industry } from '@/types';
+import type { Industry, UserOption } from '@/types';
 import CompanyForm from './components/CompanyForm.vue';
 import { store as companiesStore } from '@/routes/companies';
 
 defineProps<{
     industries: Industry[];
+    users: UserOption[];
 }>();
 
 const form = useForm({
@@ -18,6 +19,7 @@ const form = useForm({
     vat_number: null,
     description: null,
     industry_id: null,
+    account_manager_id: null,
     employee_count: null,
     founded_year: null,
 });
@@ -32,6 +34,7 @@ function submit(): void {
         vat_number: nullIfBlank(data.vat_number),
         description: nullIfBlank(data.description),
         industry_id: numberOrNull(data.industry_id),
+        account_manager_id: numberOrNull(data.account_manager_id),
         employee_count: numberOrNull(data.employee_count),
         founded_year: numberOrNull(data.founded_year),
     })).post(companiesStore.url());
@@ -47,6 +50,7 @@ function submit(): void {
             <CompanyForm
                 v-model:name="form.name"
                 v-model:industry-id="form.industry_id"
+                v-model:account-manager-id="form.account_manager_id"
                 v-model:email="form.email"
                 v-model:phone="form.phone"
                 v-model:website="form.website"
@@ -58,6 +62,7 @@ function submit(): void {
                 :is-editing="false"
                 :processing="form.processing"
                 :industries="industries"
+                :users="users"
                 :errors="form.errors"
                 @submit="submit"
             />

@@ -195,6 +195,7 @@ export interface Company {
     vat_number: string | null;
     description: string | null;
     industry_id: number | null;
+    account_manager_id: number | null;
     employee_count: number | null;
     founded_year: number | null;
     meta: Record<string, unknown> | null;
@@ -207,6 +208,7 @@ export interface Company {
     updated_at: string;
     deleted_at: string | null;
     industry?: { id: number; title: string } | null;
+    account_manager?: { id: number; name: string } | null;
     creator?: { name: string };
     updater?: { name: string };
     deleter?: { name: string };

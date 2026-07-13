@@ -54,6 +54,7 @@ const bulkDeleteProcessing = ref(false);
 const columns: ResourceTableColumn[] = [
     { key: 'name', label: 'Name' },
     { key: 'industry', label: 'Industry' },
+    { key: 'account_manager', label: 'Account Manager' },
     { key: 'email', label: 'Email' },
     { key: 'phone', label: 'Phone' },
 ];
@@ -209,6 +210,10 @@ function truncate(value: string | null | undefined, length = 30): string {
 
                 <template #cell-industry="{ row }">
                     {{ truncate(row.industry?.title, 30) }}
+                </template>
+
+                <template #cell-account_manager="{ row }">
+                    {{ row.account_manager?.name ?? '—' }}
                 </template>
 
                 <template #cell-email="{ row }">
