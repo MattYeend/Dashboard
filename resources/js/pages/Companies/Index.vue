@@ -7,11 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import type {
-    Company,
-    Pagination as PaginationMeta,
-    PermissionsMeta,
-} from '@/types';
 import {
     index as companiesIndex,
     create as companiesCreate,
@@ -20,6 +15,11 @@ import {
     destroy as companiesDestroy,
 } from '@/routes/companies';
 import companiesBulk from '@/routes/companies/bulk';
+import type {
+    Company,
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+} from '@/types';
 
 interface Props {
     companies: {

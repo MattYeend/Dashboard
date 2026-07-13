@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank, numberOrNull } from '@/lib/forms';
+import { store as companiesStore } from '@/routes/companies';
 import type { Industry, UserOption } from '@/types';
 import CompanyForm from './components/CompanyForm.vue';
-import { store as companiesStore } from '@/routes/companies';
 
 defineProps<{
     industries: Industry[];

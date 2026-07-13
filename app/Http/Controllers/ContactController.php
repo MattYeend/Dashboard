@@ -54,7 +54,7 @@ class ContactController extends Controller
     {
         $this->authorize('create', Contact::class);
 
-        $data = $this->query->getCreateData();
+        $data = $this->query->getFormData();
 
         return Inertia::render('Contacts/Create', $data);
     }

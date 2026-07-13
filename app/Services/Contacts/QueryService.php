@@ -52,6 +52,7 @@ class QueryService
 
         return array_merge(
             ['contact' => $this->formatterService->format($contact)],
+            $this->getFormData(),
             $this->getPermissions($user),
             $this->baseData(),
         );
@@ -60,9 +61,11 @@ class QueryService
     /**
      * Get the data needed to render the "Create Contact" form.
      */
-    public function getCreateData(): array
+    public function getFormData(): array
     {
-        return $this->baseData();
+        return [
+            'contactableTypes' => $this->registry->types(),
+        ];
     }
 
     /**

@@ -54,7 +54,7 @@ class CompanyController extends Controller
     {
         $this->authorize('create', Company::class);
 
-        $data = $this->query->getCreateData();
+        $data = $this->query->getFormData();
 
         return Inertia::render('Companies/Create', $data);
     }

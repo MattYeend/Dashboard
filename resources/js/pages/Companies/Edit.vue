@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank, numberOrNull } from '@/lib/forms';
+import { update as companiesUpdate } from '@/routes/companies';
 import type { Company, Industry, UserOption } from '@/types';
 import CompanyForm from './components/CompanyForm.vue';
-import { update as companiesUpdate } from '@/routes/companies';
 
 interface Props {
     company: Company;
@@ -21,7 +21,7 @@ const form = useForm({
     registration_number: props.company.registration_number,
     vat_number: props.company.vat_number,
     description: props.company.description,
-    industry_id: props.company.industry_id,
+    industry_id: numberOrNull(props.company.industry_id),
     account_manager_id: props.company.account_manager_id,
     employee_count: props.company.employee_count,
     founded_year: props.company.founded_year,
