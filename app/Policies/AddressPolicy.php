@@ -4,16 +4,32 @@ namespace App\Policies;
 
 use App\Models\Address;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\Addresses\PolicyAuthorisationService;
 
 class AddressPolicy
 {
     /**
+     * The authorisation service handling permission checks.
+     */
+    protected PolicyAuthorisationService $authorisationService;
+
+    /**
+     * Inject the required service into the policy.
+     */
+    public function __construct(
+        PolicyAuthorisationService $authorisationService
+    ) {
+        $this->authorisationService = $authorisationService;
+    }
+
+    /**
      * Determine whether the user can view any models.
+     *
+     * Only admins can view the list of contacts.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
@@ -21,7 +37,7 @@ class AddressPolicy
      */
     public function view(User $user, Address $address): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $address);
     }
 
     /**
@@ -29,7 +45,7 @@ class AddressPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
@@ -37,7 +53,7 @@ class AddressPolicy
      */
     public function update(User $user, Address $address): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $address);
     }
 
     /**
@@ -45,7 +61,7 @@ class AddressPolicy
      */
     public function delete(User $user, Address $address): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $address);
     }
 
     /**
@@ -53,7 +69,7 @@ class AddressPolicy
      */
     public function restore(User $user, Address $address): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $address);
     }
 
     /**
@@ -61,6 +77,41 @@ class AddressPolicy
      */
     public function forceDelete(User $user, Address $address): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete(
+            $user,
+            $address
+        );
+    }
+
+    /**
+     * Determine whether the user can bulk delete models.
+     */
+    public function bulkDelete(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can bulk restore models.
+     */
+    public function bulkRestore(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can import models.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can export models.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->isUser($user);
     }
 }
