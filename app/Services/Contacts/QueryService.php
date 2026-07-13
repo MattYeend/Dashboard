@@ -52,6 +52,7 @@ class QueryService
 
         return array_merge(
             ['contact' => $this->formatterService->format($contact)],
+            $this->getFormData(),
             $this->getPermissions($user),
             $this->baseData(),
         );
