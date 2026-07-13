@@ -209,7 +209,7 @@ function truncate(value: string | null | undefined, length = 30): string {
                 </template>
 
                 <template #cell-industry="{ row }">
-                    {{ truncate(row.industry?.title, 30) }}
+                    {{ truncate(row.industry?.title, 20) }}
                 </template>
 
                 <template #cell-account_manager="{ row }">
@@ -217,7 +217,7 @@ function truncate(value: string | null | undefined, length = 30): string {
                 </template>
 
                 <template #cell-email="{ row }">
-                    {{ row.email ?? '—' }}
+                    {{ truncate(row.email, 20) ?? '—' }}
                 </template>
 
                 <template #cell-phone="{ row }">
