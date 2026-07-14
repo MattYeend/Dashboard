@@ -266,7 +266,7 @@ class Log extends Model
 
     // Address Management
     public const ACTION_CREATE_ADDRESS = 122;
-    
+
     public const ACTION_UPDATE_ADDRESS = 123;
 
     public const ACTION_VIEW_ADDRESS = 124;
