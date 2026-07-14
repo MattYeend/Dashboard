@@ -48,7 +48,7 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): array {
-        $address = $this->findContact($id, $withTrashed);
+        $address = $this->findAddress($id, $withTrashed);
 
         return array_merge(
             ['address' => $this->formatterService->format($address)],
@@ -69,9 +69,9 @@ class QueryService
     }
 
     /**
-     * Get the "owner" options for a given contactable type, for the dependent dropdown on the Create/Edit address form.
+     * Get the "owner" options for a given addressable type, for the dependent dropdown on the Create/Edit address form.
      */
-    public function getContactableOptions(string $type): array
+    public function getAddressableOptions(string $type): array
     {
         return $this->registry->optionsFor($type);
     }
@@ -149,7 +149,7 @@ class QueryService
     /**
      * Find a address by ID with optional trashed records.
      */
-    private function findContact(
+    private function findAddress(
         int $id,
         bool $withTrashed = false
     ): Address {

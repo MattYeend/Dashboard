@@ -161,6 +161,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('addresses')->name('addresses.')->group(function () {
+        Route::get('/addressable-options', [AddressController::class, 'addressableOptions'])->name('addressable-options');
+
         Route::post('/bulk/delete', [AddressController::class, 'bulkDelete'])->name('bulk.delete');
         Route::post('/bulk/restore', [AddressController::class, 'bulkRestore'])->name('bulk.restore');
         Route::post('/{id}/restore', [AddressController::class, 'restore'])->name('restore');

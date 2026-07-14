@@ -267,13 +267,13 @@ class AddressController extends Controller
     }
 
     /**
-     * Get the list of selectable "owner" options for a given contactable type.
+     * Get the list of selectable "owner" options for a given addressable type.
      */
-    public function contactableOptions(Request $request): JsonResponse
+    public function addressableOptions(Request $request): JsonResponse
     {
         $type = $request->query('type', '');
 
-        $options = $this->query->getContactableOptions($type);
+        $options = $this->query->getAddressableOptions($type);
 
         return response()->json($options);
     }
