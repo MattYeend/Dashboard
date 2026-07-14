@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\IndustryController;
@@ -157,6 +158,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{plan}/edit', [PlanController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{plan}', [PlanController::class, 'update'])->name('update');
         Route::delete('/{plan}', [PlanController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('addresses')->name('addresses.')->group(function () {
+        Route::post('/bulk/delete', [AddressController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [AddressController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [AddressController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [AddressController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [AddressController::class, 'index'])->name('index');
+        Route::get('/create', [AddressController::class, 'create'])->name('create');
+        Route::post('/', [AddressController::class, 'store'])->name('store');
+        Route::get('/{address}', [AddressController::class, 'show'])->name('show');
+        Route::get('/{address}/edit', [AddressController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{address}', [AddressController::class, 'update'])->name('update');
+        Route::delete('/{address}', [AddressController::class, 'destroy'])->name('destroy');
     });
 });
 
