@@ -2,9 +2,9 @@
 
 namespace App\Services\Addresses;
 
-use App\Models\Address;
 use App\Models\Company;
 use App\Models\Contact;
+use App\Models\User;
 
 class AddressableTypeRegistryService
 {
@@ -17,8 +17,8 @@ class AddressableTypeRegistryService
     {
         return [
             'user' => [
-                'label' => 'Address',
-                'model' => Address::class,
+                'label' => 'User',
+                'model' => User::class,
                 'label_field' => 'name',
             ],
             'company' => [
@@ -26,7 +26,7 @@ class AddressableTypeRegistryService
                 'model' => Company::class,
                 'label_field' => 'name',
             ],
-            'task' => [
+            'contact' => [
                 'label' => 'Contact',
                 'model' => Contact::class,
                 'label_field' => 'title',

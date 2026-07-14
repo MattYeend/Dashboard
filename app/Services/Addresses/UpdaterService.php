@@ -44,7 +44,7 @@ class UpdaterService
                 $fresh = $address->fresh();
 
                 $this->auditLogService->record(
-                    Log::ACTION_UPDATE_CONTACT,
+                    Log::ACTION_UPDATE_ADDRESS,
                     $actor,
                     $fresh,
                     [
