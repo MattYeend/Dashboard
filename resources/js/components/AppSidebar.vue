@@ -7,6 +7,7 @@ import {
     CreditCard,
     FolderGit2,
     LayoutGrid,
+    MapPin,
     User2,
 } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
@@ -23,6 +24,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { index as addressesIndex } from '@/routes/addresses';
 import { index as companiesIndex } from '@/routes/companies';
 import { index as contactsIndex } from '@/routes/contacts';
 import { index as industriesIndex } from '@/routes/industries';
@@ -44,6 +46,11 @@ const mainNavItems: NavItem[] = [
         title: 'Contacts',
         href: contactsIndex.url(),
         icon: Contact2,
+    },
+    {
+        title: 'Addresses',
+        href: addressesIndex.url(),
+        icon: MapPin,
     },
     {
         title: 'Companies',

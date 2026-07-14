@@ -65,7 +65,7 @@ defineProps<Props>();
             <InputError :message="errors.country" />
         </div>
         <div class="flex items-center space-x-2">
-            <Checkbox id="is_primary" v-model:checked="isPrimary" />
+            <Checkbox id="is_primary" v-model="isPrimary" />
             <Label for="is_primary">Set as primary address</Label>
             <InputError :message="errors.is_primary" />
         </div>

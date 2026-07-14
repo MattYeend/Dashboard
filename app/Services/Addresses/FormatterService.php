@@ -19,12 +19,16 @@ class FormatterService
     {
         return [
             'id' => $address->id,
-            'contactable_type' => $address->addressable_type,
-            'contactable_id' => $address->addressable_id,
-            'address' => $address->address,
+            'addressable_type' => $address->addressable_type,
+            'addressable_id' => $address->addressable_id,
+            'address_line_one' => $address->address_line_one,
+            'address_line_two' => $address->address_line_two,
+            'town' => $address->town,
             'city' => $address->city,
-            'postal_code' => $address->postal_code,
+            'county' => $address->county,
+            'postcode' => $address->postcode,
             'country' => $address->country,
+            'is_primary' => $address->is_primary,
             'meta' => $address->meta,
             'created_at' => $address->created_at,
             'updated_at' => $address->updated_at,
@@ -34,15 +38,15 @@ class FormatterService
             'updater' => $address->updater ? ['id' => $address->updater->id, 'name' => $address->updater->name] : null,
             'deleter' => $address->deleter ? ['id' => $address->deleter->id, 'name' => $address->deleter->name] : null,
             'restorer' => $address->restorer ? ['id' => $address->restorer->id, 'name' => $address->restorer->name] : null,
-            'contactable_type_label' => $address->contactable_type
-                ? ($this->registry->labelForModel($address->contactable_type) ?? class_basename($address->contactable_type))
+            'addressable_type_label' => $address->addressable_type
+                ? ($this->registry->labelForModel($address->addressable_type) ?? class_basename($address->addressable_type))
                 : null,
-            'contactable_name' => $address->contactable
-                ? ($address->contactable->name
-                    ?? $address->contactable->title
-                    ?? '#'.$address->contactable->id)
+            'addressable_name' => $address->addressable
+                ? ($address->addressable->name
+                    ?? $address->addressable->title
+                    ?? '#'.$address->addressable->id)
                 : null,
-            'contactable_type_key' => $this->registry->keyForModel($address->contactable_type),
+            'addressable_type_key' => $this->registry->keyForModel($address->addressable_type),
         ];
     }
 }

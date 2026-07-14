@@ -25,7 +25,7 @@ class FilterService
         $search = $this->escapeLikeValue($search);
 
         return $query->where(function (Builder $q) use ($search): void {
-            $q->where('address', 'like', "%{$search}%")
+            $q->where('address_line_one', 'like', "%{$search}%")
                 ->orWhere('city', 'like', "%{$search}%")
                 ->orWhere('postal_code', 'like', "%{$search}%")
                 ->orWhere('country', 'like', "%{$search}%");

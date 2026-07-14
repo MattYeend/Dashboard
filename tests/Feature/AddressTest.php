@@ -289,6 +289,20 @@ describe('show', function () {
             ->get('/addresses/99999')
             ->assertStatus(404);
     });
+
+    test('show returns is_primary in the formatted response', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $address = Address::factory()->forModel($superAdmin)->create(['is_primary' => true]);
+
+        $this->actingAs($superAdmin)
+            ->get("/addresses/{$address->id}")
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Addresses/Show')
+                ->where('address.is_primary', true)
+                ->where('address.address_line_one', $address->address_line_one)
+            );
+    });
 });
 
 describe('edit', function () {

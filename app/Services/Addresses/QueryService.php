@@ -142,7 +142,7 @@ class QueryService
         return [
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
-            'contactableTypes' => $this->registry->types(),
+            'addressableTypes' => $this->registry->types(),
         ];
     }
 
