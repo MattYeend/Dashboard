@@ -114,10 +114,6 @@ export interface Contact {
     contactable_name: string | null;
     phone: string | null;
     email: string | null;
-    address: string | null;
-    city: string | null;
-    postal_code: string | null;
-    country: string | null;
     meta: Record<string, unknown> | null;
     created_by: number | null;
     updated_by: number | null;
@@ -222,6 +218,36 @@ export interface Plan {
     description: string | null;
     price_per_user_per_month: number;
     is_active: boolean;
+    created_by: number | null;
+    updated_by: number | null;
+    deleted_by: number | null;
+    restored_by: number | null;
+    restored_at: string | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    creator?: { name: string };
+    updater?: { name: string };
+    deleter?: { name: string };
+    restorer?: { name: string };
+}
+
+export interface Address {
+    id: number;
+    addressable_id: number;
+    addressable_type: string;
+    addressable_type_key: string;
+    addressable_type_label: string | null;
+    addressable_name: string | null;
+    address_line_one: string;
+    address_line_two: string | null;
+    town: string | null;
+    city: string;
+    county: string | null;
+    postcode: string | null;
+    country: string;
+    is_primary: boolean;
+    meta: Record<string, unknown> | null;
     created_by: number | null;
     updated_by: number | null;
     deleted_by: number | null;
