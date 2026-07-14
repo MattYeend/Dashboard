@@ -15,7 +15,6 @@ use App\Services\Orders\QueryService;
 use App\Services\Orders\UpdaterService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class OrderController extends Controller
 {
@@ -31,23 +30,31 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * Returns paginated orders as a JSON resource collection.
+     * Returns paginated orders, already formatted by the QueryService,
+     * as a raw JSON response (not a resource collection, since getPaginated
+     * returns a pre-shaped array rather than an Eloquent collection).
      *
      * Authorises via the 'viewAny' policy, then confirms the request's token carries the
      * 'orders:read' ability before returning data.
      */
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(Request $request): JsonResponse
     {
         $this->authorize('viewAny', Order::class);
         $this->authoriseTokenAbility($request, TokenAbility::OrdersRead->value);
 
-        return OrderResource::collection($this->queryService->paginate($request));
+        $data = $this->queryService->getPaginated(
+            $request->user(),
+            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+        );
+
+        return response()->json($data);
     }
 
     /**
      * Store a newly created resource.
      *
-     * Creates an order from validated request data via the CreatorService.
+     * Creates an order from validated request data via the CreatorService,
+     * passing the authenticated user's ID as the acting creator.
      *
      * Authorises via the 'create' policy, then confirms the request's token carries the
      * 'orders:write' ability before persisting.
@@ -57,29 +64,38 @@ class OrderController extends Controller
         $this->authorize('create', Order::class);
         $this->authoriseTokenAbility($request, TokenAbility::OrdersWrite->value);
 
-        return new OrderResource($this->creatorService->create($request->validated()));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * Returns a single order as a JSON resource.
-     *
-     * Authorises via the 'view' policy, then confirms the request's token carries the
-     * 'orders:read' ability before returning data.
-     */
-    public function show(Request $request, Order $order): OrderResource
-    {
-        $this->authorize('view', $order);
-        $this->authoriseTokenAbility($request, TokenAbility::OrdersRead->value);
+        $order = $this->creatorService->create(
+            $request->validated(),
+            $request->user()->id,
+        );
 
         return new OrderResource($order);
     }
 
     /**
+     * Display the specified resource.
+     *
+     * Returns a single order via the QueryService, which includes formatted
+     * relations and permissions metadata, as a raw JSON response.
+     *
+     * Authorises via the 'view' policy, then confirms the request's token carries the
+     * 'orders:read' ability before returning data.
+     */
+    public function show(Request $request, Order $order): JsonResponse
+    {
+        $this->authorize('view', $order);
+        $this->authoriseTokenAbility($request, TokenAbility::OrdersRead->value);
+
+        return response()->json(
+            $this->queryService->getById($request->user(), $order->id)
+        );
+    }
+
+    /**
      * Update the specified resource.
      *
-     * Updates an order from validated request data via the UpdaterService.
+     * Updates an order from validated request data via the UpdaterService,
+     * passing the authenticated user's ID as the acting updater.
      *
      * Authorises via the 'update' policy, then confirms the request's token carries the
      * 'orders:write' ability before persisting.
@@ -89,13 +105,20 @@ class OrderController extends Controller
         $this->authorize('update', $order);
         $this->authoriseTokenAbility($request, TokenAbility::OrdersWrite->value);
 
-        return new OrderResource($this->updaterService->update($order, $request->validated()));
+        $updated = $this->updaterService->update(
+            $order,
+            $request->validated(),
+            $request->user()->id,
+        );
+
+        return new OrderResource($updated);
     }
 
     /**
      * Remove the specified resource.
      *
-     * Soft-deletes an order via the DeleterService and returns an empty 204 response.
+     * Soft-deletes an order via the DeleterService, passing the authenticated
+     * user's ID as the acting deleter, and returns an empty 204 response.
      *
      * Authorises via the 'delete' policy, then confirms the request's token carries the
      * 'orders:write' ability before deleting.
@@ -105,7 +128,7 @@ class OrderController extends Controller
         $this->authorize('delete', $order);
         $this->authoriseTokenAbility($request, TokenAbility::OrdersWrite->value);
 
-        $this->deleterService->delete($order);
+        $this->deleterService->delete($order, $request->user()->id);
 
         return response()->json(null, 204);
     }

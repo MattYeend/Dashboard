@@ -15,7 +15,6 @@ use App\Services\Tasks\QueryService;
 use App\Services\Tasks\UpdaterService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TaskController extends Controller
 {
@@ -31,23 +30,31 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * Returns paginated tasks as a JSON resource collection.
+     * Returns paginated tasks, already formatted by the QueryService,
+     * as a raw JSON response (not a resource collection, since getPaginated
+     * returns a pre-shaped array rather than an Eloquent collection).
      *
      * Authorises via the 'viewAny' policy, then confirms the request's token carries the
      * 'tasks:read' ability before returning data.
      */
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(Request $request): JsonResponse
     {
         $this->authorize('viewAny', Task::class);
         $this->authoriseTokenAbility($request, TokenAbility::TasksRead->value);
 
-        return TaskResource::collection($this->queryService->paginate($request));
+        $data = $this->queryService->getPaginated(
+            $request->user(),
+            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+        );
+
+        return response()->json($data);
     }
 
     /**
      * Store a newly created resource.
      *
-     * Creates a task from validated request data via the CreatorService.
+     * Creates a task from validated request data via the CreatorService,
+     * passing the authenticated user's ID as the acting creator.
      *
      * Authorises via the 'create' policy, then confirms the request's token carries the
      * 'tasks:write' ability before persisting.
@@ -57,29 +64,38 @@ class TaskController extends Controller
         $this->authorize('create', Task::class);
         $this->authoriseTokenAbility($request, TokenAbility::TasksWrite->value);
 
-        return new TaskResource($this->creatorService->create($request->validated()));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * Returns a single task as a JSON resource.
-     *
-     * Authorises via the 'view' policy, then confirms the request's token carries the
-     * 'tasks:read' ability before returning data.
-     */
-    public function show(Request $request, Task $task): TaskResource
-    {
-        $this->authorize('view', $task);
-        $this->authoriseTokenAbility($request, TokenAbility::TasksRead->value);
+        $task = $this->creatorService->create(
+            $request->validated(),
+            $request->user()->id,
+        );
 
         return new TaskResource($task);
     }
 
     /**
+     * Display the specified resource.
+     *
+     * Returns a single task via the QueryService, which includes formatted
+     * relations and permissions metadata, as a raw JSON response.
+     *
+     * Authorises via the 'view' policy, then confirms the request's token carries the
+     * 'tasks:read' ability before returning data.
+     */
+    public function show(Request $request, Task $task): JsonResponse
+    {
+        $this->authorize('view', $task);
+        $this->authoriseTokenAbility($request, TokenAbility::TasksRead->value);
+
+        return response()->json(
+            $this->queryService->getById($request->user(), $task->id)
+        );
+    }
+
+    /**
      * Update the specified resource.
      *
-     * Updates a task from validated request data via the UpdaterService.
+     * Updates a task from validated request data via the UpdaterService,
+     * passing the authenticated user's ID as the acting updater.
      *
      * Authorises via the 'update' policy, then confirms the request's token carries the
      * 'tasks:write' ability before persisting.
@@ -89,13 +105,20 @@ class TaskController extends Controller
         $this->authorize('update', $task);
         $this->authoriseTokenAbility($request, TokenAbility::TasksWrite->value);
 
-        return new TaskResource($this->updaterService->update($task, $request->validated()));
+        $updated = $this->updaterService->update(
+            $task,
+            $request->validated(),
+            $request->user()->id,
+        );
+
+        return new TaskResource($updated);
     }
 
     /**
      * Remove the specified resource.
      *
-     * Soft-deletes a task via the DeleterService and returns an empty 204 response.
+     * Soft-deletes a task via the DeleterService, passing the authenticated
+     * user's ID as the acting deleter, and returns an empty 204 response.
      *
      * Authorises via the 'delete' policy, then confirms the request's token carries the
      * 'tasks:write' ability before deleting.
@@ -105,7 +128,7 @@ class TaskController extends Controller
         $this->authorize('delete', $task);
         $this->authoriseTokenAbility($request, TokenAbility::TasksWrite->value);
 
-        $this->deleterService->delete($task);
+        $this->deleterService->delete($task, $request->user()->id);
 
         return response()->json(null, 204);
     }
