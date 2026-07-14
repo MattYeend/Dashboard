@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enums\TokenAbility;
-use App\Traits\AuthorisesTokenAbility;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
@@ -13,6 +12,7 @@ use App\Services\Companies\CreatorService;
 use App\Services\Companies\DeleterService;
 use App\Services\Companies\QueryService;
 use App\Services\Companies\UpdaterService;
+use App\Traits\AuthorisesTokenAbility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

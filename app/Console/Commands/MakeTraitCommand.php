@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
-use Symfony\Component\Console\Input\InputArgument;
 
 class MakeTraitCommand extends GeneratorCommand
 {
