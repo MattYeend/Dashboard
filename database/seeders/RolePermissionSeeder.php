@@ -214,6 +214,18 @@ class RolePermissionSeeder extends Seeder
             'delete plans',
             'restore plans',
             'force delete plans',
+
+            // Address Management
+            'view any addresses',
+            'view addresses',
+            'create addresses',
+            'edit addresses',
+            'delete addresses',
+            'force delete addresses',
+            'import addresses',
+            'export addresses',
+            'change addresses',
+            'assign address',
         ];
 
         foreach ($permissions as $permission) {
@@ -363,6 +375,16 @@ class RolePermissionSeeder extends Seeder
             'delete plans',
             'restore plans',
             'force delete plans',
+            'view any addresses',
+            'view addresses',
+            'create addresses',
+            'edit addresses',
+            'delete addresses',
+            'force delete addresses',
+            'import addresses',
+            'export addresses',
+            'change addresses',
+            'assign address',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -473,6 +495,16 @@ class RolePermissionSeeder extends Seeder
             'view plans',
             'create plans',
             'edit plans',
+            'view any addresses',
+            'view addresses',
+            'create addresses',
+            'edit addresses',
+            'delete addresses',
+            'force delete addresses',
+            'import addresses',
+            'export addresses',
+            'change addresses',
+            'assign address',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -540,6 +572,13 @@ class RolePermissionSeeder extends Seeder
             'delete companies',
             'restore companies',
             'change company industry',
+            'view any addresses',
+            'view addresses',
+            'create addresses',
+            'edit addresses',
+            'delete addresses',
+            'change addresses',
+            'assign address',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -567,6 +606,8 @@ class RolePermissionSeeder extends Seeder
             'view order',
             'view industries',
             'view companies',
+            'view any addresses',
+            'view addresses',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -605,6 +646,8 @@ class RolePermissionSeeder extends Seeder
             'view contact information',
             'view industries',
             'view companies',
+            'view any addresses',
+            'view addresses',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
 
@@ -689,6 +732,16 @@ class RolePermissionSeeder extends Seeder
             'import companies',
             'export companies',
             'change company industry',
+            'view any addresses',
+            'view addresses',
+            'create addresses',
+            'edit addresses',
+            'delete addresses',
+            'force delete addresses',
+            'import addresses',
+            'export addresses',
+            'change addresses',
+            'assign address',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -738,6 +791,10 @@ class RolePermissionSeeder extends Seeder
             'view companies',
             'export companies',
             'change company industry',
+            'view any addresses',
+            'view addresses',
+            'export addresses',
+            'change addresses',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
@@ -764,6 +821,8 @@ class RolePermissionSeeder extends Seeder
             'view companies',
             'view any plans',
             'view plans',
+            'view any addresses',
+            'view addresses',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -821,5 +880,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Industries');
         $this->command->info('- Companies');
         $this->command->info('- Plans');
+        $this->command->info('- Addresses');
     }
 }
