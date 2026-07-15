@@ -13,6 +13,7 @@ use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
 use App\Observers\UserObserver;
+use App\Policies\ApiTokenPolicy;
 use App\Policies\CompanyPolicy;
 use App\Policies\ContactPolicy;
 use App\Policies\IndustryPolicy;
@@ -34,6 +35,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Cashier\Cashier;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -68,6 +70,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Industry::class, IndustryPolicy::class);
         Gate::policy(Company::class, CompanyPolicy::class);
         Gate::policy(Plan::class, PlanPolicy::class);
+        Gate::policy(PersonalAccessToken::class, ApiTokenPolicy::class);
 
         Relation::morphMap([
             'App\Models\User' => User::class,
