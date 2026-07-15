@@ -16,10 +16,26 @@ const emit = defineEmits<{
     <table class="min-w-full divide-y divide-gray-800">
         <thead>
             <tr>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Name</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Abilities</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Last used</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Expires</th>
+                <th
+                    class="px-4 py-3 text-left text-sm font-medium text-gray-300"
+                >
+                    Name
+                </th>
+                <th
+                    class="px-4 py-3 text-left text-sm font-medium text-gray-300"
+                >
+                    Abilities
+                </th>
+                <th
+                    class="px-4 py-3 text-left text-sm font-medium text-gray-300"
+                >
+                    Last used
+                </th>
+                <th
+                    class="px-4 py-3 text-left text-sm font-medium text-gray-300"
+                >
+                    Expires
+                </th>
                 <th class="px-4 py-3"></th>
             </tr>
         </thead>

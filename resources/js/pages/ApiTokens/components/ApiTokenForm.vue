@@ -21,7 +21,10 @@ function isAbilitySelected(value: string): boolean {
     return form.abilities.includes(value);
 }
 
-function toggleAbility(value: string, checked: boolean | 'indeterminate'): void {
+function toggleAbility(
+    value: string,
+    checked: boolean | 'indeterminate',
+): void {
     const isChecked = checked === true;
 
     if (isChecked && !form.abilities.includes(value)) {
@@ -38,7 +41,8 @@ function toggleAbility(value: string, checked: boolean | 'indeterminate'): void 
 const expiresAt = computed<string | number | undefined>({
     get: () => form.expires_at ?? undefined,
     set: (value) => {
-        form.expires_at = value === undefined || value === '' ? null : String(value);
+        form.expires_at =
+            value === undefined || value === '' ? null : String(value);
     },
 });
 
@@ -75,7 +79,9 @@ function submit(): void {
                 >
                     <Checkbox
                         :model-value="isAbilitySelected(value)"
-                        @update:model-value="(checked) => toggleAbility(value, checked)"
+                        @update:model-value="
+                            (checked) => toggleAbility(value, checked)
+                        "
                     />
                     {{ label }}
                 </label>
@@ -87,11 +93,7 @@ function submit(): void {
 
         <div class="space-y-2">
             <Label for="expires_at">Expires (optional)</Label>
-            <Input
-                id="expires_at"
-                v-model="expiresAt"
-                type="datetime-local"
-            />
+            <Input id="expires_at" v-model="expiresAt" type="datetime-local" />
             <p v-if="form.errors.expires_at" class="text-sm text-red-600">
                 {{ form.errors.expires_at }}
             </p>
