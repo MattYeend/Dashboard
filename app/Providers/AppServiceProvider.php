@@ -9,6 +9,7 @@ use App\Models\Industry;
 use App\Models\Order;
 use App\Models\OrderStatus;
 use App\Models\Plan;
+use App\Models\SubjectArea;
 use App\Models\Subscription;
 use App\Models\Task;
 use App\Models\TaskStatus;
@@ -22,6 +23,7 @@ use App\Policies\IndustryPolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\OrderStatusPolicy;
 use App\Policies\PlanPolicy;
+use App\Policies\SubjectAreaPolicy;
 use App\Policies\TaskPolicy;
 use App\Policies\TaskStatusPolicy;
 use App\Policies\UserPolicy;
@@ -74,6 +76,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Plan::class, PlanPolicy::class);
         Gate::policy(PersonalAccessToken::class, ApiTokenPolicy::class);
         Gate::policy(Address::class, AddressPolicy::class);
+        Gate::policy(SubjectArea::class, SubjectAreaPolicy::class);
 
         Relation::morphMap([
             'App\Models\User' => User::class,

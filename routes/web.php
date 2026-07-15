@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\StripeWebhookController;
+use App\Http\Controllers\SubjectAreaController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\UserController;
@@ -183,6 +184,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/', [ApiTokenController::class, 'store'])->name('store');
         Route::put('/{apiToken}', [ApiTokenController::class, 'update'])->name('update');
         Route::delete('/{apiToken}', [ApiTokenController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('subject-areas')->name('subject-areas.')->group(function () {
+        Route::post('/bulk/delete', [SubjectAreaController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [SubjectAreaController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [SubjectAreaController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [SubjectAreaController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [SubjectAreaController::class, 'index'])->name('index');
+        Route::get('/create', [SubjectAreaController::class, 'create'])->name('create');
+        Route::post('/', [SubjectAreaController::class, 'store'])->name('store');
+        Route::get('/{subjectArea}', [SubjectAreaController::class, 'show'])->name('show');
+        Route::get('/{subjectArea}/edit', [SubjectAreaController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{subjectArea}', [SubjectAreaController::class, 'update'])->name('update');
+        Route::delete('/{subjectArea}', [SubjectAreaController::class, 'destroy'])->name('destroy');
     });
 });
 
