@@ -3,8 +3,8 @@ import { Link } from '@inertiajs/vue3';
 
 interface Props {
     title: string;
-    createHref: string;
-    createLabel: string;
+    createHref?: string;
+    createLabel?: string;
     canCreate?: boolean;
 }
 

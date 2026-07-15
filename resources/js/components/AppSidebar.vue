@@ -6,6 +6,7 @@ import {
     Contact2,
     CreditCard,
     FolderGit2,
+    KeyRound,
     LayoutGrid,
     MapPin,
     User2,
@@ -25,6 +26,7 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as addressesIndex } from '@/routes/addresses';
+import { index as apiTokensIndex } from '@/routes/api-tokens';
 import { index as companiesIndex } from '@/routes/companies';
 import { index as contactsIndex } from '@/routes/contacts';
 import { index as industriesIndex } from '@/routes/industries';
@@ -106,6 +108,11 @@ const mainNavItems: NavItem[] = [
         title: 'Users',
         href: usersIndex.url(),
         icon: User2,
+    },
+    {
+        title: 'API Tokens',
+        href: apiTokensIndex.url(),
+        icon: KeyRound,
     },
 ];
 

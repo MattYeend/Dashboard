@@ -6,25 +6,30 @@ defineProps<{
     tokens: ApiToken[];
     abilities: Record<string, string>;
 }>();
+
+const emit = defineEmits<{
+    revoke: [token: ApiToken];
+}>();
 </script>
 
 <template>
-    <table>
+    <table class="min-w-full divide-y divide-gray-800">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Abilities</th>
-                <th>Last used</th>
-                <th>Expires</th>
-                <th></th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Name</th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Abilities</th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Last used</th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Expires</th>
+                <th class="px-4 py-3"></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-gray-800">
             <ApiTokenRow
                 v-for="token in tokens"
                 :key="token.id"
                 :token="token"
                 :abilities="abilities"
+                @revoke="emit('revoke', $event)"
             />
         </tbody>
     </table>

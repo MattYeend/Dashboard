@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
 import type { ApiToken } from '@/types';
 
-const props = defineProps<{
+defineProps<{
     token: ApiToken;
     abilities: Record<string, string>;
 }>();
 
-const revoke = () => {
-    if (confirm(`Revoke token "${props.token.name}"? This cannot be undone.`)) {
-        router.delete(route('api-tokens.destroy', props.token.id));
-    }
-};
+const emit = defineEmits<{
+    revoke: [token: ApiToken];
+}>();
 </script>
 
 <template>
@@ -21,7 +18,13 @@ const revoke = () => {
         <td>{{ token.last_used_at ?? 'Never' }}</td>
         <td>{{ token.expires_at ?? 'Never' }}</td>
         <td>
-            <button type="button" @click="revoke">Revoke</button>
+            <button
+                type="button"
+                class="text-red-600 hover:text-red-900"
+                @click="emit('revoke', token)"
+            >
+                Revoke
+            </button>
         </td>
     </tr>
 </template>

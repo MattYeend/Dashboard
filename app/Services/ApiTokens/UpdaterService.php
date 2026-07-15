@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\ApiToken;
+namespace App\Services\ApiTokens;
 
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\PersonalAccessToken;

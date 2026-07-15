@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\ApiToken;
+namespace App\Services\ApiTokens;
 
 use Laravel\Sanctum\PersonalAccessToken;
 

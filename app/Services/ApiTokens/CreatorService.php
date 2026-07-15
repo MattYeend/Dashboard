@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\ApiToken;
+namespace App\Services\ApiTokens;
 
 use App\Models\User;
 use Illuminate\Support\Carbon;
