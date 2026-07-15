@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiTokenController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\IndustryController;
@@ -157,6 +158,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{plan}/edit', [PlanController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{plan}', [PlanController::class, 'update'])->name('update');
         Route::delete('/{plan}', [PlanController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('api-tokens')->name('api-tokens.')->group(function () {
+        Route::get('/', [ApiTokenController::class, 'index'])->name('index');
+        Route::post('/', [ApiTokenController::class, 'store'])->name('store');
+        Route::put('/{apiToken}', [ApiTokenController::class, 'update'])->name('update');
+        Route::delete('/{apiToken}', [ApiTokenController::class, 'destroy'])->name('destroy');
     });
 });
 
