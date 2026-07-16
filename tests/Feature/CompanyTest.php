@@ -207,7 +207,7 @@ describe('store', function () {
 
         $this->assertDatabaseHas('companies', [
             'name' => 'Minimal Company Ltd',
-            'slug' => null,
+            'slug' => 'minimal-company-ltd',
             'email' => null,
             'industry_id' => null,
         ]);

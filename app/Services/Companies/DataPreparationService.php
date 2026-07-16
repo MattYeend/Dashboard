@@ -2,6 +2,9 @@
 
 namespace App\Services\Companies;
 
+use App\Models\Company;
+use Illuminate\Support\Str;
+
 class DataPreparationService
 {
     /**
@@ -14,7 +17,7 @@ class DataPreparationService
     {
         return [
             'name' => $data['name'],
-            'slug' => $data['slug'] ?? null,
+            'slug' => $data['slug'] ?? $this->generateUniqueSlug($data['name']),
             'email' => $data['email'] ?? null,
             'phone' => $data['phone'] ?? null,
             'website' => $data['website'] ?? null,
@@ -65,5 +68,22 @@ class DataPreparationService
         $payload['updated_by'] = $updatedBy;
 
         return $payload;
+    }
+
+    /**
+     * Generate a unique slug from the given name.
+     */
+    protected function generateUniqueSlug(string $name): string
+    {
+        $base = Str::slug($name);
+        $slug = $base !== '' ? $base : 'company';
+        $suffix = 1;
+
+        while (Company::withTrashed()->where('slug', $slug)->exists()) {
+            $slug = "{$base}-{$suffix}";
+            $suffix++;
+        }
+
+        return $slug;
     }
 }
