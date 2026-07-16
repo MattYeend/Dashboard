@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -48,6 +49,17 @@ class CategoryFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'parent_id' => $parentId,
+        ]);
+    }
+
+    /**
+     * State for a soft-deleted category.
+     */
+    public function deleted(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'deleted_at' => now(),
+            'deleted_by' => User::factory(),
         ]);
     }
 }

@@ -87,7 +87,7 @@ class QueryService
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
-            'industries' => [
+            'categories' => [
                 'data' => array_map(
                     fn (Category $category) => $this->formatterService->format($category),
                     $paginator->items()
