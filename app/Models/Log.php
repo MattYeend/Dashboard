@@ -285,6 +285,29 @@ class Log extends Model
 
     public const ACTION_ASSIGN_ADDRESS = 131;
 
+    // Category Management
+    public const ACTION_CREATE_CATEGORY = 132;
+
+    public const ACTION_UPDATE_CATEGORY = 133;
+
+    public const ACTION_VIEW_CATEGORY = 134;
+
+    public const ACTION_DELETE_CATEGORY = 135;
+
+    public const ACTION_FORCE_DELETE_CATEGORY = 136;
+
+    public const ACTION_RESTORE_CATEGORY = 137;
+
+    public const ACTION_IMPORT_CATEGORY = 138;
+
+    public const ACTION_EXPORT_CATEGORY = 139;
+
+    public const ACTION_CATEGORY_UPDATED_BY_CRON = 140;
+
+    public const ACTION_ASSIGN_CATEGORY = 141;
+
+    public const ACTION_ASSIGN_CATEGORY_TO_CATEGORY = 142;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
