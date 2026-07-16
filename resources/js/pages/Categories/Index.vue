@@ -8,22 +8,22 @@ import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import {
-    index as addressesIndex,
-    show as addressesShow,
-    create as addressesCreate,
-    edit as addressesEdit,
-    destroy as addressesDestroy,
-} from '@/routes/addresses';
-import addressesBulk from '@/routes/addresses/bulk';
+    index as categoriesIndex,
+    show as categoriesShow,
+    create as categoriesCreate,
+    edit as categoriesEdit,
+    destroy as categoriesDestroy,
+} from '@/routes/categories';
+import categoriesBulk from '@/routes/categories/bulk';
 import type {
     Pagination as PaginationMeta,
     PermissionsMeta,
-    Address,
+    Category,
 } from '@/types';
 
 interface Props {
-    addresses: {
-        data: Address[];
+    categories: {
+        data: Category[];
         links: Array<{ url: string | null; label: string; active: boolean }>;
         meta: PaginationMeta;
     };
@@ -39,14 +39,14 @@ const urlParams = new URLSearchParams(window.location.search);
 const filters = ref({
     search: urlParams.get('search') ?? '',
     trashed: urlParams.get('trashed') ?? '',
-    sort_by: urlParams.get('sort_by') ?? 'city',
+    sort_by: urlParams.get('sort_by') ?? 'name',
     sort_direction: urlParams.get('sort_direction') ?? 'asc',
 });
 
 const selectedIds = ref<Array<number | string>>([]);
 
 const deleteDialogOpen = ref(false);
-const selectedAddressId = ref<number | null>(null);
+const selectedCategoryId = ref<number | null>(null);
 const deleteProcessing = ref(false);
 
 const bulkDeleteDialogOpen = ref(false);
@@ -54,19 +54,17 @@ const pendingBulkIds = ref<Array<number | string>>([]);
 const bulkDeleteProcessing = ref(false);
 
 const columns: ResourceTableColumn[] = [
-    { key: 'addressable_type_label', label: 'Type' },
-    { key: 'addressable_name', label: 'Owner' },
-    { key: 'address_line_one', label: 'Address' },
-    { key: 'city', label: 'City' },
-    { key: 'postcode', label: 'Postcode' },
-    { key: 'country', label: 'Country' },
+    { key: 'name', label: 'Name' },
+    { key: 'slug', label: 'Slug' },
+    { key: 'parent_name', label: 'Parent' },
+    { key: 'description', label: 'Description' },
 ];
 
 const filterFields = [
     {
         key: 'search',
         type: 'text' as const,
-        placeholder: 'Search addresses…',
+        placeholder: 'Search categories…',
     },
     {
         key: 'trashed',
@@ -101,30 +99,30 @@ const filterFields = [
 ];
 
 function applyFilters(): void {
-    router.get(addressesIndex.url(), filters.value, {
+    router.get(categoriesIndex.url(), filters.value, {
         preserveState: true,
         replace: true,
     });
 }
 
 function requestDestroy(id: number): void {
-    selectedAddressId.value = id;
+    selectedCategoryId.value = id;
     deleteDialogOpen.value = true;
 }
 
 function destroy(): void {
-    if (selectedAddressId.value === null) {
+    if (selectedCategoryId.value === null) {
         return;
     }
 
     deleteProcessing.value = true;
 
-    router.delete(addressesDestroy.url(selectedAddressId.value), {
+    router.delete(categoriesDestroy.url(selectedCategoryId.value), {
         preserveScroll: true,
         onFinish: () => {
             deleteProcessing.value = false;
             deleteDialogOpen.value = false;
-            selectedAddressId.value = null;
+            selectedCategoryId.value = null;
         },
     });
 }
@@ -146,7 +144,7 @@ function bulkDelete(): void {
     bulkDeleteProcessing.value = true;
 
     router.post(
-        addressesBulk.delete.url(),
+        categoriesBulk.delete.url(),
         { ids: pendingBulkIds.value },
         {
             preserveScroll: true,
@@ -167,9 +165,9 @@ function bulkDelete(): void {
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <IndexHeader
-                title="Addresses"
-                :create-href="addressesCreate.url()"
-                create-label="Add Address"
+                title="Categories"
+                :create-href="categoriesCreate.url()"
+                create-label="Add Category"
                 :can-create="permissions_meta.can_create"
             />
 
@@ -181,11 +179,11 @@ function bulkDelete(): void {
 
             <ResourceTable
                 v-model:selected="selectedIds"
-                :rows="addresses.data"
+                :rows="categories.data"
                 :columns="columns"
                 row-key="id"
                 selectable
-                empty-message="No addresses found."
+                empty-message="No categories found."
             >
                 <template #bulk-actions="{ selected }">
                     <button
@@ -198,8 +196,8 @@ function bulkDelete(): void {
                 </template>
 
                 <template #actions="{ row }">
-                    <Link :href="addressesShow.url(row.id)">View</Link>
-                    <Link :href="addressesEdit.url(row.id)">Edit</Link>
+                    <Link :href="categoriesShow.url(row.id)">View</Link>
+                    <Link :href="categoriesEdit.url(row.id)">Edit</Link>
                     <button
                         type="button"
                         class="text-red-600 hover:text-red-900"
@@ -211,16 +209,16 @@ function bulkDelete(): void {
             </ResourceTable>
 
             <Pagination
-                :meta="addresses.meta"
-                :links="addresses.links"
-                resource-label="addresses"
+                :meta="categories.meta"
+                :links="categories.links"
+                resource-label="categories"
             />
         </div>
 
         <ConfirmDialog
             v-model:open="deleteDialogOpen"
-            title="Delete address"
-            description="This address will be moved to trash."
+            title="Delete category"
+            description="This category will be moved to trash."
             confirm-label="Delete"
             :processing="deleteProcessing"
             @confirm="destroy"
@@ -228,8 +226,8 @@ function bulkDelete(): void {
 
         <ConfirmDialog
             v-model:open="bulkDeleteDialogOpen"
-            title="Delete addresses"
-            :description="`${pendingBulkIds.length} address(es) will be moved to trash.`"
+            title="Delete categories"
+            :description="`${pendingBulkIds.length} categorie(s) will be moved to trash.`"
             confirm-label="Delete"
             :processing="bulkDeleteProcessing"
             @confirm="bulkDelete"

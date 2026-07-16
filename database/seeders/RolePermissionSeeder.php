@@ -226,6 +226,15 @@ class RolePermissionSeeder extends Seeder
             'export addresses',
             'change addresses',
             'assign address',
+
+            // Category Management
+            'view any categories',
+            'view categories',
+            'create categories',
+            'edit categories',
+            'delete categories',
+            'restore categories',
+            'force delete categories',
         ];
 
         foreach ($permissions as $permission) {
@@ -385,6 +394,13 @@ class RolePermissionSeeder extends Seeder
             'export addresses',
             'change addresses',
             'assign address',
+            'view any categories',
+            'view categories',
+            'create categories',
+            'edit categories',
+            'delete categories',
+            'restore categories',
+            'force delete categories',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -505,6 +521,12 @@ class RolePermissionSeeder extends Seeder
             'export addresses',
             'change addresses',
             'assign address',
+            'view any categories',
+            'view categories',
+            'create categories',
+            'edit categories',
+            'delete categories',
+            'restore categories',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -881,5 +903,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Companies');
         $this->command->info('- Plans');
         $this->command->info('- Addresses');
+        $this->command->info('- Categories');
     }
 }

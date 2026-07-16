@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Address;
+use App\Models\Category;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Models\Industry;
@@ -16,6 +17,7 @@ use App\Models\User;
 use App\Observers\UserObserver;
 use App\Policies\AddressPolicy;
 use App\Policies\ApiTokenPolicy;
+use App\Policies\CategoryPolicy;
 use App\Policies\CompanyPolicy;
 use App\Policies\ContactPolicy;
 use App\Policies\IndustryPolicy;
@@ -74,6 +76,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Plan::class, PlanPolicy::class);
         Gate::policy(PersonalAccessToken::class, ApiTokenPolicy::class);
         Gate::policy(Address::class, AddressPolicy::class);
+        Gate::policy(Category::class, CategoryPolicy::class);
 
         Relation::morphMap([
             'App\Models\User' => User::class,

@@ -2,17 +2,17 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import AddressAuditDetails from '@/pages/Addresses/components/AddressAuditDetails.vue';
-import AddressBasicDetails from '@/pages/Addresses/components/AddressBasicDetails.vue';
+import CategoryAuditDetails from '@/pages/Categories/components/CategoryAuditDetails.vue';
+import CategoryBasicDetails from '@/pages/Categories/components/CategoryBasicDetails.vue';
 import {
-    edit as addressesEdit,
-    destroy as addressesDestroy,
-    index as addressesIndex,
-} from '@/routes/addresses';
-import type { Address } from '@/types';
+    edit as categoriesEdit,
+    destroy as categoriesDestroy,
+    index as categoriesIndex,
+} from '@/routes/categories';
+import type { Category } from '@/types';
 
 interface Props {
-    address: Address;
+    category: Category;
 }
 
 const props = defineProps<Props>();
@@ -27,7 +27,7 @@ function requestDestroy(): void {
 function destroy(): void {
     deleteProcessing.value = true;
 
-    router.delete(addressesDestroy.url(props.address.id), {
+    router.delete(categoriesDestroy.url(props.category.id), {
         onFinish: () => {
             deleteProcessing.value = false;
             deleteDialogOpen.value = false;
@@ -40,16 +40,16 @@ function destroy(): void {
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <div class="mb-6 flex items-center justify-between">
-                <h1 class="text-2xl font-semibold text-gray-300">Address</h1>
+                <h1 class="text-2xl font-semibold text-gray-300">Category</h1>
                 <div class="space-x-2">
                     <Link
-                        :href="addressesIndex.url()"
+                        :href="categoriesIndex.url()"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
                     >
                         Back
                     </Link>
                     <Link
-                        :href="addressesEdit.url(props.address.id)"
+                        :href="categoriesEdit.url(props.category.id)"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
                     >
                         Edit
@@ -65,15 +65,15 @@ function destroy(): void {
             </div>
 
             <div class="space-y-6">
-                <AddressBasicDetails :address="address" />
-                <AddressAuditDetails :address="address" />
+                <CategoryBasicDetails :category="category" />
+                <CategoryAuditDetails :category="category" />
             </div>
         </div>
 
         <ConfirmDialog
             v-model:open="deleteDialogOpen"
-            title="Delete address"
-            description="This address will be moved to trash."
+            title="Delete category"
+            description="This category will be moved to trash."
             confirm-label="Delete"
             :processing="deleteProcessing"
             @confirm="destroy"

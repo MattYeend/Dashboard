@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ApiTokenController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\IndustryController;
@@ -183,6 +184,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/', [ApiTokenController::class, 'store'])->name('store');
         Route::put('/{apiToken}', [ApiTokenController::class, 'update'])->name('update');
         Route::delete('/{apiToken}', [ApiTokenController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('categories')->name('categories.')->group(function () {
+        Route::post('/bulk/delete', [CategoryController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [CategoryController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [CategoryController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [CategoryController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [CategoryController::class, 'index'])->name('index');
+        Route::get('/create', [CategoryController::class, 'create'])->name('create');
+        Route::post('/', [CategoryController::class, 'store'])->name('store');
+        Route::get('/{category}', [CategoryController::class, 'show'])->name('show');
+        Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{category}', [CategoryController::class, 'update'])->name('update');
+        Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('destroy');
     });
 });
 
