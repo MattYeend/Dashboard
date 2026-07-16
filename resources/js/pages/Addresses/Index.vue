@@ -7,11 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import type {
-    Pagination as PaginationMeta,
-    PermissionsMeta,
-    Address,
-} from '@/types';
 import {
     index as addressesIndex,
     show as addressesShow,
@@ -20,6 +15,11 @@ import {
     destroy as addressesDestroy,
 } from '@/routes/addresses';
 import addressesBulk from '@/routes/addresses/bulk';
+import type {
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+    Address,
+} from '@/types';
 
 interface Props {
     addresses: {

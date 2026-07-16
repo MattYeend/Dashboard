@@ -4,8 +4,8 @@ import axios from 'axios';
 import { ref, watch } from 'vue';
 import { nullIfBlank } from '@/lib/forms';
 import AddressForm from '@/pages/Addresses/components/AddressForm.vue';
-import type { Address } from '@/types';
 import { update as addressesUpdate } from '@/routes/addresses';
+import type { Address } from '@/types';
 
 interface Props {
     address: Address;

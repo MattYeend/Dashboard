@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class IndustryController extends Controller
+class CategoryController extends Controller
 {
     use AuthorizesRequests;
 

@@ -4,12 +4,12 @@ import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import AddressAuditDetails from '@/pages/Addresses/components/AddressAuditDetails.vue';
 import AddressBasicDetails from '@/pages/Addresses/components/AddressBasicDetails.vue';
-import type { Address } from '@/types';
 import {
     edit as addressesEdit,
     destroy as addressesDestroy,
     index as addressesIndex,
 } from '@/routes/addresses';
+import type { Address } from '@/types';
 
 interface Props {
     address: Address;
