@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\SubjectAreas;
+namespace App\Services\Categories;
 
 class FilterService
 {

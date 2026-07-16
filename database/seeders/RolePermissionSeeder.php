@@ -226,6 +226,15 @@ class RolePermissionSeeder extends Seeder
             'export addresses',
             'change addresses',
             'assign address',
+
+            // Subject Area Management
+            'view any subject areas',
+            'view subject areas',
+            'create subject areas',
+            'edit subject areas',
+            'delete subject areas',
+            'restore subject areas',
+            'force delete subject areas',
         ];
 
         foreach ($permissions as $permission) {
@@ -385,6 +394,13 @@ class RolePermissionSeeder extends Seeder
             'export addresses',
             'change addresses',
             'assign address',
+            'view any subject areas',
+            'view subject areas',
+            'create subject areas',
+            'edit subject areas',
+            'delete subject areas',
+            'restore subject areas',
+            'force delete subject areas',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -505,6 +521,12 @@ class RolePermissionSeeder extends Seeder
             'export addresses',
             'change addresses',
             'assign address',
+            'view any subject areas',
+            'view subject areas',
+            'create subject areas',
+            'edit subject areas',
+            'delete subject areas',
+            'restore subject areas',
         ];
         $manager->givePermissionTo($managerPermissions);
 

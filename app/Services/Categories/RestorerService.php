@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\SubjectAreas;
+namespace App\Services\Categories;
 
-class ManagementService
+class RestorerService
 {
     public function __construct()
     {

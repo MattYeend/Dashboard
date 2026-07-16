@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\SubjectAreas;
+namespace App\Services\Categories;
 
-class PolicAuthorisationService
+class FormatterService
 {
     public function __construct()
     {

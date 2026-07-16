@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\SubjectAreas;
+namespace App\Services\Categories;
 
-class DeleterService
+class QueryService
 {
     public function __construct()
     {

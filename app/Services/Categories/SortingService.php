@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\SubjectAreas;
+namespace App\Services\Categories;
 
-class CreatorService
+class SortingService
 {
     public function __construct()
     {

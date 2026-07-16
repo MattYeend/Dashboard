@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\SubjectAreas;
+namespace App\Services\Categories;
 
-class FormatterService
+class CreatorService
 {
     public function __construct()
     {

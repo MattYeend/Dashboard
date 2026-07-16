@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreSubjectAreaRequest;
-use App\Http\Requests\UpdateSubjectAreaRequest;
-use App\Models\SubjectArea;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Models\Category;
 
-class SubjectAreaController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class SubjectAreaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSubjectAreaRequest $request)
+    public function store(StoreCategoryRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class SubjectAreaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SubjectArea $subjectArea)
+    public function show(Category $categories)
     {
         //
     }
@@ -43,7 +43,7 @@ class SubjectAreaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SubjectArea $subjectArea)
+    public function edit(Category $categories)
     {
         //
     }
@@ -51,7 +51,7 @@ class SubjectAreaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSubjectAreaRequest $request, SubjectArea $subjectArea)
+    public function update(UpdateCategoryRequest $request, Category $categories)
     {
         //
     }
@@ -59,7 +59,7 @@ class SubjectAreaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SubjectArea $subjectArea)
+    public function destroy(Category $categories)
     {
         //
     }

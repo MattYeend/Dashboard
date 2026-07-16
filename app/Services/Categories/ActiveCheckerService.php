@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\SubjectAreas;
+namespace App\Services\Categories;
 
-class UpdaterService
+class ActiveCheckerService
 {
     public function __construct()
     {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\SubjectAreas;
+namespace App\Services\Categories;
 
-class ActiveCheckerService
+class DataPreparationService
 {
     public function __construct()
     {

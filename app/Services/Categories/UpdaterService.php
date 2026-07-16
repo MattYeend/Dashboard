@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\SubjectAreas;
+namespace App\Services\Categories;
 
-class QueryService
+class UpdaterService
 {
     public function __construct()
     {
