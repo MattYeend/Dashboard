@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
@@ -12,6 +13,57 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $categories = [
+            [
+                'name' => 'Web Development',
+                'description' => 'General web development topics covering backend and frontend practices.',
+                'children' => [
+                    'Laravel',
+                    'Vue.js',
+                    'PHP',
+                    'MySQL',
+                ],
+            ],
+            [
+                'name' => 'SEO',
+                'description' => 'Search engine optimisation, PageSpeed performance, and Yoast SEO guidance.',
+                'children' => [
+                    'Technical SEO',
+                ],
+            ],
+            [
+                'name' => 'WordPress',
+                'description' => 'WordPress performance, theming, and Cloudflare setup.',
+            ],
+            [
+                'name' => 'Packagist Packages',
+                'description' => 'Documentation and write-ups for open source Laravel packages.',
+            ],
+            [
+                'name' => 'Career',
+                'description' => 'Freelancing, career development, and working as a software developer.',
+            ],
+        ];
+
+        foreach ($categories as $category) {
+            $parent = Category::updateOrCreate(
+                ['slug' => Str::slug($category['name'])],
+                [
+                    'name' => $category['name'],
+                    'description' => $category['description'],
+                ]
+            );
+
+            foreach ($category['children'] ?? [] as $childName) {
+                Category::updateOrCreate(
+                    ['slug' => Str::slug($childName)],
+                    [
+                        'parent_id' => $parent->id,
+                        'name' => $childName,
+                        'description' => null,
+                    ]
+                );
+            }
+        }
     }
 }
