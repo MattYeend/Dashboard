@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePlanRequest;
-use App\Http\Requests\UpdatePlanRequest;
+use App\Http\Requests\Plans\StorePlanRequest;
+use App\Http\Requests\Plans\UpdatePlanRequest;
 use App\Models\Plan;
 use App\Services\Plans\ManagementService;
 use App\Services\Plans\QueryService;

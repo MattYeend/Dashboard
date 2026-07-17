@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCompanyRequest;
-use App\Http\Requests\UpdateCompanyRequest;
+use App\Http\Requests\Companies\StoreCompanyRequest;
+use App\Http\Requests\Companies\UpdateCompanyRequest;
 use App\Models\Company;
 use App\Services\Companies\ManagementService;
 use App\Services\Companies\QueryService;

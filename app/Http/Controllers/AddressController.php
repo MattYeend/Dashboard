@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAddressRequest;
-use App\Http\Requests\UpdateAddressRequest;
+use App\Http\Requests\Addresses\StoreAddressRequest;
+use App\Http\Requests\Addresses\UpdateAddressRequest;
 use App\Models\Address;
 use App\Services\Addresses\ManagementService;
 use App\Services\Addresses\QueryService;

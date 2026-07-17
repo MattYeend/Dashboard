@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreIndustryRequest;
-use App\Http\Requests\UpdateIndustryRequest;
+use App\Http\Requests\Industries\StoreIndustryRequest;
+use App\Http\Requests\Industries\UpdateIndustryRequest;
 use App\Models\Industry;
 use App\Services\Industries\ManagementService;
 use App\Services\Industries\QueryService;

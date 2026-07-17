@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TokenAbility;
-use App\Http\Requests\StoreApiTokenRequest;
-use App\Http\Requests\UpdateApiTokenRequest;
+use App\Http\Requests\ApiTokens\StoreApiTokenRequest;
+use App\Http\Requests\ApiTokens\UpdateApiTokenRequest;
 use App\Services\ApiTokens\CreatorService;
 use App\Services\ApiTokens\DeleterService;
 use App\Services\ApiTokens\QueryService;
