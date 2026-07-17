@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Addresses;
 
 use App\Models\Address;
 use App\Services\Addresses\AddressableTypeRegistryService;

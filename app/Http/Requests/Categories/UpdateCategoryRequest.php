@@ -1,23 +1,19 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Categories;
 
-use App\Concerns\PasswordValidationRules;
-use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreUserRequest extends FormRequest
+class UpdateCategoryRequest extends FormRequest
 {
-    use PasswordValidationRules;
-
     /**
-     * Determine if the user is authorised to make this request.
+     * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('create', User::class);
+        return $this->user()->can('update', $this->route('category'));
     }
 
     /**
@@ -28,10 +24,10 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'parent_id' => $this->parentIdRules(),
             'name' => $this->nameRules(),
-            'email' => $this->emailRules(),
-            'password' => $this->passwordRules(),
-            'role' => $this->roleRules(),
+            'slug' => $this->slugRules(),
+            'description' => $this->descriptionRules(),
             'meta' => $this->metaRules(),
         ];
     }
@@ -44,14 +40,31 @@ class StoreUserRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'parent_id.exists' => 'The selected parent category does not exist.',
+            'parent_id.not_in' => 'A category cannot be its own parent.',
             'name.required' => 'The name is required.',
             'name.string' => 'The name must be a string.',
             'name.max' => 'The name may not exceed 255 characters.',
-            'email.required' => 'The email address is required.',
-            'email.email' => 'The email address must be a valid email.',
-            'email.max' => 'The email address may not exceed 255 characters.',
-            'email.unique' => 'The email address is already taken.',
-            'role.in' => 'The selected role is invalid.',
+            'slug.required' => 'The slug is required.',
+            'slug.string' => 'The slug must be a string.',
+            'slug.max' => 'The slug may not exceed 255 characters.',
+            'slug.unique' => 'This slug is already in use.',
+        ];
+    }
+
+    /**
+     * Get validation rules for the parent_id field.
+     *
+     * @return array<mixed>
+     */
+    protected function parentIdRules(): array
+    {
+        return [
+            'sometimes',
+            'nullable',
+            'integer',
+            'exists:categories,id',
+            Rule::notIn([$this->route('category')?->id]),
         ];
     }
 
@@ -63,6 +76,7 @@ class StoreUserRequest extends FormRequest
     protected function nameRules(): array
     {
         return [
+            'sometimes',
             'required',
             'string',
             'max:255',
@@ -70,30 +84,32 @@ class StoreUserRequest extends FormRequest
     }
 
     /**
-     * Get validation rules for the email field.
+     * Get validation rules for the slug field.
      *
      * @return array<mixed>
      */
-    protected function emailRules(): array
+    protected function slugRules(): array
     {
         return [
+            'sometimes',
             'required',
-            'email',
+            'string',
             'max:255',
-            Rule::unique('users', 'email'),
+            Rule::unique('categories', 'slug')->ignore($this->route('category')),
         ];
     }
 
     /**
-     * Get validation rules for the role field.
+     * Get validation rules for the description field.
      *
      * @return array<mixed>
      */
-    protected function roleRules(): array
+    protected function descriptionRules(): array
     {
         return [
+            'sometimes',
             'nullable',
-            Rule::in(['user', 'admin', 'super_admin']),
+            'string',
         ];
     }
 
@@ -105,6 +121,7 @@ class StoreUserRequest extends FormRequest
     protected function metaRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'array',
         ];

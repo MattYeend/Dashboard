@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\ApiTokens;
 
 use App\Enums\TokenAbility;
 use Illuminate\Contracts\Validation\ValidationRule;

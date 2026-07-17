@@ -1,19 +1,23 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Users;
 
-use App\Models\Category;
+use App\Concerns\PasswordValidationRules;
+use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreCategoryRequest extends FormRequest
+class StoreUserRequest extends FormRequest
 {
+    use PasswordValidationRules;
+
     /**
-     * Determine if the user is authorized to make this request.
+     * Determine if the user is authorised to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('create', Category::class);
+        return $this->user()->can('create', User::class);
     }
 
     /**
@@ -24,10 +28,10 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'parent_id' => $this->parentIdRules(),
             'name' => $this->nameRules(),
-            'slug' => $this->slugRules(),
-            'description' => $this->descriptionRules(),
+            'email' => $this->emailRules(),
+            'password' => $this->passwordRules(),
+            'role' => $this->roleRules(),
             'meta' => $this->metaRules(),
         ];
     }
@@ -40,28 +44,14 @@ class StoreCategoryRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'parent_id.exists' => 'The selected parent category does not exist.',
             'name.required' => 'The name is required.',
             'name.string' => 'The name must be a string.',
             'name.max' => 'The name may not exceed 255 characters.',
-            'slug.required' => 'The slug is required.',
-            'slug.string' => 'The slug must be a string.',
-            'slug.max' => 'The slug may not exceed 255 characters.',
-            'slug.unique' => 'This slug is already in use.',
-        ];
-    }
-
-    /**
-     * Get validation rules for the parent_id field.
-     *
-     * @return array<mixed>
-     */
-    protected function parentIdRules(): array
-    {
-        return [
-            'nullable',
-            'integer',
-            'exists:categories,id',
+            'email.required' => 'The email address is required.',
+            'email.email' => 'The email address must be a valid email.',
+            'email.max' => 'The email address may not exceed 255 characters.',
+            'email.unique' => 'The email address is already taken.',
+            'role.in' => 'The selected role is invalid.',
         ];
     }
 
@@ -80,30 +70,30 @@ class StoreCategoryRequest extends FormRequest
     }
 
     /**
-     * Get validation rules for the slug field.
+     * Get validation rules for the email field.
      *
      * @return array<mixed>
      */
-    protected function slugRules(): array
+    protected function emailRules(): array
     {
         return [
             'required',
-            'string',
+            'email',
             'max:255',
-            'unique:categories,slug',
+            Rule::unique('users', 'email'),
         ];
     }
 
     /**
-     * Get validation rules for the description field.
+     * Get validation rules for the role field.
      *
      * @return array<mixed>
      */
-    protected function descriptionRules(): array
+    protected function roleRules(): array
     {
         return [
             'nullable',
-            'string',
+            Rule::in(['user', 'admin', 'super_admin']),
         ];
     }
 

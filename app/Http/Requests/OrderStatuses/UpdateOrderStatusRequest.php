@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\OrderStatuses;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateIndustryRequest extends FormRequest
+class UpdateOrderStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('update', $this->route('industry'));
+        return $this->user()->can('update', $this->route('order_status'));
     }
 
     /**
@@ -25,8 +24,9 @@ class UpdateIndustryRequest extends FormRequest
     {
         return [
             'title' => $this->titleRules(),
-            'code' => $this->codeRules(),
             'description' => $this->descriptionRules(),
+            'background_colour' => $this->backgroundColourRules(),
+            'text_colour' => $this->textColourRules(),
             'meta' => $this->metaRules(),
         ];
     }
@@ -42,9 +42,10 @@ class UpdateIndustryRequest extends FormRequest
             'title.required' => 'The title is required.',
             'title.string' => 'The title must be a string.',
             'title.max' => 'The title may not exceed 255 characters.',
-            'code.string' => 'The code must be a string.',
-            'code.max' => 'The code may not exceed 255 characters.',
-            'code.unique' => 'This code is already in use.',
+            'background_colour.regex' => 'The background colour must be a valid hex colour (e.g. #ffffff).',
+            'background_colour.max' => 'The background colour may not exceed 7 characters.',
+            'text_colour.regex' => 'The text colour must be a valid hex colour (e.g. #000000).',
+            'text_colour.max' => 'The text colour may not exceed 7 characters.',
         ];
     }
 
@@ -64,22 +65,6 @@ class UpdateIndustryRequest extends FormRequest
     }
 
     /**
-     * Get validation rules for the code field.
-     *
-     * @return array<mixed>
-     */
-    protected function codeRules(): array
-    {
-        return [
-            'sometimes',
-            'nullable',
-            'string',
-            'max:255',
-            Rule::unique('industries', 'code')->ignore($this->route('industry')),
-        ];
-    }
-
-    /**
      * Get validation rules for the description field.
      *
      * @return array<mixed>
@@ -90,6 +75,36 @@ class UpdateIndustryRequest extends FormRequest
             'sometimes',
             'nullable',
             'string',
+        ];
+    }
+
+    /**
+     * Get validation rules for the background_colour field.
+     *
+     * @return array<mixed>
+     */
+    protected function backgroundColourRules(): array
+    {
+        return [
+            'sometimes',
+            'string',
+            'max:7',
+            'regex:/^#[0-9A-Fa-f]{6}$/',
+        ];
+    }
+
+    /**
+     * Get validation rules for the text_colour field.
+     *
+     * @return array<mixed>
+     */
+    protected function textColourRules(): array
+    {
+        return [
+            'sometimes',
+            'string',
+            'max:7',
+            'regex:/^#[0-9A-Fa-f]{6}$/',
         ];
     }
 

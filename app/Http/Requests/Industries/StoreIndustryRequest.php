@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Industries;
 
+use App\Models\Industry;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateOrderStatusRequest extends FormRequest
+class StoreIndustryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('update', $this->route('order_status'));
+        return $this->user()->can('create', Industry::class);
     }
 
     /**
@@ -24,9 +25,8 @@ class UpdateOrderStatusRequest extends FormRequest
     {
         return [
             'title' => $this->titleRules(),
+            'code' => $this->codeRules(),
             'description' => $this->descriptionRules(),
-            'background_colour' => $this->backgroundColourRules(),
-            'text_colour' => $this->textColourRules(),
             'meta' => $this->metaRules(),
         ];
     }
@@ -42,10 +42,9 @@ class UpdateOrderStatusRequest extends FormRequest
             'title.required' => 'The title is required.',
             'title.string' => 'The title must be a string.',
             'title.max' => 'The title may not exceed 255 characters.',
-            'background_colour.regex' => 'The background colour must be a valid hex colour (e.g. #ffffff).',
-            'background_colour.max' => 'The background colour may not exceed 7 characters.',
-            'text_colour.regex' => 'The text colour must be a valid hex colour (e.g. #000000).',
-            'text_colour.max' => 'The text colour may not exceed 7 characters.',
+            'code.string' => 'The code must be a string.',
+            'code.max' => 'The code may not exceed 255 characters.',
+            'code.unique' => 'This code is already in use.',
         ];
     }
 
@@ -57,10 +56,24 @@ class UpdateOrderStatusRequest extends FormRequest
     protected function titleRules(): array
     {
         return [
-            'sometimes',
             'required',
             'string',
             'max:255',
+        ];
+    }
+
+    /**
+     * Get validation rules for the code field.
+     *
+     * @return array<mixed>
+     */
+    protected function codeRules(): array
+    {
+        return [
+            'nullable',
+            'string',
+            'max:255',
+            'unique:industries,code',
         ];
     }
 
@@ -72,39 +85,8 @@ class UpdateOrderStatusRequest extends FormRequest
     protected function descriptionRules(): array
     {
         return [
-            'sometimes',
             'nullable',
             'string',
-        ];
-    }
-
-    /**
-     * Get validation rules for the background_colour field.
-     *
-     * @return array<mixed>
-     */
-    protected function backgroundColourRules(): array
-    {
-        return [
-            'sometimes',
-            'string',
-            'max:7',
-            'regex:/^#[0-9A-Fa-f]{6}$/',
-        ];
-    }
-
-    /**
-     * Get validation rules for the text_colour field.
-     *
-     * @return array<mixed>
-     */
-    protected function textColourRules(): array
-    {
-        return [
-            'sometimes',
-            'string',
-            'max:7',
-            'regex:/^#[0-9A-Fa-f]{6}$/',
         ];
     }
 
@@ -116,7 +98,6 @@ class UpdateOrderStatusRequest extends FormRequest
     protected function metaRules(): array
     {
         return [
-            'sometimes',
             'nullable',
             'array',
         ];

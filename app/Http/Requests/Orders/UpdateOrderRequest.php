@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Orders;
 
 use App\Services\Orders\OrderableTypeRegistryService;
 use Illuminate\Contracts\Validation\ValidationRule;

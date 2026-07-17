@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Contacts;
 
-use App\Models\Contact;
 use App\Services\Contacts\ContactableTypeRegistryService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
-class StoreContactRequest extends FormRequest
+class UpdateContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorised to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('create', Contact::class);
+        return $this->user()->can('update', $this->route('contact'));
     }
 
     /**
@@ -43,16 +42,14 @@ class StoreContactRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'contactable_type.required' => 'The contactable type is required.',
-            'contactable_type.string' => 'The contactable type must be a
-                 string.',
-            'contactable_id.required' => 'The contactable ID is required.',
-            'contactable_id.integer' => 'The contactable ID must be an
-                 integer.',
-            'contactable_id.min' => 'The contactable ID must be at least 1.',
             'email.email' => 'The email address must be a valid email.',
             'email.max' => 'The email address may not exceed 255 characters.',
             'phone.max' => 'The phone number may not exceed 255 characters.',
+            'contactable_type.required' => 'The contactable type is required.',
+            'contactable_type.string' => 'The contactable type must be a string.',
+            'contactable_id.required' => 'The contactable ID is required.',
+            'contactable_id.integer' => 'The contactable ID must be an integer.',
+            'contactable_id.min' => 'The contactable ID must be at least 1.',
         ];
     }
 
@@ -64,6 +61,7 @@ class StoreContactRequest extends FormRequest
     protected function contactableTypeRules(): array
     {
         return [
+            'sometimes',
             'required',
             'string',
             Rule::in(array_keys(
@@ -80,6 +78,7 @@ class StoreContactRequest extends FormRequest
     protected function contactableIdRules(): array
     {
         return [
+            'sometimes',
             'required',
             'integer',
             'min:1',
@@ -94,6 +93,7 @@ class StoreContactRequest extends FormRequest
     protected function phoneRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'string',
             'max:255',
@@ -108,6 +108,7 @@ class StoreContactRequest extends FormRequest
     protected function emailRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'email',
             'max:255',
@@ -122,6 +123,7 @@ class StoreContactRequest extends FormRequest
     protected function metaRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'array',
         ];

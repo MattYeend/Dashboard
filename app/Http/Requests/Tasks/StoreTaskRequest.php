@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Tasks;
 
+use App\Models\Task;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTaskStatusRequest extends FormRequest
+class StoreTaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorised to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('update', $this->route('task_status'));
+        return $this->user()->can('create', Task::class);
     }
 
     /**
@@ -25,8 +26,10 @@ class UpdateTaskStatusRequest extends FormRequest
         return [
             'title' => $this->titleRules(),
             'description' => $this->descriptionRules(),
-            'background_colour' => $this->backgroundColourRules(),
-            'text_colour' => $this->textColourRules(),
+            'due_date' => $this->dueDateRules(),
+            'assigned_date' => $this->assignedDateRules(),
+            'assigned_to' => $this->assignedToRules(),
+            'status_id' => $this->statusIdRules(),
             'meta' => $this->metaRules(),
         ];
     }
@@ -42,10 +45,10 @@ class UpdateTaskStatusRequest extends FormRequest
             'title.required' => 'The title is required.',
             'title.string' => 'The title must be a string.',
             'title.max' => 'The title may not exceed 255 characters.',
-            'background_colour.regex' => 'The background colour must be a valid hex colour (e.g. #ffffff).',
-            'background_colour.max' => 'The background colour may not exceed 7 characters.',
-            'text_colour.regex' => 'The text colour must be a valid hex colour (e.g. #000000).',
-            'text_colour.max' => 'The text colour may not exceed 7 characters.',
+            'due_date.date' => 'The due date must be a valid date.',
+            'assigned_date.date' => 'The assigned date must be a valid date.',
+            'assigned_to.exists' => 'The selected user does not exist.',
+            'status_id.exists' => 'The selected status does not exist.',
         ];
     }
 
@@ -57,7 +60,6 @@ class UpdateTaskStatusRequest extends FormRequest
     protected function titleRules(): array
     {
         return [
-            'sometimes',
             'required',
             'string',
             'max:255',
@@ -72,39 +74,62 @@ class UpdateTaskStatusRequest extends FormRequest
     protected function descriptionRules(): array
     {
         return [
-            'sometimes',
             'nullable',
             'string',
         ];
     }
 
     /**
-     * Get validation rules for the background_colour field.
+     * Get validation rules for the due_date field.
      *
      * @return array<mixed>
      */
-    protected function backgroundColourRules(): array
+    protected function dueDateRules(): array
     {
         return [
-            'sometimes',
-            'string',
-            'max:7',
-            'regex:/^#[0-9A-Fa-f]{6}$/',
+            'nullable',
+            'date',
         ];
     }
 
     /**
-     * Get validation rules for the text_colour field.
+     * Get validation rules for the assigned_date field.
      *
      * @return array<mixed>
      */
-    protected function textColourRules(): array
+    protected function assignedDateRules(): array
     {
         return [
-            'sometimes',
-            'string',
-            'max:7',
-            'regex:/^#[0-9A-Fa-f]{6}$/',
+            'nullable',
+            'date',
+        ];
+    }
+
+    /**
+     * Get validation rules for the assigned_to field.
+     *
+     * @return array<mixed>
+     */
+    protected function assignedToRules(): array
+    {
+        return [
+            'nullable',
+            'integer',
+            'exists:users,id',
+        ];
+    }
+
+    /**
+     * Get validation rules for the status_id field.
+     *
+     * @return array<mixed>
+     */
+    protected function statusIdRules(): array
+    {
+        return [
+            'nullable',
+            'integer',
+            'exists:task_statuses,id',
         ];
     }
 
@@ -116,7 +141,6 @@ class UpdateTaskStatusRequest extends FormRequest
     protected function metaRules(): array
     {
         return [
-            'sometimes',
             'nullable',
             'array',
         ];

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Companies;
 
-use App\Models\Company;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreCompanyRequest extends FormRequest
+class UpdateCompanyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorised to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('create', Company::class);
+        return $this->user()->can('update', $this->route('company'));
     }
 
     /**
@@ -74,6 +74,7 @@ class StoreCompanyRequest extends FormRequest
     protected function nameRules(): array
     {
         return [
+            'sometimes',
             'required',
             'string',
             'max:255',
@@ -88,10 +89,11 @@ class StoreCompanyRequest extends FormRequest
     protected function registrationNumberRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'string',
             'max:255',
-            'unique:companies,registration_number',
+            Rule::unique('companies', 'registration_number')->ignore($this->route('company')),
         ];
     }
 
@@ -103,11 +105,12 @@ class StoreCompanyRequest extends FormRequest
     protected function slugRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'string',
             'max:255',
             'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
-            'unique:companies,slug',
+            Rule::unique('companies', 'slug')->ignore($this->route('company')),
         ];
     }
 
@@ -119,6 +122,7 @@ class StoreCompanyRequest extends FormRequest
     protected function vatNumberRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'string',
             'max:255',
@@ -133,6 +137,7 @@ class StoreCompanyRequest extends FormRequest
     protected function employeeCountRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'integer',
             'min:0',
@@ -147,6 +152,7 @@ class StoreCompanyRequest extends FormRequest
     protected function foundedYearRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'integer',
             'digits:4',
@@ -163,6 +169,7 @@ class StoreCompanyRequest extends FormRequest
     protected function industryIdRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'integer',
             'exists:industries,id',
@@ -177,6 +184,7 @@ class StoreCompanyRequest extends FormRequest
     protected function accountManagerIdRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'integer',
             'exists:users,id',
@@ -191,6 +199,7 @@ class StoreCompanyRequest extends FormRequest
     protected function emailRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'email',
             'max:255',
@@ -205,6 +214,7 @@ class StoreCompanyRequest extends FormRequest
     protected function phoneRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'string',
             'max:50',
@@ -219,6 +229,7 @@ class StoreCompanyRequest extends FormRequest
     protected function websiteRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'url',
             'max:255',
@@ -233,6 +244,7 @@ class StoreCompanyRequest extends FormRequest
     protected function descriptionRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'string',
         ];
@@ -246,6 +258,7 @@ class StoreCompanyRequest extends FormRequest
     protected function metaRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'array',
         ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Orders;
 
 use App\Models\Order;
 use App\Services\Orders\OrderableTypeRegistryService;

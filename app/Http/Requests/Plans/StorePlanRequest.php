@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Plans;
 
+use App\Models\Plan;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdatePlanRequest extends FormRequest
+class StorePlanRequest extends FormRequest
 {
     /**
      * Determine if the user is authorised to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('update', $this->route('plan'));
+        return $this->user()->can('create', Plan::class);
     }
 
     /**
@@ -60,11 +60,10 @@ class UpdatePlanRequest extends FormRequest
     protected function nameRules(): array
     {
         return [
-            'sometimes',
             'required',
             'string',
             'max:255',
-            Rule::unique('plans', 'name')->ignore($this->route('plan')),
+            'unique:plans,name',
         ];
     }
 
@@ -76,12 +75,11 @@ class UpdatePlanRequest extends FormRequest
     protected function slugRules(): array
     {
         return [
-            'sometimes',
             'nullable',
             'string',
             'max:255',
             'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
-            Rule::unique('plans', 'slug')->ignore($this->route('plan')),
+            'unique:plans,slug',
         ];
     }
 
@@ -93,7 +91,6 @@ class UpdatePlanRequest extends FormRequest
     protected function descriptionRules(): array
     {
         return [
-            'sometimes',
             'nullable',
             'string',
         ];
@@ -107,7 +104,6 @@ class UpdatePlanRequest extends FormRequest
     protected function pricePerUserPerMonthRules(): array
     {
         return [
-            'sometimes',
             'required',
             'integer',
             'min:0',
