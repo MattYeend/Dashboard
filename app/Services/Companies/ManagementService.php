@@ -2,8 +2,8 @@
 
 namespace App\Services\Companies;
 
-use App\Http\Requests\StoreCompanyRequest;
-use App\Http\Requests\UpdateCompanyRequest;
+use App\Http\Requests\Companies\StoreCompanyRequest;
+use App\Http\Requests\Companies\UpdateCompanyRequest;
 use App\Models\Company;
 use App\Models\User;
 

@@ -2,8 +2,8 @@
 
 namespace App\Services\Plans;
 
-use App\Http\Requests\StorePlanRequest;
-use App\Http\Requests\UpdatePlanRequest;
+use App\Http\Requests\Plans\StorePlanRequest;
+use App\Http\Requests\Plans\UpdatePlanRequest;
 use App\Models\Plan;
 use App\Models\User;
 

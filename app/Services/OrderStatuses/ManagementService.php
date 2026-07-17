@@ -2,8 +2,8 @@
 
 namespace App\Services\OrderStatuses;
 
-use App\Http\Requests\StoreOrderStatusRequest;
-use App\Http\Requests\UpdateOrderStatusRequest;
+use App\Http\Requests\OrderStatuses\StoreOrderStatusRequest;
+use App\Http\Requests\OrderStatuses\UpdateOrderStatusRequest;
 use App\Models\OrderStatus;
 use App\Models\User;
 

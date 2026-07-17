@@ -2,8 +2,8 @@
 
 namespace App\Services\Industries;
 
-use App\Http\Requests\StoreIndustryRequest;
-use App\Http\Requests\UpdateIndustryRequest;
+use App\Http\Requests\Industries\StoreIndustryRequest;
+use App\Http\Requests\Industries\UpdateIndustryRequest;
 use App\Models\Industry;
 use App\Models\User;
 

@@ -2,8 +2,8 @@
 
 namespace App\Services\TaskStatuses;
 
-use App\Http\Requests\StoreTaskStatusRequest;
-use App\Http\Requests\UpdateTaskStatusRequest;
+use App\Http\Requests\TaskStatuses\StoreTaskStatusRequest;
+use App\Http\Requests\TaskStatuses\UpdateTaskStatusRequest;
 use App\Models\TaskStatus;
 use App\Models\User;
 
