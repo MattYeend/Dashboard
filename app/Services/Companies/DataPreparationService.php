@@ -3,10 +3,14 @@
 namespace App\Services\Companies;
 
 use App\Models\Company;
-use Illuminate\Support\Str;
+use App\Services\SlugService;
 
 class DataPreparationService
 {
+    public function __construct(
+        protected SlugService $slugService,
+    ) {}
+
     /**
      * Prepare company data for creation.
      *
@@ -17,7 +21,7 @@ class DataPreparationService
     {
         return [
             'name' => $data['name'],
-            'slug' => $data['slug'] ?? $this->generateUniqueSlug($data['name']),
+            'slug' => $data['slug'] ?? $this->slugService->generateUnique(Company::class, $data['name']),
             'email' => $data['email'] ?? null,
             'phone' => $data['phone'] ?? null,
             'website' => $data['website'] ?? null,
@@ -39,8 +43,11 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForUpdate(array $data, int $updatedBy): array
-    {
+    public function prepareForUpdate(
+        array $data,
+        int $updatedBy,
+        ?int $id = null
+    ): array {
         $allowed = [
             'name',
             'slug',
@@ -65,25 +72,14 @@ class DataPreparationService
             }
         }
 
+        // Regenerate the slug if the name changes but no explicit slug was given,
+        // so it stays in sync rather than going stale against a renamed company.
+        if (array_key_exists('name', $payload) && ! array_key_exists('slug', $data)) {
+            $payload['slug'] = $this->slugService->generateUnique(Company::class, $payload['name'], $id);
+        }
+
         $payload['updated_by'] = $updatedBy;
 
         return $payload;
-    }
-
-    /**
-     * Generate a unique slug from the given name.
-     */
-    protected function generateUniqueSlug(string $name): string
-    {
-        $base = Str::slug($name);
-        $slug = $base !== '' ? $base : 'company';
-        $suffix = 1;
-
-        while (Company::withTrashed()->where('slug', $slug)->exists()) {
-            $slug = "{$base}-{$suffix}";
-            $suffix++;
-        }
-
-        return $slug;
     }
 }

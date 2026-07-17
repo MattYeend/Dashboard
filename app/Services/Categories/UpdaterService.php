@@ -35,7 +35,11 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($category);
 
-        $categoryData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $categoryData = $this->dataPreparation->prepareForUpdate(
+            $data,
+            $updatedBy,
+            $category->id
+        );
 
         return $this->updateResource->handle(
             $category,

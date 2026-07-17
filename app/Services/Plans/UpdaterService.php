@@ -35,7 +35,11 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($plan);
 
-        $planData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $planData = $this->dataPreparation->prepareForUpdate(
+            $data,
+            $updatedBy,
+            $plan->id
+        );
 
         return $this->updateResource->handle(
             $plan,
