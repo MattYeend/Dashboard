@@ -2,6 +2,7 @@
 
 namespace App\Services\Posts;
 
+use Illuminate\Http\UploadedFile;
 use Mews\Purifier\Facades\Purifier;
 
 class DataPreparationService
@@ -17,7 +18,7 @@ class DataPreparationService
         return [
             'title' => $data['title'],
             'description' => Purifier::clean($data['description']),
-            'image' => $data['image'] ?? null,
+            'image' => $this->storeImage($data['image'] ?? null),
             'meta' => $data['meta'] ?? null,
             'created_by' => $createdBy,
         ];
@@ -41,18 +42,32 @@ class DataPreparationService
         $payload = [];
 
         foreach ($allowed as $field) {
-            if (array_key_exists($field, $data)) {
-                $payload[$field] = $data[$field];
-            }
-
-            if ($field === 'description' && array_key_exists($field, $data)) {
-                $payload[$field] = Purifier::clean($data[$field]);
+            if (! array_key_exists($field, $data)) {
                 continue;
             }
+
+            $payload[$field] = match ($field) {
+                'description' => Purifier::clean($data[$field]),
+                'image' => $this->storeImage($data[$field]),
+                default => $data[$field],
+            };
         }
 
         $payload['updated_by'] = $updatedBy;
 
         return $payload;
+    }
+
+    /**
+     * Store an uploaded image and return its path, passing through
+     * anything that isn't an uploaded file (e.g. an existing path, or null).
+     */
+    private function storeImage(mixed $image): ?string
+    {
+        if ($image instanceof UploadedFile) {
+            return $image->store('posts', 'public');
+        }
+
+        return $image;
     }
 }
