@@ -2,6 +2,8 @@
 
 namespace App\Services\Posts;
 
+use Mews\Purifier\Facades\Purifier;
+
 class DataPreparationService
 {
     /**
@@ -14,7 +16,7 @@ class DataPreparationService
     {
         return [
             'title' => $data['title'],
-            'description' => $data['description'],
+            'description' => Purifier::clean($data['description']),
             'image' => $data['image'] ?? null,
             'meta' => $data['meta'] ?? null,
             'created_by' => $createdBy,
@@ -41,6 +43,11 @@ class DataPreparationService
         foreach ($allowed as $field) {
             if (array_key_exists($field, $data)) {
                 $payload[$field] = $data[$field];
+            }
+
+            if ($field === 'description' && array_key_exists($field, $data)) {
+                $payload[$field] = Purifier::clean($data[$field]);
+                continue;
             }
         }
 
