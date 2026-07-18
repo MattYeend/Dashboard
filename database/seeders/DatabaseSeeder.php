@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             AddressSeeder::class,
             CategorySeeder::class,
             PostSeeder::class,
+            InvoiceStatusSeeder::class,
         ]);
     }
 }

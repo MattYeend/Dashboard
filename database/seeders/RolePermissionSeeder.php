@@ -249,6 +249,17 @@ class RolePermissionSeeder extends Seeder
             'force delete posts',
             'import posts',
             'export posts',
+
+            // Invoice status management
+            'view invoice statuses',
+            'create invoice statuses',
+            'edit invoice statuses',
+            'delete invoice statuses',
+            'restore invoice statuses',
+            'force delete invoice statuses',
+            'import invoice statuses',
+            'export invoice statuses',
+            'assign invoice statuses',
         ];
 
         foreach ($permissions as $permission) {
@@ -427,6 +438,15 @@ class RolePermissionSeeder extends Seeder
             'force delete posts',
             'import posts',
             'export posts',
+            'view invoice statuses',
+            'create invoice statuses',
+            'edit invoice statuses',
+            'delete invoice statuses',
+            'restore invoice statuses',
+            'force delete invoice statuses',
+            'import invoice statuses',
+            'export invoice statuses',
+            'assign invoice statuses',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -564,6 +584,15 @@ class RolePermissionSeeder extends Seeder
             'restore posts',
             'import posts',
             'export posts',
+            'view invoice statuses',
+            'create invoice statuses',
+            'edit invoice statuses',
+            'delete invoice statuses',
+            'restore invoice statuses',
+            'force delete invoice statuses',
+            'import invoice statuses',
+            'export invoice statuses',
+            'assign invoice statuses',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -651,6 +680,12 @@ class RolePermissionSeeder extends Seeder
             'edit posts',
             'delete posts',
             'restore posts',
+            'view invoice statuses',
+            'create invoice statuses',
+            'edit invoice statuses',
+            'delete invoice statuses',
+            'restore invoice statuses',
+            'assign invoice statuses',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -684,6 +719,7 @@ class RolePermissionSeeder extends Seeder
             'view categories',
             'view any posts',
             'view posts',
+            'view invoice statuses',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -750,6 +786,9 @@ class RolePermissionSeeder extends Seeder
             'view posts',
             'create posts',
             'edit posts',
+            'view invoice statuses',
+            'create invoice statuses',
+            'edit invoice statuses',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
 
@@ -856,6 +895,14 @@ class RolePermissionSeeder extends Seeder
             'restore posts',
             'import posts',
             'export posts',
+            'view invoice statuses',
+            'create invoice statuses',
+            'edit invoice statuses',
+            'delete invoice statuses',
+            'restore invoice statuses',
+            'import invoice statuses',
+            'export invoice statuses',
+            'assign invoice statuses',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -916,6 +963,9 @@ class RolePermissionSeeder extends Seeder
             'view any posts',
             'view posts',
             'export posts',
+            'view invoice statuses',
+            'export invoice statuses',
+            'assign invoice statuses',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
@@ -946,6 +996,7 @@ class RolePermissionSeeder extends Seeder
             'view addresses',
             'view categories',
             'view posts',
+            'view invoice statuses',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -964,6 +1015,7 @@ class RolePermissionSeeder extends Seeder
             'view companies',
             'view categories',
             'view posts',
+            'view invoice statuses',
         ];
         $guest->givePermissionTo($guestPermissions);
 
@@ -1008,5 +1060,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Addresses');
         $this->command->info('- Categories');
         $this->command->info('- Posts');
+        $this->command->info('- Invoice Statuses');
     }
 }
