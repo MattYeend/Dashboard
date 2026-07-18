@@ -27,7 +27,7 @@ class PostFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(6),
-            'description' => '<p>' . implode('</p><p>', $this->faker->paragraphs(4)) . '</p>',
+            'description' => '<p>'.implode('</p><p>', $this->faker->paragraphs(4)).'</p>',
             'image' => null,
             'meta' => null,
             'created_by' => User::factory(),
@@ -40,7 +40,7 @@ class PostFactory extends Factory
     public function withImage(): static
     {
         return $this->state(fn (array $attributes) => [
-            'image' => 'blogs/' . $this->faker->uuid() . '.jpg',
+            'image' => 'blogs/'.$this->faker->uuid().'.jpg',
         ]);
     }
 

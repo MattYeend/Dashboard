@@ -108,9 +108,9 @@ class PostController extends Controller
     ): Response {
         $this->authorize('update', $post);
 
-        $data = $this->query->getById(
-            $request->user(),
-            $post->id
+        $data = array_merge(
+            $this->query->getById($request->user(), $post->id),
+            $this->query->getFormData(),
         );
 
         return Inertia::render('Posts/Edit', $data);

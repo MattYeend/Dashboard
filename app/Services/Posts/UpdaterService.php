@@ -35,12 +35,16 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($post);
 
-        $orderStatusData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $postData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
 
         return $this->updateResource->handle(
             $post,
-            $orderStatusData,
-            function (Post $post) use ($actor, $before): void {
+            $postData,
+            function (Post $post) use ($actor, $before, $data): void {
+                if (array_key_exists('category_ids', $data)) {
+                    $post->categories()->sync($data['category_ids'] ?? []);
+                }
+
                 $fresh = $post->fresh();
 
                 $this->auditLogService->record(

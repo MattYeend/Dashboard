@@ -28,6 +28,8 @@ class StorePostRequest extends FormRequest
             'description' => $this->descriptionRules(),
             'image' => $this->imageRules(),
             'meta' => $this->metaRules(),
+            'category_ids' => $this->categoryIdsRules(),
+            'category_ids.*' => $this->categoryIdRules(),
         ];
     }
 
@@ -46,6 +48,8 @@ class StorePostRequest extends FormRequest
             'description.string' => 'The post description must be a string.',
             'image.image' => 'The image must be a valid image file.',
             'image.max' => 'The image may not be larger than 5MB.',
+            'category_ids.array' => 'Categories must be provided as a list.',
+            'category_ids.*.exists' => 'One or more selected categories are invalid.',
         ];
     }
 
@@ -100,6 +104,32 @@ class StorePostRequest extends FormRequest
         return [
             'nullable',
             'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for the category_ids field.
+     *
+     * @return array<mixed>
+     */
+    protected function categoryIdsRules(): array
+    {
+        return [
+            'nullable',
+            'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for each category_ids entry.
+     *
+     * @return array<mixed>
+     */
+    protected function categoryIdRules(): array
+    {
+        return [
+            'integer',
+            'exists:categories,id',
         ];
     }
 }

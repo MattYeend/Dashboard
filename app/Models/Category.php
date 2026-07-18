@@ -134,7 +134,6 @@ class Category extends Model implements Auditable
             'name',
             'slug',
             'description',
-            'meta',
         ]);
     }
 
@@ -146,7 +145,6 @@ class Category extends Model implements Auditable
     protected function casts(): array
     {
         return [
-            'meta' => 'array',
             'parent_id' => 'integer',
             'deleted_at' => 'datetime',
             'restored_at' => 'datetime',
