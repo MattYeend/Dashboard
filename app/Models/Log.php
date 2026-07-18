@@ -327,6 +327,29 @@ class Log extends Model
 
     public const ACTION_POST_UPDATED_BY_CRON = 151;
 
+    // Invoice Status Management
+    public const ACTION_CREATE_INVOICE_STATUS = 152;
+
+    public const ACTION_UPDATE_INVOICE_STATUS = 153;
+
+    public const ACTION_VIEW_INVOICE_STATUS = 154;
+
+    public const ACTION_DELETE_INVOICE_STATUS = 155;
+
+    public const ACTION_FORCE_DELETE_INVOICE_STATUS = 156;
+
+    public const ACTION_RESTORE_INVOICE_STATUS = 157;
+
+    public const ACTION_IMPORT_INVOICE_STATUS = 158;
+
+    public const ACTION_EXPORT_INVOICE_STATUS = 159;
+
+    public const ACTION_INVOICE_STATUS_UPDATED_BY_CRON = 160;
+
+    public const ACTION_ASSIGN_INVOICE_STATUS = 161;
+
+    public const ACTION_UNASSIGN_INVOICE_STATUS = 162;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
