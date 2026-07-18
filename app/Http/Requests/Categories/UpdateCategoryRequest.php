@@ -45,7 +45,6 @@ class UpdateCategoryRequest extends FormRequest
             'name.required' => 'The name is required.',
             'name.string' => 'The name must be a string.',
             'name.max' => 'The name may not exceed 255 characters.',
-            'slug.required' => 'The slug is required.',
             'slug.string' => 'The slug must be a string.',
             'slug.max' => 'The slug may not exceed 255 characters.',
             'slug.unique' => 'This slug is already in use.',
@@ -94,6 +93,7 @@ class UpdateCategoryRequest extends FormRequest
             'sometimes',
             'required',
             'string',
+            'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
             'max:255',
             Rule::unique('categories', 'slug')->ignore($this->route('category')),
         ];

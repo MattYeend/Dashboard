@@ -15,7 +15,6 @@ const props = defineProps<Props>();
 const form = useForm({
     parent_id: props.category.parent_id,
     name: props.category.name,
-    slug: props.category.slug,
     description: props.category.description ?? '',
 });
 
@@ -35,7 +34,6 @@ function submit(): void {
             <CategoryForm
                 v-model:parent-id="form.parent_id"
                 v-model:name="form.name"
-                v-model:slug="form.slug"
                 v-model:description="form.description"
                 :parent-options="parentOptions"
                 :is-editing="true"

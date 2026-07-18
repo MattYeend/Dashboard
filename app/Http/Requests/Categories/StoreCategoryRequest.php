@@ -44,7 +44,6 @@ class StoreCategoryRequest extends FormRequest
             'name.required' => 'The name is required.',
             'name.string' => 'The name must be a string.',
             'name.max' => 'The name may not exceed 255 characters.',
-            'slug.required' => 'The slug is required.',
             'slug.string' => 'The slug must be a string.',
             'slug.max' => 'The slug may not exceed 255 characters.',
             'slug.unique' => 'This slug is already in use.',
@@ -87,9 +86,10 @@ class StoreCategoryRequest extends FormRequest
     protected function slugRules(): array
     {
         return [
-            'required',
+            'nullable',
             'string',
             'max:255',
+            'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
             'unique:categories,slug',
         ];
     }

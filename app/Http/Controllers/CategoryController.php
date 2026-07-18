@@ -109,9 +109,9 @@ class CategoryController extends Controller
         $this->authorize('update', $category);
 
         $data = array_merge(
-           $this->query->getById($request->user(), $category->id),
-           $this->query->getFormData($category->id),
-       );
+            $this->query->getById($request->user(), $category->id),
+            $this->query->getFormData($category->id),
+        );
 
         return Inertia::render('Categories/Edit', $data);
     }

@@ -25,7 +25,6 @@ defineEmits<{ submit: [] }>();
 
 const parentId = defineModel<number | null>('parentId', { required: true });
 const name = defineModel<string>('name', { required: true });
-const slug = defineModel<string>('slug', { required: true });
 const description = defineModel<string>('description', { required: true });
 </script>
 
@@ -39,7 +38,6 @@ const description = defineModel<string>('description', { required: true });
 
         <CategoryDetailsForm
             v-model:name="name"
-            v-model:slug="slug"
             v-model:description="description"
             :errors="errors"
         />

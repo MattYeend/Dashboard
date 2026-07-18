@@ -42,17 +42,5 @@ function update<K extends keyof PlanFormData>(
             />
             <InputError :message="errors.name" />
         </div>
-        <div>
-            <Label for="slug">Slug</Label>
-            <Input
-                id="slug"
-                :model-value="form.slug ?? ''"
-                type="text"
-                class="mt-1 block w-full"
-                placeholder="Leave blank to generate automatically"
-                @update:model-value="update('slug', ($event as string) || null)"
-            />
-            <InputError :message="errors.slug" />
-        </div>
     </div>
 </template>

@@ -179,12 +179,12 @@ class QueryService
     private function getParentOptions(?int $excludeId = null): array
     {
         $query = Category::query()->orderBy('name');
- 
+
         if ($excludeId !== null) {
             $query->where('id', '!=', $excludeId)
                 ->whereNotIn('id', $this->descendantIds($excludeId));
         }
- 
+
         return $query->get(['id', 'name'])
             ->map(fn (Category $category) => [
                 'value' => $category->id,
@@ -200,13 +200,13 @@ class QueryService
     private function descendantIds(int $id): array
     {
         $childIds = Category::query()->where('parent_id', $id)->pluck('id')->all();
- 
+
         $descendants = $childIds;
- 
+
         foreach ($childIds as $childId) {
             $descendants = [...$descendants, ...$this->descendantIds($childId)];
         }
- 
+
         return $descendants;
     }
 }

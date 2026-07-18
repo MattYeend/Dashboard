@@ -11,7 +11,6 @@ interface Props {
 defineProps<Props>();
 
 const name = defineModel<string>('name', { required: true });
-const slug = defineModel<string>('slug', { required: true });
 const description = defineModel<string>('description', { required: true });
 </script>
 
@@ -26,16 +25,6 @@ const description = defineModel<string>('description', { required: true });
                 class="mt-1 block w-full"
             />
             <InputError :message="errors.name" />
-        </div>
-        <div>
-            <Label for="slug">Slug</Label>
-            <Input
-                id="slug"
-                v-model="slug"
-                type="text"
-                class="mt-1 block w-full"
-            />
-            <InputError :message="errors.slug" />
         </div>
         <div>
             <Label for="description">Description</Label>

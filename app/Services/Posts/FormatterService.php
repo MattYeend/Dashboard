@@ -3,6 +3,7 @@
 namespace App\Services\Posts;
 
 use App\Models\Post;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 
 class FormatterService
@@ -44,8 +45,9 @@ class FormatterService
      */
     private function formatImageUrl(?string $path): ?string
     {
-        /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+        /** @var FilesystemAdapter $disk */
         $disk = Storage::disk('public');
+
         return $path ? $disk->url($path) : null;
     }
 }

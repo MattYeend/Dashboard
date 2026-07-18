@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
-import { ref, watch } from 'vue';
 import { nullIfBlank } from '@/lib/forms';
-import { slugify } from '@/lib/slug';
 import CategoryForm from '@/pages/Categories/components/CategoryForm.vue';
 import { store as categoriesStore } from '@/routes/categories';
 
@@ -15,21 +13,8 @@ defineProps<Props>();
 const form = useForm({
     parent_id: null as number | null,
     name: '',
-    slug: '',
     description: '',
 });
-
-const autoSlug = ref('');
-
-watch(
-    () => form.name,
-    (name) => {
-        if (form.slug === autoSlug.value) {
-            autoSlug.value = slugify(name);
-            form.slug = autoSlug.value;
-        }
-    },
-);
 
 function submit(): void {
     form.transform((data) => ({
@@ -47,7 +32,6 @@ function submit(): void {
             <CategoryForm
                 v-model:parent-id="form.parent_id"
                 v-model:name="form.name"
-                v-model:slug="form.slug"
                 v-model:description="form.description"
                 :parent-options="parentOptions"
                 :is-editing="false"
