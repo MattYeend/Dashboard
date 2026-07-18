@@ -59,10 +59,10 @@ class QueryService
     /**
      * Get data needed to populate create and edit forms.
      */
-    public function getFormData(): array
+    public function getFormData(?int $excludeId = null): array
     {
         return [
-            'users' => User::orderBy('name')->get(['id', 'name']),
+            'parentOptions' => $this->getParentOptions($excludeId),
         ];
     }
 
@@ -166,5 +166,47 @@ class QueryService
             $filters['sort_by'] ?? 'name',
             $filters['sort_direction'] ?? 'asc'
         );
+    }
+
+    /**
+     * Get the list of categories eligible to be selected as a parent.
+     *
+     * Excludes the given category itself, and its descendants, to prevent
+     * a circular parent/child hierarchy.
+     *
+     * @return array<int, array{value: int, label: string}>
+     */
+    private function getParentOptions(?int $excludeId = null): array
+    {
+        $query = Category::query()->orderBy('name');
+ 
+        if ($excludeId !== null) {
+            $query->where('id', '!=', $excludeId)
+                ->whereNotIn('id', $this->descendantIds($excludeId));
+        }
+ 
+        return $query->get(['id', 'name'])
+            ->map(fn (Category $category) => [
+                'value' => $category->id,
+                'label' => $category->name,
+            ])->all();
+    }
+
+    /**
+     * Recursively resolve all descendant category IDs for the given category.
+     *
+     * @return array<int, int>
+     */
+    private function descendantIds(int $id): array
+    {
+        $childIds = Category::query()->where('parent_id', $id)->pluck('id')->all();
+ 
+        $descendants = $childIds;
+ 
+        foreach ($childIds as $childId) {
+            $descendants = [...$descendants, ...$this->descendantIds($childId)];
+        }
+ 
+        return $descendants;
     }
 }

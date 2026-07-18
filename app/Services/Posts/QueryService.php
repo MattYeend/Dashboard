@@ -72,7 +72,7 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Post::query()->with(['creator', 'updater', 'deleter', 'restorer']);
+        $query = Post::query()->with(['creator', 'updater', 'deleter', 'restorer', 'categories']);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
@@ -135,7 +135,7 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Post {
-        $query = Post::query()->with(['creator', 'updater', 'deleter', 'restorer']);
+        $query = Post::query()->with(['creator', 'updater', 'deleter', 'restorer', 'categories']);
 
         if ($withTrashed) {
             $query->withTrashed();

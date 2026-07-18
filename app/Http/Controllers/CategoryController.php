@@ -108,10 +108,10 @@ class CategoryController extends Controller
     ): Response {
         $this->authorize('update', $category);
 
-        $data = $this->query->getById(
-            $request->user(),
-            $category->id
-        );
+        $data = array_merge(
+           $this->query->getById($request->user(), $category->id),
+           $this->query->getFormData($category->id),
+       );
 
         return Inertia::render('Categories/Edit', $data);
     }

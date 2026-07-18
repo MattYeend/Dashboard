@@ -46,6 +46,13 @@ class DataPreparationService
                 continue;
             }
 
+            // Only touch the stored image when a new file was actually uploaded.
+            // Otherwise the existing image would be nulled out on every update,
+            // since the frontend always submits an `image` key.
+            if ($field === 'image' && ! $data['image'] instanceof UploadedFile) {
+                continue;
+            }
+
             $payload[$field] = match ($field) {
                 'description' => Purifier::clean($data[$field]),
                 'image' => $this->storeImage($data[$field]),

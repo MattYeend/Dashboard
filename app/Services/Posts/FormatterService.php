@@ -3,6 +3,7 @@
 namespace App\Services\Posts;
 
 use App\Models\Post;
+use Illuminate\Support\Facades\Storage;
 
 class FormatterService
 {
@@ -17,8 +18,12 @@ class FormatterService
             'id' => $post->id,
             'title' => $post->title,
             'description' => $post->description,
-            'image' => $post->image,
+            'image' => $this->formatImageUrl($post->image),
             'meta' => $post->meta,
+            'categories' => $post->categories->map(fn ($category) => [
+                'id' => $category->id,
+                'name' => $category->name,
+            ])->all(),
             'created_at' => $post->created_at,
             'updated_at' => $post->updated_at,
             'deleted_at' => $post->deleted_at,
@@ -32,5 +37,15 @@ class FormatterService
             'deleter' => $post->deleter ? ['id' => $post->deleter->id, 'name' => $post->deleter->name] : null,
             'restorer' => $post->restorer ? ['id' => $post->restorer->id, 'name' => $post->restorer->name] : null,
         ];
+    }
+
+    /**
+     * Resolve the public URL for a stored image path.
+     */
+    private function formatImageUrl(?string $path): ?string
+    {
+        /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+        $disk = Storage::disk('public');
+        return $path ? $disk->url($path) : null;
     }
 }

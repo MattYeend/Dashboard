@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
 import { nullIfBlank } from '@/lib/forms';
+import { slugify } from '@/lib/slug';
 import CategoryForm from '@/pages/Categories/components/CategoryForm.vue';
 import { store as categoriesStore } from '@/routes/categories';
 
@@ -16,6 +18,18 @@ const form = useForm({
     slug: '',
     description: '',
 });
+
+const autoSlug = ref('');
+
+watch(
+    () => form.name,
+    (name) => {
+        if (form.slug === autoSlug.value) {
+            autoSlug.value = slugify(name);
+            form.slug = autoSlug.value;
+        }
+    },
+);
 
 function submit(): void {
     form.transform((data) => ({

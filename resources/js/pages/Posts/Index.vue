@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { router, Link } from '@inertiajs/vue3';
+import DOMPurify from 'dompurify';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import FilterBar from '@/components/table/FilterBar.vue';
@@ -157,6 +158,25 @@ function bulkDelete(): void {
         },
     );
 }
+
+function sanitiseDescription(value: string | null | undefined): string {
+    if (!value) {
+        return '';
+    }
+
+    // ALLOWED_TAGS: [] strips all HTML, leaving plain text content only
+    return DOMPurify.sanitize(value, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
+}
+
+function truncate(value: string | null | undefined, length = 30): string {
+    const plain = sanitiseDescription(value);
+
+    if (!plain) {
+        return '—';
+    }
+
+    return plain.length > length ? `${plain.slice(0, length)}…` : plain;
+}
 </script>
 
 <template>
@@ -191,6 +211,10 @@ function bulkDelete(): void {
                     >
                         Delete selected
                     </button>
+                </template>
+
+                <template #cell-description="{ row }">
+                    {{ truncate(row.description, 60) }}
                 </template>
 
                 <template #actions="{ row }">
