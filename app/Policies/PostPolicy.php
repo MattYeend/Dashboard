@@ -4,63 +4,70 @@ namespace App\Policies;
 
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\Posts\PolicyAuthorisationService;
 
-class BlogPolicy
+class PostPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
+    /**
+     * Determine whether the user can view any tasks.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can view the post.
      */
     public function view(User $user, Post $post): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $post);
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create tasks.
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can update the post.
      */
     public function update(User $user, Post $post): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $post);
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete the post.
      */
     public function delete(User $user, Post $post): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $post);
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can restore the post.
      */
     public function restore(User $user, Post $post): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $post);
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can permanently delete the post.
      */
     public function forceDelete(User $user, Post $post): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $post);
     }
 }
