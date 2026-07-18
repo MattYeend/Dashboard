@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\IndustryController;
+use App\Http\Controllers\InvoiceStatusController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PlanController;
@@ -215,6 +216,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{post}/edit', [PostController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{post}', [PostController::class, 'update'])->name('update');
         Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('invoice-statuses')->name('invoice-statuses.')->group(function () {
+        Route::post('/bulk/delete', [InvoiceStatusController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [InvoiceStatusController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [InvoiceStatusController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [InvoiceStatusController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [InvoiceStatusController::class, 'index'])->name('index');
+        Route::get('/create', [InvoiceStatusController::class, 'create'])->name('create');
+        Route::post('/', [InvoiceStatusController::class, 'store'])->name('store');
+        Route::get('/{invoice_status}', [InvoiceStatusController::class, 'show'])->name('show');
+        Route::get('/{invoice_status}/edit', [InvoiceStatusController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{invoice_status}', [InvoiceStatusController::class, 'update'])->name('update');
+        Route::delete('/{invoice_status}', [InvoiceStatusController::class, 'destroy'])->name('destroy');
     });
 });
 
