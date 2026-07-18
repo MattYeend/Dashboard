@@ -144,15 +144,20 @@ describe('store', function () {
             ->assertJsonValidationErrors(['name']);
     });
 
-    test('store fails validation when slug is missing', function () {
+    test('store auto-generates a slug when slug is missing', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
             ->postJson('/categories', [
                 'name' => 'No Slug',
             ])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['slug']);
+            ->assertStatus(201)
+            ->assertJsonPath('slug', 'no-slug');
+
+        $this->assertDatabaseHas('categories', [
+            'name' => 'No Slug',
+            'slug' => 'no-slug',
+        ]);
     });
 
     test('store fails validation when slug already exists', function () {
