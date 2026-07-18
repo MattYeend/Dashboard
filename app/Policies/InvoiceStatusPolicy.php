@@ -4,63 +4,70 @@ namespace App\Policies;
 
 use App\Models\InvoiceStatus;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\InvoiceStatuses\PolicyAuthorisationService;
 
 class InvoiceStatusPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
+    /**
+     * Determine whether the user can view any invoice statuses.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can view the invoice status.
      */
     public function view(User $user, InvoiceStatus $invoiceStatus): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $invoiceStatus);
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create invoice statuses.
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can update the invoice status.
      */
     public function update(User $user, InvoiceStatus $invoiceStatus): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $invoiceStatus);
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete the invoice status.
      */
     public function delete(User $user, InvoiceStatus $invoiceStatus): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $invoiceStatus);
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can restore the invoice status.
      */
     public function restore(User $user, InvoiceStatus $invoiceStatus): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $invoiceStatus);
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can permanently delete the invoice status.
      */
     public function forceDelete(User $user, InvoiceStatus $invoiceStatus): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $invoiceStatus);
     }
 }
