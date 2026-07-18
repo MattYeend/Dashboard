@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends Factory<Post>
  */
-class BlogFactory extends Factory
+class PostFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

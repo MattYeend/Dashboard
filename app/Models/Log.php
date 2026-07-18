@@ -308,6 +308,25 @@ class Log extends Model
 
     public const ACTION_ASSIGN_CATEGORY_TO_CATEGORY = 142;
 
+    // Post Management
+    public const ACTION_CREATE_POST = 143;
+
+    public const ACTION_UPDATE_POST = 144;
+
+    public const ACTION_VIEW_POST = 145;
+
+    public const ACTION_DELETE_POST = 146;
+
+    public const ACTION_FORCE_DELETE_POST = 147;
+
+    public const ACTION_RESTORE_POST = 148;
+
+    public const ACTION_IMPORT_POST = 149;
+
+    public const ACTION_EXPORT_POST = 150;
+
+    public const ACTION_POST_UPDATED_BY_CRON = 151;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
