@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
 interface Props {
-    errors: Partial<Record<'name' | 'slug' | 'description', string>>;
+    errors: Partial<Record<'name' | 'description', string>>;
 }
 
 defineProps<Props>();
