@@ -2,6 +2,7 @@
 
 namespace App\Services\Posts;
 
+use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use App\Services\TrashFilterService;
@@ -57,11 +58,21 @@ class QueryService
     }
 
     /**
+     * Get data needed to populate create and edit forms.
+     */
+    public function getFormData(): array
+    {
+        return [
+            'categories' => Category::orderBy('name')->get(['id', 'name']),
+        ];
+    }
+
+    /**
      * Build the base query with filters.
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Post::query();
+        $query = Post::query()->with(['creator', 'updater', 'deleter', 'restorer']);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
@@ -124,7 +135,7 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Post {
-        $query = Post::query();
+        $query = Post::query()->with(['creator', 'updater', 'deleter', 'restorer']);
 
         if ($withTrashed) {
             $query->withTrashed();
