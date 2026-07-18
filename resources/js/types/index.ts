@@ -294,6 +294,27 @@ export interface Category {
     restorer?: { name: string };
 }
 
+export interface Post {
+    id: number;
+    title: string;
+    description: string;
+    image: string | null;
+    meta: Record<string, unknown> | null;
+    created_by: number | null;
+    updated_by: number | null;
+    deleted_by: number | null;
+    restored_by: number | null;
+    restored_at: string | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    categories?: { id: number; name: string }[];
+    creator?: { name: string };
+    updater?: { name: string };
+    deleter?: { name: string };
+    restorer?: { name: string };
+}
+
 export interface PermissionsMeta {
     can_create: boolean;
     can_view_any: boolean;

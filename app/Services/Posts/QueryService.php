@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Services\Categories;
+namespace App\Services\Posts;
 
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,10 +21,10 @@ class QueryService
     ) {}
 
     /**
-     * Get paginated industries with filters.
+     * Get paginated posts with filters.
      */
     public function getPaginated(
-        User $user,
+        User $actor,
         array $filters = []
     ): array {
         $query = $this->buildQuery($filters);
@@ -34,23 +35,23 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions($user),
+            $this->getPermissions($actor),
             $this->baseData(),
         );
     }
 
     /**
-     * Get a single category by ID.
+     * Get a single post by ID.
      */
     public function getById(
         User $user,
         int $id,
         bool $withTrashed = false
     ): array {
-        $category = $this->findCategory($id, $withTrashed);
+        $post = $this->findPost($id, $withTrashed);
 
         return array_merge(
-            ['category' => $this->formatterService->format($category)],
+            ['post' => $this->formatterService->format($post)],
             $this->getPermissions($user),
             $this->baseData(),
         );
@@ -59,10 +60,10 @@ class QueryService
     /**
      * Get data needed to populate create and edit forms.
      */
-    public function getFormData(?int $excludeId = null): array
+    public function getFormData(): array
     {
         return [
-            'parentOptions' => $this->getParentOptions($excludeId),
+            'categories' => Category::orderBy('name')->get(['id', 'name']),
         ];
     }
 
@@ -71,25 +72,23 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Category::query()->with(['creator', 'updater', 'deleter', 'restorer']);
+        $query = Post::query()->with(['creator', 'updater', 'deleter', 'restorer', 'categories']);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
     }
 
     /**
-     * Paginate the query and return as a plain array.
+     * Paginate the query and return as plain array.
      */
-    protected function paginate(
-        Builder $query,
-        int $perPage
-    ): array {
+    protected function paginate(Builder $query, int $perPage): array
+    {
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
-            'categories' => [
+            'posts' => [
                 'data' => array_map(
-                    fn (Category $category) => $this->formatterService->format($category),
+                    fn (Post $post) => $this->formatterService->format($post),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -110,14 +109,10 @@ class QueryService
      */
     protected function getPermissions(User $user): array
     {
-        if (! $user) {
-            return ['permissions_meta' => []];
-        }
-
         return [
             'permissions_meta' => [
-                'can_create' => $user->can('create', Category::class),
-                'can_view_any' => $user->can('viewAny', Category::class),
+                'can_create' => $user->can('create', Post::class),
+                'can_view_any' => $user->can('viewAny', Post::class),
             ],
         ];
     }
@@ -134,13 +129,13 @@ class QueryService
     }
 
     /**
-     * Find an category by ID with optional trashed records.
+     * Find a post by ID with optional trashed records.
      */
-    private function findCategory(
+    private function findPost(
         int $id,
         bool $withTrashed = false
-    ): Category {
-        $query = Category::query()->with(['creator', 'updater', 'deleter', 'restorer']);
+    ): Post {
+        $query = Post::query()->with(['creator', 'updater', 'deleter', 'restorer', 'categories']);
 
         if ($withTrashed) {
             $query->withTrashed();
@@ -150,12 +145,10 @@ class QueryService
     }
 
     /**
-     * Apply sorting and trash filtering to the query.
+     * Apply sorting to the query.
      */
-    private function applySorting(
-        Builder $query,
-        array $filters
-    ): Builder {
+    private function applySorting(Builder $query, array $filters): Builder
+    {
         $query = $this->trashFilterService->applyFilter(
             $query,
             $filters['trashed'] ?? null
@@ -163,50 +156,8 @@ class QueryService
 
         return $this->sortingService->applySorting(
             $query,
-            $filters['sort_by'] ?? 'name',
-            $filters['sort_direction'] ?? 'asc'
+            $filters['sort_by'] ?? 'created_at',
+            $filters['sort_direction'] ?? 'desc'
         );
-    }
-
-    /**
-     * Get the list of categories eligible to be selected as a parent.
-     *
-     * Excludes the given category itself, and its descendants, to prevent
-     * a circular parent/child hierarchy.
-     *
-     * @return array<int, array{value: int, label: string}>
-     */
-    private function getParentOptions(?int $excludeId = null): array
-    {
-        $query = Category::query()->orderBy('name');
- 
-        if ($excludeId !== null) {
-            $query->where('id', '!=', $excludeId)
-                ->whereNotIn('id', $this->descendantIds($excludeId));
-        }
- 
-        return $query->get(['id', 'name'])
-            ->map(fn (Category $category) => [
-                'value' => $category->id,
-                'label' => $category->name,
-            ])->all();
-    }
-
-    /**
-     * Recursively resolve all descendant category IDs for the given category.
-     *
-     * @return array<int, int>
-     */
-    private function descendantIds(int $id): array
-    {
-        $childIds = Category::query()->where('parent_id', $id)->pluck('id')->all();
- 
-        $descendants = $childIds;
- 
-        foreach ($childIds as $childId) {
-            $descendants = [...$descendants, ...$this->descendantIds($childId)];
-        }
- 
-        return $descendants;
     }
 }

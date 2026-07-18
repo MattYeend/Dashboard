@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             PlanSeeder::class,
             AddressSeeder::class,
             CategorySeeder::class,
+            PostSeeder::class,
         ]);
     }
 }

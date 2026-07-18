@@ -9,6 +9,7 @@ use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
@@ -199,6 +200,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{category}', [CategoryController::class, 'update'])->name('update');
         Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('posts')->name('posts.')->group(function () {
+        Route::post('/bulk/delete', [PostController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [PostController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [PostController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [PostController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [PostController::class, 'index'])->name('index');
+        Route::get('/create', [PostController::class, 'create'])->name('create');
+        Route::post('/', [PostController::class, 'store'])->name('store');
+        Route::get('/{post}', [PostController::class, 'show'])->name('show');
+        Route::get('/{post}/edit', [PostController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{post}', [PostController::class, 'update'])->name('update');
+        Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
     });
 });
 

@@ -19,6 +19,7 @@
         "laravel/sanctum": "^4.3",
         "laravel/tinker": "^3.0",
         "laravel/wayfinder": "^0.1.14",
+        "mews/purifier": "^3.4",
         "petebishwhip/laradocs": "^0.3.0",
         "spatie/laravel-permission": "^7.4"
     },

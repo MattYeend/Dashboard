@@ -9,6 +9,7 @@ import {
     KeyRound,
     LayoutGrid,
     MapPin,
+    Newspaper,
     User2,
 } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
@@ -27,12 +28,14 @@ import {
 import { dashboard } from '@/routes';
 import { index as addressesIndex } from '@/routes/addresses';
 import { index as apiTokensIndex } from '@/routes/api-tokens';
+import { index as categoriesIndex } from '@/routes/categories';
 import { index as companiesIndex } from '@/routes/companies';
 import { index as contactsIndex } from '@/routes/contacts';
 import { index as industriesIndex } from '@/routes/industries';
 import { index as orderStatusesIndex } from '@/routes/order-statuses';
 import { index as ordersIndex } from '@/routes/orders';
 import { index as plansIndex } from '@/routes/plans';
+import { index as postsIndex } from '@/routes/posts';
 import { index as taskStatusesIndex } from '@/routes/task-statuses';
 import { index as tasksIndex } from '@/routes/tasks';
 import { index as usersIndex } from '@/routes/users';
@@ -101,6 +104,21 @@ const mainNavItems: NavItem[] = [
             {
                 title: 'Task Statuses',
                 href: taskStatusesIndex.url(),
+            },
+        ],
+    },
+    {
+        title: 'Posts',
+        href: '#',
+        icon: Newspaper,
+        children: [
+            {
+                title: 'All Posts',
+                href: postsIndex.url(),
+            },
+            {
+                title: 'Categories',
+                href: categoriesIndex.url(),
             },
         ],
     },

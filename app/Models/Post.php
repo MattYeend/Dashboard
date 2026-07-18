@@ -3,83 +3,66 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
-use Database\Factories\CategoryFactory;
+use Database\Factories\PostFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int|null $parent_id
- * @property string $name
- * @property string $slug
- * @property string|null $description
- * @property Carbon|null $deleted_at
+ * @property string $title
+ * @property string $description
+ * @property string|null $image
+ * @property array<string, mixed>|null $meta
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property int|null $deleted_by
+ * @property int|null $restored_by
  * @property Carbon|null $restored_at
+ * @property Carbon|null $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property-read Category|null $parent
- * @property-read User|null $accountManager
+ * @property-read User|null $creator
+ * @property-read User|null $updater
+ * @property-read User|null $deleter
+ * @property-read User|null $restorer
  */
 #[Fillable([
-    'parent_id',
-    'name',
-    'slug',
+    'title',
     'description',
+    'image',
+    'meta',
     'created_by',
-    'created_at',
     'updated_by',
-    'updated_at',
     'deleted_by',
-    'deleted_at',
     'restored_by',
     'restored_at',
+    'deleted_at',
 ])]
-class Category extends Model implements Auditable
+class Post extends Model implements Auditable
 {
     /**
-     * @use HasFactory<CategoryFactory>
+     * @use HasFactory<PostFactory>
      */
     use HasFactory,
         SoftDeletes;
 
     /**
-     * Get the parent category.
+     * Get the categories associated with this post.
      *
-     * @return BelongsTo<Category, $this>
+     * @return BelongsToMany<Category, $this>
      */
-    public function parent(): BelongsTo
+    public function categories(): BelongsToMany
     {
-        return $this->belongsTo(Category::class, 'parent_id');
+        return $this->belongsToMany(Category::class, 'category_post');
     }
 
     /**
-     * Get the child categories.
-     *
-     * @return HasMany<Category>
-     */
-    public function children(): HasMany
-    {
-        return $this->hasMany(Category::class, 'parent_id');
-    }
-
-    /**
-     * Get the posts associated with this category.
-     *
-     * @return BelongsToMany<Post, $this>
-     */
-    public function posts(): BelongsToMany
-    {
-        return $this->belongsToMany(Post::class, 'category_post');
-    }
-
-    /**
-     * Get the user who created this category.
+     * Get the user who created this post.
      *
      * @return BelongsTo<User, $this>
      */
@@ -89,7 +72,7 @@ class Category extends Model implements Auditable
     }
 
     /**
-     * Get the user who last updated this category.
+     * Get the user who last updated this post.
      *
      * @return BelongsTo<User, $this>
      */
@@ -99,7 +82,7 @@ class Category extends Model implements Auditable
     }
 
     /**
-     * Get the user who deleted this category.
+     * Get the user who deleted this post.
      *
      * @return BelongsTo<User, $this>
      */
@@ -109,7 +92,7 @@ class Category extends Model implements Auditable
     }
 
     /**
-     * Get the user who restored this category.
+     * Get the user who restored this post.
      *
      * @return BelongsTo<User, $this>
      */
@@ -119,7 +102,7 @@ class Category extends Model implements Auditable
     }
 
     /**
-     * Get a snapshot of the category's auditable attributes.
+     * Get a snapshot of the post's auditable attributes.
      *
      * Used by the audit log to capture before/after state on create,
      * update, delete and restore actions.
@@ -130,22 +113,22 @@ class Category extends Model implements Auditable
     {
         return $this->only([
             'id',
-            'parent_id',
-            'name',
-            'slug',
+            'title',
             'description',
+            'image',
+            'meta',
         ]);
     }
 
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string,string>
+     * @return array<string, string>
      */
     protected function casts(): array
     {
         return [
-            'parent_id' => 'integer',
+            'meta' => 'array',
             'deleted_at' => 'datetime',
             'restored_at' => 'datetime',
         ];
