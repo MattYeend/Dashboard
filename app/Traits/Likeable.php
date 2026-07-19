@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 /**
  * Provides like/unlike behaviour for any model that can be liked.
  *
- * @see \App\Models\Like
+ * @see Like
  */
 trait Likeable
 {

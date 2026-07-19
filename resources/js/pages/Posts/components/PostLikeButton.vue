@@ -25,7 +25,10 @@ function toggleLike(): void {
         class="inline-flex items-center gap-1 text-sm font-medium"
         @click="toggleLike"
     >
-        <Heart :class="post.liked_by_user ? 'fill-current' : ''" class="h-4 w-4" />
+        <Heart
+            :class="post.liked_by_user ? 'fill-current' : ''"
+            class="h-4 w-4"
+        />
         <span>{{ post.likes_count ?? 0 }}</span>
     </button>
 </template>
