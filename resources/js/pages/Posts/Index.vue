@@ -8,11 +8,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import type {
-    Pagination as PaginationMeta,
-    PermissionsMeta,
-    Post,
-} from '@/types';
 import {
     index as postsIndex,
     show as postsShow,
@@ -21,6 +16,11 @@ import {
     destroy as postsDestroy,
 } from '@/routes/posts';
 import postsBulk from '@/routes/posts/bulk';
+import type {
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+    Post,
+} from '@/types';
 
 interface Props {
     posts: {
