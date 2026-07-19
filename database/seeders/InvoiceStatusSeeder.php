@@ -3,12 +3,27 @@
 namespace Database\Seeders;
 
 use App\Models\InvoiceStatus;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class InvoiceStatusSeeder extends Seeder
 {
     public function run(): void
     {
+        if (InvoiceStatus::exists()) {
+            $this->command->info('Invoice Statuses already seeded, skipping...');
+
+            return;
+        }
+
+        $users = User::all()->keyBy('email');
+
+        if ($users->isEmpty()) {
+            $this->command->warn('No users found, skipping address seeding...');
+
+            return;
+        }
+
         $statuses = [
             [
                 'title' => 'Draft',

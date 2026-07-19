@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -13,6 +14,20 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
+        if (Category::exists()) {
+            $this->command->info('Categories already seeded, skipping...');
+
+            return;
+        }
+
+        $users = User::all()->keyBy('email');
+
+        if ($users->isEmpty()) {
+            $this->command->warn('No users found, skipping address seeding...');
+
+            return;
+        }
+
         $categories = [
             [
                 'name' => 'Web Development',

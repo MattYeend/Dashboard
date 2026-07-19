@@ -5,6 +5,7 @@ import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import PostAuditDetails from '@/pages/Posts/components/PostAuditDetails.vue';
 import PostBasicDetails from '@/pages/Posts/components/PostBasicDetails.vue';
 import PostCategoriesDetails from '@/pages/Posts/components/PostCategoriesDetails.vue';
+import PostComments from '@/pages/Posts/components/PostComments.vue';
 import PostLikeButton from '@/pages/Posts/components/PostLikeButton.vue';
 import {
     edit as postsEdit,
@@ -71,6 +72,7 @@ function destroy(): void {
                 <PostBasicDetails :post="post" />
                 <PostCategoriesDetails :post="post" />
                 <PostAuditDetails :post="post" />
+                <PostComments :post="post" />
             </div>
         </div>
 

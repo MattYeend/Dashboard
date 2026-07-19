@@ -10,6 +10,20 @@ class PostSeeder extends Seeder
 {
     public function run(): void
     {
+        if (Post::exists()) {
+            $this->command->info('Posts already seeded, skipping...');
+
+            return;
+        }
+
+        $users = User::all()->keyBy('email');
+
+        if ($users->isEmpty()) {
+            $this->command->warn('No users found, skipping address seeding...');
+
+            return;
+        }
+
         $author = User::query()->first();
 
         $posts = [
