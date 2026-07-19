@@ -3,6 +3,7 @@
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ApiTokenController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\IndustryController;
@@ -219,6 +220,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::post('/{post}/like', [PostController::class, 'like'])->name('like');
         Route::delete('/{post}/like', [PostController::class, 'unlike'])->name('unlike');
+
+        Route::prefix('/{post}/comments')->name('comments.')->group(function () {
+        Route::post('/', [CommentController::class, 'store'])->name('store');
+        Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('destroy');
+    });
     });
 
     Route::prefix('invoice-statuses')->name('invoice-statuses.')->group(function () {

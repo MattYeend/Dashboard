@@ -3,22 +3,18 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
-use App\Traits\Likeable;
-use Database\Factories\PostFactory;
+use Database\Factories\CommentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property string $title
- * @property string $description
- * @property string|null $image
+ * @property int $post_id
+ * @property string $content
  * @property array<string, mixed>|null $meta
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -28,15 +24,15 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property-read Post $post
  * @property-read User|null $creator
  * @property-read User|null $updater
  * @property-read User|null $deleter
  * @property-read User|null $restorer
  */
 #[Fillable([
-    'title',
-    'description',
-    'image',
+    'post_id',
+    'content',
     'meta',
     'created_by',
     'updated_by',
@@ -45,37 +41,26 @@ use Illuminate\Support\Carbon;
     'restored_at',
     'deleted_at',
 ])]
-class Post extends Model implements Auditable
+class Comment extends Model implements Auditable
 {
     /**
-     * @use HasFactory<PostFactory>
+     * @use HasFactory<CommentFactory>
      */
     use HasFactory,
-        Likeable,
         SoftDeletes;
 
     /**
-     * Get the categories associated with this post.
+     * Get the post this comment belongs to.
      *
-     * @return BelongsToMany<Category, $this>
+     * @return BelongsTo<Post, $this>
      */
-    public function categories(): BelongsToMany
+    public function post(): BelongsTo
     {
-        return $this->belongsToMany(Category::class, 'category_post');
+        return $this->belongsTo(Post::class);
     }
 
     /**
-     * Get the comments on this post.
-     *
-     * @return HasMany<Comment, $this>
-     */
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class);
-    }
-
-    /**
-     * Get the user who created this post.
+     * Get the user who created this comment.
      *
      * @return BelongsTo<User, $this>
      */
@@ -85,7 +70,7 @@ class Post extends Model implements Auditable
     }
 
     /**
-     * Get the user who last updated this post.
+     * Get the user who last updated this comment.
      *
      * @return BelongsTo<User, $this>
      */
@@ -95,7 +80,7 @@ class Post extends Model implements Auditable
     }
 
     /**
-     * Get the user who deleted this post.
+     * Get the user who deleted this comment.
      *
      * @return BelongsTo<User, $this>
      */
@@ -105,7 +90,7 @@ class Post extends Model implements Auditable
     }
 
     /**
-     * Get the user who restored this post.
+     * Get the user who restored this comment.
      *
      * @return BelongsTo<User, $this>
      */
@@ -115,10 +100,7 @@ class Post extends Model implements Auditable
     }
 
     /**
-     * Get a snapshot of the post's auditable attributes.
-     *
-     * Used by the audit log to capture before/after state on create,
-     * update, delete and restore actions.
+     * Get a snapshot of the comment's auditable attributes.
      *
      * @return array<string, mixed>
      */
@@ -126,9 +108,8 @@ class Post extends Model implements Auditable
     {
         return $this->only([
             'id',
-            'title',
-            'description',
-            'image',
+            'post_id',
+            'content',
             'meta',
         ]);
     }

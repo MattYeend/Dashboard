@@ -350,6 +350,13 @@ class Log extends Model
 
     public const ACTION_UNASSIGN_INVOICE_STATUS = 162;
 
+    // Comment Management
+    public const ACTION_CREATE_COMMENT = 163;
+
+    public const ACTION_UPDATE_COMMENT = 164;
+
+    public const ACTION_DELETE_COMMENT = 165;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.

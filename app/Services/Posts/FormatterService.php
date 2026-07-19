@@ -3,17 +3,26 @@
 namespace App\Services\Posts;
 
 use App\Models\Post;
+use App\Models\User;
+use App\Services\Comments\FormatterService as CommentFormatterService;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 
 class FormatterService
 {
     /**
+     * Inject the required services into the formatter service.
+     */
+    public function __construct(
+        protected readonly CommentFormatterService $commentFormatter
+    ) {}
+
+    /**
      * Format a single post with all data.
      *
      * @return array<string, mixed>
      */
-    public function format(Post $post): array
+    public function format(Post $post, ?User $viewer = null): array
     {
         return [
             'id' => $post->id,
@@ -29,6 +38,10 @@ class FormatterService
             'liked_by_user' => $post->relationLoaded('likes')
                 ? $post->likes->isNotEmpty()
                 : false,
+            'comments' => $post->relationLoaded('comments')
+                ? $post->comments->map(fn ($comment) => $this->commentFormatter->format($comment, $viewer))->all()
+                : [],
+            'comments_count' => $post->comments_count ?? 0,
             'created_at' => $post->created_at,
             'updated_at' => $post->updated_at,
             'deleted_at' => $post->deleted_at,

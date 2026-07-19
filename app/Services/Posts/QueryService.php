@@ -30,7 +30,8 @@ class QueryService
         $query = $this->buildQuery($filters, $actor);
         $paginated = $this->paginate(
             $query,
-            min((int) ($filters['per_page'] ?? 15), 100)
+            min((int) ($filters['per_page'] ?? 15), 100),
+            $actor
         );
 
         return array_merge(
@@ -51,7 +52,7 @@ class QueryService
         $post = $this->findPost($id, $withTrashed, $user);
 
         return array_merge(
-            ['post' => $this->formatterService->format($post)],
+            ['post' => $this->formatterService->format($post, $user)],
             $this->getPermissions($user),
             $this->baseData(),
         );
@@ -74,7 +75,7 @@ class QueryService
     {
         $query = Post::query()
             ->with(['creator', 'updater', 'deleter', 'restorer', 'categories'])
-            ->withCount('likes')
+            ->withCount(['likes', 'comments'])
             ->with(['likes' => fn ($query) => $query->where('user_id', $actor->id)]);
         $query = $this->filterService->applyAll($query, $filters);
 
@@ -84,14 +85,14 @@ class QueryService
     /**
      * Paginate the query and return as plain array.
      */
-    protected function paginate(Builder $query, int $perPage): array
+    protected function paginate(Builder $query, int $perPage, User $actor): array
     {
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
             'posts' => [
                 'data' => array_map(
-                    fn (Post $post) => $this->formatterService->format($post),
+                    fn (Post $post) => $this->formatterService->format($post, $actor),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -140,8 +141,8 @@ class QueryService
         ?User $user = null
     ): Post {
         $query = Post::query()
-            ->with(['creator', 'updater', 'deleter', 'restorer', 'categories'])
-            ->withCount('likes');
+            ->with(['creator', 'updater', 'deleter', 'restorer', 'categories', 'comments.creator'])
+            ->withCount(['likes', 'comments']);
 
         if ($user) {
             $query->with(['likes' => fn ($query) => $query->where('user_id', $user->id)]);
