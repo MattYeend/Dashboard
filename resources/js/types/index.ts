@@ -311,6 +311,8 @@ export interface Post {
     categories?: { id: number; name: string }[];
     likes_count?: number;
     liked_by_user?: boolean;
+    comments?: Comment[];
+    comments_count?: number;
     creator?: { name: string };
     updater?: { name: string };
     deleter?: { name: string };
@@ -336,6 +338,26 @@ export interface InvoiceStatus {
     updater?: { name: string };
     deleter?: { name: string };
     restorer?: { name: string };
+}
+
+export interface Comment {
+    id: number;
+    post_id: number;
+    content: string;
+    meta: Record<string, unknown> | null;
+    created_by: number | null;
+    updated_by: number | null;
+    deleted_by: number | null;
+    restored_by: number | null;
+    restored_at: string | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    creator?: { name: string };
+    updater?: { name: string };
+    deleter?: { name: string };
+    restorer?: { name: string };
+    can_delete?: boolean;
 }
 
 export interface PermissionsMeta {
