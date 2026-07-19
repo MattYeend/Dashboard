@@ -309,6 +309,8 @@ export interface Post {
     updated_at: string;
     deleted_at: string | null;
     categories?: { id: number; name: string }[];
+    likes_count?: number;
+    liked_by_user?: boolean;
     creator?: { name: string };
     updater?: { name: string };
     deleter?: { name: string };

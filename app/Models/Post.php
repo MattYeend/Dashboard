@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\Likeable;
 use Database\Factories\PostFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,6 +50,7 @@ class Post extends Model implements Auditable
      * @use HasFactory<PostFactory>
      */
     use HasFactory,
+        Likeable,
         SoftDeletes;
 
     /**

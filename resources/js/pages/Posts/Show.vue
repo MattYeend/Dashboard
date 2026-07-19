@@ -5,12 +5,13 @@ import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import PostAuditDetails from '@/pages/Posts/components/PostAuditDetails.vue';
 import PostBasicDetails from '@/pages/Posts/components/PostBasicDetails.vue';
 import PostCategoriesDetails from '@/pages/Posts/components/PostCategoriesDetails.vue';
-import type { Post } from '@/types';
+import PostLikeButton from '@/pages/Posts/components/PostLikeButton.vue';
 import {
     edit as postsEdit,
     destroy as postsDestroy,
     index as postsIndex,
 } from '@/routes/posts';
+import type { Post } from '@/types';
 
 interface Props {
     post: Post;
@@ -66,6 +67,7 @@ function destroy(): void {
             </div>
 
             <div class="space-y-6">
+                <PostLikeButton :post="post" />
                 <PostBasicDetails :post="post" />
                 <PostCategoriesDetails :post="post" />
                 <PostAuditDetails :post="post" />

@@ -216,6 +216,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{post}/edit', [PostController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{post}', [PostController::class, 'update'])->name('update');
         Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
+
+        Route::post('/{post}/like', [PostController::class, 'like'])->name('like');
+        Route::delete('/{post}/like', [PostController::class, 'unlike'])->name('unlike');
     });
 
     Route::prefix('invoice-statuses')->name('invoice-statuses.')->group(function () {

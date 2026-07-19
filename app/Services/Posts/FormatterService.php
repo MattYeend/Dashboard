@@ -25,6 +25,10 @@ class FormatterService
                 'id' => $category->id,
                 'name' => $category->name,
             ])->all(),
+            'likes_count' => $post->likes_count ?? 0,
+            'liked_by_user' => $post->relationLoaded('likes')
+                ? $post->likes->isNotEmpty()
+                : false,
             'created_at' => $post->created_at,
             'updated_at' => $post->updated_at,
             'deleted_at' => $post->deleted_at,

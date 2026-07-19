@@ -27,7 +27,7 @@ class QueryService
         User $actor,
         array $filters = []
     ): array {
-        $query = $this->buildQuery($filters);
+        $query = $this->buildQuery($filters, $actor);
         $paginated = $this->paginate(
             $query,
             min((int) ($filters['per_page'] ?? 15), 100)
@@ -48,7 +48,7 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): array {
-        $post = $this->findPost($id, $withTrashed);
+        $post = $this->findPost($id, $withTrashed, $user);
 
         return array_merge(
             ['post' => $this->formatterService->format($post)],
@@ -70,9 +70,12 @@ class QueryService
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(array $filters): Builder
+    protected function buildQuery(array $filters, User $actor): Builder
     {
-        $query = Post::query()->with(['creator', 'updater', 'deleter', 'restorer', 'categories']);
+        $query = Post::query()
+            ->with(['creator', 'updater', 'deleter', 'restorer', 'categories'])
+            ->withCount('likes')
+            ->with(['likes' => fn ($query) => $query->where('user_id', $actor->id)]);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
@@ -133,9 +136,16 @@ class QueryService
      */
     private function findPost(
         int $id,
-        bool $withTrashed = false
+        bool $withTrashed = false,
+        ?User $user = null
     ): Post {
-        $query = Post::query()->with(['creator', 'updater', 'deleter', 'restorer', 'categories']);
+        $query = Post::query()
+            ->with(['creator', 'updater', 'deleter', 'restorer', 'categories'])
+            ->withCount('likes');
+
+        if ($user) {
+            $query->with(['likes' => fn ($query) => $query->where('user_id', $user->id)]);
+        }
 
         if ($withTrashed) {
             $query->withTrashed();

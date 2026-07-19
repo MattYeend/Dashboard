@@ -2,6 +2,8 @@
 
 namespace App\Services\Posts;
 
+use App\Actions\Like\LikePost;
+use App\Actions\Like\UnlikePost;
 use App\Http\Requests\Posts\StorePostRequest;
 use App\Http\Requests\Posts\UpdatePostRequest;
 use App\Models\Post;
@@ -17,6 +19,8 @@ class ManagementService
         protected readonly UpdaterService $updater,
         protected readonly DeleterService $destructor,
         protected readonly RestorerService $restorer,
+        protected readonly LikePost $likePost,
+        protected readonly UnlikePost $unlikePost,
     ) {}
 
     /**
@@ -130,5 +134,25 @@ class ManagementService
         }
 
         return $deleted;
+    }
+
+    /**
+     * Like the given post on behalf of the given user.
+     */
+    public function like(
+        Post $post,
+        User $actor
+    ): void {
+        $this->likePost->handle($post, $actor);
+    }
+
+    /**
+     * Unlike the given post on behalf of the given user.
+     */
+    public function unlike(
+        Post $post,
+        User $actor
+    ): void {
+        $this->unlikePost->handle($post, $actor);
     }
 }

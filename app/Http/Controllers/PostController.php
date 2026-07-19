@@ -263,4 +263,31 @@ class PostController extends Controller
 
         return redirect()->route('posts.index');
     }
+
+    /**
+     * Like the given post for the currently authenticated user.
+     *
+     * Authorises via the 'view' policy, since liking requires being
+     * able to see the post in the first place.
+     */
+    public function like(Post $post, Request $request): RedirectResponse
+    {
+        $this->authorize('view', $post);
+
+        $this->management->like($post, $request->user());
+
+        return back();
+    }
+
+    /**
+     * Unlike the given post for the currently authenticated user.
+     */
+    public function unlike(Post $post, Request $request): RedirectResponse
+    {
+        $this->authorize('view', $post);
+
+        $this->management->unlike($post, $request->user());
+
+        return back();
+    }
 }
