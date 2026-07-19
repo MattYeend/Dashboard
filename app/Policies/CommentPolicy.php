@@ -25,6 +25,14 @@ class CommentPolicy
     }
 
     /**
+     * Determine whether the user can update the given comment.
+     */
+    public function update(User $user, Comment $comment): bool
+    {
+        return $this->authorisationService->canUpdate($user, $comment);
+    }
+
+    /**
      * Determine whether the user can delete the given comment.
      */
     public function delete(User $user, Comment $comment): bool

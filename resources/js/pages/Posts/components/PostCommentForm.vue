@@ -30,8 +30,6 @@ function submit(): void {
             placeholder="Add a comment..."
         />
         <InputError :message="form.errors.content" />
-        <Button type="submit" :disabled="form.processing">
-            Comment
-        </Button>
+        <Button type="submit" :disabled="form.processing"> Comment </Button>
     </form>
 </template>

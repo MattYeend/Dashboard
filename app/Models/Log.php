@@ -355,7 +355,13 @@ class Log extends Model
 
     public const ACTION_UPDATE_COMMENT = 164;
 
-    public const ACTION_DELETE_COMMENT = 165;
+    public const ACTION_VIEW_COMMENT = 165;
+
+    public const ACTION_DELETE_COMMENT = 166;
+
+    public const ACTION_FORCE_DELETE_COMMENT = 167;
+
+    public const ACTION_RESTORE_COMMENT = 168;
 
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.

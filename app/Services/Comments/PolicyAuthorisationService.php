@@ -39,6 +39,19 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can update the given comment.
+     *
+     * Only the comment's own author can edit it, provided it is not
+     * already trashed. Unlike delete, admins cannot edit someone
+     * else's comment content, only remove it.
+     */
+    public function canUpdate(User $actor, Comment $comment): bool
+    {
+        return $actor->id === $comment->created_by
+            && $this->activeChecker->canBeModified($comment);
+    }
+
+    /**
      * Determine whether the user can delete the given comment.
      *
      * The comment's own author can always delete it, provided it is

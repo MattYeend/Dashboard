@@ -8,11 +8,11 @@ use Illuminate\Foundation\Http\FormRequest;
 class UpdateCommentRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determine if the user is authorised to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('update', $this->route('comment'));
     }
 
     /**
@@ -23,7 +23,35 @@ class UpdateCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'content' => $this->contentRules(),
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'content.required' => 'The comment cannot be empty.',
+            'content.string' => 'The comment must be a string.',
+            'content.max' => 'The comment may not exceed 2000 characters.',
+        ];
+    }
+
+    /**
+     * Get validation rules for the content field.
+     *
+     * @return array<mixed>
+     */
+    protected function contentRules(): array
+    {
+        return [
+            'required',
+            'string',
+            'max:2000',
         ];
     }
 }

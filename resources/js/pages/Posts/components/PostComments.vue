@@ -20,7 +20,10 @@ defineProps<Props>();
         <div class="border-t border-gray-500 px-4 py-4 sm:px-6">
             <PostCommentForm :post-id="post.id" />
             <div class="mt-4">
-                <PostCommentList :post-id="post.id" :comments="post.comments ?? []" />
+                <PostCommentList
+                    :post-id="post.id"
+                    :comments="post.comments ?? []"
+                />
             </div>
         </div>
     </div>

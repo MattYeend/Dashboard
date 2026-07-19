@@ -3,6 +3,7 @@
 namespace App\Services\Comments;
 
 use App\Http\Requests\Comments\StoreCommentRequest;
+use App\Http\Requests\Comments\UpdateCommentRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
@@ -14,6 +15,7 @@ class ManagementService
      */
     public function __construct(
         protected readonly CreatorService $creator,
+        protected readonly UpdaterService $updater,
         protected readonly DeleterService $destructor,
     ) {}
 
@@ -26,6 +28,20 @@ class ManagementService
     ): Comment {
         return $this->creator->create(
             $post,
+            $request->validated(),
+            $request->user()->id
+        );
+    }
+
+    /**
+     * Update an existing comment.
+     */
+    public function update(
+        UpdateCommentRequest $request,
+        Comment $comment
+    ): Comment {
+        return $this->updater->update(
+            $comment,
             $request->validated(),
             $request->user()->id
         );

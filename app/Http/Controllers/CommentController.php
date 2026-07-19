@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Comments\StoreCommentRequest;
+use App\Http\Requests\Comments\UpdateCommentRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Services\Comments\ManagementService;
@@ -33,6 +34,22 @@ class CommentController extends Controller
 
         if ($request->wantsJson()) {
             return response()->json($comment, 201);
+        }
+
+        return back();
+    }
+
+    /**
+     * Update the specified comment in storage.
+     *
+     * Authorisation is handled upstream by UpdateCommentRequest.
+     */
+    public function update(UpdateCommentRequest $request, Post $post, Comment $comment): JsonResponse|RedirectResponse
+    {
+        $comment = $this->management->update($request, $comment);
+
+        if ($request->wantsJson()) {
+            return response()->json($comment);
         }
 
         return back();

@@ -357,6 +357,7 @@ export interface Comment {
     updater?: { name: string };
     deleter?: { name: string };
     restorer?: { name: string };
+    can_update?: boolean;
     can_delete?: boolean;
 }
 

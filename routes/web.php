@@ -222,9 +222,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/{post}/like', [PostController::class, 'unlike'])->name('unlike');
 
         Route::prefix('/{post}/comments')->name('comments.')->group(function () {
-        Route::post('/', [CommentController::class, 'store'])->name('store');
-        Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('destroy');
-    });
+            Route::post('/', [CommentController::class, 'store'])->name('store');
+            Route::put('/{comment}', [CommentController::class, 'update'])->name('update');
+            Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('destroy');
+        });
     });
 
     Route::prefix('invoice-statuses')->name('invoice-statuses.')->group(function () {

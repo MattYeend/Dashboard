@@ -31,6 +31,7 @@ class FormatterService
             'updater' => $comment->updater ? ['id' => $comment->updater->id, 'name' => $comment->updater->name] : null,
             'deleter' => $comment->deleter ? ['id' => $comment->deleter->id, 'name' => $comment->deleter->name] : null,
             'restorer' => $comment->restorer ? ['id' => $comment->restorer->id, 'name' => $comment->restorer->name] : null,
+            'can_update' => $viewer ? $viewer->can('update', $comment) : false,
             'can_delete' => $viewer ? $viewer->can('delete', $comment) : false,
         ];
     }
