@@ -141,8 +141,15 @@ class QueryService
         ?User $user = null
     ): Post {
         $query = Post::query()
-            ->with(['creator', 'updater', 'deleter', 'restorer', 'categories', 'comments.creator'])
-            ->withCount(['likes', 'comments']);
+            ->with(['creator', 'updater', 'deleter', 'restorer', 'categories'])
+            ->withCount(['likes', 'comments'])
+            ->with(['comments' => function ($query) use ($user) {
+                $query->with('creator')->withCount('likes');
+
+                if ($user) {
+                    $query->with(['likes' => fn ($query) => $query->where('user_id', $user->id)]);
+                }
+            }]);
 
         if ($user) {
             $query->with(['likes' => fn ($query) => $query->where('user_id', $user->id)]);

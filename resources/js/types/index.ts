@@ -345,6 +345,8 @@ export interface Comment {
     post_id: number;
     content: string;
     meta: Record<string, unknown> | null;
+    likes_count?: number;
+    liked_by_user?: boolean;
     created_by: number | null;
     updated_by: number | null;
     deleted_by: number | null;

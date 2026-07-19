@@ -72,4 +72,31 @@ class CommentController extends Controller
 
         return back();
     }
+
+    /**
+     * Like the given comment for the currently authenticated user.
+     *
+     * Authorises via the 'view' policy on the parent post, since
+     * liking a comment requires being able to see the post it's on.
+     */
+    public function like(Post $post, Comment $comment, Request $request): RedirectResponse
+    {
+        $this->authorize('view', $post);
+
+        $this->management->like($comment, $request->user());
+
+        return back();
+    }
+
+    /**
+     * Unlike the given comment for the currently authenticated user.
+     */
+    public function unlike(Post $post, Comment $comment, Request $request): RedirectResponse
+    {
+        $this->authorize('view', $post);
+
+        $this->management->unlike($comment, $request->user());
+
+        return back();
+    }
 }

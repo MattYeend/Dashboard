@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import DOMPurify from 'dompurify';
+import { computed, ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
+import CommentLikeButton from '@/pages/Posts/components/CommentLikeButton.vue';
 import type { Comment } from '@/types';
 
 interface Props {
@@ -20,6 +22,18 @@ const isEditing = ref(false);
 const editContent = ref(props.comment.content);
 const editProcessing = ref(false);
 const editErrors = ref<{ content?: string }>({});
+
+// ALLOWED_TAGS: [] strips all HTML, leaving plain text content only,
+// matching the sanitisation used for post content on Posts/Index.vue
+function sanitiseContent(value: string | null | undefined): string {
+    if (!value) {
+        return '';
+    }
+
+    return DOMPurify.sanitize(value, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
+}
+
+const sanitisedContent = computed(() => sanitiseContent(props.comment.content));
 
 function requestDestroy(): void {
     deleteDialogOpen.value = true;
@@ -38,7 +52,7 @@ function destroy(): void {
 }
 
 function startEdit(): void {
-    editContent.value = props.comment.content;
+    editContent.value = sanitiseContent(props.comment.content);
     editErrors.value = {};
     isEditing.value = true;
 }
@@ -88,9 +102,10 @@ function saveEdit(): void {
             </div>
         </template>
         <template v-else>
-            <p class="text-sm text-gray-300">{{ comment.content }}</p>
+            <p class="text-sm text-gray-300">{{ sanitisedContent }}</p>
             <div class="mt-1 flex items-center gap-2 text-xs text-gray-400">
                 <span>{{ comment.creator?.name ?? '—' }}</span>
+                <CommentLikeButton :post-id="postId" :comment="comment" />
                 <button
                     v-if="comment.can_update"
                     type="button"

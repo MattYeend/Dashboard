@@ -19,6 +19,10 @@ class FormatterService
             'post_id' => $comment->post_id,
             'content' => $comment->content,
             'meta' => $comment->meta,
+            'likes_count' => $comment->likes_count ?? 0,
+            'liked_by_user' => $comment->relationLoaded('likes')
+                ? $comment->likes->isNotEmpty()
+                : false,
             'created_at' => $comment->created_at,
             'updated_at' => $comment->updated_at,
             'deleted_at' => $comment->deleted_at,

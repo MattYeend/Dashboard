@@ -225,6 +225,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/', [CommentController::class, 'store'])->name('store');
             Route::put('/{comment}', [CommentController::class, 'update'])->name('update');
             Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('destroy');
+            Route::post('/{comment}/like', [CommentController::class, 'like'])->name('like');
+            Route::delete('/{comment}/like', [CommentController::class, 'unlike'])->name('unlike');
         });
     });
 

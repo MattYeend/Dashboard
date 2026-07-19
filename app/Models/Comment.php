@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\Likeable;
 use Database\Factories\CommentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -47,6 +48,7 @@ class Comment extends Model implements Auditable
      * @use HasFactory<CommentFactory>
      */
     use HasFactory,
+        Likeable,
         SoftDeletes;
 
     /**

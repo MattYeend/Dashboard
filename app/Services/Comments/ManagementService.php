@@ -2,6 +2,8 @@
 
 namespace App\Services\Comments;
 
+use App\Actions\Like\LikeComment;
+use App\Actions\Like\UnlikeComment;
 use App\Http\Requests\Comments\StoreCommentRequest;
 use App\Http\Requests\Comments\UpdateCommentRequest;
 use App\Models\Comment;
@@ -17,6 +19,8 @@ class ManagementService
         protected readonly CreatorService $creator,
         protected readonly UpdaterService $updater,
         protected readonly DeleterService $destructor,
+        protected readonly LikeComment $likeComment,
+        protected readonly UnlikeComment $unlikeComment,
     ) {}
 
     /**
@@ -55,5 +59,25 @@ class ManagementService
         User $actor
     ): void {
         $this->destructor->delete($comment, $actor->id);
+    }
+
+    /**
+     * Like the given comment on behalf of the given user.
+     */
+    public function like(
+        Comment $comment,
+        User $actor
+    ): void {
+        $this->likeComment->handle($comment, $actor);
+    }
+
+    /**
+     * Unlike the given comment on behalf of the given user.
+     */
+    public function unlike(
+        Comment $comment,
+        User $actor
+    ): void {
+        $this->unlikeComment->handle($comment, $actor);
     }
 }
