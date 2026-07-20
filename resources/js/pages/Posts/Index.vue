@@ -228,7 +228,7 @@ function formatDate(value: string | null): string {
                 </template>
 
                 <template #cell-description="{ row }">
-                    {{ truncate(row.description, 60) }}
+                    {{ truncate(row.description, 30) }}
                 </template>
 
                 <template #cell-tags="{ row }">
