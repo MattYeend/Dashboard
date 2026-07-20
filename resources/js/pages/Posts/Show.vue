@@ -7,6 +7,7 @@ import PostBasicDetails from '@/pages/Posts/components/PostBasicDetails.vue';
 import PostCategoriesDetails from '@/pages/Posts/components/PostCategoriesDetails.vue';
 import PostComments from '@/pages/Posts/components/PostComments.vue';
 import PostLikeButton from '@/pages/Posts/components/PostLikeButton.vue';
+import PostTagsDetails from '@/pages/Posts/components/PostTagsDetails.vue';
 import {
     edit as postsEdit,
     destroy as postsDestroy,
@@ -71,6 +72,7 @@ function destroy(): void {
                 <PostLikeButton :post="post" />
                 <PostBasicDetails :post="post" />
                 <PostCategoriesDetails :post="post" />
+                <PostTagsDetails :post="post" />
                 <PostAuditDetails :post="post" />
                 <PostComments :post="post" />
             </div>

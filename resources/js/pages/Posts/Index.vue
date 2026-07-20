@@ -57,6 +57,7 @@ const bulkDeleteProcessing = ref(false);
 const columns: ResourceTableColumn[] = [
     { key: 'title', label: 'Title' },
     { key: 'description', label: 'Description' },
+    { key: 'tags', label: 'Tags' },
     { key: 'created_at', label: 'Created' },
 ];
 
@@ -228,6 +229,11 @@ function formatDate(value: string | null): string {
 
                 <template #cell-description="{ row }">
                     {{ truncate(row.description, 60) }}
+                </template>
+
+                <template #cell-tags="{ row }">
+                    <span v-if="!row.tags?.length">—</span>
+                    <span v-else>{{ row.tags.map((tag) => tag.name).join(', ') }}</span>
                 </template>
 
                 <template #cell-created_at="{ row }">

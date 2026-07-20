@@ -8,8 +8,14 @@ interface CategoryOption {
     name: string;
 }
 
+interface TagOption {
+    id: number;
+    name: string;
+}
+
 interface Props {
     categories: CategoryOption[];
+    tags: TagOption[];
 }
 
 defineProps<Props>();
@@ -19,6 +25,7 @@ const form = useForm({
     description: '',
     image: null as File | null,
     category_ids: [] as number[],
+    tag_ids: [] as number[],
 });
 
 function onFileChange(file: File | null): void {
@@ -39,7 +46,9 @@ function submit(): void {
                 v-model:title="form.title"
                 v-model:description="form.description"
                 v-model:category-ids="form.category_ids"
+                v-model:tag-ids="form.tag_ids"
                 :categories="categories"
+                :tags="tags"
                 :is-editing="false"
                 :processing="form.processing"
                 :errors="form.errors"
