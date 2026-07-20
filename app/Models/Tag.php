@@ -3,22 +3,19 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
-use App\Traits\Likeable;
-use Database\Factories\PostFactory;
+use Database\Factories\TagFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property string $title
- * @property string $description
- * @property string|null $image
+ * @property string $name
+ * @property string $slug
  * @property array<string, mixed>|null $meta
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -34,9 +31,8 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
-    'title',
-    'description',
-    'image',
+    'name',
+    'slug',
     'meta',
     'created_by',
     'updated_by',
@@ -45,47 +41,25 @@ use Illuminate\Support\Carbon;
     'restored_at',
     'deleted_at',
 ])]
-class Post extends Model implements Auditable
+class Tag extends Model implements Auditable
 {
     /**
-     * @use HasFactory<PostFactory>
+     * @use HasFactory<TagFactory>
      */
-    use HasFactory,
-        Likeable,
-        SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     /**
-     * Get the categories associated with this post.
+     * Get the posts associated with this tag.
      *
-     * @return BelongsToMany<Category, $this>
+     * @return BelongsToMany<Post, $this>
      */
-    public function categories(): BelongsToMany
+    public function posts(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class, 'category_post');
+        return $this->belongsToMany(Post::class);
     }
 
     /**
-     * Get the comments on this post.
-     *
-     * @return HasMany<Comment, $this>
-     */
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class);
-    }
-
-    /**
-     * Get the tags associated with this post.
-     *
-     * @return BelongsToMany<Tag, $this>
-     */
-    public function tags(): BelongsToMany
-    {
-        return $this->belongsToMany(Tag::class);
-    }
-
-    /**
-     * Get the user who created this post.
+     * Get the user who created this tag.
      *
      * @return BelongsTo<User, $this>
      */
@@ -95,7 +69,7 @@ class Post extends Model implements Auditable
     }
 
     /**
-     * Get the user who last updated this post.
+     * Get the user who last updated this tag.
      *
      * @return BelongsTo<User, $this>
      */
@@ -105,7 +79,7 @@ class Post extends Model implements Auditable
     }
 
     /**
-     * Get the user who deleted this post.
+     * Get the user who deleted this tag.
      *
      * @return BelongsTo<User, $this>
      */
@@ -115,7 +89,7 @@ class Post extends Model implements Auditable
     }
 
     /**
-     * Get the user who restored this post.
+     * Get the user who restored this tag.
      *
      * @return BelongsTo<User, $this>
      */
@@ -125,7 +99,7 @@ class Post extends Model implements Auditable
     }
 
     /**
-     * Get a snapshot of the post's auditable attributes.
+     * Get a snapshot of the tag's auditable attributes.
      *
      * Used by the audit log to capture before/after state on create,
      * update, delete and restore actions.
@@ -134,13 +108,7 @@ class Post extends Model implements Auditable
      */
     public function auditSnapshot(): array
     {
-        return $this->only([
-            'id',
-            'title',
-            'description',
-            'image',
-            'meta',
-        ]);
+        return $this->only(['id', 'name', 'slug', 'meta']);
     }
 
     /**

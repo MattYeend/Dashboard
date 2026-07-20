@@ -363,6 +363,17 @@ class Log extends Model
 
     public const ACTION_RESTORE_COMMENT = 168;
 
+    // Tag Management
+    public const ACTION_CREATE_TAG = 169;
+
+    public const ACTION_UPDATE_TAG = 170;
+
+    public const ACTION_DELETE_TAG = 171;
+
+    public const ACTION_RESTORE_TAG = 172;
+
+    public const ACTION_FORCE_DELETE_TAG = 173;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
