@@ -38,7 +38,7 @@ const filters = ref({
     search: '',
     is_active: '',
     trashed: '',
-    sort_by: 'created_at',
+    sort_by: 'price_per_user_per_month',
     sort_direction: 'asc',
 });
 

@@ -54,6 +54,7 @@ const bulkDeleteProcessing = ref(false);
 const columns: ResourceTableColumn[] = [
     { key: 'name', label: 'Name' },
     { key: 'slug', label: 'Slug' },
+    { key: 'created_at', label: 'Created' },
 ];
 
 const filterFields = [
@@ -155,6 +156,18 @@ function bulkDelete(): void {
         },
     );
 }
+
+function formatDate(value: string | null): string {
+    if (!value) {
+        return '—';
+    }
+
+    return new Date(value).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
+}
 </script>
 
 <template>
@@ -199,6 +212,10 @@ function bulkDelete(): void {
 
                 <template #cell-slug="{ row }">
                     {{ row.slug }}
+                </template>
+
+                <template #cell-created_at="{ row }">
+                    {{ formatDate(row.created_at) }}
                 </template>
 
                 <template #actions="{ row }">

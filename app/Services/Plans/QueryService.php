@@ -163,7 +163,7 @@ class QueryService
 
         return $this->sortingService->applySorting(
             $query,
-            $filters['sort_by'] ?? 'name',
+            $filters['sort_by'] ?? 'price',
             $filters['sort_direction'] ?? 'asc'
         );
     }

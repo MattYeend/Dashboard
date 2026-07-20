@@ -57,6 +57,7 @@ const bulkDeleteProcessing = ref(false);
 const columns: ResourceTableColumn[] = [
     { key: 'title', label: 'Title' },
     { key: 'description', label: 'Description' },
+    { key: 'created_at', label: 'Created' },
 ];
 
 const filterFields = [
@@ -177,6 +178,18 @@ function truncate(value: string | null | undefined, length = 30): string {
 
     return plain.length > length ? `${plain.slice(0, length)}…` : plain;
 }
+
+function formatDate(value: string | null): string {
+    if (!value) {
+        return '—';
+    }
+
+    return new Date(value).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
+}
 </script>
 
 <template>
@@ -215,6 +228,10 @@ function truncate(value: string | null | undefined, length = 30): string {
 
                 <template #cell-description="{ row }">
                     {{ truncate(row.description, 60) }}
+                </template>
+
+                <template #cell-created_at="{ row }">
+                    {{ formatDate(row.created_at) }}
                 </template>
 
                 <template #actions="{ row }">

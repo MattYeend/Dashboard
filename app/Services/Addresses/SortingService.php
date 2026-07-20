@@ -46,7 +46,6 @@ class SortingService
             'postal_code' => 'Postal Code',
             'country' => 'Country',
             'created_at' => 'Created Date',
-            'updated_at' => 'Updated Date',
         ];
     }
 }
