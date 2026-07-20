@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import PostForm from '@/pages/Posts/components/PostForm.vue';
-import type { Post } from '@/types';
 import { update as postsUpdate } from '@/routes/posts';
+import type { Post } from '@/types';
 
 interface CategoryOption {
     id: number;
