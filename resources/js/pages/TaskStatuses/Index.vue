@@ -37,7 +37,7 @@ const props = defineProps<Props>();
 const filters = ref({
     search: '',
     trashed: '',
-    sort_by: 'title',
+    sort_by: 'created_at',
     sort_direction: 'asc',
 });
 
@@ -55,6 +55,7 @@ const columns: ResourceTableColumn[] = [
     { key: 'title', label: 'Title' },
     { key: 'description', label: 'Description' },
     { key: 'preview', label: 'Preview' },
+    { key: 'created_at', label: 'Created' },
 ];
 
 const filterFields = [
@@ -156,6 +157,18 @@ function bulkDelete(): void {
         },
     );
 }
+
+function formatDate(value: string | null): string {
+    if (!value) {
+        return '—';
+    }
+
+    return new Date(value).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
+}
 </script>
 
 <template>
@@ -212,6 +225,10 @@ function bulkDelete(): void {
                     >
                         {{ row.title }}
                     </span>
+                </template>
+
+                <template #cell-created_at="{ row }">
+                    {{ formatDate(row.created_at) }}
                 </template>
 
                 <template #actions="{ row }">

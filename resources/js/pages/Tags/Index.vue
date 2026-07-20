@@ -7,11 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import type {
-    Tag,
-    Pagination as PaginationMeta,
-    PermissionsMeta,
-} from '@/types';
 import {
     index as tagsIndex,
     create as tagsCreate,
@@ -20,6 +15,11 @@ import {
     destroy as tagsDestroy,
 } from '@/routes/tags';
 import tagsBulk from '@/routes/tags/bulk';
+import type {
+    Tag,
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+} from '@/types';
 
 interface Props {
     tags: {

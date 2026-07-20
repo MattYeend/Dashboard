@@ -39,7 +39,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const filters = ref({
     search: urlParams.get('search') ?? '',
     trashed: urlParams.get('trashed') ?? '',
-    sort_by: urlParams.get('sort_by') ?? 'title',
+    sort_by: urlParams.get('sort_by') ?? 'due_date',
     sort_direction: urlParams.get('sort_direction') ?? 'asc',
 });
 

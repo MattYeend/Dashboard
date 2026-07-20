@@ -149,7 +149,7 @@ class QueryService
 
         return $this->sortingService->applySorting(
             $query,
-            $filters['sort_by'] ?? 'title',
+            $filters['sort_by'] ?? 'created_at',
             $filters['sort_direction'] ?? 'asc'
         );
     }
