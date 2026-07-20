@@ -38,7 +38,6 @@ class SortingService
         return [
             'name' => 'Name',
             'created_at' => 'Created Date',
-            'updated_at' => 'Updated Date',
         ];
     }
 }

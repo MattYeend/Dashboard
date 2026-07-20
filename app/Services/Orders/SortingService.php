@@ -58,7 +58,6 @@ class SortingService
             'completed_at' => 'Completed Date',
             'status_id' => 'Status',
             'created_at' => 'Created Date',
-            'updated_at' => 'Updated Date',
         ];
     }
 }

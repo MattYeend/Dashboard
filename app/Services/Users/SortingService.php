@@ -44,7 +44,6 @@ class SortingService
             'email' => 'Email',
             'role' => 'Role',
             'created_at' => 'Created Date',
-            'updated_at' => 'Updated Date',
         ];
     }
 }

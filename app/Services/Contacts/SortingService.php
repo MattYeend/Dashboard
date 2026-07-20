@@ -43,7 +43,6 @@ class SortingService
             'phone' => 'Phone',
             'email' => 'Email',
             'created_at' => 'Created Date',
-            'updated_at' => 'Updated Date',
         ];
     }
 }

@@ -42,7 +42,6 @@ class SortingService
             'price_per_user_per_month' => 'Price',
             'is_active' => 'Active',
             'created_at' => 'Created Date',
-            'updated_at' => 'Updated Date',
         ];
     }
 }

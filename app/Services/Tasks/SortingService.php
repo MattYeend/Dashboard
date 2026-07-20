@@ -40,7 +40,6 @@ class SortingService
             'title' => 'Title',
             'due_date' => 'Due Date',
             'created_at' => 'Created Date',
-            'updated_at' => 'Updated Date',
         ];
     }
 }
