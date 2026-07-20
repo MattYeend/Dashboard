@@ -72,7 +72,7 @@ class StoreTagRequest extends FormRequest
             'string',
             'max:255',
             'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
-            'unique:companies,slug',
+            'unique:tags,slug',
         ];
     }
 
