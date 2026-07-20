@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('invoice_statuses_and_comments_tables', function (Blueprint $table) {
-            //
+        Schema::table('invoice_statuses', function (Blueprint $table) {
+            $table->index('title');
+            $table->index(['deleted_at', 'created_at']);
+        });
+
+        Schema::table('comments', function (Blueprint $table) {
+            $table->index(['post_id', 'created_at']);
+            $table->index('deleted_at');
         });
     }
 
@@ -21,8 +27,14 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('invoice_statuses_and_comments_tables', function (Blueprint $table) {
-            //
+        Schema::table('invoice_statuses', function (Blueprint $table) {
+            $table->dropIndex(['title']);
+            $table->dropIndex(['deleted_at', 'created_at']);
+        });
+
+        Schema::table('comments', function (Blueprint $table) {
+            $table->dropIndex(['post_id', 'created_at']);
+            $table->dropIndex(['deleted_at']);
         });
     }
 };
