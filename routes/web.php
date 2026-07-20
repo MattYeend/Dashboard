@@ -13,6 +13,7 @@ use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\StripeWebhookController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\UserController;
@@ -243,6 +244,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{invoice_status}/edit', [InvoiceStatusController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{invoice_status}', [InvoiceStatusController::class, 'update'])->name('update');
         Route::delete('/{invoice_status}', [InvoiceStatusController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('tags')->name('tags.')->group(function () {
+        Route::post('/bulk/delete', [TagController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [TagController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [TagController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [TagController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [TagController::class, 'index'])->name('index');
+        Route::get('/create', [TagController::class, 'create'])->name('create');
+        Route::post('/', [TagController::class, 'store'])->name('store');
+        Route::get('/{tag}', [TagController::class, 'show'])->name('show');
+        Route::get('/{tag}/edit', [TagController::class, 'edit'])->name('edit');
+        Route::put('/{tag}', [TagController::class, 'update'])->name('update');
+        Route::patch('/{tag}', [TagController::class, 'update'])->name('patch');
+        Route::delete('/{tag}', [TagController::class, 'destroy'])->name('destroy');
     });
 });
 

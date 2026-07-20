@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             PostSeeder::class,
             InvoiceStatusSeeder::class,
             CommentSeeder::class,
+            TagSeeder::class,
         ]);
     }
 }

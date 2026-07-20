@@ -261,6 +261,15 @@ class RolePermissionSeeder extends Seeder
             'import comments',
             'export comments',
 
+            // Tag Management
+            'view_any_tags',
+            'view_tags',
+            'create_tags',
+            'update_tags',
+            'delete_tags',
+            'restore_tags',
+            'force_delete_tags',
+
             // Invoice status management
             'view invoice statuses',
             'create invoice statuses',
@@ -458,6 +467,13 @@ class RolePermissionSeeder extends Seeder
             'force delete comments',
             'import comments',
             'export comments',
+            'view_any_tags',
+            'view_tags',
+            'create_tags',
+            'update_tags',
+            'delete_tags',
+            'restore_tags',
+            'force_delete_tags',
             'view invoice statuses',
             'create invoice statuses',
             'edit invoice statuses',
@@ -612,6 +628,12 @@ class RolePermissionSeeder extends Seeder
             'restore comments',
             'import comments',
             'export comments',
+            'view_any_tags',
+            'view_tags',
+            'create_tags',
+            'update_tags',
+            'delete_tags',
+            'restore_tags',
             'view invoice statuses',
             'create invoice statuses',
             'edit invoice statuses',
@@ -714,6 +736,12 @@ class RolePermissionSeeder extends Seeder
             'edit comments',
             'delete comments',
             'restore comments',
+            'view_any_tags',
+            'view_tags',
+            'create_tags',
+            'update_tags',
+            'delete_tags',
+            'restore_tags',
             'view invoice statuses',
             'create invoice statuses',
             'edit invoice statuses',
@@ -755,6 +783,8 @@ class RolePermissionSeeder extends Seeder
             'view posts',
             'view any comments',
             'view comments',
+            'view_any_tags',
+            'view_tags',
             'view invoice statuses',
         ];
         $viewer->givePermissionTo($viewerPermissions);
@@ -826,6 +856,10 @@ class RolePermissionSeeder extends Seeder
             'view comments',
             'create comments',
             'edit comments',
+            'view_any_tags',
+            'view_tags',
+            'create_tags',
+            'update_tags',
             'view invoice statuses',
             'create invoice statuses',
             'edit invoice statuses',
@@ -943,6 +977,12 @@ class RolePermissionSeeder extends Seeder
             'restore comments',
             'import comments',
             'export comments',
+            'view_any_tags',
+            'view_tags',
+            'create_tags',
+            'update_tags',
+            'delete_tags',
+            'restore_tags',
             'view invoice statuses',
             'create invoice statuses',
             'edit invoice statuses',
@@ -1014,6 +1054,8 @@ class RolePermissionSeeder extends Seeder
             'view any comments',
             'view comments',
             'export comments',
+            'view_any_tags',
+            'view_tags',
             'view invoice statuses',
             'export invoice statuses',
             'assign invoice statuses',
@@ -1047,7 +1089,8 @@ class RolePermissionSeeder extends Seeder
             'view addresses',
             'view categories',
             'view posts',
-             'view comments',
+            'view comments',
+            'view_tags',
             'view invoice statuses',
         ];
         $user->givePermissionTo($userPermissions);
@@ -1068,6 +1111,7 @@ class RolePermissionSeeder extends Seeder
             'view categories',
             'view posts',
             'view comments',
+            'view_tags',
             'view invoice statuses',
         ];
         $guest->givePermissionTo($guestPermissions);
@@ -1114,6 +1158,7 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Categories');
         $this->command->info('- Posts');
         $this->command->info('- Comments');
+        $this->command->info('- Tags');
         $this->command->info('- Invoice Statuses');
     }
 }
