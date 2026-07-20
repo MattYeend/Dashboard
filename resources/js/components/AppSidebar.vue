@@ -36,6 +36,7 @@ import { index as orderStatusesIndex } from '@/routes/order-statuses';
 import { index as ordersIndex } from '@/routes/orders';
 import { index as plansIndex } from '@/routes/plans';
 import { index as postsIndex } from '@/routes/posts';
+import { index as tagsIndex } from '@/routes/tags';
 import { index as taskStatusesIndex } from '@/routes/task-statuses';
 import { index as tasksIndex } from '@/routes/tasks';
 import { index as usersIndex } from '@/routes/users';
@@ -119,6 +120,10 @@ const mainNavItems: NavItem[] = [
             {
                 title: 'Categories',
                 href: categoriesIndex.url(),
+            },
+            {
+                title: 'Tags',
+                href: tagsIndex.url(),
             },
         ],
     },

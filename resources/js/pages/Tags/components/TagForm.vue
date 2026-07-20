@@ -16,7 +16,6 @@ interface Props {
 defineProps<Props>();
 
 const name = defineModel<string>('name', { required: true });
-const slug = defineModel<string | null>('slug', { default: null });
 </script>
 
 <template>
@@ -33,19 +32,6 @@ const slug = defineModel<string | null>('slug', { default: null });
                 placeholder="Enter tag name"
             />
             <InputError :message="errors.name" />
-        </div>
-
-        <div>
-            <Label for="slug">Slug</Label>
-            <Input
-                id="slug"
-                :model-value="slug ?? ''"
-                type="text"
-                class="mt-1 block w-full"
-                placeholder="Auto-generated if left blank"
-                @update:model-value="slug = ($event as string) || null"
-            />
-            <InputError :message="errors.slug" />
         </div>
     </div>
 </template>

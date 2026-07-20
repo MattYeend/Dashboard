@@ -42,6 +42,7 @@ class StoreTagRequest extends FormRequest
             'name.string' => 'The tag name must be a string.',
             'name.max' => 'The tag name may not exceed 255 characters.',
             'slug.unique' => 'This slug is already in use.',
+            'slug.regex' => 'The slug may only contain lowercase letters, numbers and hyphens.',
         ];
     }
 
@@ -70,7 +71,8 @@ class StoreTagRequest extends FormRequest
             'nullable',
             'string',
             'max:255',
-            'unique:tags,slug',
+            'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+            'unique:companies,slug',
         ];
     }
 

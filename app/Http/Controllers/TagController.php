@@ -7,37 +7,48 @@ use App\Http\Requests\Tags\UpdateTagRequest;
 use App\Models\Tag;
 use App\Services\Tags\ManagementService;
 use App\Services\Tags\QueryService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class TagController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Inject the required services into the controller.
      */
     public function __construct(
-        protected readonly QueryService $queryService,
-        protected readonly ManagementService $managementService,
+        protected readonly ManagementService $management,
+        protected readonly QueryService $query,
     ) {}
 
     /**
-     * Display a listing of tags.
+     * Display a listing of the resource.
+     *
+     * Passes paginated tags to the Tags/Index Inertia page.
+     *
+     * Authorises via the 'viewAny' policy before returning data.
      */
     public function index(Request $request): Response
     {
         $this->authorize('viewAny', Tag::class);
 
-        return Inertia::render('Tags/Index', $this->queryService->getPaginated(
-            Auth::user(),
-            $request->all()
-        ));
+        $data = $this->query->getPaginated(
+            $request->user(),
+            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+        );
+
+        return Inertia::render('Tags/Index', $data);
     }
 
     /**
      * Show the form for creating a new tag.
+     *
+     * Authorises via the 'create' policy before rendering.
      */
     public function create(): Response
     {
@@ -47,126 +58,209 @@ class TagController extends Controller
     }
 
     /**
-     * Store a newly created tag.
+     * Store a newly created resource in storage.
+     *
+     * Validation is handled upstream by StoreTagRequest.
+     *
+     * After storing, an audit log entry is written against the
+     * authenticated user.
      */
-    public function store(StoreTagRequest $request): RedirectResponse
+    public function store(StoreTagRequest $request): JsonResponse|RedirectResponse
     {
-        $tag = $this->managementService->store($request);
+        $tag = $this->management->store($request);
 
-        return redirect()->route('tags.show', $tag)
-            ->with('success', 'Tag created successfully.');
+        if ($request->wantsJson()) {
+            return response()->json($tag, 201);
+        }
+
+        return redirect()->route('tags.show', $tag->id);
     }
 
     /**
-     * Display the specified tag.
+     * Display the specified resource.
+     *
+     * Passes a single tag to the Tags/Show Inertia page.
+     *
+     * Authorises via the 'view' policy before rendering.
      */
-    public function show(int $id): Response
-    {
-        $data = $this->queryService->getById(Auth::user(), $id, withTrashed: true);
+    public function show(
+        Tag $tag,
+        Request $request
+    ): Response {
+        $this->authorize('view', $tag);
 
-        $this->authorize('view', $data['tag']);
+        $data = $this->query->getById(
+            $request->user(),
+            $tag->id
+        );
 
         return Inertia::render('Tags/Show', $data);
     }
 
     /**
-     * Show the form for editing the specified tag.
+     * Show the form for editing an existing tag.
+     *
+     * Authorises via the 'update' policy before rendering.
      */
-    public function edit(Tag $tag): Response
-    {
+    public function edit(
+        Tag $tag,
+        Request $request
+    ): Response {
         $this->authorize('update', $tag);
 
-        return Inertia::render('Tags/Edit', [
-            'tag' => $tag,
-        ]);
+        $data = $this->query->getById(
+            $request->user(),
+            $tag->id
+        );
+
+        return Inertia::render('Tags/Edit', $data);
     }
 
     /**
-     * Update the specified tag.
+     * Update the specified resource in storage.
+     *
+     * Validation is handled upstream by UpdateTagRequest, which also
+     * implicitly authorises the operation via its authorize() method.
+     *
+     * After updating, an audit log entry is written against the authenticated
+     * user.
      */
-    public function update(UpdateTagRequest $request, Tag $tag): RedirectResponse
-    {
-        $this->managementService->update($request, $tag);
+    public function update(
+        UpdateTagRequest $request,
+        Tag $tag
+    ): JsonResponse|RedirectResponse {
+        $tag = $this->management->update($request, $tag);
 
-        return redirect()->route('tags.show', $tag)
-            ->with('success', 'Tag updated successfully.');
+        if ($request->wantsJson()) {
+            return response()->json($tag);
+        }
+
+        return redirect()->route('tags.show', $tag->id);
     }
 
     /**
-     * Soft delete the specified tag.
+     * Remove the specified resource from storage.
+     *
+     * Authorises via the 'delete' policy before proceeding.
+     *
+     * The audit log entry is written before the deletion so that the
+     * tag instance is still fully accessible during logging.
      */
-    public function destroy(Tag $tag): RedirectResponse
-    {
+    public function destroy(
+        Request $request,
+        Tag $tag
+    ): JsonResponse|RedirectResponse {
         $this->authorize('delete', $tag);
 
-        $this->managementService->destroy($tag, Auth::user());
+        $this->management->destroy($tag, $request->user());
 
-        return redirect()->route('tags.index')
-            ->with('success', 'Tag deleted successfully.');
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('tags.index');
     }
 
     /**
-     * Restore the specified soft-deleted tag.
+     * Restore a soft-deleted tag.
+     *
+     * Resolves the trashed model manually since route model binding
+     * excludes soft-deleted records by default.
+     *
+     * Authorises via the 'restore' policy before proceeding.
      */
-    public function restore(int $id): RedirectResponse
-    {
-        $tag = Tag::withTrashed()->findOrFail($id);
+    public function restore(
+        int $id,
+        Request $request
+    ): JsonResponse|RedirectResponse {
+        $tag = Tag::onlyTrashed()->findOrFail($id);
+
         $this->authorize('restore', $tag);
 
-        $this->managementService->restore($id, Auth::user());
+        $this->management->restore($id, $request->user());
 
-        return redirect()->back()->with('success', 'Tag restored successfully.');
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('tags.index');
     }
 
     /**
-     * Permanently delete the specified tag.
+     * Permanently delete a soft-deleted tag.
+     *
+     * Resolves the trashed model manually since route model binding
+     * excludes soft-deleted records by default.
+     *
+     * Authorises via the 'forceDelete' policy before proceeding.
      */
-    public function forceDelete(int $id): RedirectResponse
-    {
-        $tag = Tag::withTrashed()->findOrFail($id);
+    public function forceDelete(
+        int $id,
+        Request $request
+    ): JsonResponse|RedirectResponse {
+        $tag = Tag::onlyTrashed()->findOrFail($id);
+
         $this->authorize('forceDelete', $tag);
 
-        $this->managementService->forceDelete($id, Auth::user());
+        $this->management->forceDelete($id, $request->user());
 
-        return redirect()->route('tags.index')
-            ->with('success', 'Tag permanently deleted.');
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('tags.index');
     }
 
     /**
-     * Bulk soft delete tags.
+     * Bulk soft-delete multiple tags.
+     *
+     * Authorises each tag individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): RedirectResponse
+    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
     {
-        $ids = $request->validate([
+        $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['integer', 'exists:tags,id'],
-        ])['ids'];
+            'ids.*' => ['required', 'integer', 'exists:tags,id'],
+        ]);
 
-        $this->managementService->bulkDelete(
+        $actor = $request->user();
+        $ids = $request->input('ids');
+
+        $this->management->bulkDelete(
             $ids,
-            Auth::user(),
+            $actor,
             fn (Tag $tag) => $this->authorize('delete', $tag)
         );
 
-        return redirect()->back()->with('success', 'Tags deleted successfully.');
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('tags.index');
     }
 
     /**
-     * Bulk restore tags.
+     * Bulk restore multiple soft-deleted tags.
+     *
+     * Authorises each tag individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): RedirectResponse
+    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
     {
-        $ids = $request->validate([
+        $validated = $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['integer', 'exists:tags,id'],
-        ])['ids'];
+            'ids.*' => ['required', 'integer', 'exists:tags,id'],
+        ]);
 
-        $this->managementService->bulkRestore(
-            $ids,
-            Auth::user(),
+        $this->management->bulkRestore(
+            $validated['ids'],
+            $request->user(),
             fn (Tag $tag) => $this->authorize('restore', $tag)
         );
 
-        return redirect()->back()->with('success', 'Tags restored successfully.');
+        if ($request->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('tags.index');
     }
 }

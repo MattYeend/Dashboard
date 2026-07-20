@@ -42,6 +42,7 @@ class UpdateTagRequest extends FormRequest
             'name.string' => 'The tag name must be a string.',
             'name.max' => 'The tag name may not exceed 255 characters.',
             'slug.unique' => 'This slug is already in use.',
+            'slug.regex' => 'The slug may only contain lowercase letters, numbers and hyphens.',
         ];
     }
 
@@ -72,7 +73,8 @@ class UpdateTagRequest extends FormRequest
             'nullable',
             'string',
             'max:255',
-            Rule::unique('tags', 'slug')->ignore($this->route('tag')->id),
+            'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+            Rule::unique('tags', 'slug')->ignore($this->route('tag')),
         ];
     }
 
