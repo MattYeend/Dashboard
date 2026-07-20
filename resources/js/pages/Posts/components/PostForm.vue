@@ -64,11 +64,7 @@ const tagIds = defineModel<number[]>('tagIds', { required: true });
             :errors="errors"
         />
 
-        <PostTagsForm
-            v-model:tag-ids="tagIds"
-            :tags="tags"
-            :errors="errors"
-        />
+        <PostTagsForm v-model:tag-ids="tagIds" :tags="tags" :errors="errors" />
 
         <div class="flex justify-end space-x-3">
             <Button as-child variant="outline">
