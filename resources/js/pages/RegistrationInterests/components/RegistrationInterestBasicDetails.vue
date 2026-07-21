@@ -7,20 +7,47 @@ defineProps<{
 </script>
 
 <template>
-    <div class="border-gray-500 border-b pb-6">
-        <h2 class="mb-3 text-sm font-medium text-gray-400">Details</h2>
-        <dl class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-            <dt class="text-gray-400">Name</dt>
-            <dd class="text-gray-300">{{ interest.name }}</dd>
-
-            <dt class="text-gray-400">Email</dt>
-            <dd class="text-gray-300">{{ interest.email }}</dd>
-
-            <dt class="text-gray-400">Phone</dt>
-            <dd class="text-gray-300">{{ interest.phone ?? '-' }}</dd>
-
-            <dt class="text-gray-400">Company</dt>
-            <dd class="text-gray-300">{{ interest.company ?? '-' }}</dd>
-        </dl>
+    <div class="overflow-hidden shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-300">
+                Details
+            </h3>
+        </div>
+        <div class="border-t border-gray-500">
+            <dl>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-400">Name</dt>
+                    <dd
+                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
+                    >
+                        {{ interest.name }}
+                    </dd>
+                </div>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-400">Email</dt>
+                    <dd
+                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
+                    >
+                        {{ interest.email }}
+                    </dd>
+                </div>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-400">Phone</dt>
+                    <dd
+                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
+                    >
+                        {{ interest.phone ?? '-' }}
+                    </dd>
+                </div>
+                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-400">Company</dt>
+                    <dd
+                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
+                    >
+                        {{ interest.company ?? '-' }}
+                    </dd>
+                </div>
+            </dl>
+        </div>
     </div>
 </template>

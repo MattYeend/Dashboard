@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
@@ -119,61 +119,61 @@ const requestDestroy = (id: number) => {
 <template>
     <Head title="Registration interests" />
 
-    <div class="p-6">
-        <IndexHeader
-            title="Registration interests"
-            :can-create="false"
-        />
+    <div class="py-6">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <IndexHeader
+                title="Registration interests"
+                :can-create="false"
+            />
 
-        <FilterBar
-            v-model="filters"
-            :fields="filterFields"
-            @change="applyFilters"
-        />
+            <FilterBar
+                v-model="filters"
+                :fields="filterFields"
+                @change="applyFilters"
+            />
 
-        <ResourceTable
-            :rows="interests"
-            :columns="columns"
-            selectable
-            v-model:selected="selected"
-        >
-            <template #cell-created_at="{ row }">
-                {{ new Date(row.created_at).toLocaleDateString('en-GB') }}
-            </template>
+            <ResourceTable
+                :rows="interests"
+                :columns="columns"
+                selectable
+                v-model:selected="selected"
+            >
+                <template #cell-created_at="{ row }">
+                    {{ new Date(row.created_at).toLocaleDateString('en-GB') }}
+                </template>
 
-            <template #actions="{ row }">
-                <a
-                    :href="registrationInterestShow(row.id).url"
-                >
-                    View
-                </a>
+                <template #actions="{ row }">
+                    <Link :href="registrationInterestShow(row.id).url">
+                        View
+                    </Link>
 
-                <button
-                    v-if="!row.deleted_at"
-                    type="button"
-                    class="ml-3 text-red-600 hover:text-red-900"
-                    @click="requestDestroy(row.id)"
-                >
-                    Delete
-                </button>
-            </template>
+                    <button
+                        v-if="!row.deleted_at"
+                        type="button"
+                        class="text-red-600 hover:text-red-900"
+                        @click="requestDestroy(row.id)"
+                    >
+                        Delete
+                    </button>
+                </template>
 
-            <template #bulk-actions>
-                <button
-                    type="button"
-                    class="underline"
-                    @click="confirmingBulkDelete = true"
-                >
-                    Delete selected
-                </button>
-            </template>
-        </ResourceTable>
+                <template #bulk-actions>
+                    <button
+                        type="button"
+                        class="underline"
+                        @click="confirmingBulkDelete = true"
+                    >
+                        Delete selected
+                    </button>
+                </template>
+            </ResourceTable>
 
-        <Pagination
-            :meta="meta"
-            :links="links"
-            resource-label="registration interests"
-        />
+            <Pagination
+                :meta="meta"
+                :links="links"
+                resource-label="registration interests"
+            />
+        </div>
 
         <ConfirmDialog
             v-model:open="confirmingDelete"

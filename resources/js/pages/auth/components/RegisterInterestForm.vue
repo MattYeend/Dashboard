@@ -22,31 +22,31 @@ const emit = defineEmits<{
 
 <template>
     <form class="mt-6 flex flex-col gap-4" @submit.prevent="emit('submit')">
-        <div>
+        <div class="grid gap-2">
             <Label for="name">Name</Label>
             <Input id="name" v-model="name" type="text" required autofocus />
             <InputError :message="errors.name" />
         </div>
 
-        <div>
+        <div class="grid gap-2">
             <Label for="email">Email</Label>
             <Input id="email" v-model="email" type="email" required />
             <InputError :message="errors.email" />
         </div>
 
-        <div>
+        <div class="grid gap-2">
             <Label for="phone">Phone</Label>
             <Input id="phone" v-model="phone" type="text" />
             <InputError :message="errors.phone" />
         </div>
 
-        <div>
+        <div class="grid gap-2">
             <Label for="company">Company</Label>
             <Input id="company" v-model="company" type="text" />
             <InputError :message="errors.company" />
         </div>
 
-        <div>
+        <div class="grid gap-2">
             <Label for="message">Message</Label>
             <Textarea id="message" v-model="message" rows="4" />
             <InputError :message="errors.message" />
