@@ -4,6 +4,7 @@ namespace App\Services\Posts;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -65,6 +66,7 @@ class QueryService
     {
         return [
             'categories' => Category::orderBy('name')->get(['id', 'name']),
+            'tags' => Tag::orderBy('name')->get(['id', 'name']),
         ];
     }
 
@@ -74,7 +76,7 @@ class QueryService
     protected function buildQuery(array $filters, User $actor): Builder
     {
         $query = Post::query()
-            ->with(['creator', 'updater', 'deleter', 'restorer', 'categories'])
+            ->with(['creator', 'updater', 'deleter', 'restorer', 'categories', 'tags'])
             ->withCount(['likes', 'comments'])
             ->with(['likes' => fn ($query) => $query->where('user_id', $actor->id)]);
         $query = $this->filterService->applyAll($query, $filters);
@@ -141,7 +143,7 @@ class QueryService
         ?User $user = null
     ): Post {
         $query = Post::query()
-            ->with(['creator', 'updater', 'deleter', 'restorer', 'categories'])
+            ->with(['creator', 'updater', 'deleter', 'restorer', 'categories', 'tags'])
             ->withCount(['likes', 'comments'])
             ->with(['comments' => function ($query) use ($user) {
                 $query->with('creator')->withCount('likes');

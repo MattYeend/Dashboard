@@ -34,6 +34,10 @@ class FormatterService
                 'id' => $category->id,
                 'name' => $category->name,
             ])->all(),
+            'tags' => $post->tags->map(fn ($tag) => [
+                'id' => $tag->id,
+                'name' => $tag->name,
+            ])->all(),
             'likes_count' => $post->likes_count ?? 0,
             'liked_by_user' => $post->relationLoaded('likes')
                 ? $post->likes->isNotEmpty()

@@ -30,6 +30,8 @@ class StorePostRequest extends FormRequest
             'meta' => $this->metaRules(),
             'category_ids' => $this->categoryIdsRules(),
             'category_ids.*' => $this->categoryIdRules(),
+            'tag_ids' => $this->tagIdsRules(),
+            'tag_ids.*' => $this->tagIdRules(),
         ];
     }
 
@@ -50,6 +52,8 @@ class StorePostRequest extends FormRequest
             'image.max' => 'The image may not be larger than 5MB.',
             'category_ids.array' => 'Categories must be provided as a list.',
             'category_ids.*.exists' => 'One or more selected categories are invalid.',
+            'tag_ids.array' => 'Tags must be provided as a list.',
+            'tag_ids.*.exists' => 'One or more selected tags are invalid.',
         ];
     }
 
@@ -130,6 +134,32 @@ class StorePostRequest extends FormRequest
         return [
             'integer',
             'exists:categories,id',
+        ];
+    }
+
+    /**
+     * Get validation rules for the tag_ids field.
+     *
+     * @return array<mixed>
+     */
+    protected function tagIdsRules(): array
+    {
+        return [
+            'nullable',
+            'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for each tag_ids entry.
+     *
+     * @return array<mixed>
+     */
+    protected function tagIdRules(): array
+    {
+        return [
+            'integer',
+            'exists:tags,id',
         ];
     }
 }

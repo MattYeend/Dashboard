@@ -39,6 +39,7 @@ class CreatorService
                 $newPost = Post::create($postData);
 
                 $newPost->categories()->sync($data['category_ids'] ?? []);
+                $newPost->tags()->sync($data['tag_ids'] ?? []);
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_POST,

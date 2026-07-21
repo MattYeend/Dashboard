@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import PostCategoriesForm from '@/pages/Posts/components/PostCategoriesForm.vue';
 import PostDetailsForm from '@/pages/Posts/components/PostDetailsForm.vue';
 import PostImageForm from '@/pages/Posts/components/PostImageForm.vue';
+import PostTagsForm from '@/pages/Posts/components/PostTagsForm.vue';
 import { index as postsIndex } from '@/routes/posts';
 
 interface PostFormData {
@@ -12,9 +13,15 @@ interface PostFormData {
     description: string;
     image: File | null;
     category_ids: number[];
+    tag_ids: number[];
 }
 
 interface CategoryOption {
+    id: number;
+    name: string;
+}
+
+interface TagOption {
     id: number;
     name: string;
 }
@@ -24,6 +31,7 @@ interface Props {
     processing: boolean;
     errors: Partial<InertiaFormProps<PostFormData>['errors']>;
     categories: CategoryOption[];
+    tags: TagOption[];
     existingImage?: string | null;
 }
 
@@ -33,6 +41,7 @@ defineEmits<{ submit: []; 'update:file': [File | null] }>();
 const title = defineModel<string>('title', { required: true });
 const description = defineModel<string>('description', { required: true });
 const categoryIds = defineModel<number[]>('categoryIds', { required: true });
+const tagIds = defineModel<number[]>('tagIds', { required: true });
 </script>
 
 <template>
@@ -54,6 +63,8 @@ const categoryIds = defineModel<number[]>('categoryIds', { required: true });
             :categories="categories"
             :errors="errors"
         />
+
+        <PostTagsForm v-model:tag-ids="tagIds" :tags="tags" :errors="errors" />
 
         <div class="flex justify-end space-x-3">
             <Button as-child variant="outline">

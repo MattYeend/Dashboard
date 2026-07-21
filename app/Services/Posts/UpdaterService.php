@@ -45,6 +45,10 @@ class UpdaterService
                     $post->categories()->sync($data['category_ids'] ?? []);
                 }
 
+                if (array_key_exists('tag_ids', $data)) {
+                    $post->tags()->sync($data['tag_ids'] ?? []);
+                }
+
                 $fresh = $post->fresh();
 
                 $this->auditLogService->record(
