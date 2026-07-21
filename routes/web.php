@@ -12,17 +12,25 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RegistrationInterestController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::inertia('/', 'Welcome')->name('home');
 
 Route::post('stripe/webhook', [StripeWebhookController::class, 'handleWebhook'])
     ->name('stripe.webhook');
+
+Route::get('register', fn () => Inertia::render('Auth/RegisterInterest'))
+    ->name('register');
+Route::post('register', [RegistrationInterestController::class, 'store']);
+Route::get('register/thanks', fn () => Inertia::render('Auth/RegisterThanks'))
+    ->name('register.thanks');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
