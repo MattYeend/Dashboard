@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Invoice;
+namespace App\Services\Invoices;
 
-class SortingService
+class FormatterService
 {
     public function __construct()
     {

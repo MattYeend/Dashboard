@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Invoice;
+namespace App\Services\Invoices;
 
 class TrashFilterService
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Invoice;
+namespace App\Services\Invoices;
 
-class ManagementService
+class DeleterService
 {
     public function __construct()
     {

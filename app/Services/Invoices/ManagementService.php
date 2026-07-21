@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Invoice;
+namespace App\Services\Invoices;
 
-class QueryService
+class ManagementService
 {
     public function __construct()
     {

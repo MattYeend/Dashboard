@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Invoice;
+namespace App\Services\Invoices;
 
-class FilterService
+class UpdaterService
 {
     public function __construct()
     {

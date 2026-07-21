@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Invoice;
+namespace App\Services\Invoices;
 
-class UpdaterService
+class PolicyAuthorisationService
 {
     public function __construct()
     {
