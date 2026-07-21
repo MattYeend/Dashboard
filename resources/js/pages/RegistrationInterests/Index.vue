@@ -1,22 +1,34 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
+
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import type { RegistrationInterest, Pagination as PaginationMeta } from '@/types';
-import FilterBar from '@/components/FilterBar.vue';
-import IndexHeader from '@/components/IndexHeader.vue';
-import Pagination from '@/components/Pagination.vue';
-import ResourceTable from '@/components/ResourceTable.vue';
+import FilterBar from '@/components/table/FilterBar.vue';
+import IndexHeader from '@/components/table/IndexHeader.vue';
+import Pagination from '@/components/table/Pagination.vue';
+import ResourceTable from '@/components/table/ResourceTable.vue';
+
+import type {
+    RegistrationInterest,
+    Pagination as PaginationMeta,
+} from '@/types';
+
 import {
     index as registrationInterestsIndex,
     show as registrationInterestShow,
     destroy as registrationInterestDestroy,
 } from '@/routes/registration-interests';
-import { bulkDelete } from '@/routes/registration-interests/bulk';
+
+import bulk from '@/routes/registration-interests/bulk';
 
 defineProps<{
     interests: RegistrationInterest[];
     meta: PaginationMeta;
+    links: {
+        url: string | null;
+        label: string;
+        active: boolean;
+    }[];
     permissions: {
         can_create: boolean;
         can_view_any: boolean;
@@ -24,15 +36,79 @@ defineProps<{
 }>();
 
 const selected = ref<number[]>([]);
+
+const filters = ref<Record<string, string>>({
+    search: '',
+});
+
+const filterFields = [
+    {
+        key: 'search',
+        type: 'text' as const,
+        placeholder: 'Search registration interests...',
+    },
+];
+
+const confirmingDelete = ref(false);
 const confirmingDeleteId = ref<number | null>(null);
+
 const confirmingBulkDelete = ref(false);
+const processing = ref(false);
 
 const columns = [
-    { key: 'name', label: 'Name', sortable: true },
-    { key: 'email', label: 'Email', sortable: true },
-    { key: 'company', label: 'Company', sortable: true },
-    { key: 'created_at', label: 'Submitted', sortable: true },
+    { key: 'name', label: 'Name' },
+    { key: 'email', label: 'Email' },
+    { key: 'company', label: 'Company' },
+    { key: 'created_at', label: 'Submitted' },
 ];
+
+const applyFilters = () => {
+    router.get(
+        registrationInterestsIndex().url,
+        filters.value,
+        {
+            preserveState: true,
+            replace: true,
+        }
+    );
+};
+
+const confirmDelete = () => {
+    if (confirmingDeleteId.value === null) {
+        return;
+    }
+
+    processing.value = true;
+
+    router.delete(
+        registrationInterestDestroy(confirmingDeleteId.value).url,
+        {
+            onFinish: () => {
+                processing.value = false;
+                confirmingDelete.value = false;
+                confirmingDeleteId.value = null;
+            },
+        }
+    );
+};
+
+const confirmBulkDelete = () => {
+    processing.value = true;
+
+    router.post(
+        bulk.delete().url,
+        {
+            ids: selected.value,
+        },
+        {
+            onFinish: () => {
+                processing.value = false;
+                confirmingBulkDelete.value = false;
+                selected.value = [];
+            },
+        }
+    );
+};
 </script>
 
 <template>
@@ -44,25 +120,38 @@ const columns = [
             :can-create="false"
         />
 
-        <FilterBar :index-route="registrationInterestsIndex()" />
+        <FilterBar
+            v-model="filters"
+            :fields="filterFields"
+            @change="applyFilters"
+        />
 
         <ResourceTable
-            :items="interests"
+            :rows="interests"
             :columns="columns"
             selectable
             v-model:selected="selected"
         >
-            <template #cell-created_at="{ item }">
-                {{ new Date(item.created_at).toLocaleDateString('en-GB') }}
+            <template #cell-created_at="{ row }">
+                {{ new Date(row.created_at).toLocaleDateString('en-GB') }}
             </template>
 
-            <template #actions="{ item }">
-                <a :href="registrationInterestShow(item.id).url" class="underline">View</a>
+            <template #actions="{ row }">
+                <a
+                    :href="registrationInterestShow(row.id).url"
+                    class="underline"
+                >
+                    View
+                </a>
+
                 <button
-                    v-if="!item.deleted_at"
+                    v-if="!row.deleted_at"
                     type="button"
                     class="ml-3 underline"
-                    @click="confirmingDeleteId = item.id"
+                    @click="
+                        confirmingDeleteId = row.id;
+                        confirmingDelete = true;
+                    "
                 >
                     Delete
                 </button>
@@ -79,25 +168,26 @@ const columns = [
             </template>
         </ResourceTable>
 
-        <Pagination :meta="meta" resource-label="registration interests" />
-
-        <ConfirmDialog
-            :open="confirmingDeleteId !== null"
-            title="Delete registration interest?"
-            message="This will move the record to trash."
-            :action="confirmingDeleteId ? registrationInterestDestroy(confirmingDeleteId).url : ''"
-            method="delete"
-            @close="confirmingDeleteId = null"
+        <Pagination
+            :meta="meta"
+            :links="links"
+            resource-label="registration interests"
         />
 
         <ConfirmDialog
-            :open="confirmingBulkDelete"
+            v-model:open="confirmingDelete"
+            title="Delete registration interest?"
+            description="This will move the record to trash."
+            :processing="processing"
+            @confirm="confirmDelete"
+        />
+
+        <ConfirmDialog
+            v-model:open="confirmingBulkDelete"
             title="Delete selected interests?"
-            message="This will move the selected records to trash."
-            :action="bulkDelete().url"
-            method="post"
-            :body="{ ids: selected }"
-            @close="confirmingBulkDelete = false"
+            description="This will move the selected records to trash."
+            :processing="processing"
+            @confirm="confirmBulkDelete"
         />
     </div>
 </template>

@@ -26,10 +26,11 @@ Route::inertia('/', 'Welcome')->name('home');
 Route::post('stripe/webhook', [StripeWebhookController::class, 'handleWebhook'])
     ->name('stripe.webhook');
 
-Route::get('register', fn () => Inertia::render('Auth/RegisterInterest'))
+Route::get('register', fn () => Inertia::render('auth/RegisterInterest'))
     ->name('register');
-Route::post('register', [RegistrationInterestController::class, 'store']);
-Route::get('register/thanks', fn () => Inertia::render('Auth/RegisterThanks'))
+Route::post('register', [RegistrationInterestController::class, 'store'])
+    ->name('register.store');
+Route::get('register/thanks', fn () => Inertia::render('auth/RegisterThanks'))
     ->name('register.thanks');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -268,6 +269,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/{tag}', [TagController::class, 'update'])->name('update');
         Route::patch('/{tag}', [TagController::class, 'update'])->name('patch');
         Route::delete('/{tag}', [TagController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('registration-interests')->name('registration-interests.')->group(function () {
+        Route::post('/bulk/delete', [RegistrationInterestController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [RegistrationInterestController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [RegistrationInterestController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [RegistrationInterestController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [RegistrationInterestController::class, 'index'])->name('index');
+        Route::get('/{registration_interest}', [RegistrationInterestController::class, 'show'])->name('show');
+        Route::delete('/{registration_interest}', [RegistrationInterestController::class, 'destroy'])->name('destroy');
     });
 });
 
