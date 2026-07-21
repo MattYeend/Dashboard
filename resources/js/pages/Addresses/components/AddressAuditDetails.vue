@@ -9,7 +9,7 @@ defineProps<Props>();
 
 function formatDate(value: string | null): string {
     if (!value) {
-        return '—';
+        return '-';
     }
 
     return new Date(value).toLocaleDateString('en-GB', {
@@ -46,7 +46,7 @@ function formatDate(value: string | null): string {
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ address.creator?.name ?? '—' }}
+                        {{ address.creator?.name ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -66,7 +66,7 @@ function formatDate(value: string | null): string {
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ address.updater?.name ?? '—' }}
+                        {{ address.updater?.name ?? '-' }}
                     </dd>
                 </div>
                 <template v-if="address.deleted_at">
@@ -91,7 +91,7 @@ function formatDate(value: string | null): string {
                         <dd
                             class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                         >
-                            {{ address.deleter?.name ?? '—' }}
+                            {{ address.deleter?.name ?? '-' }}
                         </dd>
                     </div>
                 </template>
@@ -117,7 +117,7 @@ function formatDate(value: string | null): string {
                         <dd
                             class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                         >
-                            {{ address.restorer?.name ?? '—' }}
+                            {{ address.restorer?.name ?? '-' }}
                         </dd>
                     </div>
                 </template>

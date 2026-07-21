@@ -160,7 +160,7 @@ function bulkDelete(): void {
 
 function truncate(value: string | null | undefined, length = 30): string {
     if (!value) {
-        return '—';
+        return '-';
     }
 
     return value.length > length ? `${value.slice(0, length)}…` : value;
@@ -168,7 +168,7 @@ function truncate(value: string | null | undefined, length = 30): string {
 
 function formatDate(value: string | null): string {
     if (!value) {
-        return '—';
+        return '-';
     }
 
     return new Date(value).toLocaleDateString('en-GB', {
@@ -220,7 +220,7 @@ function formatDate(value: string | null): string {
                 </template>
 
                 <template #cell-code="{ row }">
-                    {{ row.code ?? '—' }}
+                    {{ row.code ?? '-' }}
                 </template>
 
                 <template #cell-description="{ row }">

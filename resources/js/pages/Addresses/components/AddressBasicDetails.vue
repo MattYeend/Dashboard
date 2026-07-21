@@ -26,7 +26,7 @@ defineProps<{ address: Address }>();
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ address.address_line_two ?? '—' }}
+                        {{ address.address_line_two ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -34,7 +34,7 @@ defineProps<{ address: Address }>();
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ address.town ?? '—' }}
+                        {{ address.town ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -50,7 +50,7 @@ defineProps<{ address: Address }>();
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ address.county ?? '—' }}
+                        {{ address.county ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -58,7 +58,7 @@ defineProps<{ address: Address }>();
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ address.postcode ?? '—' }}
+                        {{ address.postcode ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

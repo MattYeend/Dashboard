@@ -173,7 +173,7 @@ function truncate(value: string | null | undefined, length = 30): string {
     const plain = sanitiseDescription(value);
 
     if (!plain) {
-        return '—';
+        return '-';
     }
 
     return plain.length > length ? `${plain.slice(0, length)}…` : plain;
@@ -181,7 +181,7 @@ function truncate(value: string | null | undefined, length = 30): string {
 
 function formatDate(value: string | null): string {
     if (!value) {
-        return '—';
+        return '-';
     }
 
     return new Date(value).toLocaleDateString('en-GB', {

@@ -26,7 +26,7 @@ const submit = () => {
     <div class="mx-auto max-w-md">
         <h1 class="text-xl font-semibold">Register your interest</h1>
         <p class="text-sm text-gray-400">
-            Leave your details and we'll be in touch — no account is created.
+            Leave your details and we'll be in touch - no account is created.
         </p>
         <RegisterInterestForm
             v-model:name="form.name"

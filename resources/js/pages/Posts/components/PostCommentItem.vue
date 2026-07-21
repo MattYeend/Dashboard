@@ -104,7 +104,7 @@ function saveEdit(): void {
         <template v-else>
             <p class="text-sm text-gray-300">{{ sanitisedContent }}</p>
             <div class="mt-1 flex items-center gap-2 text-xs text-gray-400">
-                <span>{{ comment.creator?.name ?? '—' }}</span>
+                <span>{{ comment.creator?.name ?? '-' }}</span>
                 <CommentLikeButton :post-id="postId" :comment="comment" />
                 <button
                     v-if="comment.can_update"

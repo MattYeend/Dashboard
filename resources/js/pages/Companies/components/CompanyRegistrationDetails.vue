@@ -22,7 +22,7 @@ defineProps<{
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ company.registration_number ?? '—' }}
+                        {{ company.registration_number ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -32,7 +32,7 @@ defineProps<{
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ company.vat_number ?? '—' }}
+                        {{ company.vat_number ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -42,7 +42,7 @@ defineProps<{
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ company.employee_count ?? '—' }}
+                        {{ company.employee_count ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -52,7 +52,7 @@ defineProps<{
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ company.founded_year ?? '—' }}
+                        {{ company.founded_year ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -62,7 +62,7 @@ defineProps<{
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ company.description ?? '—' }}
+                        {{ company.description ?? '-' }}
                     </dd>
                 </div>
             </dl>

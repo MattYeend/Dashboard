@@ -47,7 +47,7 @@ const sanitisedDescription = computed(() =>
                             :alt="post.title"
                             class="h-24 w-24 rounded-md object-cover"
                         />
-                        <span v-else>—</span>
+                        <span v-else>-</span>
                     </dd>
                 </div>
             </dl>

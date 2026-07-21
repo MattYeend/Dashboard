@@ -109,6 +109,11 @@ const confirmBulkDelete = () => {
         }
     );
 };
+
+const requestDestroy = (id: number) => {
+    confirmingDeleteId.value = id;
+    confirmingDelete.value = true;
+};
 </script>
 
 <template>
@@ -139,7 +144,6 @@ const confirmBulkDelete = () => {
             <template #actions="{ row }">
                 <a
                     :href="registrationInterestShow(row.id).url"
-                    class="underline"
                 >
                     View
                 </a>
@@ -147,11 +151,8 @@ const confirmBulkDelete = () => {
                 <button
                     v-if="!row.deleted_at"
                     type="button"
-                    class="ml-3 underline"
-                    @click="
-                        confirmingDeleteId = row.id;
-                        confirmingDelete = true;
-                    "
+                    class="ml-3 text-red-600 hover:text-red-900"
+                    @click="requestDestroy(row.id)"
                 >
                     Delete
                 </button>

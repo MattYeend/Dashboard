@@ -199,7 +199,7 @@ function bulkDelete(): void {
                 </template>
 
                 <template #cell-description="{ row }">
-                    {{ row.description ?? '—' }}
+                    {{ row.description ?? '-' }}
                 </template>
 
                 <template #cell-preview="{ row }">

@@ -5,7 +5,7 @@ defineProps<{ order: Order }>();
 
 function formatDate(value: string | null): string {
     if (!value) {
-        return '—';
+        return '-';
     }
 
     return new Date(value).toLocaleDateString('en-GB', {
@@ -57,7 +57,7 @@ function formatCurrency(value: number): string {
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ order.description ?? '—' }}
+                        {{ order.description ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -65,7 +65,7 @@ function formatCurrency(value: number): string {
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ order.notes ?? '—' }}
+                        {{ order.notes ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -116,7 +116,7 @@ function formatCurrency(value: number): string {
                         >
                             {{ order.status.title }}
                         </span>
-                        <span v-else>—</span>
+                        <span v-else>-</span>
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

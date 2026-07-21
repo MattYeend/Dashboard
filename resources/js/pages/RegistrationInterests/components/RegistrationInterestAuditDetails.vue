@@ -17,7 +17,7 @@ defineProps<{
 
             <template v-if="interest.deleted_at">
                 <dt class="text-gray-400">Deleted by</dt>
-                <dd class="text-gray-300">{{ interest.deleter?.name ?? '—' }}</dd>
+                <dd class="text-gray-300">{{ interest.deleter?.name ?? '-' }}</dd>
 
                 <dt class="text-gray-400">Deleted</dt>
                 <dd class="text-gray-300">
@@ -27,7 +27,7 @@ defineProps<{
 
             <template v-if="interest.restored_at">
                 <dt class="text-gray-400">Restored by</dt>
-                <dd class="text-gray-300">{{ interest.restorer?.name ?? '—' }}</dd>
+                <dd class="text-gray-300">{{ interest.restorer?.name ?? '-' }}</dd>
 
                 <dt class="text-gray-400">Restored</dt>
                 <dd class="text-gray-300">

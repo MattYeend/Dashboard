@@ -68,7 +68,7 @@ class AddressableTypeRegistryService
             return [];
         }
 
-        // Only ever use pre-registered model classes — never user-supplied class names
+        // Only ever use pre-registered model classes - never user-supplied class names
         $model = $config['model'];
         $field = $config['label_field'];
 

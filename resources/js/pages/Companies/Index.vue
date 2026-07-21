@@ -161,7 +161,7 @@ function bulkDelete(): void {
 
 function truncate(value: string | null | undefined, length = 30): string {
     if (!value) {
-        return '—';
+        return '-';
     }
 
     return value.length > length ? `${value.slice(0, length)}…` : value;
@@ -213,15 +213,15 @@ function truncate(value: string | null | undefined, length = 30): string {
                 </template>
 
                 <template #cell-account_manager="{ row }">
-                    {{ row.account_manager?.name ?? '—' }}
+                    {{ row.account_manager?.name ?? '-' }}
                 </template>
 
                 <template #cell-email="{ row }">
-                    {{ truncate(row.email, 20) ?? '—' }}
+                    {{ truncate(row.email, 20) ?? '-' }}
                 </template>
 
                 <template #cell-phone="{ row }">
-                    {{ row.phone ?? '—' }}
+                    {{ row.phone ?? '-' }}
                 </template>
 
                 <template #actions="{ row }">

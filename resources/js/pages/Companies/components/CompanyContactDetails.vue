@@ -20,7 +20,7 @@ defineProps<{
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ company.email ?? '—' }}
+                        {{ company.email ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -28,7 +28,7 @@ defineProps<{
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ company.phone ?? '—' }}
+                        {{ company.phone ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -45,7 +45,7 @@ defineProps<{
                         >
                             {{ company.website }}
                         </a>
-                        <span v-else>—</span>
+                        <span v-else>-</span>
                     </dd>
                 </div>
             </dl>

@@ -11,6 +11,7 @@ import {
     MapPin,
     Newspaper,
     User2,
+    UserPlus,
 } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
@@ -39,6 +40,7 @@ import { index as postsIndex } from '@/routes/posts';
 import { index as tagsIndex } from '@/routes/tags';
 import { index as taskStatusesIndex } from '@/routes/task-statuses';
 import { index as tasksIndex } from '@/routes/tasks';
+import { index as registrationInterestsIndex } from '@/routes/registration-interests';
 import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
 
@@ -131,6 +133,11 @@ const mainNavItems: NavItem[] = [
         title: 'Users',
         href: usersIndex.url(),
         icon: User2,
+    },
+    {
+    title: 'Registration Interests',
+        href: registrationInterestsIndex.url(),
+        icon: UserPlus,
     },
     {
         title: 'API Tokens',

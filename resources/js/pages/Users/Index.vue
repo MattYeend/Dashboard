@@ -162,7 +162,7 @@ function bulkDelete(): void {
 
 function formatDate(value: string | null): string {
     if (!value) {
-        return '—';
+        return '-';
     }
 
     return new Date(value).toLocaleDateString('en-GB', {

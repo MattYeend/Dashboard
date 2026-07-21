@@ -20,7 +20,7 @@ defineProps<{ post: Post }>();
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        <span v-if="!post.categories?.length">—</span>
+                        <span v-if="!post.categories?.length">-</span>
                         <ul v-else class="space-y-1">
                             <li
                                 v-for="category in post.categories"

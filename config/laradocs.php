@@ -66,9 +66,9 @@ return [
     |--------------------------------------------------------------------------
     |
     | "strategy" One of: filename | metadata | both.
-    |   filename — slugs are derived purely from the file path.
-    |   metadata — slugs come from front-matter "slug:" (falls back to filename).
-    |   both     — metadata wins when present, otherwise filename.
+    |   filename - slugs are derived purely from the file path.
+    |   metadata - slugs come from front-matter "slug:" (falls back to filename).
+    |   both     - metadata wins when present, otherwise filename.
     |
     */
 
@@ -132,9 +132,9 @@ return [
     |
     | "theme"   Colour mode: auto | light | dark.
     | "preset"  Visual preset shipped with the package:
-    |             classic — sidebar + centered article + right TOC.
-    |             minimal — distraction-free single column, slimline header.
-    |             wide    — app-style, fills the viewport, denser nav.
+    |             classic - sidebar + centered article + right TOC.
+    |             minimal - distraction-free single column, slimline header.
+    |             wide    - app-style, fills the viewport, denser nav.
     | "accent"  Any CSS colour. Drives links, active nav, focus rings.
     | "fonts"   Override the built-in stacks (leave null to keep defaults).
     |
@@ -159,7 +159,7 @@ return [
         | Header navigation. Each link is an associative array:
         |   ['label' => 'GitHub', 'url' => 'https://...', 'external' => true]
         | Quick wins via ENV:
-        |   LARADOCS_GITHUB_URL — adds a "GitHub" link to the header.
+        |   LARADOCS_GITHUB_URL - adds a "GitHub" link to the header.
         */
         'header' => [
             'links' => array_values(array_filter([
@@ -193,9 +193,9 @@ return [
         /*
         | Edit-this-page link rendered on every document. The url template
         | accepts the following placeholders:
-        |   {file} — relative path on disk including extension (recommended)
-        |   {path} — same as {file} with the .md / .markdown extension stripped
-        |   {ext}  — just the extension, e.g. "md"
+        |   {file} - relative path on disk including extension (recommended)
+        |   {path} - same as {file} with the .md / .markdown extension stripped
+        |   {ext}  - just the extension, e.g. "md"
         |
         |   LARADOCS_EDIT_URL=https://github.com/me/app/edit/main/docs/{file}
         */
@@ -215,7 +215,7 @@ return [
         |
         |   LARADOCS_BANNER=1
         |   LARADOCS_BANNER_TYPE=info
-        |   LARADOCS_BANNER_MESSAGE="<a href='/changelog'>v2 is out</a> — see what's new."
+        |   LARADOCS_BANNER_MESSAGE="<a href='/changelog'>v2 is out</a> - see what's new."
         */
         'banner' => [
             'enabled' => (bool) env('LARADOCS_BANNER', false),
@@ -234,7 +234,7 @@ return [
     |
     | "fathom.site"      Your Fathom site ID (e.g. "ABCDEFGH").
     | "fathom.script"    Override the script URL (defaults to cdn.usefathom.com).
-    | "fathom.spa"       SPA mode: "auto", "history", "hash" — see Fathom docs.
+    | "fathom.spa"       SPA mode: "auto", "history", "hash" - see Fathom docs.
     | "google.measurement_id" GA4 measurement ID (e.g. "G-XXXXXXXXXX").
     | "google.anonymize_ip"   Anonymise visitor IPs (recommended in the EU).
     |
@@ -261,7 +261,7 @@ return [
     | ralphjsmit/laravel-seo: a <title>, meta description, Open Graph and
     | Twitter cards, a canonical URL, and JSON-LD structured data. Sensible
     | values are derived automatically from each page's content and
-    | front-matter — the settings below tune the site-wide defaults.
+    | front-matter - the settings below tune the site-wide defaults.
     |
     | Per-page overrides live in front-matter, either via the top-level
     | "title", "description", "image", "author" and "tags" keys or a dedicated
@@ -348,7 +348,7 @@ return [
     | crawler.
     |
     | When `laradocs.enabled` is false the entire body is replaced with a
-    | "Disallow: /" directive — so search engines keep the docs out of their
+    | "Disallow: /" directive - so search engines keep the docs out of their
     | index without ever needing to fetch a page.
     |
     | "rules" Custom User-agent groups. Each entry is an associative array:
@@ -377,10 +377,10 @@ return [
     | Powers the ⌘K command palette's full-text search over page content.
     |
     | "driver"    auto | scout | json.
-    |   auto  — use Laravel Scout (Meilisearch / Typesense / Algolia) when it's
+    |   auto  - use Laravel Scout (Meilisearch / Typesense / Algolia) when it's
     |           installed and configured, otherwise fall back to the JSON index.
-    |   scout — force Scout (falls back to JSON if Scout isn't installed).
-    |   json  — always use the built-in, dependency-free JSON index.
+    |   scout - force Scout (falls back to JSON if Scout isn't installed).
+    |   json  - always use the built-in, dependency-free JSON index.
     | "index"     Index name used by Scout engines.
     | "limit"     Maximum results returned per query.
     | "min_chars" Shortest query that triggers a search.

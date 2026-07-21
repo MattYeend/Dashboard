@@ -51,7 +51,7 @@ class RegistrationInterest extends Model implements Auditable
     /**
      * Get the user who created this record.
      *
-     * Always null in practice — submissions come from guests — but kept
+     * Always null in practice - submissions come from guests - but kept
      * for consistency with the shared audit trail pattern.
      *
      * @return BelongsTo<User, $this>

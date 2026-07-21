@@ -28,7 +28,7 @@ defineProps<{
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ company.slug ?? '—' }}
+                        {{ company.slug ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -36,7 +36,7 @@ defineProps<{
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ company.industry?.title ?? '—' }}
+                        {{ company.industry?.title ?? '-' }}
                     </dd>
                 </div>
                 <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -46,7 +46,7 @@ defineProps<{
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ company.account_manager?.name ?? '—' }}
+                        {{ company.account_manager?.name ?? '-' }}
                     </dd>
                 </div>
             </dl>

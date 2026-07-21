@@ -160,7 +160,7 @@ function bulkDelete(): void {
 
 function formatDate(value: string | null): string {
     if (!value) {
-        return '—';
+        return '-';
     }
 
     return new Date(value).toLocaleDateString('en-GB', {
@@ -212,7 +212,7 @@ function formatDate(value: string | null): string {
                 </template>
 
                 <template #cell-description="{ row }">
-                    {{ row.description ?? '—' }}
+                    {{ row.description ?? '-' }}
                 </template>
 
                 <template #cell-preview="{ row }">

@@ -38,7 +38,7 @@ defineProps<{
                     <dd
                         class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
                     >
-                        {{ plan.description ?? '—' }}
+                        {{ plan.description ?? '-' }}
                     </dd>
                 </div>
             </dl>

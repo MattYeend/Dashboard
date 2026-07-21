@@ -17,10 +17,10 @@ defineProps<{
             <dd class="text-gray-300">{{ interest.email }}</dd>
 
             <dt class="text-gray-400">Phone</dt>
-            <dd class="text-gray-300">{{ interest.phone ?? '—' }}</dd>
+            <dd class="text-gray-300">{{ interest.phone ?? '-' }}</dd>
 
             <dt class="text-gray-400">Company</dt>
-            <dd class="text-gray-300">{{ interest.company ?? '—' }}</dd>
+            <dd class="text-gray-300">{{ interest.company ?? '-' }}</dd>
         </dl>
     </div>
 </template>

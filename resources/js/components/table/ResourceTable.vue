@@ -127,7 +127,7 @@ function toggleRow(row: T): void {
                             class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
                         >
                             <slot :name="`cell-${column.key}`" :row="row">
-                                {{ getCellValue(row, column.key) ?? '—' }}
+                                {{ getCellValue(row, column.key) ?? '-' }}
                             </slot>
                         </td>
                         <td

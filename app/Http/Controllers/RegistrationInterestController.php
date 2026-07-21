@@ -59,7 +59,7 @@ class RegistrationInterestController extends Controller
     /**
      * Store a newly submitted registration interest.
      *
-     * This is a public, unauthenticated endpoint — validation is handled
+     * This is a public, unauthenticated endpoint - validation is handled
      * upstream by StoreRegistrationInterestRequest, which authorises via
      * its own authorize() method (always true, since anyone may register
      * interest). No policy check is applied here, and no user account or
