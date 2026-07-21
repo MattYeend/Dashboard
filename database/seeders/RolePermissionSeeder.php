@@ -280,6 +280,13 @@ class RolePermissionSeeder extends Seeder
             'import invoice statuses',
             'export invoice statuses',
             'assign invoice statuses',
+
+            // Registeration Interests management
+            'registration-interests.view-any',
+            'registration-interests.view',
+            'registration-interests.delete',
+            'registration-interests.restore',
+            'registration-interests.force-delete',
         ];
 
         foreach ($permissions as $permission) {
@@ -483,6 +490,11 @@ class RolePermissionSeeder extends Seeder
             'import invoice statuses',
             'export invoice statuses',
             'assign invoice statuses',
+            'registration-interests.view-any',
+            'registration-interests.view',
+            'registration-interests.delete',
+            'registration-interests.restore',
+            'registration-interests.force-delete',
         ];
         $admin->givePermissionTo($adminPermissions);
 

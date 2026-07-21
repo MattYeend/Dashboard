@@ -374,6 +374,17 @@ class Log extends Model
 
     public const ACTION_FORCE_DELETE_TAG = 173;
 
+    // Registration Interest Management
+    public const ACTION_CREATE_REGISTRATION_INTEREST = 174;
+
+    public const ACTION_VIEW_REGISTRATION_INTEREST = 175;
+
+    public const ACTION_DELETE_REGISTRATION_INTEREST = 176;
+
+    public const ACTION_FORCE_DELETE_REGISTRATION_INTEREST = 177;
+
+    public const ACTION_RESTORE_REGISTRATION_INTEREST = 178;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
