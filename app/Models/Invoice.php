@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @property int $id
@@ -21,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  * @property int|null $status_id
  * @property Carbon|null $issue_date
  * @property Carbon|null $due_date
+ * @property Carbon|null $sent_at
+ * @property Carbon|null $paid_at
  * @property int $subtotal
  * @property int $tax_total
  * @property int $total
@@ -52,6 +53,8 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
     'status_id',
     'issue_date',
     'due_date',
+    'sent_at',
+    'paid_at',
     'subtotal',
     'tax_total',
     'total',
@@ -174,6 +177,8 @@ class Invoice extends Model implements Auditable
             'status_id',
             'issue_date',
             'due_date',
+            'sent_at',
+            'paid_at',
             'subtotal',
             'tax_total',
             'total',
@@ -193,6 +198,8 @@ class Invoice extends Model implements Auditable
         return [
             'issue_date' => 'date',
             'due_date' => 'date',
+            'sent_at' => 'datetime',
+            'paid_at' => 'datetime',
             'subtotal' => 'integer',
             'tax_total' => 'integer',
             'total' => 'integer',

@@ -410,6 +410,8 @@ class Log extends Model
 
     public const ACTION_MARK_INVOICE_PAID = 190;
 
+    public const ACTION_MARK_INVOICE_UNPAID = 191;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.

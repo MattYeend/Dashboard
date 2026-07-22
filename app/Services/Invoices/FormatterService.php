@@ -21,6 +21,8 @@ class FormatterService
             'status_id' => $invoice->status_id,
             'issue_date' => $invoice->issue_date?->format('Y-m-d'),
             'due_date' => $invoice->due_date?->format('Y-m-d'),
+            'sent_at' => $invoice->sent_at?->format('Y-m-d'),
+            'paid_at' => $invoice->paid_at?->format('Y-m-d'),
             'subtotal' => $invoice->subtotal,
             'tax_total' => $invoice->tax_total,
             'total' => $invoice->total,

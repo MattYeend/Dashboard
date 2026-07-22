@@ -16,7 +16,7 @@ class SortingService
         'name',
         'email',
         'company',
-        'created_at'
+        'created_at',
     ];
 
     /**
