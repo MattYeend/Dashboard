@@ -154,7 +154,17 @@ class StoreInvoiceRequest extends FormRequest
         return [
             'nullable',
             'date',
-            'after_or_equal:issue_date',
+            function (string $attribute, mixed $value, \Closure $fail): void {
+                if ($value === null) {
+                    return;
+                }
+
+                $issueDate = $this->input('issue_date');
+
+                if ($issueDate !== null && $value < $issueDate) {
+                    $fail('The due date must be on or after the issue date.');
+                }
+            },
         ];
     }
 

@@ -158,7 +158,20 @@ class UpdateInvoiceRequest extends FormRequest
             'sometimes',
             'nullable',
             'date',
-            'after_or_equal:issue_date',
+            function (string $attribute, mixed $value, \Closure $fail): void {
+                if ($value === null) {
+                    return;
+                }
+
+                $issueDate = $this->input(
+                    'issue_date',
+                    $this->route('invoice')?->issue_date?->format('Y-m-d')
+                );
+
+                if ($issueDate !== null && $value < $issueDate) {
+                    $fail('The due date must be on or after the issue date.');
+                }
+            },
         ];
     }
 

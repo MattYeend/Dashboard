@@ -141,7 +141,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('send invoice') && $this->activeChecker->isActive($target);
+        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -153,7 +153,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('mark invoice as paid') && $this->activeChecker->isActive($target);
+        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -165,6 +165,6 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('mark invoice as unpaid') && $this->activeChecker->isActive($target);
+        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
     }
 }

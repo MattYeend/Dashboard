@@ -44,7 +44,7 @@ class InvoiceController extends Controller
                 'sort_by',
                 'sort_direction',
                 'trashed',
-                'per_page'
+                'per_page',
             ])
         );
 
