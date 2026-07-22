@@ -126,15 +126,10 @@ class InvoiceSeeder extends Seeder
                 continue;
             }
 
-            $contact = Contact::where('contactable_id', $company->id)
-                ->where('contactable_type', Company::class)
-                ->first();
-
             Invoice::updateOrCreate(
                 ['invoice_number' => $data['invoice_number']],
                 [
                     'company_id' => $company->id,
-                    'contact_id' => $contact?->id,
                     'order_id' => null,
                     'status_id' => $statuses->get($data['status_title'])?->id,
                     'issue_date' => $data['issue_date'],

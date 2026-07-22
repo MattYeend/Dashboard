@@ -3,6 +3,7 @@
 namespace App\Services\Contacts;
 
 use App\Models\Company;
+use App\Models\Invoice;
 use App\Models\Task;
 use App\Models\User;
 
@@ -30,6 +31,11 @@ class ContactableTypeRegistryService
                 'label' => 'Task',
                 'model' => Task::class,
                 'label_field' => 'title',
+            ],
+            'invoice' => [
+                'label' => 'Invoice',
+                'model' => Invoice::class,
+                'label_field' => 'invoice_number',
             ],
         ];
     }

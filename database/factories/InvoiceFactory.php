@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Company;
-use App\Models\Contact;
 use App\Models\Invoice;
 use App\Models\InvoiceStatus;
 use App\Models\User;
@@ -22,7 +21,6 @@ class InvoiceFactory extends Factory
         return [
             'invoice_number' => 'INV-' . $this->faker->unique()->numerify('######'),
             'company_id' => Company::factory(),
-            'contact_id' => Contact::factory(),
             'order_id' => null,
             'status_id' => InvoiceStatus::factory(),
             'issue_date' => $issueDate,
