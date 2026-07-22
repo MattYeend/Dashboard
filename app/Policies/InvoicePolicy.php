@@ -70,4 +70,28 @@ class InvoicePolicy
     {
         return $this->authorisationService->canForceDelete($user, $invoice);
     }
+
+    /**
+     * Determine whether the user can send the invoice.
+     */
+    public function send(User $user, Invoice $invoice): bool
+    {
+        return $this->authorisationService->canSend($user, $invoice);
+    }
+
+    /**
+     * Determine whether the user can mark the invoice as paid.
+     */
+    public function markAsPaid(User $user, Invoice $invoice): bool
+    {
+        return $this->authorisationService->canMarkAsPaid($user, $invoice);
+    }
+
+    /**
+     * Determine whether the user can mark the invoice as unpaid.
+     */
+    public function markAsUnpaid(User $user, Invoice $invoice): bool
+    {
+        return $this->authorisationService->canMarkAsUnpaid($user, $invoice);
+    }
 }

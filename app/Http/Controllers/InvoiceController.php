@@ -295,7 +295,7 @@ class InvoiceController extends Controller
         Invoice $invoice,
         Request $request
     ): JsonResponse|RedirectResponse {
-        $this->authorize('update', $invoice);
+        $this->authorize('send', $invoice);
 
         $invoice = $this->management->send($invoice, $request->user());
 
@@ -317,7 +317,7 @@ class InvoiceController extends Controller
         Invoice $invoice,
         Request $request
     ): JsonResponse|RedirectResponse {
-        $this->authorize('update', $invoice);
+        $this->authorize('markAsPaid', $invoice);
 
         $invoice = $this->management->markAsPaid($invoice, $request->user());
 
@@ -339,7 +339,7 @@ class InvoiceController extends Controller
         Invoice $invoice,
         Request $request
     ): JsonResponse|RedirectResponse {
-        $this->authorize('update', $invoice);
+        $this->authorize('markAsUnpaid', $invoice);
 
         $invoice = $this->management->markAsUnpaid($invoice, $request->user());
 

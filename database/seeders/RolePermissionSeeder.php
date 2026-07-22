@@ -302,6 +302,7 @@ class RolePermissionSeeder extends Seeder
             'change invoice status',
             'send invoices',
             'mark invoices as paid',
+            'mark invoice as unpaid',
         ];
 
         foreach ($permissions as $permission) {
@@ -522,6 +523,7 @@ class RolePermissionSeeder extends Seeder
             'change invoice status',
             'send invoices',
             'mark invoices as paid',
+            'mark invoice as unpaid',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -694,6 +696,7 @@ class RolePermissionSeeder extends Seeder
             'change invoice status',
             'send invoices',
             'mark invoices as paid',
+            'mark invoice as unpaid',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1068,6 +1071,7 @@ class RolePermissionSeeder extends Seeder
             'change invoice status',
             'send invoices',
             'mark invoices as paid',
+            'mark invoice as unpaid',
         ];
         $support->givePermissionTo($supportPermissions);
 

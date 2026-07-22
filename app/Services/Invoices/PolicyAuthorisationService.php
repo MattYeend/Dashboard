@@ -131,4 +131,40 @@ class PolicyAuthorisationService
 
         return $this->roleChecker->isSuperAdmin($creator);
     }
+
+    /**
+     * Determine whether the user can send the invoice.
+     */
+    public function canSend(User $actor, Invoice $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('send invoice') && $this->activeChecker->isActive($target);
+    }
+
+    /**
+     * Determine whether the user can mark the invoice as paid.
+     */
+    public function canMarkAsPaid(User $actor, Invoice $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('mark invoice as paid') && $this->activeChecker->isActive($target);
+    }
+
+    /**
+     * Determine whether the user can mark the invoice as unpaid.
+     */
+    public function canMarkAsUnpaid(User $actor, Invoice $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('mark invoice as unpaid') && $this->activeChecker->isActive($target);
+    }
 }
