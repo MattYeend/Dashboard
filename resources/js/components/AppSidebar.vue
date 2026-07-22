@@ -10,6 +10,8 @@ import {
     LayoutGrid,
     MapPin,
     Newspaper,
+    Receipt,
+    SquareCheckBig,
     User2,
     UserPlus,
 } from 'lucide-vue-next';
@@ -33,6 +35,7 @@ import { index as categoriesIndex } from '@/routes/categories';
 import { index as companiesIndex } from '@/routes/companies';
 import { index as contactsIndex } from '@/routes/contacts';
 import { index as industriesIndex } from '@/routes/industries';
+import { index as invoiceStatusesIndex } from '@/routes/invoice-statuses';
 import { index as orderStatusesIndex } from '@/routes/order-statuses';
 import { index as ordersIndex } from '@/routes/orders';
 import { index as plansIndex } from '@/routes/plans';
@@ -40,9 +43,10 @@ import { index as postsIndex } from '@/routes/posts';
 import { index as tagsIndex } from '@/routes/tags';
 import { index as taskStatusesIndex } from '@/routes/task-statuses';
 import { index as tasksIndex } from '@/routes/tasks';
-import { index as registrationInterestsIndex } from '@/routes/registration-interests';
 import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
+import { index as invoicesIndex } from '@/routes/invoices';
+import { index as registrationInterestsIndex } from '@/routes/registration-interests';
 
 const mainNavItems: NavItem[] = [
     {
@@ -96,9 +100,24 @@ const mainNavItems: NavItem[] = [
         ],
     },
     {
+        title: 'Invoices',
+        href: '#',
+        icon: Receipt,
+        children: [
+            {
+                title: 'All Invoices',
+                href: invoicesIndex.url(),
+            },
+            {
+                title: 'Invoice Statuses',
+                href: invoiceStatusesIndex.url(),
+            },
+        ],
+    },
+    {
         title: 'Tasks',
         href: '#',
-        icon: ClipboardList,
+        icon: SquareCheckBig,
         children: [
             {
                 title: 'All Tasks',

@@ -39,7 +39,13 @@ class InvoiceController extends Controller
 
         $data = $this->query->getPaginated(
             $request->user(),
-            request()->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page', 'status_id', 'company_id', 'order_id', 'due_date_from', 'due_date_to'])
+            request()->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page'
+            ])
         );
 
         return Inertia::render('Invoices/Index', $data);

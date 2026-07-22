@@ -48,7 +48,6 @@ use Illuminate\Support\Carbon;
 #[Fillable([
     'invoice_number',
     'company_id',
-    'contact_id',
     'order_id',
     'status_id',
     'issue_date',
@@ -89,11 +88,11 @@ class Invoice extends Model implements Auditable
     }
 
     /**
-     * Get the contacts associated with this invoice.
+     * Get the contact associated with this invoice.
      *
      * @return MorphOne<Contact, $this>
      */
-    public function contacts(): MorphOne
+    public function contact(): MorphOne
     {
         return $this->morphOne(Contact::class, 'contactable');
     }
@@ -172,7 +171,6 @@ class Invoice extends Model implements Auditable
             'id',
             'invoice_number',
             'company_id',
-            'contact_id',
             'order_id',
             'status_id',
             'issue_date',
