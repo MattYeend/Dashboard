@@ -6,7 +6,9 @@ import { home } from '@/routes';
 <template>
     <Head title="Thank you" />
     <div class="mx-auto max-w-md py-16 text-center">
-        <h1 class="text-xl font-semibold">Thanks for registering your interest</h1>
+        <h1 class="text-xl font-semibold">
+            Thanks for registering your interest
+        </h1>
         <p class="mt-2 text-sm text-gray-400">
             We've received your details and will be in touch shortly.
         </p>

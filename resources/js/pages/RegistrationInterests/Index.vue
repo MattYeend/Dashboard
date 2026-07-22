@@ -63,14 +63,10 @@ const columns = [
 ];
 
 const applyFilters = () => {
-    router.get(
-        registrationInterestsIndex().url,
-        filters.value,
-        {
-            preserveState: true,
-            replace: true,
-        }
-    );
+    router.get(registrationInterestsIndex().url, filters.value, {
+        preserveState: true,
+        replace: true,
+    });
 };
 
 const confirmDelete = () => {
@@ -80,16 +76,13 @@ const confirmDelete = () => {
 
     processing.value = true;
 
-    router.delete(
-        registrationInterestDestroy(confirmingDeleteId.value).url,
-        {
-            onFinish: () => {
-                processing.value = false;
-                confirmingDelete.value = false;
-                confirmingDeleteId.value = null;
-            },
-        }
-    );
+    router.delete(registrationInterestDestroy(confirmingDeleteId.value).url, {
+        onFinish: () => {
+            processing.value = false;
+            confirmingDelete.value = false;
+            confirmingDeleteId.value = null;
+        },
+    });
 };
 
 const confirmBulkDelete = () => {
@@ -106,7 +99,7 @@ const confirmBulkDelete = () => {
                 confirmingBulkDelete.value = false;
                 selected.value = [];
             },
-        }
+        },
     );
 };
 
@@ -121,10 +114,7 @@ const requestDestroy = (id: number) => {
 
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <IndexHeader
-                title="Registration interests"
-                :can-create="false"
-            />
+            <IndexHeader title="Registration interests" :can-create="false" />
 
             <FilterBar
                 v-model="filters"

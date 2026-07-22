@@ -5,7 +5,9 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
 defineProps<{
-    errors: Partial<Record<'name' | 'email' | 'phone' | 'company' | 'message', string>>;
+    errors: Partial<
+        Record<'name' | 'email' | 'phone' | 'company' | 'message', string>
+    >;
     processing: boolean;
 }>();
 
