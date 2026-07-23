@@ -59,7 +59,9 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return response()->json(['user' => $user]);
+        return response()->json([
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -91,6 +93,8 @@ class AuthController extends Controller
     public function user(
         Request $request
     ): JsonResponse {
-        return response()->json($request->user());
+        return response()->json(
+            $request->user()
+        );
     }
 }

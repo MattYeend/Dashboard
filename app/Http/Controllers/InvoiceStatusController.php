@@ -33,16 +33,29 @@ class InvoiceStatusController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
-    {
-        $this->authorize('viewAny', InvoiceStatus::class);
+    public function index(
+        Request $request
+    ): Response {
+        $this->authorize(
+            'viewAny',
+            InvoiceStatus::class
+        );
 
         $data = $this->query->getPaginated(
             $request->user(),
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
-        return Inertia::render('InvoiceStatuses/Index', $data);
+        return Inertia::render(
+            'InvoiceStatuses/Index',
+            $data
+        );
     }
 
     /**
@@ -52,9 +65,14 @@ class InvoiceStatusController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize('create', InvoiceStatus::class);
+        $this->authorize(
+            'create',
+            InvoiceStatus::class
+        );
 
-        return Inertia::render('InvoiceStatuses/Create');
+        return Inertia::render(
+            'InvoiceStatuses/Create'
+        );
     }
 
     /**
@@ -68,13 +86,21 @@ class InvoiceStatusController extends Controller
     public function store(
         StoreInvoiceStatusRequest $request
     ): JsonResponse|RedirectResponse {
-        $invoiceStatus = $this->management->store($request);
+        $invoiceStatus = $this->management->store(
+            $request
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($invoiceStatus, 201);
+            return response()->json(
+                $invoiceStatus,
+                201
+            );
         }
 
-        return redirect()->route('invoice-statuses.index', $invoiceStatus->id);
+        return redirect()->route(
+            'invoice-statuses.index',
+            $invoiceStatus->id
+        );
     }
 
     /**
@@ -88,14 +114,20 @@ class InvoiceStatusController extends Controller
         InvoiceStatus $invoiceStatus,
         Request $request
     ): Response {
-        $this->authorize('view', $invoiceStatus);
+        $this->authorize(
+            'view',
+            $invoiceStatus
+        );
 
         $data = $this->query->getById(
             $request->user(),
             $invoiceStatus->id
         );
 
-        return Inertia::render('InvoiceStatuses/Show', $data);
+        return Inertia::render(
+            'InvoiceStatuses/Show',
+            $data
+        );
     }
 
     /**
@@ -103,13 +135,24 @@ class InvoiceStatusController extends Controller
      *
      * Authorises via the 'update' policy before rendering.
      */
-    public function edit(InvoiceStatus $invoiceStatus, Request $request): Response
-    {
-        $this->authorize('update', $invoiceStatus);
+    public function edit(
+        InvoiceStatus $invoiceStatus,
+        Request $request
+    ): Response {
+        $this->authorize(
+            'update',
+            $invoiceStatus
+        );
 
-        $data = $this->query->getById($request->user(), $invoiceStatus->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $invoiceStatus->id
+        );
 
-        return Inertia::render('InvoiceStatuses/Edit', $data);
+        return Inertia::render(
+            'InvoiceStatuses/Edit',
+            $data
+        );
     }
 
     /**
@@ -131,10 +174,15 @@ class InvoiceStatusController extends Controller
         );
 
         if ($request->wantsJson()) {
-            return response()->json($invoiceStatus);
+            return response()->json(
+                $invoiceStatus
+            );
         }
 
-        return redirect()->route('invoice-statuses.index', $invoiceStatus->id);
+        return redirect()->route(
+            'invoice-statuses.index',
+            $invoiceStatus->id
+        );
     }
 
     /**
@@ -149,7 +197,10 @@ class InvoiceStatusController extends Controller
         Request $request,
         InvoiceStatus $invoiceStatus
     ): JsonResponse|RedirectResponse {
-        $this->authorize('delete', $invoiceStatus);
+        $this->authorize(
+            'delete',
+            $invoiceStatus
+        );
 
         $this->management->destroy(
             $invoiceStatus,
@@ -157,10 +208,15 @@ class InvoiceStatusController extends Controller
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('invoice-statuses.index');
+        return redirect()->route(
+            'invoice-statuses.index'
+        );
     }
 
     /**
@@ -177,7 +233,10 @@ class InvoiceStatusController extends Controller
     ): JsonResponse|RedirectResponse {
         $invoiceStatus = InvoiceStatus::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('restore', $invoiceStatus);
+        $this->authorize(
+            'restore',
+            $invoiceStatus
+        );
 
         $this->management->restore(
             $id,
@@ -185,10 +244,15 @@ class InvoiceStatusController extends Controller
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('invoice-statuses.index');
+        return redirect()->route(
+            'invoice-statuses.index'
+        );
     }
 
     /**
@@ -205,7 +269,10 @@ class InvoiceStatusController extends Controller
     ): JsonResponse|RedirectResponse {
         $invoiceStatus = InvoiceStatus::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('forceDelete', $invoiceStatus);
+        $this->authorize(
+            'forceDelete',
+            $invoiceStatus
+        );
 
         $this->management->forceDelete(
             $id,
@@ -213,10 +280,15 @@ class InvoiceStatusController extends Controller
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('invoice-statuses.index');
+        return redirect()->route(
+            'invoice-statuses.index'
+        );
     }
 
     /**
@@ -224,11 +296,19 @@ class InvoiceStatusController extends Controller
      *
      * Authorises each invoice status individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkDelete(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:invoice_statuses,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:invoice_statuses,id',
+            ],
         ]);
 
         $actor = $request->user();
@@ -237,14 +317,22 @@ class InvoiceStatusController extends Controller
         $this->management->bulkDelete(
             $ids,
             $actor,
-            fn (InvoiceStatus $invoiceStatus) => $this->authorize('delete', $invoiceStatus)
+            fn (InvoiceStatus $invoiceStatus) => $this->authorize(
+                'delete',
+                $invoiceStatus
+            )
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('invoice-statuses.index');
+        return redirect()->route(
+            'invoice-statuses.index'
+        );
     }
 
     /**
@@ -252,23 +340,39 @@ class InvoiceStatusController extends Controller
      *
      * Authorises each invoice status individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkRestore(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:invoice_statuses,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:invoice_statuses,id',
+            ],
         ]);
 
         $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
-            fn (InvoiceStatus $invoiceStatus) => $this->authorize('restore', $invoiceStatus)
+            fn (InvoiceStatus $invoiceStatus) => $this->authorize(
+                'restore',
+                $invoiceStatus
+            )
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('invoice-statuses.index');
+        return redirect()->route(
+            'invoice-statuses.index'
+        );
     }
 }

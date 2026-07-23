@@ -32,7 +32,10 @@ class CommentController extends Controller
         StoreCommentRequest $request,
         Post $post
     ): JsonResponse|RedirectResponse {
-        $comment = $this->management->store($request, $post);
+        $comment = $this->management->store(
+            $request,
+            $post
+        );
 
         if ($request->wantsJson()) {
             return response()->json($comment, 201);
@@ -51,7 +54,10 @@ class CommentController extends Controller
         Post $post,
         Comment $comment
     ): JsonResponse|RedirectResponse {
-        $comment = $this->management->update($request, $comment);
+        $comment = $this->management->update(
+            $request,
+            $comment
+        );
 
         if ($request->wantsJson()) {
             return response()->json($comment);
@@ -70,9 +76,15 @@ class CommentController extends Controller
         Comment $comment,
         Request $request
     ): JsonResponse|RedirectResponse {
-        $this->authorize('delete', $comment);
+        $this->authorize(
+            'delete',
+            $comment
+        );
 
-        $this->management->destroy($comment, $request->user());
+        $this->management->destroy(
+            $comment,
+            $request->user()
+        );
 
         if ($request->wantsJson()) {
             return response()->json(null, 204);
@@ -92,9 +104,15 @@ class CommentController extends Controller
         Comment $comment,
         Request $request
     ): RedirectResponse {
-        $this->authorize('view', $post);
+        $this->authorize(
+            'view',
+            $post
+        );
 
-        $this->management->like($comment, $request->user());
+        $this->management->like(
+            $comment,
+            $request->user()
+        );
 
         return back();
     }
@@ -107,9 +125,15 @@ class CommentController extends Controller
         Comment $comment,
         Request $request
     ): RedirectResponse {
-        $this->authorize('view', $post);
+        $this->authorize(
+            'view',
+            $post
+        );
 
-        $this->management->unlike($comment, $request->user());
+        $this->management->unlike(
+            $comment,
+            $request->user()
+        );
 
         return back();
     }

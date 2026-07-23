@@ -33,9 +33,13 @@ class InvoiceController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
-    {
-        $this->authorize('viewAny', Invoice::class);
+    public function index(
+        Request $request
+    ): Response {
+        $this->authorize(
+            'viewAny',
+            Invoice::class
+        );
 
         $data = $this->query->getPaginated(
             $request->user(),
@@ -48,7 +52,10 @@ class InvoiceController extends Controller
             ])
         );
 
-        return Inertia::render('Invoices/Index', $data);
+        return Inertia::render(
+            'Invoices/Index',
+            $data
+        );
     }
 
     /**
@@ -58,9 +65,15 @@ class InvoiceController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize('create', Invoice::class);
+        $this->authorize(
+            'create',
+            Invoice::class
+        );
 
-        return Inertia::render('Invoices/Create', $this->query->getFormData());
+        return Inertia::render(
+            'Invoices/Create',
+            $this->query->getFormData()
+        );
     }
 
     /**
@@ -75,13 +88,21 @@ class InvoiceController extends Controller
     public function store(
         StoreInvoiceRequest $request
     ): JsonResponse|RedirectResponse {
-        $invoice = $this->management->store($request);
+        $invoice = $this->management->store(
+            $request
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($invoice, 201);
+            return response()->json(
+                $invoice,
+                201
+            );
         }
 
-        return redirect()->route('invoices.show', $invoice->id);
+        return redirect()->route(
+            'invoices.show',
+            $invoice->id
+        );
     }
 
     /**
@@ -95,14 +116,20 @@ class InvoiceController extends Controller
         Invoice $invoice,
         Request $request
     ): Response {
-        $this->authorize('view', $invoice);
+        $this->authorize(
+            'view',
+            $invoice
+        );
 
         $data = $this->query->getById(
             $request->user(),
             $invoice->id
         );
 
-        return Inertia::render('Invoices/Show', $data);
+        return Inertia::render(
+            'Invoices/Show',
+            $data
+        );
     }
 
     /**
@@ -114,7 +141,10 @@ class InvoiceController extends Controller
         Invoice $invoice,
         Request $request
     ): Response {
-        $this->authorize('update', $invoice);
+        $this->authorize(
+            'update',
+            $invoice
+        );
 
         $data = array_merge(
             $this->query->getById(
@@ -124,7 +154,10 @@ class InvoiceController extends Controller
             $this->query->getFormData()
         );
 
-        return Inertia::render('Invoices/Edit', $data);
+        return Inertia::render(
+            'Invoices/Edit',
+            $data
+        );
     }
 
     /**
@@ -146,10 +179,15 @@ class InvoiceController extends Controller
         );
 
         if ($request->wantsJson()) {
-            return response()->json($invoice);
+            return response()->json(
+                $invoice
+            );
         }
 
-        return redirect()->route('invoices.show', $invoice->id);
+        return redirect()->route(
+            'invoices.show',
+            $invoice->id
+        );
     }
 
     /**
@@ -164,7 +202,10 @@ class InvoiceController extends Controller
         Request $request,
         Invoice $invoice
     ): JsonResponse|RedirectResponse {
-        $this->authorize('delete', $invoice);
+        $this->authorize(
+            'delete',
+            $invoice
+        );
 
         $this->management->destroy(
             $invoice,
@@ -172,10 +213,15 @@ class InvoiceController extends Controller
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('invoices.index');
+        return redirect()->route(
+            'invoices.index'
+        );
     }
 
     /**
@@ -192,7 +238,10 @@ class InvoiceController extends Controller
     ): JsonResponse|RedirectResponse {
         $invoice = Invoice::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('restore', $invoice);
+        $this->authorize(
+            'restore',
+            $invoice
+        );
 
         $this->management->restore(
             $id,
@@ -200,10 +249,15 @@ class InvoiceController extends Controller
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('invoices.index');
+        return redirect()->route(
+            'invoices.index'
+        );
     }
 
     /**
@@ -220,7 +274,10 @@ class InvoiceController extends Controller
     ): JsonResponse|RedirectResponse {
         $invoice = Invoice::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('forceDelete', $invoice);
+        $this->authorize(
+            'forceDelete',
+            $invoice
+        );
 
         $this->management->forceDelete(
             $id,
@@ -231,7 +288,9 @@ class InvoiceController extends Controller
             return response()->json(null, 204);
         }
 
-        return redirect()->route('invoices.index');
+        return redirect()->route(
+            'invoices.index'
+        );
     }
 
     /**
@@ -239,11 +298,19 @@ class InvoiceController extends Controller
      *
      * Authorises each invoice individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkDelete(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:invoices,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:invoices,id',
+            ],
         ]);
 
         $actor = $request->user();
@@ -252,14 +319,22 @@ class InvoiceController extends Controller
         $this->management->bulkDelete(
             $ids,
             $actor,
-            fn (Invoice $invoice) => $this->authorize('delete', $invoice)
+            fn (Invoice $invoice) => $this->authorize(
+                'delete',
+                $invoice
+            )
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('invoices.index');
+        return redirect()->route(
+            'invoices.index'
+        );
     }
 
     /**
@@ -267,24 +342,40 @@ class InvoiceController extends Controller
      *
      * Authorises each invoice individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkRestore(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:invoices,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:invoices,id',
+            ],
         ]);
 
         $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
-            fn (Invoice $invoice) => $this->authorize('restore', $invoice)
+            fn (Invoice $invoice) => $this->authorize(
+                'restore',
+                $invoice
+            )
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('invoices.index');
+        return redirect()->route(
+            'invoices.index'
+        );
     }
 
     /**
@@ -301,15 +392,26 @@ class InvoiceController extends Controller
         Invoice $invoice,
         Request $request
     ): JsonResponse|RedirectResponse {
-        $this->authorize('send', $invoice);
+        $this->authorize(
+            'send',
+            $invoice
+        );
 
-        $invoice = $this->management->send($invoice, $request->user());
+        $invoice = $this->management->send(
+            $invoice,
+            $request->user()
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($invoice);
+            return response()->json(
+                $invoice
+            );
         }
 
-        return redirect()->route('invoices.show', $invoice->id);
+        return redirect()->route(
+            'invoices.show',
+            $invoice->id
+        );
     }
 
     /**
@@ -323,15 +425,26 @@ class InvoiceController extends Controller
         Invoice $invoice,
         Request $request
     ): JsonResponse|RedirectResponse {
-        $this->authorize('markAsPaid', $invoice);
+        $this->authorize(
+            'markAsPaid',
+            $invoice
+        );
 
-        $invoice = $this->management->markAsPaid($invoice, $request->user());
+        $invoice = $this->management->markAsPaid(
+            $invoice,
+            $request->user()
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($invoice);
+            return response()->json(
+                $invoice
+            );
         }
 
-        return redirect()->route('invoices.show', $invoice->id);
+        return redirect()->route(
+            'invoices.show',
+            $invoice->id
+        );
     }
 
     /**
@@ -345,14 +458,25 @@ class InvoiceController extends Controller
         Invoice $invoice,
         Request $request
     ): JsonResponse|RedirectResponse {
-        $this->authorize('markAsUnpaid', $invoice);
+        $this->authorize(
+            'markAsUnpaid',
+            $invoice
+        );
 
-        $invoice = $this->management->markAsUnpaid($invoice, $request->user());
+        $invoice = $this->management->markAsUnpaid(
+            $invoice,
+            $request->user()
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($invoice);
+            return response()->json(
+                $invoice
+            );
         }
 
-        return redirect()->route('invoices.show', $invoice->id);
+        return redirect()->route(
+            'invoices.show',
+            $invoice->id
+        );
     }
 }

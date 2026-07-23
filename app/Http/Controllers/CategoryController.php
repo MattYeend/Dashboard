@@ -36,7 +36,10 @@ class CategoryController extends Controller
     public function index(
         Request $request
     ): Response {
-        $this->authorize('viewAny', Category::class);
+        $this->authorize(
+            'viewAny',
+            Category::class
+        );
 
         $data = $this->query->getPaginated(
             $request->user(),
@@ -49,7 +52,10 @@ class CategoryController extends Controller
             ])
         );
 
-        return Inertia::render('Categories/Index', $data);
+        return Inertia::render(
+            'Categories/Index',
+            $data
+        );
     }
 
     /**
@@ -59,9 +65,15 @@ class CategoryController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize('create', Category::class);
+        $this->authorize(
+            'create',
+            Category::class
+        );
 
-        return Inertia::render('Categories/Create', $this->query->getFormData());
+        return Inertia::render(
+            'Categories/Create',
+            $this->query->getFormData()
+        );
     }
 
     /**
@@ -75,13 +87,21 @@ class CategoryController extends Controller
     public function store(
         StoreCategoryRequest $request
     ): JsonResponse|RedirectResponse {
-        $category = $this->management->store($request);
+        $category = $this->management->store(
+            $request
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($category, 201);
+            return response()->json(
+                $category,
+                201
+            );
         }
 
-        return redirect()->route('categories.show', $category->id);
+        return redirect()->route(
+            'categories.show',
+            $category->id
+        );
     }
 
     /**
@@ -95,14 +115,20 @@ class CategoryController extends Controller
         Category $category,
         Request $request
     ): Response {
-        $this->authorize('view', $category);
+        $this->authorize(
+            'view',
+            $category
+        );
 
         $data = $this->query->getById(
             $request->user(),
             $category->id
         );
 
-        return Inertia::render('Categories/Show', $data);
+        return Inertia::render(
+            'Categories/Show',
+            $data
+        );
     }
 
     /**
@@ -114,14 +140,25 @@ class CategoryController extends Controller
         Category $category,
         Request $request
     ): Response {
-        $this->authorize('update', $category);
-
-        $data = array_merge(
-            $this->query->getById($request->user(), $category->id),
-            $this->query->getFormData($category->id),
+        $this->authorize(
+            'update',
+            $category
         );
 
-        return Inertia::render('Categories/Edit', $data);
+        $data = array_merge(
+            $this->query->getById(
+                $request->user(),
+                $category->id
+            ),
+            $this->query->getFormData(
+                $category->id
+            ),
+        );
+
+        return Inertia::render(
+            'Categories/Edit',
+            $data
+        );
     }
 
     /**
@@ -137,13 +174,21 @@ class CategoryController extends Controller
         UpdateCategoryRequest $request,
         Category $category
     ): JsonResponse|RedirectResponse {
-        $category = $this->management->update($request, $category);
+        $category = $this->management->update(
+            $request,
+            $category
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($category);
+            return response()->json(
+                $category
+            );
         }
 
-        return redirect()->route('categories.show', $category->id);
+        return redirect()->route(
+            'categories.show',
+            $category->id
+        );
     }
 
     /**
@@ -158,15 +203,26 @@ class CategoryController extends Controller
         Request $request,
         Category $category
     ): JsonResponse|RedirectResponse {
-        $this->authorize('delete', $category);
+        $this->authorize(
+            'delete',
+            $category
+        );
 
-        $this->management->destroy($category, $request->user());
+        $this->management->destroy(
+            $category,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('categories.index');
+        return redirect()->route(
+            'categories.index'
+        );
     }
 
     /**
@@ -183,15 +239,25 @@ class CategoryController extends Controller
     ): JsonResponse|RedirectResponse {
         $category = Category::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('restore', $category);
+        $this->authorize(
+            'restore',
+            $category
+        );
 
-        $this->management->restore($id, $request->user());
+        $this->management->restore(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null, 204
+            );
         }
 
-        return redirect()->route('categories.index');
+        return redirect()->route(
+            'categories.index'
+        );
     }
 
     /**
@@ -208,15 +274,26 @@ class CategoryController extends Controller
     ): JsonResponse|RedirectResponse {
         $category = Category::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('forceDelete', $category);
+        $this->authorize(
+            'forceDelete',
+            $category
+        );
 
-        $this->management->forceDelete($id, $request->user());
+        $this->management->forceDelete(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('categories.index');
+        return redirect()->route(
+            'categories.index'
+        );
     }
 
     /**
@@ -245,14 +322,22 @@ class CategoryController extends Controller
         $this->management->bulkDelete(
             $ids,
             $actor,
-            fn (Category $category) => $this->authorize('delete', $category)
+            fn (Category $category) => $this->authorize(
+                'delete',
+                $category
+            )
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('categories.index');
+        return redirect()->route(
+            'categories.index'
+        );
     }
 
     /**
@@ -278,13 +363,21 @@ class CategoryController extends Controller
         $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
-            fn (Category $category) => $this->authorize('restore', $category)
+            fn (Category $category) => $this->authorize(
+                'restore',
+                $category
+            )
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('categories.index');
+        return redirect()->route(
+            'categories.index'
+        );
     }
 }

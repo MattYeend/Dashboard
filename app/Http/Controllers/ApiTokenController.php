@@ -30,10 +30,15 @@ class ApiTokenController extends Controller
     public function index(
         Request $request
     ): Response {
-        $this->authorize('viewAny', PersonalAccessToken::class);
+        $this->authorize(
+            'viewAny',
+            PersonalAccessToken::class
+        );
 
         return Inertia::render('ApiTokens/Index', [
-            'tokens' => $this->queryService->forUser($request->user()),
+            'tokens' => $this->queryService->forUser(
+                $request->user()
+            ),
             'abilities' => TokenAbility::labels(),
         ]);
     }
@@ -52,8 +57,13 @@ class ApiTokenController extends Controller
         );
 
         return redirect()
-            ->route('api-tokens.index')
-            ->with('plainTextToken', $newToken->plainTextToken);
+            ->route(
+                'api-tokens.index'
+            )
+            ->with(
+                'plainTextToken',
+                $newToken->plainTextToken
+            );
     }
 
     /**
@@ -63,9 +73,14 @@ class ApiTokenController extends Controller
         UpdateApiTokenRequest $request,
         PersonalAccessToken $apiToken
     ): RedirectResponse {
-        $this->updaterService->update($apiToken, $request->validated());
+        $this->updaterService->update(
+            $apiToken,
+            $request->validated()
+        );
 
-        return redirect()->route('api-tokens.index');
+        return redirect()->route(
+            'api-tokens.index'
+        );
     }
 
     /**
@@ -75,10 +90,17 @@ class ApiTokenController extends Controller
         Request $request,
         PersonalAccessToken $apiToken
     ): RedirectResponse {
-        $this->authorize('delete', $apiToken);
+        $this->authorize(
+            'delete',
+            $apiToken
+        );
 
-        $this->deleterService->delete($apiToken);
+        $this->deleterService->delete(
+            $apiToken
+        );
 
-        return redirect()->route('api-tokens.index');
+        return redirect()->route(
+            'api-tokens.index'
+        );
     }
 }

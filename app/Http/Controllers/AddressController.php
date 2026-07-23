@@ -36,7 +36,10 @@ class AddressController extends Controller
     public function index(
         Request $request
     ): Response {
-        $this->authorize('viewAny', Address::class);
+        $this->authorize(
+            'viewAny',
+            Address::class
+        );
 
         $data = $this->query->getPaginated(
             $request->user(),
@@ -49,7 +52,10 @@ class AddressController extends Controller
             ])
         );
 
-        return Inertia::render('Addresses/Index', $data);
+        return Inertia::render(
+            'Addresses/Index',
+            $data
+        );
     }
 
     /**
@@ -59,11 +65,17 @@ class AddressController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize('create', Address::class);
+        $this->authorize(
+            'create',
+            Address::class
+        );
 
         $data = $this->query->getFormData();
 
-        return Inertia::render('Addresses/Create', $data);
+        return Inertia::render(
+            'Addresses/Create',
+            $data
+        );
     }
 
     /**
@@ -77,13 +89,21 @@ class AddressController extends Controller
     public function store(
         StoreAddressRequest $request
     ): JsonResponse|RedirectResponse {
-        $address = $this->management->store($request);
+        $address = $this->management->store(
+            $request
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($address, 201);
+            return response()->json(
+                $address,
+                201
+            );
         }
 
-        return redirect()->route('addresses.show', $address->id);
+        return redirect()->route(
+            'addresses.show',
+            $address->id
+        );
     }
 
     /**
@@ -97,14 +117,20 @@ class AddressController extends Controller
         Address $address,
         Request $request
     ): Response {
-        $this->authorize('view', $address);
+        $this->authorize(
+            'view',
+            $address
+        );
 
         $data = $this->query->getById(
             $request->user(),
             $address->id
         );
 
-        return Inertia::render('Addresses/Show', $data);
+        return Inertia::render(
+            'Addresses/Show',
+            $data
+        );
     }
 
     /**
@@ -116,14 +142,20 @@ class AddressController extends Controller
         Address $address,
         Request $request
     ): Response {
-        $this->authorize('update', $address);
+        $this->authorize(
+            'update',
+            $address
+        );
 
         $data = $this->query->getById(
             $request->user(),
             $address->id
         );
 
-        return Inertia::render('Addresses/Edit', $data);
+        return Inertia::render(
+            'Addresses/Edit',
+            $data
+        );
     }
 
     /**
@@ -139,13 +171,21 @@ class AddressController extends Controller
         UpdateAddressRequest $request,
         Address $address
     ): JsonResponse|RedirectResponse {
-        $address = $this->management->update($request, $address);
+        $address = $this->management->update(
+            $request,
+            $address
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($address);
+            return response()->json(
+                $address
+            );
         }
 
-        return redirect()->route('addresses.show', $address->id);
+        return redirect()->route(
+            'addresses.show',
+            $address->id
+        );
     }
 
     /**
@@ -160,15 +200,26 @@ class AddressController extends Controller
         Request $request,
         Address $address
     ): JsonResponse|RedirectResponse {
-        $this->authorize('delete', $address);
+        $this->authorize(
+            'delete',
+            $address
+        );
 
-        $this->management->destroy($address, $request->user());
+        $this->management->destroy(
+            $address,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('addresses.index');
+        return redirect()->route(
+            'addresses.index'
+        );
     }
 
     /**
@@ -185,15 +236,26 @@ class AddressController extends Controller
     ): JsonResponse|RedirectResponse {
         $address = Address::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('restore', $address);
+        $this->authorize(
+            'restore',
+            $address
+        );
 
-        $this->management->restore($id, $request->user());
+        $this->management->restore(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('addresses.index');
+        return redirect()->route(
+            'addresses.index'
+        );
     }
 
     /**
@@ -210,15 +272,26 @@ class AddressController extends Controller
     ): JsonResponse|RedirectResponse {
         $address = Address::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('forceDelete', $address);
+        $this->authorize(
+            'forceDelete',
+            $address
+        );
 
-        $this->management->forceDelete($id, $request->user());
+        $this->management->forceDelete(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('addresses.index');
+        return redirect()->route(
+            'addresses.index'
+        );
     }
 
     /**
@@ -247,14 +320,22 @@ class AddressController extends Controller
         $this->management->bulkDelete(
             $ids,
             $actor,
-            fn (Address $address) => $this->authorize('delete', $address)
+            fn (Address $address) => $this->authorize(
+                'delete',
+                $address
+            )
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('addresses.index');
+        return redirect()->route(
+            'addresses.index'
+        );
     }
 
     /**
@@ -280,14 +361,22 @@ class AddressController extends Controller
         $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
-            fn (Address $address) => $this->authorize('restore', $address)
+            fn (Address $address) => $this->authorize(
+                'restore',
+                $address
+            )
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('addresses.index');
+        return redirect()->route(
+            'addresses.index'
+        );
     }
 
     /**
@@ -296,10 +385,17 @@ class AddressController extends Controller
     public function addressableOptions(
         Request $request
     ): JsonResponse {
-        $type = $request->query('type', '');
+        $type = $request->query(
+            'type',
+            ''
+        );
 
-        $options = $this->query->getAddressableOptions($type);
+        $options = $this->query->getAddressableOptions(
+            $type
+        );
 
-        return response()->json($options);
+        return response()->json(
+            $options
+        );
     }
 }

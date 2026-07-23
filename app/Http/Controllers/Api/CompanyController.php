@@ -40,8 +40,14 @@ class CompanyController extends Controller
     public function index(
         Request $request
     ): JsonResponse {
-        $this->authorize('viewAny', Company::class);
-        $this->authoriseTokenAbility($request, TokenAbility::CompaniesRead->value);
+        $this->authorize(
+            'viewAny',
+            Company::class
+        );
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::CompaniesRead->value
+        );
 
         $data = $this->queryService->getPaginated(
             $request->user(),
@@ -54,7 +60,9 @@ class CompanyController extends Controller
             ])
         );
 
-        return response()->json($data);
+        return response()->json(
+            $data
+        );
     }
 
     /**
@@ -69,15 +77,23 @@ class CompanyController extends Controller
     public function store(
         StoreCompanyRequest $request
     ): CompanyResource {
-        $this->authorize('create', Company::class);
-        $this->authoriseTokenAbility($request, TokenAbility::CompaniesWrite->value);
+        $this->authorize(
+            'create',
+            Company::class
+        );
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::CompaniesWrite->value
+        );
 
         $company = $this->creatorService->create(
             $request->validated(),
             $request->user()->id,
         );
 
-        return new CompanyResource($company);
+        return new CompanyResource(
+            $company
+        );
     }
 
     /**
@@ -93,8 +109,14 @@ class CompanyController extends Controller
         Request $request,
         Company $company
     ): JsonResponse {
-        $this->authorize('view', $company);
-        $this->authoriseTokenAbility($request, TokenAbility::CompaniesRead->value);
+        $this->authorize(
+            'view',
+            $company
+        );
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::CompaniesRead->value
+        );
 
         return response()->json(
             $this->queryService->getById(
@@ -117,8 +139,14 @@ class CompanyController extends Controller
         UpdateCompanyRequest $request,
         Company $company
     ): CompanyResource {
-        $this->authorize('update', $company);
-        $this->authoriseTokenAbility($request, TokenAbility::CompaniesWrite->value);
+        $this->authorize(
+            'update',
+            $company
+        );
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::CompaniesWrite->value
+        );
 
         $updated = $this->updaterService->update(
             $company,
@@ -126,7 +154,9 @@ class CompanyController extends Controller
             $request->user()->id,
         );
 
-        return new CompanyResource($updated);
+        return new CompanyResource(
+            $updated
+        );
     }
 
     /**
@@ -142,14 +172,23 @@ class CompanyController extends Controller
         Request $request,
         Company $company
     ): JsonResponse {
-        $this->authorize('delete', $company);
-        $this->authoriseTokenAbility($request, TokenAbility::CompaniesWrite->value);
+        $this->authorize(
+            'delete',
+            $company
+        );
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::CompaniesWrite->value
+        );
 
         $this->deleterService->delete(
             $company,
             $request->user()->id
         );
 
-        return response()->json(null, 204);
+        return response()->json(
+            null,
+            204
+        );
     }
 }

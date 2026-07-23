@@ -36,7 +36,10 @@ class ContactController extends Controller
     public function index(
         Request $request
     ): Response {
-        $this->authorize('viewAny', Contact::class);
+        $this->authorize(
+            'viewAny',
+            Contact::class
+        );
 
         $data = $this->query->getPaginated(
             $request->user(),
@@ -59,7 +62,10 @@ class ContactController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize('create', Contact::class);
+        $this->authorize(
+            'create',
+            Contact::class
+        );
 
         $data = $this->query->getFormData();
 
@@ -77,7 +83,9 @@ class ContactController extends Controller
     public function store(
         StoreContactRequest $request
     ): JsonResponse|RedirectResponse {
-        $contact = $this->management->store($request);
+        $contact = $this->management->store(
+            $request
+        );
 
         if ($request->wantsJson()) {
             return response()->json($contact, 201);
@@ -97,7 +105,10 @@ class ContactController extends Controller
         Contact $contact,
         Request $request
     ): Response {
-        $this->authorize('view', $contact);
+        $this->authorize(
+            'view',
+            $contact
+        );
 
         $data = $this->query->getById(
             $request->user(),
@@ -116,7 +127,10 @@ class ContactController extends Controller
         Contact $contact,
         Request $request
     ): Response {
-        $this->authorize('update', $contact);
+        $this->authorize(
+            'update',
+            $contact
+        );
 
         $data = $this->query->getById(
             $request->user(),
@@ -139,7 +153,9 @@ class ContactController extends Controller
         UpdateContactRequest $request,
         Contact $contact
     ): JsonResponse|RedirectResponse {
-        $contact = $this->management->update($request, $contact);
+        $contact = $this->management->update(
+            $request, $contact
+        );
 
         if ($request->wantsJson()) {
             return response()->json($contact);
@@ -160,9 +176,15 @@ class ContactController extends Controller
         Request $request,
         Contact $contact
     ): JsonResponse|RedirectResponse {
-        $this->authorize('delete', $contact);
+        $this->authorize(
+            'delete',
+            $contact
+        );
 
-        $this->management->destroy($contact, $request->user());
+        $this->management->destroy(
+            $contact,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -185,9 +207,15 @@ class ContactController extends Controller
     ): JsonResponse|RedirectResponse {
         $contact = Contact::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('restore', $contact);
+        $this->authorize(
+            'restore',
+            $contact
+        );
 
-        $this->management->restore($id, $request->user());
+        $this->management->restore(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -210,9 +238,15 @@ class ContactController extends Controller
     ): JsonResponse|RedirectResponse {
         $contact = Contact::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('forceDelete', $contact);
+        $this->authorize(
+            'forceDelete',
+            $contact
+        );
 
-        $this->management->forceDelete($id, $request->user());
+        $this->management->forceDelete(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -296,10 +330,17 @@ class ContactController extends Controller
     public function contactableOptions(
         Request $request
     ): JsonResponse {
-        $type = $request->query('type', '');
+        $type = $request->query(
+            'type',
+            ''
+        );
 
-        $options = $this->query->getContactableOptions($type);
+        $options = $this->query->getContactableOptions(
+            $type
+        );
 
-        return response()->json($options);
+        return response()->json(
+            $options
+        );
     }
 }
