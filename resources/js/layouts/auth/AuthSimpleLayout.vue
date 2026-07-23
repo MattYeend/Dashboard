@@ -15,11 +15,10 @@ defineProps<{
         <div class="w-full max-w-sm">
             <div class="flex flex-col gap-8">
                 <div class="flex flex-col items-center gap-4">
-                    <Link
-                        :href="home()"
-                        class="font-medium"
-                    >
-                        <span class="text-lg font-semibold tracking-tight">Dashboard</span>
+                    <Link :href="home()" class="font-medium">
+                        <span class="text-lg font-semibold tracking-tight">
+                            Dashboard
+                        </span>
                     </Link>
                     <div class="space-y-2 text-center">
                         <h1 class="text-xl font-medium">{{ title }}</h1>

@@ -135,7 +135,7 @@ const mainNavItems: NavItem[] = [
         icon: User2,
     },
     {
-    title: 'Registration Interests',
+        title: 'Registration Interests',
         href: registrationInterestsIndex.url(),
         icon: UserPlus,
     },
