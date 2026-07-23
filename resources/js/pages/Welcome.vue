@@ -107,9 +107,9 @@ const auditFeed = [
 
                 <!-- Signature element: live audit ticker -->
                 <div
-                    class="relative h-64 overflow-hidden rounded-lg border border-[#19140035] font-mono text-[13px] dark:border-[#3E3E3A]"
+                    class="flex h-64 flex-col overflow-hidden rounded-lg border border-[#19140035] font-mono text-[13px] dark:border-[#3E3E3A]"
                 >
-                    <div class="absolute inset-x-0 top-0 z-10 flex items-center justify-between border-b border-[#19140035] px-4 py-2 dark:border-[#3E3E3A]">
+                    <div class="flex shrink-0 items-center justify-between border-b border-[#19140035] px-4 py-2 dark:border-[#3E3E3A]">
                         <span class="flex items-center gap-2 text-[#706f6c] dark:text-[#A1A09A]">
                             <svg width="6" height="6" viewBox="0 0 6 6" class="text-emerald-500">
                                 <circle cx="3" cy="3" r="3" fill="currentColor" />
@@ -118,15 +118,17 @@ const auditFeed = [
                         </span>
                         <span class="text-[#706f6c] dark:text-[#A1A09A]">live</span>
                     </div>
-                    <ul class="ticker mt-11 space-y-3 px-4">
-                        <li
-                            v-for="(entry, i) in [...auditFeed, ...auditFeed]"
-                            :key="i"
-                            class="text-[#1b1b18] dark:text-[#EDEDEC]"
-                        >
-                            <span class="text-[#706f6c] dark:text-[#A1A09A]">&gt;</span> {{ entry }}
-                        </li>
-                    </ul>
+                    <div class="relative flex-1 overflow-hidden">
+                        <ul class="ticker space-y-3 px-4 py-3">
+                            <li
+                                v-for="(entry, i) in [...auditFeed, ...auditFeed]"
+                                :key="i"
+                                class="text-[#1b1b18] dark:text-[#EDEDEC]"
+                            >
+                                <span class="text-[#706f6c] dark:text-[#A1A09A]">&gt;</span> {{ entry }}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
