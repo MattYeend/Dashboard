@@ -18,33 +18,41 @@ class ActiveCheckerService
     /**
      * Check if invoice is active (not soft-deleted).
      */
-    public function isActive(Invoice $invoice): bool
-    {
+    public function isActive(
+        Invoice $invoice
+    ): bool {
         return ! $invoice->trashed();
     }
 
     /**
      * Check if invoice is soft-deleted.
      */
-    public function isTrashed(Invoice $invoice): bool
-    {
+    public function isTrashed(
+        Invoice $invoice
+    ): bool {
         return $invoice->trashed();
     }
 
     /**
      * Check if invoice is active and can be updated or deleted.
      */
-    public function canBeModified(Invoice $invoice): bool
-    {
-        return $this->isActive($invoice);
+    public function canBeModified(
+        Invoice $invoice
+    ): bool {
+        return $this->isActive(
+            $invoice
+        );
     }
 
     /**
      * Check if invoice is soft-deleted and can be restored or force-deleted.
      */
-    public function canBeRestoredOrForceDeleted(Invoice $invoice): bool
-    {
-        return $this->isTrashed($invoice);
+    public function canBeRestoredOrForceDeleted(
+        Invoice $invoice
+    ): bool {
+        return $this->isTrashed(
+            $invoice
+        );
     }
 
     /**

@@ -35,7 +35,10 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($industry);
 
-        $industryData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $industryData = $this->dataPreparation->prepareForUpdate(
+            $data,
+            $updatedBy
+        );
 
         return $this->updateResource->handle(
             $industry,

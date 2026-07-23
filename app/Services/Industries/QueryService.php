@@ -71,10 +71,21 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Industry::query()->with(['creator', 'updater', 'deleter', 'restorer']);
-        $query = $this->filterService->applyAll($query, $filters);
+        $query = Industry::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
+        $query = $this->filterService->applyAll(
+            $query,
+            $filters
+        );
 
-        return $this->applySorting($query, $filters);
+        return $this->applySorting(
+            $query,
+            $filters
+        );
     }
 
     /**
@@ -140,13 +151,20 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Industry {
-        $query = Industry::query()->with(['creator', 'updater', 'deleter', 'restorer']);
+        $query = Industry::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         if ($withTrashed) {
             $query->withTrashed();
         }
 
-        return $query->findOrFail($id);
+        return $query->findOrFail(
+            $id
+        );
     }
 
     /**

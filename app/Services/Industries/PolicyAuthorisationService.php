@@ -19,40 +19,54 @@ class PolicyAuthorisationService
     /**
      * Check if user is a regular user, admin, or super admin.
      */
-    public function isUser(User $user): bool
-    {
-        return $this->roleChecker->isUser($user);
+    public function isUser(
+        User $user
+    ): bool {
+        return $this->roleChecker->isUser(
+            $user
+        );
     }
 
     /**
      * Check if user is admin or super admin.
      */
-    public function isAdmin(User $user): bool
-    {
-        return $this->roleChecker->isAdmin($user);
+    public function isAdmin(
+        User $user
+    ): bool {
+        return $this->roleChecker->isAdmin(
+            $user
+        );
     }
 
     /**
      * Check if industry is active (not soft-deleted).
      */
-    public function isActive(Industry $industry): bool
-    {
-        return $this->activeChecker->isActive($industry);
+    public function isActive(
+        Industry $industry
+    ): bool {
+        return $this->activeChecker->isActive(
+            $industry
+        );
     }
 
     /**
      * Check if industry is soft-deleted.
      */
-    public function isTrashed(Industry $industry): bool
-    {
-        return $this->activeChecker->isTrashed($industry);
+    public function isTrashed(
+        Industry $industry
+    ): bool {
+        return $this->activeChecker->isTrashed(
+            $industry
+        );
     }
 
     /**
      * Determine whether the user can view the industry.
      */
-    public function canView(User $actor, Industry $target): bool
-    {
+    public function canView(
+        User $actor,
+        Industry $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -63,8 +77,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can update the industry.
      */
-    public function canUpdate(User $actor, Industry $target): bool
-    {
+    public function canUpdate(
+        User $actor,
+        Industry $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -75,8 +91,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can delete the industry.
      */
-    public function canDelete(User $actor, Industry $target): bool
-    {
+    public function canDelete(
+        User $actor,
+        Industry $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -99,8 +117,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can permanently delete the industry.
      */
-    public function canForceDelete(User $actor, Industry $target): bool
-    {
+    public function canForceDelete(
+        User $actor,
+        Industry $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -115,8 +135,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can assign the industry.
      */
-    public function canAssign(User $actor, Industry $target): bool
-    {
+    public function canAssign(
+        User $actor,
+        Industry $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -129,8 +151,10 @@ class PolicyAuthorisationService
      *
      * Prevents admins from managing industries created by super admins.
      */
-    private function targetOutranksActor(User $actor, Industry $target): bool
-    {
+    private function targetOutranksActor(
+        User $actor,
+        Industry $target
+    ): bool {
         if ($this->roleChecker->isSuperAdmin($actor)) {
             return false;
         }
@@ -141,6 +165,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->roleChecker->isSuperAdmin($creator);
+        return $this->roleChecker->isSuperAdmin(
+            $creator
+        );
     }
 }

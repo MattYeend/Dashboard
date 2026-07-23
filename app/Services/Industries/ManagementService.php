@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new industry.
      */
-    public function store(StoreIndustryRequest $request): Industry
-    {
+    public function store(
+        StoreIndustryRequest $request
+    ): Industry {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -51,7 +52,10 @@ class ManagementService
         Industry $industry,
         User $actor
     ): void {
-        $this->destructor->delete($industry, $actor->id);
+        $this->destructor->delete(
+            $industry,
+            $actor->id
+        );
     }
 
     /**
@@ -63,7 +67,10 @@ class ManagementService
     ): Industry {
         $industry = Industry::withTrashed()->findOrFail($id);
 
-        return $this->restorer->restore($industry, $actor->id);
+        return $this->restorer->restore(
+            $industry,
+            $actor->id
+        );
     }
 
     /**
@@ -74,7 +81,10 @@ class ManagementService
         User $actor
     ): void {
         $industry = Industry::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete($industry, $actor->id);
+        $this->destructor->forceDelete(
+            $industry,
+            $actor->id
+        );
     }
 
     /**
@@ -96,7 +106,10 @@ class ManagementService
         foreach ($industries as $industry) {
             /** @var Industry $industry */
             $authoriseCallback($industry);
-            $this->restorer->restore($industry, $actor->id);
+            $this->restorer->restore(
+                $industry,
+                $actor->id
+            );
             $restored[] = $industry->id;
         }
 
@@ -123,7 +136,10 @@ class ManagementService
             $industry = Industry::findOrFail($id);
             $authoriseCallback($industry);
 
-            $this->destructor->delete($industry, $actor->id);
+            $this->destructor->delete(
+                $industry,
+                $actor->id
+            );
             $deleted[] = $id;
         }
 
