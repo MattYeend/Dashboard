@@ -38,6 +38,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $updated_at
  * @property-read Company|null $company
  * @property-read Contact|null $contact
+ * @property-read Address|null $address
  * @property-read Order|null $order
  * @property-read InvoiceStatus|null $status
  * @property-read User|null $creator
@@ -95,6 +96,16 @@ class Invoice extends Model implements Auditable
     public function contact(): MorphOne
     {
         return $this->morphOne(Contact::class, 'contactable');
+    }
+
+    /**
+     * Get the billing address associated with this invoice.
+     *
+     * @return MorphOne<Address, $this>
+     */
+    public function address(): MorphOne
+    {
+        return $this->morphOne(Address::class, 'addressable');
     }
 
     /**
