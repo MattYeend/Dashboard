@@ -33,16 +33,29 @@ class TagController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
-    {
-        $this->authorize('viewAny', Tag::class);
+    public function index(
+        Request $request
+    ): Response {
+        $this->authorize(
+            'viewAny',
+            Tag::class
+        );
 
         $data = $this->query->getPaginated(
             $request->user(),
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
-        return Inertia::render('Tags/Index', $data);
+        return Inertia::render(
+            'Tags/Index',
+            $data
+        );
     }
 
     /**
@@ -52,9 +65,14 @@ class TagController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize('create', Tag::class);
+        $this->authorize(
+            'create',
+            Tag::class
+        );
 
-        return Inertia::render('Tags/Create');
+        return Inertia::render(
+            'Tags/Create'
+        );
     }
 
     /**
@@ -65,15 +83,24 @@ class TagController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      */
-    public function store(StoreTagRequest $request): JsonResponse|RedirectResponse
-    {
-        $tag = $this->management->store($request);
+    public function store(
+        StoreTagRequest $request
+    ): JsonResponse|RedirectResponse {
+        $tag = $this->management->store(
+            $request
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($tag, 201);
+            return response()->json(
+                $tag,
+                201
+            );
         }
 
-        return redirect()->route('tags.show', $tag->id);
+        return redirect()->route(
+            'tags.show',
+            $tag->id
+        );
     }
 
     /**
@@ -87,14 +114,20 @@ class TagController extends Controller
         Tag $tag,
         Request $request
     ): Response {
-        $this->authorize('view', $tag);
+        $this->authorize(
+            'view',
+            $tag
+        );
 
         $data = $this->query->getById(
             $request->user(),
             $tag->id
         );
 
-        return Inertia::render('Tags/Show', $data);
+        return Inertia::render(
+            'Tags/Show',
+            $data
+        );
     }
 
     /**
@@ -106,14 +139,20 @@ class TagController extends Controller
         Tag $tag,
         Request $request
     ): Response {
-        $this->authorize('update', $tag);
+        $this->authorize(
+            'update',
+            $tag
+        );
 
         $data = $this->query->getById(
             $request->user(),
             $tag->id
         );
 
-        return Inertia::render('Tags/Edit', $data);
+        return Inertia::render(
+            'Tags/Edit',
+            $data
+        );
     }
 
     /**
@@ -129,13 +168,21 @@ class TagController extends Controller
         UpdateTagRequest $request,
         Tag $tag
     ): JsonResponse|RedirectResponse {
-        $tag = $this->management->update($request, $tag);
+        $tag = $this->management->update(
+            $request,
+            $tag
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($tag);
+            return response()->json(
+                $tag
+            );
         }
 
-        return redirect()->route('tags.show', $tag->id);
+        return redirect()->route(
+            'tags.show',
+            $tag->id
+        );
     }
 
     /**
@@ -150,15 +197,26 @@ class TagController extends Controller
         Request $request,
         Tag $tag
     ): JsonResponse|RedirectResponse {
-        $this->authorize('delete', $tag);
+        $this->authorize(
+            'delete',
+            $tag
+        );
 
-        $this->management->destroy($tag, $request->user());
+        $this->management->destroy(
+            $tag,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('tags.index');
+        return redirect()->route(
+            'tags.index'
+        );
     }
 
     /**
@@ -175,15 +233,26 @@ class TagController extends Controller
     ): JsonResponse|RedirectResponse {
         $tag = Tag::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('restore', $tag);
+        $this->authorize(
+            'restore',
+            $tag
+        );
 
-        $this->management->restore($id, $request->user());
+        $this->management->restore(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('tags.index');
+        return redirect()->route(
+            'tags.index'
+        );
     }
 
     /**
@@ -200,15 +269,26 @@ class TagController extends Controller
     ): JsonResponse|RedirectResponse {
         $tag = Tag::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('forceDelete', $tag);
+        $this->authorize(
+            'forceDelete',
+            $tag
+        );
 
-        $this->management->forceDelete($id, $request->user());
+        $this->management->forceDelete(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('tags.index');
+        return redirect()->route(
+            'tags.index'
+        );
     }
 
     /**
@@ -216,11 +296,19 @@ class TagController extends Controller
      *
      * Authorises each tag individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkDelete(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:tags,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:tags,id',
+            ],
         ]);
 
         $actor = $request->user();
@@ -229,14 +317,22 @@ class TagController extends Controller
         $this->management->bulkDelete(
             $ids,
             $actor,
-            fn (Tag $tag) => $this->authorize('delete', $tag)
+            fn (Tag $tag) => $this->authorize(
+                'delete',
+                $tag
+            )
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('tags.index');
+        return redirect()->route(
+            'tags.index'
+        );
     }
 
     /**
@@ -244,23 +340,39 @@ class TagController extends Controller
      *
      * Authorises each tag individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkRestore(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:tags,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required', '
+            integer',
+                'exists:tags,id',
+            ],
         ]);
 
         $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
-            fn (Tag $tag) => $this->authorize('restore', $tag)
+            fn (Tag $tag) => $this->authorize(
+                'restore',
+                $tag
+            )
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('tags.index');
+        return redirect()->route(
+            'tags.index'
+        );
     }
 }
