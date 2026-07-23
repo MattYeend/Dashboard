@@ -4,8 +4,8 @@ import axios from 'axios';
 import { ref, watch } from 'vue';
 import { nullIfBlank } from '@/lib/forms';
 import OrderForm from '@/pages/Orders/components/OrderForm.vue';
-import type { OrderStatus } from '@/types';
 import { store as ordersStore } from '@/routes/orders';
+import type { OrderStatus } from '@/types';
 
 interface Props {
     statuses: OrderStatus[];

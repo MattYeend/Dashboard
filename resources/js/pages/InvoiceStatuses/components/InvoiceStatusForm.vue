@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
+import { index as invoiceStatusesIndex } from '@/routes/invoice-statuses';
 import InvoiceStatusBasicDetailsForm from './InvoiceStatusBasicDetailsForm.vue';
 import InvoiceStatusColourForm from './InvoiceStatusColourForm.vue';
-import { index as invoiceStatusesIndex } from '@/routes/invoice-statuses';
 
 export interface InvoiceStatusFormData {
     title: string;

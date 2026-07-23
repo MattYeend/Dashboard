@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
+import { update as tagsUpdate } from '@/routes/tags';
 import type { Tag } from '@/types';
 import TagForm from './components/TagForm.vue';
-import { update as tagsUpdate } from '@/routes/tags';
 
 interface Props {
     tag: Tag;

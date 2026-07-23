@@ -3,11 +3,11 @@ import { router, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import IndexHeader from '@/components/table/IndexHeader.vue';
+import { destroy as apiTokensDestroy } from '@/routes/api-tokens';
 import type { ApiToken } from '@/types';
 import ApiTokenForm from './components/ApiTokenForm.vue';
 import ApiTokenList from './components/ApiTokenList.vue';
 import NewTokenReveal from './components/NewTokenReveal.vue';
-import { destroy as apiTokensDestroy } from '@/routes/api-tokens';
 
 defineProps<{
     tokens: ApiToken[];

@@ -1,25 +1,21 @@
 <script setup lang="ts">
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
-
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import FilterBar from '@/components/table/FilterBar.vue';
 import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
-
-import type {
-    RegistrationInterest,
-    Pagination as PaginationMeta,
-} from '@/types';
-
 import {
     index as registrationInterestsIndex,
     show as registrationInterestShow,
     destroy as registrationInterestDestroy,
 } from '@/routes/registration-interests';
-
 import bulk from '@/routes/registration-interests/bulk';
+import type {
+    RegistrationInterest,
+    Pagination as PaginationMeta,
+} from '@/types';
 
 defineProps<{
     interests: RegistrationInterest[];

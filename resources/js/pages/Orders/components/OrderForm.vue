@@ -4,8 +4,8 @@ import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import OrderBasicDetailsForm from '@/pages/Orders/components/OrderBasicDetailsForm.vue';
 import OrderTypeForm from '@/pages/Orders/components/OrderTypeForm.vue';
-import type { OrderStatus } from '@/types';
 import { index as ordersIndex } from '@/routes/orders';
+import type { OrderStatus } from '@/types';
 
 interface OrderFormData {
     title: string;

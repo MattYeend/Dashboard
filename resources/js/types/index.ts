@@ -158,6 +158,10 @@ export interface Task {
         background_colour: string | null;
         text_colour: string | null;
     } | null;
+    creator?: { name: string };
+    updater?: { name: string };
+    deleter?: { name: string };
+    restorer?: { name: string };
 }
 
 export interface Industry {

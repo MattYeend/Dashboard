@@ -2,15 +2,15 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import type { InvoiceStatus, PermissionsMeta } from '@/types';
-import InvoiceStatusAuditDetails from './components/InvoiceStatusAuditDetails.vue';
-import InvoiceStatusBasicDetails from './components/InvoiceStatusBasicDetails.vue';
-import InvoiceStatusColourDetails from './components/InvoiceStatusColourDetails.vue';
 import {
     edit as invoiceStatusesEdit,
     destroy as invoiceStatusesDestroy,
     index as invoiceStatusesIndex,
 } from '@/routes/invoice-statuses';
+import type { InvoiceStatus, PermissionsMeta } from '@/types';
+import InvoiceStatusAuditDetails from './components/InvoiceStatusAuditDetails.vue';
+import InvoiceStatusBasicDetails from './components/InvoiceStatusBasicDetails.vue';
+import InvoiceStatusColourDetails from './components/InvoiceStatusColourDetails.vue';
 
 interface Props {
     invoiceStatus: InvoiceStatus;
