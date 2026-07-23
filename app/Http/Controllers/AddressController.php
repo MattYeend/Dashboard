@@ -33,13 +33,20 @@ class AddressController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
-    {
+    public function index(
+        Request $request
+    ): Response {
         $this->authorize('viewAny', Address::class);
 
         $data = $this->query->getPaginated(
             $request->user(),
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
         return Inertia::render('Addresses/Index', $data);
@@ -67,8 +74,9 @@ class AddressController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      */
-    public function store(StoreAddressRequest $request): JsonResponse|RedirectResponse
-    {
+    public function store(
+        StoreAddressRequest $request
+    ): JsonResponse|RedirectResponse {
         $address = $this->management->store($request);
 
         if ($request->wantsJson()) {
@@ -218,11 +226,19 @@ class AddressController extends Controller
      *
      * Authorises each address individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkDelete(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:addresses,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:addresses,id',
+            ],
         ]);
 
         $actor = $request->user();
@@ -246,11 +262,19 @@ class AddressController extends Controller
      *
      * Authorises each address individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkRestore(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:addresses,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:addresses,id',
+            ],
         ]);
 
         $this->management->bulkRestore(
@@ -269,8 +293,9 @@ class AddressController extends Controller
     /**
      * Get the list of selectable "owner" options for a given addressable type.
      */
-    public function addressableOptions(Request $request): JsonResponse
-    {
+    public function addressableOptions(
+        Request $request
+    ): JsonResponse {
         $type = $request->query('type', '');
 
         $options = $this->query->getAddressableOptions($type);

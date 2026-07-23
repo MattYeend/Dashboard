@@ -33,13 +33,20 @@ class CategoryController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
-    {
+    public function index(
+        Request $request
+    ): Response {
         $this->authorize('viewAny', Category::class);
 
         $data = $this->query->getPaginated(
             $request->user(),
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
         return Inertia::render('Categories/Index', $data);
@@ -65,8 +72,9 @@ class CategoryController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      */
-    public function store(StoreCategoryRequest $request): JsonResponse|RedirectResponse
-    {
+    public function store(
+        StoreCategoryRequest $request
+    ): JsonResponse|RedirectResponse {
         $category = $this->management->store($request);
 
         if ($request->wantsJson()) {
@@ -216,11 +224,19 @@ class CategoryController extends Controller
      *
      * Authorises each category individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkDelete(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:categories,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:categories,id',
+            ],
         ]);
 
         $actor = $request->user();
@@ -244,11 +260,19 @@ class CategoryController extends Controller
      *
      * Authorises each category individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkRestore(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:categories,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:categories,id',
+            ],
         ]);
 
         $this->management->bulkRestore(

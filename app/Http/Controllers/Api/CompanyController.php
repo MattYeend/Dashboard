@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\TokenAbility;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCompanyRequest;
-use App\Http\Requests\UpdateCompanyRequest;
+use App\Http\Requests\Companies\StoreCompanyRequest;
+use App\Http\Requests\Companies\UpdateCompanyRequest;
 use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use App\Services\Companies\CreatorService;
@@ -37,14 +37,21 @@ class CompanyController extends Controller
      * Authorises via the 'viewAny' policy, then confirms the request's token carries the
      * 'companies:read' ability before returning data.
      */
-    public function index(Request $request): JsonResponse
-    {
+    public function index(
+        Request $request
+    ): JsonResponse {
         $this->authorize('viewAny', Company::class);
         $this->authoriseTokenAbility($request, TokenAbility::CompaniesRead->value);
 
         $data = $this->queryService->getPaginated(
             $request->user(),
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
         return response()->json($data);
@@ -59,8 +66,9 @@ class CompanyController extends Controller
      * Authorises via the 'create' policy, then confirms the request's token carries the
      * 'companies:write' ability before persisting.
      */
-    public function store(StoreCompanyRequest $request): CompanyResource
-    {
+    public function store(
+        StoreCompanyRequest $request
+    ): CompanyResource {
         $this->authorize('create', Company::class);
         $this->authoriseTokenAbility($request, TokenAbility::CompaniesWrite->value);
 
@@ -81,13 +89,18 @@ class CompanyController extends Controller
      * Authorises via the 'view' policy, then confirms the request's token carries the
      * 'companies:read' ability before returning data.
      */
-    public function show(Request $request, Company $company): JsonResponse
-    {
+    public function show(
+        Request $request,
+        Company $company
+    ): JsonResponse {
         $this->authorize('view', $company);
         $this->authoriseTokenAbility($request, TokenAbility::CompaniesRead->value);
 
         return response()->json(
-            $this->queryService->getById($request->user(), $company->id)
+            $this->queryService->getById(
+                $request->user(),
+                $company->id
+            )
         );
     }
 
@@ -100,8 +113,10 @@ class CompanyController extends Controller
      * Authorises via the 'update' policy, then confirms the request's token carries the
      * 'companies:write' ability before persisting.
      */
-    public function update(UpdateCompanyRequest $request, Company $company): CompanyResource
-    {
+    public function update(
+        UpdateCompanyRequest $request,
+        Company $company
+    ): CompanyResource {
         $this->authorize('update', $company);
         $this->authoriseTokenAbility($request, TokenAbility::CompaniesWrite->value);
 
@@ -123,12 +138,17 @@ class CompanyController extends Controller
      * Authorises via the 'delete' policy, then confirms the request's token carries the
      * 'companies:write' ability before deleting.
      */
-    public function destroy(Request $request, Company $company): JsonResponse
-    {
+    public function destroy(
+        Request $request,
+        Company $company
+    ): JsonResponse {
         $this->authorize('delete', $company);
         $this->authoriseTokenAbility($request, TokenAbility::CompaniesWrite->value);
 
-        $this->deleterService->delete($company, $request->user()->id);
+        $this->deleterService->delete(
+            $company,
+            $request->user()->id
+        );
 
         return response()->json(null, 204);
     }

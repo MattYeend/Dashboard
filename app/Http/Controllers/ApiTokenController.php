@@ -27,8 +27,9 @@ class ApiTokenController extends Controller
     /**
      * Display the authenticated user's tokens.
      */
-    public function index(Request $request): Response
-    {
+    public function index(
+        Request $request
+    ): Response {
         $this->authorize('viewAny', PersonalAccessToken::class);
 
         return Inertia::render('ApiTokens/Index', [
@@ -40,8 +41,9 @@ class ApiTokenController extends Controller
     /**
      * Store a newly created token and return its plain-text value once.
      */
-    public function store(StoreApiTokenRequest $request): RedirectResponse
-    {
+    public function store(
+        StoreApiTokenRequest $request
+    ): RedirectResponse {
         $newToken = $this->creatorService->create(
             $request->user(),
             $request->validated('name'),
@@ -57,8 +59,10 @@ class ApiTokenController extends Controller
     /**
      * Update an existing token's name, abilities, or expiry.
      */
-    public function update(UpdateApiTokenRequest $request, PersonalAccessToken $apiToken): RedirectResponse
-    {
+    public function update(
+        UpdateApiTokenRequest $request,
+        PersonalAccessToken $apiToken
+    ): RedirectResponse {
         $this->updaterService->update($apiToken, $request->validated());
 
         return redirect()->route('api-tokens.index');
@@ -67,8 +71,10 @@ class ApiTokenController extends Controller
     /**
      * Revoke an existing token.
      */
-    public function destroy(Request $request, PersonalAccessToken $apiToken): RedirectResponse
-    {
+    public function destroy(
+        Request $request,
+        PersonalAccessToken $apiToken
+    ): RedirectResponse {
         $this->authorize('delete', $apiToken);
 
         $this->deleterService->delete($apiToken);

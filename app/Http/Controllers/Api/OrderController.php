@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\TokenAbility;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreOrderRequest;
-use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Requests\Orders\StoreOrderRequest;
+use App\Http\Requests\Orders\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Services\Orders\CreatorService;
@@ -37,14 +37,24 @@ class OrderController extends Controller
      * Authorises via the 'viewAny' policy, then confirms the request's token carries the
      * 'orders:read' ability before returning data.
      */
-    public function index(Request $request): JsonResponse
-    {
+    public function index(
+        Request $request
+    ): JsonResponse {
         $this->authorize('viewAny', Order::class);
-        $this->authoriseTokenAbility($request, TokenAbility::OrdersRead->value);
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::OrdersRead->value
+        );
 
         $data = $this->queryService->getPaginated(
             $request->user(),
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
         return response()->json($data);
@@ -59,10 +69,14 @@ class OrderController extends Controller
      * Authorises via the 'create' policy, then confirms the request's token carries the
      * 'orders:write' ability before persisting.
      */
-    public function store(StoreOrderRequest $request): OrderResource
-    {
+    public function store(
+        StoreOrderRequest $request
+    ): OrderResource {
         $this->authorize('create', Order::class);
-        $this->authoriseTokenAbility($request, TokenAbility::OrdersWrite->value);
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::OrdersWrite->value
+        );
 
         $order = $this->creatorService->create(
             $request->validated(),
@@ -81,13 +95,21 @@ class OrderController extends Controller
      * Authorises via the 'view' policy, then confirms the request's token carries the
      * 'orders:read' ability before returning data.
      */
-    public function show(Request $request, Order $order): JsonResponse
-    {
+    public function show(
+        Request $request,
+        Order $order
+    ): JsonResponse {
         $this->authorize('view', $order);
-        $this->authoriseTokenAbility($request, TokenAbility::OrdersRead->value);
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::OrdersRead->value
+        );
 
         return response()->json(
-            $this->queryService->getById($request->user(), $order->id)
+            $this->queryService->getById(
+                $request->user(),
+                $order->id
+            )
         );
     }
 
@@ -100,10 +122,15 @@ class OrderController extends Controller
      * Authorises via the 'update' policy, then confirms the request's token carries the
      * 'orders:write' ability before persisting.
      */
-    public function update(UpdateOrderRequest $request, Order $order): OrderResource
-    {
+    public function update(
+        UpdateOrderRequest $request,
+        Order $order
+    ): OrderResource {
         $this->authorize('update', $order);
-        $this->authoriseTokenAbility($request, TokenAbility::OrdersWrite->value);
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::OrdersWrite->value
+        );
 
         $updated = $this->updaterService->update(
             $order,
@@ -123,12 +150,20 @@ class OrderController extends Controller
      * Authorises via the 'delete' policy, then confirms the request's token carries the
      * 'orders:write' ability before deleting.
      */
-    public function destroy(Request $request, Order $order): JsonResponse
-    {
+    public function destroy(
+        Request $request,
+        Order $order
+    ): JsonResponse {
         $this->authorize('delete', $order);
-        $this->authoriseTokenAbility($request, TokenAbility::OrdersWrite->value);
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::OrdersWrite->value
+        );
 
-        $this->deleterService->delete($order, $request->user()->id);
+        $this->deleterService->delete(
+            $order,
+            $request->user()->id
+        );
 
         return response()->json(null, 204);
     }

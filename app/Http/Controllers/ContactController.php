@@ -33,13 +33,20 @@ class ContactController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
-    {
+    public function index(
+        Request $request
+    ): Response {
         $this->authorize('viewAny', Contact::class);
 
         $data = $this->query->getPaginated(
             $request->user(),
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
         return Inertia::render('Contacts/Index', $data);
@@ -67,8 +74,9 @@ class ContactController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      */
-    public function store(StoreContactRequest $request): JsonResponse|RedirectResponse
-    {
+    public function store(
+        StoreContactRequest $request
+    ): JsonResponse|RedirectResponse {
         $contact = $this->management->store($request);
 
         if ($request->wantsJson()) {
@@ -218,11 +226,19 @@ class ContactController extends Controller
      *
      * Authorises each contact individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkDelete(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:contacts,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:contacts,id',
+            ],
         ]);
 
         $actor = $request->user();
@@ -246,11 +262,19 @@ class ContactController extends Controller
      *
      * Authorises each contact individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkRestore(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:contacts,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:contacts,id',
+            ],
         ]);
 
         $this->management->bulkRestore(
@@ -269,8 +293,9 @@ class ContactController extends Controller
     /**
      * Get the list of selectable "owner" options for a given contactable type.
      */
-    public function contactableOptions(Request $request): JsonResponse
-    {
+    public function contactableOptions(
+        Request $request
+    ): JsonResponse {
         $type = $request->query('type', '');
 
         $options = $this->query->getContactableOptions($type);

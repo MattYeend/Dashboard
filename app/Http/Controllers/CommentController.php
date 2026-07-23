@@ -28,8 +28,10 @@ class CommentController extends Controller
      *
      * Authorisation is handled upstream by StoreCommentRequest.
      */
-    public function store(StoreCommentRequest $request, Post $post): JsonResponse|RedirectResponse
-    {
+    public function store(
+        StoreCommentRequest $request,
+        Post $post
+    ): JsonResponse|RedirectResponse {
         $comment = $this->management->store($request, $post);
 
         if ($request->wantsJson()) {
@@ -44,8 +46,11 @@ class CommentController extends Controller
      *
      * Authorisation is handled upstream by UpdateCommentRequest.
      */
-    public function update(UpdateCommentRequest $request, Post $post, Comment $comment): JsonResponse|RedirectResponse
-    {
+    public function update(
+        UpdateCommentRequest $request,
+        Post $post,
+        Comment $comment
+    ): JsonResponse|RedirectResponse {
         $comment = $this->management->update($request, $comment);
 
         if ($request->wantsJson()) {
@@ -60,8 +65,11 @@ class CommentController extends Controller
      *
      * Authorises via the 'delete' policy before proceeding.
      */
-    public function destroy(Post $post, Comment $comment, Request $request): JsonResponse|RedirectResponse
-    {
+    public function destroy(
+        Post $post,
+        Comment $comment,
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $this->authorize('delete', $comment);
 
         $this->management->destroy($comment, $request->user());
@@ -79,8 +87,11 @@ class CommentController extends Controller
      * Authorises via the 'view' policy on the parent post, since
      * liking a comment requires being able to see the post it's on.
      */
-    public function like(Post $post, Comment $comment, Request $request): RedirectResponse
-    {
+    public function like(
+        Post $post,
+        Comment $comment,
+        Request $request
+    ): RedirectResponse {
         $this->authorize('view', $post);
 
         $this->management->like($comment, $request->user());
@@ -91,8 +102,11 @@ class CommentController extends Controller
     /**
      * Unlike the given comment for the currently authenticated user.
      */
-    public function unlike(Post $post, Comment $comment, Request $request): RedirectResponse
-    {
+    public function unlike(
+        Post $post,
+        Comment $comment,
+        Request $request
+    ): RedirectResponse {
         $this->authorize('view', $post);
 
         $this->management->unlike($comment, $request->user());
