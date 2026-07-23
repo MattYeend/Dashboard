@@ -119,7 +119,11 @@ const auditFeed = [
                         <span class="text-[#706f6c] dark:text-[#A1A09A]">live</span>
                     </div>
                     <ul class="ticker mt-11 space-y-3 px-4">
-                        <li v-for="(entry, i) in auditFeed" :key="i" class="text-[#1b1b18] dark:text-[#EDEDEC]">
+                        <li
+                            v-for="(entry, i) in [...auditFeed, ...auditFeed]"
+                            :key="i"
+                            class="text-[#1b1b18] dark:text-[#EDEDEC]"
+                        >
                             <span class="text-[#706f6c] dark:text-[#A1A09A]">&gt;</span> {{ entry }}
                         </li>
                     </ul>
@@ -162,9 +166,6 @@ const auditFeed = [
 @keyframes ticker-scroll {
     0% {
         transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-50%);
     }
     100% {
         transform: translateY(-50%);
