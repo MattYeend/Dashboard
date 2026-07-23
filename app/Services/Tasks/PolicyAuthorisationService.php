@@ -131,4 +131,28 @@ class PolicyAuthorisationService
 
         return $this->roleChecker->isSuperAdmin($creator);
     }
+
+    /**
+     * Determine whether the user can assign the task to another user.
+     */
+    public function canAssign(User $actor, Task $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('assign task') && $this->activeChecker->isActive($target);
+    }
+
+    /**
+     * Determine whether the user can change the task's status.
+     */
+    public function canChangeStatus(User $actor, Task $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('change task status') && $this->activeChecker->isActive($target);
+    }
 }

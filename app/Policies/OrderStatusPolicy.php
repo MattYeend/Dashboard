@@ -16,58 +16,111 @@ class OrderStatusPolicy
     ) {}
 
     /**
-     * Determine whether the user can view any order statuses.
+     * Determine whether the user can view any model.
      */
-    public function viewAny(User $user): bool
-    {
-        return $this->authorisationService->isAdmin($user);
+    public function viewAny(
+        User $user
+    ): bool {
+        return $this->authorisationService->isAdmin(
+            $user
+        );
     }
 
     /**
-     * Determine whether the user can view the order status.
+     * Determine whether the user can view the model.
      */
-    public function view(User $user, OrderStatus $orderStatus): bool
-    {
-        return $this->authorisationService->canView($user, $orderStatus);
+    public function view(
+        User $user,
+        OrderStatus $orderStatus
+    ): bool {
+        return $this->authorisationService->canView(
+            $user,
+            $orderStatus
+        );
     }
 
     /**
-     * Determine whether the user can create order statuses.
+     * Determine whether the user can create model.
      */
-    public function create(User $user): bool
-    {
-        return $this->authorisationService->isAdmin($user);
+    public function create(
+        User $user
+    ): bool {
+        return $this->authorisationService->isAdmin(
+            $user
+        );
     }
 
     /**
-     * Determine whether the user can update the order status.
+     * Determine whether the user can update the model.
      */
-    public function update(User $user, OrderStatus $orderStatus): bool
-    {
-        return $this->authorisationService->canUpdate($user, $orderStatus);
+    public function update(
+        User $user,
+        OrderStatus $orderStatus
+    ): bool {
+        return $this->authorisationService->canUpdate(
+            $user,
+            $orderStatus
+        );
     }
 
     /**
-     * Determine whether the user can delete the order status.
+     * Determine whether the user can delete the model.
      */
-    public function delete(User $user, OrderStatus $orderStatus): bool
-    {
-        return $this->authorisationService->canDelete($user, $orderStatus);
+    public function delete(
+        User $user,
+        OrderStatus $orderStatus
+    ): bool {
+        return $this->authorisationService->canDelete(
+            $user,
+            $orderStatus
+        );
     }
 
     /**
-     * Determine whether the user can restore the order status.
+     * Determine whether the user can restore the model.
      */
-    public function restore(User $user, OrderStatus $orderStatus): bool
-    {
-        return $this->authorisationService->canRestore($user, $orderStatus);
+    public function restore(
+        User $user,
+        OrderStatus $orderStatus
+    ): bool {
+        return $this->authorisationService->canRestore(
+            $user,
+            $orderStatus
+        );
     }
 
     /**
-     * Determine whether the user can permanently delete the order status.
+     * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, OrderStatus $orderStatus): bool
-    {
-        return $this->authorisationService->canForceDelete($user, $orderStatus);
+    public function forceDelete(
+        User $user,
+        OrderStatus $orderStatus
+    ): bool {
+        return $this->authorisationService->canForceDelete(
+            $user,
+            $orderStatus
+        );
+    }
+
+    /**
+     * Determine whether the user can import models.
+     */
+    public function import(
+        User $user
+    ): bool {
+        return $this->authorisationService->isAdmin(
+            $user
+        );
+    }
+
+    /**
+     * Determine whether the user can export models.
+     */
+    public function export(
+        User $user
+    ): bool {
+        return $this->authorisationService->isUser(
+            $user
+        );
     }
 }

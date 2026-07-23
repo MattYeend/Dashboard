@@ -19,24 +19,39 @@ class CommentPolicy
     /**
      * Determine whether the user can comment on the given post.
      */
-    public function create(User $user, Post $post): bool
-    {
-        return $this->authorisationService->canCreate($user, $post);
+    public function create(
+        User $user,
+        Post $post
+    ): bool {
+        return $this->authorisationService->canCreate(
+            $user,
+            $post
+        );
     }
 
     /**
      * Determine whether the user can update the given comment.
      */
-    public function update(User $user, Comment $comment): bool
-    {
-        return $this->authorisationService->canUpdate($user, $comment);
+    public function update(
+        User $user,
+        Comment $comment
+    ): bool {
+        return $this->authorisationService->canUpdate(
+            $user,
+            $comment
+        );
     }
 
     /**
      * Determine whether the user can delete the given comment.
      */
-    public function delete(User $user, Comment $comment): bool
-    {
-        return $this->authorisationService->canDelete($user, $comment);
+    public function delete(
+        User $user,
+        Comment $comment
+    ): bool {
+        return $this->authorisationService->canDelete(
+            $user,
+            $comment
+        );
     }
 }

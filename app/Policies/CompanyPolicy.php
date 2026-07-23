@@ -24,59 +24,84 @@ class CompanyPolicy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * Only admins can view the list of contacts.
      */
-    public function viewAny(User $user): bool
-    {
-        return $this->authorisationService->isAdmin($user);
+    public function viewAny(
+        User $user
+    ): bool {
+        return $this->authorisationService->isAdmin(
+            $user
+        );
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Company $company): bool
-    {
-        return $this->authorisationService->canView($user, $company);
+    public function view(
+        User $user,
+        Company $company
+    ): bool {
+        return $this->authorisationService->canView(
+            $user,
+            $company
+        );
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
-    {
-        return $this->authorisationService->isAdmin($user);
+    public function create(
+        User $user
+    ): bool {
+        return $this->authorisationService->isAdmin(
+            $user
+        );
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Company $company): bool
-    {
-        return $this->authorisationService->canUpdate($user, $company);
+    public function update(
+        User $user,
+        Company $company
+    ): bool {
+        return $this->authorisationService->canUpdate(
+            $user,
+            $company
+        );
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Company $company): bool
-    {
-        return $this->authorisationService->canDelete($user, $company);
+    public function delete(
+        User $user,
+        Company $company
+    ): bool {
+        return $this->authorisationService->canDelete(
+            $user,
+            $company
+        );
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Company $company): bool
-    {
-        return $this->authorisationService->canRestore($user, $company);
+    public function restore(
+        User $user,
+        Company $company
+    ): bool {
+        return $this->authorisationService->canRestore(
+            $user,
+            $company);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Company $company): bool
-    {
+    public function forceDelete(
+        User $user,
+        Company $company
+    ): bool {
         return $this->authorisationService->canForceDelete(
             $user,
             $company
@@ -86,32 +111,44 @@ class CompanyPolicy
     /**
      * Determine whether the user can bulk delete models.
      */
-    public function bulkDelete(User $user): bool
-    {
-        return $this->authorisationService->isAdmin($user);
+    public function bulkDelete(
+        User $user
+    ): bool {
+        return $this->authorisationService->isAdmin(
+            $user
+        );
     }
 
     /**
      * Determine whether the user can bulk restore models.
      */
-    public function bulkRestore(User $user): bool
-    {
-        return $this->authorisationService->isAdmin($user);
+    public function bulkRestore(
+        User $user
+    ): bool {
+        return $this->authorisationService->isAdmin(
+            $user
+        );
     }
 
     /**
      * Determine whether the user can import models.
      */
-    public function import(User $user): bool
-    {
-        return $this->authorisationService->isAdmin($user);
+    public function import(
+        User $user
+    ): bool {
+        return $this->authorisationService->isAdmin(
+            $user
+        );
     }
 
     /**
      * Determine whether the user can export models.
      */
-    public function export(User $user): bool
-    {
-        return $this->authorisationService->isUser($user);
+    public function export(
+        User $user
+    ): bool {
+        return $this->authorisationService->isUser(
+            $user
+        );
     }
 }

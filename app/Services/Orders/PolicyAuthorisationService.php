@@ -133,4 +133,28 @@ class PolicyAuthorisationService
 
         return $this->roleChecker->isSuperAdmin($owner);
     }
+
+    /**
+     * Determine whether the user can assign the order to another user.
+     */
+    public function canAssign(User $actor, Order $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('assign task') && $this->activeChecker->isActive($target);
+    }
+
+    /**
+     * Determine whether the user can change the order's status.
+     */
+    public function canChangeStatus(User $actor, Order $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('change task status') && $this->activeChecker->isActive($target);
+    }
 }
