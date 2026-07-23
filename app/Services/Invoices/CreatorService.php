@@ -27,18 +27,27 @@ class CreatorService
      *
      * @throws ModelNotFoundException
      */
-    public function create(array $data, int $createdBy): Invoice
-    {
+    public function create(
+        array $data,
+        int $createdBy
+    ): Invoice {
         $actor = User::findOrFail($createdBy);
 
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Invoice {
-                $invoiceData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $invoiceData = $this->dataPreparation->prepareForCreation(
+                    $data,
+                    $createdBy
+                );
 
-                $newInvoice = Invoice::create($invoiceData);
+                $newInvoice = Invoice::create(
+                    $invoiceData
+                );
 
-                $contactData = $this->dataPreparation->prepareContactForCreation($data);
+                $contactData = $this->dataPreparation->prepareContactForCreation(
+                    $data
+                );
 
                 if ($contactData !== null) {
                     $newInvoice->contact()->create($contactData);

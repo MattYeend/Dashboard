@@ -64,20 +64,40 @@ class QueryService
     public function getFormData(): array
     {
         return [
-            'statuses' => InvoiceStatus::orderBy('title')->get(['id', 'title', 'background_colour', 'text_colour']),
-            'companies' => Company::orderBy('name')->get(['id', 'name']),
+            'statuses' => InvoiceStatus::orderBy('title')->get([
+                'id',
+                'title',
+                'background_colour',
+                'text_colour',
+            ]),
+            'companies' => Company::orderBy('name')->get([
+                'id',
+                'name',
+            ]),
         ];
     }
 
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(array $filters): Builder
-    {
-        $query = Invoice::query()->with(['company', 'contact', 'order', 'status']);
-        $query = $this->filterService->applyAll($query, $filters);
+    protected function buildQuery(
+        array $filters
+    ): Builder {
+        $query = Invoice::query()->with([
+            'company',
+            'contact',
+            'order',
+            'status',
+        ]);
+        $query = $this->filterService->applyAll(
+            $query,
+            $filters
+        );
 
-        return $this->applySorting($query, $filters);
+        return $this->applySorting(
+            $query,
+            $filters
+        );
     }
 
     /**
@@ -111,8 +131,9 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(User $user): array
-    {
+    protected function getPermissions(
+        User $user
+    ): array {
         if (! $user) {
             return ['permissions_meta' => []];
         }
@@ -143,13 +164,20 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Invoice {
-        $query = Invoice::query()->with(['company', 'contact', 'order', 'status']);
+        $query = Invoice::query()->with([
+            'company',
+            'contact',
+            'order',
+            'status',
+        ]);
 
         if ($withTrashed) {
             $query->withTrashed();
         }
 
-        return $query->findOrFail($id);
+        return $query->findOrFail(
+            $id
+        );
     }
 
     /**

@@ -24,8 +24,11 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function delete(Invoice $invoice, int $deletedBy, ?User $actor = null): bool
-    {
+    public function delete(
+        Invoice $invoice,
+        int $deletedBy,
+        ?User $actor = null
+    ): bool {
         $actor ??= User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
@@ -49,8 +52,10 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function forceDelete(Invoice $invoice, int $deletedBy): bool
-    {
+    public function forceDelete(
+        Invoice $invoice,
+        int $deletedBy
+    ): bool {
         $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->forceHandle(
@@ -70,16 +75,26 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function deleteMultiple(array $invoiceIds, int $deletedBy): int
-    {
+    public function deleteMultiple(
+        array $invoiceIds,
+        int $deletedBy
+    ): int {
         $count = 0;
 
-        DB::transaction(function () use ($invoiceIds, $deletedBy, &$count) {
+        DB::transaction(function () use (
+            $invoiceIds,
+            $deletedBy,
+            &$count
+        ) {
             $actor = User::findOrFail($deletedBy);
             $invoices = Invoice::whereIn('id', $invoiceIds)->get();
 
             foreach ($invoices as $invoice) {
-                if ($this->delete($invoice, $deletedBy, $actor)) {
+                if ($this->delete(
+                    $invoice,
+                    $deletedBy,
+                    $actor
+                )) {
                     $count++;
                 }
             }

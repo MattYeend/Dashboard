@@ -19,89 +19,130 @@ class PolicyAuthorisationService
     /**
      * Check if user is a regular user, admin, or super admin.
      */
-    public function isUser(User $user): bool
-    {
-        return $this->roleChecker->isUser($user);
+    public function isUser(
+        User $user
+    ): bool {
+        return $this->roleChecker->isUser(
+            $user
+        );
     }
 
     /**
      * Check if user is admin or super admin.
      */
-    public function isAdmin(User $user): bool
-    {
-        return $this->roleChecker->isAdmin($user);
+    public function isAdmin(
+        User $user
+    ): bool {
+        return $this->roleChecker->isAdmin(
+            $user
+        );
     }
 
     /**
      * Check if invoice is active (not soft-deleted).
      */
-    public function isActive(Invoice $invoice): bool
-    {
-        return $this->activeChecker->isActive($invoice);
+    public function isActive(
+        Invoice $invoice
+    ): bool {
+        return $this->activeChecker->isActive(
+            $invoice
+        );
     }
 
     /**
      * Check if invoice is soft-deleted.
      */
-    public function isTrashed(Invoice $invoice): bool
-    {
-        return $this->activeChecker->isTrashed($invoice);
+    public function isTrashed(
+        Invoice $invoice
+    ): bool {
+        return $this->activeChecker->isTrashed(
+            $invoice
+        );
     }
 
     /**
      * Determine whether the user can view the invoice.
      */
-    public function canView(User $actor, Invoice $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canView(
+        User $actor,
+        Invoice $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $this->isAdmin($actor)
+            && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can update the invoice.
      */
-    public function canUpdate(User $actor, Invoice $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canUpdate(
+        User $actor,
+        Invoice $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $this->isAdmin($actor)
+            && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can delete the invoice.
      */
-    public function canDelete(User $actor, Invoice $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canDelete(
+        User $actor,
+        Invoice $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
+        return $this->isAdmin($actor)
+            && $this->activeChecker->canBeModified($target);
     }
 
     /**
      * Determine whether the user can restore the invoice.
      */
-    public function canRestore(User $actor, Invoice $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canRestore(
+        User $actor,
+        Invoice $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $this->isAdmin($actor)
+            && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
      * Determine whether the user can permanently delete the invoice.
      */
-    public function canForceDelete(User $actor, Invoice $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canForceDelete(
+        User $actor,
+        Invoice $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
@@ -117,9 +158,13 @@ class PolicyAuthorisationService
      *
      * Prevents admins from managing tasks created by super admins.
      */
-    private function targetOutranksActor(User $actor, Invoice $target): bool
-    {
-        if ($this->roleChecker->isSuperAdmin($actor)) {
+    private function targetOutranksActor(
+        User $actor,
+        Invoice $target
+    ): bool {
+        if ($this->roleChecker->isSuperAdmin(
+            $actor
+        )) {
             return false;
         }
 
@@ -129,70 +174,101 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->roleChecker->isSuperAdmin($creator);
+        return $this->roleChecker->isSuperAdmin(
+            $creator
+        );
     }
 
     /**
      * Determine whether the user can send the invoice.
      */
-    public function canSend(User $actor, Invoice $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canSend(
+        User $actor,
+        Invoice $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $this->isAdmin($actor)
+            && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can mark the invoice as paid.
      */
-    public function canMarkAsPaid(User $actor, Invoice $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canMarkAsPaid(
+        User $actor,
+        Invoice $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $this->isAdmin($actor)
+            && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can mark the invoice as unpaid.
      */
-    public function canMarkAsUnpaid(User $actor, Invoice $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canMarkAsUnpaid(
+        User $actor,
+        Invoice $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $this->isAdmin($actor)
+        && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can import invoices.
      */
-    public function canImport(User $actor): bool
-    {
-        return $this->isAdmin($actor);
+    public function canImport(
+        User $actor
+    ): bool {
+        return $this->isAdmin(
+            $actor
+        );
     }
 
     /**
      * Determine whether the user can export invoices.
      */
-    public function canExport(User $actor): bool
-    {
-        return $this->isUser($actor);
+    public function canExport(
+        User $actor
+    ): bool {
+        return $this->isUser(
+            $actor
+        );
     }
 
     /**
      * Determine whether the user can assign the invoice to another user.
      */
-    public function canAssign(User $actor, Invoice $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canAssign(
+        User $actor,
+        Invoice $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor, $target
+        )) {
             return false;
         }
 
-        return $actor->can('assign invoice') && $this->activeChecker->isActive($target);
+        return $actor->can('assign invoice')
+            && $this->activeChecker->isActive($target);
     }
 }

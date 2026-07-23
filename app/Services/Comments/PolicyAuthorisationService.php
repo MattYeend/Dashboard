@@ -81,11 +81,15 @@ class PolicyAuthorisationService
         User $actor,
         Comment $comment
     ): bool {
-        if ($this->targetOutranksActor($actor, $comment)) {
+        if ($this->targetOutranksActor(
+            $actor,
+            $comment
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($comment);
+        return $this->isAdmin($actor)
+            && $this->activeChecker->isActive($comment);
     }
 
     /**
@@ -95,11 +99,15 @@ class PolicyAuthorisationService
         User $actor,
         Comment $comment
     ): bool {
-        if ($this->targetOutranksActor($actor, $comment)) {
+        if ($this->targetOutranksActor(
+            $actor,
+            $comment
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($comment);
+        return $this->isAdmin($actor)
+            && $this->activeChecker->canBeModified($comment);
     }
 
     /**
@@ -109,7 +117,10 @@ class PolicyAuthorisationService
         User $actor,
         Comment $comment
     ): bool {
-        if ($this->targetOutranksActor($actor, $comment)) {
+        if ($this->targetOutranksActor(
+            $actor,
+            $comment
+        )) {
             return false;
         }
 

@@ -36,7 +36,10 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($invoice);
 
-        $invoiceData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $invoiceData = $this->dataPreparation->prepareForUpdate(
+            $data,
+            $updatedBy
+        );
 
         return $this->updateResource->handle(
             $invoice,
@@ -70,8 +73,10 @@ class UpdaterService
      * TODO: dispatch the invoice email/PDF here once invoice items
      * are complete - this currently only updates status and timestamp.
      */
-    public function markAsSent(Invoice $invoice, int $actorId): Invoice
-    {
+    public function markAsSent(
+        Invoice $invoice,
+        int $actorId
+    ): Invoice {
         $actor = User::findOrFail($actorId);
         $before = $this->auditLogService->snapshot($invoice);
 
@@ -130,8 +135,10 @@ class UpdaterService
      *
      * Reverts status_id to 'Pending' and clears paid_at.
      */
-    public function markAsUnpaid(Invoice $invoice, int $actorId): Invoice
-    {
+    public function markAsUnpaid(
+        Invoice $invoice,
+        int $actorId
+    ): Invoice {
         $actor = User::findOrFail($actorId);
         $before = $this->auditLogService->snapshot($invoice);
 

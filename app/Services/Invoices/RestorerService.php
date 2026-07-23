@@ -55,11 +55,17 @@ class RestorerService
      *
      * @throws \Exception
      */
-    public function restoreMultiple(array $invoiceIds, int $restoredBy): int
-    {
+    public function restoreMultiple(
+        array $invoiceIds,
+        int $restoredBy
+    ): int {
         $count = 0;
 
-        DB::transaction(function () use ($invoiceIds, $restoredBy, &$count) {
+        DB::transaction(function () use (
+            $invoiceIds,
+            $restoredBy,
+            &$count
+        ) {
             $actor = User::findOrFail($restoredBy);
 
             /** @var Collection<int, Invoice> $invoices */
@@ -69,7 +75,11 @@ class RestorerService
 
             foreach ($invoices as $invoice) {
                 if ($invoice->trashed()) {
-                    $this->restore($invoice, $restoredBy, $actor);
+                    $this->restore(
+                        $invoice,
+                        $restoredBy,
+                        $actor
+                    );
                     $count++;
                 }
             }

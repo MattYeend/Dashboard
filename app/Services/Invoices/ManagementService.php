@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new invoice.
      */
-    public function store(StoreInvoiceRequest $request): Invoice
-    {
+    public function store(
+        StoreInvoiceRequest $request
+    ): Invoice {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -51,7 +52,10 @@ class ManagementService
         Invoice $invoice,
         User $actor
     ): void {
-        $this->destructor->delete($invoice, $actor->id);
+        $this->destructor->delete(
+            $invoice,
+            $actor->id
+        );
     }
 
     /**
@@ -63,7 +67,10 @@ class ManagementService
     ): Invoice {
         $invoice = Invoice::withTrashed()->findOrFail($id);
 
-        return $this->restorer->restore($invoice, $actor->id);
+        return $this->restorer->restore(
+            $invoice,
+            $actor->id
+        );
     }
 
     /**
@@ -74,7 +81,10 @@ class ManagementService
         User $actor
     ): void {
         $invoice = Invoice::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete($invoice, $actor->id);
+        $this->destructor->forceDelete(
+            $invoice,
+            $actor->id
+        );
     }
 
     /**
@@ -96,7 +106,10 @@ class ManagementService
         foreach ($invoices as $invoice) {
             /** @var Invoice $invoice */
             $authoriseCallback($invoice);
-            $this->restorer->restore($invoice, $actor->id);
+            $this->restorer->restore(
+                $invoice,
+                $actor->id
+            );
             $restored[] = $invoice->id;
         }
 
@@ -123,7 +136,10 @@ class ManagementService
             $invoice = Invoice::findOrFail($id);
             $authoriseCallback($invoice);
 
-            $this->destructor->delete($invoice, $actor->id);
+            $this->destructor->delete(
+                $invoice,
+                $actor->id
+            );
             $deleted[] = $id;
         }
 

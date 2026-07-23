@@ -16,8 +16,10 @@ class FilterService
      * @param  Builder<Invoice>  $query
      * @return Builder<Invoice>
      */
-    public function applySearch(Builder $query, ?string $search): Builder
-    {
+    public function applySearch(
+        Builder $query,
+        ?string $search
+    ): Builder {
         if ($search === null) {
             return $query;
         }
@@ -36,13 +38,18 @@ class FilterService
      * @param  Builder<Invoice>  $query
      * @return Builder<Invoice>
      */
-    public function applyStatusFilter(Builder $query, ?int $statusId): Builder
-    {
+    public function applyStatusFilter(
+        Builder $query,
+        ?int $statusId
+    ): Builder {
         if ($statusId === null) {
             return $query;
         }
 
-        return $query->where('status_id', $statusId);
+        return $query->where(
+            'status_id',
+            $statusId
+        );
     }
 
     /**
@@ -51,13 +58,18 @@ class FilterService
      * @param  Builder<Invoice>  $query
      * @return Builder<Invoice>
      */
-    public function applyCompanyFilter(Builder $query, ?int $companyId): Builder
-    {
+    public function applyCompanyFilter(
+        Builder $query,
+        ?int $companyId
+    ): Builder {
         if ($companyId === null) {
             return $query;
         }
 
-        return $query->where('company_id', $companyId);
+        return $query->where(
+            'company_id',
+            $companyId
+        );
     }
 
     /**
@@ -70,14 +82,18 @@ class FilterService
      * @param  Builder<Invoice>  $query
      * @return Builder<Invoice>
      */
-    public function applyContactFilter(Builder $query, ?int $contactId): Builder
-    {
+    public function applyContactFilter(
+        Builder $query,
+        ?int $contactId
+    ): Builder {
         if ($contactId === null) {
             return $query;
         }
 
         return $query->whereHas('contact', function (Builder $q) use ($contactId): void {
-            $q->whereKey($contactId);
+            $q->whereKey(
+                $contactId
+            );
         });
     }
 
@@ -87,13 +103,18 @@ class FilterService
      * @param  Builder<Invoice>  $query
      * @return Builder<Invoice>
      */
-    public function applyOrderFilter(Builder $query, ?int $orderId): Builder
-    {
+    public function applyOrderFilter(
+        Builder $query,
+        ?int $orderId
+    ): Builder {
         if ($orderId === null) {
             return $query;
         }
 
-        return $query->where('order_id', $orderId);
+        return $query->where(
+            'order_id',
+            $orderId
+        );
     }
 
     /**
@@ -102,14 +123,25 @@ class FilterService
      * @param  Builder<Invoice>  $query
      * @return Builder<Invoice>
      */
-    public function applyDueDateRangeFilter(Builder $query, ?string $dueDateFrom, ?string $dueDateTo): Builder
-    {
+    public function applyDueDateRangeFilter(
+        Builder $query,
+        ?string $dueDateFrom,
+        ?string $dueDateTo
+    ): Builder {
         if ($dueDateFrom !== null) {
-            $query->whereDate('due_date', '>=', $dueDateFrom);
+            $query->whereDate(
+                'due_date',
+                '>=',
+                $dueDateFrom
+            );
         }
 
         if ($dueDateTo !== null) {
-            $query->whereDate('due_date', '<=', $dueDateTo);
+            $query->whereDate(
+                'due_date',
+                '<=',
+                $dueDateTo
+            );
         }
 
         return $query;
@@ -122,8 +154,10 @@ class FilterService
      * @param  array<string, mixed>  $filters
      * @return Builder<Invoice>
      */
-    public function applyAll(Builder $query, array $filters): Builder
-    {
+    public function applyAll(
+        Builder $query,
+        array $filters
+    ): Builder {
         $query = $this->applySearch($query, $filters['search'] ?? null);
         $query = $this->applyStatusFilter($query, isset($filters['status_id']) ? (int) $filters['status_id'] : null);
         $query = $this->applyCompanyFilter($query, isset($filters['company_id']) ? (int) $filters['company_id'] : null);

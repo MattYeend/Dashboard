@@ -67,11 +67,15 @@ class PolicyAuthorisationService
         User $actor,
         Company $target
     ): bool {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $this->isAdmin($actor)
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -81,11 +85,15 @@ class PolicyAuthorisationService
         User $actor,
         Company $target
     ): bool {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $this->isAdmin($actor)
+        && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -95,11 +103,15 @@ class PolicyAuthorisationService
         User $actor,
         Company $target
     ): bool {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
+        return $this->isAdmin($actor)
+        && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -109,11 +121,15 @@ class PolicyAuthorisationService
         User $actor,
         Company $target
     ): bool {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $this->isAdmin($actor)
+            && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
@@ -123,7 +139,10 @@ class PolicyAuthorisationService
         User $actor,
         Company $target
     ): bool {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
@@ -141,11 +160,15 @@ class PolicyAuthorisationService
         User $actor,
         Company $target
     ): bool {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $actor->can('change company industry') && $this->activeChecker->isActive($target);
+        return $actor->can('change company industry')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
