@@ -131,4 +131,32 @@ class PolicyAuthorisationService
 
         return $this->roleChecker->isSuperAdmin($creator);
     }
+
+    /**
+     * Determine whether the user can import invoice statuses.
+     */
+    public function canImport(User $actor): bool
+    {
+        return $this->isAdmin($actor);
+    }
+
+    /**
+     * Determine whether the user can export invoice statuses.
+     */
+    public function canExport(User $actor): bool
+    {
+        return $this->isUser($actor);
+    }
+
+    /**
+     * Determine whether the user can assign the invoice status.
+     */
+    public function canAssign(User $actor, InvoiceStatus $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('assign invoice statuses') && $this->activeChecker->isActive($target);
+    }
 }

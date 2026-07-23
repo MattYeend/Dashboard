@@ -123,4 +123,17 @@ class OrderStatusPolicy
             $user
         );
     }
+
+    /**
+     * Determine whether the user can assign the order status.
+     */
+    public function assign(
+        User $user,
+        OrderStatus $orderStatus
+    ): bool {
+        return $this->authorisationService->canAssign(
+            $user,
+            $orderStatus
+        );
+    }
 }

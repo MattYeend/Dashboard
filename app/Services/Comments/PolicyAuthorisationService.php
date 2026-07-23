@@ -28,6 +28,78 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Check if user is a regular user, admin, or super admin.
+     */
+    public function isUser(User $user): bool
+    {
+        return $this->roleChecker->isUser($user);
+    }
+
+    /**
+     * Check if comment is active (not soft-deleted).
+     */
+    public function isActive(Comment $comment): bool
+    {
+        return $this->activeChecker->isActive($comment);
+    }
+
+    /**
+     * Check if comment is soft-deleted.
+     */
+    public function isTrashed(Comment $comment): bool
+    {
+        return $this->activeChecker->isTrashed($comment);
+    }
+
+    /**
+     * Determine whether the user can view any comments.
+     */
+    public function canViewAny(User $actor): bool
+    {
+        return $this->isAdmin($actor);
+    }
+
+    /**
+     * Determine whether the user can view the given comment.
+     */
+    public function canView(User $actor, Comment $comment): bool
+    {
+        if ($this->targetOutranksActor($actor, $comment)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->isActive($comment);
+    }
+
+    /**
+     * Determine whether the user can restore the given comment.
+     */
+    public function canRestore(User $actor, Comment $comment): bool
+    {
+        if ($this->targetOutranksActor($actor, $comment)) {
+            return false;
+        }
+
+        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($comment);
+    }
+
+    /**
+     * Determine whether the user can permanently delete the given comment.
+     */
+    public function canForceDelete(User $actor, Comment $comment): bool
+    {
+        if ($this->targetOutranksActor($actor, $comment)) {
+            return false;
+        }
+
+        return $this->activeChecker->canUserPerformAction(
+            $actor,
+            'restoreOrForceDelete',
+            $comment
+        );
+    }
+
+    /**
      * Determine whether the user can comment on the given post.
      *
      * Mirrors Post's own view gate, since commenting requires the

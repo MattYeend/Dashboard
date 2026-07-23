@@ -101,4 +101,39 @@ class InvoiceStatusPolicy
             $invoiceStatus
         );
     }
+
+    /**
+     * Determine whether the user can import invoice statuses.
+     */
+    public function import(
+        User $user
+    ): bool {
+        return $this->authorisationService->canImport(
+            $user
+        );
+    }
+
+    /**
+     * Determine whether the user can export invoice statuses.
+     */
+    public function export(
+        User $user
+    ): bool {
+        return $this->authorisationService->canExport(
+            $user
+        );
+    }
+
+    /**
+     * Determine whether the user can assign the invoice status.
+     */
+    public function assign(
+        User $user,
+        InvoiceStatus $invoiceStatus
+    ): bool {
+        return $this->authorisationService->canAssign(
+            $user,
+            $invoiceStatus
+        );
+    }
 }

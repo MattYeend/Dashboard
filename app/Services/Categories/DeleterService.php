@@ -52,8 +52,10 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function forceDelete(Category $category, int $deletedBy): bool
-    {
+    public function forceDelete(
+        Category $category,
+        int $deletedBy
+    ): bool {
         $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->forceHandle(
@@ -73,11 +75,17 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function deleteMultiple(array $categoryIds, int $deletedBy): int
-    {
+    public function deleteMultiple(
+        array $categoryIds,
+        int $deletedBy
+    ): int {
         $count = 0;
 
-        DB::transaction(function () use ($categoryIds, $deletedBy, &$count) {
+        DB::transaction(function () use (
+            $categoryIds,
+            $deletedBy,
+            &$count
+        ) {
             $actor = User::findOrFail($deletedBy);
             $categories = Category::whereIn('id', $categoryIds)->get();
 

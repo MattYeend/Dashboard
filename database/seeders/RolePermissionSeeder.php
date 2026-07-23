@@ -224,7 +224,6 @@ class RolePermissionSeeder extends Seeder
             'force delete addresses',
             'import addresses',
             'export addresses',
-            'change addresses',
             'assign address',
 
             // Category Management
@@ -287,6 +286,7 @@ class RolePermissionSeeder extends Seeder
             'delete registration interests',
             'restore registration interests',
             'force delete registration interests',
+            'export registration interests',
 
             // Invoice management
             'view any invoice',
@@ -460,7 +460,6 @@ class RolePermissionSeeder extends Seeder
             'force delete addresses',
             'import addresses',
             'export addresses',
-            'change addresses',
             'assign address',
             'view any categories',
             'view categories',
@@ -511,6 +510,7 @@ class RolePermissionSeeder extends Seeder
             'delete registration interests',
             'restore registration interests',
             'force delete registration interests',
+            'export registration interests',
             'view any invoice',
             'view invoice',
             'create invoice',
@@ -642,7 +642,6 @@ class RolePermissionSeeder extends Seeder
             'force delete addresses',
             'import addresses',
             'export addresses',
-            'change addresses',
             'assign address',
             'view any categories',
             'view categories',
@@ -769,7 +768,6 @@ class RolePermissionSeeder extends Seeder
             'create addresses',
             'edit addresses',
             'delete addresses',
-            'change addresses',
             'assign address',
             'view any categories',
             'view categories',
@@ -1018,7 +1016,6 @@ class RolePermissionSeeder extends Seeder
             'delete addresses',
             'import addresses',
             'export addresses',
-            'change addresses',
             'assign address',
             'view any categories',
             'view categories',
@@ -1124,7 +1121,6 @@ class RolePermissionSeeder extends Seeder
             'view any addresses',
             'view addresses',
             'export addresses',
-            'change addresses',
             'view any categories',
             'view categories',
             'export categories',

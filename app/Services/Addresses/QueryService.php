@@ -82,11 +82,23 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = Address::query()
-            ->with(['addressable', 'creator', 'updater', 'deleter', 'restorer']);
+            ->with([
+                'addressable',
+                'creator',
+                'updater',
+                'deleter',
+                'restorer',
+            ]);
 
-        $query = $this->filterService->applyAll($query, $filters);
+        $query = $this->filterService->applyAll(
+            $query,
+            $filters
+        );
 
-        return $this->applySorting($query, $filters);
+        return $this->applySorting(
+            $query,
+            $filters
+        );
     }
 
     /**
@@ -128,8 +140,14 @@ class QueryService
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can('create', Address::class),
-                'can_view_any' => $user->can('viewAny', Address::class),
+                'can_create' => $user->can(
+                    'create',
+                    Address::class
+                ),
+                'can_view_any' => $user->can(
+                    'viewAny',
+                    Address::class
+                ),
             ],
         ];
     }
@@ -154,7 +172,13 @@ class QueryService
         bool $withTrashed = false
     ): Address {
         $query = Address::query()
-            ->with(['addressable', 'creator', 'updater', 'deleter', 'restorer']);
+            ->with([
+                'addressable',
+                'creator',
+                'updater',
+                'deleter',
+                'restorer',
+            ]);
 
         if ($withTrashed) {
             $query->withTrashed();

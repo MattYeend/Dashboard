@@ -113,6 +113,18 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can assign the industry.
+     */
+    public function canAssign(User $actor, Industry $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('assign industries') && $this->activeChecker->isActive($target);
+    }
+
+    /**
      * Determine whether the industry was created by a user who outranks the actor.
      *
      * Prevents admins from managing industries created by super admins.

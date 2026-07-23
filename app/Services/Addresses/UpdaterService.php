@@ -35,7 +35,10 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($address);
 
-        $addressData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $addressData = $this->dataPreparation->prepareForUpdate(
+            $data,
+            $updatedBy
+        );
 
         return $this->updateResource->handle(
             $address,

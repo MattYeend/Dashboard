@@ -61,7 +61,11 @@ class RestorerService
     ): int {
         $count = 0;
 
-        DB::transaction(function () use ($addressIds, $restoredBy, &$count) {
+        DB::transaction(function () use (
+            $addressIds,
+            $restoredBy,
+            &$count
+        ) {
             $actor = User::findOrFail($restoredBy);
 
             /** @var Collection<int,Address> $addresses */

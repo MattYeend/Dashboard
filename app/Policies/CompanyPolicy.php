@@ -151,4 +151,17 @@ class CompanyPolicy
             $user
         );
     }
+
+    /**
+     * Determine whether the user can change the company's industry.
+     */
+    public function changeIndustry(
+        User $user,
+        Company $company
+    ): bool {
+        return $this->authorisationService->canChangeIndustry(
+            $user,
+            $company
+        );
+    }
 }

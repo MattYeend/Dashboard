@@ -152,4 +152,17 @@ class IndustryPolicy
             $user
         );
     }
+
+    /**
+     * Determine whether the user can assign the industry.
+     */
+    public function assign(
+        User $user,
+        Industry $industry
+    ): bool {
+        return $this->authorisationService->canAssign(
+            $user,
+            $industry
+        );
+    }
 }

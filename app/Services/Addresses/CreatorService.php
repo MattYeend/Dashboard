@@ -34,23 +34,23 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Address {
-                $contactData = $this->dataPreparation->prepareForCreation(
+                $addressData = $this->dataPreparation->prepareForCreation(
                     $data,
                     $data['addressable_type'],
                     $data['addressable_id'],
                     $createdBy,
                 );
 
-                $newContact = Address::create($contactData);
+                $newAddress = Address::create($addressData);
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_ADDRESS,
                     $actor,
-                    $newContact,
-                    ['after' => $this->auditLogService->snapshot($newContact)],
+                    $newAddress,
+                    ['after' => $this->auditLogService->snapshot($newAddress)],
                 );
 
-                return $newContact;
+                return $newAddress;
             });
     }
 }

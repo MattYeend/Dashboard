@@ -51,7 +51,10 @@ class ManagementService
         Address $address,
         User $actor
     ): void {
-        $this->destructor->delete($address, $actor->id);
+        $this->destructor->delete(
+            $address,
+            $actor->id
+        );
     }
 
     /**
@@ -63,7 +66,10 @@ class ManagementService
     ): Address {
         $address = Address::withTrashed()->findOrFail($id);
 
-        return $this->restorer->restore($address, $actor->id);
+        return $this->restorer->restore(
+            $address,
+            $actor->id
+        );
     }
 
     /**
@@ -75,7 +81,10 @@ class ManagementService
         User $actor
     ): void {
         $address = Address::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete($address, $actor->id);
+        $this->destructor->forceDelete(
+            $address,
+            $actor->id
+        );
     }
 
     /**
@@ -124,7 +133,10 @@ class ManagementService
             $address = Address::findOrFail($id);
             $authoriseCallback($address);
 
-            $this->destructor->delete($address, $actor->id);
+            $this->destructor->delete(
+                $address,
+                $actor->id
+            );
             $deleted[] = $id;
         }
 

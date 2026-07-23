@@ -131,4 +131,16 @@ class PolicyAuthorisationService
 
         return $this->roleChecker->isSuperAdmin($creator);
     }
+
+    /**
+     * Determine whether the user can assign the order status.
+     */
+    public function canAssign(User $actor, OrderStatus $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('assign order statuses') && $this->activeChecker->isActive($target);
+    }
 }

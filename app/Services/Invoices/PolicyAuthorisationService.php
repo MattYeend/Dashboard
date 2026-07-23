@@ -167,4 +167,32 @@ class PolicyAuthorisationService
 
         return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
     }
+
+    /**
+     * Determine whether the user can import invoices.
+     */
+    public function canImport(User $actor): bool
+    {
+        return $this->isAdmin($actor);
+    }
+
+    /**
+     * Determine whether the user can export invoices.
+     */
+    public function canExport(User $actor): bool
+    {
+        return $this->isUser($actor);
+    }
+
+    /**
+     * Determine whether the user can assign the invoice to another user.
+     */
+    public function canAssign(User $actor, Invoice $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('assign invoice') && $this->activeChecker->isActive($target);
+    }
 }

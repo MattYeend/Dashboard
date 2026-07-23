@@ -47,7 +47,10 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): array {
-        $category = $this->findCategory($id, $withTrashed);
+        $category = $this->findCategory(
+            $id,
+            $withTrashed
+        );
 
         return array_merge(
             ['category' => $this->formatterService->format($category)],
@@ -71,10 +74,21 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Category::query()->with(['creator', 'updater', 'deleter', 'restorer']);
-        $query = $this->filterService->applyAll($query, $filters);
+        $query = Category::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
+        $query = $this->filterService->applyAll(
+            $query,
+            $filters
+        );
 
-        return $this->applySorting($query, $filters);
+        return $this->applySorting(
+            $query,
+            $filters
+        );
     }
 
     /**
@@ -140,7 +154,12 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Category {
-        $query = Category::query()->with(['creator', 'updater', 'deleter', 'restorer']);
+        $query = Category::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         if ($withTrashed) {
             $query->withTrashed();
@@ -176,8 +195,9 @@ class QueryService
      *
      * @return array<int, array{value: int, label: string}>
      */
-    private function getParentOptions(?int $excludeId = null): array
-    {
+    private function getParentOptions(
+        ?int $excludeId = null
+    ): array {
         $query = Category::query()->orderBy('name');
 
         if ($excludeId !== null) {
@@ -197,8 +217,9 @@ class QueryService
      *
      * @return array<int, int>
      */
-    private function descendantIds(int $id): array
-    {
+    private function descendantIds(
+        int $id
+    ): array {
         $childIds = Category::query()->where('parent_id', $id)->pluck('id')->all();
 
         $descendants = $childIds;

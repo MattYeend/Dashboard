@@ -123,4 +123,17 @@ class TaskStatusPolicy
             $user
         );
     }
+
+    /**
+     * Determine whether the user can assign the task status.
+     */
+    public function assign(
+        User $user,
+        TaskStatus $taskStatus
+    ): bool {
+        return $this->authorisationService->canAssign(
+            $user,
+            $taskStatus
+        );
+    }
 }

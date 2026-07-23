@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new category.
      */
-    public function store(StoreCategoryRequest $request): Category
-    {
+    public function store(
+        StoreCategoryRequest $request
+    ): Category {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -51,7 +52,10 @@ class ManagementService
         Category $category,
         User $actor
     ): void {
-        $this->destructor->delete($category, $actor->id);
+        $this->destructor->delete(
+            $category,
+            $actor->id
+        );
     }
 
     /**
@@ -63,7 +67,10 @@ class ManagementService
     ): Category {
         $category = Category::withTrashed()->findOrFail($id);
 
-        return $this->restorer->restore($category, $actor->id);
+        return $this->restorer->restore(
+            $category,
+            $actor->id
+        );
     }
 
     /**
@@ -74,7 +81,10 @@ class ManagementService
         User $actor
     ): void {
         $category = Category::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete($category, $actor->id);
+        $this->destructor->forceDelete(
+            $category,
+            $actor->id
+        );
     }
 
     /**
@@ -96,7 +106,10 @@ class ManagementService
         foreach ($categories as $category) {
             /** @var Category $category */
             $authoriseCallback($category);
-            $this->restorer->restore($category, $actor->id);
+            $this->restorer->restore(
+                $category,
+                $actor->id
+            );
             $restored[] = $category->id;
         }
 
@@ -123,7 +136,10 @@ class ManagementService
             $category = Category::findOrFail($id);
             $authoriseCallback($category);
 
-            $this->destructor->delete($category, $actor->id);
+            $this->destructor->delete(
+                $category,
+                $actor->id
+            );
             $deleted[] = $id;
         }
 

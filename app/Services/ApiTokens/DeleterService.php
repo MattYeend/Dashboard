@@ -9,8 +9,9 @@ class DeleterService
     /**
      * Revoke (delete) the given token.
      */
-    public function delete(PersonalAccessToken $token): void
-    {
+    public function delete(
+        PersonalAccessToken $token
+    ): void {
         $token->delete();
     }
 }

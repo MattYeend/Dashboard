@@ -152,4 +152,17 @@ class CategoryPolicy
             $user
         );
     }
+
+    /**
+     * Determine whether the user can assign the category.
+     */
+    public function assign(
+        User $user,
+        Category $category
+    ): bool {
+        return $this->authorisationService->canAssign(
+            $user,
+            $category
+        );
+    }
 }

@@ -81,7 +81,11 @@ class DeleterService
     ): int {
         $count = 0;
 
-        DB::transaction(function () use ($addressIds, $deletedBy, &$count) {
+        DB::transaction(function () use (
+            $addressIds,
+            $deletedBy,
+            &$count
+        ) {
             $actor = User::findOrFail($deletedBy);
             $addresses = Address::whereIn('id', $addressIds)->get();
 

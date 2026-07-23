@@ -19,41 +19,54 @@ class PolicyAuthorisationService
     /**
      * Check if user is a regular user, admin, or super admin.
      */
-    public function isUser(User $user): bool
-    {
-        return $this->roleChecker->isUser($user);
+    public function isUser(
+        User $user
+    ): bool {
+        return $this->roleChecker->isUser(
+            $user
+        );
     }
 
     /**
      * Check if user is admin or super admin.
      */
-    public function isAdmin(User $user): bool
-    {
-        return $this->roleChecker->isAdmin($user);
+    public function isAdmin(
+        User $user
+    ): bool {
+        return $this->roleChecker->isAdmin(
+            $user
+        );
     }
 
     /**
      * Check if address is active (not soft-deleted).
      */
-    public function isActive(Address $address): bool
-    {
-        return $this->activeChecker->isActive($address);
+    public function isActive(
+        Address $address
+    ): bool {
+        return $this->activeChecker->isActive(
+            $address
+        );
     }
 
     /**
      * Check if address is soft-deleted.
      */
-    public function isTrashed(Address $address): bool
-    {
-        return $this->activeChecker->isTrashed($address);
+    public function isTrashed(
+        Address $address
+    ): bool {
+        return $this->activeChecker->isTrashed(
+            $address
+        );
     }
 
     /**
      * Determine whether the user can view the model.
-     * Only admins can view company addresses.
      */
-    public function canView(User $actor, Address $target): bool
-    {
+    public function canView(
+        User $actor,
+        Address $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -64,8 +77,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can update the model.
      */
-    public function canUpdate(User $actor, Address $target): bool
-    {
+    public function canUpdate(
+        User $actor,
+        Address $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -76,8 +91,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can delete the model.
      */
-    public function canDelete(User $actor, Address $target): bool
-    {
+    public function canDelete(
+        User $actor,
+        Address $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -88,8 +105,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can restore the model.
      */
-    public function canRestore(User $actor, Address $target): bool
-    {
+    public function canRestore(
+        User $actor,
+        Address $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -101,8 +120,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function canForceDelete(User $actor, Address $target): bool
-    {
+    public function canForceDelete(
+        User $actor,
+        Address $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -115,12 +136,28 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can assign the address to another owner.
+     */
+    public function canAssign(
+        User $actor,
+        Address $target
+    ): bool {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('assign address') && $this->activeChecker->isActive($target);
+    }
+
+    /**
      * Determine whether the target user outranks the acting user.
      *
      * A Super Admin cannot be managed by anyone other than another Super Admin.
      */
-    private function targetOutranksActor(User $actor, Address $target): bool
-    {
+    private function targetOutranksActor(
+        User $actor,
+        Address $target
+    ): bool {
         if ($this->roleChecker->isSuperAdmin($actor)) {
             return false;
         }
@@ -131,6 +168,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->roleChecker->isSuperAdmin($owner);
+        return $this->roleChecker->isSuperAdmin(
+            $owner
+        );
     }
 }

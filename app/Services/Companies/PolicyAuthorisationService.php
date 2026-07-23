@@ -113,6 +113,18 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can change the company's industry.
+     */
+    public function canChangeIndustry(User $actor, Company $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('change company industry') && $this->activeChecker->isActive($target);
+    }
+
+    /**
      * Determine whether the company was created by a user who outranks the actor.
      *
      * Prevents admins from managing companies created by super admins.

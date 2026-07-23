@@ -16,8 +16,10 @@ class FilterService
      * @param  Builder<Address>  $query
      * @return Builder<Address>
      */
-    public function applySearch(Builder $query, ?string $search): Builder
-    {
+    public function applySearch(
+        Builder $query,
+        ?string $search
+    ): Builder {
         if ($search === null) {
             return $query;
         }
@@ -38,8 +40,10 @@ class FilterService
      * @param  Builder<Address>  $query
      * @return Builder<Address>
      */
-    public function applyCountry(Builder $query, ?string $country): Builder
-    {
+    public function applyCountry(
+        Builder $query,
+        ?string $country
+    ): Builder {
         if ($country === null) {
             return $query;
         }
@@ -54,8 +58,10 @@ class FilterService
      * @param  array<string,mixed>  $filters
      * @return Builder<Address>
      */
-    public function applyAll(Builder $query, array $filters): Builder
-    {
+    public function applyAll(
+        Builder $query,
+        array $filters
+    ): Builder {
         $query = $this->applySearch($query, $filters['search'] ?? null);
 
         return $this->applyCountry(

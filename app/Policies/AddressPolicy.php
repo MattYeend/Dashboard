@@ -150,4 +150,17 @@ class AddressPolicy
             $user
         );
     }
+
+    /**
+     * Determine whether the user can assign the address to another owner.
+     */
+    public function assign(
+        User $user,
+        Address $address
+    ): bool {
+        return $this->authorisationService->canAssign(
+            $user,
+            $address
+        );
+    }
 }

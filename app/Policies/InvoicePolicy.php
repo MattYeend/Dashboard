@@ -137,4 +137,39 @@ class InvoicePolicy
             $invoice
         );
     }
+
+    /**
+     * Determine whether the user can import invoices.
+     */
+    public function import(
+        User $user
+    ): bool {
+        return $this->authorisationService->canImport(
+            $user
+        );
+    }
+
+    /**
+     * Determine whether the user can export invoices.
+     */
+    public function export(
+        User $user
+    ): bool {
+        return $this->authorisationService->canExport(
+            $user
+        );
+    }
+
+    /**
+     * Determine whether the user can assign the invoice to another user.
+     */
+    public function assign(
+        User $user,
+        Invoice $invoice
+    ): bool {
+        return $this->authorisationService->canAssign(
+            $user,
+            $invoice
+        );
+    }
 }
