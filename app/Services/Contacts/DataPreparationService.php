@@ -36,8 +36,10 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string,mixed>
      */
-    public function prepareForUpdate(array $data, int $updatedBy): array
-    {
+    public function prepareForUpdate(
+        array $data,
+        int $updatedBy
+    ): array {
         $allowed = [
             'contactable_type',
             'contactable_id',
@@ -68,8 +70,9 @@ class DataPreparationService
      * recognised short key, in case a fully-qualified name is ever passed
      * through directly.
      */
-    private function resolveContactableType(string $contactableType): string
-    {
+    private function resolveContactableType(
+        string $contactableType
+    ): string {
         return $this->registry->modelClassForKey($contactableType)
         ?? throw new \InvalidArgumentException("Unrecognised contactable type: {$contactableType}");
     }

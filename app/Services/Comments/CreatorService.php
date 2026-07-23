@@ -28,16 +28,25 @@ class CreatorService
      *
      * @throws ModelNotFoundException
      */
-    public function create(Post $post, array $data, int $createdBy): Comment
-    {
+    public function create(
+        Post $post,
+        array $data,
+        int $createdBy
+    ): Comment {
         $actor = User::findOrFail($createdBy);
 
         return $this->createResource->handle(
             $data,
             function (array $data) use ($post, $createdBy, $actor): Comment {
-                $commentData = $this->dataPreparation->prepareForCreation($data, $post->id, $createdBy);
+                $commentData = $this->dataPreparation->prepareForCreation(
+                    $data,
+                    $post->id,
+                    $createdBy
+                );
 
-                $newComment = Comment::create($commentData);
+                $newComment = Comment::create(
+                    $commentData
+                );
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_COMMENT,

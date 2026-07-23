@@ -61,7 +61,11 @@ class RestorerService
     ): int {
         $count = 0;
 
-        DB::transaction(function () use ($contactIds, $restoredBy, &$count) {
+        DB::transaction(function () use (
+            $contactIds,
+            $restoredBy,
+            &$count
+        ) {
             $actor = User::findOrFail($restoredBy);
 
             /** @var Collection<int,Contact> $contacts */
@@ -71,7 +75,11 @@ class RestorerService
 
             foreach ($contacts as $contact) {
                 if ($contact->trashed()) {
-                    $this->restore($contact, $restoredBy, $actor);
+                    $this->restore(
+                        $contact,
+                        $restoredBy,
+                        $actor
+                    );
                     $count++;
                 }
             }

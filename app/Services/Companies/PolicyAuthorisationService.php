@@ -19,40 +19,54 @@ class PolicyAuthorisationService
     /**
      * Check if user is a regular user, admin, or super admin.
      */
-    public function isUser(User $user): bool
-    {
-        return $this->roleChecker->isUser($user);
+    public function isUser(
+        User $user
+    ): bool {
+        return $this->roleChecker->isUser(
+            $user
+        );
     }
 
     /**
      * Check if user is admin or super admin.
      */
-    public function isAdmin(User $user): bool
-    {
-        return $this->roleChecker->isAdmin($user);
+    public function isAdmin(
+        User $user
+    ): bool {
+        return $this->roleChecker->isAdmin(
+            $user
+        );
     }
 
     /**
      * Check if company is active (not soft-deleted).
      */
-    public function isActive(Company $company): bool
-    {
-        return $this->activeChecker->isActive($company);
+    public function isActive(
+        Company $company
+    ): bool {
+        return $this->activeChecker->isActive(
+            $company
+        );
     }
 
     /**
      * Check if company is soft-deleted.
      */
-    public function isTrashed(Company $company): bool
-    {
-        return $this->activeChecker->isTrashed($company);
+    public function isTrashed(
+        Company $company
+    ): bool {
+        return $this->activeChecker->isTrashed(
+            $company
+        );
     }
 
     /**
      * Determine whether the user can view the company.
      */
-    public function canView(User $actor, Company $target): bool
-    {
+    public function canView(
+        User $actor,
+        Company $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -63,8 +77,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can update the company.
      */
-    public function canUpdate(User $actor, Company $target): bool
-    {
+    public function canUpdate(
+        User $actor,
+        Company $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -75,8 +91,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can delete the company.
      */
-    public function canDelete(User $actor, Company $target): bool
-    {
+    public function canDelete(
+        User $actor,
+        Company $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -87,8 +105,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can restore the company.
      */
-    public function canRestore(User $actor, Company $target): bool
-    {
+    public function canRestore(
+        User $actor,
+        Company $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -99,8 +119,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can permanently delete the company.
      */
-    public function canForceDelete(User $actor, Company $target): bool
-    {
+    public function canForceDelete(
+        User $actor,
+        Company $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -115,8 +137,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can change the company's industry.
      */
-    public function canChangeIndustry(User $actor, Company $target): bool
-    {
+    public function canChangeIndustry(
+        User $actor,
+        Company $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -129,8 +153,10 @@ class PolicyAuthorisationService
      *
      * Prevents admins from managing companies created by super admins.
      */
-    private function targetOutranksActor(User $actor, Company $target): bool
-    {
+    private function targetOutranksActor(
+        User $actor,
+        Company $target
+    ): bool {
         if ($this->roleChecker->isSuperAdmin($actor)) {
             return false;
         }
@@ -141,6 +167,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->roleChecker->isSuperAdmin($creator);
+        return $this->roleChecker->isSuperAdmin(
+            $creator
+        );
     }
 }

@@ -35,7 +35,10 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($comment);
 
-        $commentData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $commentData = $this->dataPreparation->prepareForUpdate(
+            $data,
+            $updatedBy
+        );
 
         return $this->updateResource->handle(
             $comment,

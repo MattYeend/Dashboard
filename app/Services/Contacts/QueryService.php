@@ -71,9 +71,12 @@ class QueryService
     /**
      * Get the "owner" options for a given contactable type, for the dependent dropdown on the Create/Edit contact form.
      */
-    public function getContactableOptions(string $type): array
-    {
-        return $this->registry->optionsFor($type);
+    public function getContactableOptions(
+        string $type
+    ): array {
+        return $this->registry->optionsFor(
+            $type
+        );
     }
 
     /**
@@ -82,11 +85,23 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = Contact::query()
-            ->with(['contactable', 'creator', 'updater', 'deleter', 'restorer']);
+            ->with([
+                'contactable',
+                'creator',
+                'updater',
+                'deleter',
+                'restorer',
+            ]);
 
-        $query = $this->filterService->applyAll($query, $filters);
+        $query = $this->filterService->applyAll(
+            $query,
+            $filters
+        );
 
-        return $this->applySorting($query, $filters);
+        return $this->applySorting(
+            $query,
+            $filters
+        );
     }
 
     /**
@@ -154,13 +169,21 @@ class QueryService
         bool $withTrashed = false
     ): Contact {
         $query = Contact::query()
-            ->with(['contactable', 'creator', 'updater', 'deleter', 'restorer']);
+            ->with([
+                'contactable',
+                'creator',
+                'updater',
+                'deleter',
+                'restorer',
+            ]);
 
         if ($withTrashed) {
             $query->withTrashed();
         }
 
-        return $query->findOrFail($id);
+        return $query->findOrFail(
+            $id
+        );
     }
 
     /**

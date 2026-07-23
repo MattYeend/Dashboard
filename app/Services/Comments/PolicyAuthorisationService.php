@@ -22,48 +22,65 @@ class PolicyAuthorisationService
     /**
      * Check if user is admin or super admin.
      */
-    public function isAdmin(User $user): bool
-    {
-        return $this->roleChecker->isAdmin($user);
+    public function isAdmin(
+        User $user
+    ): bool {
+        return $this->roleChecker->isAdmin(
+            $user
+        );
     }
 
     /**
      * Check if user is a regular user, admin, or super admin.
      */
-    public function isUser(User $user): bool
-    {
-        return $this->roleChecker->isUser($user);
+    public function isUser(
+        User $user
+    ): bool {
+        return $this->roleChecker->isUser(
+            $user
+        );
     }
 
     /**
      * Check if comment is active (not soft-deleted).
      */
-    public function isActive(Comment $comment): bool
-    {
-        return $this->activeChecker->isActive($comment);
+    public function isActive(
+        Comment $comment
+    ): bool {
+        return $this->activeChecker->isActive(
+            $comment
+        );
     }
 
     /**
      * Check if comment is soft-deleted.
      */
-    public function isTrashed(Comment $comment): bool
-    {
-        return $this->activeChecker->isTrashed($comment);
+    public function isTrashed(
+        Comment $comment
+    ): bool {
+        return $this->activeChecker->isTrashed(
+            $comment
+        );
     }
 
     /**
      * Determine whether the user can view any comments.
      */
-    public function canViewAny(User $actor): bool
-    {
-        return $this->isAdmin($actor);
+    public function canViewAny(
+        User $actor
+    ): bool {
+        return $this->isAdmin(
+            $actor
+        );
     }
 
     /**
      * Determine whether the user can view the given comment.
      */
-    public function canView(User $actor, Comment $comment): bool
-    {
+    public function canView(
+        User $actor,
+        Comment $comment
+    ): bool {
         if ($this->targetOutranksActor($actor, $comment)) {
             return false;
         }
@@ -74,8 +91,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can restore the given comment.
      */
-    public function canRestore(User $actor, Comment $comment): bool
-    {
+    public function canRestore(
+        User $actor,
+        Comment $comment
+    ): bool {
         if ($this->targetOutranksActor($actor, $comment)) {
             return false;
         }
@@ -86,8 +105,10 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can permanently delete the given comment.
      */
-    public function canForceDelete(User $actor, Comment $comment): bool
-    {
+    public function canForceDelete(
+        User $actor,
+        Comment $comment
+    ): bool {
         if ($this->targetOutranksActor($actor, $comment)) {
             return false;
         }
@@ -105,9 +126,14 @@ class PolicyAuthorisationService
      * Mirrors Post's own view gate, since commenting requires the
      * same access as viewing the post.
      */
-    public function canCreate(User $actor, Post $post): bool
-    {
-        return $this->postAuthorisation->canView($actor, $post);
+    public function canCreate(
+        User $actor,
+        Post $post
+    ): bool {
+        return $this->postAuthorisation->canView(
+            $actor,
+            $post
+        );
     }
 
     /**
@@ -117,8 +143,10 @@ class PolicyAuthorisationService
      * already trashed. Unlike delete, admins cannot edit someone
      * else's comment content, only remove it.
      */
-    public function canUpdate(User $actor, Comment $comment): bool
-    {
+    public function canUpdate(
+        User $actor,
+        Comment $comment
+    ): bool {
         return $actor->id === $comment->created_by
             && $this->activeChecker->canBeModified($comment);
     }
@@ -130,8 +158,10 @@ class PolicyAuthorisationService
      * not already trashed. Otherwise the same outrank + admin rules
      * as Post apply.
      */
-    public function canDelete(User $actor, Comment $comment): bool
-    {
+    public function canDelete(
+        User $actor,
+        Comment $comment
+    ): bool {
         if ($actor->id === $comment->created_by) {
             return $this->activeChecker->canBeModified($comment);
         }
@@ -140,7 +170,11 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->activeChecker->canUserPerformAction($actor, 'modify', $comment);
+        return $this->activeChecker->canUserPerformAction(
+            $actor,
+            'modify',
+            $comment
+        );
     }
 
     /**
@@ -148,8 +182,10 @@ class PolicyAuthorisationService
      *
      * Prevents admins from deleting comments created by super admins.
      */
-    private function targetOutranksActor(User $actor, Comment $target): bool
-    {
+    private function targetOutranksActor(
+        User $actor,
+        Comment $target
+    ): bool {
         if ($this->roleChecker->isSuperAdmin($actor)) {
             return false;
         }
@@ -160,6 +196,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->roleChecker->isSuperAdmin($creator);
+        return $this->roleChecker->isSuperAdmin(
+            $creator
+        );
     }
 }

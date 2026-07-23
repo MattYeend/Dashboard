@@ -34,7 +34,10 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Company {
-                $companyData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $companyData = $this->dataPreparation->prepareForCreation(
+                    $data,
+                    $createdBy
+                );
 
                 $newCompany = Company::create($companyData);
 

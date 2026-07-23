@@ -35,7 +35,10 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($contact);
 
-        $contactData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $contactData = $this->dataPreparation->prepareForUpdate(
+            $data,
+            $updatedBy
+        );
 
         return $this->updateResource->handle(
             $contact,

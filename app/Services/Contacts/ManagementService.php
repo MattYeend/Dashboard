@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new company contact.
      */
-    public function store(StoreContactRequest $request): Contact
-    {
+    public function store(
+        StoreContactRequest $request
+    ): Contact {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -51,7 +52,10 @@ class ManagementService
         Contact $contact,
         User $actor
     ): void {
-        $this->destructor->delete($contact, $actor->id);
+        $this->destructor->delete(
+            $contact,
+            $actor->id
+        );
     }
 
     /**
@@ -63,7 +67,10 @@ class ManagementService
     ): Contact {
         $contact = Contact::withTrashed()->findOrFail($id);
 
-        return $this->restorer->restore($contact, $actor->id);
+        return $this->restorer->restore(
+            $contact,
+            $actor->id
+        );
     }
 
     /**
@@ -75,7 +82,10 @@ class ManagementService
         User $actor
     ): void {
         $contact = Contact::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete($contact, $actor->id);
+        $this->destructor->forceDelete(
+            $contact,
+            $actor->id
+        );
     }
 
     /**
@@ -124,7 +134,10 @@ class ManagementService
             $contact = Contact::findOrFail($id);
             $authoriseCallback($contact);
 
-            $this->destructor->delete($contact, $actor->id);
+            $this->destructor->delete(
+                $contact,
+                $actor->id
+            );
             $deleted[] = $id;
         }
 

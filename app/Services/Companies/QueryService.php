@@ -72,12 +72,26 @@ class QueryService
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(array $filters): Builder
-    {
-        $query = Company::query()->with(['creator', 'updater', 'deleter', 'restorer', 'industry', 'accountManager']);
-        $query = $this->filterService->applyAll($query, $filters);
+    protected function buildQuery(
+        array $filters
+    ): Builder {
+        $query = Company::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'industry',
+            'accountManager',
+        ]);
+        $query = $this->filterService->applyAll(
+            $query,
+            $filters
+        );
 
-        return $this->applySorting($query, $filters);
+        return $this->applySorting(
+            $query,
+            $filters
+        );
     }
 
     /**
@@ -143,13 +157,22 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Company {
-        $query = Company::query()->with(['creator', 'updater', 'deleter', 'restorer', 'industry', 'accountManager']);
+        $query = Company::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'industry',
+            'accountManager',
+        ]);
 
         if ($withTrashed) {
             $query->withTrashed();
         }
 
-        return $query->findOrFail($id);
+        return $query->findOrFail(
+            $id
+        );
     }
 
     /**
