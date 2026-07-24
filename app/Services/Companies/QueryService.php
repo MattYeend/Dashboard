@@ -27,7 +27,9 @@ class QueryService
         User $user,
         array $filters = []
     ): array {
-        $query = $this->buildQuery($filters);
+        $query = $this->buildQuery(
+            $filters
+        );
         $paginated = $this->paginate(
             $query,
             min((int) ($filters['per_page'] ?? 15), 100)
@@ -35,7 +37,9 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions($user),
+            $this->getPermissions(
+                $user
+            ),
             $this->baseData(),
         );
     }
@@ -48,12 +52,19 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): array {
-        $company = $this->findCompany($id, $withTrashed);
+        $company = $this->findCompany(
+            $id,
+            $withTrashed
+        );
 
         return array_merge(
-            ['company' => $this->formatterService->format($company)],
+            ['company' => $this->formatterService->format(
+                $company
+            )],
             $this->getFormData(),
-            $this->getPermissions($user),
+            $this->getPermissions(
+                $user
+            ),
             $this->baseData(),
         );
     }
@@ -64,8 +75,14 @@ class QueryService
     public function getFormData(): array
     {
         return [
-            'industries' => Industry::orderBy('title')->get(['id', 'title']),
-            'users' => User::orderBy('name')->get(['id', 'name']),
+            'industries' => Industry::orderBy('title')->get([
+                'id',
+                'title',
+            ]),
+            'users' => User::orderBy('name')->get([
+                'id',
+                'name',
+            ]),
         ];
     }
 
@@ -106,7 +123,9 @@ class QueryService
         return [
             'companies' => [
                 'data' => array_map(
-                    fn (Company $company) => $this->formatterService->format($company),
+                    fn (Company $company) => $this->formatterService->format(
+                        $company
+                    ),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -125,16 +144,23 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(User $user): array
-    {
+    protected function getPermissions(
+        User $user
+    ): array {
         if (! $user) {
             return ['permissions_meta' => []];
         }
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can('create', Company::class),
-                'can_view_any' => $user->can('viewAny', Company::class),
+                'can_create' => $user->can(
+                    'create',
+                    Company::class
+                ),
+                'can_view_any' => $user->can(
+                    'viewAny',
+                    Company::class
+                ),
             ],
         ];
     }

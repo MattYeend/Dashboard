@@ -45,7 +45,9 @@ class UpdaterService
             $invoice,
             $invoiceData,
             function (Invoice $invoice) use ($actor, $before, $data): void {
-                $contactData = $this->dataPreparation->prepareContactForUpdate($data);
+                $contactData = $this->dataPreparation->prepareContactForUpdate(
+                    $data
+                );
 
                 if ($contactData !== null) {
                     $invoice->contact()->updateOrCreate([], $contactData);

@@ -82,7 +82,11 @@ class DeleterService
     ): int {
         $count = 0;
 
-        DB::transaction(function () use ($invoiceStatusIds, $deletedBy, &$count) {
+        DB::transaction(function () use (
+            $invoiceStatusIds,
+            $deletedBy,
+            &$count
+        ) {
             $invoiceStatuses = InvoiceStatus::whereIn('id', $invoiceStatusIds)->get();
 
             foreach ($invoiceStatuses as $invoiceStatus) {

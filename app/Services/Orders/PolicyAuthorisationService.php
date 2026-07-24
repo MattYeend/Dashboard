@@ -19,78 +19,112 @@ class PolicyAuthorisationService
     /**
      * Check if user is a regular user, admin, or super admin.
      */
-    public function isUser(User $user): bool
-    {
-        return $this->roleChecker->isUser($user);
+    public function isUser(
+        User $user
+    ): bool {
+        return $this->roleChecker->isUser(
+            $user
+        );
     }
 
     /**
      * Check if user is admin or super admin.
      */
-    public function isAdmin(User $user): bool
-    {
-        return $this->roleChecker->isAdmin($user);
+    public function isAdmin(
+        User $user
+    ): bool {
+        return $this->roleChecker->isAdmin(
+            $user
+        );
     }
 
     /**
      * Check if order is active (not soft-deleted).
      */
-    public function isActive(Order $order): bool
-    {
-        return $this->activeChecker->isActive($order);
+    public function isActive(
+        Order $order
+    ): bool {
+        return $this->activeChecker->isActive(
+            $order
+        );
     }
 
     /**
      * Check if order is soft-deleted.
      */
-    public function isTrashed(Order $order): bool
-    {
-        return $this->activeChecker->isTrashed($order);
+    public function isTrashed(
+        Order $order
+    ): bool {
+        return $this->activeChecker->isTrashed(
+            $order
+        );
     }
 
     /**
      * Determine whether the user can view the model.
-     * Only admins can view company contacts.
      */
-    public function canView(User $actor, Order $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canView(
+        User $actor,
+        Order $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $this->isAdmin($actor)
+            && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function canUpdate(User $actor, Order $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canUpdate(
+        User $actor,
+        Order $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $this->isAdmin($actor)
+            && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function canDelete(User $actor, Order $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canDelete(
+        User $actor,
+        Order $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
+        return $this->isAdmin($actor)
+            && $this->activeChecker->canBeModified($target);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function canRestore(User $actor, Order $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canRestore(
+        User $actor,
+        Order $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
@@ -101,9 +135,14 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function canForceDelete(User $actor, Order $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canForceDelete(
+        User $actor,
+        Order $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
@@ -119,8 +158,10 @@ class PolicyAuthorisationService
      *
      * A Super Admin cannot be managed by anyone other than another Super Admin.
      */
-    private function targetOutranksActor(User $actor, Order $target): bool
-    {
+    private function targetOutranksActor(
+        User $actor,
+        Order $target
+    ): bool {
         if ($this->roleChecker->isSuperAdmin($actor)) {
             return false;
         }
@@ -137,24 +178,33 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can assign the order to another user.
      */
-    public function canAssign(User $actor, Order $target): bool
-    {
+    public function canAssign(
+        User $actor,
+        Order $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
-        return $actor->can('assign task') && $this->activeChecker->isActive($target);
+        return $actor->can('assign task')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can change the order's status.
      */
-    public function canChangeStatus(User $actor, Order $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canChangeStatus(
+        User $actor,
+        Order $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $actor->can('change task status') && $this->activeChecker->isActive($target);
+        return $actor->can('change task status')
+            && $this->activeChecker->isActive($target);
     }
 }

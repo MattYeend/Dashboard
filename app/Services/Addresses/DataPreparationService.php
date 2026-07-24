@@ -21,7 +21,9 @@ class DataPreparationService
         int $createdBy
     ): array {
         return [
-            'addressable_type' => $this->resolveAddressableType($addressableType),
+            'addressable_type' => $this->resolveAddressableType(
+                $addressableType
+            ),
             'addressable_id' => $addressableId,
             'address_line_one' => $data['address_line_one'],
             'address_line_two' => $data['address_line_two'] ?? null,
@@ -42,8 +44,10 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForUpdate(array $data, int $updatedBy): array
-    {
+    public function prepareForUpdate(
+        array $data,
+        int $updatedBy
+    ): array {
         $allowed = [
             'addressable_type',
             'addressable_id',
@@ -80,8 +84,9 @@ class DataPreparationService
      * recognised short key, in case a fully-qualified name is ever passed
      * through directly.
      */
-    private function resolveAddressableType(string $addressableType): string
-    {
+    private function resolveAddressableType(
+        string $addressableType
+    ): string {
         return $this->registry->modelClassForKey($addressableType)
         ?? throw new \InvalidArgumentException("Unrecognised addressable type: {$addressableType}");
     }

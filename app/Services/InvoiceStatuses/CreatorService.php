@@ -34,9 +34,14 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): InvoiceStatus {
-                $invoiceStatusData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $invoiceStatusData = $this->dataPreparation->prepareForCreation(
+                    $data,
+                    $createdBy
+                );
 
-                $newInvoiceStatus = InvoiceStatus::create($invoiceStatusData);
+                $newInvoiceStatus = InvoiceStatus::create(
+                    $invoiceStatusData
+                );
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_INVOICE_STATUS,

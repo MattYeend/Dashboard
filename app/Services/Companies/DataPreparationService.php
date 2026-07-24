@@ -17,11 +17,16 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForCreation(array $data, int $createdBy): array
-    {
+    public function prepareForCreation(
+        array $data,
+        int $createdBy
+    ): array {
         return [
             'name' => $data['name'],
-            'slug' => $data['slug'] ?? $this->slugService->generateUnique(Company::class, $data['name']),
+            'slug' => $data['slug'] ?? $this->slugService->generateUnique(
+                Company::class,
+                $data['name']
+            ),
             'email' => $data['email'] ?? null,
             'phone' => $data['phone'] ?? null,
             'website' => $data['website'] ?? null,

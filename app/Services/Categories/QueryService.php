@@ -26,7 +26,9 @@ class QueryService
         User $user,
         array $filters = []
     ): array {
-        $query = $this->buildQuery($filters);
+        $query = $this->buildQuery(
+            $filters
+        );
         $paginated = $this->paginate(
             $query,
             min((int) ($filters['per_page'] ?? 15), 100)
@@ -34,7 +36,9 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions($user),
+            $this->getPermissions(
+                $user
+            ),
             $this->baseData(),
         );
     }
@@ -53,8 +57,12 @@ class QueryService
         );
 
         return array_merge(
-            ['category' => $this->formatterService->format($category)],
-            $this->getPermissions($user),
+            ['category' => $this->formatterService->format(
+                $category
+            )],
+            $this->getPermissions(
+                $user
+            ),
             $this->baseData(),
         );
     }
@@ -62,18 +70,22 @@ class QueryService
     /**
      * Get data needed to populate create and edit forms.
      */
-    public function getFormData(?int $excludeId = null): array
-    {
+    public function getFormData(
+        ?int $excludeId = null
+    ): array {
         return [
-            'parentOptions' => $this->getParentOptions($excludeId),
+            'parentOptions' => $this->getParentOptions(
+                $excludeId
+            ),
         ];
     }
 
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(array $filters): Builder
-    {
+    protected function buildQuery(
+        array $filters
+    ): Builder {
         $query = Category::query()->with([
             'creator',
             'updater',
@@ -103,7 +115,9 @@ class QueryService
         return [
             'categories' => [
                 'data' => array_map(
-                    fn (Category $category) => $this->formatterService->format($category),
+                    fn (Category $category) => $this->formatterService->format(
+                        $category
+                    ),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -122,16 +136,23 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(User $user): array
-    {
+    protected function getPermissions(
+        User $user
+    ): array {
         if (! $user) {
             return ['permissions_meta' => []];
         }
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can('create', Category::class),
-                'can_view_any' => $user->can('viewAny', Category::class),
+                'can_create' => $user->can(
+                    'create',
+                    Category::class
+                ),
+                'can_view_any' => $user->can(
+                    'viewAny',
+                    Category::class
+                ),
             ],
         ];
     }
@@ -165,7 +186,9 @@ class QueryService
             $query->withTrashed();
         }
 
-        return $query->findOrFail($id);
+        return $query->findOrFail(
+            $id
+        );
     }
 
     /**
@@ -201,8 +224,16 @@ class QueryService
         $query = Category::query()->orderBy('name');
 
         if ($excludeId !== null) {
-            $query->where('id', '!=', $excludeId)
-                ->whereNotIn('id', $this->descendantIds($excludeId));
+            $query->where(
+                'id',
+                '!=',
+                $excludeId
+            )
+                ->whereNotIn(
+                    'id',
+                    $this->descendantIds(
+                        $excludeId
+                    ));
         }
 
         return $query->get(['id', 'name'])

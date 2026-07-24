@@ -16,8 +16,10 @@ class FilterService
      * @param  Builder<Order>  $query
      * @return Builder<Order>
      */
-    public function applySearch(Builder $query, ?string $search): Builder
-    {
+    public function applySearch(
+        Builder $query,
+        ?string $search
+    ): Builder {
         if ($search === null) {
             return $query;
         }
@@ -38,13 +40,18 @@ class FilterService
      * @param  Builder<Order>  $query
      * @return Builder<Order>
      */
-    public function applyStatus(Builder $query, ?int $statusId): Builder
-    {
+    public function applyStatus(
+        Builder $query,
+        ?int $statusId
+    ): Builder {
         if ($statusId === null) {
             return $query;
         }
 
-        return $query->where('status_id', $statusId);
+        return $query->where(
+            'status_id',
+            $statusId
+        );
     }
 
     /**
@@ -54,8 +61,10 @@ class FilterService
      * @param  array<string,mixed>  $filters
      * @return Builder<Order>
      */
-    public function applyAll(Builder $query, array $filters): Builder
-    {
+    public function applyAll(
+        Builder $query,
+        array $filters
+    ): Builder {
         $query = $this->applySearch($query, $filters['search'] ?? null);
 
         return $this->applyStatus(

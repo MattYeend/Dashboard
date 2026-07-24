@@ -21,7 +21,9 @@ class DataPreparationService
         int $createdBy
     ): array {
         return [
-            'contactable_type' => $this->resolveContactableType($contactableType),
+            'contactable_type' => $this->resolveContactableType(
+                $contactableType
+            ),
             'contactable_id' => $contactableId,
             'phone' => $data['phone'] ?? null,
             'email' => $data['email'] ?? null,
