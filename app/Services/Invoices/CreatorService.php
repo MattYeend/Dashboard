@@ -57,10 +57,15 @@ class CreatorService
                     Log::ACTION_CREATE_INVOICE,
                     $actor,
                     $newInvoice,
-                    ['after' => $this->auditLogService->snapshot($newInvoice)],
+                    [
+                        'after' => $this->auditLogService->snapshot(
+                            $newInvoice
+                        ),
+                    ],
                 );
 
                 return $newInvoice;
-            });
+            }
+        );
     }
 }

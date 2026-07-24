@@ -31,9 +31,13 @@ class UpdaterService
         array $data,
         int $updatedBy
     ): Industry {
-        $actor = User::findOrFail($updatedBy);
+        $actor = User::findOrFail(
+            $updatedBy
+        );
 
-        $before = $this->auditLogService->snapshot($industry);
+        $before = $this->auditLogService->snapshot(
+            $industry
+        );
 
         $industryData = $this->dataPreparation->prepareForUpdate(
             $data,
@@ -52,9 +56,12 @@ class UpdaterService
                     $fresh,
                     [
                         'before' => $before,
-                        'after' => $this->auditLogService->snapshot($fresh),
+                        'after' => $this->auditLogService->snapshot(
+                            $fresh
+                        ),
                     ],
                 );
-            });
+            }
+        );
     }
 }

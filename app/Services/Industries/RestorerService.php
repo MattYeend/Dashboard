@@ -30,7 +30,9 @@ class RestorerService
         int $restoredBy,
         ?User $actor = null
     ): Industry {
-        $actor ??= User::findOrFail($restoredBy);
+        $actor ??= User::findOrFail(
+            $restoredBy
+        );
 
         return $this->restoreResource->handle(
             $industry,
@@ -43,9 +45,14 @@ class RestorerService
                     Log::ACTION_RESTORE_INDUSTRY,
                     $actor,
                     $industry,
-                    ['before' => $this->auditLogService->snapshot($industry)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $industry
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -66,7 +73,9 @@ class RestorerService
             $restoredBy,
             &$count
         ) {
-            $actor = User::findOrFail($restoredBy);
+            $actor = User::findOrFail(
+                $restoredBy
+            );
 
             /** @var Collection<int, Industry> $industries */
             $industries = Industry::withTrashed()

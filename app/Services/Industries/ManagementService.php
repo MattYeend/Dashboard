@@ -105,7 +105,9 @@ class ManagementService
 
         foreach ($industries as $industry) {
             /** @var Industry $industry */
-            $authoriseCallback($industry);
+            $authoriseCallback(
+                $industry
+            );
             $this->restorer->restore(
                 $industry,
                 $actor->id
@@ -133,8 +135,12 @@ class ManagementService
         $deleted = [];
 
         foreach ($ids as $id) {
-            $industry = Industry::findOrFail($id);
-            $authoriseCallback($industry);
+            $industry = Industry::findOrFail(
+                $id
+            );
+            $authoriseCallback(
+                $industry
+            );
 
             $this->destructor->delete(
                 $industry,

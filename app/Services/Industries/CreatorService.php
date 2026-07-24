@@ -31,7 +31,9 @@ class CreatorService
         array $data,
         int $createdBy
     ): Industry {
-        $actor = User::findOrFail($createdBy);
+        $actor = User::findOrFail(
+            $createdBy
+        );
 
         return $this->createResource->handle(
             $data,
@@ -49,10 +51,15 @@ class CreatorService
                     Log::ACTION_CREATE_INDUSTRY,
                     $actor,
                     $newIndustry,
-                    ['after' => $this->auditLogService->snapshot($newIndustry)],
+                    [
+                        'after' => $this->auditLogService->snapshot(
+                            $newIndustry
+                        ),
+                    ],
                 );
 
                 return $newIndustry;
-            });
+            }
+        );
     }
 }

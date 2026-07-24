@@ -65,7 +65,9 @@ class ManagementService
         int $id,
         User $actor
     ): Contact {
-        $contact = Contact::withTrashed()->findOrFail($id);
+        $contact = Contact::withTrashed()->findOrFail(
+            $id
+        );
 
         return $this->restorer->restore(
             $contact,
@@ -131,8 +133,12 @@ class ManagementService
         $deleted = [];
 
         foreach ($ids as $id) {
-            $contact = Contact::findOrFail($id);
-            $authoriseCallback($contact);
+            $contact = Contact::findOrFail(
+                $id
+            );
+            $authoriseCallback(
+                $contact
+            );
 
             $this->destructor->delete(
                 $contact,

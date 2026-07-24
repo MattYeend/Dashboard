@@ -50,7 +50,8 @@ class DeleterService
                         ),
                     ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -79,7 +80,8 @@ class DeleterService
                         ),
                     ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -112,7 +114,8 @@ class DeleterService
                     $count++;
                 }
             }
-        });
+        }
+        );
 
         return $count;
     }

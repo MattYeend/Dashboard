@@ -30,7 +30,9 @@ class RestorerService
         int $restoredBy,
         ?User $actor = null
     ): Contact {
-        $actor ??= User::findOrFail($restoredBy);
+        $actor ??= User::findOrFail(
+            $restoredBy
+        );
 
         return $this->restoreResource->handle(
             $contact,
@@ -43,9 +45,14 @@ class RestorerService
                     Log::ACTION_RESTORE_CONTACT,
                     $actor,
                     $contact,
-                    ['before' => $this->auditLogService->snapshot($contact)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $contact
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -66,7 +73,9 @@ class RestorerService
             $restoredBy,
             &$count
         ) {
-            $actor = User::findOrFail($restoredBy);
+            $actor = User::findOrFail(
+                $restoredBy
+            );
 
             /** @var Collection<int,Contact> $contacts */
             $contacts = Contact::withTrashed()

@@ -29,7 +29,9 @@ class DeleterService
         int $deletedBy,
         ?User $actor = null
     ): bool {
-        $actor ??= User::findOrFail($deletedBy);
+        $actor ??= User::findOrFail(
+            $deletedBy
+        );
 
         return $this->deleteResource->handle(
             $industry,
@@ -42,9 +44,14 @@ class DeleterService
                     Log::ACTION_DELETE_INDUSTRY,
                     $actor,
                     $industry,
-                    ['before' => $this->auditLogService->snapshot($industry)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $industry
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -65,9 +72,14 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_INDUSTRY,
                     $actor,
                     $industry,
-                    ['before' => $this->auditLogService->snapshot($industry)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $industry
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -86,11 +98,17 @@ class DeleterService
             $deletedBy,
             &$count
         ) {
-            $actor = User::findOrFail($deletedBy);
+            $actor = User::findOrFail(
+                $deletedBy
+            );
             $industries = Industry::whereIn('id', $industryIds)->get();
 
             foreach ($industries as $industry) {
-                if ($this->delete($industry, $deletedBy, $actor)) {
+                if ($this->delete(
+                    $industry,
+                    $deletedBy,
+                    $actor
+                )) {
                     $count++;
                 }
             }
