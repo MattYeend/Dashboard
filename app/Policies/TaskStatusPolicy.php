@@ -18,122 +18,80 @@ class TaskStatusPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(
-        User $user
-    ): bool {
-        return $this->authorisationService->canViewAny(
-            $user
-        );
+    public function viewAny(User $user): bool
+    {
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(
-        User $user,
-        TaskStatus $taskStatus
-    ): bool {
-        return $this->authorisationService->canView(
-            $user,
-            $taskStatus
-        );
+    public function view(User $user, TaskStatus $taskStatus): bool
+    {
+        return $this->authorisationService->canView($user, $taskStatus);
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(
-        User $user
-    ): bool {
-        return $this->authorisationService->canCreate(
-            $user
-        );
+    public function create(User $user): bool
+    {
+        return $this->authorisationService->canCreate($user);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(
-        User $user,
-        TaskStatus $taskStatus
-    ): bool {
-        return $this->authorisationService->canUpdate(
-            $user,
-            $taskStatus
-        );
+    public function update(User $user, TaskStatus $taskStatus): bool
+    {
+        return $this->authorisationService->canUpdate($user, $taskStatus);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(
-        User $user,
-        TaskStatus $taskStatus
-    ): bool {
-        return $this->authorisationService->canDelete(
-            $user,
-            $taskStatus
-        );
+    public function delete(User $user, TaskStatus $taskStatus): bool
+    {
+        return $this->authorisationService->canDelete($user, $taskStatus);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(
-        User $user,
-        TaskStatus $taskStatus
-    ): bool {
-        return $this->authorisationService->canRestore(
-            $user,
-            $taskStatus
-        );
+    public function restore(User $user, TaskStatus $taskStatus): bool
+    {
+        return $this->authorisationService->canRestore($user, $taskStatus);
     }
 
     /**
      * Determine whether the user can permanently delete the models.
      */
-    public function forceDelete(
-        User $user,
-        TaskStatus $taskStatus
-    ): bool {
-        return $this->authorisationService->canForceDelete(
-            $user,
-            $taskStatus
-        );
+    public function forceDelete(User $user, TaskStatus $taskStatus): bool
+    {
+        return $this->authorisationService->canForceDelete($user, $taskStatus);
     }
 
     /**
      * Determine whether the user can assign the task status.
      */
-    public function assign(
-        User $user,
-        TaskStatus $taskStatus
-    ): bool {
-        return $this->authorisationService->canAssign(
-            $user,
-            $taskStatus
-        );
+    public function assign(User $user, TaskStatus $taskStatus): bool
+    {
+        return $this->authorisationService->canAssign($user, $taskStatus);
     }
 
     /**
      * Determine whether the user can import models.
      */
-    public function import(
-        User $user
-    ): bool {
-        return $this->authorisationService->canImport(
-            $user
-        );
+    public function import(User $user): bool
+    {
+        return $this->authorisationService->canImport($user);
     }
 
     /**
      * Determine whether the user can export models.
      */
-    public function export(
-        User $user
-    ): bool {
-        return $this->authorisationService->canExport(
-            $user
-        );
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->canExport($user);
     }
 }

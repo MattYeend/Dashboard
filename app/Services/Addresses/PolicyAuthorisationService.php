@@ -73,8 +73,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view addresses')
-            && $this->activeChecker->isActive($target);
+        return $actor->can('view addresses') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -86,8 +85,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit addresses')
-            && $this->activeChecker->isActive($target);
+        return $actor->can('edit addresses') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -99,8 +97,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete addresses')
-            && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete addresses') && $this->activeChecker->canBeModified($target);
     }
 
     /**
