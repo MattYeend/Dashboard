@@ -21,7 +21,7 @@ class TagPolicy
     public function viewAny(
         User $user
     ): bool {
-        return $this->authorisation->isAdmin(
+        return $this->authorisation->canViewAny(
             $user
         );
     }
@@ -45,7 +45,7 @@ class TagPolicy
     public function create(
         User $user
     ): bool {
-        return $this->authorisation->isAdmin(
+        return $this->authorisation->canCreate(
             $user
         );
     }

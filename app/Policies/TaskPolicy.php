@@ -21,7 +21,7 @@ class TaskPolicy
     public function viewAny(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin($user);
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**
@@ -43,7 +43,7 @@ class TaskPolicy
     public function create(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canCreate(
             $user
         );
     }
@@ -106,7 +106,7 @@ class TaskPolicy
     public function import(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canImport(
             $user
         );
     }
@@ -117,7 +117,7 @@ class TaskPolicy
     public function export(
         User $user
     ): bool {
-        return $this->authorisationService->isUser(
+        return $this->authorisationService->canExport(
             $user
         );
     }

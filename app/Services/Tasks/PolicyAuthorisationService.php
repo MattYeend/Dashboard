@@ -49,6 +49,22 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can view any tasks.
+     */
+    public function canViewAny(User $actor): bool
+    {
+        return $actor->can('view any task');
+    }
+
+    /**
+     * Determine whether the user can create tasks.
+     */
+    public function canCreate(User $actor): bool
+    {
+        return $actor->can('create task');
+    }
+
+    /**
      * Determine whether the user can view the task.
      */
     public function canView(User $actor, Task $target): bool
@@ -57,7 +73,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('view task') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -69,7 +85,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('edit task') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -81,7 +97,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete task') && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -93,7 +109,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $actor->can('restore task') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
@@ -154,5 +170,21 @@ class PolicyAuthorisationService
         }
 
         return $actor->can('change task status') && $this->activeChecker->isActive($target);
+    }
+
+    /**
+     * Determine whether the user can import tasks.
+     */
+    public function canImport(User $actor): bool
+    {
+        return $actor->can('import task');
+    }
+
+    /**
+     * Determine whether the user can export tasks.
+     */
+    public function canExport(User $actor): bool
+    {
+        return $actor->can('export task');
     }
 }

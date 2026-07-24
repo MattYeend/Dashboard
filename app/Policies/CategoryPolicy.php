@@ -28,7 +28,7 @@ class CategoryPolicy
     public function viewAny(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canViewAny(
             $user
         );
     }
@@ -52,7 +52,7 @@ class CategoryPolicy
     public function create(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canCreate(
             $user
         );
     }
@@ -110,6 +110,19 @@ class CategoryPolicy
     }
 
     /**
+     * Determine whether the user can assign the category.
+     */
+    public function assign(
+        User $user,
+        Category $category
+    ): bool {
+        return $this->authorisationService->canAssign(
+            $user,
+            $category
+        );
+    }
+
+    /**
      * Determine whether the user can bulk delete models.
      */
     public function bulkDelete(
@@ -137,7 +150,7 @@ class CategoryPolicy
     public function import(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canImport(
             $user
         );
     }
@@ -148,21 +161,8 @@ class CategoryPolicy
     public function export(
         User $user
     ): bool {
-        return $this->authorisationService->isUser(
+        return $this->authorisationService->canExport(
             $user
-        );
-    }
-
-    /**
-     * Determine whether the user can assign the category.
-     */
-    public function assign(
-        User $user,
-        Category $category
-    ): bool {
-        return $this->authorisationService->canAssign(
-            $user,
-            $category
         );
     }
 }

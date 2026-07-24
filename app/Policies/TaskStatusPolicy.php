@@ -21,7 +21,7 @@ class TaskStatusPolicy
     public function viewAny(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canViewAny(
             $user
         );
     }
@@ -45,7 +45,7 @@ class TaskStatusPolicy
     public function create(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canCreate(
             $user
         );
     }
@@ -103,12 +103,25 @@ class TaskStatusPolicy
     }
 
     /**
+     * Determine whether the user can assign the task status.
+     */
+    public function assign(
+        User $user,
+        TaskStatus $taskStatus
+    ): bool {
+        return $this->authorisationService->canAssign(
+            $user,
+            $taskStatus
+        );
+    }
+
+    /**
      * Determine whether the user can import models.
      */
     public function import(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canImport(
             $user
         );
     }
@@ -119,21 +132,8 @@ class TaskStatusPolicy
     public function export(
         User $user
     ): bool {
-        return $this->authorisationService->isUser(
+        return $this->authorisationService->canExport(
             $user
-        );
-    }
-
-    /**
-     * Determine whether the user can assign the task status.
-     */
-    public function assign(
-        User $user,
-        TaskStatus $taskStatus
-    ): bool {
-        return $this->authorisationService->canAssign(
-            $user,
-            $taskStatus
         );
     }
 }

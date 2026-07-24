@@ -29,7 +29,7 @@ class UserPolicy
     public function viewAny(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canViewAny(
             $user
         );
     }
@@ -53,7 +53,7 @@ class UserPolicy
     public function create(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canCreate(
             $user
         );
     }
@@ -138,7 +138,7 @@ class UserPolicy
     public function import(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canImport(
             $user
         );
     }
@@ -149,7 +149,7 @@ class UserPolicy
     public function export(
         User $user
     ): bool {
-        return $this->authorisationService->isUser(
+        return $this->authorisationService->canExport(
             $user
         );
     }

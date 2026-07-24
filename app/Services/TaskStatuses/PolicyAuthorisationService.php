@@ -49,6 +49,22 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can view any task statuses.
+     */
+    public function canViewAny(User $actor): bool
+    {
+        return $actor->can('view task statuses');
+    }
+
+    /**
+     * Determine whether the user can create task statuses.
+     */
+    public function canCreate(User $actor): bool
+    {
+        return $actor->can('create task statuses');
+    }
+
+    /**
      * Determine whether the user can view the task status.
      */
     public function canView(User $actor, TaskStatus $target): bool
@@ -57,7 +73,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('view task statuses') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -69,7 +85,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('edit task statuses') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -81,7 +97,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete task statuses') && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -93,7 +109,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $actor->can('restore task statuses') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
@@ -110,6 +126,34 @@ class PolicyAuthorisationService
             'restoreOrForceDelete',
             $target
         );
+    }
+
+    /**
+     * Determine whether the user can assign the task status.
+     */
+    public function canAssign(User $actor, TaskStatus $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('assign task statuses') && $this->activeChecker->isActive($target);
+    }
+
+    /**
+     * Determine whether the user can import task statuses.
+     */
+    public function canImport(User $actor): bool
+    {
+        return $actor->can('import task statuses');
+    }
+
+    /**
+     * Determine whether the user can export task statuses.
+     */
+    public function canExport(User $actor): bool
+    {
+        return $actor->can('export task statuses');
     }
 
     /**
@@ -130,17 +174,5 @@ class PolicyAuthorisationService
         }
 
         return $this->roleChecker->isSuperAdmin($creator);
-    }
-
-    /**
-     * Determine whether the user can assign the task status.
-     */
-    public function canAssign(User $actor, TaskStatus $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
-            return false;
-        }
-
-        return $actor->can('assign task statuses') && $this->activeChecker->isActive($target);
     }
 }

@@ -21,7 +21,7 @@ class PlanPolicy
     public function viewAny(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canViewAny(
             $user
         );
     }
@@ -45,7 +45,7 @@ class PlanPolicy
     public function create(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canCreate(
             $user
         );
     }

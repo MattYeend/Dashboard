@@ -28,7 +28,7 @@ class CompanyPolicy
     public function viewAny(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canViewAny(
             $user
         );
     }
@@ -52,7 +52,7 @@ class CompanyPolicy
     public function create(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canCreate(
             $user
         );
     }
@@ -92,7 +92,8 @@ class CompanyPolicy
     ): bool {
         return $this->authorisationService->canRestore(
             $user,
-            $company);
+            $company
+        );
     }
 
     /**
@@ -103,6 +104,19 @@ class CompanyPolicy
         Company $company
     ): bool {
         return $this->authorisationService->canForceDelete(
+            $user,
+            $company
+        );
+    }
+
+    /**
+     * Determine whether the user can change the company's industry.
+     */
+    public function changeIndustry(
+        User $user,
+        Company $company
+    ): bool {
+        return $this->authorisationService->canChangeIndustry(
             $user,
             $company
         );
@@ -136,7 +150,7 @@ class CompanyPolicy
     public function import(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canImport(
             $user
         );
     }
@@ -147,21 +161,8 @@ class CompanyPolicy
     public function export(
         User $user
     ): bool {
-        return $this->authorisationService->isUser(
+        return $this->authorisationService->canExport(
             $user
-        );
-    }
-
-    /**
-     * Determine whether the user can change the company's industry.
-     */
-    public function changeIndustry(
-        User $user,
-        Company $company
-    ): bool {
-        return $this->authorisationService->canChangeIndustry(
-            $user,
-            $company
         );
     }
 }

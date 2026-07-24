@@ -28,7 +28,7 @@ class AddressPolicy
     public function viewAny(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canViewAny(
             $user
         );
     }
@@ -52,7 +52,7 @@ class AddressPolicy
     public function create(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canCreate(
             $user
         );
     }
@@ -135,7 +135,7 @@ class AddressPolicy
     public function import(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canImport(
             $user
         );
     }
@@ -146,21 +146,8 @@ class AddressPolicy
     public function export(
         User $user
     ): bool {
-        return $this->authorisationService->isUser(
+        return $this->authorisationService->canExport(
             $user
-        );
-    }
-
-    /**
-     * Determine whether the user can assign the address to another owner.
-     */
-    public function assign(
-        User $user,
-        Address $address
-    ): bool {
-        return $this->authorisationService->canAssign(
-            $user,
-            $address
         );
     }
 }

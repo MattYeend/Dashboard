@@ -28,7 +28,7 @@ class IndustryPolicy
     public function viewAny(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canViewAny(
             $user
         );
     }
@@ -52,7 +52,7 @@ class IndustryPolicy
     public function create(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canCreate(
             $user
         );
     }
@@ -110,6 +110,19 @@ class IndustryPolicy
     }
 
     /**
+     * Determine whether the user can assign the industry.
+     */
+    public function assign(
+        User $user,
+        Industry $industry
+    ): bool {
+        return $this->authorisationService->canAssign(
+            $user,
+            $industry
+        );
+    }
+
+    /**
      * Determine whether the user can bulk delete models.
      */
     public function bulkDelete(
@@ -137,7 +150,7 @@ class IndustryPolicy
     public function import(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canImport(
             $user
         );
     }
@@ -148,21 +161,8 @@ class IndustryPolicy
     public function export(
         User $user
     ): bool {
-        return $this->authorisationService->isUser(
+        return $this->authorisationService->canExport(
             $user
-        );
-    }
-
-    /**
-     * Determine whether the user can assign the industry.
-     */
-    public function assign(
-        User $user,
-        Industry $industry
-    ): bool {
-        return $this->authorisationService->canAssign(
-            $user,
-            $industry
         );
     }
 }

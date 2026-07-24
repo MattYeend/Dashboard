@@ -21,7 +21,7 @@ class OrderStatusPolicy
     public function viewAny(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canViewAny(
             $user
         );
     }
@@ -45,7 +45,7 @@ class OrderStatusPolicy
     public function create(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canCreate(
             $user
         );
     }
@@ -103,12 +103,25 @@ class OrderStatusPolicy
     }
 
     /**
+     * Determine whether the user can assign the order status.
+     */
+    public function assign(
+        User $user,
+        OrderStatus $orderStatus
+    ): bool {
+        return $this->authorisationService->canAssign(
+            $user,
+            $orderStatus
+        );
+    }
+
+    /**
      * Determine whether the user can import models.
      */
     public function import(
         User $user
     ): bool {
-        return $this->authorisationService->isAdmin(
+        return $this->authorisationService->canImport(
             $user
         );
     }
@@ -119,21 +132,8 @@ class OrderStatusPolicy
     public function export(
         User $user
     ): bool {
-        return $this->authorisationService->isUser(
+        return $this->authorisationService->canExport(
             $user
-        );
-    }
-
-    /**
-     * Determine whether the user can assign the order status.
-     */
-    public function assign(
-        User $user,
-        OrderStatus $orderStatus
-    ): bool {
-        return $this->authorisationService->canAssign(
-            $user,
-            $orderStatus
         );
     }
 }
