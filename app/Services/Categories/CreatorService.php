@@ -27,39 +27,25 @@ class CreatorService
      *
      * @throws ModelNotFoundException
      */
-    public function create(
-        array $data,
-        int $createdBy
-    ): Category {
-        $actor = User::findOrFail(
-            $createdBy
-        );
+    public function create(array $data, int $createdBy): Category
+    {
+        $actor = User::findOrFail($createdBy);
 
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Category {
-                $categoryData = $this->dataPreparation->prepareForCreation(
-                    $data,
-                    $createdBy
-                );
+                $industryData = $this->dataPreparation->prepareForCreation($data, $createdBy);
 
-                $newCategory = Category::create(
-                    $categoryData
-                );
+                $newIndustry = Category::create($industryData);
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_CATEGORY,
                     $actor,
-                    $newCategory,
-                    [
-                        'after' => $this->auditLogService->snapshot(
-                            $newCategory
-                        ),
-                    ],
+                    $newIndustry,
+                    ['after' => $this->auditLogService->snapshot($newIndustry)],
                 );
 
-                return $newCategory;
-            }
-        );
+                return $newIndustry;
+            });
     }
 }

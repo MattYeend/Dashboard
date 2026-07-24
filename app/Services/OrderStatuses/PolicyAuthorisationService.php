@@ -74,7 +74,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view order statuses') && $this->activeChecker->isActive($target);
+        return $actor->can('view order statuses')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -86,7 +87,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit order statuses') && $this->activeChecker->isActive($target);
+        return $actor->can('edit order statuses')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -98,7 +100,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete order statuses') && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete order statuses')
+            && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -110,7 +113,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('restore order statuses') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $actor->can('restore order statuses')
+            && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**

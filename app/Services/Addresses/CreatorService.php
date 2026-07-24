@@ -47,15 +47,10 @@ class CreatorService
                     Log::ACTION_CREATE_ADDRESS,
                     $actor,
                     $newAddress,
-                    [
-                        'after' => $this->auditLogService->snapshot(
-                            $newAddress
-                        ),
-                    ],
+                    ['after' => $this->auditLogService->snapshot($newAddress)],
                 );
 
                 return $newAddress;
-            }
-        );
+            });
     }
 }

@@ -60,10 +60,7 @@ class AddressableTypeRegistryService
         $allowed = $this->all();
 
         // Normalise either a short key or a stored FQCN back to a short key
-        $resolvedType = $this->resolveTypeKey(
-            $type,
-            $allowed
-        );
+        $resolvedType = $this->resolveTypeKey($type, $allowed);
 
         $config = $allowed[$resolvedType] ?? null;
 
@@ -139,10 +136,8 @@ class AddressableTypeRegistryService
      * class name (e.g. "App\Models\User"), but only returns keys that
      * exist in the allow-list.
      */
-    private function resolveTypeKey(
-        string $type,
-        array $allowed
-    ): string {
+    private function resolveTypeKey(string $type, array $allowed): string
+    {
         if (isset($allowed[$type])) {
             return $type;
         }

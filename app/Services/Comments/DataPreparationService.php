@@ -12,11 +12,8 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForCreation(
-        array $data,
-        int $postId,
-        int $createdBy
-    ): array {
+    public function prepareForCreation(array $data, int $postId, int $createdBy): array
+    {
         return [
             'post_id' => $postId,
             'content' => Purifier::clean($data['content']),
@@ -31,10 +28,8 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForUpdate(
-        array $data,
-        int $updatedBy
-    ): array {
+    public function prepareForUpdate(array $data, int $updatedBy): array
+    {
         return [
             'content' => Purifier::clean($data['content']),
             'updated_by' => $updatedBy,

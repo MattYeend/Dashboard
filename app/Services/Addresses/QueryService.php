@@ -48,21 +48,12 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): array {
-        $address = $this->findAddress(
-            $id,
-            $withTrashed
-        );
+        $address = $this->findAddress($id, $withTrashed);
 
         return array_merge(
-            [
-                'address' => $this->formatterService->format(
-                    $address
-                ),
-            ],
+            ['address' => $this->formatterService->format($address)],
             $this->getFormData(),
-            $this->getPermissions(
-                $user
-            ),
+            $this->getPermissions($user),
             $this->baseData(),
         );
     }
@@ -80,38 +71,21 @@ class QueryService
     /**
      * Get the "owner" options for a given addressable type, for the dependent dropdown on the Create/Edit address form.
      */
-    public function getAddressableOptions(
-        string $type
-    ): array {
-        return $this->registry->optionsFor(
-            $type
-        );
+    public function getAddressableOptions(string $type): array
+    {
+        return $this->registry->optionsFor($type);
     }
 
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(
-        array $filters
-    ): Builder {
-        $query = Address::query()
-            ->with([
-                'addressable',
-                'creator',
-                'updater',
-                'deleter',
-                'restorer',
-            ]);
+    protected function buildQuery(array $filters): Builder
+    {
+        $query = Address::query()->with(['addressable', 'creator', 'updater', 'deleter', 'restorer']);
 
-        $query = $this->filterService->applyAll(
-            $query,
-            $filters
-        );
+        $query = $this->filterService->applyAll($query, $filters);
 
-        return $this->applySorting(
-            $query,
-            $filters
-        );
+        return $this->applySorting($query, $filters);
     }
 
     /**
@@ -126,9 +100,7 @@ class QueryService
         return [
             'addresses' => [
                 'data' => array_map(
-                    fn (Address $address) => $this->formatterService->format(
-                        $address
-                    ),
+                    fn (Address $address) => $this->formatterService->format($address),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -147,23 +119,16 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(
-        User $user
-    ): array {
+    protected function getPermissions(User $user): array
+    {
         if (! $user) {
             return ['permissions_meta' => []];
         }
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can(
-                    'create',
-                    Address::class
-                ),
-                'can_view_any' => $user->can(
-                    'viewAny',
-                    Address::class
-                ),
+                'can_create' => $user->can('create', Address::class),
+                'can_view_any' => $user->can('viewAny', Address::class),
             ],
         ];
     }
@@ -187,22 +152,13 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Address {
-        $query = Address::query()
-            ->with([
-                'addressable',
-                'creator',
-                'updater',
-                'deleter',
-                'restorer',
-            ]);
+        $query = Address::query()->with(['addressable', 'creator', 'updater', 'deleter', 'restorer']);
 
         if ($withTrashed) {
             $query->withTrashed();
         }
 
-        return $query->findOrFail(
-            $id
-        );
+        return $query->findOrFail($id);
     }
 
     /**

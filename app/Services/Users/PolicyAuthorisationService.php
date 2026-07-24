@@ -72,7 +72,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view users') && $this->activeChecker->isActive($target);
+        return $actor->can('view users')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -84,7 +85,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit users') && $this->activeChecker->isActive($target);
+        return $actor->can('edit users')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -96,7 +98,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete users') && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete users')
+            && $this->activeChecker->canBeModified($target);
     }
 
     /**

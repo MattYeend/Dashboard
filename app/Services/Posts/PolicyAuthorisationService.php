@@ -67,14 +67,9 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can view the order status.
      */
-    public function canView(
-        User $actor,
-        Post $target
-    ): bool {
-        if ($this->targetOutranksActor(
-            $actor,
-            $target
-        )) {
+    public function canView(User $actor, Post $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -85,14 +80,9 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can update the order status.
      */
-    public function canUpdate(
-        User $actor,
-        Post $target
-    ): bool {
-        if ($this->targetOutranksActor(
-            $actor,
-            $target
-        )) {
+    public function canUpdate(User $actor, Post $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -103,10 +93,8 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can delete the order status.
      */
-    public function canDelete(
-        User $actor,
-        Post $target
-    ): bool {
+    public function canDelete(User $actor, Post $target): bool
+    {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -118,10 +106,8 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can restore the order status.
      */
-    public function canRestore(
-        User $actor,
-        Post $target
-    ): bool {
+    public function canRestore(User $actor, Post $target): bool
+    {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -133,10 +119,8 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can permanently delete the order status.
      */
-    public function canForceDelete(
-        User $actor,
-        Post $target
-    ): bool {
+    public function canForceDelete(User $actor, Post $target): bool
+    {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -169,10 +153,8 @@ class PolicyAuthorisationService
      *
      * Prevents admins from managing order statuses created by super admins.
      */
-    private function targetOutranksActor(
-        User $actor,
-        Post $target
-    ): bool {
+    private function targetOutranksActor(User $actor, Post $target): bool
+    {
         if ($this->roleChecker->isSuperAdmin($actor)) {
             return false;
         }
@@ -183,7 +165,6 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->roleChecker->isSuperAdmin($creator
-        );
+        return $this->roleChecker->isSuperAdmin($creator);
     }
 }

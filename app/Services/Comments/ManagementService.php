@@ -58,10 +58,7 @@ class ManagementService
         Comment $comment,
         User $actor
     ): void {
-        $this->destructor->delete(
-            $comment,
-            $actor->id
-        );
+        $this->destructor->delete($comment, $actor->id);
     }
 
     /**
@@ -71,10 +68,7 @@ class ManagementService
         Comment $comment,
         User $actor
     ): void {
-        $this->likeComment->handle(
-            $comment,
-            $actor
-        );
+        $this->likeComment->handle($comment, $actor);
     }
 
     /**
@@ -84,9 +78,6 @@ class ManagementService
         Comment $comment,
         User $actor
     ): void {
-        $this->unlikeComment->handle(
-            $comment,
-            $actor
-        );
+        $this->unlikeComment->handle($comment, $actor);
     }
 }
