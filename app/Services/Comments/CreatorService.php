@@ -52,10 +52,15 @@ class CreatorService
                     Log::ACTION_CREATE_COMMENT,
                     $actor,
                     $newComment,
-                    ['after' => $this->auditLogService->snapshot($newComment)],
+                    [
+                        'after' => $this->auditLogService->snapshot(
+                            $newComment
+                        ),
+                    ],
                 );
 
                 return $newComment;
-            });
+            }
+        );
     }
 }

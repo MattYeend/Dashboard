@@ -29,7 +29,9 @@ class DeleterService
         int $deletedBy,
         ?User $actor = null
     ): bool {
-        $actor ??= User::findOrFail($deletedBy);
+        $actor ??= User::findOrFail(
+            $deletedBy
+        );
 
         return $this->deleteResource->handle(
             $company,
@@ -42,9 +44,14 @@ class DeleterService
                     Log::ACTION_DELETE_COMPANY,
                     $actor,
                     $company,
-                    ['before' => $this->auditLogService->snapshot($company)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $company
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**

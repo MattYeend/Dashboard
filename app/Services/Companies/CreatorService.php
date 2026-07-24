@@ -27,9 +27,13 @@ class CreatorService
      *
      * @throws ModelNotFoundException
      */
-    public function create(array $data, int $createdBy): Company
-    {
-        $actor = User::findOrFail($createdBy);
+    public function create(
+        array $data,
+        int $createdBy
+    ): Company {
+        $actor = User::findOrFail(
+            $createdBy
+        );
 
         return $this->createResource->handle(
             $data,
@@ -45,10 +49,15 @@ class CreatorService
                     Log::ACTION_CREATE_COMPANY,
                     $actor,
                     $newCompany,
-                    ['after' => $this->auditLogService->snapshot($newCompany)],
+                    [
+                        'after' => $this->auditLogService->snapshot(
+                            $newCompany
+                        ),
+                    ],
                 );
 
                 return $newCompany;
-            });
+            }
+        );
     }
 }
