@@ -7,12 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import invoicesBulk from '@/routes/invoices/bulk';
-import type {
-    Invoice,
-    Pagination as PaginationMeta,
-    PermissionsMeta,
-} from '@/types';
 import {
     index as invoicesIndex,
     create as invoicesCreate,
@@ -20,6 +14,12 @@ import {
     edit as invoicesEdit,
     destroy as invoicesDestroy,
 } from '@/routes/invoices';
+import invoicesBulk from '@/routes/invoices/bulk';
+import type {
+    Invoice,
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+} from '@/types';
 
 interface Props {
     invoices: {
