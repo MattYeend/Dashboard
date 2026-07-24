@@ -30,7 +30,9 @@ class RestorerService
         int $restoredBy,
         ?User $actor = null
     ): Company {
-        $actor ??= User::findOrFail($restoredBy);
+        $actor ??= User::findOrFail(
+            $restoredBy
+        );
 
         return $this->restoreResource->handle(
             $company,
@@ -43,9 +45,14 @@ class RestorerService
                     Log::ACTION_RESTORE_COMPANY,
                     $actor,
                     $company,
-                    ['before' => $this->auditLogService->snapshot($company)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $company
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -66,7 +73,9 @@ class RestorerService
             $restoredBy,
             &$count
         ) {
-            $actor = User::findOrFail($restoredBy);
+            $actor = User::findOrFail(
+                $restoredBy
+            );
 
             /** @var Collection<int, Company> $companies */
             $companies = Company::withTrashed()

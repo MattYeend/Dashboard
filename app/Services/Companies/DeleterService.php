@@ -63,7 +63,9 @@ class DeleterService
         Company $company,
         int $deletedBy
     ): bool {
-        $actor = User::findOrFail($deletedBy);
+        $actor = User::findOrFail(
+            $deletedBy
+        );
 
         return $this->deleteResource->forceHandle(
             $company,
@@ -72,9 +74,14 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_COMPANY,
                     $actor,
                     $company,
-                    ['before' => $this->auditLogService->snapshot($company)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $company
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -93,11 +100,17 @@ class DeleterService
             $deletedBy,
             &$count
         ) {
-            $actor = User::findOrFail($deletedBy);
+            $actor = User::findOrFail(
+                $deletedBy
+            );
             $companies = Company::whereIn('id', $companyIds)->get();
 
             foreach ($companies as $company) {
-                if ($this->delete($company, $deletedBy, $actor)) {
+                if ($this->delete(
+                    $company,
+                    $deletedBy,
+                    $actor
+                )) {
                     $count++;
                 }
             }
