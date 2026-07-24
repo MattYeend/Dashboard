@@ -35,16 +35,18 @@ class TrashFilterService
     /**
      * Check if query includes trashed records.
      */
-    public function includesTrashed(?string $trashed): bool
-    {
+    public function includesTrashed(
+        ?string $trashed
+    ): bool {
         return in_array($trashed, ['with', 'only'], true);
     }
 
     /**
      * Check if query is only trashed records.
      */
-    public function isOnlyTrashed(?string $trashed): bool
-    {
+    public function isOnlyTrashed(
+        ?string $trashed
+    ): bool {
         return $trashed === 'only';
     }
 }

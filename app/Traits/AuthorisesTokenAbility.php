@@ -18,8 +18,10 @@ trait AuthorisesTokenAbility
      * Intended to be called alongside (not instead of) policy authorisation via
      * $this->authorize(), so both ownership/role checks and token scope must pass.
      */
-    protected function authoriseTokenAbility(Request $request, string $ability): void
-    {
+    protected function authoriseTokenAbility(
+        Request $request,
+        string $ability
+    ): void {
         if (! $request->user()->tokenCan($ability)) {
             throw new HttpException(403, "This token does not have the [{$ability}] ability.");
         }
