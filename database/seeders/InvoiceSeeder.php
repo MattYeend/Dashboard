@@ -65,10 +65,13 @@ class InvoiceSeeder extends Seeder
                 'contact' => [
                     'phone' => '01132 496821',
                     'email' => 'accounts@brightwavesoftware.co.uk',
-                    'address' => '14 Wellington Street',
+                ],
+                'address' => [
+                    'address_line_one' => '14 Wellington Street',
                     'city' => 'Leeds',
-                    'postal_code' => 'LS1 4DL',
+                    'postcode' => 'LS1 4DL',
                     'country' => 'United Kingdom',
+                    'is_primary' => true,
                 ],
             ],
             [
@@ -86,10 +89,13 @@ class InvoiceSeeder extends Seeder
                 'contact' => [
                     'phone' => '01132 496821',
                     'email' => 'accounts@brightwavesoftware.co.uk',
-                    'address' => '14 Wellington Street',
+                ],
+                'address' => [
+                    'address_line_one' => '14 Wellington Street',
                     'city' => 'Leeds',
-                    'postal_code' => 'LS1 4DL',
+                    'postcode' => 'LS1 4DL',
                     'country' => 'United Kingdom',
+                    'is_primary' => true,
                 ],
             ],
             [
@@ -107,10 +113,13 @@ class InvoiceSeeder extends Seeder
                 'contact' => [
                     'phone' => '01142 738455',
                     'email' => 'finance@thistleoakretail.co.uk',
-                    'address' => '2 Fargate',
+                ],
+                'address' => [
+                    'address_line_one' => '2 Fargate',
                     'city' => 'Sheffield',
-                    'postal_code' => 'S1 2HE',
+                    'postcode' => 'S1 2HE',
                     'country' => 'United Kingdom',
+                    'is_primary' => true,
                 ],
             ],
             [
@@ -128,10 +137,13 @@ class InvoiceSeeder extends Seeder
                 'contact' => [
                     'phone' => '01142 738455',
                     'email' => 'finance@thistleoakretail.co.uk',
-                    'address' => '2 Fargate',
+                ],
+                'address' => [
+                    'address_line_one' => '2 Fargate',
                     'city' => 'Sheffield',
-                    'postal_code' => 'S1 2HE',
+                    'postcode' => 'S1 2HE',
                     'country' => 'United Kingdom',
+                    'is_primary' => true,
                 ],
             ],
             [
@@ -149,10 +161,13 @@ class InvoiceSeeder extends Seeder
                 'contact' => [
                     'phone' => '01914 682037',
                     'email' => 'accounts@kestrelbuild.co.uk',
-                    'address' => '9 Grainger Street',
+                ],
+                'address' => [
+                    'address_line_one' => '9 Grainger Street',
                     'city' => 'Newcastle upon Tyne',
-                    'postal_code' => 'NE1 5JQ',
+                    'postcode' => 'NE1 5JQ',
                     'country' => 'United Kingdom',
+                    'is_primary' => true,
                 ],
             ],
             [
@@ -170,10 +185,13 @@ class InvoiceSeeder extends Seeder
                 'contact' => [
                     'phone' => '01423 561974',
                     'email' => 'billing@harrogatedatacentres.co.uk',
-                    'address' => '5 Cheltenham Parade',
+                ],
+                'address' => [
+                    'address_line_one' => '5 Cheltenham Parade',
                     'city' => 'Harrogate',
-                    'postal_code' => 'HG1 1DB',
+                    'postcode' => 'HG1 1DB',
                     'country' => 'United Kingdom',
+                    'is_primary' => true,
                 ],
             ],
         ];
@@ -205,7 +223,17 @@ class InvoiceSeeder extends Seeder
             );
 
             if ($invoice->contact === null) {
-                $invoice->contact()->create($data['contact']);
+                $invoice->contact()->create([
+                    ...$data['contact'],
+                    'created_by' => $creator->id,
+                ]);
+            }
+
+            if ($invoice->address === null) {
+                $invoice->address()->create([
+                    ...$data['address'],
+                    'created_by' => $creator->id,
+                ]);
             }
         }
     }
