@@ -41,7 +41,7 @@ describe('index', function () {
     });
 
     test('user without permission cannot list invoice statuses', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $this->actingAs($user)
             ->get('/invoice-statuses')
@@ -202,7 +202,7 @@ describe('show', function () {
     });
 
     test('user without permission cannot view an invoice status', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $invoiceStatus = InvoiceStatus::factory()->create();
 

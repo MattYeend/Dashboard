@@ -229,7 +229,7 @@ describe('show', function () {
     });
 
     test('user without permission cannot view a category', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $category = Category::factory()->create();
 

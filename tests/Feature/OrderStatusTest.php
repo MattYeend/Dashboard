@@ -41,7 +41,7 @@ describe('index', function () {
     });
 
     test('user without permission cannot list order statuses', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $this->actingAs($user)
             ->get('/order-statuses')
@@ -202,7 +202,7 @@ describe('show', function () {
     });
 
     test('user without permission cannot view an order status', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $orderStatus = OrderStatus::factory()->create();
 

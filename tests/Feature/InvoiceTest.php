@@ -300,7 +300,7 @@ describe('show', function () {
     });
 
     test('user without permission cannot view an invoice', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
         $invoice = Invoice::factory()->create();
 
         $this->actingAs($user)

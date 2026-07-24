@@ -41,7 +41,7 @@ describe('index', function () {
     });
 
     test('user without permission cannot list plans', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $this->actingAs($user)
             ->get('/plans')
@@ -238,7 +238,7 @@ describe('show', function () {
     });
 
     test('user without permission cannot view a plan', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $plan = Plan::factory()->create();
 

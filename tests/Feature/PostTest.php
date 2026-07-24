@@ -271,7 +271,7 @@ describe('show', function () {
     });
 
     test('user without permission cannot view a post', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $post = Post::factory()->create();
 

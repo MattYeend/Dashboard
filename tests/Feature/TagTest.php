@@ -183,7 +183,7 @@ describe('show', function () {
     });
 
     test('user without permission cannot view a tag', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $tag = Tag::factory()->create();
 

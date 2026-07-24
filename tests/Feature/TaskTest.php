@@ -47,7 +47,7 @@ describe('index', function () {
     });
 
     test('user without permission cannot list tasks', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $this->actingAs($user)
             ->get('/tasks')
@@ -221,7 +221,7 @@ describe('show', function () {
     });
 
     test('user without permission cannot view a task', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
         $task = Task::factory()->create();
 
         $this->actingAs($user)
