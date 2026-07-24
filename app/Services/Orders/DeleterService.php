@@ -44,11 +44,14 @@ class DeleterService
                     Log::ACTION_DELETE_ORDER,
                     $actor,
                     $order,
-                    ['before' => $this->auditLogService->snapshot(
-                        $order
-                    )],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $order
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -71,11 +74,14 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_ORDER,
                     $actor,
                     $order,
-                    ['before' => $this->auditLogService->snapshot(
-                        $order
-                    )],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $order
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**

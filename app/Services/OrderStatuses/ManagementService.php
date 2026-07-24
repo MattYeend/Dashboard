@@ -52,7 +52,10 @@ class ManagementService
         OrderStatus $orderStatus,
         User $actor
     ): void {
-        $this->destructor->delete($orderStatus, $actor->id);
+        $this->destructor->delete(
+            $orderStatus,
+            $actor->id
+        );
     }
 
     /**
@@ -64,7 +67,10 @@ class ManagementService
     ): OrderStatus {
         $orderStatus = OrderStatus::withTrashed()->findOrFail($id);
 
-        return $this->restorer->restore($orderStatus, $actor->id);
+        return $this->restorer->restore(
+            $orderStatus,
+            $actor->id
+        );
     }
 
     /**
@@ -76,7 +82,10 @@ class ManagementService
         User $actor
     ): void {
         $orderStatus = OrderStatus::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete($orderStatus, $actor->id);
+        $this->destructor->forceDelete(
+            $orderStatus,
+            $actor->id
+        );
     }
 
     /**
@@ -97,8 +106,13 @@ class ManagementService
 
         foreach ($orderStatuses as $orderStatus) {
             /** @var OrderStatus $orderStatus */
-            $authoriseCallback($orderStatus);
-            $this->restorer->restore($orderStatus, $actor->id);
+            $authoriseCallback(
+                $orderStatus
+            );
+            $this->restorer->restore(
+                $orderStatus,
+                $actor->id
+            );
             $restored[] = $orderStatus->id;
         }
 
@@ -122,10 +136,17 @@ class ManagementService
         $deleted = [];
 
         foreach ($ids as $id) {
-            $orderStatus = OrderStatus::findOrFail($id);
-            $authoriseCallback($orderStatus);
+            $orderStatus = OrderStatus::findOrFail(
+                $id
+            );
+            $authoriseCallback(
+                $orderStatus
+            );
 
-            $this->destructor->delete($orderStatus, $actor->id);
+            $this->destructor->delete(
+                $orderStatus,
+                $actor->id
+            );
             $deleted[] = $id;
         }
 

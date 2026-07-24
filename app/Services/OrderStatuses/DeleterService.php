@@ -29,7 +29,9 @@ class DeleterService
         int $deletedBy,
         ?User $actor = null
     ): bool {
-        $actor ??= User::findOrFail($deletedBy);
+        $actor ??= User::findOrFail(
+            $deletedBy
+        );
 
         return $this->deleteResource->handle(
             $orderStatus,
@@ -42,9 +44,14 @@ class DeleterService
                     Log::ACTION_DELETE_ORDER_STATUS,
                     $actor,
                     $orderStatus,
-                    ['before' => $this->auditLogService->snapshot($orderStatus)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $orderStatus
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -56,7 +63,9 @@ class DeleterService
         OrderStatus $orderStatus,
         int $deletedBy
     ): bool {
-        $actor = User::findOrFail($deletedBy);
+        $actor = User::findOrFail(
+            $deletedBy
+        );
 
         return $this->deleteResource->forceHandle(
             $orderStatus,
@@ -65,9 +74,14 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_ORDER_STATUS,
                     $actor,
                     $orderStatus,
-                    ['before' => $this->auditLogService->snapshot($orderStatus)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $orderStatus
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -81,12 +95,20 @@ class DeleterService
     ): int {
         $count = 0;
 
-        DB::transaction(function () use ($orderStatusIds, $deletedBy, &$count) {
+        DB::transaction(function () use (
+            $orderStatusIds,
+            $deletedBy,
+            &$count
+        ) {
             $actor = User::findOrFail($deletedBy);
             $orderStatuses = OrderStatus::whereIn('id', $orderStatusIds)->get();
 
             foreach ($orderStatuses as $orderStatus) {
-                if ($this->delete($orderStatus, $deletedBy, $actor)) {
+                if ($this->delete(
+                    $orderStatus,
+                    $deletedBy,
+                    $actor
+                )) {
                     $count++;
                 }
             }

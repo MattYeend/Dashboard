@@ -16,8 +16,10 @@ class FilterService
      * @param  Builder<OrderStatus>  $query
      * @return Builder<OrderStatus>
      */
-    public function applySearch(Builder $query, ?string $search): Builder
-    {
+    public function applySearch(
+        Builder $query,
+        ?string $search
+    ): Builder {
         if ($search === null) {
             return $query;
         }
@@ -37,8 +39,13 @@ class FilterService
      * @param  array<string, mixed>  $filters
      * @return Builder<OrderStatus>
      */
-    public function applyAll(Builder $query, array $filters): Builder
-    {
-        return $this->applySearch($query, $filters['search'] ?? null);
+    public function applyAll(
+        Builder $query,
+        array $filters
+    ): Builder {
+        return $this->applySearch(
+            $query,
+            $filters['search'] ?? null
+        );
     }
 }
