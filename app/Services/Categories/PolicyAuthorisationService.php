@@ -19,105 +19,152 @@ class PolicyAuthorisationService
     /**
      * Check if user is a regular user, admin, or super admin.
      */
-    public function isUser(User $user): bool
-    {
-        return $this->roleChecker->isUser($user);
+    public function isUser(
+        User $user
+    ): bool {
+        return $this->roleChecker->isUser(
+            $user
+        );
     }
 
     /**
      * Check if user is admin or super admin.
      */
-    public function isAdmin(User $user): bool
-    {
-        return $this->roleChecker->isAdmin($user);
+    public function isAdmin(
+        User $user
+    ): bool {
+        return $this->roleChecker->isAdmin(
+            $user
+        );
     }
 
     /**
      * Check if category is active (not soft-deleted).
      */
-    public function isActive(Category $category): bool
-    {
-        return $this->activeChecker->isActive($category);
+    public function isActive(
+        Category $category
+    ): bool {
+        return $this->activeChecker->isActive(
+            $category
+        );
     }
 
     /**
      * Check if category is soft-deleted.
      */
-    public function isTrashed(Category $category): bool
-    {
-        return $this->activeChecker->isTrashed($category);
+    public function isTrashed(
+        Category $category
+    ): bool {
+        return $this->activeChecker->isTrashed(
+            $category
+        );
     }
 
     /**
      * Determine whether the user can view any categories.
      */
-    public function canViewAny(User $actor): bool
-    {
-        return $actor->can('view any categories');
+    public function canViewAny(
+        User $actor
+    ): bool {
+        return $actor->can(
+            'view any categories'
+        );
     }
 
     /**
      * Determine whether the user can create categories.
      */
-    public function canCreate(User $actor): bool
-    {
-        return $actor->can('create categories');
+    public function canCreate(
+        User $actor
+    ): bool {
+        return $actor->can(
+            'create categories'
+        );
     }
 
     /**
      * Determine whether the user can view the category.
      */
-    public function canView(User $actor, Category $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canView(
+        User $actor,
+        Category $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $actor->can('view categories') && $this->activeChecker->isActive($target);
+        return $actor->can('view categories')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can update the category.
      */
-    public function canUpdate(User $actor, Category $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canUpdate(
+        User $actor,
+        Category $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $actor->can('edit categories') && $this->activeChecker->isActive($target);
+        return $actor->can('edit categories')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can delete the category.
      */
-    public function canDelete(User $actor, Category $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canDelete(
+        User $actor,
+        Category $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $actor->can('delete categories') && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete categories')
+            && $this->activeChecker->canBeModified($target);
     }
 
     /**
      * Determine whether the user can restore the category.
      */
-    public function canRestore(User $actor, Category $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canRestore(
+        User $actor,
+        Category $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $actor->can('restore categories') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $actor->can('restore categories')
+            && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
      * Determine whether the user can permanently delete the category.
      */
-    public function canForceDelete(User $actor, Category $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canForceDelete(
+        User $actor,
+        Category $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
@@ -131,29 +178,41 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can assign the category.
      */
-    public function canAssign(User $actor, Category $target): bool
-    {
-        if ($this->targetOutranksActor($actor, $target)) {
+    public function canAssign(
+        User $actor,
+        Category $target
+    ): bool {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $actor->can('assign category') && $this->activeChecker->isActive($target);
+        return $actor->can('assign category')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can import categories.
      */
-    public function canImport(User $actor): bool
-    {
-        return $actor->can('import categories');
+    public function canImport(
+        User $actor
+    ): bool {
+        return $actor->can(
+            'import categories'
+        );
     }
 
     /**
      * Determine whether the user can export categories.
      */
-    public function canExport(User $actor): bool
-    {
-        return $actor->can('export categories');
+    public function canExport(
+        User $actor
+    ): bool {
+        return $actor->can(
+            'export categories'
+        );
     }
 
     /**
@@ -161,9 +220,13 @@ class PolicyAuthorisationService
      *
      * Prevents admins from managing categories created by super admins.
      */
-    private function targetOutranksActor(User $actor, Category $target): bool
-    {
-        if ($this->roleChecker->isSuperAdmin($actor)) {
+    private function targetOutranksActor(
+        User $actor,
+        Category $target
+    ): bool {
+        if ($this->roleChecker->isSuperAdmin(
+            $actor
+        )) {
             return false;
         }
 
@@ -173,6 +236,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->roleChecker->isSuperAdmin($creator);
+        return $this->roleChecker->isSuperAdmin(
+            $creator
+        );
     }
 }
