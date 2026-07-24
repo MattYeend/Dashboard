@@ -37,7 +37,9 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions($actor),
+            $this->getPermissions(
+                $actor
+            ),
             $this->baseData(),
         );
     }
@@ -56,9 +58,11 @@ class QueryService
         );
 
         return array_merge(
-            ['contact' => $this->formatterService->format(
-                $contact
-            )],
+            [
+                'contact' => $this->formatterService->format(
+                    $contact
+                ),
+            ],
             $this->getFormData(),
             $this->getPermissions(
                 $user

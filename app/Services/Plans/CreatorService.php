@@ -34,22 +34,22 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Plan {
-                $taskData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $planData = $this->dataPreparation->prepareForCreation($data, $createdBy);
 
-                $newIndustry = Plan::create($taskData);
+                $newPlan = Plan::create($planData);
 
-                $newIndustry->created_by = $createdBy;
-                $newIndustry->created_at = now();
-                $newIndustry->save();
+                $newPlan->created_by = $createdBy;
+                $newPlan->created_at = now();
+                $newPlan->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_PLAN,
                     $actor,
-                    $newIndustry,
-                    ['after' => $newIndustry->toArray()],
+                    $newPlan,
+                    ['after' => $newPlan->toArray()],
                 );
 
-                return $newIndustry;
+                return $newPlan;
             });
     }
 
@@ -60,8 +60,8 @@ class CreatorService
      */
     protected function createIndustry(array $data, int $createdBy): Plan
     {
-        $industryData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+        $planData = $this->dataPreparation->prepareForCreation($data, $createdBy);
 
-        return Plan::create($industryData);
+        return Plan::create($planData);
     }
 }

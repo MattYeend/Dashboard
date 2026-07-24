@@ -57,9 +57,11 @@ class QueryService
         );
 
         return array_merge(
-            ['category' => $this->formatterService->format(
-                $category
-            )],
+            [
+                'category' => $this->formatterService->format(
+                    $category
+                ),
+            ],
             $this->getPermissions(
                 $user
             ),

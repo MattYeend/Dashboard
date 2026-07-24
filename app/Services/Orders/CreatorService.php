@@ -27,13 +27,9 @@ class CreatorService
      *
      * @throws ModelNotFoundException
      */
-    public function create(
-        array $data,
-        int $createdBy
-    ): Order {
-        $actor = User::findOrFail(
-            $createdBy
-        );
+    public function create(array $data, int $createdBy): Order
+    {
+        $actor = User::findOrFail($createdBy);
 
         return $this->createResource->handle(
             $data,
@@ -45,23 +41,16 @@ class CreatorService
                     $createdBy,
                 );
 
-                $newOrder = Order::create(
-                    $orderData
-                );
+                $newOrder = Order::create($orderData);
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_ORDER,
                     $actor,
                     $newOrder,
-                    [
-                        'after' => $this->auditLogService->snapshot(
-                            $newOrder
-                        ),
-                    ],
+                    ['after' => $this->auditLogService->snapshot($newOrder)],
                 );
 
                 return $newOrder;
-            }
-        );
+            });
     }
 }

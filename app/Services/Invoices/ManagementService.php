@@ -22,9 +22,8 @@ class ManagementService
     /**
      * Create a new invoice.
      */
-    public function store(
-        StoreInvoiceRequest $request
-    ): Invoice {
+    public function store(StoreInvoiceRequest $request): Invoice
+    {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -52,10 +51,7 @@ class ManagementService
         Invoice $invoice,
         User $actor
     ): void {
-        $this->destructor->delete(
-            $invoice,
-            $actor->id
-        );
+        $this->destructor->delete($invoice, $actor->id);
     }
 
     /**
@@ -67,10 +63,7 @@ class ManagementService
     ): Invoice {
         $invoice = Invoice::withTrashed()->findOrFail($id);
 
-        return $this->restorer->restore(
-            $invoice,
-            $actor->id
-        );
+        return $this->restorer->restore($invoice, $actor->id);
     }
 
     /**
@@ -81,10 +74,7 @@ class ManagementService
         User $actor
     ): void {
         $invoice = Invoice::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete(
-            $invoice,
-            $actor->id
-        );
+        $this->destructor->forceDelete($invoice, $actor->id);
     }
 
     /**
@@ -105,13 +95,8 @@ class ManagementService
 
         foreach ($invoices as $invoice) {
             /** @var Invoice $invoice */
-            $authoriseCallback(
-                $invoice
-            );
-            $this->restorer->restore(
-                $invoice,
-                $actor->id
-            );
+            $authoriseCallback($invoice);
+            $this->restorer->restore($invoice, $actor->id);
             $restored[] = $invoice->id;
         }
 
@@ -135,17 +120,10 @@ class ManagementService
         $deleted = [];
 
         foreach ($ids as $id) {
-            $invoice = Invoice::findOrFail(
-                $id
-            );
-            $authoriseCallback(
-                $invoice
-            );
+            $invoice = Invoice::findOrFail($id);
+            $authoriseCallback($invoice);
 
-            $this->destructor->delete(
-                $invoice,
-                $actor->id
-            );
+            $this->destructor->delete($invoice, $actor->id);
             $deleted[] = $id;
         }
 
@@ -155,39 +133,24 @@ class ManagementService
     /**
      * Mark an invoice as sent.
      */
-    public function send(
-        Invoice $invoice,
-        User $actor
-    ): Invoice {
-        return $this->updater->markAsSent(
-            $invoice,
-            $actor->id
-        );
+    public function send(Invoice $invoice, User $actor): Invoice
+    {
+        return $this->updater->markAsSent($invoice, $actor->id);
     }
 
     /**
      * Mark an invoice as paid.
      */
-    public function markAsPaid(
-        Invoice $invoice,
-        User $actor
-    ): Invoice {
-        return $this->updater->markAsPaid(
-            $invoice,
-            $actor->id
-        );
+    public function markAsPaid(Invoice $invoice, User $actor): Invoice
+    {
+        return $this->updater->markAsPaid($invoice, $actor->id);
     }
 
     /**
      * Mark an invoice as unpaid.
      */
-    public function markAsUnpaid(
-        Invoice $invoice,
-        User $actor
-    ): Invoice {
-        return $this->updater->markAsUnpaid(
-            $invoice,
-            $actor->id
-        );
+    public function markAsUnpaid(Invoice $invoice, User $actor): Invoice
+    {
+        return $this->updater->markAsUnpaid($invoice, $actor->id);
     }
 }

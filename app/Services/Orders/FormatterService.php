@@ -15,9 +15,8 @@ class FormatterService
      *
      * @return array<string, mixed>
      */
-    public function format(
-        Order $order
-    ): array {
+    public function format(Order $order): array
+    {
         return [
             'id' => $order->id,
             'orderable_type' => $order->orderable_type,

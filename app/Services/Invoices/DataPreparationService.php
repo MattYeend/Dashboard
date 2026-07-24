@@ -10,10 +10,8 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForCreation(
-        array $data,
-        int $createdBy
-    ): array {
+    public function prepareForCreation(array $data, int $createdBy): array
+    {
         return [
             'invoice_number' => $data['invoice_number'],
             'company_id' => $data['company_id'] ?? null,
@@ -37,10 +35,8 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForUpdate(
-        array $data,
-        int $updatedBy
-    ): array {
+    public function prepareForUpdate(array $data, int $updatedBy): array
+    {
         $allowed = [
             'invoice_number',
             'company_id',
@@ -79,9 +75,8 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>|null
      */
-    public function prepareContactForCreation(
-        array $data
-    ): ?array {
+    public function prepareContactForCreation(array $data): ?array
+    {
         if (! isset($data['contact']) || ! is_array($data['contact'])) {
             return null;
         }
@@ -105,9 +100,8 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>|null
      */
-    public function prepareContactForUpdate(
-        array $data
-    ): ?array {
+    public function prepareContactForUpdate(array $data): ?array
+    {
         if (! isset($data['contact']) || ! is_array($data['contact'])) {
             return null;
         }

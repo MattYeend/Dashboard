@@ -55,10 +55,14 @@ class QueryService
         );
 
         return array_merge(
-            ['industry' => $this->formatterService->format(
-                $industry
-            )],
-            $this->getPermissions($user),
+            [
+                'industry' => $this->formatterService->format(
+                    $industry
+                ),
+            ],
+            $this->getPermissions(
+                $user
+            ),
             $this->baseData(),
         );
     }

@@ -58,9 +58,11 @@ class QueryService
         );
 
         return array_merge(
-            ['company' => $this->formatterService->format(
-                $company
-            )],
+            [
+                'company' => $this->formatterService->format(
+                    $company
+                ),
+            ],
             $this->getFormData(),
             $this->getPermissions(
                 $user

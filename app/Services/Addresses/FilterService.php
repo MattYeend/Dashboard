@@ -48,7 +48,10 @@ class FilterService
             return $query;
         }
 
-        return $query->where('country', $country);
+        return $query->where(
+            'country',
+            $country
+        );
     }
 
     /**

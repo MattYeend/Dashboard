@@ -59,11 +59,15 @@ class QueryService
         );
 
         return array_merge(
-            ['order' => $this->formatterService->format(
-                $order
-            )],
+            [
+                'order' => $this->formatterService->format(
+                    $order
+                ),
+            ],
             $this->getFormData(),
-            $this->getPermissions($user),
+            $this->getPermissions(
+                $user
+            ),
             $this->baseData(),
         );
     }

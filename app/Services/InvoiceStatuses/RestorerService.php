@@ -30,9 +30,7 @@ class RestorerService
         int $restoredBy,
         ?User $actor = null,
     ): InvoiceStatus {
-        $actor ??= User::findOrFail(
-            $restoredBy
-        );
+        $actor ??= User::findOrFail($restoredBy);
 
         return $this->restoreResource->handle(
             $invoiceStatus,
@@ -45,13 +43,9 @@ class RestorerService
                     Log::ACTION_RESTORE_INVOICE_STATUS,
                     $actor,
                     $invoiceStatus,
-                    ['before' => $this->auditLogService->snapshot(
-                        $invoiceStatus
-                    ),
-                    ],
+                    ['before' => $this->auditLogService->snapshot($invoiceStatus)],
                 );
-            }
-        );
+            });
     }
 
     /**
@@ -67,14 +61,8 @@ class RestorerService
     ): int {
         $count = 0;
 
-        DB::transaction(function () use (
-            $taskStatusIds,
-            $restoredBy,
-            &$count
-        ) {
-            $actor = User::findOrFail(
-                $restoredBy
-            );
+        DB::transaction(function () use ($taskStatusIds, $restoredBy, &$count) {
+            $actor = User::findOrFail($restoredBy);
 
             /** @var Collection<int,InvoiceStatus> $invoiceStatuses */
             $invoiceStatuses = InvoiceStatus::withTrashed()
@@ -83,11 +71,7 @@ class RestorerService
 
             foreach ($invoiceStatuses as $invoiceStatus) {
                 if ($invoiceStatus->trashed()) {
-                    $this->restore(
-                        $invoiceStatus,
-                        $restoredBy,
-                        $actor
-                    );
+                    $this->restore($invoiceStatus, $restoredBy, $actor);
                     $count++;
                 }
             }

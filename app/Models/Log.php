@@ -493,6 +493,9 @@ class Log extends Model
      */
     public function scopeOfAction(Builder $query, int $action): Builder
     {
-        return $query->where('action_id', $action);
+        return $query->where(
+            'action_id',
+            $action
+        );
     }
 }

@@ -30,9 +30,7 @@ class RestorerService
         int $restoredBy,
         ?User $actor = null
     ): Invoice {
-        $actor ??= User::findOrFail(
-            $restoredBy
-        );
+        $actor ??= User::findOrFail($restoredBy);
 
         return $this->restoreResource->handle(
             $invoice,
@@ -45,14 +43,9 @@ class RestorerService
                     Log::ACTION_RESTORE_INVOICE,
                     $actor,
                     $invoice,
-                    [
-                        'before' => $this->auditLogService->snapshot(
-                            $invoice
-                        ),
-                    ],
+                    ['before' => $this->auditLogService->snapshot($invoice)],
                 );
-            }
-        );
+            });
     }
 
     /**
@@ -62,20 +55,12 @@ class RestorerService
      *
      * @throws \Exception
      */
-    public function restoreMultiple(
-        array $invoiceIds,
-        int $restoredBy
-    ): int {
+    public function restoreMultiple(array $invoiceIds, int $restoredBy): int
+    {
         $count = 0;
 
-        DB::transaction(function () use (
-            $invoiceIds,
-            $restoredBy,
-            &$count
-        ) {
-            $actor = User::findOrFail(
-                $restoredBy
-            );
+        DB::transaction(function () use ($invoiceIds, $restoredBy, &$count) {
+            $actor = User::findOrFail($restoredBy);
 
             /** @var Collection<int, Invoice> $invoices */
             $invoices = Invoice::withTrashed()
@@ -84,11 +69,7 @@ class RestorerService
 
             foreach ($invoices as $invoice) {
                 if ($invoice->trashed()) {
-                    $this->restore(
-                        $invoice,
-                        $restoredBy,
-                        $actor
-                    );
+                    $this->restore($invoice, $restoredBy, $actor);
                     $count++;
                 }
             }

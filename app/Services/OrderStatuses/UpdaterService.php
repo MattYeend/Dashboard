@@ -31,18 +31,11 @@ class UpdaterService
         array $data,
         int $updatedBy
     ): OrderStatus {
-        $actor = User::findOrFail(
-            $updatedBy
-        );
+        $actor = User::findOrFail($updatedBy);
 
-        $before = $this->auditLogService->snapshot(
-            $orderStatus
-        );
+        $before = $this->auditLogService->snapshot($orderStatus);
 
-        $orderStatusData = $this->dataPreparation->prepareForUpdate(
-            $data,
-            $updatedBy
-        );
+        $orderStatusData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
 
         return $this->updateResource->handle(
             $orderStatus,
@@ -56,12 +49,9 @@ class UpdaterService
                     $fresh,
                     [
                         'before' => $before,
-                        'after' => $this->auditLogService->snapshot(
-                            $fresh
-                        ),
+                        'after' => $this->auditLogService->snapshot($fresh),
                     ],
                 );
-            }
-        );
+            });
     }
 }
