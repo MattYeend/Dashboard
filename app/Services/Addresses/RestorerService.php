@@ -43,9 +43,14 @@ class RestorerService
                     Log::ACTION_RESTORE_ADDRESS,
                     $actor,
                     $address,
-                    ['before' => $this->auditLogService->snapshot($address)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $address
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**

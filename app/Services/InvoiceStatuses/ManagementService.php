@@ -65,7 +65,9 @@ class ManagementService
         int $id,
         User $actor
     ): InvoiceStatus {
-        $invoiceStatus = InvoiceStatus::withTrashed()->findOrFail($id);
+        $invoiceStatus = InvoiceStatus::withTrashed()->findOrFail(
+            $id
+        );
 
         return $this->restorer->restore(
             $invoiceStatus,
@@ -81,7 +83,9 @@ class ManagementService
         int $id,
         User $actor
     ): void {
-        $invoiceStatus = InvoiceStatus::withTrashed()->findOrFail($id);
+        $invoiceStatus = InvoiceStatus::withTrashed()->findOrFail(
+            $id
+        );
         $this->destructor->forceDelete(
             $invoiceStatus,
             $actor->id
@@ -106,7 +110,9 @@ class ManagementService
 
         foreach ($invoiceStatuses as $invoiceStatus) {
             /** @var InvoiceStatus $invoiceStatus */
-            $authoriseCallback($invoiceStatus);
+            $authoriseCallback(
+                $invoiceStatus
+            );
             $this->restorer->restore(
                 $invoiceStatus,
                 $actor->id

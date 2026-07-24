@@ -42,9 +42,14 @@ class DeleterService
                     Log::ACTION_DELETE_CATEGORY,
                     $actor,
                     $category,
-                    ['before' => $this->auditLogService->snapshot($category)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $category
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -56,7 +61,9 @@ class DeleterService
         Category $category,
         int $deletedBy
     ): bool {
-        $actor = User::findOrFail($deletedBy);
+        $actor = User::findOrFail(
+            $deletedBy
+        );
 
         return $this->deleteResource->forceHandle(
             $category,
@@ -65,9 +72,14 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_CATEGORY,
                     $actor,
                     $category,
-                    ['before' => $this->auditLogService->snapshot($category)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $category
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -86,11 +98,17 @@ class DeleterService
             $deletedBy,
             &$count
         ) {
-            $actor = User::findOrFail($deletedBy);
+            $actor = User::findOrFail(
+                $deletedBy
+            );
             $categories = Category::whereIn('id', $categoryIds)->get();
 
             foreach ($categories as $category) {
-                if ($this->delete($category, $deletedBy, $actor)) {
+                if ($this->delete(
+                    $category,
+                    $deletedBy,
+                    $actor
+                )) {
                     $count++;
                 }
             }

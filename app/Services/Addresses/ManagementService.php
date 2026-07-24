@@ -130,8 +130,12 @@ class ManagementService
         $deleted = [];
 
         foreach ($ids as $id) {
-            $address = Address::findOrFail($id);
-            $authoriseCallback($address);
+            $address = Address::findOrFail(
+                $id
+            );
+            $authoriseCallback(
+                $address
+            );
 
             $this->destructor->delete(
                 $address,

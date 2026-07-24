@@ -53,7 +53,9 @@ class CreatorService
                     Log::ACTION_CREATE_ORDER,
                     $actor,
                     $newOrder,
-                    ['after' => $this->auditLogService->snapshot($newOrder)],
+                    ['after' => $this->auditLogService->snapshot(
+                        $newOrder
+                    )],
                 );
 
                 return $newOrder;

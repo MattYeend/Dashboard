@@ -30,7 +30,9 @@ class DeleterService
         ?User $actor = null
     ): bool {
 
-        $actor ??= User::findOrFail($deletedBy);
+        $actor ??= User::findOrFail(
+            $deletedBy
+        );
 
         return $this->deleteResource->handle(
             $invoiceStatus,
@@ -43,7 +45,10 @@ class DeleterService
                     Log::ACTION_DELETE_INVOICE_STATUS,
                     $actor,
                     $invoiceStatus,
-                    ['before' => $this->auditLogService->snapshot($invoiceStatus)],
+                    ['before' => $this->auditLogService->snapshot(
+                        $invoiceStatus
+                    ),
+                    ],
                 );
             });
     }
@@ -57,7 +62,9 @@ class DeleterService
         InvoiceStatus $invoiceStatus,
         int $deletedBy
     ): bool {
-        $actor = User::findOrFail($deletedBy);
+        $actor = User::findOrFail(
+            $deletedBy
+        );
 
         return $this->deleteResource->forceHandle(
             $invoiceStatus,
@@ -66,7 +73,10 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_INVOICE_STATUS,
                     $actor,
                     $invoiceStatus,
-                    ['before' => $this->auditLogService->snapshot($invoiceStatus)],
+                    ['before' => $this->auditLogService->snapshot(
+                        $invoiceStatus
+                    ),
+                    ],
                 );
             });
     }
@@ -90,7 +100,10 @@ class DeleterService
             $invoiceStatuses = InvoiceStatus::whereIn('id', $invoiceStatusIds)->get();
 
             foreach ($invoiceStatuses as $invoiceStatus) {
-                if ($this->delete($invoiceStatus, $deletedBy)) {
+                if ($this->delete(
+                    $invoiceStatus,
+                    $deletedBy
+                )) {
                     $count++;
                 }
             }

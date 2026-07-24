@@ -162,7 +162,9 @@ class PolicyAuthorisationService
         User $actor,
         Order $target
     ): bool {
-        if ($this->roleChecker->isSuperAdmin($actor)) {
+        if ($this->roleChecker->isSuperAdmin(
+            $actor
+        )) {
             return false;
         }
 
@@ -172,7 +174,9 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->roleChecker->isSuperAdmin($owner);
+        return $this->roleChecker->isSuperAdmin(
+            $owner
+        );
     }
 
     /**
@@ -182,7 +186,10 @@ class PolicyAuthorisationService
         User $actor,
         Order $target
     ): bool {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 

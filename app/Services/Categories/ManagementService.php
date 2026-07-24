@@ -105,7 +105,9 @@ class ManagementService
 
         foreach ($categories as $category) {
             /** @var Category $category */
-            $authoriseCallback($category);
+            $authoriseCallback(
+                $category
+            );
             $this->restorer->restore(
                 $category,
                 $actor->id
@@ -133,8 +135,12 @@ class ManagementService
         $deleted = [];
 
         foreach ($ids as $id) {
-            $category = Category::findOrFail($id);
-            $authoriseCallback($category);
+            $category = Category::findOrFail(
+                $id
+            );
+            $authoriseCallback(
+                $category
+            );
 
             $this->destructor->delete(
                 $category,

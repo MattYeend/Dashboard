@@ -65,7 +65,9 @@ class ManagementService
         int $id,
         User $actor
     ): Order {
-        $order = Order::withTrashed()->findOrFail($id);
+        $order = Order::withTrashed()->findOrFail(
+            $id
+        );
 
         return $this->restorer->restore(
             $order,
@@ -81,7 +83,9 @@ class ManagementService
         int $id,
         User $actor
     ): void {
-        $order = Order::withTrashed()->findOrFail($id);
+        $order = Order::withTrashed()->findOrFail(
+            $id
+        );
         $this->destructor->forceDelete(
             $order,
             $actor->id
@@ -106,7 +110,9 @@ class ManagementService
 
         foreach ($orders as $order) {
             /** @var Order $order */
-            $authoriseCallback($order);
+            $authoriseCallback(
+                $order
+            );
             $this->restorer->restore(
                 $order,
                 $actor->id
@@ -134,8 +140,12 @@ class ManagementService
         $deleted = [];
 
         foreach ($ids as $id) {
-            $order = Order::findOrFail($id);
-            $authoriseCallback($order);
+            $order = Order::findOrFail(
+                $id
+            );
+            $authoriseCallback(
+                $order
+            );
 
             $this->destructor->delete(
                 $order,

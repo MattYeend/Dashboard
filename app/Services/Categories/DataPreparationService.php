@@ -18,7 +18,8 @@ class DataPreparationService
      * @return array<string, mixed>
      */
     public function prepareForCreation(
-        array $data, int $createdBy
+        array $data,
+        int $createdBy
     ): array {
         return [
             'parent_id' => $data['parent_id'] ?? null,

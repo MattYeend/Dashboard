@@ -32,9 +32,13 @@ class UpdaterService
         array $data,
         int $updatedBy
     ): Invoice {
-        $actor = User::findOrFail($updatedBy);
+        $actor = User::findOrFail(
+            $updatedBy
+        );
 
-        $before = $this->auditLogService->snapshot($invoice);
+        $before = $this->auditLogService->snapshot(
+            $invoice
+        );
 
         $invoiceData = $this->dataPreparation->prepareForUpdate(
             $data,
@@ -61,10 +65,13 @@ class UpdaterService
                     $fresh,
                     [
                         'before' => $before,
-                        'after' => $this->auditLogService->snapshot($fresh),
+                        'after' => $this->auditLogService->snapshot(
+                            $fresh
+                        ),
                     ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -79,8 +86,12 @@ class UpdaterService
         Invoice $invoice,
         int $actorId
     ): Invoice {
-        $actor = User::findOrFail($actorId);
-        $before = $this->auditLogService->snapshot($invoice);
+        $actor = User::findOrFail(
+            $actorId
+        );
+        $before = $this->auditLogService->snapshot(
+            $invoice
+        );
 
         $status = InvoiceStatus::where('title', 'Sent')->first();
 
@@ -96,7 +107,12 @@ class UpdaterService
             Log::ACTION_SEND_INVOICE,
             $actor,
             $fresh,
-            ['before' => $before, 'after' => $this->auditLogService->snapshot($fresh)],
+            [
+                'before' => $before,
+                'after' => $this->auditLogService->snapshot(
+                    $fresh
+                ),
+            ],
         );
 
         return $fresh;
@@ -107,10 +123,16 @@ class UpdaterService
      *
      * Sets status_id to the 'Paid' status and records paid_at.
      */
-    public function markAsPaid(Invoice $invoice, int $actorId): Invoice
-    {
-        $actor = User::findOrFail($actorId);
-        $before = $this->auditLogService->snapshot($invoice);
+    public function markAsPaid(
+        Invoice $invoice,
+        int $actorId
+    ): Invoice {
+        $actor = User::findOrFail(
+            $actorId
+        );
+        $before = $this->auditLogService->snapshot(
+            $invoice
+        );
 
         $status = InvoiceStatus::where('title', 'Paid')->first();
 
@@ -126,7 +148,12 @@ class UpdaterService
             Log::ACTION_MARK_INVOICE_PAID,
             $actor,
             $fresh,
-            ['before' => $before, 'after' => $this->auditLogService->snapshot($fresh)],
+            [
+                'before' => $before,
+                'after' => $this->auditLogService->snapshot(
+                    $fresh
+                ),
+            ],
         );
 
         return $fresh;
@@ -141,8 +168,12 @@ class UpdaterService
         Invoice $invoice,
         int $actorId
     ): Invoice {
-        $actor = User::findOrFail($actorId);
-        $before = $this->auditLogService->snapshot($invoice);
+        $actor = User::findOrFail(
+            $actorId
+        );
+        $before = $this->auditLogService->snapshot(
+            $invoice
+        );
 
         $status = InvoiceStatus::where('title', 'Pending')->first();
 
@@ -158,7 +189,12 @@ class UpdaterService
             Log::ACTION_MARK_INVOICE_UNPAID,
             $actor,
             $fresh,
-            ['before' => $before, 'after' => $this->auditLogService->snapshot($fresh)],
+            [
+                'before' => $before,
+                'after' => $this->auditLogService->snapshot(
+                    $fresh
+                ),
+            ],
         );
 
         return $fresh;

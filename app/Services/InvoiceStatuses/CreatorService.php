@@ -27,9 +27,13 @@ class CreatorService
      *
      * @throws ModelNotFoundException
      */
-    public function create(array $data, int $createdBy): InvoiceStatus
-    {
-        $actor = User::findOrFail($createdBy);
+    public function create(
+        array $data,
+        int $createdBy
+    ): InvoiceStatus {
+        $actor = User::findOrFail(
+            $createdBy
+        );
 
         return $this->createResource->handle(
             $data,
@@ -47,10 +51,15 @@ class CreatorService
                     Log::ACTION_CREATE_INVOICE_STATUS,
                     $actor,
                     $newInvoiceStatus,
-                    ['after' => $this->auditLogService->snapshot($newInvoiceStatus)],
+                    [
+                        'after' => $this->auditLogService->snapshot(
+                            $newInvoiceStatus
+                        ),
+                    ],
                 );
 
                 return $newInvoiceStatus;
-            });
+            }
+        );
     }
 }

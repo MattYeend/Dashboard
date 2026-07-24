@@ -24,7 +24,9 @@ class FilterService
             return $query;
         }
 
-        $search = $this->escapeLikeValue($search);
+        $search = $this->escapeLikeValue(
+            $search
+        );
 
         return $query->where(function (Builder $q) use ($search): void {
             $q->where('order_number', 'like', "%{$search}%")
