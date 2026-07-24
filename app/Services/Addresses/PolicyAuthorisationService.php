@@ -21,10 +21,10 @@ class PolicyAuthorisationService
      */
     public function isUser(
         User $user
-        ): bool {
+    ): bool {
         return $this->roleChecker->isUser(
             $user
-            );
+        );
     }
 
     /**
@@ -32,10 +32,10 @@ class PolicyAuthorisationService
      */
     public function isAdmin(
         User $user
-        ): bool {
+    ): bool {
         return $this->roleChecker->isAdmin(
             $user
-            );
+        );
     }
 
     /**
@@ -43,10 +43,10 @@ class PolicyAuthorisationService
      */
     public function isActive(
         Address $address
-        ): bool {
+    ): bool {
         return $this->activeChecker->isActive(
             $address
-            );
+        );
     }
 
     /**
@@ -54,10 +54,10 @@ class PolicyAuthorisationService
      */
     public function isTrashed(
         Address $address
-        ): bool {
+    ): bool {
         return $this->activeChecker->isTrashed(
             $address
-            );
+        );
     }
 
     /**
@@ -65,10 +65,10 @@ class PolicyAuthorisationService
      */
     public function canViewAny(
         User $actor
-        ): bool {
+    ): bool {
         return $actor->can(
             'view any addresses'
-            );
+        );
     }
 
     /**
@@ -76,28 +76,27 @@ class PolicyAuthorisationService
      */
     public function canCreate(
         User $actor
-        ): bool
-    {
+    ): bool {
         return $actor->can(
             'create addresses'
-            );
+        );
     }
 
     /**
      * Determine whether the user can view the model.
      */
     public function canView(
-        User $actor, 
+        User $actor,
         Address $target
-        ): bool {
+    ): bool {
         if ($this->targetOutranksActor(
-            $actor, 
+            $actor,
             $target
-            )) {
+        )) {
             return false;
         }
 
-        return $actor->can('view addresses') 
+        return $actor->can('view addresses')
             && $this->activeChecker->isActive($target);
     }
 
@@ -105,17 +104,17 @@ class PolicyAuthorisationService
      * Determine whether the user can update the model.
      */
     public function canUpdate(
-        User $actor, 
+        User $actor,
         Address $target
-        ): bool {
+    ): bool {
         if ($this->targetOutranksActor(
-            $actor, 
+            $actor,
             $target
-            )) {
+        )) {
             return false;
         }
 
-        return $actor->can('edit addresses') 
+        return $actor->can('edit addresses')
             && $this->activeChecker->isActive($target);
     }
 
@@ -123,17 +122,17 @@ class PolicyAuthorisationService
      * Determine whether the user can delete the model.
      */
     public function canDelete(
-        User $actor, 
+        User $actor,
         Address $target
-        ): bool {
+    ): bool {
         if ($this->targetOutranksActor(
-            $actor, 
+            $actor,
             $target
-            )) {
+        )) {
             return false;
         }
 
-        return $actor->can('delete addresses') 
+        return $actor->can('delete addresses')
             && $this->activeChecker->canBeModified($target);
     }
 
@@ -141,13 +140,13 @@ class PolicyAuthorisationService
      * Determine whether the user can restore the model.
      */
     public function canRestore(
-        User $actor, 
+        User $actor,
         Address $target
-        ): bool {
+    ): bool {
         if ($this->targetOutranksActor(
-            $actor, 
+            $actor,
             $target
-            )) {
+        )) {
             return false;
         }
 
@@ -159,13 +158,13 @@ class PolicyAuthorisationService
      * Determine whether the user can permanently delete the model.
      */
     public function canForceDelete(
-        User $actor, 
+        User $actor,
         Address $target
-        ): bool {
+    ): bool {
         if ($this->targetOutranksActor(
-            $actor, 
+            $actor,
             $target
-            )) {
+        )) {
             return false;
         }
 
@@ -181,10 +180,10 @@ class PolicyAuthorisationService
      */
     public function canImport(
         User $actor
-        ): bool {
+    ): bool {
         return $actor->can(
             'import addresses'
-            );
+        );
     }
 
     /**
@@ -192,10 +191,10 @@ class PolicyAuthorisationService
      */
     public function canExport(
         User $actor
-        ): bool {
+    ): bool {
         return $actor->can(
             'export addresses'
-            );
+        );
     }
 
     /**
@@ -204,12 +203,12 @@ class PolicyAuthorisationService
      * A Super Admin cannot be managed by anyone other than another Super Admin.
      */
     private function targetOutranksActor(
-        User $actor, 
+        User $actor,
         Address $target
-        ): bool {
+    ): bool {
         if ($this->roleChecker->isSuperAdmin(
             $actor
-            )) {
+        )) {
             return false;
         }
 
@@ -221,6 +220,6 @@ class PolicyAuthorisationService
 
         return $this->roleChecker->isSuperAdmin(
             $owner
-            );
+        );
     }
 }

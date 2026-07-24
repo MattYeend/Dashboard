@@ -159,7 +159,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('assign task') && $this->activeChecker->isActive($target);
+        return $actor->can('assign order') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -171,7 +171,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('change task status') && $this->activeChecker->isActive($target);
+        return $actor->can('change order status') && $this->activeChecker->isActive($target);
     }
 
     /**
