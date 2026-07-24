@@ -232,7 +232,7 @@ function formatDate(value: string | null): string {
                 </template>
 
                 <template #cell-tags="{ row }">
-                    <span v-if="!row.tags?.length">—</span>
+                    <span v-if="!row.tags?.length">-</span>
                     <span v-else>{{
                         row.tags.map((tag) => tag.name).join(', ')
                     }}</span>

@@ -21,8 +21,8 @@ abstract class TestCase extends BaseTestCase
      * Seed roles and permissions once, immediately after the test database is migrated.
      *
      * Runs a single time per test-suite database refresh (works with both
-     * RefreshDatabase and LazilyRefreshDatabase), so every test — including
-     * those using CreatesUsers::adminUser()/superAdminUser() — has real
+     * RefreshDatabase and LazilyRefreshDatabase), so every test - including
+     * those using CreatesUsers::adminUser()/superAdminUser() - has real
      * permission grants to check against, not just an empty role shell.
      */
     protected function afterRefreshingDatabase()

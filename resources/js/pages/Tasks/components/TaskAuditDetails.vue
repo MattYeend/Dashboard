@@ -9,7 +9,7 @@ defineProps<Props>();
 
 function formatDateTime(value: string | null): string {
     if (!value) {
-        return '—';
+        return '-';
     }
 
     return new Date(value).toLocaleString();
@@ -23,7 +23,7 @@ function formatDateTime(value: string | null): string {
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
                 <dt class="text-xs text-gray-400">Created by</dt>
-                <dd class="text-sm">{{ task.creator?.name ?? '—' }}</dd>
+                <dd class="text-sm">{{ task.creator?.name ?? '-' }}</dd>
             </div>
             <div>
                 <dt class="text-xs text-gray-400">Created at</dt>
@@ -32,7 +32,7 @@ function formatDateTime(value: string | null): string {
 
             <div>
                 <dt class="text-xs text-gray-400">Last updated by</dt>
-                <dd class="text-sm">{{ task.updater?.name ?? '—' }}</dd>
+                <dd class="text-sm">{{ task.updater?.name ?? '-' }}</dd>
             </div>
             <div>
                 <dt class="text-xs text-gray-400">Last updated at</dt>
@@ -42,7 +42,7 @@ function formatDateTime(value: string | null): string {
             <template v-if="task.deleted_at">
                 <div>
                     <dt class="text-xs text-gray-400">Deleted by</dt>
-                    <dd class="text-sm">{{ task.deleter?.name ?? '—' }}</dd>
+                    <dd class="text-sm">{{ task.deleter?.name ?? '-' }}</dd>
                 </div>
                 <div>
                     <dt class="text-xs text-gray-400">Deleted at</dt>
@@ -55,7 +55,7 @@ function formatDateTime(value: string | null): string {
             <template v-if="task.restored_at">
                 <div>
                     <dt class="text-xs text-gray-400">Restored by</dt>
-                    <dd class="text-sm">{{ task.restorer?.name ?? '—' }}</dd>
+                    <dd class="text-sm">{{ task.restorer?.name ?? '-' }}</dd>
                 </div>
                 <div>
                     <dt class="text-xs text-gray-400">Restored at</dt>
