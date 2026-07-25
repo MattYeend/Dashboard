@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank, numberOrNull } from '@/lib/forms';
+import { update as invoicesUpdate } from '@/routes/invoices';
 import type { Invoice, InvoiceStatus, UserOption } from '@/types';
 import InvoiceForm from './components/InvoiceForm.vue';
-import { update as invoicesUpdate } from '@/routes/invoices';
 
 interface Props {
     invoice: Invoice;

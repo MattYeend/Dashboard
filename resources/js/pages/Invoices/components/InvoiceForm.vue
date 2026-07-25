@@ -6,8 +6,8 @@ import InvoiceBasicDetailsForm from '@/pages/Invoices/components/InvoiceBasicDet
 import InvoiceContactDetailsForm from '@/pages/Invoices/components/InvoiceContactDetailsForm.vue';
 import InvoiceDateDetailsForm from '@/pages/Invoices/components/InvoiceDateDetailsForm.vue';
 import InvoiceTotalsDetailsForm from '@/pages/Invoices/components/InvoiceTotalsDetailsForm.vue';
-import type { InvoiceStatus, UserOption } from '@/types';
 import { index as invoicesIndex } from '@/routes/invoices';
+import type { InvoiceStatus, UserOption } from '@/types';
 
 interface InvoiceContact {
     phone: string | null;

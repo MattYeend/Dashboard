@@ -7,7 +7,6 @@ import InvoiceBasicDetails from '@/pages/Invoices/components/InvoiceBasicDetails
 import InvoiceContactDetails from '@/pages/Invoices/components/InvoiceContactDetails.vue';
 import InvoiceDateDetails from '@/pages/Invoices/components/InvoiceDateDetails.vue';
 import InvoiceTotalsDetails from '@/pages/Invoices/components/InvoiceTotalsDetails.vue';
-import type { Invoice, PermissionsMeta } from '@/types';
 import {
     edit as invoicesEdit,
     destroy as invoicesDestroy,
@@ -16,6 +15,7 @@ import {
     markAsPaid as invoicesMarkAsPaid,
     markAsUnpaid as invoicesMarkAsUnpaid,
 } from '@/routes/invoices';
+import type { Invoice, PermissionsMeta } from '@/types';
 import { index as invoiceItemsIndex } from '@/routes/invoices/items';
 
 interface Props {
