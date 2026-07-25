@@ -9,6 +9,7 @@ use App\Models\Company;
 use App\Models\Contact;
 use App\Models\Industry;
 use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use App\Models\InvoiceStatus;
 use App\Models\Order;
 use App\Models\OrderStatus;
@@ -27,6 +28,7 @@ use App\Policies\CommentPolicy;
 use App\Policies\CompanyPolicy;
 use App\Policies\ContactPolicy;
 use App\Policies\IndustryPolicy;
+use App\Policies\InvoiceItemPolicy;
 use App\Policies\InvoicePolicy;
 use App\Policies\InvoiceStatusPolicy;
 use App\Policies\OrderPolicy;
@@ -46,6 +48,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Cashier\Cashier;
@@ -92,6 +95,11 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Comment::class, CommentPolicy::class);
         Gate::policy(Tag::class, TagPolicy::class);
         Gate::policy(Invoice::class, InvoicePolicy::class);
+        Gate::policy(InvoiceItem::class, InvoiceItemPolicy::class);
+
+        Route::bind('invoiceItem', function ($value, $route) {
+            return $route->parameter('invoice')->items()->findOrFail($value);
+        });
 
         Relation::morphMap([
             'App\Models\User' => User::class,

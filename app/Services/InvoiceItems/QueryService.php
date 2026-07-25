@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Services\Invoices;
+namespace App\Services\InvoiceItems;
 
-use App\Models\Company;
 use App\Models\Invoice;
-use App\Models\InvoiceStatus;
+use App\Models\InvoiceItem;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,13 +21,15 @@ class QueryService
     ) {}
 
     /**
-     * Get paginated invoices with filters.
+     * Get paginated invoice items for a given invoice, with filters.
      */
     public function getPaginated(
         User $user,
+        Invoice $invoice,
         array $filters = []
     ): array {
         $query = $this->buildQuery(
+            $invoice,
             $filters
         );
         $paginated = $this->paginate(
@@ -44,20 +45,22 @@ class QueryService
     }
 
     /**
-     * Get a single invoice by ID.
+     * Get a single invoice item by ID, scoped to its parent invoice.
      */
     public function getById(
         User $user,
+        Invoice $invoice,
         int $id,
         bool $withTrashed = false
     ): array {
-        $invoice = $this->findInvoice(
+        $invoiceItem = $this->findInvoiceItem(
+            $invoice,
             $id,
             $withTrashed
         );
 
         return array_merge(
-            ['invoice' => $this->formatterService->format($invoice)],
+            ['invoice_item' => $this->formatterService->format($invoiceItem)],
             $this->getPermissions($user),
             $this->baseData(),
         );
@@ -66,34 +69,24 @@ class QueryService
     /**
      * Get data needed to populate create and edit forms.
      */
-    public function getFormData(): array
+    public function getFormData(Invoice $invoice): array
     {
         return [
-            'statuses' => InvoiceStatus::orderBy('title')->get([
-                'id',
-                'title',
-                'background_colour',
-                'text_colour',
-            ]),
-            'companies' => Company::orderBy('name')->get([
-                'id',
-                'name',
-            ]),
+            'invoice' => [
+                'id' => $invoice->id,
+                'invoice_number' => $invoice->invoice_number,
+            ],
         ];
     }
 
     /**
-     * Build the base query with filters.
+     * Build the base query with filters, scoped to the parent invoice.
      */
     protected function buildQuery(
+        Invoice $invoice,
         array $filters
     ): Builder {
-        $query = Invoice::query()->with([
-            'company',
-            'contact',
-            'order',
-            'status',
-        ]);
+        $query = $invoice->items()->getQuery();
         $query = $this->filterService->applyAll(
             $query,
             $filters
@@ -115,10 +108,10 @@ class QueryService
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
-            'invoices' => [
+            'invoice_items' => [
                 'data' => array_map(
-                    fn (Invoice $invoice) => $this->formatterService->format(
-                        $invoice
+                    fn (InvoiceItem $invoiceItem) => $this->formatterService->format(
+                        $invoiceItem
                     ),
                     $paginator->items()
                 ),
@@ -149,11 +142,11 @@ class QueryService
             'permissions_meta' => [
                 'can_create' => $user->can(
                     'create',
-                    Invoice::class
+                    InvoiceItem::class
                 ),
                 'can_view_any' => $user->can(
                     'viewAny',
-                    Invoice::class
+                    InvoiceItem::class
                 ),
             ],
         ];
@@ -171,19 +164,14 @@ class QueryService
     }
 
     /**
-     * Find an invoice by ID with optional trashed records.
+     * Find an invoice item by ID, scoped to its parent invoice.
      */
-    private function findInvoice(
+    private function findInvoiceItem(
+        Invoice $invoice,
         int $id,
         bool $withTrashed = false
-    ): Invoice {
-        $query = Invoice::query()->with([
-            'company',
-            'contact',
-            'order',
-            'status',
-            'items' => fn ($query) => $query->orderBy('position'),
-        ]);
+    ): InvoiceItem {
+        $query = $invoice->items()->getQuery();
 
         if ($withTrashed) {
             $query->withTrashed();
@@ -208,7 +196,7 @@ class QueryService
 
         return $this->sortingService->applySorting(
             $query,
-            $filters['sort_by'] ?? 'due_date',
+            $filters['sort_by'] ?? 'position',
             $filters['sort_direction'] ?? 'asc'
         );
     }
