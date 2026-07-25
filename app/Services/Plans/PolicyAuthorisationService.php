@@ -73,7 +73,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view plans') && $this->activeChecker->isActive($target);
+        return $actor->can('view plans')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -85,7 +86,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit plans') && $this->activeChecker->isActive($target);
+        return $actor->can('edit plans')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -97,7 +99,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete plans') && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete plans')
+            && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -109,7 +112,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('restore plans') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $actor->can('restore plans')
+            && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**

@@ -80,6 +80,7 @@ class ManagementService
         User $actor
     ): void {
         $post = Post::withTrashed()->findOrFail($id);
+
         $this->destructor->forceDelete($post, $actor->id);
     }
 
@@ -102,7 +103,9 @@ class ManagementService
         foreach ($posts as $post) {
             /** @var Post $post */
             $authoriseCallback($post);
+
             $this->restorer->restore($post, $actor->id);
+
             $restored[] = $post->id;
         }
 

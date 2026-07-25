@@ -22,9 +22,8 @@ class ManagementService
     /**
      * Create a new company.
      */
-    public function store(
-        StoreCompanyRequest $request
-    ): Company {
+    public function store(StoreCompanyRequest $request): Company
+    {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -52,10 +51,7 @@ class ManagementService
         Company $company,
         User $actor
     ): void {
-        $this->destructor->delete(
-            $company,
-            $actor->id
-        );
+        $this->destructor->delete($company, $actor->id);
     }
 
     /**
@@ -78,10 +74,7 @@ class ManagementService
         User $actor
     ): void {
         $company = Company::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete(
-            $company,
-            $actor->id
-        );
+        $this->destructor->forceDelete($company, $actor->id);
     }
 
     /**
@@ -102,13 +95,8 @@ class ManagementService
 
         foreach ($companies as $company) {
             /** @var Company $company */
-            $authoriseCallback(
-                $company
-            );
-            $this->restorer->restore(
-                $company,
-                $actor->id
-            );
+            $authoriseCallback($company);
+            $this->restorer->restore($company, $actor->id);
             $restored[] = $company->id;
         }
 
@@ -132,17 +120,10 @@ class ManagementService
         $deleted = [];
 
         foreach ($ids as $id) {
-            $company = Company::findOrFail(
-                $id
-            );
-            $authoriseCallback(
-                $company
-            );
+            $company = Company::findOrFail($id);
+            $authoriseCallback($company);
 
-            $this->destructor->delete(
-                $company,
-                $actor->id
-            );
+            $this->destructor->delete($company, $actor->id);
             $deleted[] = $id;
         }
 

@@ -27,9 +27,7 @@ class QueryService
         User $actor,
         array $filters = []
     ): array {
-        $query = $this->buildQuery(
-            $filters
-        );
+        $query = $this->buildQuery($filters);
         $paginated = $this->paginate(
             $query,
             min((int) ($filters['per_page'] ?? 15), 100)
@@ -50,19 +48,12 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): array {
-        $contact = $this->findContact(
-            $id,
-            $withTrashed
-        );
+        $contact = $this->findContact($id, $withTrashed);
 
         return array_merge(
-            ['contact' => $this->formatterService->format(
-                $contact
-            )],
+            ['contact' => $this->formatterService->format($contact)],
             $this->getFormData(),
-            $this->getPermissions(
-                $user
-            ),
+            $this->getPermissions($user),
             $this->baseData(),
         );
     }
@@ -80,38 +71,21 @@ class QueryService
     /**
      * Get the "owner" options for a given contactable type, for the dependent dropdown on the Create/Edit contact form.
      */
-    public function getContactableOptions(
-        string $type
-    ): array {
-        return $this->registry->optionsFor(
-            $type
-        );
+    public function getContactableOptions(string $type): array
+    {
+        return $this->registry->optionsFor($type);
     }
 
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(
-        array $filters
-    ): Builder {
-        $query = Contact::query()
-            ->with([
-                'contactable',
-                'creator',
-                'updater',
-                'deleter',
-                'restorer',
-            ]);
+    protected function buildQuery(array $filters): Builder
+    {
+        $query = Contact::query()->with(['contactable', 'creator', 'updater', 'deleter', 'restorer']);
 
-        $query = $this->filterService->applyAll(
-            $query,
-            $filters
-        );
+        $query = $this->filterService->applyAll($query, $filters);
 
-        return $this->applySorting(
-            $query,
-            $filters
-        );
+        return $this->applySorting($query, $filters);
     }
 
     /**
@@ -126,9 +100,7 @@ class QueryService
         return [
             'contacts' => [
                 'data' => array_map(
-                    fn (Contact $contact) => $this->formatterService->format(
-                        $contact
-                    ),
+                    fn (Contact $contact) => $this->formatterService->format($contact),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -147,23 +119,16 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(
-        User $user
-    ): array {
+    protected function getPermissions(User $user): array
+    {
         if (! $user) {
             return ['permissions_meta' => []];
         }
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can(
-                    'create',
-                    Contact::class
-                ),
-                'can_view_any' => $user->can(
-                    'viewAny',
-                    Contact::class
-                ),
+                'can_create' => $user->can('create', Contact::class),
+                'can_view_any' => $user->can('viewAny', Contact::class),
             ],
         ];
     }
@@ -187,22 +152,13 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Contact {
-        $query = Contact::query()
-            ->with([
-                'contactable',
-                'creator',
-                'updater',
-                'deleter',
-                'restorer',
-            ]);
+        $query = Contact::query()->with(['contactable', 'creator', 'updater', 'deleter', 'restorer']);
 
         if ($withTrashed) {
             $query->withTrashed();
         }
 
-        return $query->findOrFail(
-            $id
-        );
+        return $query->findOrFail($id);
     }
 
     /**

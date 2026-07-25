@@ -33,13 +33,9 @@ class OrderController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(
-        Request $request
-    ): Response {
-        $this->authorize(
-            'viewAny',
-            Order::class
-        );
+    public function index(Request $request): Response
+    {
+        $this->authorize('viewAny', Order::class);
 
         $data = $this->query->getPaginated(
             $request->user(),
@@ -52,10 +48,7 @@ class OrderController extends Controller
             ])
         );
 
-        return Inertia::render(
-            'Orders/Index',
-            $data
-        );
+        return Inertia::render('Orders/Index', $data);
     }
 
     /**
@@ -65,15 +58,9 @@ class OrderController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize(
-            'create',
-            Order::class
-        );
+        $this->authorize('create', Order::class);
 
-        return Inertia::render(
-            'Orders/Create',
-            $this->query->getFormData()
-        );
+        return Inertia::render('Orders/Create', $this->query->getFormData());
     }
 
     /**
@@ -84,24 +71,15 @@ class OrderController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      */
-    public function store(
-        StoreOrderRequest $request
-    ): JsonResponse|RedirectResponse {
-        $order = $this->management->store(
-            $request
-        );
+    public function store(StoreOrderRequest $request): JsonResponse|RedirectResponse
+    {
+        $order = $this->management->store($request);
 
         if ($request->wantsJson()) {
-            return response()->json(
-                $order,
-                201
-            );
+            return response()->json($order, 201);
         }
 
-        return redirect()->route(
-            'orders.show',
-            $order->id
-        );
+        return redirect()->route('orders.show', $order->id);
     }
 
     /**
@@ -115,20 +93,14 @@ class OrderController extends Controller
         Order $order,
         Request $request
     ): Response {
-        $this->authorize(
-            'view',
-            $order
-        );
+        $this->authorize('view', $order);
 
         $data = $this->query->getById(
             $request->user(),
             $order->id
         );
 
-        return Inertia::render(
-            'Orders/Show',
-            $data
-        );
+        return Inertia::render('Orders/Show', $data);
     }
 
     /**
@@ -140,20 +112,14 @@ class OrderController extends Controller
         Order $order,
         Request $request
     ): Response {
-        $this->authorize(
-            'update',
-            $order
-        );
+        $this->authorize('update', $order);
 
         $data = $this->query->getById(
             $request->user(),
             $order->id
         );
 
-        return Inertia::render(
-            'Orders/Edit',
-            $data
-        );
+        return Inertia::render('Orders/Edit', $data);
     }
 
     /**
@@ -169,21 +135,13 @@ class OrderController extends Controller
         UpdateOrderRequest $request,
         Order $order
     ): JsonResponse|RedirectResponse {
-        $order = $this->management->update(
-            $request,
-            $order
-        );
+        $order = $this->management->update($request, $order);
 
         if ($request->wantsJson()) {
-            return response()->json(
-                $order
-            );
+            return response()->json($order);
         }
 
-        return redirect()->route(
-            'orders.show',
-            $order->id
-        );
+        return redirect()->route('orders.show', $order->id);
     }
 
     /**
@@ -198,26 +156,15 @@ class OrderController extends Controller
         Request $request,
         Order $order
     ): JsonResponse|RedirectResponse {
-        $this->authorize(
-            'delete',
-            $order
-        );
+        $this->authorize('delete', $order);
 
-        $this->management->destroy(
-            $order,
-            $request->user()
-        );
+        $this->management->destroy($order, $request->user());
 
         if (request()->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'orders.index'
-        );
+        return redirect()->route('orders.index');
     }
 
     /**
@@ -234,26 +181,15 @@ class OrderController extends Controller
     ): JsonResponse|RedirectResponse {
         $order = Order::onlyTrashed()->findOrFail($id);
 
-        $this->authorize(
-            'restore',
-            $order
-        );
+        $this->authorize('restore', $order);
 
-        $this->management->restore(
-            $id,
-            $request->user()
-        );
+        $this->management->restore($id, $request->user());
 
         if (request()->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'orders.index'
-        );
+        return redirect()->route('orders.index');
     }
 
     /**
@@ -270,26 +206,15 @@ class OrderController extends Controller
     ): JsonResponse|RedirectResponse {
         $order = Order::onlyTrashed()->findOrFail($id);
 
-        $this->authorize(
-            'forceDelete',
-            $order
-        );
+        $this->authorize('forceDelete', $order);
 
-        $this->management->forceDelete(
-            $id,
-            $request->user()
-        );
+        $this->management->forceDelete($id, $request->user());
 
         if (request()->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'orders.index'
-        );
+        return redirect()->route('orders.index');
     }
 
     /**
@@ -297,19 +222,11 @@ class OrderController extends Controller
      *
      * Authorises each order individually via the 'delete' policy.
      */
-    public function bulkDelete(
-        Request $request
-    ): JsonResponse|RedirectResponse {
+    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    {
         $request->validate([
-            'ids' => [
-                'required',
-                'array',
-            ],
-            'ids.*' => [
-                'required',
-                'integer',
-                'exists:orders,id',
-            ],
+            'ids' => ['required', 'array'],
+            'ids.*' => ['required', 'integer', 'exists:orders,id'],
         ]);
 
         $actor = $request->user();
@@ -318,22 +235,14 @@ class OrderController extends Controller
         $this->management->bulkDelete(
             $ids,
             $actor,
-            fn (Order $order) => $this->authorize(
-                'delete',
-                $order
-            )
+            fn (Order $order) => $this->authorize('delete', $order)
         );
 
         if (request()->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'orders.index'
-        );
+        return redirect()->route('orders.index');
     }
 
     /**
@@ -341,59 +250,35 @@ class OrderController extends Controller
      *
      * Authorises each order individually via the 'restore' policy.
      */
-    public function bulkRestore(
-        Request $request
-    ): JsonResponse|RedirectResponse {
+    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    {
         $validated = $request->validate([
-            'ids' => [
-                'required',
-                'array',
-            ],
-            'ids.*' => [
-                'required',
-                'integer',
-                'exists:orders,id',
-            ],
+            'ids' => ['required', 'array'],
+            'ids.*' => ['required', 'integer', 'exists:orders,id'],
         ]);
 
         $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
-            fn (Order $order) => $this->authorize(
-                'restore',
-                $order
-            )
+            fn (Order $order) => $this->authorize('restore', $order)
         );
 
         if ($request->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'orders.index'
-        );
+        return redirect()->route('orders.index');
     }
 
     /**
      * Get the list of selectable "owner" options for a given orderable type.
      */
-    public function orderableOptions(
-        Request $request
-    ): JsonResponse {
-        $type = $request->query(
-            'type',
-            ''
-        );
+    public function orderableOptions(Request $request): JsonResponse
+    {
+        $type = $request->query('type', '');
 
-        $options = $this->query->getOrderableOptions(
-            $type
-        );
+        $options = $this->query->getOrderableOptions($type);
 
-        return response()->json(
-            $options
-        );
+        return response()->json($options);
     }
 }

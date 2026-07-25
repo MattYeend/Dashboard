@@ -33,13 +33,9 @@ class CompanyController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(
-        Request $request
-    ): Response {
-        $this->authorize(
-            'viewAny',
-            Company::class
-        );
+    public function index(Request $request): Response
+    {
+        $this->authorize('viewAny', Company::class);
 
         $data = $this->query->getPaginated(
             $request->user(),
@@ -62,10 +58,7 @@ class CompanyController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize(
-            'create',
-            Company::class
-        );
+        $this->authorize('create', Company::class);
 
         $data = $this->query->getFormData();
 
@@ -80,12 +73,9 @@ class CompanyController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      */
-    public function store(
-        StoreCompanyRequest $request
-    ): JsonResponse|RedirectResponse {
-        $company = $this->management->store(
-            $request
-        );
+    public function store(StoreCompanyRequest $request): JsonResponse|RedirectResponse
+    {
+        $company = $this->management->store($request);
 
         if ($request->wantsJson()) {
             return response()->json($company, 201);
@@ -105,10 +95,7 @@ class CompanyController extends Controller
         Company $company,
         Request $request
     ): Response {
-        $this->authorize(
-            'view',
-            $company
-        );
+        $this->authorize('view', $company);
 
         $data = $this->query->getById(
             $request->user(),
@@ -127,9 +114,7 @@ class CompanyController extends Controller
         Company $company,
         Request $request
     ): Response {
-        $this->authorize(
-            'update',
-            $company);
+        $this->authorize('update', $company);
 
         $data = $this->query->getById(
             $request->user(),
@@ -152,10 +137,7 @@ class CompanyController extends Controller
         UpdateCompanyRequest $request,
         Company $company
     ): JsonResponse|RedirectResponse {
-        $company = $this->management->update(
-            $request,
-            $company
-        );
+        $company = $this->management->update($request, $company);
 
         if ($request->wantsJson()) {
             return response()->json($company);
@@ -176,15 +158,9 @@ class CompanyController extends Controller
         Request $request,
         Company $company
     ): JsonResponse|RedirectResponse {
-        $this->authorize(
-            'delete',
-            $company
-        );
+        $this->authorize('delete', $company);
 
-        $this->management->destroy(
-            $company,
-            $request->user()
-        );
+        $this->management->destroy($company, $request->user());
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -207,15 +183,9 @@ class CompanyController extends Controller
     ): JsonResponse|RedirectResponse {
         $company = Company::onlyTrashed()->findOrFail($id);
 
-        $this->authorize(
-            'restore',
-            $company
-        );
+        $this->authorize('restore', $company);
 
-        $this->management->restore(
-            $id,
-            $request->user()
-        );
+        $this->management->restore($id, $request->user());
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -238,15 +208,9 @@ class CompanyController extends Controller
     ): JsonResponse|RedirectResponse {
         $company = Company::onlyTrashed()->findOrFail($id);
 
-        $this->authorize(
-            'forceDelete',
-            $company
-        );
+        $this->authorize('forceDelete', $company);
 
-        $this->management->forceDelete(
-            $id,
-            $request->user()
-        );
+        $this->management->forceDelete($id, $request->user());
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -260,19 +224,11 @@ class CompanyController extends Controller
      *
      * Authorises each company individually via the 'delete' policy.
      */
-    public function bulkDelete(
-        Request $request
-    ): JsonResponse|RedirectResponse {
+    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    {
         $request->validate([
-            'ids' => [
-                'required',
-                'array',
-            ],
-            'ids.*' => [
-                'required',
-                'integer',
-                'exists:companies,id',
-            ],
+            'ids' => ['required', 'array'],
+            'ids.*' => ['required', 'integer', 'exists:companies,id'],
         ]);
 
         $actor = $request->user();
@@ -296,19 +252,11 @@ class CompanyController extends Controller
      *
      * Authorises each company individually via the 'restore' policy.
      */
-    public function bulkRestore(
-        Request $request
-    ): JsonResponse|RedirectResponse {
+    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    {
         $validated = $request->validate([
-            'ids' => [
-                'required',
-                'array',
-            ],
-            'ids.*' => [
-                'required',
-                'integer',
-                'exists:companies,id',
-            ],
+            'ids' => ['required', 'array'],
+            'ids.*' => ['required', 'integer', 'exists:companies,id'],
         ]);
 
         $this->management->bulkRestore(

@@ -74,7 +74,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view order') && $this->activeChecker->isActive($target);
+        return $actor->can('view order')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -86,7 +87,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit order') && $this->activeChecker->isActive($target);
+        return $actor->can('edit order')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -98,14 +100,17 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete order') && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete order')
+            && $this->activeChecker->canBeModified($target);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function canRestore(User $actor, Order $target): bool
-    {
+    public function canRestore(
+        User $actor,
+        Order $target
+    ): bool {
         if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
@@ -137,7 +142,9 @@ class PolicyAuthorisationService
      */
     private function targetOutranksActor(User $actor, Order $target): bool
     {
-        if ($this->roleChecker->isSuperAdmin($actor)) {
+        if ($this->roleChecker->isSuperAdmin(
+            $actor
+        )) {
             return false;
         }
 
@@ -159,7 +166,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('assign order') && $this->activeChecker->isActive($target);
+        return $actor->can('assign order')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -171,7 +179,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('change order status') && $this->activeChecker->isActive($target);
+        return $actor->can('change order status')
+            && $this->activeChecker->isActive($target);
     }
 
     /**

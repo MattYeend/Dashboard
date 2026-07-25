@@ -11,9 +11,8 @@ trait EscapesLikeValues
      * the % and _ characters treated as SQL wildcards rather than literal
      * characters, returning unintended matches.
      */
-    private function escapeLikeValue(
-        string $value
-    ): string {
+    private function escapeLikeValue(string $value): string
+    {
         return str_replace(
             ['\\', '%', '_'],
             ['\\\\', '\\%', '\\_'],

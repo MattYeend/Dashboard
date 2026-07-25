@@ -73,7 +73,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view invoice') && $this->activeChecker->isActive($target);
+        return $actor->can('view invoice')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -81,11 +82,15 @@ class PolicyAuthorisationService
      */
     public function canUpdate(User $actor, Invoice $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if ($this->targetOutranksActor(
+            $actor,
+            $target
+        )) {
             return false;
         }
 
-        return $actor->can('edit invoice') && $this->activeChecker->isActive($target);
+        return $actor->can('edit invoice')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -97,7 +102,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete invoice') && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete invoice')
+            && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -109,7 +115,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('restore invoice') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $actor->can('restore invoice')
+            && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
@@ -129,26 +136,6 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the invoice was created by a user who outranks the actor.
-     *
-     * Prevents admins from managing tasks created by super admins.
-     */
-    private function targetOutranksActor(User $actor, Invoice $target): bool
-    {
-        if ($this->roleChecker->isSuperAdmin($actor)) {
-            return false;
-        }
-
-        $creator = $target->creator;
-
-        if (! $creator instanceof User) {
-            return false;
-        }
-
-        return $this->roleChecker->isSuperAdmin($creator);
-    }
-
-    /**
      * Determine whether the user can send the invoice.
      */
     public function canSend(User $actor, Invoice $target): bool
@@ -157,7 +144,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('send invoices') && $this->activeChecker->isActive($target);
+        return $actor->can('send invoices')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -169,7 +157,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('mark invoices as paid') && $this->activeChecker->isActive($target);
+        return $actor->can('mark invoices as paid')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -181,7 +170,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('mark invoice as unpaid') && $this->activeChecker->isActive($target);
+        return $actor->can('mark invoice as unpaid')
+        && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -193,7 +183,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('change invoice status') && $this->activeChecker->isActive($target);
+        return $actor->can('change invoice status')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -221,6 +212,29 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('assign invoice') && $this->activeChecker->isActive($target);
+        return $actor->can('assign invoice')
+            && $this->activeChecker->isActive($target);
+    }
+
+    /**
+     * Determine whether the invoice was created by a user who outranks the actor.
+     *
+     * Prevents admins from managing tasks created by super admins.
+     */
+    private function targetOutranksActor(User $actor, Invoice $target): bool
+    {
+        if ($this->roleChecker->isSuperAdmin(
+            $actor
+        )) {
+            return false;
+        }
+
+        $creator = $target->creator;
+
+        if (! $creator instanceof User) {
+            return false;
+        }
+
+        return $this->roleChecker->isSuperAdmin($creator);
     }
 }

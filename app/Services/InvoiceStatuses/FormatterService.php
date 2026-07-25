@@ -11,9 +11,8 @@ class FormatterService
      *
      * @return array<string, mixed>
      */
-    public function format(
-        InvoiceStatus $invoiceStatus
-    ): array {
+    public function format(InvoiceStatus $invoiceStatus): array
+    {
         return [
             'id' => $invoiceStatus->id,
             'title' => $invoiceStatus->title,

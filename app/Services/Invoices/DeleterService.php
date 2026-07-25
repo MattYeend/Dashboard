@@ -24,14 +24,9 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function delete(
-        Invoice $invoice,
-        int $deletedBy,
-        ?User $actor = null
-    ): bool {
-        $actor ??= User::findOrFail(
-            $deletedBy
-        );
+    public function delete(Invoice $invoice, int $deletedBy, ?User $actor = null): bool
+    {
+        $actor ??= User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
             $invoice,
@@ -44,14 +39,9 @@ class DeleterService
                     Log::ACTION_DELETE_INVOICE,
                     $actor,
                     $invoice,
-                    [
-                        'before' => $this->auditLogService->snapshot(
-                            $invoice
-                        ),
-                    ],
+                    ['before' => $this->auditLogService->snapshot($invoice)],
                 );
-            }
-        );
+            });
     }
 
     /**
@@ -59,13 +49,9 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function forceDelete(
-        Invoice $invoice,
-        int $deletedBy
-    ): bool {
-        $actor = User::findOrFail(
-            $deletedBy
-        );
+    public function forceDelete(Invoice $invoice, int $deletedBy): bool
+    {
+        $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->forceHandle(
             $invoice,
@@ -74,14 +60,9 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_INVOICE,
                     $actor,
                     $invoice,
-                    [
-                        'before' => $this->auditLogService->snapshot(
-                            $invoice
-                        ),
-                    ],
+                    ['before' => $this->auditLogService->snapshot($invoice)],
                 );
-            }
-        );
+            });
     }
 
     /**
@@ -89,33 +70,20 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function deleteMultiple(
-        array $invoiceIds,
-        int $deletedBy
-    ): int {
+    public function deleteMultiple(array $invoiceIds, int $deletedBy): int
+    {
         $count = 0;
 
-        DB::transaction(function () use (
-            $invoiceIds,
-            $deletedBy,
-            &$count
-        ) {
-            $actor = User::findOrFail(
-                $deletedBy
-            );
+        DB::transaction(function () use ($invoiceIds, $deletedBy, &$count) {
+            $actor = User::findOrFail($deletedBy);
             $invoices = Invoice::whereIn('id', $invoiceIds)->get();
 
             foreach ($invoices as $invoice) {
-                if ($this->delete(
-                    $invoice,
-                    $deletedBy,
-                    $actor
-                )) {
+                if ($this->delete($invoice, $deletedBy, $actor)) {
                     $count++;
                 }
             }
-        }
-        );
+        });
 
         return $count;
     }

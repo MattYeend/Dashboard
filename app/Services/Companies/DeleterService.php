@@ -29,9 +29,7 @@ class DeleterService
         int $deletedBy,
         ?User $actor = null
     ): bool {
-        $actor ??= User::findOrFail(
-            $deletedBy
-        );
+        $actor ??= User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
             $company,
@@ -44,14 +42,9 @@ class DeleterService
                     Log::ACTION_DELETE_COMPANY,
                     $actor,
                     $company,
-                    [
-                        'before' => $this->auditLogService->snapshot(
-                            $company
-                        ),
-                    ],
+                    ['before' => $this->auditLogService->snapshot($company)],
                 );
-            }
-        );
+            });
     }
 
     /**
@@ -59,13 +52,9 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function forceDelete(
-        Company $company,
-        int $deletedBy
-    ): bool {
-        $actor = User::findOrFail(
-            $deletedBy
-        );
+    public function forceDelete(Company $company, int $deletedBy): bool
+    {
+        $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->forceHandle(
             $company,
@@ -74,14 +63,9 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_COMPANY,
                     $actor,
                     $company,
-                    [
-                        'before' => $this->auditLogService->snapshot(
-                            $company
-                        ),
-                    ],
+                    ['before' => $this->auditLogService->snapshot($company)],
                 );
-            }
-        );
+            });
     }
 
     /**
@@ -89,28 +73,16 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function deleteMultiple(
-        array $companyIds,
-        int $deletedBy
-    ): int {
+    public function deleteMultiple(array $companyIds, int $deletedBy): int
+    {
         $count = 0;
 
-        DB::transaction(function () use (
-            $companyIds,
-            $deletedBy,
-            &$count
-        ) {
-            $actor = User::findOrFail(
-                $deletedBy
-            );
+        DB::transaction(function () use ($companyIds, $deletedBy, &$count) {
+            $actor = User::findOrFail($deletedBy);
             $companies = Company::whereIn('id', $companyIds)->get();
 
             foreach ($companies as $company) {
-                if ($this->delete(
-                    $company,
-                    $deletedBy,
-                    $actor
-                )) {
+                if ($this->delete($company, $deletedBy, $actor)) {
                     $count++;
                 }
             }

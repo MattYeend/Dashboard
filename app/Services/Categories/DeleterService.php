@@ -42,14 +42,9 @@ class DeleterService
                     Log::ACTION_DELETE_CATEGORY,
                     $actor,
                     $category,
-                    [
-                        'before' => $this->auditLogService->snapshot(
-                            $category
-                        ),
-                    ],
+                    ['before' => $this->auditLogService->snapshot($category)],
                 );
-            }
-        );
+            });
     }
 
     /**
@@ -57,13 +52,9 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function forceDelete(
-        Category $category,
-        int $deletedBy
-    ): bool {
-        $actor = User::findOrFail(
-            $deletedBy
-        );
+    public function forceDelete(Category $category, int $deletedBy): bool
+    {
+        $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->forceHandle(
             $category,
@@ -72,14 +63,9 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_CATEGORY,
                     $actor,
                     $category,
-                    [
-                        'before' => $this->auditLogService->snapshot(
-                            $category
-                        ),
-                    ],
+                    ['before' => $this->auditLogService->snapshot($category)],
                 );
-            }
-        );
+            });
     }
 
     /**
@@ -87,28 +73,16 @@ class DeleterService
      *
      * @throws \Exception
      */
-    public function deleteMultiple(
-        array $categoryIds,
-        int $deletedBy
-    ): int {
+    public function deleteMultiple(array $categoryIds, int $deletedBy): int
+    {
         $count = 0;
 
-        DB::transaction(function () use (
-            $categoryIds,
-            $deletedBy,
-            &$count
-        ) {
-            $actor = User::findOrFail(
-                $deletedBy
-            );
+        DB::transaction(function () use ($categoryIds, $deletedBy, &$count) {
+            $actor = User::findOrFail($deletedBy);
             $categories = Category::whereIn('id', $categoryIds)->get();
 
             foreach ($categories as $category) {
-                if ($this->delete(
-                    $category,
-                    $deletedBy,
-                    $actor
-                )) {
+                if ($this->delete($category, $deletedBy, $actor)) {
                     $count++;
                 }
             }

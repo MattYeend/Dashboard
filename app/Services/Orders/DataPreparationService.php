@@ -21,9 +21,7 @@ class DataPreparationService
         int $createdBy
     ): array {
         return [
-            'orderable_type' => $this->resolveOrderableType(
-                $orderableType
-            ),
+            'orderable_type' => $this->resolveOrderableType($orderableType),
             'orderable_id' => $orderableId,
             'title' => $data['title'],
             'description' => $data['description'] ?? null,
@@ -47,10 +45,8 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string,mixed>
      */
-    public function prepareForUpdate(
-        array $data,
-        int $updatedBy
-    ): array {
+    public function prepareForUpdate(array $data, int $updatedBy): array
+    {
         $allowed = [
             'orderable_type',
             'orderable_id',
@@ -90,9 +86,8 @@ class DataPreparationService
      * recognised short key, in case a fully-qualified name is ever passed
      * through directly.
      */
-    private function resolveOrderableType(
-        string $orderableType
-    ): string {
+    private function resolveOrderableType(string $orderableType): string
+    {
         return $this->registry->modelClassForKey($orderableType)
             ?? throw new \InvalidArgumentException("Unrecognised orderable type: {$orderableType}");
     }

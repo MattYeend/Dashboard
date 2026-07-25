@@ -38,7 +38,9 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions($user),
+            $this->getPermissions(
+                $user
+            ),
             $this->baseData(),
         );
     }
@@ -57,8 +59,14 @@ class QueryService
         );
 
         return array_merge(
-            ['invoice' => $this->formatterService->format($invoice)],
-            $this->getPermissions($user),
+            [
+                'invoice' => $this->formatterService->format(
+                    $invoice
+                ),
+            ],
+            $this->getPermissions(
+                $user
+            ),
             $this->baseData(),
         );
     }

@@ -22,9 +22,8 @@ class ManagementService
     /**
      * Create a new company order.
      */
-    public function store(
-        StoreOrderRequest $request
-    ): Order {
+    public function store(StoreOrderRequest $request): Order
+    {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -34,10 +33,8 @@ class ManagementService
     /**
      * Update an existing order.
      */
-    public function update(
-        UpdateOrderRequest $request,
-        Order $order
-    ): Order {
+    public function update(UpdateOrderRequest $request, Order $order): Order
+    {
         return $this->updater->update(
             $order,
             $request->validated(),
@@ -48,48 +45,29 @@ class ManagementService
     /**
      * Soft delete a order.
      */
-    public function destroy(
-        Order $order,
-        User $actor
-    ): void {
-        $this->destructor->delete(
-            $order,
-            $actor->id
-        );
+    public function destroy(Order $order, User $actor): void
+    {
+        $this->destructor->delete($order, $actor->id);
     }
 
     /**
      * Restore a soft-deleted order.
      */
-    public function restore(
-        int $id,
-        User $actor
-    ): Order {
-        $order = Order::withTrashed()->findOrFail(
-            $id
-        );
+    public function restore(int $id, User $actor): Order
+    {
+        $order = Order::withTrashed()->findOrFail($id);
 
-        return $this->restorer->restore(
-            $order,
-            $actor->id
-        );
+        return $this->restorer->restore($order, $actor->id);
     }
 
     /**
      * Force delete a order, permanently removing it from the
      * database.
      */
-    public function forceDelete(
-        int $id,
-        User $actor
-    ): void {
-        $order = Order::withTrashed()->findOrFail(
-            $id
-        );
-        $this->destructor->forceDelete(
-            $order,
-            $actor->id
-        );
+    public function forceDelete(int $id, User $actor): void
+    {
+        $order = Order::withTrashed()->findOrFail($id);
+        $this->destructor->forceDelete($order, $actor->id);
     }
 
     /**
@@ -110,13 +88,8 @@ class ManagementService
 
         foreach ($orders as $order) {
             /** @var Order $order */
-            $authoriseCallback(
-                $order
-            );
-            $this->restorer->restore(
-                $order,
-                $actor->id
-            );
+            $authoriseCallback($order);
+            $this->restorer->restore($order, $actor->id);
             $restored[] = $order->id;
         }
 
@@ -132,25 +105,15 @@ class ManagementService
     /**
      * Bulk soft delete orders.
      */
-    public function bulkDelete(
-        array $ids,
-        User $actor,
-        callable $authoriseCallback
-    ): array {
+    public function bulkDelete(array $ids, User $actor, callable $authoriseCallback): array
+    {
         $deleted = [];
 
         foreach ($ids as $id) {
-            $order = Order::findOrFail(
-                $id
-            );
-            $authoriseCallback(
-                $order
-            );
+            $order = Order::findOrFail($id);
+            $authoriseCallback($order);
 
-            $this->destructor->delete(
-                $order,
-                $actor->id
-            );
+            $this->destructor->delete($order, $actor->id);
             $deleted[] = $id;
         }
 

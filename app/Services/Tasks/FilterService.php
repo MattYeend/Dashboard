@@ -42,7 +42,10 @@ class FilterService
             return $query;
         }
 
-        return $query->where('status_id', $statusId);
+        return $query->where(
+            'status_id',
+            $statusId
+        );
     }
 
     /**
@@ -57,7 +60,10 @@ class FilterService
             return $query;
         }
 
-        return $query->where('assigned_to', $assignedTo);
+        return $query->where(
+            'assigned_to',
+            $assignedTo
+        );
     }
 
     /**

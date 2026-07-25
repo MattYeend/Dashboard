@@ -39,14 +39,8 @@ class ContactController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $this->authorize(
-            'viewAny',
-            Contact::class
-        );
-        $this->authoriseTokenAbility(
-            $request,
-            TokenAbility::ContactsRead->value
-        );
+        $this->authorize('viewAny', Contact::class);
+        $this->authoriseTokenAbility($request, TokenAbility::ContactsRead->value);
 
         $data = $this->queryService->getPaginated(
             $request->user(),
@@ -59,9 +53,7 @@ class ContactController extends Controller
             ])
         );
 
-        return response()->json(
-            $data
-        );
+        return response()->json($data);
     }
 
     /**
@@ -73,26 +65,17 @@ class ContactController extends Controller
      * Authorises via the 'create' policy, then confirms the request's token carries the
      * 'contacts:write' ability before persisting.
      */
-    public function store(
-        StoreContactRequest $request
-    ): ContactResource {
-        $this->authorize(
-            'create',
-            Contact::class
-        );
-        $this->authoriseTokenAbility(
-            $request,
-            TokenAbility::ContactsWrite->value
-        );
+    public function store(StoreContactRequest $request): ContactResource
+    {
+        $this->authorize('create', Contact::class);
+        $this->authoriseTokenAbility($request, TokenAbility::ContactsWrite->value);
 
         $contact = $this->creatorService->create(
             $request->validated(),
             $request->user()->id,
         );
 
-        return new ContactResource(
-            $contact
-        );
+        return new ContactResource($contact);
     }
 
     /**
@@ -108,20 +91,11 @@ class ContactController extends Controller
         Request $request,
         Contact $contact
     ): JsonResponse {
-        $this->authorize(
-            'view',
-            $contact
-        );
-        $this->authoriseTokenAbility(
-            $request,
-            TokenAbility::ContactsRead->value
-        );
+        $this->authorize('view', $contact);
+        $this->authoriseTokenAbility($request, TokenAbility::ContactsRead->value);
 
         return response()->json(
-            $this->queryService->getById(
-                $request->user(),
-                $contact->id
-            )
+            $this->queryService->getById($request->user(), $contact->id)
         );
     }
 
@@ -138,14 +112,8 @@ class ContactController extends Controller
         UpdateContactRequest $request,
         Contact $contact
     ): ContactResource {
-        $this->authorize(
-            'update',
-            $contact
-        );
-        $this->authoriseTokenAbility(
-            $request,
-            TokenAbility::ContactsWrite->value
-        );
+        $this->authorize('update', $contact);
+        $this->authoriseTokenAbility($request, TokenAbility::ContactsWrite->value);
 
         $updated = $this->updaterService->update(
             $contact,
@@ -153,9 +121,7 @@ class ContactController extends Controller
             $request->user()->id,
         );
 
-        return new ContactResource(
-            $updated
-        );
+        return new ContactResource($updated);
     }
 
     /**
@@ -171,23 +137,11 @@ class ContactController extends Controller
         Request $request,
         Contact $contact
     ): JsonResponse {
-        $this->authorize(
-            'delete',
-            $contact
-        );
-        $this->authoriseTokenAbility(
-            $request,
-            TokenAbility::ContactsWrite->value
-        );
+        $this->authorize('delete', $contact);
+        $this->authoriseTokenAbility($request, TokenAbility::ContactsWrite->value);
 
-        $this->deleterService->delete(
-            $contact,
-            $request->user()->id
-        );
+        $this->deleterService->delete($contact, $request->user()->id);
 
-        return response()->json(
-            null,
-            204
-        );
+        return response()->json(null, 204);
     }
 }

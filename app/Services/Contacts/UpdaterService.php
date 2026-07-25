@@ -31,18 +31,11 @@ class UpdaterService
         array $data,
         int $updatedBy
     ): Contact {
-        $actor = User::findOrFail(
-            $updatedBy
-        );
+        $actor = User::findOrFail($updatedBy);
 
-        $before = $this->auditLogService->snapshot(
-            $contact
-        );
+        $before = $this->auditLogService->snapshot($contact);
 
-        $contactData = $this->dataPreparation->prepareForUpdate(
-            $data,
-            $updatedBy
-        );
+        $contactData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
 
         return $this->updateResource->handle(
             $contact,
@@ -56,12 +49,9 @@ class UpdaterService
                     $fresh,
                     [
                         'before' => $before,
-                        'after' => $this->auditLogService->snapshot(
-                            $fresh
-                        ),
+                        'after' => $this->auditLogService->snapshot($fresh),
                     ],
                 );
-            }
-        );
+            });
     }
 }

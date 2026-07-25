@@ -29,7 +29,8 @@ class PolicyAuthorisationService
      */
     public function isAdmin(User $user): bool
     {
-        return $this->roleChecker->isAdmin($user);
+        return $this->roleChecker->isAdmin($user
+        );
     }
 
     /**
@@ -73,7 +74,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view order statuses') && $this->activeChecker->isActive($target);
+        return $actor->can('view order statuses')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -85,7 +87,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit order statuses') && $this->activeChecker->isActive($target);
+        return $actor->can('edit order statuses')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -97,7 +100,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete order statuses') && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete order statuses')
+            && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -109,7 +113,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('restore order statuses') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $actor->can('restore order statuses')
+            && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
@@ -161,8 +166,10 @@ class PolicyAuthorisationService
      *
      * Prevents admins from managing order statuses created by super admins.
      */
-    private function targetOutranksActor(User $actor, OrderStatus $target): bool
-    {
+    private function targetOutranksActor(
+        User $actor,
+        OrderStatus $target
+    ): bool {
         if ($this->roleChecker->isSuperAdmin($actor)) {
             return false;
         }

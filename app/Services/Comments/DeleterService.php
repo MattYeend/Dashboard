@@ -27,9 +27,7 @@ class DeleterService
         Comment $comment,
         int $deletedBy
     ): bool {
-        $actor = User::findOrFail(
-            $deletedBy
-        );
+        $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
             $comment,
@@ -42,13 +40,8 @@ class DeleterService
                     Log::ACTION_DELETE_COMMENT,
                     $actor,
                     $comment,
-                    [
-                        'before' => $this->auditLogService->snapshot(
-                            $comment
-                        ),
-                    ],
+                    ['before' => $this->auditLogService->snapshot($comment)],
                 );
-            }
-        );
+            });
     }
 }

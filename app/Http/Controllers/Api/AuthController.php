@@ -20,28 +20,17 @@ class AuthController extends Controller
      *
      * Throws a validation exception on incorrect credentials rather than leaking which field was wrong.
      */
-    public function login(
-        Request $request
-    ): JsonResponse {
+    public function login(Request $request): JsonResponse
+    {
         $credentials = $request->validate([
-            'email' => [
-                'required',
-                'email',
-            ],
-            'password' => [
-                'required',
-            ],
-            'device_name' => [
-                'nullable',
-                'string',
-            ],
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+            'device_name' => ['nullable', 'string'],
         ]);
 
         if (! Auth::attempt($request->only('email', 'password'))) {
             throw ValidationException::withMessages([
-                'email' => [
-                    'The provided credentials are incorrect.',
-                ],
+                'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
@@ -51,17 +40,12 @@ class AuthController extends Controller
         if ($request->filled('device_name')) {
             $token = $user->createToken($credentials['device_name'])->plainTextToken;
 
-            return response()->json([
-                'user' => $user,
-                'token' => $token,
-            ]);
+            return response()->json(['user' => $user, 'token' => $token]);
         }
 
         $request->session()->regenerate();
 
-        return response()->json([
-            'user' => $user,
-        ]);
+        return response()->json(['user' => $user]);
     }
 
     /**
@@ -71,18 +55,15 @@ class AuthController extends Controller
      *
      * Safe to call from either flow; only acts on whichever authentication method was actually used.
      */
-    public function logout(
-        Request $request
-    ): JsonResponse {
+    public function logout(Request $request): JsonResponse
+    {
         if ($token = $request->user()?->currentAccessToken()) {
             $token->delete();
         }
 
         Auth::guard('web')->logout();
 
-        return response()->json([
-            'message' => 'Logged out',
-        ]);
+        return response()->json(['message' => 'Logged out']);
     }
 
     /**
@@ -90,11 +71,8 @@ class AuthController extends Controller
      *
      * Used by SPA and token clients alike to confirm identity and refresh local user state.
      */
-    public function user(
-        Request $request
-    ): JsonResponse {
-        return response()->json(
-            $request->user()
-        );
+    public function user(Request $request): JsonResponse
+    {
+        return response()->json($request->user());
     }
 }

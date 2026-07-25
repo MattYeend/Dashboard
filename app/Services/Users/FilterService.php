@@ -42,7 +42,9 @@ class FilterService
             return $query;
         }
 
-        return $query->where('role', $role);
+        return $query->where(
+            'role', $role
+        );
     }
 
     /**

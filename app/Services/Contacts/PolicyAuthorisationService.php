@@ -19,80 +19,57 @@ class PolicyAuthorisationService
     /**
      * Check if user is a regular user, admin, or super admin.
      */
-    public function isUser(
-        User $user
-    ): bool {
-        return $this->roleChecker->isUser(
-            $user
-        );
+    public function isUser(User $user): bool
+    {
+        return $this->roleChecker->isUser($user);
     }
 
     /**
      * Check if user is admin or super admin.
      */
-    public function isAdmin(
-        User $user
-    ): bool {
-        return $this->roleChecker->isAdmin(
-            $user
-        );
+    public function isAdmin(User $user): bool
+    {
+        return $this->roleChecker->isAdmin($user);
     }
 
     /**
      * Check if contact is active (not soft-deleted).
      */
-    public function isActive(
-        Contact $contact
-    ): bool {
-        return $this->activeChecker->isActive(
-            $contact
-        );
+    public function isActive(Contact $contact): bool
+    {
+        return $this->activeChecker->isActive($contact);
     }
 
     /**
      * Check if contact is soft-deleted.
      */
-    public function isTrashed(
-        Contact $contact
-    ): bool {
-        return $this->activeChecker->isTrashed(
-            $contact
-        );
+    public function isTrashed(Contact $contact): bool
+    {
+        return $this->activeChecker->isTrashed($contact);
     }
 
     /**
      * Determine whether the user can view any contacts.
      */
-    public function canViewAny(
-        User $actor
-    ): bool {
-        return $actor->can(
-            'view contact information'
-        );
+    public function canViewAny(User $actor): bool
+    {
+        return $actor->can('view contact information');
     }
 
     /**
      * Determine whether the user can create contacts.
      */
-    public function canCreate(
-        User $actor
-    ): bool {
-        return $actor->can(
-            'create contact information'
-        );
+    public function canCreate(User $actor): bool
+    {
+        return $actor->can('create contact information');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function canView(
-        User $actor,
-        Contact $target
-    ): bool {
-        if ($this->targetOutranksActor(
-            $actor,
-            $target
-        )) {
+    public function canView(User $actor, Contact $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -109,20 +86,16 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit contact information') && $this->activeChecker->isActive($target);
+        return $actor->can('edit contact information')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function canDelete(
-        User $actor,
-        Contact $target
-    ): bool {
-        if ($this->targetOutranksActor(
-            $actor,
-            $target
-        )) {
+    public function canDelete(User $actor, Contact $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -133,14 +106,9 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can restore the model.
      */
-    public function canRestore(
-        User $actor,
-        Contact $target
-    ): bool {
-        if ($this->targetOutranksActor(
-            $actor,
-            $target
-        )) {
+    public function canRestore(User $actor, Contact $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -167,23 +135,17 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can import contacts.
      */
-    public function canImport(
-        User $actor
-    ): bool {
-        return $actor->can(
-            'import contact information'
-        );
+    public function canImport(User $actor): bool
+    {
+        return $actor->can('import contact information');
     }
 
     /**
      * Determine whether the user can export contacts.
      */
-    public function canExport(
-        User $actor
-    ): bool {
-        return $actor->can(
-            'export contact information'
-        );
+    public function canExport(User $actor): bool
+    {
+        return $actor->can('export contact information');
     }
 
     /**
@@ -191,13 +153,9 @@ class PolicyAuthorisationService
      *
      * A Super Admin cannot be managed by anyone other than another Super Admin.
      */
-    private function targetOutranksActor(
-        User $actor,
-        Contact $target
-    ): bool {
-        if ($this->roleChecker->isSuperAdmin(
-            $actor
-        )) {
+    private function targetOutranksActor(User $actor, Contact $target): bool
+    {
+        if ($this->roleChecker->isSuperAdmin($actor)) {
             return false;
         }
 
@@ -207,8 +165,6 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->roleChecker->isSuperAdmin(
-            $owner
-        );
+        return $this->roleChecker->isSuperAdmin($owner);
     }
 }

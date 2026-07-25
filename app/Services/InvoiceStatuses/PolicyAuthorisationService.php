@@ -73,7 +73,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view invoice statuses') && $this->activeChecker->isActive($target);
+        return $actor->can('view invoice statuses')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -85,7 +86,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit invoice statuses') && $this->activeChecker->isActive($target);
+        return $actor->can('edit invoice statuses')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -97,7 +99,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete invoice statuses') && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete invoice statuses')
+            && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -109,7 +112,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('restore invoice statuses') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $actor->can('restore invoice statuses')
+            && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
@@ -153,7 +157,8 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('assign invoice statuses') && $this->activeChecker->isActive($target);
+        return $actor->can('assign invoice statuses')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -161,8 +166,10 @@ class PolicyAuthorisationService
      *
      * Prevents admins from managing task statuses created by super admins.
      */
-    private function targetOutranksActor(User $actor, InvoiceStatus $target): bool
-    {
+    private function targetOutranksActor(
+        User $actor,
+        InvoiceStatus $target
+    ): bool {
         if ($this->roleChecker->isSuperAdmin($actor)) {
             return false;
         }

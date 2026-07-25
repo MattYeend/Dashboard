@@ -29,9 +29,7 @@ class DeleterService
         int $deletedBy,
         ?User $actor = null
     ): bool {
-        $actor ??= User::findOrFail(
-            $deletedBy
-        );
+        $actor ??= User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
             $contact,
@@ -44,11 +42,7 @@ class DeleterService
                     Log::ACTION_DELETE_CONTACT,
                     $actor,
                     $contact,
-                    [
-                        'before' => $this->auditLogService->snapshot(
-                            $contact
-                        ),
-                    ],
+                    ['before' => $this->auditLogService->snapshot($contact)],
                 );
             });
     }
@@ -62,9 +56,7 @@ class DeleterService
         Contact $contact,
         int $deletedBy
     ): bool {
-        $actor = User::findOrFail(
-            $deletedBy
-        );
+        $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->forceHandle(
             $contact,
@@ -73,14 +65,9 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_CONTACT,
                     $actor,
                     $contact,
-                    [
-                        'before' => $this->auditLogService->snapshot(
-                            $contact
-                        ),
-                    ],
+                    ['before' => $this->auditLogService->snapshot($contact)],
                 );
-            }
-        );
+            });
     }
 
     /**
@@ -94,20 +81,12 @@ class DeleterService
     ): int {
         $count = 0;
 
-        DB::transaction(function () use (
-            $contactIds,
-            $deletedBy,
-            &$count
-        ) {
+        DB::transaction(function () use ($contactIds, $deletedBy, &$count) {
             $actor = User::findOrFail($deletedBy);
             $contacts = Contact::whereIn('id', $contactIds)->get();
 
             foreach ($contacts as $contact) {
-                if ($this->delete(
-                    $contact,
-                    $deletedBy,
-                    $actor
-                )) {
+                if ($this->delete($contact, $deletedBy, $actor)) {
                     $count++;
                 }
             }
