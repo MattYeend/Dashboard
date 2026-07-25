@@ -412,7 +412,7 @@ class Log extends Model
 
     public const ACTION_MARK_INVOICE_UNPAID = 191;
 
-     // Invoice Item Management
+    // Invoice Item Management
     public const ACTION_CREATE_INVOICE_ITEM = 192;
 
     public const ACTION_UPDATE_INVOICE_ITEM = 193;

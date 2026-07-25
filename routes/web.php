@@ -301,9 +301,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{invoice}/edit', [InvoiceController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{invoice}', [InvoiceController::class, 'update'])->name('update');
         Route::delete('/{invoice}', [InvoiceController::class, 'destroy'])->name('destroy');
-    });
 
-    Route::prefix('/{invoice}/items')->name('items.')->group(function () {
+        Route::prefix('/{invoice}/items')->name('items.')->group(function () {
             Route::post('/bulk/delete', [InvoiceItemController::class, 'bulkDelete'])->name('bulk.delete');
             Route::post('/bulk/restore', [InvoiceItemController::class, 'bulkRestore'])->name('bulk.restore');
             Route::post('/{id}/restore', [InvoiceItemController::class, 'restore'])->name('restore');
@@ -317,6 +316,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::match(['put', 'patch'], '/{invoiceItem}', [InvoiceItemController::class, 'update'])->name('update');
             Route::delete('/{invoiceItem}', [InvoiceItemController::class, 'destroy'])->name('destroy');
         });
+    });
 });
 
 require __DIR__.'/settings.php';
