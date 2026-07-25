@@ -28,9 +28,7 @@ class QueryService
         User $actor,
         array $filters = []
     ): array {
-        $query = $this->buildQuery(
-            $filters
-        );
+        $query = $this->buildQuery($filters);
         $paginated = $this->paginate(
             $query,
             min((int) ($filters['per_page'] ?? 15), 100)
@@ -38,9 +36,7 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions(
-                $actor
-            ),
+            $this->getPermissions($actor),
             $this->baseData(),
         );
     }
@@ -59,15 +55,9 @@ class QueryService
         );
 
         return array_merge(
-            [
-                'order' => $this->formatterService->format(
-                    $order
-                ),
-            ],
+            ['order' => $this->formatterService->format($order),],
             $this->getFormData(),
-            $this->getPermissions(
-                $user
-            ),
+            $this->getPermissions($user),
             $this->baseData(),
         );
     }
@@ -91,12 +81,9 @@ class QueryService
     /**
      * Get the "owner" options for a given contactable type, for the dependent dropdown on the Create/Edit order form.
      */
-    public function getOrderableOptions(
-        string $type
-    ): array {
-        return $this->registry->optionsFor(
-            $type
-        );
+    public function getOrderableOptions(string $type): array 
+    {
+        return $this->registry->optionsFor($type);
     }
 
     /**
@@ -137,9 +124,7 @@ class QueryService
         return [
             'orders' => [
                 'data' => array_map(
-                    fn (Order $order) => $this->formatterService->format(
-                        $order
-                    ),
+                    fn (Order $order) => $this->formatterService->format($order),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -158,23 +143,16 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(
-        User $user
-    ): array {
+    protected function getPermissions(User $user): array 
+    {
         if (! $user) {
             return ['permissions_meta' => []];
         }
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can(
-                    'create',
-                    Order::class
-                ),
-                'can_view_any' => $user->can(
-                    'viewAny',
-                    Order::class
-                ),
+                'can_create' => $user->can('create', Order::class),
+                'can_view_any' => $user->can('viewAny', Order::class),
             ],
         ];
     }
@@ -210,9 +188,7 @@ class QueryService
             $query->withTrashed();
         }
 
-        return $query->findOrFail(
-            $id
-        );
+        return $query->findOrFail($id);
     }
 
     /**

@@ -71,7 +71,12 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Category::query()->with(['creator', 'updater', 'deleter', 'restorer']);
+        $query = Category::query()->with([
+            'creator', 
+            'updater', 
+            'deleter', 
+            'restorer'
+        ]);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
@@ -140,7 +145,12 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Category {
-        $query = Category::query()->with(['creator', 'updater', 'deleter', 'restorer']);
+        $query = Category::query()->with([
+            'creator', 
+            'updater', 
+            'deleter', 
+            'restorer'
+        ]);
 
         if ($withTrashed) {
             $query->withTrashed();

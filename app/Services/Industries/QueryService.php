@@ -26,9 +26,7 @@ class QueryService
         User $user,
         array $filters = []
     ): array {
-        $query = $this->buildQuery(
-            $filters
-        );
+        $query = $this->buildQuery($filters);
         $paginated = $this->paginate(
             $query,
             min((int) ($filters['per_page'] ?? 15), 100)
@@ -55,14 +53,8 @@ class QueryService
         );
 
         return array_merge(
-            [
-                'industry' => $this->formatterService->format(
-                    $industry
-                ),
-            ],
-            $this->getPermissions(
-                $user
-            ),
+            ['industry' => $this->formatterService->format($industry)],
+            $this->getPermissions($user),
             $this->baseData(),
         );
     }
@@ -114,9 +106,7 @@ class QueryService
         return [
             'industries' => [
                 'data' => array_map(
-                    fn (Industry $industry) => $this->formatterService->format(
-                        $industry
-                    ),
+                    fn (Industry $industry) => $this->formatterService->format($industry),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -135,23 +125,16 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(
-        User $user
-    ): array {
+    protected function getPermissions(User $user): array 
+    {
         if (! $user) {
             return ['permissions_meta' => []];
         }
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can(
-                    'create',
-                    Industry::class
-                ),
-                'can_view_any' => $user->can(
-                    'viewAny',
-                    Industry::class
-                ),
+                'can_create' => $user->can('create', Industry::class),
+                'can_view_any' => $user->can('viewAny', Industry::class),
             ],
         ];
     }
@@ -185,9 +168,7 @@ class QueryService
             $query->withTrashed();
         }
 
-        return $query->findOrFail(
-            $id
-        );
+        return $query->findOrFail($id);
     }
 
     /**

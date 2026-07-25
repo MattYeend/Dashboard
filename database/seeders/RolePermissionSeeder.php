@@ -315,6 +315,17 @@ class RolePermissionSeeder extends Seeder
             'force delete invoice item',
             'import invoice item',
             'export invoice item',
+
+            // Pipeline status management
+            'view pipeline statuses',
+            'create pipeline statuses',
+            'edit pipeline statuses',
+            'delete pipeline statuses',
+            'restore pipeline statuses',
+            'force delete pipeline statuses',
+            'import pipeline statuses',
+            'export pipeline statuses',
+            'assign pipeline statuses',
         ];
 
         foreach ($permissions as $permission) {
@@ -543,6 +554,15 @@ class RolePermissionSeeder extends Seeder
             'restore invoice item',
             'import invoice item',
             'export invoice item',
+            'view pipeline statuses',
+            'create pipeline statuses',
+            'edit pipeline statuses',
+            'delete pipeline statuses',
+            'restore pipeline statuses',
+            'force delete pipeline statuses',
+            'import pipeline statuses',
+            'export pipeline statuses',
+            'assign pipeline statuses'
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -722,6 +742,15 @@ class RolePermissionSeeder extends Seeder
             'restore invoice item',
             'import invoice item',
             'export invoice item',
+            'view pipeline statuses',
+            'create pipeline statuses',
+            'edit pipeline statuses',
+            'delete pipeline statuses',
+            'restore pipeline statuses',
+            'force delete pipeline statuses',
+            'import pipeline statuses',
+            'export pipeline statuses',
+            'assign pipeline statuses',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -841,6 +870,11 @@ class RolePermissionSeeder extends Seeder
             'edit invoice item',
             'delete invoice item',
             'restore invoice item',
+            'create pipeline statuses',
+            'edit pipeline statuses',
+            'delete pipeline statuses',
+            'restore pipeline statuses',
+            'assign pipeline statuses',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -878,7 +912,6 @@ class RolePermissionSeeder extends Seeder
             'view comments',
             'view any tags',
             'view tags',
-            'view invoice statuses',
             'view invoice',
             'view invoice item',
         ];
@@ -955,9 +988,6 @@ class RolePermissionSeeder extends Seeder
             'view tags',
             'create tags',
             'update tags',
-            'view invoice statuses',
-            'create invoice statuses',
-            'edit invoice statuses',
             'view any invoice',
             'view invoice',
             'create invoice',
@@ -1115,6 +1145,14 @@ class RolePermissionSeeder extends Seeder
             'restore invoice item',
             'import invoice item',
             'export invoice item',
+            'view pipeline statuses',
+            'create pipeline statuses',
+            'edit pipeline statuses',
+            'delete pipeline statuses',
+            'restore pipeline statuses',
+            'import pipeline statuses',
+            'export pipeline statuses',
+            'assign pipeline statuses',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -1179,9 +1217,6 @@ class RolePermissionSeeder extends Seeder
             'export comments',
             'view any tags',
             'view tags',
-            'view invoice statuses',
-            'export invoice statuses',
-            'assign invoice statuses',
             'view any invoice',
             'view invoice',
             'export invoice',
@@ -1221,7 +1256,6 @@ class RolePermissionSeeder extends Seeder
             'view posts',
             'view comments',
             'view tags',
-            'view invoice statuses',
             'view any invoice',
             'view invoice',
             'view any invoice item',
@@ -1246,7 +1280,6 @@ class RolePermissionSeeder extends Seeder
             'view posts',
             'view comments',
             'view tags',
-            'view invoice statuses',
             'view any invoice',
             'view invoice',
             'view any invoice item',
@@ -1300,5 +1333,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Invoice Statuses');
         $this->command->info('- Invoices');
         $this->command->info('- Invoice Items');
+        $this->command->info('- Pipeline Statuses');
     }
 }

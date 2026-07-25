@@ -60,8 +60,12 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = User::query()
-            ->with(['creator', 'updater', 'deleter', 'restorer']);
+        $query = User::query()->with([
+            'creator', 
+            'updater', 
+            'deleter', 
+            'restorer']
+            );
 
         $query = $this->filterService->applyAll($query, $filters);
 
@@ -133,8 +137,12 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): User {
-        $query = User::query()
-            ->with(['creator', 'updater', 'deleter', 'restorer']);
+        $query = User::query()->with([
+            'creator', 
+            'updater', 
+            'deleter', 
+            'restorer'
+            ]);
 
         if ($withTrashed) {
             $query->withTrashed();

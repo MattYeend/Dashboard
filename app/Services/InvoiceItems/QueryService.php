@@ -112,9 +112,7 @@ class QueryService
         return [
             'invoice_items' => [
                 'data' => array_map(
-                    fn (InvoiceItem $invoiceItem) => $this->formatterService->format(
-                        $invoiceItem
-                    ),
+                    fn (InvoiceItem $invoiceItem) => $this->formatterService->format($invoiceItem),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -133,23 +131,16 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(
-        User $user
-    ): array {
+    protected function getPermissions(User $user): array 
+    {
         if (! $user) {
             return ['permissions_meta' => []];
         }
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can(
-                    'create',
-                    InvoiceItem::class
-                ),
-                'can_view_any' => $user->can(
-                    'viewAny',
-                    InvoiceItem::class
-                ),
+                'can_create' => $user->can('create', InvoiceItem::class),
+                'can_view_any' => $user->can('viewAny', InvoiceItem::class),
             ],
         ];
     }
@@ -179,9 +170,7 @@ class QueryService
             $query->withTrashed();
         }
 
-        return $query->findOrFail(
-            $id
-        );
+        return $query->findOrFail($id);
     }
 
     /**
