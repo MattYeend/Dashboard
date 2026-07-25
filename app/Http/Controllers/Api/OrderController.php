@@ -37,17 +37,10 @@ class OrderController extends Controller
      * Authorises via the 'viewAny' policy, then confirms the request's token carries the
      * 'orders:read' ability before returning data.
      */
-    public function index(
-        Request $request
-    ): JsonResponse {
-        $this->authorize(
-            'viewAny',
-            Order::class
-        );
-        $this->authoriseTokenAbility(
-            $request,
-            TokenAbility::OrdersRead->value
-        );
+    public function index(Request $request): JsonResponse
+    {
+        $this->authorize('viewAny', Order::class);
+        $this->authoriseTokenAbility($request, TokenAbility::OrdersRead->value);
 
         $data = $this->queryService->getPaginated(
             $request->user(),
@@ -60,9 +53,7 @@ class OrderController extends Controller
             ])
         );
 
-        return response()->json(
-            $data
-        );
+        return response()->json($data);
     }
 
     /**
@@ -74,26 +65,17 @@ class OrderController extends Controller
      * Authorises via the 'create' policy, then confirms the request's token carries the
      * 'orders:write' ability before persisting.
      */
-    public function store(
-        StoreOrderRequest $request
-    ): OrderResource {
-        $this->authorize(
-            'create',
-            Order::class
-        );
-        $this->authoriseTokenAbility(
-            $request,
-            TokenAbility::OrdersWrite->value
-        );
+    public function store(StoreOrderRequest $request): OrderResource
+    {
+        $this->authorize('create', Order::class);
+        $this->authoriseTokenAbility($request, TokenAbility::OrdersWrite->value);
 
         $order = $this->creatorService->create(
             $request->validated(),
             $request->user()->id,
         );
 
-        return new OrderResource(
-            $order
-        );
+        return new OrderResource($order);
     }
 
     /**
@@ -109,14 +91,8 @@ class OrderController extends Controller
         Request $request,
         Order $order
     ): JsonResponse {
-        $this->authorize(
-            'view',
-            $order
-        );
-        $this->authoriseTokenAbility(
-            $request,
-            TokenAbility::OrdersRead->value
-        );
+        $this->authorize('view', $order);
+        $this->authoriseTokenAbility($request, TokenAbility::OrdersRead->value);
 
         return response()->json(
             $this->queryService->getById(
@@ -139,14 +115,8 @@ class OrderController extends Controller
         UpdateOrderRequest $request,
         Order $order
     ): OrderResource {
-        $this->authorize(
-            'update',
-            $order
-        );
-        $this->authoriseTokenAbility(
-            $request,
-            TokenAbility::OrdersWrite->value
-        );
+        $this->authorize('update', $order);
+        $this->authoriseTokenAbility($request, TokenAbility::OrdersWrite->value);
 
         $updated = $this->updaterService->update(
             $order,
@@ -154,9 +124,7 @@ class OrderController extends Controller
             $request->user()->id,
         );
 
-        return new OrderResource(
-            $updated
-        );
+        return new OrderResource($updated);
     }
 
     /**
@@ -172,23 +140,11 @@ class OrderController extends Controller
         Request $request,
         Order $order
     ): JsonResponse {
-        $this->authorize(
-            'delete',
-            $order
-        );
-        $this->authoriseTokenAbility(
-            $request,
-            TokenAbility::OrdersWrite->value
-        );
+        $this->authorize('delete', $order);
+        $this->authoriseTokenAbility($request, TokenAbility::OrdersWrite->value);
 
-        $this->deleterService->delete(
-            $order,
-            $request->user()->id
-        );
+        $this->deleterService->delete($order, $request->user()->id);
 
-        return response()->json(
-            null,
-            204
-        );
+        return response()->json(null, 204);
     }
 }
