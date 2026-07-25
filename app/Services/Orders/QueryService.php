@@ -28,7 +28,9 @@ class QueryService
         User $actor,
         array $filters = []
     ): array {
-        $query = $this->buildQuery($filters);
+        $query = $this->buildQuery(
+            $filters
+        );
         $paginated = $this->paginate(
             $query,
             min((int) ($filters['per_page'] ?? 15), 100)
@@ -36,7 +38,9 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions($actor),
+            $this->getPermissions(
+                $actor
+            ),
             $this->baseData(),
         );
     }
@@ -49,10 +53,15 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): array {
-        $order = $this->findOrder($id, $withTrashed);
+        $order = $this->findOrder(
+            $id,
+            $withTrashed
+        );
 
         return array_merge(
-            ['order' => $this->formatterService->format($order)],
+            ['order' => $this->formatterService->format(
+                $order
+            )],
             $this->getFormData(),
             $this->getPermissions($user),
             $this->baseData(),
@@ -65,7 +74,12 @@ class QueryService
     public function getFormData(): array
     {
         return [
-            'statuses' => OrderStatus::orderBy('title')->get(['id', 'title', 'background_colour', 'text_colour']),
+            'statuses' => OrderStatus::orderBy('title')->get([
+                'id',
+                'title',
+                'background_colour',
+                'text_colour',
+            ]),
             'orderableTypes' => $this->registry->types(),
         ];
     }
@@ -73,22 +87,38 @@ class QueryService
     /**
      * Get the "owner" options for a given contactable type, for the dependent dropdown on the Create/Edit order form.
      */
-    public function getOrderableOptions(string $type): array
-    {
-        return $this->registry->optionsFor($type);
+    public function getOrderableOptions(
+        string $type
+    ): array {
+        return $this->registry->optionsFor(
+            $type
+        );
     }
 
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(array $filters): Builder
-    {
-        $query = Order::query()
-            ->with(['orderable', 'creator', 'updater', 'deleter', 'restorer', 'status']);
+    protected function buildQuery(
+        array $filters
+    ): Builder {
+        $query = Order::query()->with([
+            'orderable',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'status',
+        ]);
 
-        $query = $this->filterService->applyAll($query, $filters);
+        $query = $this->filterService->applyAll(
+            $query,
+            $filters
+        );
 
-        return $this->applySorting($query, $filters);
+        return $this->applySorting(
+            $query,
+            $filters
+        );
     }
 
     /**
@@ -103,7 +133,9 @@ class QueryService
         return [
             'orders' => [
                 'data' => array_map(
-                    fn (Order $order) => $this->formatterService->format($order),
+                    fn (Order $order) => $this->formatterService->format(
+                        $order
+                    ),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -122,16 +154,23 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(User $user): array
-    {
+    protected function getPermissions(
+        User $user
+    ): array {
         if (! $user) {
             return ['permissions_meta' => []];
         }
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can('create', Order::class),
-                'can_view_any' => $user->can('viewAny', Order::class),
+                'can_create' => $user->can(
+                    'create',
+                    Order::class
+                ),
+                'can_view_any' => $user->can(
+                    'viewAny',
+                    Order::class
+                ),
             ],
         ];
     }
@@ -154,14 +193,22 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Order {
-        $query = Order::query()
-            ->with(['orderable', 'creator', 'updater', 'deleter', 'restorer', 'status']);
+        $query = Order::query()->with([
+            'orderable',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'status',
+        ]);
 
         if ($withTrashed) {
             $query->withTrashed();
         }
 
-        return $query->findOrFail($id);
+        return $query->findOrFail(
+            $id
+        );
     }
 
     /**

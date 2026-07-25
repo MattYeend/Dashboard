@@ -49,12 +49,16 @@ class OrderableTypeRegistryService
      *
      * @return array<int, array{value: int, label: string}>
      */
-    public function optionsFor(string $type): array
-    {
+    public function optionsFor(
+        string $type
+    ): array {
         $allowed = $this->all();
 
         // Normalise either a short key or a stored FQCN back to a short key
-        $resolvedType = $this->resolveTypeKey($type, $allowed);
+        $resolvedType = $this->resolveTypeKey(
+            $type,
+            $allowed
+        );
 
         $config = $allowed[$resolvedType] ?? null;
 
@@ -80,8 +84,9 @@ class OrderableTypeRegistryService
      * Resolve a stored FQCN (e.g. "App\Models\User") to its short UI key
      * (e.g. "user"). Used when hydrating the edit form.
      */
-    public function keyForModel(?string $modelClass): string
-    {
+    public function keyForModel(
+        ?string $modelClass
+    ): string {
         if (! $modelClass) {
             return '';
         }
@@ -98,8 +103,9 @@ class OrderableTypeRegistryService
     /**
      * Resolve the human-readable label for a stored FQCN.
      */
-    public function labelForModel(?string $modelClass): ?string
-    {
+    public function labelForModel(
+        ?string $modelClass
+    ): ?string {
         if (! $modelClass) {
             return null;
         }
@@ -119,8 +125,9 @@ class OrderableTypeRegistryService
      * (e.g. "user" -> "App\Models\User"). Returns null if the key isn't
      * in the allow-list.
      */
-    public function modelClassForKey(string $key): ?string
-    {
+    public function modelClassForKey(
+        string $key
+    ): ?string {
         return $this->all()[$key]['model'] ?? null;
     }
 
@@ -130,8 +137,10 @@ class OrderableTypeRegistryService
      * class name (e.g. "App\Models\User"), but only returns keys that
      * exist in the allow-list.
      */
-    private function resolveTypeKey(string $type, array $allowed): string
-    {
+    private function resolveTypeKey(
+        string $type,
+        array $allowed
+    ): string {
         if (isset($allowed[$type])) {
             return $type;
         }

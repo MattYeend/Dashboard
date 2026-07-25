@@ -42,9 +42,14 @@ class DeleterService
                     Log::ACTION_DELETE_ADDRESS,
                     $actor,
                     $address,
-                    ['before' => $this->auditLogService->snapshot($address)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $address
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -65,9 +70,14 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_ADDRESS,
                     $actor,
                     $address,
-                    ['before' => $this->auditLogService->snapshot($address)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $address
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -81,7 +91,11 @@ class DeleterService
     ): int {
         $count = 0;
 
-        DB::transaction(function () use ($addressIds, $deletedBy, &$count) {
+        DB::transaction(function () use (
+            $addressIds,
+            $deletedBy,
+            &$count
+        ) {
             $actor = User::findOrFail($deletedBy);
             $addresses = Address::whereIn('id', $addressIds)->get();
 

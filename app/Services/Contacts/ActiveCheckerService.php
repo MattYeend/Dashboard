@@ -18,16 +18,18 @@ class ActiveCheckerService
     /**
      * Check if contact is active (not soft-deleted).
      */
-    public function isActive(Contact $contact): bool
-    {
+    public function isActive(
+        Contact $contact
+    ): bool {
         return ! $contact->trashed();
     }
 
     /**
      * Check if contact is soft-deleted.
      */
-    public function isTrashed(Contact $contact): bool
-    {
+    public function isTrashed(
+        Contact $contact
+    ): bool {
         return $contact->trashed();
     }
 
@@ -35,9 +37,12 @@ class ActiveCheckerService
      * Check if contact is active (not soft-deleted) and can be
      * updated/deleted.
      */
-    public function canBeModified(Contact $contact): bool
-    {
-        return $this->isActive($contact);
+    public function canBeModified(
+        Contact $contact
+    ): bool {
+        return $this->isActive(
+            $contact
+        );
     }
 
     /**
@@ -46,7 +51,9 @@ class ActiveCheckerService
     public function canBeRestoredOrForceDeleted(
         Contact $contact
     ): bool {
-        return $this->isTrashed($contact);
+        return $this->isTrashed(
+            $contact
+        );
     }
 
     /**

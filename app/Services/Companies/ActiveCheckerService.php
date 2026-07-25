@@ -18,33 +18,41 @@ class ActiveCheckerService
     /**
      * Check if company is active (not soft-deleted).
      */
-    public function isActive(Company $company): bool
-    {
+    public function isActive(
+        Company $company
+    ): bool {
         return ! $company->trashed();
     }
 
     /**
      * Check if company is soft-deleted.
      */
-    public function isTrashed(Company $company): bool
-    {
+    public function isTrashed(
+        Company $company
+    ): bool {
         return $company->trashed();
     }
 
     /**
      * Check if company is active and can be updated or deleted.
      */
-    public function canBeModified(Company $company): bool
-    {
-        return $this->isActive($company);
+    public function canBeModified(
+        Company $company
+    ): bool {
+        return $this->isActive(
+            $company
+        );
     }
 
     /**
      * Check if company is soft-deleted and can be restored or force-deleted.
      */
-    public function canBeRestoredOrForceDeleted(Company $company): bool
-    {
-        return $this->isTrashed($company);
+    public function canBeRestoredOrForceDeleted(
+        Company $company
+    ): bool {
+        return $this->isTrashed(
+            $company
+        );
     }
 
     /**

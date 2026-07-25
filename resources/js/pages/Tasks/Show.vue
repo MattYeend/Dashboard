@@ -3,6 +3,7 @@ import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import TaskAssignmentDetails from '@/pages/Tasks/components/TaskAssignmentDetails.vue';
+import TaskAuditDetails from '@/pages/Tasks/components/TaskAuditDetails.vue';
 import TaskBasicDetails from '@/pages/Tasks/components/TaskBasicDetails.vue';
 import TaskDateDetails from '@/pages/Tasks/components/TaskDateDetails.vue';
 import {
@@ -80,6 +81,7 @@ function destroy(): void {
                 <TaskBasicDetails :task="task" />
                 <TaskAssignmentDetails :task="task" />
                 <TaskDateDetails :task="task" />
+                <TaskAuditDetails :task="task" />
             </div>
         </div>
 

@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new company order.
      */
-    public function store(StoreOrderRequest $request): Order
-    {
+    public function store(
+        StoreOrderRequest $request
+    ): Order {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -51,7 +52,10 @@ class ManagementService
         Order $order,
         User $actor
     ): void {
-        $this->destructor->delete($order, $actor->id);
+        $this->destructor->delete(
+            $order,
+            $actor->id
+        );
     }
 
     /**
@@ -61,9 +65,14 @@ class ManagementService
         int $id,
         User $actor
     ): Order {
-        $order = Order::withTrashed()->findOrFail($id);
+        $order = Order::withTrashed()->findOrFail(
+            $id
+        );
 
-        return $this->restorer->restore($order, $actor->id);
+        return $this->restorer->restore(
+            $order,
+            $actor->id
+        );
     }
 
     /**
@@ -74,8 +83,13 @@ class ManagementService
         int $id,
         User $actor
     ): void {
-        $order = Order::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete($order, $actor->id);
+        $order = Order::withTrashed()->findOrFail(
+            $id
+        );
+        $this->destructor->forceDelete(
+            $order,
+            $actor->id
+        );
     }
 
     /**
@@ -96,8 +110,13 @@ class ManagementService
 
         foreach ($orders as $order) {
             /** @var Order $order */
-            $authoriseCallback($order);
-            $this->restorer->restore($order, $actor->id);
+            $authoriseCallback(
+                $order
+            );
+            $this->restorer->restore(
+                $order,
+                $actor->id
+            );
             $restored[] = $order->id;
         }
 
@@ -121,10 +140,17 @@ class ManagementService
         $deleted = [];
 
         foreach ($ids as $id) {
-            $order = Order::findOrFail($id);
-            $authoriseCallback($order);
+            $order = Order::findOrFail(
+                $id
+            );
+            $authoriseCallback(
+                $order
+            );
 
-            $this->destructor->delete($order, $actor->id);
+            $this->destructor->delete(
+                $order,
+                $actor->id
+            );
             $deleted[] = $id;
         }
 

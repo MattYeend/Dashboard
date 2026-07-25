@@ -7,6 +7,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\IndustryController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceStatusController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
@@ -280,6 +281,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [RegistrationInterestController::class, 'index'])->name('index');
         Route::get('/{registration_interest}', [RegistrationInterestController::class, 'show'])->name('show');
         Route::delete('/{registration_interest}', [RegistrationInterestController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('invoices')->name('invoices.')->group(function () {
+        Route::post('/bulk/delete', [InvoiceController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [InvoiceController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [InvoiceController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [InvoiceController::class, 'forceDelete'])->name('force-delete');
+
+        Route::post('/{invoice}/send', [InvoiceController::class, 'send'])->name('send');
+        Route::post('/{invoice}/mark-as-paid', [InvoiceController::class, 'markAsPaid'])->name('mark-as-paid');
+        Route::post('/{invoice}/mark-as-unpaid', [InvoiceController::class, 'markAsUnpaid'])->name('mark-as-unpaid');
+
+        Route::get('/', [InvoiceController::class, 'index'])->name('index');
+        Route::get('/create', [InvoiceController::class, 'create'])->name('create');
+        Route::post('/', [InvoiceController::class, 'store'])->name('store');
+        Route::get('/{invoice}', [InvoiceController::class, 'show'])->name('show');
+        Route::get('/{invoice}/edit', [InvoiceController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{invoice}', [InvoiceController::class, 'update'])->name('update');
+        Route::delete('/{invoice}', [InvoiceController::class, 'destroy'])->name('destroy');
     });
 });
 

@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             CommentSeeder::class,
             TagSeeder::class,
             RegistrationInterestSeeder::class,
+            InvoiceSeeder::class,
         ]);
     }
 }

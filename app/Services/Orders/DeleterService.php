@@ -29,7 +29,9 @@ class DeleterService
         int $deletedBy,
         ?User $actor = null
     ): bool {
-        $actor ??= User::findOrFail($deletedBy);
+        $actor ??= User::findOrFail(
+            $deletedBy
+        );
 
         return $this->deleteResource->handle(
             $order,
@@ -42,9 +44,14 @@ class DeleterService
                     Log::ACTION_DELETE_ORDER,
                     $actor,
                     $order,
-                    ['before' => $this->auditLogService->snapshot($order)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $order
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -56,7 +63,9 @@ class DeleterService
         Order $order,
         int $deletedBy
     ): bool {
-        $actor = User::findOrFail($deletedBy);
+        $actor = User::findOrFail(
+            $deletedBy
+        );
 
         return $this->deleteResource->forceHandle(
             $order,
@@ -65,9 +74,14 @@ class DeleterService
                     Log::ACTION_FORCE_DELETE_ORDER,
                     $actor,
                     $order,
-                    ['before' => $this->auditLogService->snapshot($order)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $order
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -81,12 +95,25 @@ class DeleterService
     ): int {
         $count = 0;
 
-        DB::transaction(function () use ($orderIds, $deletedBy, &$count) {
-            $actor = User::findOrFail($deletedBy);
-            $orders = Order::whereIn('id', $orderIds)->get();
+        DB::transaction(function () use (
+            $orderIds,
+            $deletedBy,
+            &$count
+        ) {
+            $actor = User::findOrFail(
+                $deletedBy
+            );
+            $orders = Order::whereIn(
+                'id',
+                $orderIds
+            )->get();
 
             foreach ($orders as $order) {
-                if ($this->delete($order, $deletedBy, $actor)) {
+                if ($this->delete(
+                    $order,
+                    $deletedBy,
+                    $actor
+                )) {
                     $count++;
                 }
             }

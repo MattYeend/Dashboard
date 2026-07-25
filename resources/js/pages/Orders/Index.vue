@@ -7,11 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import type {
-    Pagination as PaginationMeta,
-    PermissionsMeta,
-    Order,
-} from '@/types';
 import {
     index as ordersIndex,
     show as ordersShow,
@@ -20,6 +15,11 @@ import {
     destroy as ordersDestroy,
 } from '@/routes/orders';
 import ordersBulk from '@/routes/orders/bulk';
+import type {
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+    Order,
+} from '@/types';
 
 interface Props {
     orders: {

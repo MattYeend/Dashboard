@@ -13,14 +13,21 @@ class DeleterService
      * Deletes in batches to avoid loading the whole result set into memory
      * or holding a long-running transaction on a potentially large table.
      */
-    public function deleteOlderThan(int $days = 30): int
-    {
-        $cutoff = Carbon::now()->subDays($days);
+    public function deleteOlderThan(
+        int $days = 30
+    ): int {
+        $cutoff = Carbon::now()->subDays(
+            $days
+        );
         $totalDeleted = 0;
 
         do {
             $deletedCount = Log::query()
-                ->where('created_at', '<', $cutoff)
+                ->where(
+                    'created_at',
+                    '<',
+                    $cutoff
+                )
                 ->limit(500)
                 ->delete();
 

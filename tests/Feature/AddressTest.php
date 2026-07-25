@@ -46,7 +46,7 @@ describe('index', function () {
     });
 
     test('user without permission cannot list addresses', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $this->actingAs($user)
             ->get('/addresses')
@@ -273,7 +273,7 @@ describe('show', function () {
 
     test('user without permission cannot view an address', function () {
         $superAdmin = $this->superAdminUser();
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $address = Address::factory()->forModel($superAdmin)->create();
 

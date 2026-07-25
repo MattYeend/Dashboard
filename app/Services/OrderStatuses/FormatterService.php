@@ -11,8 +11,9 @@ class FormatterService
      *
      * @return array<string, mixed>
      */
-    public function format(OrderStatus $orderStatus): array
-    {
+    public function format(
+        OrderStatus $orderStatus
+    ): array {
         return [
             'id' => $orderStatus->id,
             'title' => $orderStatus->title,

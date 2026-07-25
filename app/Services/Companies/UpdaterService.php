@@ -31,9 +31,13 @@ class UpdaterService
         array $data,
         int $updatedBy
     ): Company {
-        $actor = User::findOrFail($updatedBy);
+        $actor = User::findOrFail(
+            $updatedBy
+        );
 
-        $before = $this->auditLogService->snapshot($company);
+        $before = $this->auditLogService->snapshot(
+            $company
+        );
 
         $companyData = $this->dataPreparation->prepareForUpdate(
             $data,
@@ -56,6 +60,7 @@ class UpdaterService
                         'after' => $this->auditLogService->snapshot($fresh),
                     ],
                 );
-            });
+            }
+        );
     }
 }

@@ -26,7 +26,9 @@ class QueryService
         User $actor,
         array $filters = []
     ): array {
-        $query = $this->buildQuery($filters);
+        $query = $this->buildQuery(
+            $filters
+        );
         $paginated = $this->paginate(
             $query,
             min((int) ($filters['per_page'] ?? 15), 100)
@@ -47,10 +49,15 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): array {
-        $invoiceStatus = $this->findTaskStatus($id, $withTrashed);
+        $invoiceStatus = $this->findTaskStatus(
+            $id,
+            $withTrashed
+        );
 
         return array_merge(
-            ['invoiceStatus' => $this->formatterService->format($invoiceStatus)],
+            ['invoiceStatus' => $this->formatterService->format(
+                $invoiceStatus
+            )],
             $this->getPermissions($user),
             $this->baseData(),
         );
@@ -59,25 +66,36 @@ class QueryService
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(array $filters): Builder
-    {
+    protected function buildQuery(
+        array $filters
+    ): Builder {
         $query = InvoiceStatus::query();
-        $query = $this->filterService->applyAll($query, $filters);
+        $query = $this->filterService->applyAll(
+            $query,
+            $filters
+        );
 
-        return $this->applySorting($query, $filters);
+        return $this->applySorting(
+            $query,
+            $filters
+        );
     }
 
     /**
      * Paginate the query and return as plain array.
      */
-    protected function paginate(Builder $query, int $perPage): array
-    {
+    protected function paginate(
+        Builder $query,
+        int $perPage
+    ): array {
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
             'invoiceStatuses' => [
                 'data' => array_map(
-                    fn (InvoiceStatus $invoiceStatus) => $this->formatterService->format($invoiceStatus),
+                    fn (InvoiceStatus $invoiceStatus) => $this->formatterService->format(
+                        $invoiceStatus
+                    ),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -104,8 +122,14 @@ class QueryService
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can('create', InvoiceStatus::class),
-                'can_view_any' => $user->can('viewAny', InvoiceStatus::class),
+                'can_create' => $user->can(
+                    'create',
+                    InvoiceStatus::class
+                ),
+                'can_view_any' => $user->can(
+                    'viewAny',
+                    InvoiceStatus::class
+                ),
             ],
         ];
     }
@@ -140,8 +164,10 @@ class QueryService
     /**
      * Apply sorting to the query.
      */
-    private function applySorting(Builder $query, array $filters): Builder
-    {
+    private function applySorting(
+        Builder $query,
+        array $filters
+    ): Builder {
         $query = $this->trashFilterService->applyFilter(
             $query,
             $filters['trashed'] ?? null

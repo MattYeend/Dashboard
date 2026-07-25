@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
-import TagForm from './components/TagForm.vue';
 import { store as tagsStore } from '@/routes/tags';
+import TagForm from './components/TagForm.vue';
 
 const form = useForm({
     name: '',

@@ -4,12 +4,12 @@ import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import OrderAuditDetails from '@/pages/Orders/components/OrderAuditDetails.vue';
 import OrderBasicDetails from '@/pages/Orders/components/OrderBasicDetails.vue';
-import type { Order } from '@/types';
 import {
     edit as ordersEdit,
     destroy as ordersDestroy,
     index as ordersIndex,
 } from '@/routes/orders';
+import type { Order } from '@/types';
 
 interface Props {
     order: Order;

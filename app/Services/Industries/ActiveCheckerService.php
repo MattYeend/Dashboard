@@ -18,33 +18,41 @@ class ActiveCheckerService
     /**
      * Check if industry is active (not soft-deleted).
      */
-    public function isActive(Industry $industry): bool
-    {
+    public function isActive(
+        Industry $industry
+    ): bool {
         return ! $industry->trashed();
     }
 
     /**
      * Check if industry is soft-deleted.
      */
-    public function isTrashed(Industry $industry): bool
-    {
+    public function isTrashed(
+        Industry $industry
+    ): bool {
         return $industry->trashed();
     }
 
     /**
      * Check if industry is active and can be updated or deleted.
      */
-    public function canBeModified(Industry $industry): bool
-    {
-        return $this->isActive($industry);
+    public function canBeModified(
+        Industry $industry
+    ): bool {
+        return $this->isActive(
+            $industry
+        );
     }
 
     /**
      * Check if industry is soft-deleted and can be restored or force-deleted.
      */
-    public function canBeRestoredOrForceDeleted(Industry $industry): bool
-    {
-        return $this->isTrashed($industry);
+    public function canBeRestoredOrForceDeleted(
+        Industry $industry
+    ): bool {
+        return $this->isTrashed(
+            $industry
+        );
     }
 
     /**

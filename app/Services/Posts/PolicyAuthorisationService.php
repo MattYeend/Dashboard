@@ -49,6 +49,22 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can view any posts.
+     */
+    public function canViewAny(User $actor): bool
+    {
+        return $actor->can('view any posts');
+    }
+
+    /**
+     * Determine whether the user can create posts.
+     */
+    public function canCreate(User $actor): bool
+    {
+        return $actor->can('create posts');
+    }
+
+    /**
      * Determine whether the user can view the order status.
      */
     public function canView(User $actor, Post $target): bool
@@ -57,7 +73,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('view posts') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -69,7 +85,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('edit posts') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -81,7 +97,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete posts') && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -93,7 +109,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $actor->can('restore posts') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
@@ -110,6 +126,22 @@ class PolicyAuthorisationService
             'restoreOrForceDelete',
             $target
         );
+    }
+
+    /**
+     * Determine whether the user can import posts.
+     */
+    public function canImport(User $actor): bool
+    {
+        return $actor->can('import posts');
+    }
+
+    /**
+     * Determine whether the user can export posts.
+     */
+    public function canExport(User $actor): bool
+    {
+        return $actor->can('export posts');
     }
 
     /**

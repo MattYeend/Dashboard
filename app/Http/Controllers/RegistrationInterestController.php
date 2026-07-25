@@ -30,16 +30,29 @@ class RegistrationInterestController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
-    {
-        $this->authorize('viewAny', RegistrationInterest::class);
+    public function index(
+        Request $request
+    ): Response {
+        $this->authorize(
+            'viewAny',
+            RegistrationInterest::class
+        );
 
         $data = $this->query->getPaginated(
             $request->user(),
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
-        return Inertia::render('RegistrationInterests/Index', $data);
+        return Inertia::render(
+            'RegistrationInterests/Index',
+            $data
+        );
     }
 
     /**
@@ -47,13 +60,22 @@ class RegistrationInterestController extends Controller
      *
      * Authorises via the 'view' policy before rendering.
      */
-    public function show(RegistrationInterest $registrationInterest): Response
-    {
-        $this->authorize('view', $registrationInterest);
+    public function show(
+        RegistrationInterest $registrationInterest
+    ): Response {
+        $this->authorize(
+            'view',
+            $registrationInterest
+        );
 
-        $data = $this->query->getById($registrationInterest->id);
+        $data = $this->query->getById(
+            $registrationInterest->id
+        );
 
-        return Inertia::render('RegistrationInterests/Show', $data);
+        return Inertia::render(
+            'RegistrationInterests/Show',
+            $data
+        );
     }
 
     /**
@@ -65,11 +87,16 @@ class RegistrationInterestController extends Controller
      * interest). No policy check is applied here, and no user account or
      * session is created.
      */
-    public function store(StoreRegistrationInterestRequest $request): RedirectResponse
-    {
-        $this->management->store($request);
+    public function store(
+        StoreRegistrationInterestRequest $request
+    ): RedirectResponse {
+        $this->management->store(
+            $request
+        );
 
-        return redirect()->route('register.thanks');
+        return redirect()->route(
+            'register.thanks'
+        );
     }
 
     /**
@@ -81,15 +108,26 @@ class RegistrationInterestController extends Controller
         Request $request,
         RegistrationInterest $registrationInterest
     ): JsonResponse|RedirectResponse {
-        $this->authorize('delete', $registrationInterest);
+        $this->authorize(
+            'delete',
+            $registrationInterest
+        );
 
-        $this->management->destroy($registrationInterest, $request->user());
+        $this->management->destroy(
+            $registrationInterest,
+            $request->user()
+        );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('registration-interests.index');
+        return redirect()->route(
+            'registration-interests.index'
+        );
     }
 
     /**
@@ -100,19 +138,32 @@ class RegistrationInterestController extends Controller
      *
      * Authorises via the 'restore' policy before proceeding.
      */
-    public function restore(int $id, Request $request): JsonResponse|RedirectResponse
-    {
+    public function restore(
+        int $id,
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $interest = RegistrationInterest::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('restore', $interest);
+        $this->authorize(
+            'restore',
+            $interest
+        );
 
-        $this->management->restore($id, $request->user());
+        $this->management->restore(
+            $id,
+            $request->user()
+        );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('registration-interests.index');
+        return redirect()->route(
+            'registration-interests.index'
+        );
     }
 
     /**
@@ -123,19 +174,32 @@ class RegistrationInterestController extends Controller
      *
      * Authorises via the 'forceDelete' policy before proceeding.
      */
-    public function forceDelete(int $id, Request $request): JsonResponse|RedirectResponse
-    {
+    public function forceDelete(
+        int $id,
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $interest = RegistrationInterest::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('forceDelete', $interest);
+        $this->authorize(
+            'forceDelete',
+            $interest
+        );
 
-        $this->management->forceDestroy($interest, $request->user());
+        $this->management->forceDestroy(
+            $interest,
+            $request->user()
+        );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('registration-interests.index');
+        return redirect()->route(
+            'registration-interests.index'
+        );
     }
 
     /**
@@ -143,24 +207,40 @@ class RegistrationInterestController extends Controller
      *
      * Authorises each interest individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkDelete(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:registration_interests,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:registration_interests,id',
+            ],
         ]);
 
         $this->management->bulkDelete(
             $request->input('ids'),
             $request->user(),
-            fn (RegistrationInterest $interest) => $this->authorize('delete', $interest)
+            fn (RegistrationInterest $interest) => $this->authorize(
+                'delete',
+                $interest
+            )
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('registration-interests.index');
+        return redirect()->route(
+            'registration-interests.index'
+        );
     }
 
     /**
@@ -171,20 +251,35 @@ class RegistrationInterestController extends Controller
     public function bulkRestore(Request $request): JsonResponse|RedirectResponse
     {
         $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:registration_interests,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required', '
+            integer',
+                'exists:registration_interests,id',
+            ],
         ]);
 
         $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
-            fn (RegistrationInterest $interest) => $this->authorize('restore', $interest)
+            fn (RegistrationInterest $interest) => $this->authorize(
+                'restore',
+                $interest
+            )
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('registration-interests.index');
+        return redirect()->route(
+            'registration-interests.index'
+        );
     }
 }

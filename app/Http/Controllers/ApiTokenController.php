@@ -27,12 +27,18 @@ class ApiTokenController extends Controller
     /**
      * Display the authenticated user's tokens.
      */
-    public function index(Request $request): Response
-    {
-        $this->authorize('viewAny', PersonalAccessToken::class);
+    public function index(
+        Request $request
+    ): Response {
+        $this->authorize(
+            'viewAny',
+            PersonalAccessToken::class
+        );
 
         return Inertia::render('ApiTokens/Index', [
-            'tokens' => $this->queryService->forUser($request->user()),
+            'tokens' => $this->queryService->forUser(
+                $request->user()
+            ),
             'abilities' => TokenAbility::labels(),
         ]);
     }
@@ -40,8 +46,9 @@ class ApiTokenController extends Controller
     /**
      * Store a newly created token and return its plain-text value once.
      */
-    public function store(StoreApiTokenRequest $request): RedirectResponse
-    {
+    public function store(
+        StoreApiTokenRequest $request
+    ): RedirectResponse {
         $newToken = $this->creatorService->create(
             $request->user(),
             $request->validated('name'),
@@ -50,29 +57,50 @@ class ApiTokenController extends Controller
         );
 
         return redirect()
-            ->route('api-tokens.index')
-            ->with('plainTextToken', $newToken->plainTextToken);
+            ->route(
+                'api-tokens.index'
+            )
+            ->with(
+                'plainTextToken',
+                $newToken->plainTextToken
+            );
     }
 
     /**
      * Update an existing token's name, abilities, or expiry.
      */
-    public function update(UpdateApiTokenRequest $request, PersonalAccessToken $apiToken): RedirectResponse
-    {
-        $this->updaterService->update($apiToken, $request->validated());
+    public function update(
+        UpdateApiTokenRequest $request,
+        PersonalAccessToken $apiToken
+    ): RedirectResponse {
+        $this->updaterService->update(
+            $apiToken,
+            $request->validated()
+        );
 
-        return redirect()->route('api-tokens.index');
+        return redirect()->route(
+            'api-tokens.index'
+        );
     }
 
     /**
      * Revoke an existing token.
      */
-    public function destroy(Request $request, PersonalAccessToken $apiToken): RedirectResponse
-    {
-        $this->authorize('delete', $apiToken);
+    public function destroy(
+        Request $request,
+        PersonalAccessToken $apiToken
+    ): RedirectResponse {
+        $this->authorize(
+            'delete',
+            $apiToken
+        );
 
-        $this->deleterService->delete($apiToken);
+        $this->deleterService->delete(
+            $apiToken
+        );
 
-        return redirect()->route('api-tokens.index');
+        return redirect()->route(
+            'api-tokens.index'
+        );
     }
 }

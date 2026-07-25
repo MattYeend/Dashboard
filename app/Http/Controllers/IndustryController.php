@@ -33,13 +33,20 @@ class IndustryController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
-    {
+    public function index(
+        Request $request
+    ): Response {
         $this->authorize('viewAny', Industry::class);
 
         $data = $this->query->getPaginated(
             $request->user(),
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
         return Inertia::render('Industries/Index', $data);
@@ -65,8 +72,9 @@ class IndustryController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      */
-    public function store(StoreIndustryRequest $request): JsonResponse|RedirectResponse
-    {
+    public function store(
+        StoreIndustryRequest $request
+    ): JsonResponse|RedirectResponse {
         $industry = $this->management->store($request);
 
         if ($request->wantsJson()) {
@@ -129,7 +137,10 @@ class IndustryController extends Controller
         UpdateIndustryRequest $request,
         Industry $industry
     ): JsonResponse|RedirectResponse {
-        $industry = $this->management->update($request, $industry);
+        $industry = $this->management->update(
+            $request,
+            $industry
+        );
 
         if ($request->wantsJson()) {
             return response()->json($industry);
@@ -152,7 +163,10 @@ class IndustryController extends Controller
     ): JsonResponse|RedirectResponse {
         $this->authorize('delete', $industry);
 
-        $this->management->destroy($industry, $request->user());
+        $this->management->destroy(
+            $industry,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -175,9 +189,15 @@ class IndustryController extends Controller
     ): JsonResponse|RedirectResponse {
         $industry = Industry::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('restore', $industry);
+        $this->authorize(
+            'restore',
+            $industry
+        );
 
-        $this->management->restore($id, $request->user());
+        $this->management->restore(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -200,9 +220,15 @@ class IndustryController extends Controller
     ): JsonResponse|RedirectResponse {
         $industry = Industry::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('forceDelete', $industry);
+        $this->authorize(
+            'forceDelete',
+            $industry
+        );
 
-        $this->management->forceDelete($id, $request->user());
+        $this->management->forceDelete(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
@@ -216,11 +242,19 @@ class IndustryController extends Controller
      *
      * Authorises each industry individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkDelete(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:industries,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:industries,id',
+            ],
         ]);
 
         $actor = $request->user();
@@ -244,11 +278,18 @@ class IndustryController extends Controller
      *
      * Authorises each industry individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkRestore(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:industries,id'],
+            'ids' => [
+                'required',
+                'array'],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:industries,id',
+            ],
         ]);
 
         $this->management->bulkRestore(

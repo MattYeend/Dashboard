@@ -33,16 +33,29 @@ class UserController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
-    {
-        $this->authorize('viewAny', User::class);
+    public function index(
+        Request $request
+    ): Response {
+        $this->authorize(
+            'viewAny',
+            User::class
+        );
 
         $data = $this->query->getPaginated(
             $request->user(),
-            request()->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            request()->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
-        return Inertia::render('Users/Index', $data);
+        return Inertia::render(
+            'Users/Index',
+            $data
+        );
     }
 
     /**
@@ -52,9 +65,14 @@ class UserController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize('create', User::class);
+        $this->authorize(
+            'create',
+            User::class
+        );
 
-        return Inertia::render('Users/Create');
+        return Inertia::render(
+            'Users/Create'
+        );
     }
 
     /**
@@ -68,13 +86,21 @@ class UserController extends Controller
     public function store(
         StoreUserRequest $request
     ): JsonResponse|RedirectResponse {
-        $user = $this->management->store($request);
+        $user = $this->management->store(
+            $request
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($user, 201);
+            return response()->json(
+                $user,
+                201
+            );
         }
 
-        return redirect()->route('users.show', $user->id);
+        return redirect()->route(
+            'users.show',
+            $user->id
+        );
     }
 
     /**
@@ -88,14 +114,20 @@ class UserController extends Controller
         User $user,
         Request $request
     ): Response {
-        $this->authorize('view', $user);
+        $this->authorize(
+            'view',
+            $user
+        );
 
         $data = $this->query->getById(
             $request->user(),
             $user->id
         );
 
-        return Inertia::render('Users/Show', $data);
+        return Inertia::render(
+            'Users/Show',
+            $data
+        );
     }
 
     /**
@@ -107,14 +139,20 @@ class UserController extends Controller
         User $user,
         Request $request
     ): Response {
-        $this->authorize('update', $user);
+        $this->authorize(
+            'update',
+            $user
+        );
 
         $data = $this->query->getById(
             $request->user(),
             $user->id
         );
 
-        return Inertia::render('Users/Edit', $data);
+        return Inertia::render(
+            'Users/Edit',
+            $data
+        );
     }
 
     /**
@@ -130,13 +168,21 @@ class UserController extends Controller
         UpdateUserRequest $request,
         User $user
     ): JsonResponse|RedirectResponse {
-        $user = $this->management->update($request, $user);
+        $user = $this->management->update(
+            $request,
+            $user
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($user);
+            return response()->json(
+                $user
+            );
         }
 
-        return redirect()->route('users.show', $user->id);
+        return redirect()->route(
+            'users.show',
+            $user->id
+        );
     }
 
     /**
@@ -152,15 +198,26 @@ class UserController extends Controller
         Request $request
     ): JsonResponse|RedirectResponse {
 
-        $this->authorize('delete', $user);
+        $this->authorize(
+            'delete',
+            $user
+        );
 
-        $this->management->destroy($user, $request->user());
+        $this->management->destroy(
+            $user,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('users.index');
+        return redirect()->route(
+            'users.index'
+        );
     }
 
     /**
@@ -177,15 +234,25 @@ class UserController extends Controller
     ): JsonResponse|RedirectResponse {
         $user = User::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('restore', $user);
+        $this->authorize(
+            'restore',
+            $user
+        );
 
-        $this->management->restore($id, $request->user());
+        $this->management->restore(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204);
         }
 
-        return redirect()->route('users.index');
+        return redirect()->route(
+            'users.index'
+        );
     }
 
     /**
@@ -202,15 +269,26 @@ class UserController extends Controller
     ): JsonResponse|RedirectResponse {
         $user = User::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('forceDelete', $user);
+        $this->authorize(
+            'forceDelete',
+            $user
+        );
 
-        $this->management->forceDelete($id, $request->user());
+        $this->management->forceDelete(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('users.index');
+        return redirect()->route(
+            'users.index'
+        );
     }
 
     /**
@@ -218,11 +296,19 @@ class UserController extends Controller
      *
      * Authorises each user individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkDelete(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:users,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:users,id',
+            ],
         ]);
 
         $actor = $request->user();
@@ -231,14 +317,22 @@ class UserController extends Controller
         $this->management->bulkDelete(
             $ids,
             $actor,
-            fn (User $user) => $this->authorize('delete', $user)
+            fn (User $user) => $this->authorize(
+                'delete',
+                $user
+            )
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('users.index');
+        return redirect()->route(
+            'users.index'
+        );
     }
 
     /**
@@ -246,23 +340,39 @@ class UserController extends Controller
      *
      * Authorises each user individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkRestore(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:users,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:users,id',
+            ],
         ]);
 
         $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
-            fn (User $user) => $this->authorize('restore', $user)
+            fn (User $user) => $this->authorize(
+                'restore',
+                $user
+            )
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('users.index');
+        return redirect()->route(
+            'users.index'
+        );
     }
 }

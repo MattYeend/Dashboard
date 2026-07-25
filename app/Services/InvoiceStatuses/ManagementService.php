@@ -52,7 +52,10 @@ class ManagementService
         InvoiceStatus $invoiceStatus,
         User $actor
     ): void {
-        $this->destructor->delete($invoiceStatus, $actor->id);
+        $this->destructor->delete(
+            $invoiceStatus,
+            $actor->id
+        );
     }
 
     /**
@@ -62,9 +65,14 @@ class ManagementService
         int $id,
         User $actor
     ): InvoiceStatus {
-        $invoiceStatus = InvoiceStatus::withTrashed()->findOrFail($id);
+        $invoiceStatus = InvoiceStatus::withTrashed()->findOrFail(
+            $id
+        );
 
-        return $this->restorer->restore($invoiceStatus, $actor->id);
+        return $this->restorer->restore(
+            $invoiceStatus,
+            $actor->id
+        );
     }
 
     /**
@@ -75,8 +83,13 @@ class ManagementService
         int $id,
         User $actor
     ): void {
-        $invoiceStatus = InvoiceStatus::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete($invoiceStatus, $actor->id);
+        $invoiceStatus = InvoiceStatus::withTrashed()->findOrFail(
+            $id
+        );
+        $this->destructor->forceDelete(
+            $invoiceStatus,
+            $actor->id
+        );
     }
 
     /**
@@ -97,8 +110,13 @@ class ManagementService
 
         foreach ($invoiceStatuses as $invoiceStatus) {
             /** @var InvoiceStatus $invoiceStatus */
-            $authoriseCallback($invoiceStatus);
-            $this->restorer->restore($invoiceStatus, $actor->id);
+            $authoriseCallback(
+                $invoiceStatus
+            );
+            $this->restorer->restore(
+                $invoiceStatus,
+                $actor->id
+            );
             $restored[] = $invoiceStatus->id;
         }
 
@@ -125,7 +143,10 @@ class ManagementService
             $invoiceStatus = InvoiceStatus::findOrFail($id);
             $authoriseCallback($invoiceStatus);
 
-            $this->destructor->delete($invoiceStatus, $actor->id);
+            $this->destructor->delete(
+                $invoiceStatus,
+                $actor->id
+            );
             $deleted[] = $id;
         }
 

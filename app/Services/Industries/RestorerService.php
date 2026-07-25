@@ -30,7 +30,9 @@ class RestorerService
         int $restoredBy,
         ?User $actor = null
     ): Industry {
-        $actor ??= User::findOrFail($restoredBy);
+        $actor ??= User::findOrFail(
+            $restoredBy
+        );
 
         return $this->restoreResource->handle(
             $industry,
@@ -43,9 +45,14 @@ class RestorerService
                     Log::ACTION_RESTORE_INDUSTRY,
                     $actor,
                     $industry,
-                    ['before' => $this->auditLogService->snapshot($industry)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $industry
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -55,12 +62,20 @@ class RestorerService
      *
      * @throws \Exception
      */
-    public function restoreMultiple(array $industryIds, int $restoredBy): int
-    {
+    public function restoreMultiple(
+        array $industryIds,
+        int $restoredBy
+    ): int {
         $count = 0;
 
-        DB::transaction(function () use ($industryIds, $restoredBy, &$count) {
-            $actor = User::findOrFail($restoredBy);
+        DB::transaction(function () use (
+            $industryIds,
+            $restoredBy,
+            &$count
+        ) {
+            $actor = User::findOrFail(
+                $restoredBy
+            );
 
             /** @var Collection<int, Industry> $industries */
             $industries = Industry::withTrashed()
@@ -69,7 +84,11 @@ class RestorerService
 
             foreach ($industries as $industry) {
                 if ($industry->trashed()) {
-                    $this->restore($industry, $restoredBy, $actor);
+                    $this->restore(
+                        $industry,
+                        $restoredBy,
+                        $actor
+                    );
                     $count++;
                 }
             }

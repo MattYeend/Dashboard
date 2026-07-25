@@ -9,7 +9,9 @@ const copy = (value: string) => navigator.clipboard.writeText(value);
 <template>
     <div>
         <p>Copy this token now. You will not be able to see it again.</p>
-        <code>{{ token }}</code>
+        <code>
+            {{ token }}
+        </code>
         <button type="button" @click="copy(token)">Copy</button>
     </div>
 </template>

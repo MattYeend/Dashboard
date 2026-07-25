@@ -49,6 +49,22 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can view any orders.
+     */
+    public function canViewAny(User $actor): bool
+    {
+        return $actor->can('view any order');
+    }
+
+    /**
+     * Determine whether the user can create orders.
+     */
+    public function canCreate(User $actor): bool
+    {
+        return $actor->can('create order');
+    }
+
+    /**
      * Determine whether the user can view the model.
      * Only admins can view company contacts.
      */
@@ -58,7 +74,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('view order') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -70,7 +86,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('edit order') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -82,7 +98,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete order') && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -94,7 +110,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor)
+        return $actor->can('restore order')
             && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
@@ -132,5 +148,45 @@ class PolicyAuthorisationService
         }
 
         return $this->roleChecker->isSuperAdmin($owner);
+    }
+
+    /**
+     * Determine whether the user can assign the order to another user.
+     */
+    public function canAssign(User $actor, Order $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('assign order') && $this->activeChecker->isActive($target);
+    }
+
+    /**
+     * Determine whether the user can change the order's status.
+     */
+    public function canChangeStatus(User $actor, Order $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('change order status') && $this->activeChecker->isActive($target);
+    }
+
+    /**
+     * Determine whether the user can import orders.
+     */
+    public function canImport(User $actor): bool
+    {
+        return $actor->can('import order');
+    }
+
+    /**
+     * Determine whether the user can export orders.
+     */
+    public function canExport(User $actor): bool
+    {
+        return $actor->can('export order');
     }
 }

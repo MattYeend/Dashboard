@@ -46,7 +46,7 @@ describe('index', function () {
     });
 
     test('user without permission cannot list industries', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $this->actingAs($user)
             ->get('/industries')
@@ -191,7 +191,7 @@ describe('show', function () {
     });
 
     test('user without permission cannot view an industry', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $industry = Industry::factory()->create();
 

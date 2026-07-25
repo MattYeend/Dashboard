@@ -4,8 +4,8 @@ import axios from 'axios';
 import { ref, watch } from 'vue';
 import { nullIfBlank } from '@/lib/forms';
 import OrderForm from '@/pages/Orders/components/OrderForm.vue';
-import type { Order, OrderStatus } from '@/types';
 import { update as ordersUpdate } from '@/routes/orders';
+import type { Order, OrderStatus } from '@/types';
 
 interface Props {
     order: Order;

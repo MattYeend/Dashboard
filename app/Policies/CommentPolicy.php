@@ -19,24 +19,109 @@ class CommentPolicy
     /**
      * Determine whether the user can comment on the given post.
      */
-    public function create(User $user, Post $post): bool
-    {
-        return $this->authorisationService->canCreate($user, $post);
+    public function create(
+        User $user,
+        Post $post
+    ): bool {
+        return $this->authorisationService->canCreate(
+            $user,
+            $post
+        );
     }
 
     /**
      * Determine whether the user can update the given comment.
      */
-    public function update(User $user, Comment $comment): bool
-    {
-        return $this->authorisationService->canUpdate($user, $comment);
+    public function update(
+        User $user,
+        Comment $comment
+    ): bool {
+        return $this->authorisationService->canUpdate(
+            $user,
+            $comment
+        );
     }
 
     /**
      * Determine whether the user can delete the given comment.
      */
-    public function delete(User $user, Comment $comment): bool
-    {
-        return $this->authorisationService->canDelete($user, $comment);
+    public function delete(
+        User $user,
+        Comment $comment
+    ): bool {
+        return $this->authorisationService->canDelete(
+            $user,
+            $comment
+        );
+    }
+
+    /**
+     * Determine whether the user can view any comments.
+     */
+    public function viewAny(
+        User $user
+    ): bool {
+        return $this->authorisationService->canViewAny($user);
+    }
+
+    /**
+     * Determine whether the user can view the given comment.
+     */
+    public function view(
+        User $user,
+        Comment $comment
+    ): bool {
+        return $this->authorisationService->canView(
+            $user,
+            $comment
+        );
+    }
+
+    /**
+     * Determine whether the user can restore the given comment.
+     */
+    public function restore(
+        User $user,
+        Comment $comment
+    ): bool {
+        return $this->authorisationService->canRestore(
+            $user,
+            $comment
+        );
+    }
+
+    /**
+     * Determine whether the user can permanently delete the given comment.
+     */
+    public function forceDelete(
+        User $user,
+        Comment $comment
+    ): bool {
+        return $this->authorisationService->canForceDelete(
+            $user,
+            $comment
+        );
+    }
+
+    /**
+     * Determine whether the user can import comments.
+     */
+    public function import(
+        User $user
+    ): bool {
+        return $this->authorisationService->isAdmin(
+            $user
+        );
+    }
+
+    /**
+     * Determine whether the user can export comments.
+     */
+    public function export(
+        User $user
+    ): bool {
+        return $this->authorisationService->isUser(
+            $user
+        );
     }
 }

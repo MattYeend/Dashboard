@@ -46,7 +46,7 @@ describe('index', function () {
     });
 
     test('user without permission cannot list task statuses', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $this->actingAs($user)
             ->get('/task-statuses')
@@ -207,7 +207,7 @@ describe('show', function () {
     });
 
     test('user without permission cannot view a task status', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $taskStatus = TaskStatus::factory()->create();
 

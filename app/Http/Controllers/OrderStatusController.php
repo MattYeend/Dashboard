@@ -33,16 +33,29 @@ class OrderStatusController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
-    {
-        $this->authorize('viewAny', OrderStatus::class);
+    public function index(
+        Request $request
+    ): Response {
+        $this->authorize(
+            'viewAny',
+            OrderStatus::class
+        );
 
         $data = $this->query->getPaginated(
             $request->user(),
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
-        return Inertia::render('OrderStatuses/Index', $data);
+        return Inertia::render(
+            'OrderStatuses/Index',
+            $data
+        );
     }
 
     /**
@@ -52,9 +65,14 @@ class OrderStatusController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize('create', OrderStatus::class);
+        $this->authorize(
+            'create',
+            OrderStatus::class
+        );
 
-        return Inertia::render('OrderStatuses/Create');
+        return Inertia::render(
+            'OrderStatuses/Create'
+        );
     }
 
     /**
@@ -68,13 +86,21 @@ class OrderStatusController extends Controller
     public function store(
         StoreOrderStatusRequest $request
     ): JsonResponse|RedirectResponse {
-        $orderStatus = $this->management->store($request);
+        $orderStatus = $this->management->store(
+            $request
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($orderStatus, 201);
+            return response()->json(
+                $orderStatus,
+                201
+            );
         }
 
-        return redirect()->route('order-statuses.index', $orderStatus->id);
+        return redirect()->route(
+            'order-statuses.index',
+            $orderStatus->id
+        );
     }
 
     /**
@@ -88,14 +114,20 @@ class OrderStatusController extends Controller
         OrderStatus $orderStatus,
         Request $request
     ): Response {
-        $this->authorize('view', $orderStatus);
+        $this->authorize(
+            'view',
+            $orderStatus
+        );
 
         $data = $this->query->getById(
             $request->user(),
             $orderStatus->id
         );
 
-        return Inertia::render('OrderStatuses/Show', $data);
+        return Inertia::render(
+            'OrderStatuses/Show',
+            $data
+        );
     }
 
     /**
@@ -103,13 +135,24 @@ class OrderStatusController extends Controller
      *
      * Authorises via the 'update' policy before rendering.
      */
-    public function edit(OrderStatus $orderStatus, Request $request): Response
-    {
-        $this->authorize('update', $orderStatus);
+    public function edit(
+        OrderStatus $orderStatus,
+        Request $request
+    ): Response {
+        $this->authorize(
+            'update',
+            $orderStatus
+        );
 
-        $data = $this->query->getById($request->user(), $orderStatus->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $orderStatus->id
+        );
 
-        return Inertia::render('OrderStatuses/Edit', $data);
+        return Inertia::render(
+            'OrderStatuses/Edit',
+            $data
+        );
     }
 
     /**
@@ -131,10 +174,15 @@ class OrderStatusController extends Controller
         );
 
         if ($request->wantsJson()) {
-            return response()->json($orderStatus);
+            return response()->json(
+                $orderStatus
+            );
         }
 
-        return redirect()->route('order-statuses.index', $orderStatus->id);
+        return redirect()->route(
+            'order-statuses.index',
+            $orderStatus->id
+        );
     }
 
     /**
@@ -149,7 +197,10 @@ class OrderStatusController extends Controller
         Request $request,
         OrderStatus $orderStatus
     ): JsonResponse|RedirectResponse {
-        $this->authorize('delete', $orderStatus);
+        $this->authorize(
+            'delete',
+            $orderStatus
+        );
 
         $this->management->destroy(
             $orderStatus,
@@ -157,10 +208,15 @@ class OrderStatusController extends Controller
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('order-statuses.index');
+        return redirect()->route(
+            'order-statuses.index'
+        );
     }
 
     /**
@@ -177,7 +233,10 @@ class OrderStatusController extends Controller
     ): JsonResponse|RedirectResponse {
         $orderStatus = OrderStatus::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('restore', $orderStatus);
+        $this->authorize(
+            'restore',
+            $orderStatus
+        );
 
         $this->management->restore(
             $id,
@@ -185,10 +244,15 @@ class OrderStatusController extends Controller
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('order-statuses.index');
+        return redirect()->route(
+            'order-statuses.index'
+        );
     }
 
     /**
@@ -205,7 +269,10 @@ class OrderStatusController extends Controller
     ): JsonResponse|RedirectResponse {
         $orderStatus = OrderStatus::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('forceDelete', $orderStatus);
+        $this->authorize(
+            'forceDelete',
+            $orderStatus
+        );
 
         $this->management->forceDelete(
             $id,
@@ -213,10 +280,15 @@ class OrderStatusController extends Controller
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('order-statuses.index');
+        return redirect()->route(
+            'order-statuses.index'
+        );
     }
 
     /**
@@ -224,11 +296,19 @@ class OrderStatusController extends Controller
      *
      * Authorises each order status individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkDelete(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:order_statuses,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:order_statuses,id',
+            ],
         ]);
 
         $actor = $request->user();
@@ -237,14 +317,22 @@ class OrderStatusController extends Controller
         $this->management->bulkDelete(
             $ids,
             $actor,
-            fn (OrderStatus $orderStatus) => $this->authorize('delete', $orderStatus)
+            fn (OrderStatus $orderStatus) => $this->authorize(
+                'delete',
+                $orderStatus
+            )
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('order-statuses.index');
+        return redirect()->route(
+            'order-statuses.index'
+        );
     }
 
     /**
@@ -252,23 +340,39 @@ class OrderStatusController extends Controller
      *
      * Authorises each order status individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkRestore(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:order_statuses,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:order_statuses,id',
+            ],
         ]);
 
         $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
-            fn (OrderStatus $orderStatus) => $this->authorize('restore', $orderStatus)
+            fn (OrderStatus $orderStatus) => $this->authorize(
+                'restore',
+                $orderStatus
+            )
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('order-statuses.index');
+        return redirect()->route(
+            'order-statuses.index'
+        );
     }
 }

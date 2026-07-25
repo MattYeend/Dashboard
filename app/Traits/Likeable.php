@@ -26,8 +26,9 @@ trait Likeable
     /**
      * Determine if the given user has liked this model.
      */
-    public function isLikedBy(?User $user): bool
-    {
+    public function isLikedBy(
+        ?User $user
+    ): bool {
         if (! $user) {
             return false;
         }

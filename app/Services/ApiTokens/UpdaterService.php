@@ -12,8 +12,10 @@ class UpdaterService
      *
      * @param  array<string, mixed>  $data
      */
-    public function update(PersonalAccessToken $token, array $data): PersonalAccessToken
-    {
+    public function update(
+        PersonalAccessToken $token,
+        array $data
+    ): PersonalAccessToken {
         $token->fill([
             'name' => $data['name'] ?? $token->name,
             'abilities' => $data['abilities'] ?? $token->abilities,

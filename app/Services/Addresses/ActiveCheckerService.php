@@ -18,16 +18,18 @@ class ActiveCheckerService
     /**
      * Check if address is active (not soft-deleted).
      */
-    public function isActive(Address $address): bool
-    {
+    public function isActive(
+        Address $address
+    ): bool {
         return ! $address->trashed();
     }
 
     /**
      * Check if address is soft-deleted.
      */
-    public function isTrashed(Address $address): bool
-    {
+    public function isTrashed(
+        Address $address
+    ): bool {
         return $address->trashed();
     }
 
@@ -35,9 +37,12 @@ class ActiveCheckerService
      * Check if address is active (not soft-deleted) and can be
      * updated/deleted.
      */
-    public function canBeModified(Address $address): bool
-    {
-        return $this->isActive($address);
+    public function canBeModified(
+        Address $address
+    ): bool {
+        return $this->isActive(
+            $address
+        );
     }
 
     /**
@@ -46,7 +51,9 @@ class ActiveCheckerService
     public function canBeRestoredOrForceDeleted(
         Address $address
     ): bool {
-        return $this->isTrashed($address);
+        return $this->isTrashed(
+            $address
+        );
     }
 
     /**

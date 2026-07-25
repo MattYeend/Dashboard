@@ -53,7 +53,7 @@ describe('store', function () {
 
     test('user without permission cannot comment on a post', function () {
         $admin = $this->adminUser();
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $post = Post::factory()->create(['created_by' => $admin->id]);
 
@@ -349,7 +349,7 @@ describe('like', function () {
 
     test('user without permission cannot like a comment', function () {
         $admin = $this->adminUser();
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $post = Post::factory()->create(['created_by' => $admin->id]);
         $comment = Comment::factory()->create([

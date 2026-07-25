@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Models\Industry;
+use App\Models\Invoice;
 use App\Models\InvoiceStatus;
 use App\Models\Order;
 use App\Models\OrderStatus;
@@ -26,6 +27,7 @@ use App\Policies\CommentPolicy;
 use App\Policies\CompanyPolicy;
 use App\Policies\ContactPolicy;
 use App\Policies\IndustryPolicy;
+use App\Policies\InvoicePolicy;
 use App\Policies\InvoiceStatusPolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\OrderStatusPolicy;
@@ -89,6 +91,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(InvoiceStatus::class, InvoiceStatusPolicy::class);
         Gate::policy(Comment::class, CommentPolicy::class);
         Gate::policy(Tag::class, TagPolicy::class);
+        Gate::policy(Invoice::class, InvoicePolicy::class);
 
         Relation::morphMap([
             'App\Models\User' => User::class,

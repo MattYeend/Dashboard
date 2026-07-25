@@ -47,10 +47,15 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): array {
-        $orderStatus = $this->findOrderStatus($id, $withTrashed);
+        $orderStatus = $this->findOrderStatus(
+            $id,
+            $withTrashed
+        );
 
         return array_merge(
-            ['orderStatus' => $this->formatterService->format($orderStatus)],
+            ['orderStatus' => $this->formatterService->format(
+                $orderStatus
+            )],
             $this->getPermissions($user),
             $this->baseData(),
         );
@@ -59,25 +64,36 @@ class QueryService
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(array $filters): Builder
-    {
+    protected function buildQuery(
+        array $filters
+    ): Builder {
         $query = OrderStatus::query();
-        $query = $this->filterService->applyAll($query, $filters);
+        $query = $this->filterService->applyAll(
+            $query,
+            $filters
+        );
 
-        return $this->applySorting($query, $filters);
+        return $this->applySorting(
+            $query,
+            $filters
+        );
     }
 
     /**
      * Paginate the query and return as plain array.
      */
-    protected function paginate(Builder $query, int $perPage): array
-    {
+    protected function paginate(
+        Builder $query,
+        int $perPage
+    ): array {
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
             'orderStatuses' => [
                 'data' => array_map(
-                    fn (OrderStatus $orderStatus) => $this->formatterService->format($orderStatus),
+                    fn (OrderStatus $orderStatus) => $this->formatterService->format(
+                        $orderStatus
+                    ),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -96,16 +112,23 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(User $user): array
-    {
+    protected function getPermissions(
+        User $user
+    ): array {
         if (! $user) {
             return ['permissions_meta' => []];
         }
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can('create', OrderStatus::class),
-                'can_view_any' => $user->can('viewAny', OrderStatus::class),
+                'can_create' => $user->can(
+                    'create',
+                    OrderStatus::class
+                ),
+                'can_view_any' => $user->can(
+                    'viewAny',
+                    OrderStatus::class
+                ),
             ],
         ];
     }
@@ -134,14 +157,18 @@ class QueryService
             $query->withTrashed();
         }
 
-        return $query->findOrFail($id);
+        return $query->findOrFail(
+            $id
+        );
     }
 
     /**
      * Apply sorting to the query.
      */
-    private function applySorting(Builder $query, array $filters): Builder
-    {
+    private function applySorting(
+        Builder $query,
+        array $filters
+    ): Builder {
         $query = $this->trashFilterService->applyFilter(
             $query,
             $filters['trashed'] ?? null

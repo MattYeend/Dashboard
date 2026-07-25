@@ -10,8 +10,10 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForCreation(array $data, int $createdBy): array
-    {
+    public function prepareForCreation(
+        array $data,
+        int $createdBy
+    ): array {
         return [
             'title' => $data['title'],
             'description' => $data['description'] ?? null,
@@ -28,8 +30,10 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForUpdate(array $data, int $updatedBy): array
-    {
+    public function prepareForUpdate(
+        array $data,
+        int $updatedBy
+    ): array {
         $allowed = [
             'title',
             'description',

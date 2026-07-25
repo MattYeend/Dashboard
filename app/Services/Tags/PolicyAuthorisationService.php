@@ -49,6 +49,22 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can view any tags.
+     */
+    public function canViewAny(User $actor): bool
+    {
+        return $actor->can('view any tags');
+    }
+
+    /**
+     * Determine whether the user can create tags.
+     */
+    public function canCreate(User $actor): bool
+    {
+        return $actor->can('create tags');
+    }
+
+    /**
      * Determine whether the user can view the tag.
      */
     public function canView(User $actor, Tag $target): bool
@@ -57,7 +73,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('view tags') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -69,7 +85,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('update tags') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -81,7 +97,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete tags') && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -93,7 +109,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $actor->can('restore tags') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**

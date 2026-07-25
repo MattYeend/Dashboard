@@ -47,7 +47,7 @@ describe('index', function () {
     });
 
     test('user without permission cannot list orders', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $this->actingAs($user)
             ->get('/orders')

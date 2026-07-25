@@ -11,8 +11,10 @@ class CreatorService
     /**
      * Create a like for the given likeable model, if one does not already exist.
      */
-    public function create(Model $likeable, User $user): Like
-    {
+    public function create(
+        Model $likeable,
+        User $user
+    ): Like {
         return Like::firstOrCreate([
             'user_id' => $user->id,
             'likeable_id' => $likeable->getKey(),

@@ -1,4 +1,4 @@
-<?php
+`<?php
 
 use App\Models\Company;
 use App\Models\Industry;
@@ -47,7 +47,7 @@ describe('index', function () {
     });
 
     test('user without permission cannot list companies', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $this->actingAs($user)
             ->get('/companies')
@@ -250,7 +250,7 @@ describe('show', function () {
     });
 
     test('user without permission cannot view a company', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $company = Company::factory()->create();
 

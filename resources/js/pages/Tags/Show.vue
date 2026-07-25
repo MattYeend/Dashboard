@@ -2,14 +2,14 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import type { Tag, PermissionsMeta } from '@/types';
-import TagAuditDetails from './components/TagAuditDetails.vue';
-import TagBasicDetails from './components/TagBasicDetails.vue';
 import {
     edit as tagsEdit,
     destroy as tagsDestroy,
     index as tagsIndex,
 } from '@/routes/tags';
+import type { Tag, PermissionsMeta } from '@/types';
+import TagAuditDetails from './components/TagAuditDetails.vue';
+import TagBasicDetails from './components/TagBasicDetails.vue';
 
 interface Props {
     tag: Tag;

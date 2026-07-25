@@ -49,6 +49,22 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can view any plans.
+     */
+    public function canViewAny(User $actor): bool
+    {
+        return $actor->can('view any plans');
+    }
+
+    /**
+     * Determine whether the user can create plans.
+     */
+    public function canCreate(User $actor): bool
+    {
+        return $actor->can('create plans');
+    }
+
+    /**
      * Determine whether the user can view the plan.
      */
     public function canView(User $actor, Plan $target): bool
@@ -57,7 +73,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('view plans') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -69,7 +85,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('edit plans') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -81,7 +97,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete plans') && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -93,7 +109,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $actor->can('restore plans') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**

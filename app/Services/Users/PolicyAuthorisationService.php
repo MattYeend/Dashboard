@@ -48,6 +48,22 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the actor can view any users.
+     */
+    public function canViewAny(User $actor): bool
+    {
+        return $actor->can('view users');
+    }
+
+    /**
+     * Determine whether the actor can create users.
+     */
+    public function canCreate(User $actor): bool
+    {
+        return $actor->can('create users');
+    }
+
+    /**
      * Determine whether the actor can view the target user.
      */
     public function canView(User $actor, User $target): bool
@@ -56,7 +72,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('view users') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -68,7 +84,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('edit users') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -80,7 +96,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete users') && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -92,7 +108,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) &&
+        return $actor->can('restore users') &&
             $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
@@ -110,6 +126,22 @@ class PolicyAuthorisationService
             'restoreOrForceDelete',
             $target
         );
+    }
+
+    /**
+     * Determine whether the actor can import users.
+     */
+    public function canImport(User $actor): bool
+    {
+        return $actor->can('import users');
+    }
+
+    /**
+     * Determine whether the actor can export users.
+     */
+    public function canExport(User $actor): bool
+    {
+        return $actor->can('export users');
     }
 
     /**

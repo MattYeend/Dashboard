@@ -385,24 +385,51 @@ class Log extends Model
 
     public const ACTION_RESTORE_REGISTRATION_INTEREST = 178;
 
-    // Invoice Item Management
-    public const ACTION_CREATE_INVOICE_ITEM = 179;
+    // Invoice Management
+    public const ACTION_CREATE_INVOICE = 179;
 
-    public const ACTION_UPDATE_INVOICE_ITEM = 180;
+    public const ACTION_UPDATE_INVOICE = 180;
 
-    public const ACTION_VIEW_INVOICE_ITEM = 181;
+    public const ACTION_VIEW_INVOICE = 181;
 
-    public const ACTION_DELETE_INVOICE_ITEM = 182;
+    public const ACTION_DELETE_INVOICE = 182;
 
-    public const ACTION_FORCE_DELETE_INVOICE_ITEM = 183;
+    public const ACTION_FORCE_DELETE_INVOICE = 183;
 
-    public const ACTION_RESTORE_INVOICE_ITEM = 184;
+    public const ACTION_RESTORE_INVOICE = 184;
 
-    public const ACTION_IMPORT_INVOICE_ITEM = 185;
+    public const ACTION_IMPORT_INVOICE = 185;
 
-    public const ACTION_EXPORT_INVOICE_ITEM = 186;
+    public const ACTION_EXPORT_INVOICE = 186;
 
-    public const ACTION_INVOICE_ITEM_UPDATED_BY_CRON = 187;
+    public const ACTION_INVOICE_UPDATED_BY_CRON = 187;
+
+    public const ACTION_CHANGE_INVOICE_STATUS = 188;
+
+    public const ACTION_SEND_INVOICE = 189;
+
+    public const ACTION_MARK_INVOICE_PAID = 190;
+
+    public const ACTION_MARK_INVOICE_UNPAID = 191;
+
+     // Invoice Item Management
+    public const ACTION_CREATE_INVOICE_ITEM = 192;
+
+    public const ACTION_UPDATE_INVOICE_ITEM = 193;
+
+    public const ACTION_VIEW_INVOICE_ITEM = 194;
+
+    public const ACTION_DELETE_INVOICE_ITEM = 195;
+
+    public const ACTION_FORCE_DELETE_INVOICE_ITEM = 196;
+
+    public const ACTION_RESTORE_INVOICE_ITEM = 197;
+
+    public const ACTION_IMPORT_INVOICE_ITEM = 198;
+
+    public const ACTION_EXPORT_INVOICE_ITEM = 199;
+
+    public const ACTION_INVOICE_ITEM_UPDATED_BY_CRON = 200;
 
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.

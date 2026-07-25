@@ -30,7 +30,9 @@ class RestorerService
         int $restoredBy,
         ?User $actor = null
     ): Category {
-        $actor ??= User::findOrFail($restoredBy);
+        $actor ??= User::findOrFail(
+            $restoredBy
+        );
 
         return $this->restoreResource->handle(
             $category,
@@ -43,9 +45,14 @@ class RestorerService
                     Log::ACTION_RESTORE_INDUSTRY,
                     $actor,
                     $category,
-                    ['before' => $this->auditLogService->snapshot($category)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $category
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -55,12 +62,20 @@ class RestorerService
      *
      * @throws \Exception
      */
-    public function restoreMultiple(array $categoryIds, int $restoredBy): int
-    {
+    public function restoreMultiple(
+        array $categoryIds,
+        int $restoredBy
+    ): int {
         $count = 0;
 
-        DB::transaction(function () use ($categoryIds, $restoredBy, &$count) {
-            $actor = User::findOrFail($restoredBy);
+        DB::transaction(function () use (
+            $categoryIds,
+            $restoredBy,
+            &$count
+        ) {
+            $actor = User::findOrFail(
+                $restoredBy
+            );
 
             /** @var Collection<int, Category> $categories */
             $categories = Category::withTrashed()
@@ -69,7 +84,11 @@ class RestorerService
 
             foreach ($categories as $category) {
                 if ($category->trashed()) {
-                    $this->restore($category, $restoredBy, $actor);
+                    $this->restore(
+                        $category,
+                        $restoredBy,
+                        $actor
+                    );
                     $count++;
                 }
             }

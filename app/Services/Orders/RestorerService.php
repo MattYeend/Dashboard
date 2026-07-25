@@ -30,7 +30,9 @@ class RestorerService
         int $restoredBy,
         ?User $actor = null
     ): Order {
-        $actor ??= User::findOrFail($restoredBy);
+        $actor ??= User::findOrFail(
+            $restoredBy
+        );
 
         return $this->restoreResource->handle(
             $order,
@@ -43,9 +45,14 @@ class RestorerService
                     Log::ACTION_RESTORE_ORDER,
                     $actor,
                     $order,
-                    ['before' => $this->auditLogService->snapshot($order)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $order
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -61,7 +68,11 @@ class RestorerService
     ): int {
         $count = 0;
 
-        DB::transaction(function () use ($orderIds, $restoredBy, &$count) {
+        DB::transaction(function () use (
+            $orderIds,
+            $restoredBy,
+            &$count
+        ) {
             $actor = User::findOrFail($restoredBy);
 
             /** @var Collection<int,Order> $orders */
@@ -71,7 +82,11 @@ class RestorerService
 
             foreach ($orders as $order) {
                 if ($order->trashed()) {
-                    $this->restore($order, $restoredBy, $actor);
+                    $this->restore(
+                        $order,
+                        $restoredBy,
+                        $actor
+                    );
                     $count++;
                 }
             }

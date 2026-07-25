@@ -46,7 +46,7 @@ describe('index', function () {
     });
 
     test('user without permission cannot list contacts', function () {
-        $user = $this->normalUser();
+        $user = $this->userWithNoPermissions();
 
         $this->actingAs($user)
             ->get('/contacts')

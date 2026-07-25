@@ -43,9 +43,14 @@ class RestorerService
                     Log::ACTION_RESTORE_ADDRESS,
                     $actor,
                     $address,
-                    ['before' => $this->auditLogService->snapshot($address)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $address
+                        ),
+                    ],
                 );
-            });
+            }
+        );
     }
 
     /**
@@ -61,7 +66,11 @@ class RestorerService
     ): int {
         $count = 0;
 
-        DB::transaction(function () use ($addressIds, $restoredBy, &$count) {
+        DB::transaction(function () use (
+            $addressIds,
+            $restoredBy,
+            &$count
+        ) {
             $actor = User::findOrFail($restoredBy);
 
             /** @var Collection<int,Address> $addresses */

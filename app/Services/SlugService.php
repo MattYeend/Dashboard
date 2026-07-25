@@ -33,8 +33,12 @@ class SlugService
     /**
      * Determine whether a slug already exists for the given model.
      */
-    protected function exists(string $modelClass, string $column, string $slug, ?int $ignoreId): bool
-    {
+    protected function exists(
+        string $modelClass,
+        string $column,
+        string $slug,
+        ?int $ignoreId
+    ): bool {
         return $modelClass::withTrashed()
             ->where($column, $slug)
             ->when($ignoreId, fn ($query) => $query->where('id', '!=', $ignoreId))

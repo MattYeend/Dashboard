@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
+import { store as invoiceStatusesStore } from '@/routes/invoice-statuses';
 import InvoiceStatusForm from './components/InvoiceStatusForm.vue';
 import type { InvoiceStatusFormData } from './components/InvoiceStatusForm.vue';
-import { store as invoiceStatusesStore } from '@/routes/invoice-statuses';
 
 const form = useForm<InvoiceStatusFormData>({
     title: '',

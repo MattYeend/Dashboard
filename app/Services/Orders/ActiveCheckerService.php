@@ -18,16 +18,18 @@ class ActiveCheckerService
     /**
      * Check if order is active (not soft-deleted).
      */
-    public function isActive(Order $order): bool
-    {
+    public function isActive(
+        Order $order
+    ): bool {
         return ! $order->trashed();
     }
 
     /**
      * Check if order is soft-deleted.
      */
-    public function isTrashed(Order $order): bool
-    {
+    public function isTrashed(
+        Order $order
+    ): bool {
         return $order->trashed();
     }
 
@@ -35,9 +37,12 @@ class ActiveCheckerService
      * Check if order is active (not soft-deleted) and can be
      * updated/deleted.
      */
-    public function canBeModified(Order $order): bool
-    {
-        return $this->isActive($order);
+    public function canBeModified(
+        Order $order
+    ): bool {
+        return $this->isActive(
+            $order
+        );
     }
 
     /**
@@ -46,7 +51,9 @@ class ActiveCheckerService
     public function canBeRestoredOrForceDeleted(
         Order $order
     ): bool {
-        return $this->isTrashed($order);
+        return $this->isTrashed(
+            $order
+        );
     }
 
     /**

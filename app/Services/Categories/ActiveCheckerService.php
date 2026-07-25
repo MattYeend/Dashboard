@@ -18,33 +18,41 @@ class ActiveCheckerService
     /**
      * Check if category is active (not soft-deleted).
      */
-    public function isActive(Category $category): bool
-    {
+    public function isActive(
+        Category $category
+    ): bool {
         return ! $category->trashed();
     }
 
     /**
      * Check if category is soft-deleted.
      */
-    public function isTrashed(Category $category): bool
-    {
+    public function isTrashed(
+        Category $category
+    ): bool {
         return $category->trashed();
     }
 
     /**
      * Check if category is active and can be updated or deleted.
      */
-    public function canBeModified(Category $category): bool
-    {
-        return $this->isActive($category);
+    public function canBeModified(
+        Category $category
+    ): bool {
+        return $this->isActive(
+            $category
+        );
     }
 
     /**
      * Check if category is soft-deleted and can be restored or force-deleted.
      */
-    public function canBeRestoredOrForceDeleted(Category $category): bool
-    {
-        return $this->isTrashed($category);
+    public function canBeRestoredOrForceDeleted(
+        Category $category
+    ): bool {
+        return $this->isTrashed(
+            $category
+        );
     }
 
     /**

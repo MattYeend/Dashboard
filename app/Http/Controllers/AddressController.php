@@ -33,16 +33,29 @@ class AddressController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
-    {
-        $this->authorize('viewAny', Address::class);
+    public function index(
+        Request $request
+    ): Response {
+        $this->authorize(
+            'viewAny',
+            Address::class
+        );
 
         $data = $this->query->getPaginated(
             $request->user(),
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
-        return Inertia::render('Addresses/Index', $data);
+        return Inertia::render(
+            'Addresses/Index',
+            $data
+        );
     }
 
     /**
@@ -52,11 +65,17 @@ class AddressController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize('create', Address::class);
+        $this->authorize(
+            'create',
+            Address::class
+        );
 
         $data = $this->query->getFormData();
 
-        return Inertia::render('Addresses/Create', $data);
+        return Inertia::render(
+            'Addresses/Create',
+            $data
+        );
     }
 
     /**
@@ -67,15 +86,24 @@ class AddressController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      */
-    public function store(StoreAddressRequest $request): JsonResponse|RedirectResponse
-    {
-        $address = $this->management->store($request);
+    public function store(
+        StoreAddressRequest $request
+    ): JsonResponse|RedirectResponse {
+        $address = $this->management->store(
+            $request
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($address, 201);
+            return response()->json(
+                $address,
+                201
+            );
         }
 
-        return redirect()->route('addresses.show', $address->id);
+        return redirect()->route(
+            'addresses.show',
+            $address->id
+        );
     }
 
     /**
@@ -89,14 +117,20 @@ class AddressController extends Controller
         Address $address,
         Request $request
     ): Response {
-        $this->authorize('view', $address);
+        $this->authorize(
+            'view',
+            $address
+        );
 
         $data = $this->query->getById(
             $request->user(),
             $address->id
         );
 
-        return Inertia::render('Addresses/Show', $data);
+        return Inertia::render(
+            'Addresses/Show',
+            $data
+        );
     }
 
     /**
@@ -108,14 +142,20 @@ class AddressController extends Controller
         Address $address,
         Request $request
     ): Response {
-        $this->authorize('update', $address);
+        $this->authorize(
+            'update',
+            $address
+        );
 
         $data = $this->query->getById(
             $request->user(),
             $address->id
         );
 
-        return Inertia::render('Addresses/Edit', $data);
+        return Inertia::render(
+            'Addresses/Edit',
+            $data
+        );
     }
 
     /**
@@ -131,13 +171,21 @@ class AddressController extends Controller
         UpdateAddressRequest $request,
         Address $address
     ): JsonResponse|RedirectResponse {
-        $address = $this->management->update($request, $address);
+        $address = $this->management->update(
+            $request,
+            $address
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($address);
+            return response()->json(
+                $address
+            );
         }
 
-        return redirect()->route('addresses.show', $address->id);
+        return redirect()->route(
+            'addresses.show',
+            $address->id
+        );
     }
 
     /**
@@ -152,15 +200,26 @@ class AddressController extends Controller
         Request $request,
         Address $address
     ): JsonResponse|RedirectResponse {
-        $this->authorize('delete', $address);
+        $this->authorize(
+            'delete',
+            $address
+        );
 
-        $this->management->destroy($address, $request->user());
+        $this->management->destroy(
+            $address,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('addresses.index');
+        return redirect()->route(
+            'addresses.index'
+        );
     }
 
     /**
@@ -177,15 +236,26 @@ class AddressController extends Controller
     ): JsonResponse|RedirectResponse {
         $address = Address::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('restore', $address);
+        $this->authorize(
+            'restore',
+            $address
+        );
 
-        $this->management->restore($id, $request->user());
+        $this->management->restore(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('addresses.index');
+        return redirect()->route(
+            'addresses.index'
+        );
     }
 
     /**
@@ -202,15 +272,26 @@ class AddressController extends Controller
     ): JsonResponse|RedirectResponse {
         $address = Address::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('forceDelete', $address);
+        $this->authorize(
+            'forceDelete',
+            $address
+        );
 
-        $this->management->forceDelete($id, $request->user());
+        $this->management->forceDelete(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('addresses.index');
+        return redirect()->route(
+            'addresses.index'
+        );
     }
 
     /**
@@ -218,11 +299,19 @@ class AddressController extends Controller
      *
      * Authorises each address individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkDelete(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:addresses,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:addresses,id',
+            ],
         ]);
 
         $actor = $request->user();
@@ -231,14 +320,22 @@ class AddressController extends Controller
         $this->management->bulkDelete(
             $ids,
             $actor,
-            fn (Address $address) => $this->authorize('delete', $address)
+            fn (Address $address) => $this->authorize(
+                'delete',
+                $address
+            )
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('addresses.index');
+        return redirect()->route(
+            'addresses.index'
+        );
     }
 
     /**
@@ -246,35 +343,59 @@ class AddressController extends Controller
      *
      * Authorises each address individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkRestore(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:addresses,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:addresses,id',
+            ],
         ]);
 
         $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
-            fn (Address $address) => $this->authorize('restore', $address)
+            fn (Address $address) => $this->authorize(
+                'restore',
+                $address
+            )
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('addresses.index');
+        return redirect()->route(
+            'addresses.index'
+        );
     }
 
     /**
      * Get the list of selectable "owner" options for a given addressable type.
      */
-    public function addressableOptions(Request $request): JsonResponse
-    {
-        $type = $request->query('type', '');
+    public function addressableOptions(
+        Request $request
+    ): JsonResponse {
+        $type = $request->query(
+            'type',
+            ''
+        );
 
-        $options = $this->query->getAddressableOptions($type);
+        $options = $this->query->getAddressableOptions(
+            $type
+        );
 
-        return response()->json($options);
+        return response()->json(
+            $options
+        );
     }
 }

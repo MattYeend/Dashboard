@@ -13,7 +13,7 @@ defineProps<Props>();
         <dl>
             <dt class="text-sm font-medium text-gray-400">Tags</dt>
             <dd class="mt-1 text-sm text-gray-300">
-                <span v-if="!post.tags?.length">—</span>
+                <span v-if="!post.tags?.length">-</span>
                 <span v-else class="flex flex-wrap gap-2">
                     <span
                         v-for="tag in post.tags"

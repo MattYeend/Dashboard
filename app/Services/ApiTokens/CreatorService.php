@@ -13,8 +13,12 @@ class CreatorService
      *
      * @param  array<int, string>  $abilities
      */
-    public function create(User $user, string $name, array $abilities, ?string $expiresAt = null): NewAccessToken
-    {
+    public function create(
+        User $user,
+        string $name,
+        array $abilities,
+        ?string $expiresAt = null
+    ): NewAccessToken {
         return $user->createToken(
             name: $name,
             abilities: $abilities,

@@ -33,16 +33,29 @@ class PostController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
-    {
-        $this->authorize('viewAny', Post::class);
+    public function index(
+        Request $request
+    ): Response {
+        $this->authorize(
+            'viewAny',
+            Post::class
+        );
 
         $data = $this->query->getPaginated(
             $request->user(),
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
-        return Inertia::render('Posts/Index', $data);
+        return Inertia::render(
+            'Posts/Index',
+            $data
+        );
     }
 
     /**
@@ -52,9 +65,15 @@ class PostController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize('create', Post::class);
+        $this->authorize(
+            'create',
+            Post::class
+        );
 
-        return Inertia::render('Posts/Create', $this->query->getFormData());
+        return Inertia::render(
+            'Posts/Create',
+            $this->query->getFormData()
+        );
     }
 
     /**
@@ -65,15 +84,24 @@ class PostController extends Controller
      * After storing, an audit log entry is written against the
      * authenticated user.
      */
-    public function store(StorePostRequest $request): JsonResponse|RedirectResponse
-    {
-        $post = $this->management->store($request);
+    public function store(
+        StorePostRequest $request
+    ): JsonResponse|RedirectResponse {
+        $post = $this->management->store(
+            $request
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($post, 201);
+            return response()->json(
+                $post,
+                201
+            );
         }
 
-        return redirect()->route('posts.show', $post->id);
+        return redirect()->route(
+            'posts.show',
+            $post->id
+        );
     }
 
     /**
@@ -87,14 +115,20 @@ class PostController extends Controller
         Post $post,
         Request $request
     ): Response {
-        $this->authorize('view', $post);
+        $this->authorize(
+            'view',
+            $post
+        );
 
         $data = $this->query->getById(
             $request->user(),
             $post->id
         );
 
-        return Inertia::render('Posts/Show', $data);
+        return Inertia::render(
+            'Posts/Show',
+            $data
+        );
     }
 
     /**
@@ -106,14 +140,21 @@ class PostController extends Controller
         Post $post,
         Request $request
     ): Response {
-        $this->authorize('update', $post);
+        $this->authorize(
+            'update', $post);
 
         $data = array_merge(
-            $this->query->getById($request->user(), $post->id),
+            $this->query->getById(
+                $request->user(),
+                $post->id
+            ),
             $this->query->getFormData(),
         );
 
-        return Inertia::render('Posts/Edit', $data);
+        return Inertia::render(
+            'Posts/Edit',
+            $data
+        );
     }
 
     /**
@@ -129,13 +170,21 @@ class PostController extends Controller
         UpdatePostRequest $request,
         Post $post
     ): JsonResponse|RedirectResponse {
-        $post = $this->management->update($request, $post);
+        $post = $this->management->update(
+            $request,
+            $post
+        );
 
         if ($request->wantsJson()) {
-            return response()->json($post);
+            return response()->json(
+                $post
+            );
         }
 
-        return redirect()->route('posts.show', $post->id);
+        return redirect()->route(
+            'posts.show',
+            $post->id
+        );
     }
 
     /**
@@ -150,15 +199,26 @@ class PostController extends Controller
         Request $request,
         Post $post
     ): JsonResponse|RedirectResponse {
-        $this->authorize('delete', $post);
+        $this->authorize(
+            'delete',
+            $post
+        );
 
-        $this->management->destroy($post, $request->user());
+        $this->management->destroy(
+            $post,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('posts.index');
+        return redirect()->route(
+            'posts.index'
+        );
     }
 
     /**
@@ -175,15 +235,26 @@ class PostController extends Controller
     ): JsonResponse|RedirectResponse {
         $post = Post::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('restore', $post);
+        $this->authorize(
+            'restore',
+            $post
+        );
 
-        $this->management->restore($id, $request->user());
+        $this->management->restore(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('posts.index');
+        return redirect()->route(
+            'posts.index'
+        );
     }
 
     /**
@@ -200,15 +271,26 @@ class PostController extends Controller
     ): JsonResponse|RedirectResponse {
         $post = Post::onlyTrashed()->findOrFail($id);
 
-        $this->authorize('forceDelete', $post);
+        $this->authorize(
+            'forceDelete',
+            $post
+        );
 
-        $this->management->forceDelete($id, $request->user());
+        $this->management->forceDelete(
+            $id,
+            $request->user()
+        );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('posts.index');
+        return redirect()->route(
+            'posts.index'
+        );
     }
 
     /**
@@ -216,11 +298,19 @@ class PostController extends Controller
      *
      * Authorises each post individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkDelete(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:posts,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:posts,id',
+            ],
         ]);
 
         $actor = $request->user();
@@ -229,14 +319,22 @@ class PostController extends Controller
         $this->management->bulkDelete(
             $ids,
             $actor,
-            fn (Post $post) => $this->authorize('delete', $post)
+            fn (Post $post) => $this->authorize(
+                'delete',
+                $post
+            )
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('posts.index');
+        return redirect()->route(
+            'posts.index'
+        );
     }
 
     /**
@@ -244,24 +342,40 @@ class PostController extends Controller
      *
      * Authorises each post individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
-    {
+    public function bulkRestore(
+        Request $request
+    ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:posts,id'],
+            'ids' => [
+                'required',
+                'array',
+            ],
+            'ids.*' => [
+                'required',
+                'integer',
+                'exists:posts,id',
+            ],
         ]);
 
         $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
-            fn (Post $post) => $this->authorize('restore', $post)
+            fn (Post $post) => $this->authorize(
+                'restore',
+                $post
+            )
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json(
+                null,
+                204
+            );
         }
 
-        return redirect()->route('posts.index');
+        return redirect()->route(
+            'posts.index'
+        );
     }
 
     /**
@@ -270,11 +384,19 @@ class PostController extends Controller
      * Authorises via the 'view' policy, since liking requires being
      * able to see the post in the first place.
      */
-    public function like(Post $post, Request $request): RedirectResponse
-    {
-        $this->authorize('view', $post);
+    public function like(
+        Post $post,
+        Request $request
+    ): RedirectResponse {
+        $this->authorize(
+            'view',
+            $post
+        );
 
-        $this->management->like($post, $request->user());
+        $this->management->like(
+            $post,
+            $request->user()
+        );
 
         return back();
     }
@@ -282,11 +404,19 @@ class PostController extends Controller
     /**
      * Unlike the given post for the currently authenticated user.
      */
-    public function unlike(Post $post, Request $request): RedirectResponse
-    {
-        $this->authorize('view', $post);
+    public function unlike(
+        Post $post,
+        Request $request
+    ): RedirectResponse {
+        $this->authorize(
+            'view',
+            $post
+        );
 
-        $this->management->unlike($post, $request->user());
+        $this->management->unlike(
+            $post,
+            $request->user()
+        );
 
         return back();
     }

@@ -32,4 +32,12 @@ trait CreatesUsers
 
         return $user;
     }
+
+    public function userWithNoPermissions(): User
+    {
+        $user = User::factory()->create();
+        setPermissionsTeamId(1);
+
+        return $user;
+    }
 }

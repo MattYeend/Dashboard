@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\TokenAbility;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreContactRequest;
-use App\Http\Requests\UpdateContactRequest;
+use App\Http\Requests\Contacts\StoreContactRequest;
+use App\Http\Requests\Contacts\UpdateContactRequest;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
 use App\Services\Contacts\CreatorService;
@@ -39,15 +39,29 @@ class ContactController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $this->authorize('viewAny', Contact::class);
-        $this->authoriseTokenAbility($request, TokenAbility::ContactsRead->value);
+        $this->authorize(
+            'viewAny',
+            Contact::class
+        );
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::ContactsRead->value
+        );
 
         $data = $this->queryService->getPaginated(
             $request->user(),
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
-        return response()->json($data);
+        return response()->json(
+            $data
+        );
     }
 
     /**
@@ -59,17 +73,26 @@ class ContactController extends Controller
      * Authorises via the 'create' policy, then confirms the request's token carries the
      * 'contacts:write' ability before persisting.
      */
-    public function store(StoreContactRequest $request): ContactResource
-    {
-        $this->authorize('create', Contact::class);
-        $this->authoriseTokenAbility($request, TokenAbility::ContactsWrite->value);
+    public function store(
+        StoreContactRequest $request
+    ): ContactResource {
+        $this->authorize(
+            'create',
+            Contact::class
+        );
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::ContactsWrite->value
+        );
 
         $contact = $this->creatorService->create(
             $request->validated(),
             $request->user()->id,
         );
 
-        return new ContactResource($contact);
+        return new ContactResource(
+            $contact
+        );
     }
 
     /**
@@ -81,13 +104,24 @@ class ContactController extends Controller
      * Authorises via the 'view' policy, then confirms the request's token carries the
      * 'contacts:read' ability before returning data.
      */
-    public function show(Request $request, Contact $contact): JsonResponse
-    {
-        $this->authorize('view', $contact);
-        $this->authoriseTokenAbility($request, TokenAbility::ContactsRead->value);
+    public function show(
+        Request $request,
+        Contact $contact
+    ): JsonResponse {
+        $this->authorize(
+            'view',
+            $contact
+        );
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::ContactsRead->value
+        );
 
         return response()->json(
-            $this->queryService->getById($request->user(), $contact->id)
+            $this->queryService->getById(
+                $request->user(),
+                $contact->id
+            )
         );
     }
 
@@ -100,10 +134,18 @@ class ContactController extends Controller
      * Authorises via the 'update' policy, then confirms the request's token carries the
      * 'contacts:write' ability before persisting.
      */
-    public function update(UpdateContactRequest $request, Contact $contact): ContactResource
-    {
-        $this->authorize('update', $contact);
-        $this->authoriseTokenAbility($request, TokenAbility::ContactsWrite->value);
+    public function update(
+        UpdateContactRequest $request,
+        Contact $contact
+    ): ContactResource {
+        $this->authorize(
+            'update',
+            $contact
+        );
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::ContactsWrite->value
+        );
 
         $updated = $this->updaterService->update(
             $contact,
@@ -111,7 +153,9 @@ class ContactController extends Controller
             $request->user()->id,
         );
 
-        return new ContactResource($updated);
+        return new ContactResource(
+            $updated
+        );
     }
 
     /**
@@ -123,13 +167,27 @@ class ContactController extends Controller
      * Authorises via the 'delete' policy, then confirms the request's token carries the
      * 'contacts:write' ability before deleting.
      */
-    public function destroy(Request $request, Contact $contact): JsonResponse
-    {
-        $this->authorize('delete', $contact);
-        $this->authoriseTokenAbility($request, TokenAbility::ContactsWrite->value);
+    public function destroy(
+        Request $request,
+        Contact $contact
+    ): JsonResponse {
+        $this->authorize(
+            'delete',
+            $contact
+        );
+        $this->authoriseTokenAbility(
+            $request,
+            TokenAbility::ContactsWrite->value
+        );
 
-        $this->deleterService->delete($contact, $request->user()->id);
+        $this->deleterService->delete(
+            $contact,
+            $request->user()->id
+        );
 
-        return response()->json(null, 204);
+        return response()->json(
+            null,
+            204
+        );
     }
 }

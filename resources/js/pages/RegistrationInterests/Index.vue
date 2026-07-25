@@ -1,25 +1,21 @@
 <script setup lang="ts">
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
-
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import FilterBar from '@/components/table/FilterBar.vue';
 import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
-
-import type {
-    RegistrationInterest,
-    Pagination as PaginationMeta,
-} from '@/types';
-
 import {
     index as registrationInterestsIndex,
     show as registrationInterestShow,
     destroy as registrationInterestDestroy,
 } from '@/routes/registration-interests';
-
 import bulk from '@/routes/registration-interests/bulk';
+import type {
+    RegistrationInterest,
+    Pagination as PaginationMeta,
+} from '@/types';
 
 defineProps<{
     interests: RegistrationInterest[];
@@ -63,14 +59,10 @@ const columns = [
 ];
 
 const applyFilters = () => {
-    router.get(
-        registrationInterestsIndex().url,
-        filters.value,
-        {
-            preserveState: true,
-            replace: true,
-        }
-    );
+    router.get(registrationInterestsIndex().url, filters.value, {
+        preserveState: true,
+        replace: true,
+    });
 };
 
 const confirmDelete = () => {
@@ -80,16 +72,13 @@ const confirmDelete = () => {
 
     processing.value = true;
 
-    router.delete(
-        registrationInterestDestroy(confirmingDeleteId.value).url,
-        {
-            onFinish: () => {
-                processing.value = false;
-                confirmingDelete.value = false;
-                confirmingDeleteId.value = null;
-            },
-        }
-    );
+    router.delete(registrationInterestDestroy(confirmingDeleteId.value).url, {
+        onFinish: () => {
+            processing.value = false;
+            confirmingDelete.value = false;
+            confirmingDeleteId.value = null;
+        },
+    });
 };
 
 const confirmBulkDelete = () => {
@@ -106,7 +95,7 @@ const confirmBulkDelete = () => {
                 confirmingBulkDelete.value = false;
                 selected.value = [];
             },
-        }
+        },
     );
 };
 
@@ -121,10 +110,7 @@ const requestDestroy = (id: number) => {
 
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <IndexHeader
-                title="Registration interests"
-                :can-create="false"
-            />
+            <IndexHeader title="Registration interests" :can-create="false" />
 
             <FilterBar
                 v-model="filters"

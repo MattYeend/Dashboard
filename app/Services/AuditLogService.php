@@ -38,8 +38,9 @@ class AuditLogService
      *
      * @return array<string, mixed>
      */
-    public function snapshot(Auditable $model): array
-    {
+    public function snapshot(
+        Auditable $model
+    ): array {
         return $model->auditSnapshot();
     }
 }

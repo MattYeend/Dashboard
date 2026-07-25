@@ -49,6 +49,22 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can view any invoice statuses.
+     */
+    public function canViewAny(User $actor): bool
+    {
+        return $actor->can('view invoice statuses');
+    }
+
+    /**
+     * Determine whether the user can create invoice statuses.
+     */
+    public function canCreate(User $actor): bool
+    {
+        return $actor->can('create invoice statuses');
+    }
+
+    /**
      * Determine whether the user can view the task status.
      */
     public function canView(User $actor, InvoiceStatus $target): bool
@@ -57,7 +73,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('view invoice statuses') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -69,7 +85,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->isActive($target);
+        return $actor->can('edit invoice statuses') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -81,7 +97,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeModified($target);
+        return $actor->can('delete invoice statuses') && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -93,7 +109,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->isAdmin($actor) && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $actor->can('restore invoice statuses') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
@@ -110,6 +126,34 @@ class PolicyAuthorisationService
             'restoreOrForceDelete',
             $target
         );
+    }
+
+    /**
+     * Determine whether the user can import invoice statuses.
+     */
+    public function canImport(User $actor): bool
+    {
+        return $actor->can('import invoice statuses');
+    }
+
+    /**
+     * Determine whether the user can export invoice statuses.
+     */
+    public function canExport(User $actor): bool
+    {
+        return $actor->can('export invoice statuses');
+    }
+
+    /**
+     * Determine whether the user can assign the invoice status.
+     */
+    public function canAssign(User $actor, InvoiceStatus $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('assign invoice statuses') && $this->activeChecker->isActive($target);
     }
 
     /**

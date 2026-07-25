@@ -18,25 +18,30 @@ class ActiveCheckerService
     /**
      * Check if comment is active (not soft-deleted).
      */
-    public function isActive(Comment $comment): bool
-    {
+    public function isActive(
+        Comment $comment
+    ): bool {
         return ! $comment->trashed();
     }
 
     /**
      * Check if comment is soft-deleted.
      */
-    public function isTrashed(Comment $comment): bool
-    {
+    public function isTrashed(
+        Comment $comment
+    ): bool {
         return $comment->trashed();
     }
 
     /**
      * Check if comment is active (not soft-deleted) and can be modified.
      */
-    public function canBeModified(Comment $comment): bool
-    {
-        return $this->isActive($comment);
+    public function canBeModified(
+        Comment $comment
+    ): bool {
+        return $this->isActive(
+            $comment
+        );
     }
 
     /**
