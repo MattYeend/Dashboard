@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             RegistrationInterestSeeder::class,
             InvoiceSeeder::class,
+            InvoiceItemSeeder::class,
         ]);
     }
 }
