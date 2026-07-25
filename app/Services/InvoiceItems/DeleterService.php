@@ -3,6 +3,7 @@
 namespace App\Services\InvoiceItems;
 
 use App\Actions\DeleteResource;
+use App\Actions\RecalculateInvoiceTotal;
 use App\Models\InvoiceItem;
 use App\Models\Log;
 use App\Models\User;
@@ -17,6 +18,7 @@ class DeleterService
     public function __construct(
         protected readonly AuditLogService $auditLogService,
         protected readonly DeleteResource $deleteResource,
+        protected readonly RecalculateInvoiceTotal $recalculateInvoiceTotal,
     ) {}
 
     /**
@@ -39,6 +41,10 @@ class DeleterService
                 $invoiceItem->deleted_by = $deletedBy;
                 $invoiceItem->deleted_at = now();
                 $invoiceItem->save();
+
+                $this->recalculateInvoiceTotal->execute(
+                    $invoiceItem->invoice
+                );
 
                 $this->auditLogService->record(
                     Log::ACTION_DELETE_INVOICE,
