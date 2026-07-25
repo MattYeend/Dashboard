@@ -33,9 +33,8 @@ class PlanController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(
-        Request $request
-    ): Response {
+    public function index(Request $request): Response
+    {
         $this->authorize('viewAny', Plan::class);
 
         $data = $this->query->getPaginated(
@@ -51,10 +50,7 @@ class PlanController extends Controller
 
         );
 
-        return Inertia::render(
-            'Plans/Index',
-            $data
-        );
+        return Inertia::render('Plans/Index', $data);
     }
 
     /**
@@ -64,15 +60,9 @@ class PlanController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize(
-            'create',
-            Plan::class
-        );
+        $this->authorize('create', Plan::class);
 
-        return Inertia::render(
-            'Plans/Create',
-            $this->query->getFormData()
-        );
+        return Inertia::render('Plans/Create', $this->query->getFormData());
     }
 
     /**
@@ -86,21 +76,13 @@ class PlanController extends Controller
     public function store(
         StorePlanRequest $request
     ): JsonResponse|RedirectResponse {
-        $plan = $this->management->store(
-            $request
-        );
+        $plan = $this->management->store($request);
 
         if ($request->wantsJson()) {
-            return response()->json(
-                $plan,
-                201
-            );
+            return response()->json($plan, 201);
         }
 
-        return redirect()->route(
-            'plans.show',
-            $plan->id
-        );
+        return redirect()->route('plans.show', $plan->id);
     }
 
     /**
@@ -114,20 +96,14 @@ class PlanController extends Controller
         Plan $plan,
         Request $request
     ): Response {
-        $this->authorize(
-            'view',
-            $plan
-        );
+        $this->authorize('view', $plan);
 
         $data = $this->query->getById(
             $request->user(),
             $plan->id
         );
 
-        return Inertia::render(
-            'Plans/Show',
-            $data
-        );
+        return Inertia::render('Plans/Show', $data);
     }
 
     /**
@@ -139,10 +115,7 @@ class PlanController extends Controller
         Plan $plan,
         Request $request
     ): Response {
-        $this->authorize(
-            'update',
-            $plan
-        );
+        $this->authorize('update', $plan);
 
         $data = array_merge(
             $this->query->getById(
@@ -152,10 +125,7 @@ class PlanController extends Controller
             $this->query->getFormData()
         );
 
-        return Inertia::render(
-            'Plans/Edit',
-            $data
-        );
+        return Inertia::render('Plans/Edit', $data);
     }
 
     /**
@@ -177,15 +147,10 @@ class PlanController extends Controller
         );
 
         if ($request->wantsJson()) {
-            return response()->json(
-                $plan
-            );
+            return response()->json($plan);
         }
 
-        return redirect()->route(
-            'plans.show',
-            $plan->id
-        );
+        return redirect()->route('plans.show', $plan->id);
     }
 
     /**
@@ -200,10 +165,7 @@ class PlanController extends Controller
         Request $request,
         Plan $plan
     ): JsonResponse|RedirectResponse {
-        $this->authorize(
-            'delete',
-            $plan
-        );
+        $this->authorize('delete', $plan);
 
         $this->management->destroy(
             $plan,
@@ -211,15 +173,10 @@ class PlanController extends Controller
         );
 
         if (request()->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'plans.index'
-        );
+        return redirect()->route('plans.index');
     }
 
     /**
@@ -236,10 +193,7 @@ class PlanController extends Controller
     ): JsonResponse|RedirectResponse {
         $plan = Plan::onlyTrashed()->findOrFail($id);
 
-        $this->authorize(
-            'restore',
-            $plan
-        );
+        $this->authorize('restore', $plan);
 
         $this->management->restore(
             $id,
@@ -247,15 +201,10 @@ class PlanController extends Controller
         );
 
         if (request()->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'plans.index'
-        );
+        return redirect()->route('plans.index');
     }
 
     /**
@@ -272,10 +221,7 @@ class PlanController extends Controller
     ): JsonResponse|RedirectResponse {
         $plan = Plan::onlyTrashed()->findOrFail($id);
 
-        $this->authorize(
-            'forceDelete',
-            $plan
-        );
+        $this->authorize('forceDelete', $plan);
 
         $this->management->forceDelete(
             $id,
@@ -283,15 +229,10 @@ class PlanController extends Controller
         );
 
         if (request()->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'plans.index'
-        );
+        return redirect()->route('plans.index');
     }
 
     /**
@@ -299,19 +240,11 @@ class PlanController extends Controller
      *
      * Authorises each plan individually via the 'delete' policy.
      */
-    public function bulkDelete(
-        Request $request
-    ): JsonResponse|RedirectResponse {
+    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    {
         $request->validate([
-            'ids' => [
-                'required',
-                'array',
-            ],
-            'ids.*' => [
-                'required',
-                'integer',
-                'exists:plans,id',
-            ],
+            'ids' => ['required', 'array'],
+            'ids.*' => ['required', 'integer', 'exists:plans,id'],
         ]);
 
         $actor = $request->user();
@@ -320,22 +253,14 @@ class PlanController extends Controller
         $this->management->bulkDelete(
             $ids,
             $actor,
-            fn (Plan $plan) => $this->authorize(
-                'delete',
-                $plan
-            )
+            fn (Plan $plan) => $this->authorize('delete', $plan)
         );
 
         if (request()->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'plans.index'
-        );
+        return redirect()->route('plans.index');
     }
 
     /**
@@ -343,39 +268,23 @@ class PlanController extends Controller
      *
      * Authorises each plan individually via the 'restore' policy.
      */
-    public function bulkRestore(
-        Request $request
-    ): JsonResponse|RedirectResponse {
+    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    {
         $validated = $request->validate([
-            'ids' => [
-                'required',
-                'array',
-            ],
-            'ids.*' => [
-                'required',
-                'integer',
-                'exists:plans,id',
-            ],
+            'ids' => ['required', 'array'],
+            'ids.*' => ['required', 'integer', 'exists:plans,id'],
         ]);
 
         $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
-            fn (Plan $plan) => $this->authorize(
-                'restore',
-                $plan
-            )
+            fn (Plan $plan) => $this->authorize('restore', $plan)
         );
 
         if ($request->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'plans.index'
-        );
+        return redirect()->route('plans.index');
     }
 }
