@@ -385,6 +385,25 @@ class Log extends Model
 
     public const ACTION_RESTORE_REGISTRATION_INTEREST = 178;
 
+    // Invoice Item Management
+    public const ACTION_CREATE_INVOICE_ITEM = 179;
+
+    public const ACTION_UPDATE_INVOICE_ITEM = 180;
+
+    public const ACTION_VIEW_INVOICE_ITEM = 181;
+
+    public const ACTION_DELETE_INVOICE_ITEM = 182;
+
+    public const ACTION_FORCE_DELETE_INVOICE_ITEM = 183;
+
+    public const ACTION_RESTORE_INVOICE_ITEM = 184;
+
+    public const ACTION_IMPORT_INVOICE_ITEM = 185;
+
+    public const ACTION_EXPORT_INVOICE_ITEM = 186;
+
+    public const ACTION_INVOICE_ITEM_UPDATED_BY_CRON = 187;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
