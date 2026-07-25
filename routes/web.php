@@ -268,8 +268,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/', [TagController::class, 'store'])->name('store');
         Route::get('/{tag}', [TagController::class, 'show'])->name('show');
         Route::get('/{tag}/edit', [TagController::class, 'edit'])->name('edit');
-        Route::put('/{tag}', [TagController::class, 'update'])->name('update');
-        Route::patch('/{tag}', [TagController::class, 'update'])->name('patch');
+        Route::match(['put', 'patch'], '/{tag}', [TagController::class, 'update'])->name('update');
         Route::delete('/{tag}', [TagController::class, 'destroy'])->name('destroy');
     });
 

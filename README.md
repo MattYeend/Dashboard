@@ -232,7 +232,7 @@ npm run types:check
 After changing Laravel routes or controllers, regenerate frontend route/action files:
 
 ```bash
-php artisan wayfinder:generate
+php artisan wayfinder:generate --with-form
 npm run types:check
 ```
 
