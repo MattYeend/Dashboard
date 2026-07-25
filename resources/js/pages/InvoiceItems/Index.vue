@@ -195,7 +195,7 @@ function formatMoney(pence: number): string {
             </div>
 
             <IndexHeader
-                :title="`Items — ${invoice.invoice_number}`"
+                :title="`Items - ${invoice.invoice_number}`"
                 :create-href="invoiceItemsCreate.url({ invoice: invoice.id })"
                 create-label="Add Item"
                 :can-create="permissions_meta.can_create"

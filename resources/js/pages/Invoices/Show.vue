@@ -16,6 +16,7 @@ import {
     markAsPaid as invoicesMarkAsPaid,
     markAsUnpaid as invoicesMarkAsUnpaid,
 } from '@/routes/invoices';
+import { index as invoiceItemsIndex } from '@/routes/invoices/items';
 
 interface Props {
     invoice: Invoice;
@@ -112,6 +113,12 @@ function markAsUnpaid(): void {
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
                     >
                         Back
+                    </Link>
+                    <Link
+                        :href="invoiceItemsIndex.url({ invoice: invoice.id })"
+                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
+                    >
+                        Items
                     </Link>
                     <button
                         type="button"

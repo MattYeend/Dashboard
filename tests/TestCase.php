@@ -33,7 +33,7 @@ abstract class TestCase extends BaseTestCase
      * Pest's `uses(LazilyRefreshDatabase::class)` composes its own no-op
      * afterRefreshingDatabase() directly into each test file's class,
      * which always takes precedence over the version inherited from this
-     * abstract TestCase — so overriding afterRefreshingDatabase() here
+     * abstract TestCase - so overriding afterRefreshingDatabase() here
      * never actually fires. Listening for MigrationsEnded instead runs
      * exactly once, right after `migrate` completes and before any
      * per-test transaction wrapping begins, regardless of which

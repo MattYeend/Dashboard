@@ -98,7 +98,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(InvoiceItem::class, InvoiceItemPolicy::class);
 
         Route::bind('invoiceItem', function ($value, $route) {
-            return $route->parameter('invoice')->items()->findOrFail($value);
+            return InvoiceItem::where('invoice_id', $route->parameter('invoice'))
+                ->findOrFail($value);
         });
 
         Relation::morphMap([

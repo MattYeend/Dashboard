@@ -39,10 +39,7 @@ class InvoiceItemController extends Controller
         Invoice $invoice,
         Request $request
     ): Response {
-        $this->authorize(
-            'viewAny',
-            InvoiceItem::class
-        );
+        $this->authorize('viewAny', InvoiceItem::class);
 
         $data = $this->query->getPaginated(
             $request->user(),
@@ -56,10 +53,7 @@ class InvoiceItemController extends Controller
             ])
         );
 
-        return Inertia::render(
-            'InvoiceItems/Index',
-            $data
-        );
+        return Inertia::render('InvoiceItems/Index', $data);
     }
 
     /**
@@ -67,13 +61,9 @@ class InvoiceItemController extends Controller
      *
      * Authorises via the 'create' policy before rendering.
      */
-    public function create(
-        Invoice $invoice
-    ): Response {
-        $this->authorize(
-            'create',
-            InvoiceItem::class
-        );
+    public function create(Invoice $invoice): Response
+    {
+        $this->authorize('create', InvoiceItem::class);
 
         return Inertia::render(
             'InvoiceItems/Create',
@@ -91,16 +81,10 @@ class InvoiceItemController extends Controller
         StoreInvoiceItemRequest $request,
         Invoice $invoice
     ): JsonResponse|RedirectResponse {
-        $invoiceItem = $this->management->store(
-            $request,
-            $invoice
-        );
+        $invoiceItem = $this->management->store($request, $invoice);
 
         if ($request->wantsJson()) {
-            return response()->json(
-                $invoiceItem,
-                201
-            );
+            return response()->json($invoiceItem, 201);
         }
 
         return redirect()->route(
@@ -121,10 +105,7 @@ class InvoiceItemController extends Controller
         InvoiceItem $invoiceItem,
         Request $request
     ): Response {
-        $this->authorize(
-            'view',
-            $invoiceItem
-        );
+        $this->authorize('view', $invoiceItem);
 
         $data = $this->query->getById(
             $request->user(),
@@ -132,10 +113,7 @@ class InvoiceItemController extends Controller
             $invoiceItem->id
         );
 
-        return Inertia::render(
-            'InvoiceItems/Show',
-            $data
-        );
+        return Inertia::render('InvoiceItems/Show', $data);
     }
 
     /**
@@ -148,10 +126,7 @@ class InvoiceItemController extends Controller
         InvoiceItem $invoiceItem,
         Request $request
     ): Response {
-        $this->authorize(
-            'update',
-            $invoiceItem
-        );
+        $this->authorize('update', $invoiceItem);
 
         $data = array_merge(
             $this->query->getById(
@@ -162,10 +137,7 @@ class InvoiceItemController extends Controller
             $this->query->getFormData($invoice)
         );
 
-        return Inertia::render(
-            'InvoiceItems/Edit',
-            $data
-        );
+        return Inertia::render('InvoiceItems/Edit', $data);
     }
 
     /**
@@ -179,15 +151,10 @@ class InvoiceItemController extends Controller
         Invoice $invoice,
         InvoiceItem $invoiceItem
     ): JsonResponse|RedirectResponse {
-        $invoiceItem = $this->management->update(
-            $request,
-            $invoiceItem
-        );
+        $invoiceItem = $this->management->update($request, $invoiceItem);
 
         if ($request->wantsJson()) {
-            return response()->json(
-                $invoiceItem
-            );
+            return response()->json($invoiceItem);
         }
 
         return redirect()->route(
@@ -206,27 +173,15 @@ class InvoiceItemController extends Controller
         Invoice $invoice,
         InvoiceItem $invoiceItem
     ): JsonResponse|RedirectResponse {
-        $this->authorize(
-            'delete',
-            $invoiceItem
-        );
+        $this->authorize('delete', $invoiceItem);
 
-        $this->management->destroy(
-            $invoiceItem,
-            $request->user()
-        );
+        $this->management->destroy($invoiceItem, $request->user());
 
         if (request()->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'invoices.items.index',
-            $invoice->id
-        );
+        return redirect()->route('invoices.items.index', $invoice->id);
     }
 
     /**
@@ -244,28 +199,15 @@ class InvoiceItemController extends Controller
     ): JsonResponse|RedirectResponse {
         $invoiceItem = $invoice->items()->onlyTrashed()->findOrFail($id);
 
-        $this->authorize(
-            'restore',
-            $invoiceItem
-        );
+        $this->authorize('restore', $invoiceItem);
 
-        $this->management->restore(
-            $invoice,
-            $id,
-            $request->user()
-        );
+        $this->management->restore($invoice, $id, $request->user());
 
         if (request()->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'invoices.items.index',
-            $invoice->id
-        );
+        return redirect()->route('invoices.items.index', $invoice->id);
     }
 
     /**
@@ -283,25 +225,15 @@ class InvoiceItemController extends Controller
     ): JsonResponse|RedirectResponse {
         $invoiceItem = $invoice->items()->onlyTrashed()->findOrFail($id);
 
-        $this->authorize(
-            'forceDelete',
-            $invoiceItem
-        );
+        $this->authorize('forceDelete', $invoiceItem);
 
-        $this->management->forceDelete(
-            $invoice,
-            $id,
-            $request->user()
-        );
+        $this->management->forceDelete($invoice, $id, $request->user());
 
         if (request()->wantsJson()) {
             return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'invoices.items.index',
-            $invoice->id
-        );
+        return redirect()->route('invoices.items.index', $invoice->id);
     }
 
     /**
@@ -314,38 +246,22 @@ class InvoiceItemController extends Controller
         Request $request
     ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
-            'ids' => [
-                'required',
-                'array',
-            ],
-            'ids.*' => [
-                'required',
-                'integer',
-                'exists:invoice_items,id',
-            ],
+            'ids' => ['required', 'array'],
+            'ids.*' => ['required', 'integer', 'exists:invoice_items,id'],
         ]);
 
         $this->management->bulkDelete(
             $invoice,
             $validated['ids'],
             $request->user(),
-            fn (InvoiceItem $invoiceItem) => $this->authorize(
-                'delete',
-                $invoiceItem
-            )
+            fn (InvoiceItem $invoiceItem) => $this->authorize('delete', $invoiceItem)
         );
 
         if (request()->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'invoices.items.index',
-            $invoice->id
-        );
+        return redirect()->route('invoices.items.index', $invoice->id);
     }
 
     /**
@@ -359,37 +275,21 @@ class InvoiceItemController extends Controller
         Request $request
     ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
-            'ids' => [
-                'required',
-                'array',
-            ],
-            'ids.*' => [
-                'required',
-                'integer',
-                'exists:invoice_items,id',
-            ],
+            'ids' => ['required', 'array'],
+            'ids.*' => ['required', 'integer', 'exists:invoice_items,id'],
         ]);
 
         $this->management->bulkRestore(
             $invoice,
             $validated['ids'],
             $request->user(),
-            fn (InvoiceItem $invoiceItem) => $this->authorize(
-                'restore',
-                $invoiceItem
-            )
+            fn (InvoiceItem $invoiceItem) => $this->authorize('restore', $invoiceItem)
         );
 
         if ($request->wantsJson()) {
-            return response()->json(
-                null,
-                204
-            );
+            return response()->json(null, 204);
         }
 
-        return redirect()->route(
-            'invoices.items.index',
-            $invoice->id
-        );
+        return redirect()->route('invoices.items.index', $invoice->id);
     }
 }

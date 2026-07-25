@@ -11,7 +11,7 @@ class RecalculateInvoiceTotal
      */
     public function execute(Invoice $invoice): Invoice
     {
-        $invoice->total = $invoice->items()->sum('line_total');
+        $invoice->total = $invoice->items()->sum('total');
         $invoice->save();
 
         return $invoice;
