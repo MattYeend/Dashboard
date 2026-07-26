@@ -26,9 +26,7 @@ class QueryService
         User $actor,
         array $filters = []
     ): array {
-        $query = $this->buildQuery(
-            $filters
-        );
+        $query = $this->buildQuery($filters);
         $paginated = $this->paginate(
             $query,
             min((int) ($filters['per_page'] ?? 15), 100)
@@ -36,9 +34,7 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions(
-                $actor
-            ),
+            $this->getPermissions($actor),
             $this->baseData(),
         );
     }
@@ -57,14 +53,8 @@ class QueryService
         );
 
         return array_merge(
-            [
-                'pipelineStatus' => $this->formatterService->format(
-                    $pipelineStatus
-                ),
-            ],
-            $this->getPermissions(
-                $user
-            ),
+            ['pipelineStatus' => $this->formatterService->format($pipelineStatus)],
+            $this->getPermissions($user),
             $this->baseData(),
         );
     }
@@ -99,9 +89,7 @@ class QueryService
         return [
             'pipelineStatuses' => [
                 'data' => array_map(
-                    fn (PipelineStatus $pipelineStatus) => $this->formatterService->format(
-                        $pipelineStatus
-                    ),
+                    fn (PipelineStatus $pipelineStatus) => $this->formatterService->format($pipelineStatus),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -128,14 +116,8 @@ class QueryService
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can(
-                    'create',
-                    PipelineStatus::class
-                ),
-                'can_view_any' => $user->can(
-                    'viewAny',
-                    PipelineStatus::class
-                ),
+                'can_create' => $user->can('create', PipelineStatus::class),
+                'can_view_any' => $user->can('viewAny',PipelineStatus::class),
             ],
         ];
     }
