@@ -63,8 +63,12 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Tag::query()
-            ->with(['creator', 'updater', 'deleter', 'restorer']);
+        $query = Tag::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
@@ -127,8 +131,12 @@ class QueryService
      */
     private function findTag(int $id, bool $withTrashed = false): Tag
     {
-        $query = Tag::query()
-            ->with(['creator', 'updater', 'deleter', 'restorer']);
+        $query = Tag::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         if ($withTrashed) {
             $query->withTrashed();

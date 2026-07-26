@@ -51,11 +51,7 @@ class RestorerService
                     Log::ACTION_RESTORE_INVOICE_ITEM,
                     $actor,
                     $invoiceItem,
-                    [
-                        'before' => $this->auditLogService->snapshot(
-                            $invoiceItem
-                        ),
-                    ],
+                    ['before' => $this->auditLogService->snapshot($invoiceItem)],
                 );
             }
         );

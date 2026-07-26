@@ -100,6 +100,6 @@ class TaskPolicy
      */
     public function changeStatus(User $user, Task $task): bool
     {
-        return $this->authorisationService->canChangeStatus($user,$task);
+        return $this->authorisationService->canChangeStatus($user, $task);
     }
 }

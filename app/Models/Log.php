@@ -431,6 +431,29 @@ class Log extends Model
 
     public const ACTION_INVOICE_ITEM_UPDATED_BY_CRON = 200;
 
+    // Pipeline Status Management
+    public const ACTION_CREATE_PIPELINE_STATUS = 201;
+
+    public const ACTION_UPDATE_PIPELINE_STATUS = 202;
+
+    public const ACTION_VIEW_PIPELINE_STATUS = 203;
+
+    public const ACTION_DELETE_PIPELINE_STATUS = 204;
+
+    public const ACTION_FORCE_DELETE_PIPELINE_STATUS = 205;
+
+    public const ACTION_RESTORE_PIPELINE_STATUS = 206;
+
+    public const ACTION_IMPORT_PIPELINE_STATUS = 207;
+
+    public const ACTION_EXPORT_PIPELINE_STATUS = 208;
+
+    public const ACTION_PIPELINE_STATUS_UPDATED_BY_CRON = 209;
+
+    public const ACTION_ASSIGN_PIPELINE_STATUS = 210;
+
+    public const ACTION_UNASSIGN_PIPELINE_STATUS = 211;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.

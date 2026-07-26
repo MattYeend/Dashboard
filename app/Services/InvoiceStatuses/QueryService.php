@@ -26,9 +26,7 @@ class QueryService
         User $actor,
         array $filters = []
     ): array {
-        $query = $this->buildQuery(
-            $filters
-        );
+        $query = $this->buildQuery($filters);
         $paginated = $this->paginate(
             $query,
             min((int) ($filters['per_page'] ?? 15), 100)
@@ -36,9 +34,7 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions(
-                $actor
-            ),
+            $this->getPermissions($actor),
             $this->baseData(),
         );
     }
@@ -57,14 +53,8 @@ class QueryService
         );
 
         return array_merge(
-            [
-                'invoiceStatus' => $this->formatterService->format(
-                    $invoiceStatus
-                ),
-            ],
-            $this->getPermissions(
-                $user
-            ),
+            ['invoiceStatus' => $this->formatterService->format($invoiceStatus)],
+            $this->getPermissions($user),
             $this->baseData(),
         );
     }
@@ -99,9 +89,7 @@ class QueryService
         return [
             'invoiceStatuses' => [
                 'data' => array_map(
-                    fn (InvoiceStatus $invoiceStatus) => $this->formatterService->format(
-                        $invoiceStatus
-                    ),
+                    fn (InvoiceStatus $invoiceStatus) => $this->formatterService->format($invoiceStatus),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -128,14 +116,8 @@ class QueryService
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can(
-                    'create',
-                    InvoiceStatus::class
-                ),
-                'can_view_any' => $user->can(
-                    'viewAny',
-                    InvoiceStatus::class
-                ),
+                'can_create' => $user->can('create', InvoiceStatus::class),
+                'can_view_any' => $user->can('viewAny', InvoiceStatus::class),
             ],
         ];
     }

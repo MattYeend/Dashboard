@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Services\InvoiceItems;
+namespace App\Services\PipelineStatuses;
 
-use App\Models\Invoice;
-use App\Models\InvoiceItem;
+use App\Models\PipelineStatus;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,15 +20,13 @@ class QueryService
     ) {}
 
     /**
-     * Get paginated invoice items for a given invoice, with filters.
+     * Get paginated pipeline statuses with filters.
      */
     public function getPaginated(
-        User $user,
-        Invoice $invoice,
+        User $actor,
         array $filters = []
     ): array {
         $query = $this->buildQuery(
-            $invoice,
             $filters
         );
         $paginated = $this->paginate(
@@ -39,56 +36,46 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions($user),
+            $this->getPermissions(
+                $actor
+            ),
             $this->baseData(),
-            $this->getFormData($invoice),
         );
     }
 
     /**
-     * Get a single invoice item by ID, scoped to its parent invoice.
+     * Get a single pipelineStatus by ID.
      */
     public function getById(
         User $user,
-        Invoice $invoice,
         int $id,
         bool $withTrashed = false
     ): array {
-        $invoiceItem = $this->findInvoiceItem(
-            $invoice,
+        $pipelineStatus = $this->findPipelineStatus(
             $id,
             $withTrashed
         );
 
         return array_merge(
-            ['item' => $this->formatterService->format($invoiceItem)],
-            $this->getPermissions($user),
+            [
+                'pipelineStatus' => $this->formatterService->format(
+                    $pipelineStatus
+                ),
+            ],
+            $this->getPermissions(
+                $user
+            ),
             $this->baseData(),
-            $this->getFormData($invoice),
         );
     }
 
     /**
-     * Get data needed to populate create and edit forms.
-     */
-    public function getFormData(Invoice $invoice): array
-    {
-        return [
-            'invoice' => [
-                'id' => $invoice->id,
-                'invoice_number' => $invoice->invoice_number,
-            ],
-        ];
-    }
-
-    /**
-     * Build the base query with filters, scoped to the parent invoice.
+     * Build the base query with filters.
      */
     protected function buildQuery(
-        Invoice $invoice,
         array $filters
     ): Builder {
-        $query = $invoice->items()->getQuery();
+        $query = PipelineStatus::query();
         $query = $this->filterService->applyAll(
             $query,
             $filters
@@ -101,7 +88,7 @@ class QueryService
     }
 
     /**
-     * Paginate the query and return as a plain array.
+     * Paginate the query and return as plain array.
      */
     protected function paginate(
         Builder $query,
@@ -110,9 +97,11 @@ class QueryService
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
-            'invoice_items' => [
+            'pipelineStatuses' => [
                 'data' => array_map(
-                    fn (InvoiceItem $invoiceItem) => $this->formatterService->format($invoiceItem),
+                    fn (PipelineStatus $pipelineStatus) => $this->formatterService->format(
+                        $pipelineStatus
+                    ),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -139,8 +128,14 @@ class QueryService
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can('create', InvoiceItem::class),
-                'can_view_any' => $user->can('viewAny', InvoiceItem::class),
+                'can_create' => $user->can(
+                    'create',
+                    PipelineStatus::class
+                ),
+                'can_view_any' => $user->can(
+                    'viewAny',
+                    PipelineStatus::class
+                ),
             ],
         ];
     }
@@ -157,14 +152,13 @@ class QueryService
     }
 
     /**
-     * Find an invoice item by ID, scoped to its parent invoice.
+     * Find a pipelineStatus by ID with optional trashed records.
      */
-    private function findInvoiceItem(
-        Invoice $invoice,
+    private function findPipelineStatus(
         int $id,
         bool $withTrashed = false
-    ): InvoiceItem {
-        $query = $invoice->items()->getQuery();
+    ): PipelineStatus {
+        $query = PipelineStatus::query();
 
         if ($withTrashed) {
             $query->withTrashed();
@@ -174,7 +168,7 @@ class QueryService
     }
 
     /**
-     * Apply sorting and trash filtering to the query.
+     * Apply sorting to the query.
      */
     private function applySorting(
         Builder $query,
@@ -187,7 +181,7 @@ class QueryService
 
         return $this->sortingService->applySorting(
             $query,
-            $filters['sort_by'] ?? 'position',
+            $filters['sort_by'] ?? 'title',
             $filters['sort_direction'] ?? 'asc'
         );
     }

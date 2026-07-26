@@ -63,7 +63,12 @@ class QueryService
     public function getFormData(): array
     {
         return [
-            'statuses' => TaskStatus::orderBy('title')->get(['id', 'title', 'background_colour', 'text_colour']),
+            'statuses' => TaskStatus::orderBy('title')->get([
+                'id',
+                'title',
+                'background_colour',
+                'text_colour',
+            ]),
             'users' => User::orderBy('name')->get(['id', 'name']),
         ];
     }
@@ -142,7 +147,10 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Task {
-        $query = Task::query()->with(['assignee', 'status']);
+        $query = Task::query()->with([
+            'assignee',
+            'status',
+        ]);
 
         if ($withTrashed) {
             $query->withTrashed();

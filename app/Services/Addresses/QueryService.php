@@ -81,7 +81,13 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Address::query()->with(['addressable', 'creator', 'updater', 'deleter', 'restorer']);
+        $query = Address::query()->with([
+            'addressable',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         $query = $this->filterService->applyAll($query, $filters);
 
@@ -152,7 +158,13 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Address {
-        $query = Address::query()->with(['addressable', 'creator', 'updater', 'deleter', 'restorer']);
+        $query = Address::query()->with([
+            'addressable',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         if ($withTrashed) {
             $query->withTrashed();

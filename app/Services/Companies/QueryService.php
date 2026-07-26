@@ -74,7 +74,14 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Company::query()->with(['creator', 'updater', 'deleter', 'restorer', 'industry', 'accountManager']);
+        $query = Company::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'industry',
+            'accountManager',
+        ]);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
@@ -143,7 +150,14 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Company {
-        $query = Company::query()->with(['creator', 'updater', 'deleter', 'restorer', 'industry', 'accountManager']);
+        $query = Company::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'industry',
+            'accountManager',
+        ]);
 
         if ($withTrashed) {
             $query->withTrashed();
