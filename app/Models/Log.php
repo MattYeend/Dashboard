@@ -438,7 +438,7 @@ class Log extends Model
 
     public const ACTION_VIEW_PIPELINE_STATUS = 203;
 
-    public const ACTION_DELETE_IPIPELINESTATUS = 204;
+    public const ACTION_DELETE_PIPELINE_STATUS = 204;
 
     public const ACTION_FORCE_DELETE_PIPELINE_STATUS = 205;
 
