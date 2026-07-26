@@ -12,6 +12,7 @@ use App\Http\Controllers\InvoiceItemController;
 use App\Http\Controllers\InvoiceStatusController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
+use App\Http\Controllers\PipelineStatusController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegistrationInterestController;
@@ -316,6 +317,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::match(['put', 'patch'], '/{invoiceItem}', [InvoiceItemController::class, 'update'])->name('update');
             Route::delete('/{invoiceItem}', [InvoiceItemController::class, 'destroy'])->name('destroy');
         });
+    });
+
+    Route::prefix('pipeline-statuses')->name('pipeline-statuses.')->group(function () {
+        Route::post('/bulk/delete', [PipelineStatusController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [PipelineStatusController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [PipelineStatusController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [PipelineStatusController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [PipelineStatusController::class, 'index'])->name('index');
+        Route::get('/create', [PipelineStatusController::class, 'create'])->name('create');
+        Route::post('/', [PipelineStatusController::class, 'store'])->name('store');
+        Route::get('/{pipeline_status}', [PipelineStatusController::class, 'show'])->name('show');
+        Route::get('/{pipeline_status}/edit', [PipelineStatusController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{pipeline_status}', [PipelineStatusController::class, 'update'])->name('update');
+        Route::delete('/{pipeline_status}', [PipelineStatusController::class, 'destroy'])->name('destroy');
     });
 });
 
