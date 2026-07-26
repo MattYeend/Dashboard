@@ -123,6 +123,6 @@ class OrderPolicy
      */
     public function changeStatus(User $user, Order $order): bool
     {
-        return $this->authorisationService->canChangeStatus($user,$order);
+        return $this->authorisationService->canChangeStatus($user, $order);
     }
 }

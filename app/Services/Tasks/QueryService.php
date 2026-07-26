@@ -65,9 +65,9 @@ class QueryService
         return [
             'statuses' => TaskStatus::orderBy('title')->get([
                 'id',
-                'title', 
-                'background_colour', 
-                'text_colour'
+                'title',
+                'background_colour',
+                'text_colour',
             ]),
             'users' => User::orderBy('name')->get(['id', 'name']),
         ];
@@ -148,9 +148,9 @@ class QueryService
         bool $withTrashed = false
     ): Task {
         $query = Task::query()->with([
-            'assignee', 
-            'status'
-            ]);
+            'assignee',
+            'status',
+        ]);
 
         if ($withTrashed) {
             $query->withTrashed();

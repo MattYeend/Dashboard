@@ -116,6 +116,6 @@ class InvoicePolicy
      */
     public function assign(User $user, Invoice $invoice): bool
     {
-        return $this->authorisationService->canAssign($user,$invoice);
+        return $this->authorisationService->canAssign($user, $invoice);
     }
 }

@@ -125,7 +125,7 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(User $user): array 
+    protected function getPermissions(User $user): array
     {
         if (! $user) {
             return ['permissions_meta' => []];

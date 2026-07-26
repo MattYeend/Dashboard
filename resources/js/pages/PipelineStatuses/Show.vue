@@ -79,7 +79,9 @@ function destroy(): void {
 
             <div class="space-y-6">
                 <PipelineStatusBasicDetails :pipeline-status="pipelineStatus" />
-                <PipelineStatusColourDetails :pipeline-status="pipelineStatus" />
+                <PipelineStatusColourDetails
+                    :pipeline-status="pipelineStatus"
+                />
                 <PipelineStatusAuditDetails :pipeline-status="pipelineStatus" />
             </div>
         </div>

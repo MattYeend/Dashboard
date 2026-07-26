@@ -75,12 +75,12 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = Company::query()->with([
-            'creator', 
-            'updater', 
-            'deleter', 
-            'restorer', 
-            'industry', 
-            'accountManager'
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'industry',
+            'accountManager',
         ]);
         $query = $this->filterService->applyAll($query, $filters);
 
@@ -151,12 +151,12 @@ class QueryService
         bool $withTrashed = false
     ): Company {
         $query = Company::query()->with([
-            'creator', 
-            'updater', 
-            'deleter', 
-            'restorer', 
-            'industry', 
-            'accountManager'
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'industry',
+            'accountManager',
         ]);
 
         if ($withTrashed) {

@@ -43,7 +43,7 @@ class ActiveCheckerService
     /**
      * Check if pipelineStatus is soft-deleted and can be restored/force-deleted.
      */
-    public function canBeRestoredOrForceDeleted(PipelineStatus $pipelineStatus): bool 
+    public function canBeRestoredOrForceDeleted(PipelineStatus $pipelineStatus): bool
     {
         return $this->isTrashed($pipelineStatus);
     }

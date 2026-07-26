@@ -562,7 +562,7 @@ class RolePermissionSeeder extends Seeder
             'force delete pipeline statuses',
             'import pipeline statuses',
             'export pipeline statuses',
-            'assign pipeline statuses'
+            'assign pipeline statuses',
         ];
         $admin->givePermissionTo($adminPermissions);
 

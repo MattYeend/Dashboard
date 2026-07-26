@@ -72,10 +72,10 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = Plan::query()->with([
-            'creator', 
-            'updater', 
-            'deleter', 
-            'restorer'
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
         ]);
         $query = $this->filterService->applyAll($query, $filters);
 
@@ -146,10 +146,10 @@ class QueryService
         bool $withTrashed = false
     ): Plan {
         $query = Plan::query()->with([
-            'creator', 
-            'updater', 
-            'deleter', 
-            'restorer'
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
         ]);
 
         if ($withTrashed) {

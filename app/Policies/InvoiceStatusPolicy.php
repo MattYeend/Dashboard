@@ -92,6 +92,6 @@ class InvoiceStatusPolicy
      */
     public function assign(User $user, InvoiceStatus $invoiceStatus): bool
     {
-        return $this->authorisationService->canAssign($user,$invoiceStatus);
+        return $this->authorisationService->canAssign($user, $invoiceStatus);
     }
 }

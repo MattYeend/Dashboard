@@ -55,7 +55,7 @@ class QueryService
         );
 
         return array_merge(
-            ['order' => $this->formatterService->format($order),],
+            ['order' => $this->formatterService->format($order)],
             $this->getFormData(),
             $this->getPermissions($user),
             $this->baseData(),
@@ -81,7 +81,7 @@ class QueryService
     /**
      * Get the "owner" options for a given contactable type, for the dependent dropdown on the Create/Edit order form.
      */
-    public function getOrderableOptions(string $type): array 
+    public function getOrderableOptions(string $type): array
     {
         return $this->registry->optionsFor($type);
     }
@@ -143,7 +143,7 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(User $user): array 
+    protected function getPermissions(User $user): array
     {
         if (! $user) {
             return ['permissions_meta' => []];

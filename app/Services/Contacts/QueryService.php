@@ -82,11 +82,11 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = Contact::query()->with([
-            'contactable', 
-            'creator', 
-            'updater', 
-            'deleter', 
-            'restorer'
+            'contactable',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
         ]);
 
         $query = $this->filterService->applyAll($query, $filters);
@@ -159,11 +159,11 @@ class QueryService
         bool $withTrashed = false
     ): Contact {
         $query = Contact::query()->with([
-            'contactable', 
-            'creator', 
-            'updater', 
+            'contactable',
+            'creator',
+            'updater',
             'deleter',
-            'restorer'
+            'restorer',
         ]);
 
         if ($withTrashed) {
