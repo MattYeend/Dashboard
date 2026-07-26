@@ -80,7 +80,7 @@ class TaskStatusController extends Controller
             return response()->json($taskStatus, 201);
         }
 
-        return redirect()->route('task-statuses.index', $taskStatus->id);
+        return redirect()->route('task-statuses.show', $taskStatus->id);
     }
 
     /**
@@ -140,7 +140,7 @@ class TaskStatusController extends Controller
             return response()->json($taskStatus);
         }
 
-        return redirect()->route('task-statuses.index', $taskStatus->id);
+        return redirect()->route('task-statuses.show', $taskStatus->id);
     }
 
     /**

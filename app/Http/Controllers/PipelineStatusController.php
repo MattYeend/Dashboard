@@ -80,7 +80,7 @@ class PipelineStatusController extends Controller
             return response()->json($pipelineStatus, 201);
         }
 
-        return redirect()->route('pipeline-statuses.index', $pipelineStatus->id);
+        return redirect()->route('pipeline-statuses.show', $pipelineStatus->id);
     }
 
     /**
@@ -140,7 +140,7 @@ class PipelineStatusController extends Controller
             return response()->json($pipelineStatus);
         }
 
-        return redirect()->route('pipeline-statuses.index', $pipelineStatus->id);
+        return redirect()->route('pipeline-statuses.show', $pipelineStatus->id);
     }
 
     /**
