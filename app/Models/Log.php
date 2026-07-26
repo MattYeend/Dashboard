@@ -454,6 +454,33 @@ class Log extends Model
 
     public const ACTION_UNASSIGN_PIPELINE_STATUS = 211;
 
+    // Pipeline Management
+    public const ACTION_CREATE_PIPELINE = 212;
+
+    public const ACTION_UPDATE_PIPELINE = 213;
+
+    public const ACTION_VIEW_PIPELINE = 214;
+
+    public const ACTION_DELETE_PIPELINE = 215;
+
+    public const ACTION_FORCE_DELETE_PIPELINE = 216;
+
+    public const ACTION_RESTORE_PIPELINE = 217;
+
+    public const ACTION_IMPORT_PIPELINE = 218;
+
+    public const ACTION_EXPORT_PIPELINE = 219;
+
+    public const ACTION_PIPELINE_UPDATED_BY_CRON = 220;
+
+    public const ACTION_ASSIGN_PIPELINE = 221;
+
+    public const ACTION_UNASSIGN_PIPELINE = 222;
+
+    public const ACTION_CHANGE_PIPELINE_STATUS = 223;
+
+    // New Logging Actions should go here to be reviewed
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.

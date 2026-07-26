@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             InvoiceSeeder::class,
             InvoiceItemSeeder::class,
             PipelineStatusSeeder::class,
+            PipelineSeeder::class,
         ]);
     }
 }
