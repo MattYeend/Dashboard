@@ -66,7 +66,7 @@ class PipelineStatusController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * Validation is handled upstream by StoreInvoiceStatusRequest.
+     * Validation is handled upstream by StorePipelineStatusRequest.
      *
      * After storing, an audit log entry is written against the
      * authenticated user.
@@ -121,7 +121,7 @@ class PipelineStatusController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * Validation is handled upstream by UpdateInvoiceStatusRequest, which also
+     * Validation is handled upstream by UpdatePipelineStatusRequest, which also
      * implicitly authorises the operation via its authorize() method.
      *
      * After updating, an audit log entry is written against the authenticated
