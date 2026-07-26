@@ -52,8 +52,7 @@ defineProps<{
                                 backgroundColor:
                                     pipeline.status.background_colour ??
                                     '#e2e8f0',
-                                color:
-                                    pipeline.status.text_colour ?? '#1a202c',
+                                color: pipeline.status.text_colour ?? '#1a202c',
                             }"
                             class="rounded px-2 py-0.5 text-xs font-medium"
                         >

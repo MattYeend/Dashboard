@@ -62,7 +62,7 @@ class QueryService
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(array $filters): Builder 
+    protected function buildQuery(array $filters): Builder
     {
         $query = Pipeline::query();
         $query = $this->filterService->applyAll(
