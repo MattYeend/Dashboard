@@ -53,7 +53,7 @@ class PolicyAuthorisationService
      */
     public function canViewAny(User $actor): bool
     {
-        return $actor->can('view pipelines');
+        return $actor->can('view any pipeline');
     }
 
     /**
@@ -61,7 +61,7 @@ class PolicyAuthorisationService
      */
     public function canCreate(User $actor): bool
     {
-        return $actor->can('create pipelines');
+        return $actor->can('create pipeline');
     }
 
     /**
@@ -73,7 +73,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view pipelines')
+        return $actor->can('view pipeline')
             && $this->activeChecker->isActive($target);
     }
 
@@ -86,7 +86,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit pipelines')
+        return $actor->can('edit pipeline')
             && $this->activeChecker->isActive($target);
     }
 
@@ -99,7 +99,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete pipelines')
+        return $actor->can('delete pipeline')
             && $this->activeChecker->canBeModified($target);
     }
 
@@ -112,7 +112,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('restore pipelines')
+        return $actor->can('restore pipeline')
             && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
@@ -137,7 +137,7 @@ class PolicyAuthorisationService
      */
     public function canImport(User $actor): bool
     {
-        return $actor->can('import pipelines');
+        return $actor->can('import pipeline');
     }
 
     /**
@@ -145,7 +145,7 @@ class PolicyAuthorisationService
      */
     public function canExport(User $actor): bool
     {
-        return $actor->can('export pipelines');
+        return $actor->can('export pipeline');
     }
 
     /**

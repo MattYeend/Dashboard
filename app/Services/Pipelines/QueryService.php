@@ -26,9 +26,7 @@ class QueryService
         User $actor,
         array $filters = []
     ): array {
-        $query = $this->buildQuery(
-            $filters
-        );
+        $query = $this->buildQuery($filters);
         $paginated = $this->paginate(
             $query,
             min((int) ($filters['per_page'] ?? 15), 100)
@@ -64,9 +62,8 @@ class QueryService
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(
-        array $filters
-    ): Builder {
+    protected function buildQuery(array $filters): Builder 
+    {
         $query = Pipeline::query();
         $query = $this->filterService->applyAll(
             $query,
@@ -89,7 +86,7 @@ class QueryService
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
-            'pipelineStatuses' => [
+            'pipelines' => [
                 'data' => array_map(
                     fn (Pipeline $pipeline) => $this->formatterService->format($pipeline),
                     $paginator->items()
