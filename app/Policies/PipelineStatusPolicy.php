@@ -4,62 +4,70 @@ namespace App\Policies;
 
 use App\Models\PipelineStatus;
 use App\Models\User;
+use App\Services\PipelineStatuses\PolicyAuthorisationService;
 
 class PipelineStatusPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected readonly PolicyAuthorisationService $authorisation
+    ) {}
+
+    /**
+     * Determine whether the user can view any pipeline statuses.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisation->canViewAny($user);
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can view the pipeline status.
      */
     public function view(User $user, PipelineStatus $pipelineStatus): bool
     {
-        return false;
+        return $this->authorisation->canView($user, $pipelineStatus);
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create pipeline statuses.
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisation->canCreate($user);
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can update the pipeline status.
      */
     public function update(User $user, PipelineStatus $pipelineStatus): bool
     {
-        return false;
+        return $this->authorisation->canUpdate($user, $pipelineStatus);
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete the pipeline status.
      */
     public function delete(User $user, PipelineStatus $pipelineStatus): bool
     {
-        return false;
+        return $this->authorisation->canDelete($user, $pipelineStatus);
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can restore the pipeline status.
      */
     public function restore(User $user, PipelineStatus $pipelineStatus): bool
     {
-        return false;
+        return $this->authorisation->canRestore($user, $pipelineStatus);
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can permanently delete the pipeline status.
      */
     public function forceDelete(User $user, PipelineStatus $pipelineStatus): bool
     {
-        return false;
+        return $this->authorisation->canForceDelete($user, $pipelineStatus);
     }
 }
