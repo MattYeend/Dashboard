@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Invoice\GenerateInvoicePdf;
 use App\Http\Requests\Invoices\StoreInvoiceRequest;
 use App\Http\Requests\Invoices\UpdateInvoiceRequest;
 use App\Models\Invoice;
@@ -11,8 +12,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Inertia\Inertia;
-use Inertia\Response;
+use Inertia\Response as InertiaResponse;
 
 class InvoiceController extends Controller
 {
@@ -33,7 +35,7 @@ class InvoiceController extends Controller
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Request $request): Response
+    public function index(Request $request): InertiaResponse
     {
         $this->authorize('viewAny', Invoice::class);
 
@@ -56,7 +58,7 @@ class InvoiceController extends Controller
      *
      * Authorises via the 'create' policy before rendering.
      */
-    public function create(): Response
+    public function create(): InertiaResponse
     {
         $this->authorize('create', Invoice::class);
 
@@ -94,7 +96,7 @@ class InvoiceController extends Controller
     public function show(
         Invoice $invoice,
         Request $request
-    ): Response {
+    ): InertiaResponse {
         $this->authorize('view', $invoice);
 
         $data = $this->query->getById(
@@ -113,7 +115,7 @@ class InvoiceController extends Controller
     public function edit(
         Invoice $invoice,
         Request $request
-    ): Response {
+    ): InertiaResponse {
         $this->authorize('update', $invoice);
 
         $data = array_merge(
@@ -290,12 +292,10 @@ class InvoiceController extends Controller
     /**
      * Mark the specified invoice as sent.
      *
-     * Sets status_id to 'Sent' and records sent_at.
+     * Sets status_id to 'Sent', records sent_at, and emails the invoice
+     * PDF to the customer.
      *
-     * TODO: dispatch the invoice email/PDF once invoice items are
-     * complete - this currently only updates status and timestamp.
-     *
-     * Authorises via the 'update' policy before proceeding.
+     * Authorises via the 'send' policy before proceeding.
      */
     public function send(
         Invoice $invoice,
@@ -354,5 +354,20 @@ class InvoiceController extends Controller
         }
 
         return redirect()->route('invoices.show', $invoice->id);
+    }
+
+    /**
+     * Download the invoice as a PDF.
+     *
+     * Authorises via the 'view' policy before proceeding.
+     */
+    public function downloadPdf(
+        Invoice $invoice,
+        GenerateInvoicePdf $generateInvoicePdf
+    ): Response {
+        $this->authorize('view', $invoice);
+
+        return $generateInvoicePdf->execute($invoice)
+            ->download('invoice-' . ($invoice->invoice_number ?? $invoice->id) . '.pdf');
     }
 }

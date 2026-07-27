@@ -293,6 +293,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{invoice}/send', [InvoiceController::class, 'send'])->name('send');
         Route::post('/{invoice}/mark-as-paid', [InvoiceController::class, 'markAsPaid'])->name('mark-as-paid');
         Route::post('/{invoice}/mark-as-unpaid', [InvoiceController::class, 'markAsUnpaid'])->name('mark-as-unpaid');
+        Route::get('/{invoice}/pdf', [InvoiceController::class, 'downloadPdf'])->name('pdf');
 
         Route::get('/', [InvoiceController::class, 'index'])->name('index');
         Route::get('/create', [InvoiceController::class, 'create'])->name('create');
