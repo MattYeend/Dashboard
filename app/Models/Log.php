@@ -479,6 +479,31 @@ class Log extends Model
 
     public const ACTION_CHANGE_PIPELINE_STATUS = 223;
 
+    // Pipeline Stage Management
+    public const ACTION_CREATE_PIPELINE_STAGE = 224;
+
+    public const ACTION_UPDATE_PIPELINE_STAGE = 225;
+
+    public const ACTION_VIEW_PIPELINE_STAGE = 226;
+
+    public const ACTION_DELETE_PIPELINE_STAGE = 227;
+
+    public const ACTION_FORCE_DELETE_PIPELINE_STAGE = 228;
+
+    public const ACTION_RESTORE_PIPELINE_STAGE = 229;
+
+    public const ACTION_IMPORT_PIPELINE_STAGE = 230;
+
+    public const ACTION_EXPORT_PIPELINE_STAGE = 231;
+
+    public const ACTION_PIPELINE_STAGE_UPDATED_BY_CRON = 232;
+
+    public const ACTION_ASSIGN_PIPELINE_STAGE = 233;
+
+    public const ACTION_UNASSIGN_PIPELINE_STAGE = 234;
+
+    public const ACTION_REORDER_PIPELINE_STAGE = 235;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
