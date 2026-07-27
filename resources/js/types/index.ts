@@ -500,6 +500,33 @@ export interface PipelineStatus {
     restorer?: { name: string };
 }
 
+export interface Pipeline {
+    id: number;
+    title: string;
+    description: string | null;
+    is_default: boolean;
+    status_id: number | null;
+    meta: Record<string, unknown> | null;
+    created_by: number | null;
+    updated_by: number | null;
+    deleted_by: number | null;
+    restored_by: number | null;
+    restored_at: string | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    status?: {
+        id: number;
+        title: string;
+        background_colour: string | null;
+        text_colour: string | null;
+    } | null;
+    creator?: { name: string };
+    updater?: { name: string };
+    deleter?: { name: string };
+    restorer?: { name: string };
+}
+
 export interface PermissionsMeta {
     can_create: boolean;
     can_view_any: boolean;

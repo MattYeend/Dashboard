@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\PipelineStatuses;
+namespace App\Services\Pipelines;
 
-use App\Models\PipelineStatus;
+use App\Models\Pipeline;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,20 +40,20 @@ class QueryService
     }
 
     /**
-     * Get a single pipelineStatus by ID.
+     * Get a single pipeline by ID.
      */
     public function getById(
         User $user,
         int $id,
         bool $withTrashed = false
     ): array {
-        $pipelineStatus = $this->findPipelineStatus(
+        $pipeline = $this->findPipelineStatus(
             $id,
             $withTrashed
         );
 
         return array_merge(
-            ['pipelineStatus' => $this->formatterService->format($pipelineStatus)],
+            ['pipeline' => $this->formatterService->format($pipeline)],
             $this->getPermissions($user),
             $this->baseData(),
         );
@@ -62,10 +62,9 @@ class QueryService
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(
-        array $filters
-    ): Builder {
-        $query = PipelineStatus::query();
+    protected function buildQuery(array $filters): Builder
+    {
+        $query = Pipeline::query();
         $query = $this->filterService->applyAll(
             $query,
             $filters
@@ -87,9 +86,9 @@ class QueryService
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
-            'pipelineStatuses' => [
+            'pipelines' => [
                 'data' => array_map(
-                    fn (PipelineStatus $pipelineStatus) => $this->formatterService->format($pipelineStatus),
+                    fn (Pipeline $pipeline) => $this->formatterService->format($pipeline),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -116,8 +115,8 @@ class QueryService
 
         return [
             'permissions_meta' => [
-                'can_create' => $user->can('create', PipelineStatus::class),
-                'can_view_any' => $user->can('viewAny', PipelineStatus::class),
+                'can_create' => $user->can('create', Pipeline::class),
+                'can_view_any' => $user->can('viewAny', Pipeline::class),
             ],
         ];
     }
@@ -134,13 +133,13 @@ class QueryService
     }
 
     /**
-     * Find a pipelineStatus by ID with optional trashed records.
+     * Find a pipeline by ID with optional trashed records.
      */
     private function findPipelineStatus(
         int $id,
         bool $withTrashed = false
-    ): PipelineStatus {
-        $query = PipelineStatus::query();
+    ): Pipeline {
+        $query = Pipeline::query();
 
         if ($withTrashed) {
             $query->withTrashed();

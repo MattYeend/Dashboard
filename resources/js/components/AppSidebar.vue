@@ -14,6 +14,7 @@ import {
     SquareCheckBig,
     User2,
     UserPlus,
+    Workflow,
 } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
@@ -39,6 +40,8 @@ import { index as invoiceStatusesIndex } from '@/routes/invoice-statuses';
 import { index as invoicesIndex } from '@/routes/invoices';
 import { index as orderStatusesIndex } from '@/routes/order-statuses';
 import { index as ordersIndex } from '@/routes/orders';
+import { index as pipelineStatusesIndex } from '@/routes/pipeline-statuses';
+import { index as pipelinesIndex } from '@/routes/pipelines';
 import { index as plansIndex } from '@/routes/plans';
 import { index as postsIndex } from '@/routes/posts';
 import { index as registrationInterestsIndex } from '@/routes/registration-interests';
@@ -111,6 +114,21 @@ const mainNavItems: NavItem[] = [
             {
                 title: 'Invoice Statuses',
                 href: invoiceStatusesIndex.url(),
+            },
+        ],
+    },
+    {
+        title: 'Pipelines',
+        href: '#',
+        icon: Workflow,
+        children: [
+            {
+                title: 'All Pipelines',
+                href: pipelinesIndex.url(),
+            },
+            {
+                title: 'Pipeline Statuses',
+                href: pipelineStatusesIndex.url(),
             },
         ],
     },

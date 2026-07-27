@@ -80,7 +80,7 @@ class InvoiceStatusController extends Controller
             return response()->json($invoiceStatus, 201);
         }
 
-        return redirect()->route('invoice-statuses.index', $invoiceStatus->id);
+        return redirect()->route('invoice-statuses.show', $invoiceStatus->id);
     }
 
     /**
@@ -140,7 +140,7 @@ class InvoiceStatusController extends Controller
             return response()->json($invoiceStatus);
         }
 
-        return redirect()->route('invoice-statuses.index', $invoiceStatus->id);
+        return redirect()->route('invoice-statuses.show', $invoiceStatus->id);
     }
 
     /**

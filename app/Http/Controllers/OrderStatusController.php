@@ -80,7 +80,7 @@ class OrderStatusController extends Controller
             return response()->json($orderStatus, 201);
         }
 
-        return redirect()->route('order-statuses.index', $orderStatus->id);
+        return redirect()->route('order-statuses.show', $orderStatus->id);
     }
 
     /**
@@ -140,7 +140,7 @@ class OrderStatusController extends Controller
             return response()->json($orderStatus);
         }
 
-        return redirect()->route('order-statuses.index', $orderStatus->id);
+        return redirect()->route('order-statuses.show', $orderStatus->id);
     }
 
     /**
