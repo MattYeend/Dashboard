@@ -2,6 +2,8 @@
 
 namespace App\Services\Invoices;
 
+use App\Actions\Invoice\MarkInvoiceAsPaid;
+use App\Actions\Invoice\SendInvoiceToCustomer;
 use App\Actions\UpdateResource;
 use App\Models\Invoice;
 use App\Models\InvoiceStatus;
@@ -18,6 +20,8 @@ class UpdaterService
         protected readonly DataPreparationService $dataPreparation,
         protected readonly AuditLogService $auditLogService,
         protected readonly UpdateResource $updateResource,
+        protected readonly MarkInvoiceAsPaid $markInvoiceAsPaid,
+        protected readonly SendInvoiceToCustomer $sendInvoiceToCustomer,
     ) {}
 
     /**
@@ -65,10 +69,8 @@ class UpdaterService
     /**
      * Mark an invoice as sent.
      *
-     * Sets status_id to the 'Sent' status and records sent_at.
-     *
-     * TODO: dispatch the invoice email/PDF here once invoice items
-     * are complete - this currently only updates status and timestamp.
+     * Sets status_id to the 'Sent' status, records sent_at, and emails
+     * the invoice PDF to the customer.
      */
     public function markAsSent(Invoice $invoice, int $actorId): Invoice
     {
@@ -84,6 +86,8 @@ class UpdaterService
         ]);
 
         $fresh = $invoice->fresh();
+
+        $this->sendInvoiceToCustomer->execute($fresh);
 
         $this->auditLogService->record(
             Log::ACTION_SEND_INVOICE,
@@ -105,15 +109,7 @@ class UpdaterService
         $actor = User::findOrFail($actorId);
         $before = $this->auditLogService->snapshot($invoice);
 
-        $status = InvoiceStatus::where('title', 'Paid')->first();
-
-        $invoice->update([
-            'status_id' => $status?->id,
-            'paid_at' => now(),
-            'updated_by' => $actorId,
-        ]);
-
-        $fresh = $invoice->fresh();
+        $fresh = $this->markInvoiceAsPaid->execute($invoice, $actorId);
 
         $this->auditLogService->record(
             Log::ACTION_MARK_INVOICE_PAID,
