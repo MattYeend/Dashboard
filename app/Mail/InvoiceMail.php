@@ -28,7 +28,7 @@ class InvoiceMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Invoice ' . ($this->invoice->invoice_number ?? '#' . $this->invoice->id),
+            subject: 'Invoice '.($this->invoice->invoice_number ?? '#'.$this->invoice->id),
         );
     }
 
@@ -52,7 +52,7 @@ class InvoiceMail extends Mailable
         return [
             Attachment::fromData(
                 fn () => $this->pdfContent,
-                'invoice-' . ($this->invoice->invoice_number ?? $this->invoice->id) . '.pdf'
+                'invoice-'.($this->invoice->invoice_number ?? $this->invoice->id).'.pdf'
             )->withMime('application/pdf'),
         ];
     }

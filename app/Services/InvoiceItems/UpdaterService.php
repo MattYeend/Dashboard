@@ -2,7 +2,7 @@
 
 namespace App\Services\InvoiceItems;
 
-use App\Actions\RecalculateInvoiceTotal;
+use App\Actions\Invoice\RecalculateInvoiceTotal;
 use App\Actions\UpdateResource;
 use App\Models\InvoiceItem;
 use App\Models\Log;

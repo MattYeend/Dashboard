@@ -368,6 +368,6 @@ class InvoiceController extends Controller
         $this->authorize('view', $invoice);
 
         return $generateInvoicePdf->execute($invoice)
-            ->download('invoice-' . ($invoice->invoice_number ?? $invoice->id) . '.pdf');
+            ->download('invoice-'.($invoice->invoice_number ?? $invoice->id).'.pdf');
     }
 }

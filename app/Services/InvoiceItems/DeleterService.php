@@ -3,7 +3,7 @@
 namespace App\Services\InvoiceItems;
 
 use App\Actions\DeleteResource;
-use App\Actions\RecalculateInvoiceTotal;
+use App\Actions\Invoice\RecalculateInvoiceTotal;
 use App\Models\InvoiceItem;
 use App\Models\Log;
 use App\Models\User;
