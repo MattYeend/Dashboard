@@ -20,7 +20,7 @@ class QueryService
     ) {}
 
     /**
-     * Get paginated pipeline statuses with filters.
+     * Get paginated pipeline with filters.
      */
     public function getPaginated(
         User $actor,
@@ -47,7 +47,7 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): array {
-        $pipeline = $this->findPipelineStatus(
+        $pipeline = $this->findPipeline(
             $id,
             $withTrashed
         );
@@ -64,7 +64,7 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Pipeline::query();
+        $query = Pipeline::query()->with('status', 'creator', 'updater', 'deleter', 'restorer')->withCount('stages');
         $query = $this->filterService->applyAll(
             $query,
             $filters
@@ -135,11 +135,11 @@ class QueryService
     /**
      * Find a pipeline by ID with optional trashed records.
      */
-    private function findPipelineStatus(
+    private function findPipeline(
         int $id,
         bool $withTrashed = false
     ): Pipeline {
-        $query = Pipeline::query();
+        $query = Pipeline::query()->with('status', 'stages', 'creator', 'updater', 'deleter', 'restorer');
 
         if ($withTrashed) {
             $query->withTrashed();

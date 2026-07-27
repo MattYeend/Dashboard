@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -61,6 +62,16 @@ class Pipeline extends Model implements Auditable
     public function status(): BelongsTo
     {
         return $this->belongsTo(PipelineStatus::class, 'status_id');
+    }
+
+    /**
+     * Get the stages that belong to this pipeline, ordered by position.
+     *
+     * @return HasMany<PipelineStage, $this>
+     */
+    public function stages(): HasMany
+    {
+        return $this->hasMany(PipelineStage::class)->orderBy('position');
     }
 
     /**

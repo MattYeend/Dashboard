@@ -13,6 +13,7 @@ use App\Http\Controllers\InvoiceStatusController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PipelineController;
+use App\Http\Controllers\PipelineStageController;
 use App\Http\Controllers\PipelineStatusController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
@@ -348,6 +349,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{pipeline}/edit', [PipelineController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{pipeline}', [PipelineController::class, 'update'])->name('update');
         Route::delete('/{pipeline}', [PipelineController::class, 'destroy'])->name('destroy');
+
+        Route::prefix('/{pipeline}/stages')->name('stages.')->group(function () {
+            Route::post('/bulk/delete', [PipelineStageController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [PipelineStageController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [PipelineStageController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [PipelineStageController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/', [PipelineStageController::class, 'index'])->name('index');
+            Route::get('/create', [PipelineStageController::class, 'create'])->name('create');
+            Route::post('/', [PipelineStageController::class, 'store'])->name('store');
+            Route::get('/{stage}', [PipelineStageController::class, 'show'])->name('show');
+            Route::get('/{stage}/edit', [PipelineStageController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{stage}', [PipelineStageController::class, 'update'])->name('update');
+            Route::delete('/{stage}', [PipelineStageController::class, 'destroy'])->name('destroy');
+        });
     });
 });
 
