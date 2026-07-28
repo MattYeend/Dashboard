@@ -7,28 +7,29 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import { show as invoicesShow } from '@/routes/invoices';
+import { Button } from '@/components/ui/button';
+import { show as pipelinesShow } from '@/routes/pipelines';
 import {
-    index as invoiceItemsIndex,
-    create as invoiceItemsCreate,
-    show as invoiceItemsShow,
-    edit as invoiceItemsEdit,
-    destroy as invoiceItemsDestroy,
-    restore as invoiceItemsRestore,
-    forceDelete as invoiceItemsForceDelete,
-} from '@/routes/invoices/items';
-import invoiceItemsBulk from '@/routes/invoices/items/bulk';
+    index as pipelineStagesIndex,
+    create as pipelineStagesCreate,
+    show as pipelineStagesShow,
+    edit as pipelineStagesEdit,
+    destroy as pipelineStagesDestroy,
+    restore as pipelineStagesRestore,
+    forceDelete as pipelineStagesForceDelete,
+} from '@/routes/pipelines/stages';
+import pipelineStagesBulk from '@/routes/pipelines/stages/bulk';
 import type {
-    Invoice,
-    InvoiceItem,
+    Pipeline,
+    PipelineStage,
     Pagination as PaginationMeta,
     PermissionsMeta,
 } from '@/types';
 
 interface Props {
-    invoice: Invoice;
-    invoice_items: {
-        data: InvoiceItem[];
+    pipeline: Pipeline;
+    pipeline_stages: {
+        data: PipelineStage[];
         links: Array<{ url: string | null; label: string; active: boolean }>;
         meta: PaginationMeta;
     };
@@ -51,7 +52,7 @@ const filters = ref({
 const selectedIds = ref<Array<number | string>>([]);
 
 const deleteDialogOpen = ref(false);
-const selectedItemId = ref<number | null>(null);
+const selectedStageId = ref<number | null>(null);
 const deleteProcessing = ref(false);
 
 const bulkDeleteDialogOpen = ref(false);
@@ -71,18 +72,17 @@ const pendingBulkRestoreIds = ref<Array<number | string>>([]);
 const bulkRestoreProcessing = ref(false);
 
 const columns: ResourceTableColumn[] = [
-    { key: 'description', label: 'Description' },
-    { key: 'quantity', label: 'Quantity' },
-    { key: 'unit_price', label: 'Unit Price' },
-    { key: 'tax_rate', label: 'Tax Rate' },
-    { key: 'total', label: 'Total' },
+    { key: 'position', label: 'Position' },
+    { key: 'title', label: 'Title' },
+    { key: 'is_won', label: 'Won' },
+    { key: 'is_lost', label: 'Lost' },
 ];
 
 const filterFields = [
     {
         key: 'search',
         type: 'text' as const,
-        placeholder: 'Search items…',
+        placeholder: 'Search stages…',
     },
     {
         key: 'trashed',
@@ -118,7 +118,7 @@ const filterFields = [
 
 function applyFilters(): void {
     router.get(
-        invoiceItemsIndex.url({ invoice: props.invoice.id }),
+        pipelineStagesIndex.url({ pipeline: props.pipeline.id }),
         filters.value,
         {
             preserveState: true,
@@ -128,28 +128,28 @@ function applyFilters(): void {
 }
 
 function requestDestroy(id: number): void {
-    selectedItemId.value = id;
+    selectedStageId.value = id;
     deleteDialogOpen.value = true;
 }
 
 function destroy(): void {
-    if (selectedItemId.value === null) {
+    if (selectedStageId.value === null) {
         return;
     }
 
     deleteProcessing.value = true;
 
     router.delete(
-        invoiceItemsDestroy.url({
-            invoice: props.invoice.id,
-            invoiceItem: selectedItemId.value,
+        pipelineStagesDestroy.url({
+            pipeline: props.pipeline.id,
+            stage: selectedStageId.value,
         }),
         {
             preserveScroll: true,
             onFinish: () => {
                 deleteProcessing.value = false;
                 deleteDialogOpen.value = false;
-                selectedItemId.value = null;
+                selectedStageId.value = null;
             },
         },
     );
@@ -172,7 +172,7 @@ function bulkDelete(): void {
     bulkDeleteProcessing.value = true;
 
     router.post(
-        invoiceItemsBulk.delete.url({ invoice: props.invoice.id }),
+        pipelineStagesBulk.delete.url({ pipeline: props.pipeline.id }),
         { ids: pendingBulkIds.value },
         {
             preserveScroll: true,
@@ -201,8 +201,8 @@ function restore(): void {
     restoreProcessing.value = true;
 
     router.post(
-        invoiceItemsRestore.url({
-            invoice: props.invoice.id,
+        pipelineStagesRestore.url({
+            pipeline: props.pipeline.id,
             id: selectedRestoreId.value,
         }),
         {},
@@ -230,8 +230,8 @@ function forceDelete(): void {
     forceDeleteProcessing.value = true;
 
     router.delete(
-        invoiceItemsForceDelete.url({
-            invoice: props.invoice.id,
+        pipelineStagesForceDelete.url({
+            pipeline: props.pipeline.id,
             id: selectedForceDeleteId.value,
         }),
         {
@@ -262,7 +262,7 @@ function bulkRestore(): void {
     bulkRestoreProcessing.value = true;
 
     router.post(
-        invoiceItemsBulk.restore.url({ invoice: props.invoice.id }),
+        pipelineStagesBulk.restore.url({ pipeline: props.pipeline.id }),
         { ids: pendingBulkRestoreIds.value },
         {
             preserveScroll: true,
@@ -277,13 +277,6 @@ function bulkRestore(): void {
         },
     );
 }
-
-function formatMoney(pence: number): string {
-    return new Intl.NumberFormat('en-GB', {
-        style: 'currency',
-        currency: 'GBP',
-    }).format(pence / 100);
-}
 </script>
 
 <template>
@@ -291,17 +284,17 @@ function formatMoney(pence: number): string {
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="mb-2">
                 <Link
-                    :href="invoicesShow.url(invoice.id)"
+                    :href="pipelinesShow.url(pipeline.id)"
                     class="text-sm text-gray-400 hover:text-gray-300"
                 >
-                    &larr; Back to {{ invoice.invoice_number }}
+                    &larr; Back to {{ pipeline.title }}
                 </Link>
             </div>
 
             <IndexHeader
-                :title="`Items - ${invoice.invoice_number}`"
-                :create-href="invoiceItemsCreate.url({ invoice: invoice.id })"
-                create-label="Add Item"
+                :title="`Stages - ${pipeline.title}`"
+                :create-href="pipelineStagesCreate.url({ pipeline: pipeline.id })"
+                create-label="Add Stage"
                 :can-create="permissions_meta.can_create"
             />
 
@@ -313,55 +306,57 @@ function formatMoney(pence: number): string {
 
             <ResourceTable
                 v-model:selected="selectedIds"
-                :rows="invoice_items.data"
+                :rows="pipeline_stages.data"
                 :columns="columns"
                 row-key="id"
                 selectable
-                empty-message="No invoice items found."
+                empty-message="No pipeline stages found."
             >
                 <template #bulk-actions="{ selected }">
-                    <button
+                    <Button
                         v-if="filters.trashed !== 'only'"
-                        type="button"
-                        class="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-500"
+                        variant="destructive"
+                        size="sm"
                         @click="requestBulkDelete(selected)"
                     >
                         Delete selected
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         v-else
-                        type="button"
-                        class="rounded-md px-3 py-1.5 text-sm font-medium"
+                        variant="outline"
+                        size="sm"
                         @click="requestBulkRestore(selected)"
                     >
                         Restore selected
-                    </button>
+                    </Button>
                 </template>
 
-                <template #cell-description="{ row }">
-                    <span class="font-medium text-gray-300">
-                        {{ row.description }}
+                <template #cell-title="{ row }">
+                    <span
+                        class="inline-block rounded px-2 py-1 text-sm font-medium"
+                        :style="{
+                            backgroundColor: row.background_colour,
+                            color: row.text_colour,
+                        }"
+                    >
+                        {{ row.title }}
                     </span>
                 </template>
 
-                <template #cell-unit_price="{ row }">
-                    {{ formatMoney(row.unit_price) }}
+                <template #cell-is_won="{ row }">
+                    {{ row.is_won ? 'Yes' : 'No' }}
                 </template>
 
-                <template #cell-tax_rate="{ row }">
-                    {{ row.tax_rate }}%
-                </template>
-
-                <template #cell-total="{ row }">
-                    {{ formatMoney(row.total) }}
+                <template #cell-is_lost="{ row }">
+                    {{ row.is_lost ? 'Yes' : 'No' }}
                 </template>
 
                 <template #actions="{ row }">
                     <Link
                         :href="
-                            invoiceItemsShow.url({
-                                invoice: invoice.id,
-                                invoiceItem: row.id,
+                            pipelineStagesShow.url({
+                                pipeline: pipeline.id,
+                                stage: row.id,
                             })
                         "
                     >
@@ -370,9 +365,9 @@ function formatMoney(pence: number): string {
                     <template v-if="!row.deleted_at">
                         <Link
                             :href="
-                                invoiceItemsEdit.url({
-                                    invoice: invoice.id,
-                                    invoiceItem: row.id,
+                                pipelineStagesEdit.url({
+                                    pipeline: pipeline.id,
+                                    stage: row.id,
                                 })
                             "
                         >
@@ -387,10 +382,7 @@ function formatMoney(pence: number): string {
                         </button>
                     </template>
                     <template v-else>
-                        <button
-                            type="button"
-                            @click="requestRestore(row.id)"
-                        >
+                        <button type="button" @click="requestRestore(row.id)">
                             Restore
                         </button>
                         <button
@@ -405,16 +397,16 @@ function formatMoney(pence: number): string {
             </ResourceTable>
 
             <Pagination
-                :meta="invoice_items.meta"
-                :links="invoice_items.links"
-                resource-label="items"
+                :meta="pipeline_stages.meta"
+                :links="pipeline_stages.links"
+                resource-label="stages"
             />
         </div>
 
         <ConfirmDialog
             v-model:open="deleteDialogOpen"
-            title="Delete invoice item"
-            description="This invoice item will be moved to trash."
+            title="Delete pipeline stage"
+            description="This pipeline stage will be moved to trash."
             confirm-label="Delete"
             :processing="deleteProcessing"
             @confirm="destroy"
@@ -422,8 +414,8 @@ function formatMoney(pence: number): string {
 
         <ConfirmDialog
             v-model:open="bulkDeleteDialogOpen"
-            title="Delete invoice items"
-            :description="`${pendingBulkIds.length} item(s) will be moved to trash.`"
+            title="Delete pipeline stages"
+            :description="`${pendingBulkIds.length} stage(s) will be moved to trash.`"
             confirm-label="Delete"
             :processing="bulkDeleteProcessing"
             @confirm="bulkDelete"
@@ -431,8 +423,8 @@ function formatMoney(pence: number): string {
 
         <ConfirmDialog
             v-model:open="restoreDialogOpen"
-            title="Restore invoice item"
-            description="This invoice item will be restored from trash."
+            title="Restore pipeline stage"
+            description="This pipeline stage will be restored from trash."
             confirm-label="Restore"
             :processing="restoreProcessing"
             @confirm="restore"
@@ -440,8 +432,8 @@ function formatMoney(pence: number): string {
 
         <ConfirmDialog
             v-model:open="forceDeleteDialogOpen"
-            title="Permanently delete invoice item"
-            description="This cannot be undone. The invoice item will be permanently removed."
+            title="Permanently delete pipeline stage"
+            description="This cannot be undone. The pipeline stage will be permanently removed."
             confirm-label="Delete permanently"
             :processing="forceDeleteProcessing"
             @confirm="forceDelete"
@@ -449,8 +441,8 @@ function formatMoney(pence: number): string {
 
         <ConfirmDialog
             v-model:open="bulkRestoreDialogOpen"
-            title="Restore invoice items"
-            :description="`${pendingBulkRestoreIds.length} item(s) will be restored from trash.`"
+            title="Restore pipeline stages"
+            :description="`${pendingBulkRestoreIds.length} stage(s) will be restored from trash.`"
             confirm-label="Restore"
             :processing="bulkRestoreProcessing"
             @confirm="bulkRestore"
