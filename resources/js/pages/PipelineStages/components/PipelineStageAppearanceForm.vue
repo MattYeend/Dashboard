@@ -1,5 +1,5 @@
 <script setup lang="ts">
- import type { InertiaFormProps } from '@inertiajs/vue3';
+import type { InertiaFormProps } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
