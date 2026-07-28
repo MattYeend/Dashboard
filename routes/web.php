@@ -305,7 +305,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::match(['put', 'patch'], '/{invoice}', [InvoiceController::class, 'update'])->name('update');
         Route::delete('/{invoice}', [InvoiceController::class, 'destroy'])->name('destroy');
 
-        Route::prefix('/{invoice}/items')->name('items.')->group(function () {
+        Route::prefix('/{invoice}/items')->name('items.')->scopeBindings()->group(function () {
             Route::post('/bulk/delete', [InvoiceItemController::class, 'bulkDelete'])->name('bulk.delete');
             Route::post('/bulk/restore', [InvoiceItemController::class, 'bulkRestore'])->name('bulk.restore');
             Route::post('/{id}/restore', [InvoiceItemController::class, 'restore'])->name('restore');
@@ -350,7 +350,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::match(['put', 'patch'], '/{pipeline}', [PipelineController::class, 'update'])->name('update');
         Route::delete('/{pipeline}', [PipelineController::class, 'destroy'])->name('destroy');
 
-        Route::prefix('/{pipeline}/stages')->name('stages.')->group(function () {
+        Route::prefix('/{pipeline}/stages')->name('stages.')->scopeBindings()->group(function () {
             Route::post('/bulk/delete', [PipelineStageController::class, 'bulkDelete'])->name('bulk.delete');
             Route::post('/bulk/restore', [PipelineStageController::class, 'bulkRestore'])->name('bulk.restore');
             Route::post('/{id}/restore', [PipelineStageController::class, 'restore'])->name('restore');

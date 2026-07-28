@@ -45,23 +45,29 @@ class QueryService
      * Get a single pipeline stage by ID, scoped to a pipeline.
      */
     public function getById(
-        User $user,
-        Pipeline $pipeline,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $pipelineStage = $this->findPipelineStage(
-            $pipeline,
-            $id,
-            $withTrashed
-        );
+    User $user,
+    Pipeline $pipeline,
+    int $id,
+    bool $withTrashed = false
+): array {
+    $pipelineStage = $this->findPipelineStage(
+        $pipeline,
+        $id,
+        $withTrashed
+    );
 
-        return array_merge(
-            ['pipeline_stage' => $this->formatterService->format($pipelineStage)],
-            $this->getPermissions($user),
-            $this->baseData(),
-        );
-    }
+    return array_merge(
+        [
+            'pipeline_stage' => $this->formatterService->format($pipelineStage),
+            'pipeline' => [
+                'id' => $pipeline->id,
+                'title' => $pipeline->title,
+            ],
+        ],
+        $this->getPermissions($user),
+        $this->baseData(),
+    );
+}
 
     /**
      * Build the base query with filters, scoped to a pipeline.
