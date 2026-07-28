@@ -18,9 +18,7 @@ function formatDateTime(value: string | null): string {
 
 <template>
     <div class="rounded-lg border p-4">
-        <h2 class="mb-4 text-sm font-medium text-gray-400">
-            Audit details
-        </h2>
+        <h2 class="mb-4 text-sm font-medium text-gray-400">Audit details</h2>
 
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
@@ -44,7 +42,9 @@ function formatDateTime(value: string | null): string {
             <template v-if="user.deleted_at">
                 <div>
                     <dt class="text-xs text-gray-400">Deleted by</dt>
-                    <dd class="text-sm">{{ user.deleter?.name ?? 'System' }}</dd>
+                    <dd class="text-sm">
+                        {{ user.deleter?.name ?? 'System' }}
+                    </dd>
                 </div>
                 <div>
                     <dt class="text-xs text-gray-400">Deleted at</dt>
@@ -57,7 +57,9 @@ function formatDateTime(value: string | null): string {
             <template v-if="user.restored_at">
                 <div>
                     <dt class="text-xs text-gray-400">Restored by</dt>
-                    <dd class="text-sm">{{ user.restorer?.name ?? 'System' }}</dd>
+                    <dd class="text-sm">
+                        {{ user.restorer?.name ?? 'System' }}
+                    </dd>
                 </div>
                 <div>
                     <dt class="text-xs text-gray-400">Restored at</dt>

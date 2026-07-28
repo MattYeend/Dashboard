@@ -18,33 +18,41 @@ function formatDateTime(value: string | null): string {
 
 <template>
     <div class="rounded-lg border p-4">
-        <h2 class="mb-4 text-sm font-medium text-gray-400">
-            Audit details
-        </h2>
+        <h2 class="mb-4 text-sm font-medium text-gray-400">Audit details</h2>
 
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
                 <dt class="text-xs text-gray-400">Created by</dt>
-                <dd class="text-sm">{{ pipelineStatus.creator?.name ?? '-' }}</dd>
+                <dd class="text-sm">
+                    {{ pipelineStatus.creator?.name ?? 'System' }}
+                </dd>
             </div>
             <div>
                 <dt class="text-xs text-gray-400">Created at</dt>
-                <dd class="text-sm">{{ formatDateTime(pipelineStatus.created_at) }}</dd>
+                <dd class="text-sm">
+                    {{ formatDateTime(pipelineStatus.created_at) }}
+                </dd>
             </div>
 
             <div>
                 <dt class="text-xs text-gray-400">Last updated by</dt>
-                <dd class="text-sm">{{ pipelineStatus.updater?.name ?? '-' }}</dd>
+                <dd class="text-sm">
+                    {{ pipelineStatus.updater?.name ?? 'System' }}
+                </dd>
             </div>
             <div>
                 <dt class="text-xs text-gray-400">Last updated at</dt>
-                <dd class="text-sm">{{ formatDateTime(pipelineStatus.updated_at) }}</dd>
+                <dd class="text-sm">
+                    {{ formatDateTime(pipelineStatus.updated_at) }}
+                </dd>
             </div>
 
             <template v-if="pipelineStatus.deleted_at">
                 <div>
                     <dt class="text-xs text-gray-400">Deleted by</dt>
-                    <dd class="text-sm">{{ pipelineStatus.deleter?.name ?? '-' }}</dd>
+                    <dd class="text-sm">
+                        {{ pipelineStatus.deleter?.name ?? 'System' }}
+                    </dd>
                 </div>
                 <div>
                     <dt class="text-xs text-gray-400">Deleted at</dt>
@@ -57,7 +65,9 @@ function formatDateTime(value: string | null): string {
             <template v-if="pipelineStatus.restored_at">
                 <div>
                     <dt class="text-xs text-gray-400">Restored by</dt>
-                    <dd class="text-sm">{{ pipelineStatus.restorer?.name ?? '-' }}</dd>
+                    <dd class="text-sm">
+                        {{ pipelineStatus.restorer?.name ?? 'System' }}
+                    </dd>
                 </div>
                 <div>
                     <dt class="text-xs text-gray-400">Restored at</dt>
