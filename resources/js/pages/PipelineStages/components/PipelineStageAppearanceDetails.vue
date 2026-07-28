@@ -1,55 +1,71 @@
 <script setup lang="ts">
 import type { PipelineStage } from '@/types';
 
-defineProps<{
+interface Props {
     stage: PipelineStage;
-}>();
+}
+
+defineProps<Props>();
+
+function formatDateTime(value: string | null): string {
+    if (!value) {
+        return '-';
+    }
+
+    return new Date(value).toLocaleString();
+}
 </script>
 
 <template>
-    <div class="overflow-hidden shadow sm:rounded-lg">
-        <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-300">
-                Appearance
-            </h3>
-        </div>
-        <div class="border-t border-gray-500">
-            <dl>
-                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-400">Preview</dt>
-                    <dd class="mt-1 sm:col-span-2 sm:mt-0">
-                        <span
-                            class="inline-block rounded px-2 py-1 text-sm font-medium"
-                            :style="{
-                                backgroundColor: stage.background_colour,
-                                color: stage.text_colour,
-                            }"
-                        >
-                            {{ stage.title }}
-                        </span>
+    <div class="rounded-lg border p-4">
+        <h2 class="mb-4 text-sm font-medium text-gray-400">
+            Audit details
+        </h2>
+
+        <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+                <dt class="text-xs text-gray-400">Created by</dt>
+                <dd class="text-sm">{{ stage.creator?.name ?? '-' }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs text-gray-400">Created at</dt>
+                <dd class="text-sm">{{ formatDateTime(stage.created_at) }}</dd>
+            </div>
+
+            <div>
+                <dt class="text-xs text-gray-400">Last updated by</dt>
+                <dd class="text-sm">{{ stage.updater?.name ?? '-' }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs text-gray-400">Last updated at</dt>
+                <dd class="text-sm">{{ formatDateTime(stage.updated_at) }}</dd>
+            </div>
+
+            <template v-if="stage.deleted_at">
+                <div>
+                    <dt class="text-xs text-gray-400">Deleted by</dt>
+                    <dd class="text-sm">{{ stage.deleter?.name ?? '-' }}</dd>
+                </div>
+                <div>
+                    <dt class="text-xs text-gray-400">Deleted at</dt>
+                    <dd class="text-sm">
+                        {{ formatDateTime(stage.deleted_at) }}
                     </dd>
                 </div>
-                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-400">
-                        Background colour
-                    </dt>
-                    <dd
-                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
-                    >
-                        {{ stage.background_colour }}
+            </template>
+
+            <template v-if="stage.restored_at">
+                <div>
+                    <dt class="text-xs text-gray-400">Restored by</dt>
+                    <dd class="text-sm">{{ stage.restorer?.name ?? '-' }}</dd>
+                </div>
+                <div>
+                    <dt class="text-xs text-gray-400">Restored at</dt>
+                    <dd class="text-sm">
+                        {{ formatDateTime(stage.restored_at) }}
                     </dd>
                 </div>
-                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-400">
-                        Text colour
-                    </dt>
-                    <dd
-                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
-                    >
-                        {{ stage.text_colour }}
-                    </dd>
-                </div>
-            </dl>
-        </div>
+            </template>
+        </dl>
     </div>
 </template>
