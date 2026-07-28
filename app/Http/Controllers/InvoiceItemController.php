@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -247,7 +248,11 @@ class InvoiceItemController extends Controller
     ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:invoice_items,id'],
+            'ids.*' => [
+                'required',
+                'integer',
+                Rule::exists('invoice_items', 'id')->where('invoice_id', $invoice->id),
+            ],
         ]);
 
         $this->management->bulkDelete(
@@ -276,7 +281,11 @@ class InvoiceItemController extends Controller
     ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:invoice_items,id'],
+            'ids.*' => [
+                'required',
+                'integer',
+                Rule::exists('invoice_items', 'id')->where('invoice_id', $invoice->id),
+            ],
         ]);
 
         $this->management->bulkRestore(

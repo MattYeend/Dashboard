@@ -666,7 +666,8 @@ describe('bulk delete', function () {
 
         $this->actingAs($superAdmin)
             ->postJson("/invoices/{$invoice->id}/items/bulk/delete", ['ids' => [$foreignItem->id]])
-            ->assertStatus(404);
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['ids.0']);
 
         $this->assertDatabaseHas('invoice_items', [
             'id' => $foreignItem->id,
@@ -726,7 +727,7 @@ describe('bulk restore', function () {
             ->assertJsonValidationErrors(['ids.0']);
     });
 
-    test('bulk restore silently skips an id belonging to a different invoice', function () {
+    test('bulk restore failes validation for ids belonging to a different invoice', function () {
         $superAdmin = $this->superAdminUser();
         $invoice = Invoice::factory()->create();
         $otherInvoice = Invoice::factory()->create();
@@ -734,7 +735,8 @@ describe('bulk restore', function () {
 
         $this->actingAs($superAdmin)
             ->postJson("/invoices/{$invoice->id}/items/bulk/restore", ['ids' => [$foreignItem->id]])
-            ->assertStatus(204);
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['ids.0']);
 
         $this->assertSoftDeleted('invoice_items', ['id' => $foreignItem->id]);
     });
