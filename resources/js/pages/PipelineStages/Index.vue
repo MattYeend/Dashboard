@@ -293,7 +293,9 @@ function bulkRestore(): void {
 
             <IndexHeader
                 :title="`Stages - ${pipeline.title}`"
-                :create-href="pipelineStagesCreate.url({ pipeline: pipeline.id })"
+                :create-href="
+                    pipelineStagesCreate.url({ pipeline: pipeline.id })
+                "
                 create-label="Add Stage"
                 :can-create="permissions_meta.can_create"
             />

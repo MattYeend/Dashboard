@@ -63,7 +63,9 @@ function destroy(): void {
                 </h1>
                 <div class="space-x-2">
                     <Link
-                        :href="pipelineStagesIndex.url({ pipeline: pipeline.id })"
+                        :href="
+                            pipelineStagesIndex.url({ pipeline: pipeline.id })
+                        "
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
                     >
                         Back

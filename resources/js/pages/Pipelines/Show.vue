@@ -125,7 +125,9 @@ function destroy(): void {
                                 </span>
                                 <span class="text-sm text-gray-400">
                                     <template v-if="stage.is_won">Won</template>
-                                    <template v-else-if="stage.is_lost">Lost</template>
+                                    <template v-else-if="stage.is_lost"
+                                        >Lost</template
+                                    >
                                     <template v-else>Open</template>
                                 </span>
                             </li>

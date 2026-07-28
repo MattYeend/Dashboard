@@ -387,10 +387,7 @@ function formatMoney(pence: number): string {
                         </button>
                     </template>
                     <template v-else>
-                        <button
-                            type="button"
-                            @click="requestRestore(row.id)"
-                        >
+                        <button type="button" @click="requestRestore(row.id)">
                             Restore
                         </button>
                         <button
