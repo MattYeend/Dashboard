@@ -4,16 +4,30 @@ namespace App\Policies;
 
 use App\Models\PipelineStage;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\PipelineStages\PolicyAuthorisationService;
 
 class PipelineStagePolicy
 {
+    /**
+     * The authorisation service handling permission checks.
+     */
+    protected PolicyAuthorisationService $authorisationService;
+
+    /**
+     * Inject the required service into the policy.
+     */
+    public function __construct(
+        PolicyAuthorisationService $authorisationService
+    ) {
+        $this->authorisationService = $authorisationService;
+    }
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**
@@ -21,7 +35,7 @@ class PipelineStagePolicy
      */
     public function view(User $user, PipelineStage $pipelineStage): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $pipelineStage);
     }
 
     /**
@@ -29,7 +43,7 @@ class PipelineStagePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canCreate($user);
     }
 
     /**
@@ -37,7 +51,7 @@ class PipelineStagePolicy
      */
     public function update(User $user, PipelineStage $pipelineStage): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $pipelineStage);
     }
 
     /**
@@ -45,7 +59,7 @@ class PipelineStagePolicy
      */
     public function delete(User $user, PipelineStage $pipelineStage): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $pipelineStage);
     }
 
     /**
@@ -53,7 +67,7 @@ class PipelineStagePolicy
      */
     public function restore(User $user, PipelineStage $pipelineStage): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $pipelineStage);
     }
 
     /**
@@ -61,6 +75,46 @@ class PipelineStagePolicy
      */
     public function forceDelete(User $user, PipelineStage $pipelineStage): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $pipelineStage);
+    }
+
+    /**
+     * Determine whether the user can assign the pipeline stage.
+     */
+    public function assign(User $user, PipelineStage $pipelineStage): bool
+    {
+        return $this->authorisationService->canAssign($user, $pipelineStage);
+    }
+
+    /**
+     * Determine whether the user can bulk delete models.
+     */
+    public function bulkDelete(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can bulk restore models.
+     */
+    public function bulkRestore(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can import models.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisationService->canImport($user);
+    }
+
+    /**
+     * Determine whether the user can export models.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->canExport($user);
     }
 }

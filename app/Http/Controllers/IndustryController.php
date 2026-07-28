@@ -29,7 +29,7 @@ class IndustryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * Passes paginated industries to the Orders/Index Inertia page.
+     * Passes paginated industries to the Industries/Index Inertia page.
      *
      * Authorises via the 'viewAny' policy before returning data.
      */

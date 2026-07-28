@@ -29,7 +29,7 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * Passes paginated posts to the Orders/Index Inertia page.
+     * Passes paginated posts to the Posts/Index Inertia page.
      *
      * Authorises via the 'viewAny' policy before returning data.
      */

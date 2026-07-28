@@ -29,7 +29,7 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * Passes paginated categories to the Orders/Index Inertia page.
+     * Passes paginated categories to the Categories/Index Inertia page.
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
