@@ -23,7 +23,9 @@ function formatDateTime(value: string | null): string {
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
                 <dt class="text-xs text-gray-400">Issue date</dt>
-                <dd class="text-sm">{{ formatDateTime(invoice.issue_date) }}</dd>
+                <dd class="text-sm">
+                    {{ formatDateTime(invoice.issue_date) }}
+                </dd>
             </div>
             <div>
                 <dt class="text-xs text-gray-400">Due date</dt>
