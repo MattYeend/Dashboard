@@ -84,27 +84,27 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
-        Gate::policy(Contact::class, ContactPolicy::class);
-        Gate::policy(TaskStatus::class, TaskStatusPolicy::class);
-        Gate::policy(Task::class, TaskPolicy::class);
-        Gate::policy(User::class, UserPolicy::class);
-        Gate::policy(OrderStatus::class, OrderStatusPolicy::class);
-        Gate::policy(Order::class, OrderPolicy::class);
-        Gate::policy(Industry::class, IndustryPolicy::class);
-        Gate::policy(Company::class, CompanyPolicy::class);
-        Gate::policy(Plan::class, PlanPolicy::class);
-        Gate::policy(PersonalAccessToken::class, ApiTokenPolicy::class);
         Gate::policy(Address::class, AddressPolicy::class);
         Gate::policy(Category::class, CategoryPolicy::class);
-        Gate::policy(Post::class, PostPolicy::class);
-        Gate::policy(InvoiceStatus::class, InvoiceStatusPolicy::class);
         Gate::policy(Comment::class, CommentPolicy::class);
-        Gate::policy(Tag::class, TagPolicy::class);
+        Gate::policy(Company::class, CompanyPolicy::class);
+        Gate::policy(Contact::class, ContactPolicy::class);
+        Gate::policy(Industry::class, IndustryPolicy::class);
         Gate::policy(Invoice::class, InvoicePolicy::class);
         Gate::policy(InvoiceItem::class, InvoiceItemPolicy::class);
-        Gate::policy(PipelineStatus::class, PipelineStatusPolicy::class);
+        Gate::policy(InvoiceStatus::class, InvoiceStatusPolicy::class);
+        Gate::policy(Order::class, OrderPolicy::class);
+        Gate::policy(OrderStatus::class, OrderStatusPolicy::class);
+        Gate::policy(PersonalAccessToken::class, ApiTokenPolicy::class);
         Gate::policy(Pipeline::class, PipelinePolicy::class);
         Gate::policy(PipelineStage::class, PipelineStagePolicy::class);
+        Gate::policy(PipelineStatus::class, PipelineStatusPolicy::class);
+        Gate::policy(Plan::class, PlanPolicy::class);
+        Gate::policy(Post::class, PostPolicy::class);
+        Gate::policy(Tag::class, TagPolicy::class);
+        Gate::policy(Task::class, TaskPolicy::class);
+        Gate::policy(TaskStatus::class, TaskStatusPolicy::class);
+        Gate::policy(User::class, UserPolicy::class);
 
         Route::bind('invoiceItem', function ($value, $route) {
             return InvoiceItem::where('invoice_id', $route->parameter('invoice'))
