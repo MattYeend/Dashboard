@@ -9,23 +9,16 @@ defineProps<Props>();
 </script>
 
 <template>
-    <div class="overflow-hidden shadow sm:rounded-lg">
-        <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-300">
-                Role Details
-            </h3>
-        </div>
-        <div class="border-t border-gray-500">
-            <dl>
-                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-400">Role</dt>
-                    <dd
-                        class="mt-1 text-sm text-gray-300 capitalize sm:col-span-2 sm:mt-0"
-                    >
-                        {{ user.role.replace('_', ' ') }}
-                    </dd>
-                </div>
-            </dl>
-        </div>
+    <div class="rounded-lg border p-4">
+        <h2 class="mb-4 text-sm font-medium text-gray-400">Role details</h2>
+
+        <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+                <dt class="text-xs text-gray-400">Role</dt>
+                <dd class="text-sm capitalize">
+                    {{ user.role.replace('_', ' ') }}
+                </dd>
+            </div>
+        </dl>
     </div>
 </template>
