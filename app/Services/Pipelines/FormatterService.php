@@ -34,6 +34,19 @@ class FormatterService
                 'background_colour' => $pipeline->status->background_colour,
                 'text_colour' => $pipeline->status->text_colour,
             ] : null,
+            'stages' => $pipeline->relationLoaded('stages')
+                ? $pipeline->stages->map(fn ($stage) => [
+                    'id' => $stage->id,
+                    'title' => $stage->title,
+                    'description' => $stage->description,
+                    'position' => $stage->position,
+                    'background_colour' => $stage->background_colour,
+                    'text_colour' => $stage->text_colour,
+                    'is_won' => $stage->is_won,
+                    'is_lost' => $stage->is_lost,
+                ])->values()->all()
+                : null,
+            'stages_count' => $pipeline->stages_count ?? null,
             'creator' => $pipeline->creator ? ['id' => $pipeline->creator->id, 'name' => $pipeline->creator->name] : null,
             'updater' => $pipeline->updater ? ['id' => $pipeline->updater->id, 'name' => $pipeline->updater->name] : null,
             'deleter' => $pipeline->deleter ? ['id' => $pipeline->deleter->id, 'name' => $pipeline->deleter->name] : null,
