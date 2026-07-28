@@ -111,6 +111,11 @@ class AppServiceProvider extends ServiceProvider
                 ->findOrFail($value);
         });
 
+        Route::bind('pipelineStage', function ($value, $route) {
+            return PipelineStage::where('pipeline_id', $route->parameter('pipeline'))
+                ->findOrFail($value);
+        });
+
         Relation::morphMap([
             'App\Models\User' => User::class,
             'App\Models\Company' => Company::class,
