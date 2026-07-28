@@ -18,7 +18,9 @@ function formatDateTime(value: string | null): string {
 
 <template>
     <div class="rounded-lg border p-4">
-        <h2 class="mb-4 text-sm font-medium text-gray-400">Audit details</h2>
+        <h2 class="mb-4 text-sm font-medium text-gray-400">
+            Audit details
+        </h2>
 
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
