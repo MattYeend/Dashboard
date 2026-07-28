@@ -13,6 +13,8 @@ use App\Models\InvoiceItem;
 use App\Models\InvoiceStatus;
 use App\Models\Order;
 use App\Models\OrderStatus;
+use App\Models\Pipeline;
+use App\Models\PipelineStage;
 use App\Models\PipelineStatus;
 use App\Models\Plan;
 use App\Models\Post;
@@ -34,6 +36,8 @@ use App\Policies\InvoicePolicy;
 use App\Policies\InvoiceStatusPolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\OrderStatusPolicy;
+use App\Policies\PipelinePolicy;
+use App\Policies\PipelineStagePolicy;
 use App\Policies\PipelineStatusPolicy;
 use App\Policies\PlanPolicy;
 use App\Policies\PostPolicy;
@@ -99,6 +103,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Invoice::class, InvoicePolicy::class);
         Gate::policy(InvoiceItem::class, InvoiceItemPolicy::class);
         Gate::policy(PipelineStatus::class, PipelineStatusPolicy::class);
+        Gate::policy(Pipeline::class, PipelinePolicy::class);
+        Gate::policy(PipelineStage::class, PipelineStagePolicy::class);
 
         Route::bind('invoiceItem', function ($value, $route) {
             return InvoiceItem::where('invoice_id', $route->parameter('invoice'))
