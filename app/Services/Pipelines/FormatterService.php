@@ -46,7 +46,8 @@ class FormatterService
                     'is_lost' => $stage->is_lost,
                 ])->values()->all()
                 : null,
-            'stages_count' => $pipeline->stages_count ?? null,
+            'stages_count' => $pipeline->stages_count
+                ?? ($pipeline->relationLoaded('stages') ? $pipeline->stages->count() : null),
             'creator' => $pipeline->creator ? ['id' => $pipeline->creator->id, 'name' => $pipeline->creator->name] : null,
             'updater' => $pipeline->updater ? ['id' => $pipeline->updater->id, 'name' => $pipeline->updater->name] : null,
             'deleter' => $pipeline->deleter ? ['id' => $pipeline->deleter->id, 'name' => $pipeline->deleter->name] : null,

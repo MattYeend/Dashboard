@@ -26,6 +26,19 @@ class FormatterService
             'subtotal' => $invoice->subtotal,
             'tax_total' => $invoice->tax_total,
             'total' => $invoice->total,
+            'items' => $invoice->relationLoaded('items')
+                ? $invoice->items->map(fn ($item) => [
+                    'id' => $item->id,
+                    'description' => $item->description,
+                    'quantity' => $item->quantity,
+                    'unit_price' => $item->unit_price,
+                    'tax_rate' => $item->tax_rate,
+                    'total' => $item->total,
+                    'position' => $item->position,
+                ])->values()->all()
+                : null,
+            'items_count' => $invoice->items_count
+                ?? ($invoice->relationLoaded('items') ? $invoice->items->count() : null),
             'currency' => $invoice->currency,
             'notes' => $invoice->notes,
             'meta' => $invoice->meta,
