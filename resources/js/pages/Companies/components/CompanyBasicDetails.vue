@@ -1,55 +1,37 @@
 <script setup lang="ts">
 import type { Company } from '@/types';
 
-defineProps<{
+interface Props {
     company: Company;
-}>();
+}
+
+defineProps<Props>();
 </script>
 
 <template>
-    <div class="overflow-hidden shadow sm:rounded-lg">
-        <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-300">
-                Basic Details
-            </h3>
-        </div>
-        <div class="border-t border-gray-500">
-            <dl>
-                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-400">Name</dt>
-                    <dd
-                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
-                    >
-                        {{ company.name }}
-                    </dd>
-                </div>
-                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-400">Slug</dt>
-                    <dd
-                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
-                    >
-                        {{ company.slug ?? '-' }}
-                    </dd>
-                </div>
-                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-400">Industry</dt>
-                    <dd
-                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
-                    >
-                        {{ company.industry?.title ?? '-' }}
-                    </dd>
-                </div>
-                <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-400">
-                        Account Manager
-                    </dt>
-                    <dd
-                        class="mt-1 text-sm text-gray-300 sm:col-span-2 sm:mt-0"
-                    >
-                        {{ company.account_manager?.name ?? '-' }}
-                    </dd>
-                </div>
-            </dl>
-        </div>
+    <div class="rounded-lg border p-4">
+        <h2 class="mb-4 text-sm font-medium text-gray-400">Basic details</h2>
+
+        <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+                <dt class="text-xs text-gray-400">Name</dt>
+                <dd class="text-sm">{{ company.name }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs text-gray-400">Slug</dt>
+                <dd class="text-sm">{{ company.slug ?? '-' }}</dd>
+            </div>
+
+            <div>
+                <dt class="text-xs text-gray-400">Industry</dt>
+                <dd class="text-sm">{{ company.industry?.title ?? '-' }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs text-gray-400">Account manager</dt>
+                <dd class="text-sm">
+                    {{ company.account_manager?.name ?? '-' }}
+                </dd>
+            </div>
+        </dl>
     </div>
 </template>
