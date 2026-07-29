@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
@@ -137,6 +138,16 @@ class Invoice extends Model implements Auditable
     public function status(): BelongsTo
     {
         return $this->belongsTo(InvoiceStatus::class, 'status_id');
+    }
+
+    /**
+     * Get the deal this invoice was raised from.
+     *
+     * @return HasOne<Deal, $this>
+     */
+    public function deal(): HasOne
+    {
+        return $this->hasOne(Deal::class);
     }
 
     /**

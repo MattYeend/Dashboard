@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
@@ -111,6 +112,16 @@ class Company extends Model implements Auditable
     public function orders(): MorphMany
     {
         return $this->morphMany(Order::class, 'orderable');
+    }
+
+    /**
+     * Get the deals associated with this company.
+     *
+     * @return HasMany<Deal, $this>
+     */
+    public function deals(): HasMany
+    {
+        return $this->hasMany(Deal::class);
     }
 
     /**

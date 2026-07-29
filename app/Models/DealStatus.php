@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -51,6 +52,16 @@ class DealStatus extends Model implements Auditable
     /** @use HasFactory<DealStatusFactory> */
     use HasFactory,
         SoftDeletes;
+
+    /**
+     * Get the deals with this status.
+     *
+     * @return HasMany<Deal, $this>
+     */
+    public function deals(): HasMany
+    {
+        return $this->hasMany(Deal::class, 'status_id');
+    }
 
     /**
      * Get the user who created this deal status.

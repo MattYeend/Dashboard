@@ -75,6 +75,16 @@ class Pipeline extends Model implements Auditable
     }
 
     /**
+     * Get the deals that belong to this pipeline.
+     *
+     * @return HasMany<Deal, $this>
+     */
+    public function deals(): HasMany
+    {
+        return $this->hasMany(Deal::class);
+    }
+
+    /**
      * Get the user who created this pipeline.
      *
      * @return BelongsTo<User, $this>
