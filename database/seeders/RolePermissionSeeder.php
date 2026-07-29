@@ -351,6 +351,30 @@ class RolePermissionSeeder extends Seeder
             'import pipeline stage',
             'export pipeline stage',
             'assign pipeline stage',
+
+            // Deal status management
+            'view deal statuses',
+            'create deal statuses',
+            'edit deal statuses',
+            'delete deal statuses',
+            'restore deal statuses',
+            'force delete deal statuses',
+            'import deal statuses',
+            'export deal statuses',
+            'assign deal statuses',
+
+            // Deal management
+            'view any deal',
+            'view deal',
+            'create deal',
+            'edit deal',
+            'delete deal',
+            'restore deal',
+            'force delete deal',
+            'import deal',
+            'export deal',
+            'assign deal',
+            'change deal status',
         ];
 
         foreach ($permissions as $permission) {
@@ -607,6 +631,26 @@ class RolePermissionSeeder extends Seeder
             'import pipeline stage',
             'export pipeline stage',
             'assign pipeline stage',
+            'view deal statuses',
+            'create deal statuses',
+            'edit deal statuses',
+            'delete deal statuses',
+            'restore deal statuses',
+            'force delete deal statuses',
+            'import deal statuses',
+            'export deal statuses',
+            'assign deal statuses',
+            'view any deal',
+            'view deal',
+            'create deal',
+            'edit deal',
+            'delete deal',
+            'restore deal',
+            'force delete deal',
+            'import deal',
+            'export deal',
+            'assign deal',
+            'change deal status',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -814,6 +858,25 @@ class RolePermissionSeeder extends Seeder
             'import pipeline stage',
             'export pipeline stage',
             'assign pipeline stage',
+            'view deal statuses',
+            'create deal statuses',
+            'edit deal statuses',
+            'delete deal statuses',
+            'restore deal statuses',
+            'force delete deal statuses',
+            'import deal statuses',
+            'export deal statuses',
+            'assign deal statuses',
+            'view any deal',
+            'view deal',
+            'create deal',
+            'edit deal',
+            'delete deal',
+            'restore deal',
+            'import deal',
+            'export deal',
+            'assign deal',
+            'change deal status',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -953,6 +1016,19 @@ class RolePermissionSeeder extends Seeder
             'delete pipeline stage',
             'restore pipeline stage',
             'assign pipeline stage',
+            'create deal statuses',
+            'edit deal statuses',
+            'delete deal statuses',
+            'restore deal statuses',
+            'assign deal statuses',
+            'view any deal',
+            'view deal',
+            'create deal',
+            'edit deal',
+            'delete deal',
+            'restore deal',
+            'assign deal',
+            'change deal status',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -996,6 +1072,8 @@ class RolePermissionSeeder extends Seeder
             'view pipeline',
             'view any pipeline stage',
             'view pipeline stage',
+            'view any deal',
+            'view deal',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -1086,6 +1164,10 @@ class RolePermissionSeeder extends Seeder
             'view pipeline stage',
             'create pipeline stage',
             'edit pipeline stage',
+            'view any deal',
+            'view deal',
+            'create deal',
+            'edit deal',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
 
@@ -1262,6 +1344,24 @@ class RolePermissionSeeder extends Seeder
             'import pipeline stage',
             'export pipeline stage',
             'assign pipeline stage',
+            'view deal statuses',
+            'create deal statuses',
+            'edit deal statuses',
+            'delete deal statuses',
+            'restore deal statuses',
+            'import deal statuses',
+            'export deal statuses',
+            'assign deal statuses',
+            'view any deal',
+            'view deal',
+            'create deal',
+            'edit deal',
+            'delete deal',
+            'restore deal',
+            'import deal',
+            'export deal',
+            'assign deal',
+            'change deal status',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -1341,6 +1441,10 @@ class RolePermissionSeeder extends Seeder
             'view pipeline stage',
             'export pipeline stage',
             'assign pipeline stage',
+            'view any deal',
+            'view deal',
+            'export deal',
+            'assign deal',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
@@ -1381,6 +1485,8 @@ class RolePermissionSeeder extends Seeder
             'view pipeline',
             'view any pipeline stage',
             'view pipeline stage',
+            'view any deal',
+            'view deal',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -1409,6 +1515,8 @@ class RolePermissionSeeder extends Seeder
             'view pipeline',
             'view any pipeline stage',
             'view pipeline stage',
+            'view any deal',
+            'view deal',
         ];
         $guest->givePermissionTo($guestPermissions);
 
@@ -1461,5 +1569,7 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Pipeline Statuses');
         $this->command->info('- Pipelines');
         $this->command->info('- Pipeline Stages');
+        $this->command->info('- Deal Statuses');
+        $this->command->info('- Deals');
     }
 }
