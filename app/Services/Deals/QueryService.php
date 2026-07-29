@@ -2,7 +2,12 @@
 
 namespace App\Services\Deals;
 
+use App\Models\Company;
 use App\Models\Deal;
+use App\Models\DealStatus;
+use App\Models\Invoice;
+use App\Models\Pipeline;
+use App\Models\PipelineStage;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,7 +25,7 @@ class QueryService
     ) {}
 
     /**
-     * Get paginated task statuses with filters.
+     * Get paginated deals with filters.
      */
     public function getPaginated(
         User $actor,
@@ -47,7 +52,7 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): array {
-        $deal = $this->findTaskStatus(
+        $deal = $this->findDeal(
             $id,
             $withTrashed
         );
@@ -57,6 +62,35 @@ class QueryService
             $this->getPermissions($user),
             $this->baseData(),
         );
+    }
+
+    /**
+     * Get dropdown data required by the deal create/edit forms.
+     */
+    public function getFormData(): array
+    {
+        return [
+            'pipelines' => Pipeline::query()
+                ->select('id', 'title')
+                ->orderBy('title')
+                ->get(),
+            'pipeline_stages' => PipelineStage::query()
+                ->select('id', 'pipeline_id', 'title')
+                ->orderBy('position')
+                ->get(),
+            'deal_statuses' => DealStatus::query()
+                ->select('id', 'title', 'background_colour', 'text_colour')
+                ->orderBy('title')
+                ->get(),
+            'companies' => Company::query()
+                ->select('id', 'name')
+                ->orderBy('name')
+                ->get(),
+            'invoices' => Invoice::query()
+                ->select('id', 'invoice_number')
+                ->orderBy('invoice_number')
+                ->get(),
+        ];
     }
 
     /**
@@ -136,7 +170,7 @@ class QueryService
     /**
      * Find a deal by ID with optional trashed records.
      */
-    private function findTaskStatus(
+    private function findDeal(
         int $id,
         bool $withTrashed = false
     ): Deal {
