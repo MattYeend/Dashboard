@@ -504,6 +504,54 @@ class Log extends Model
 
     public const ACTION_REORDER_PIPELINE_STAGE = 235;
 
+    // Deal Status Management
+    public const ACTION_CREATE_DEAL_STATUS = 236;
+
+    public const ACTION_UPDATE_DEAL_STATUS = 237;
+
+    public const ACTION_VIEW_DEAL_STATUS = 238;
+
+    public const ACTION_DELETE_DEAL_STATUS = 239;
+
+    public const ACTION_FORCE_DELETE_DEAL_STATUS = 240;
+
+    public const ACTION_RESTORE_DEAL_STATUS = 241;
+
+    public const ACTION_IMPORT_DEAL_STATUS = 242;
+
+    public const ACTION_EXPORT_DEAL_STATUS = 243;
+
+    public const ACTION_DEAL_STATUS_UPDATED_BY_CRON = 244;
+
+    public const ACTION_ASSIGN_DEAL_STATUS = 245;
+
+    public const ACTION_UNASSIGN_DEAL_STATUS = 246;
+
+    // Deal Management
+    public const ACTION_CREATE_DEAL = 247;
+
+    public const ACTION_UPDATE_DEAL = 248;
+
+    public const ACTION_VIEW_DEAL = 249;
+
+    public const ACTION_DELETE_DEAL = 250;
+
+    public const ACTION_FORCE_DELETE_DEAL = 251;
+
+    public const ACTION_RESTORE_DEAL = 252;
+
+    public const ACTION_IMPORT_DEAL = 253;
+
+    public const ACTION_EXPORT_DEAL = 254;
+
+    public const ACTION_DEAL_UPDATED_BY_CRON = 255;
+
+    public const ACTION_ASSIGN_DEAL = 256;
+
+    public const ACTION_UNASSIGN_DEAL = 257;
+
+    public const ACTION_CHANGE_DEAL_STATUS = 258;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
