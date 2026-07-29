@@ -4,16 +4,23 @@ namespace App\Policies;
 
 use App\Models\Deal;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\Deals\PolicyAuthorisationService;
 
 class DealPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
+    /**
+     * Determine whether the user can view any deals.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
@@ -21,15 +28,15 @@ class DealPolicy
      */
     public function view(User $user, Deal $deal): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $deal);
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create deals.
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
@@ -37,7 +44,7 @@ class DealPolicy
      */
     public function update(User $user, Deal $deal): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $deal);
     }
 
     /**
@@ -45,7 +52,7 @@ class DealPolicy
      */
     public function delete(User $user, Deal $deal): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $deal);
     }
 
     /**
@@ -53,7 +60,7 @@ class DealPolicy
      */
     public function restore(User $user, Deal $deal): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $deal);
     }
 
     /**
@@ -61,6 +68,38 @@ class DealPolicy
      */
     public function forceDelete(User $user, Deal $deal): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $deal);
+    }
+
+    /**
+     * Determine whether the user can import deals.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisationService->canImport($user);
+    }
+
+    /**
+     * Determine whether the user can export deals.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->canExport($user);
+    }
+
+    /**
+     * Determine whether the user can assign the deal to another user.
+     */
+    public function assign(User $user, Deal $deal): bool
+    {
+        return $this->authorisationService->canAssign($user, $deal);
+    }
+
+    /**
+     * Determine whether the user can change the status of the deal.
+     */
+    public function changeStatus(User $user, Deal $deal): bool
+    {
+        return $this->authorisationService->canChangeStatus($user, $deal);
     }
 }
