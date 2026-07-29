@@ -16,9 +16,7 @@ defineProps<Props>();
 <template>
     <div class="overflow-hidden shadow sm:rounded-lg">
         <div class="flex items-center justify-between px-4 py-5 sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-300">
-                Stages
-            </h3>
+            <h3 class="text-lg leading-6 font-medium text-gray-300">Stages</h3>
             <div class="space-x-2">
                 <Link
                     :href="pipelineStagesCreate.url({ pipeline: pipeline.id })"
