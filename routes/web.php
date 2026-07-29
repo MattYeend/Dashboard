@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DealStatusController;
 use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceItemController;
@@ -364,6 +365,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::match(['put', 'patch'], '/{stage}', [PipelineStageController::class, 'update'])->name('update');
             Route::delete('/{stage}', [PipelineStageController::class, 'destroy'])->name('destroy');
         });
+    });
+
+    Route::prefix('deal-statuses')->name('deal-statuses.')->group(function () {
+        Route::post('/bulk/delete', [DealStatusController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [DealStatusController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [DealStatusController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [DealStatusController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [DealStatusController::class, 'index'])->name('index');
+        Route::get('/create', [DealStatusController::class, 'create'])->name('create');
+        Route::post('/', [DealStatusController::class, 'store'])->name('store');
+        Route::get('/{deal_status}', [DealStatusController::class, 'show'])->name('show');
+        Route::get('/{deal_status}/edit', [DealStatusController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{deal_status}', [DealStatusController::class, 'update'])->name('update');
+        Route::delete('/{deal_status}', [DealStatusController::class, 'destroy'])->name('destroy');
     });
 });
 
