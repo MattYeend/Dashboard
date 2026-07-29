@@ -2,10 +2,133 @@
 
 namespace App\Services\DealStatuses;
 
+use App\Http\Requests\DealStatuses\StoreDealStatusRequest;
+use App\Http\Requests\DealStatuses\UpdateDealStatusRequest;
+use App\Models\DealStatus;
+use App\Models\User;
+
 class ManagementService
 {
-    public function __construct()
-    {
-        //
+    /**
+     * Inject the required services into the management service.
+     */
+    public function __construct(
+        protected readonly CreatorService $creator,
+        protected readonly UpdaterService $updater,
+        protected readonly DeleterService $destructor,
+        protected readonly RestorerService $restorer,
+    ) {}
+
+    /**
+     * Create a new deal status.
+     */
+    public function store(
+        StoreDealStatusRequest $request
+    ): DealStatus {
+        return $this->creator->create(
+            $request->validated(),
+            $request->user()->id
+        );
+    }
+
+    /**
+     * Update an existing deal status.
+     */
+    public function update(
+        UpdateDealStatusRequest $request,
+        DealStatus $dealStatus
+    ): DealStatus {
+        return $this->updater->update(
+            $dealStatus,
+            $request->validated(),
+            $request->user()->id
+        );
+    }
+
+    /**
+     * Soft delete a deal status.
+     */
+    public function destroy(
+        DealStatus $dealStatus,
+        User $actor
+    ): void {
+        $this->destructor->delete($dealStatus, $actor->id);
+    }
+
+    /**
+     * Restore a soft-deleted deal status.
+     */
+    public function restore(
+        int $id,
+        User $actor
+    ): DealStatus {
+        $dealStatus = DealStatus::withTrashed()->findOrFail($id);
+
+        return $this->restorer->restore($dealStatus, $actor->id);
+    }
+
+    /**
+     * Force delete a deal status, permanently removing it from the
+     * database.
+     */
+    public function forceDelete(
+        int $id,
+        User $actor
+    ): void {
+        $dealStatus = DealStatus::withTrashed()->findOrFail($id);
+        $this->destructor->forceDelete($dealStatus, $actor->id);
+    }
+
+    /**
+     * Bulk restore deal statuses.
+     */
+    public function bulkRestore(
+        array $ids,
+        User $actor,
+        callable $authoriseCallback
+    ): array {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $invoiceStatuses = DealStatus::onlyTrashed()
+            ->whereIn('id', $requestedIds)
+            ->get();
+
+        $restored = [];
+
+        foreach ($invoiceStatuses as $dealStatus) {
+            /** @var DealStatus $dealStatus */
+            $authoriseCallback($dealStatus);
+            $this->restorer->restore($dealStatus, $actor->id);
+            $restored[] = $dealStatus->id;
+        }
+
+        return [
+            'restored' => $restored,
+            'skipped' => $requestedIds
+                ->diff($invoiceStatuses->pluck('id'))
+                ->values()
+                ->all(),
+        ];
+    }
+
+    /**
+     * Bulk soft delete deal statuses.
+     */
+    public function bulkDelete(
+        array $ids,
+        User $actor,
+        callable $authoriseCallback
+    ): array {
+        $deleted = [];
+
+        foreach ($ids as $id) {
+            $dealStatus = DealStatus::findOrFail($id);
+            $authoriseCallback($dealStatus);
+
+            $this->destructor->delete($dealStatus, $actor->id);
+            $deleted[] = $id;
+        }
+
+        return $deleted;
     }
 }

@@ -16,7 +16,7 @@ class ActiveCheckerService
     ) {}
 
     /**
-     * Check if invoiceStatus is active (not soft-deleted).
+     * Check if invoice status is active (not soft-deleted).
      */
     public function isActive(InvoiceStatus $invoiceStatus): bool
     {
@@ -24,7 +24,7 @@ class ActiveCheckerService
     }
 
     /**
-     * Check if invoiceStatus is soft-deleted.
+     * Check if invoice status is soft-deleted.
      */
     public function isTrashed(InvoiceStatus $invoiceStatus): bool
     {
@@ -32,7 +32,7 @@ class ActiveCheckerService
     }
 
     /**
-     * Check if invoiceStatus is active (not soft-deleted) and can be
+     * Check if invoice status is active (not soft-deleted) and can be
      * updated/deleted.
      */
     public function canBeModified(InvoiceStatus $invoiceStatus): bool
@@ -41,7 +41,7 @@ class ActiveCheckerService
     }
 
     /**
-     * Check if invoiceStatus is soft-deleted and can be restored/force-deleted.
+     * Check if invoice status is soft-deleted and can be restored/force-deleted.
      */
     public function canBeRestoredOrForceDeleted(
         InvoiceStatus $invoiceStatus
@@ -50,8 +50,8 @@ class ActiveCheckerService
     }
 
     /**
-     * Check if user can modify invoiceStatus (update/delete) or restore/force-delete
-     * invoiceStatus based on its active status.
+     * Check if user can modify invoice status (update/delete) or restore/force-delete
+     * invoice status based on its active status.
      */
     public function canUserPerformAction(
         User $actor,

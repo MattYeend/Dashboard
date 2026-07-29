@@ -20,7 +20,7 @@ class ManagementService
     ) {}
 
     /**
-     * Create a new task status.
+     * Create a new invoice status.
      */
     public function store(
         StoreInvoiceStatusRequest $request
@@ -32,7 +32,7 @@ class ManagementService
     }
 
     /**
-     * Update an existing task status.
+     * Update an existing invoice status.
      */
     public function update(
         UpdateInvoiceStatusRequest $request,
@@ -46,7 +46,7 @@ class ManagementService
     }
 
     /**
-     * Soft delete a task status.
+     * Soft delete a invoice status.
      */
     public function destroy(
         InvoiceStatus $invoiceStatus,
@@ -56,7 +56,7 @@ class ManagementService
     }
 
     /**
-     * Restore a soft-deleted task status.
+     * Restore a soft-deleted invoice status.
      */
     public function restore(
         int $id,
@@ -68,7 +68,7 @@ class ManagementService
     }
 
     /**
-     * Force delete a task status, permanently removing it from the
+     * Force delete a invoice status, permanently removing it from the
      * database.
      */
     public function forceDelete(
@@ -80,7 +80,7 @@ class ManagementService
     }
 
     /**
-     * Bulk restore task statuses.
+     * Bulk restore invoice statuses.
      */
     public function bulkRestore(
         array $ids,
@@ -112,7 +112,7 @@ class ManagementService
     }
 
     /**
-     * Bulk soft delete task statuses.
+     * Bulk soft delete invoice statuses.
      */
     public function bulkDelete(
         array $ids,

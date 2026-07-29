@@ -33,7 +33,7 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Check if invoiceStatus is active (not soft-deleted).
+     * Check if invoice status is active (not soft-deleted).
      */
     public function isActive(InvoiceStatus $invoiceStatus): bool
     {
@@ -41,7 +41,7 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Check if invoiceStatus is soft-deleted.
+     * Check if invoice status is soft-deleted.
      */
     public function isTrashed(InvoiceStatus $invoiceStatus): bool
     {
@@ -65,7 +65,7 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can view the task status.
+     * Determine whether the user can view the invoice status.
      */
     public function canView(User $actor, InvoiceStatus $target): bool
     {
@@ -78,7 +78,7 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can update the task status.
+     * Determine whether the user can update the invoice status.
      */
     public function canUpdate(User $actor, InvoiceStatus $target): bool
     {
@@ -91,7 +91,7 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can delete the task status.
+     * Determine whether the user can delete the invoice status.
      */
     public function canDelete(User $actor, InvoiceStatus $target): bool
     {
@@ -104,7 +104,7 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can restore the task status.
+     * Determine whether the user can restore the invoice status.
      */
     public function canRestore(User $actor, InvoiceStatus $target): bool
     {
@@ -117,7 +117,7 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can permanently delete the task status.
+     * Determine whether the user can permanently delete the invoice status.
      */
     public function canForceDelete(User $actor, InvoiceStatus $target): bool
     {
@@ -162,9 +162,9 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the task status was created by a user who outranks the actor.
+     * Determine whether the invoice status was created by a user who outranks the actor.
      *
-     * Prevents admins from managing task statuses created by super admins.
+     * Prevents admins from managing invoice statuses created by super admins.
      */
     private function targetOutranksActor(
         User $actor,

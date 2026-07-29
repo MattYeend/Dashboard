@@ -21,7 +21,7 @@ class RestorerService
     ) {}
 
     /**
-     * Restore a soft-deleted invoiceStatus.
+     * Restore a soft-deleted invoice status.
      *
      * @throws \Exception
      */
@@ -49,24 +49,24 @@ class RestorerService
     }
 
     /**
-     * Restore multiple soft-deleted invoiceStatuses.
+     * Restore multiple soft-deleted invoice statuses.
      *
-     * @return int Number of invoiceStatuses restored
+     * @return int Number of invoice statuses restored
      *
      * @throws \Exception
      */
     public function restoreMultiple(
-        array $taskStatusIds,
+        array $invoiceStatusIds,
         int $restoredBy
     ): int {
         $count = 0;
 
-        DB::transaction(function () use ($taskStatusIds, $restoredBy, &$count) {
+        DB::transaction(function () use ($invoiceStatusIds, $restoredBy, &$count) {
             $actor = User::findOrFail($restoredBy);
 
             /** @var Collection<int,InvoiceStatus> $invoiceStatuses */
             $invoiceStatuses = InvoiceStatus::withTrashed()
-                ->whereIn('id', $taskStatusIds)
+                ->whereIn('id', $invoiceStatusIds)
                 ->get();
 
             foreach ($invoiceStatuses as $invoiceStatus) {
