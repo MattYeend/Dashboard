@@ -89,13 +89,13 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $invoiceStatuses = DealStatus::onlyTrashed()
+        $dealStatuses = DealStatus::onlyTrashed()
             ->whereIn('id', $requestedIds)
             ->get();
 
         $restored = [];
 
-        foreach ($invoiceStatuses as $dealStatus) {
+        foreach ($dealStatuses as $dealStatus) {
             /** @var DealStatus $dealStatus */
             $authoriseCallback($dealStatus);
             $this->restorer->restore($dealStatus, $actor->id);
@@ -105,7 +105,7 @@ class ManagementService
         return [
             'restored' => $restored,
             'skipped' => $requestedIds
-                ->diff($invoiceStatuses->pluck('id'))
+                ->diff($dealStatuses->pluck('id'))
                 ->values()
                 ->all(),
         ];
@@ -119,16 +119,26 @@ class ManagementService
         User $actor,
         callable $authoriseCallback
     ): array {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $dealStatuses = DealStatus::whereIn('id', $requestedIds)
+            ->get();
+
         $deleted = [];
 
-        foreach ($ids as $id) {
-            $dealStatus = DealStatus::findOrFail($id);
+        foreach ($dealStatuses as $dealStatus) {
+            /** @var DealStatus $dealStatus */
             $authoriseCallback($dealStatus);
-
             $this->destructor->delete($dealStatus, $actor->id);
-            $deleted[] = $id;
+            $deleted[] = $dealStatus->id;
         }
 
-        return $deleted;
+        return [
+            'deleted' => $deleted,
+            'skipped' => $requestedIds
+                ->diff($dealStatuses->pluck('id'))
+                ->values()
+                ->all(),
+        ];
     }
 }

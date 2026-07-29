@@ -2,10 +2,44 @@
 
 namespace App\Services\Deals;
 
+use App\Models\Deal;
+use Illuminate\Database\Eloquent\Builder;
+
 class SortingService
 {
-    public function __construct()
+    /**
+     * Apply sorting to the query.
+     *
+     * @param  Builder<Deal>  $query
+     * @return Builder<Deal>
+     */
+    public function applySorting(
+        Builder $query,
+        ?string $sortBy = 'title',
+        ?string $sortDirection = 'desc'
+    ): Builder {
+        $sortBy = $sortBy ?? 'title';
+        $sortDirection = strtolower(
+            $sortDirection ?? 'asc'
+        ) === 'asc' ? 'asc' : 'desc';
+
+        return match ($sortBy) {
+            'title' => $query->orderBy('title', $sortDirection),
+            'updated_at' => $query->orderBy('updated_at', $sortDirection),
+            default => $query->orderBy('created_at', $sortDirection),
+        };
+    }
+
+    /**
+     * Get available sort fields.
+     *
+     * @return array<string, string>
+     */
+    public function getAvailableSortFields(): array
     {
-        //
+        return [
+            'title' => 'Title',
+            'created_at' => 'Created Date',
+        ];
     }
 }
