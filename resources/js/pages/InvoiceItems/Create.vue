@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import { store as invoiceItemsStore } from '@/routes/invoices/items';
 import type { Invoice } from '@/types';
 import InvoiceItemForm from './components/InvoiceItemForm.vue';
-import { store as invoiceItemsStore } from '@/routes/invoices/items';
 
 interface Props {
     invoice: Invoice;
