@@ -86,7 +86,7 @@ class OrderStatusController extends Controller
     /**
      * Display the specified resource.
      *
-     * Passes a single orderStatus to the OrderStatuses/Show Inertia page.
+     * Passes a single order status to the OrderStatuses/Show Inertia page.
      *
      * Authorises via the 'view' and 'access' policies before rendering.
      */
@@ -149,7 +149,7 @@ class OrderStatusController extends Controller
      * Authorises via the 'delete' policy before proceeding.
      *
      * The audit log entry is written before the deletion so that the
-     * orderStatus instance is still fully accessible during logging.
+     * order status instance is still fully accessible during logging.
      */
     public function destroy(
         Request $request,
@@ -170,7 +170,7 @@ class OrderStatusController extends Controller
     }
 
     /**
-     * Restore a soft-deleted orderStatus.
+     * Restore a soft-deleted order status.
      *
      * Resolves the trashed model manually since route model binding
      * excludes soft-deleted records by default.
@@ -198,7 +198,7 @@ class OrderStatusController extends Controller
     }
 
     /**
-     * Permanently delete a soft-deleted orderStatus.
+     * Permanently delete a soft-deleted order status.
      *
      * Resolves the trashed model manually since route model binding
      * excludes soft-deleted records by default.
