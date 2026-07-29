@@ -21,6 +21,10 @@ defineProps<Props>();
                 <dt class="text-xs text-gray-400">Company</dt>
                 <dd class="text-sm">{{ invoice.company?.name ?? '-' }}</dd>
             </div>
+            <div>
+                <dt class="text-xs text-gray-400">Items</dt>
+                <dd class="text-sm">{{ invoice.items_count ?? 0 }}</dd>
+            </div>
 
             <div>
                 <dt class="text-xs text-gray-400">Status</dt>

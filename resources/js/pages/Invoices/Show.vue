@@ -15,8 +15,8 @@ import {
     markAsPaid as invoicesMarkAsPaid,
     markAsUnpaid as invoicesMarkAsUnpaid,
 } from '@/routes/invoices';
-import type { Invoice, PermissionsMeta } from '@/types';
 import { index as invoiceItemsIndex } from '@/routes/invoices/items';
+import type { Invoice, PermissionsMeta } from '@/types';
 
 interface Props {
     invoice: Invoice;

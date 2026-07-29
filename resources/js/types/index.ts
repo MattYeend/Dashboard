@@ -402,6 +402,8 @@ export interface Invoice {
     total: number;
     currency: string;
     notes: string | null;
+    items?: InvoiceItem[];
+    items_count?: number;
     meta: Record<string, unknown> | null;
     created_by: number | null;
     updated_by: number | null;
@@ -522,6 +524,7 @@ export interface Pipeline {
         text_colour: string | null;
     } | null;
     stages?: PipelineStage[];
+    stages_count?: number;
     creator?: { name: string };
     updater?: { name: string };
     deleter?: { name: string };
