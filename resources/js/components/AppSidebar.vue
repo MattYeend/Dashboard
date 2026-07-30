@@ -6,6 +6,7 @@ import {
     Contact2,
     CreditCard,
     FolderGit2,
+    HandCoins,
     KeyRound,
     LayoutGrid,
     MapPin,
@@ -30,25 +31,6 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { index as addressesIndex } from '@/routes/addresses';
-import { index as apiTokensIndex } from '@/routes/api-tokens';
-import { index as categoriesIndex } from '@/routes/categories';
-import { index as companiesIndex } from '@/routes/companies';
-import { index as contactsIndex } from '@/routes/contacts';
-import { index as industriesIndex } from '@/routes/industries';
-import { index as invoiceStatusesIndex } from '@/routes/invoice-statuses';
-import { index as invoicesIndex } from '@/routes/invoices';
-import { index as orderStatusesIndex } from '@/routes/order-statuses';
-import { index as ordersIndex } from '@/routes/orders';
-import { index as pipelineStatusesIndex } from '@/routes/pipeline-statuses';
-import { index as pipelinesIndex } from '@/routes/pipelines';
-import { index as plansIndex } from '@/routes/plans';
-import { index as postsIndex } from '@/routes/posts';
-import { index as registrationInterestsIndex } from '@/routes/registration-interests';
-import { index as tagsIndex } from '@/routes/tags';
-import { index as taskStatusesIndex } from '@/routes/task-statuses';
-import { index as tasksIndex } from '@/routes/tasks';
-import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -59,12 +41,12 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Contacts',
-        href: contactsIndex.url(),
+        href: '/contacts',
         icon: Contact2,
     },
     {
         title: 'Addresses',
-        href: addressesIndex.url(),
+        href: '/addresses',
         icon: MapPin,
     },
     {
@@ -74,17 +56,17 @@ const mainNavItems: NavItem[] = [
         children: [
             {
                 title: 'All Companies',
-                href: companiesIndex.url(),
+                href: '/companies',
             },
             {
                 title: 'Industries',
-                href: industriesIndex.url(),
+                href: '/industries',
             },
         ],
     },
     {
         title: 'Plans',
-        href: plansIndex.url(),
+        href: '/plans',
         icon: CreditCard,
     },
     {
@@ -94,11 +76,11 @@ const mainNavItems: NavItem[] = [
         children: [
             {
                 title: 'All Orders',
-                href: ordersIndex.url(),
+                href: '/orders',
             },
             {
                 title: 'Order Statuses',
-                href: orderStatusesIndex.url(),
+                href: '/order-statuses',
             },
         ],
     },
@@ -109,11 +91,11 @@ const mainNavItems: NavItem[] = [
         children: [
             {
                 title: 'All Invoices',
-                href: invoicesIndex.url(),
+                href: '/invoices',
             },
             {
                 title: 'Invoice Statuses',
-                href: invoiceStatusesIndex.url(),
+                href: '/invoice-statuses',
             },
         ],
     },
@@ -124,11 +106,26 @@ const mainNavItems: NavItem[] = [
         children: [
             {
                 title: 'All Pipelines',
-                href: pipelinesIndex.url(),
+                href: '/pipelines',
             },
             {
                 title: 'Pipeline Statuses',
-                href: pipelineStatusesIndex.url(),
+                href: '/pipeline-statuses',
+            },
+        ],
+    },
+    {
+        title: 'Deals',
+        href: '#',
+        icon: HandCoins,
+        children: [
+            {
+                title: 'All Deals',
+                href: '/deals',
+            },
+            {
+                title: 'Deal Statuses',
+                href: '/deal-statuses',
             },
         ],
     },
@@ -139,11 +136,11 @@ const mainNavItems: NavItem[] = [
         children: [
             {
                 title: 'All Tasks',
-                href: tasksIndex.url(),
+                href: '/tasks',
             },
             {
                 title: 'Task Statuses',
-                href: taskStatusesIndex.url(),
+                href: '/task-statuses',
             },
         ],
     },
@@ -154,31 +151,31 @@ const mainNavItems: NavItem[] = [
         children: [
             {
                 title: 'All Posts',
-                href: postsIndex.url(),
+                href: '/posts',
             },
             {
                 title: 'Categories',
-                href: categoriesIndex.url(),
+                href: '/categories',
             },
             {
                 title: 'Tags',
-                href: tagsIndex.url(),
+                href: '/tags',
             },
         ],
     },
     {
         title: 'Users',
-        href: usersIndex.url(),
+        href: '/users',
         icon: User2,
     },
     {
         title: 'Registration Interests',
-        href: registrationInterestsIndex.url(),
+        href: '/registration-interests',
         icon: UserPlus,
     },
     {
         title: 'API Tokens',
-        href: apiTokensIndex.url(),
+        href: '/api-tokens',
         icon: KeyRound,
     },
 ];

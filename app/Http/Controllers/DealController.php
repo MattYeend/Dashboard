@@ -48,7 +48,7 @@ class DealController extends Controller
             ])
         );
 
-        return Inertia::render('Deal/Index', $data);
+        return Inertia::render('Deals/Index', $data);
     }
 
     /**
@@ -60,7 +60,7 @@ class DealController extends Controller
     {
         $this->authorize('create', Deal::class);
 
-        return Inertia::render('Deal/Create', $this->query->getFormData());
+        return Inertia::render('Deals/Create', $this->query->getFormData());
     }
 
     /**
@@ -100,7 +100,7 @@ class DealController extends Controller
             $deal->id
         );
 
-        return Inertia::render('Deal/Show', $data);
+        return Inertia::render('Deals/Show', $data);
     }
 
     /**
@@ -119,7 +119,7 @@ class DealController extends Controller
             $deal->id
         );
 
-        return Inertia::render('Deal/Edit', $data);
+        return Inertia::render('Deals/Edit', $data);
     }
 
     /**
