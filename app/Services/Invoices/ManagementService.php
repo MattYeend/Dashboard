@@ -142,24 +142,30 @@ class ManagementService
     /**
      * Mark an invoice as sent.
      */
-    public function send(Invoice $invoice, User $actor): Invoice
-    {
+    public function send(
+        Invoice $invoice,
+        User $actor
+    ): Invoice {
         return $this->updater->markAsSent($invoice, $actor->id);
     }
 
     /**
      * Mark an invoice as paid.
      */
-    public function markAsPaid(Invoice $invoice, User $actor): Invoice
-    {
+    public function markAsPaid(
+        Invoice $invoice,
+        User $actor
+    ): Invoice {
         return $this->updater->markAsPaid($invoice, $actor->id);
     }
 
     /**
      * Mark an invoice as unpaid.
      */
-    public function markAsUnpaid(Invoice $invoice, User $actor): Invoice
-    {
+    public function markAsUnpaid(
+        Invoice $invoice,
+        User $actor
+    ): Invoice {
         return $this->updater->markAsUnpaid($invoice, $actor->id);
     }
 }

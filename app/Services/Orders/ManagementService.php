@@ -105,8 +105,11 @@ class ManagementService
     /**
      * Bulk soft delete orders.
      */
-    public function bulkDelete(array $ids, User $actor, callable $authoriseCallback): array
-    {
+    public function bulkDelete(
+        array $ids,
+        User $actor,
+        callable $authoriseCallback
+    ): array {
         $requestedIds = collect($ids)->unique()->values();
 
         $orders = Order::whereIn('id', $requestedIds)->get();
