@@ -83,12 +83,10 @@ const filterFields = [
         key: 'sort_by',
         type: 'select' as const,
         get options() {
-            return Object.entries(props.sort_fields).map(
-                ([value, label]) => ({
-                    value,
-                    label: `Sort by ${label}`,
-                }),
-            );
+            return Object.entries(props.sort_fields).map(([value, label]) => ({
+                value,
+                label: `Sort by ${label}`,
+            }));
         },
     },
     {

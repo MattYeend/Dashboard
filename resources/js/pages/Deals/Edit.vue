@@ -56,9 +56,7 @@ function submit(): void {
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <h1 class="mb-6 text-2xl font-semibold text-gray-300">
-                Edit Deal
-            </h1>
+            <h1 class="mb-6 text-2xl font-semibold text-gray-300">Edit Deal</h1>
 
             <DealForm
                 v-model:title="form.title"
