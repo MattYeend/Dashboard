@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new industry.
      */
-    public function store(StoreIndustryRequest $request): Industry
-    {
+    public function store(
+        StoreIndustryRequest $request
+    ): Industry {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id

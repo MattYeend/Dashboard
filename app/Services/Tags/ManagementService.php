@@ -24,7 +24,7 @@ class ManagementService
      */
     public function store(
         StoreTagRequest $request
-        ): Tag {
+    ): Tag {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id

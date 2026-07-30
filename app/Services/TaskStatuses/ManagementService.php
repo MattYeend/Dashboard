@@ -24,7 +24,7 @@ class ManagementService
      */
     public function store(
         StoreTaskStatusRequest $request
-        ): TaskStatus {
+    ): TaskStatus {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id

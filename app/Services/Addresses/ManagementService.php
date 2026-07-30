@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new company address.
      */
-    public function store(StoreAddressRequest $request): Address
-    {
+    public function store(
+        StoreAddressRequest $request
+    ): Address {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id

@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new company contact.
      */
-    public function store(StoreContactRequest $request): Contact
-    {
+    public function store(
+        StoreContactRequest $request
+    ): Contact {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id

@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new category.
      */
-    public function store(StoreCategoryRequest $request): Category
-    {
+    public function store(
+        StoreCategoryRequest $request
+    ): Category {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id

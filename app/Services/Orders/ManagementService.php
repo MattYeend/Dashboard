@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new company order.
      */
-    public function store(StoreOrderRequest $request): Order
-    {
+    public function store(
+        StoreOrderRequest $request
+    ): Order {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id

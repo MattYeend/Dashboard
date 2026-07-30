@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new plan.
      */
-    public function store(StorePlanRequest $request): Plan
-    {
+    public function store(
+        StorePlanRequest $request
+    ): Plan {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id

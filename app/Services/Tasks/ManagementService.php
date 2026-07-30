@@ -24,7 +24,7 @@ class ManagementService
      */
     public function store(
         StoreTaskRequest $request
-        ): Task {
+    ): Task {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id

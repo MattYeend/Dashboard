@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new invoice.
      */
-    public function store(StoreInvoiceRequest $request): Invoice
-    {
+    public function store(
+        StoreInvoiceRequest $request
+    ): Invoice {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id

@@ -23,7 +23,7 @@ class ManagementService
      */
     public function store(
         StoreUserRequest $request
-        ): User {
+    ): User {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
