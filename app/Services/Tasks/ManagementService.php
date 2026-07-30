@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new task.
      */
-    public function store(StoreTaskRequest $request): Task
-    {
+    public function store(
+        StoreTaskRequest $request
+        ): Task {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -117,16 +118,25 @@ class ManagementService
         User $actor,
         callable $authoriseCallback
     ): array {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $tasks = Task::whereIn('id', $requestedIds)->get();
+
         $deleted = [];
 
-        foreach ($ids as $id) {
-            $task = Task::findOrFail($id);
+        foreach ($tasks as $task) {
+            /** @var Task $task */
             $authoriseCallback($task);
-
             $this->destructor->delete($task, $actor->id);
-            $deleted[] = $id;
+            $deleted[] = $task->id;
         }
 
-        return $deleted;
+        return [
+            'deleted' => $deleted,
+            'skipped' => $requestedIds
+                ->diff($tasks->pluck('id'))
+                ->values()
+                ->all(),
+        ];
     }
 }

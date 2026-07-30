@@ -24,7 +24,7 @@ class ManagementService
      */
     public function store(
         StoreTaskStatusRequest $request
-    ): TaskStatus {
+        ): TaskStatus {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -119,16 +119,25 @@ class ManagementService
         User $actor,
         callable $authoriseCallback
     ): array {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $taskStatuses = TaskStatus::whereIn('id', $requestedIds)->get();
+
         $deleted = [];
 
-        foreach ($ids as $id) {
-            $taskStatus = TaskStatus::findOrFail($id);
+        foreach ($taskStatuses as $taskStatus) {
+            /** @var TaskStatus $taskStatus */
             $authoriseCallback($taskStatus);
-
             $this->destructor->delete($taskStatus, $actor->id);
-            $deleted[] = $id;
+            $deleted[] = $taskStatus->id;
         }
 
-        return $deleted;
+        return [
+            'deleted' => $deleted,
+            'skipped' => $requestedIds
+                ->diff($taskStatuses->pluck('id'))
+                ->values()
+                ->all(),
+        ];
     }
 }

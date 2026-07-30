@@ -22,8 +22,9 @@ class ManagementService
     /**
      * Create a new tag.
      */
-    public function store(StoreTagRequest $request): Tag
-    {
+    public function store(
+        StoreTagRequest $request
+        ): Tag {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -109,16 +110,25 @@ class ManagementService
         User $actor,
         callable $authoriseCallback
     ): array {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $tags = Tag::whereIn('id', $requestedIds)->get();
+
         $deleted = [];
 
-        foreach ($ids as $id) {
-            $tag = Tag::findOrFail($id);
+        foreach ($tags as $tag) {
+            /** @var Tag $tag */
             $authoriseCallback($tag);
-
             $this->destructor->delete($tag, $actor->id);
-            $deleted[] = $id;
+            $deleted[] = $tag->id;
         }
 
-        return $deleted;
+        return [
+            'deleted' => $deleted,
+            'skipped' => $requestedIds
+                ->diff($tags->pluck('id'))
+                ->values()
+                ->all(),
+        ];
     }
 }

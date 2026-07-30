@@ -21,8 +21,9 @@ class ManagementService
     /**
      * Create a new company user.
      */
-    public function store(StoreUserRequest $request): User
-    {
+    public function store(
+        StoreUserRequest $request
+        ): User {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -110,23 +111,32 @@ class ManagementService
     }
 
     /**
-     * Bulk soft delete contacts.
+     * Bulk soft delete users.
      */
     public function bulkDelete(
         array $ids,
         User $actor,
         callable $authoriseCallback
     ): array {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $users = User::whereIn('id', $requestedIds)->get();
+
         $deleted = [];
 
-        foreach ($ids as $id) {
-            $user = User::findOrFail($id);
+        foreach ($users as $user) {
+            /** @var User $user */
             $authoriseCallback($user);
-
             $this->destructor->delete($user, $actor->id);
-            $deleted[] = $id;
+            $deleted[] = $user->id;
         }
 
-        return $deleted;
+        return [
+            'deleted' => $deleted,
+            'skipped' => $requestedIds
+                ->diff($users->pluck('id'))
+                ->values()
+                ->all(),
+        ];
     }
 }
