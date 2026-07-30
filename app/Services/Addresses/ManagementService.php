@@ -118,16 +118,25 @@ class ManagementService
         User $actor,
         callable $authoriseCallback
     ): array {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $addresses = Address::whereIn('id', $requestedIds)->get();
+
         $deleted = [];
 
-        foreach ($ids as $id) {
-            $address = Address::findOrFail($id);
+        foreach ($addresses as $address) {
+            /** @var Address $address */
             $authoriseCallback($address);
-
             $this->destructor->delete($address, $actor->id);
-            $deleted[] = $id;
+            $deleted[] = $address->id;
         }
 
-        return $deleted;
+        return [
+            'deleted' => $deleted,
+            'skipped' => $requestedIds
+                ->diff($addresses->pluck('id'))
+                ->values()
+                ->all(),
+        ];
     }
 }

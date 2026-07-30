@@ -117,16 +117,25 @@ class ManagementService
         User $actor,
         callable $authoriseCallback
     ): array {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $companies = Company::whereIn('id', $requestedIds)->get();
+
         $deleted = [];
 
-        foreach ($ids as $id) {
-            $company = Company::findOrFail($id);
+        foreach ($companies as $company) {
+            /** @var Company $company */
             $authoriseCallback($company);
-
             $this->destructor->delete($company, $actor->id);
-            $deleted[] = $id;
+            $deleted[] = $company->id;
         }
 
-        return $deleted;
+        return [
+            'deleted' => $deleted,
+            'skipped' => $requestedIds
+                ->diff($companies->pluck('id'))
+                ->values()
+                ->all(),
+        ];
     }
 }
