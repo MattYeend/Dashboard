@@ -3,8 +3,8 @@ import type { InertiaFormProps } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import PipelineBasicDetailsForm from '@/pages/Pipelines/components/PipelineBasicDetailsForm.vue';
-import type { PipelineStatus } from '@/types';
 import { index as pipelinesIndex } from '@/routes/pipelines';
+import type { PipelineStatus } from '@/types';
 
 interface PipelineFormData {
     title: string;

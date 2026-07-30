@@ -2,8 +2,8 @@
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank, numberOrNull } from '@/lib/forms';
 import PipelineForm from '@/pages/Pipelines/components/PipelineForm.vue';
-import type { Pipeline, PipelineStatus } from '@/types';
 import { update as pipelinesUpdate } from '@/routes/pipelines';
+import type { Pipeline, PipelineStatus } from '@/types';
 
 interface Props {
     pipeline: Pipeline;
