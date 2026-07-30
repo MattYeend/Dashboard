@@ -107,16 +107,25 @@ class ManagementService
      */
     public function bulkDelete(array $ids, User $actor, callable $authoriseCallback): array
     {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $orders = Order::whereIn('id', $requestedIds)->get();
+
         $deleted = [];
 
-        foreach ($ids as $id) {
-            $order = Order::findOrFail($id);
+        foreach ($orders as $order) {
+            /** @var Order $order */
             $authoriseCallback($order);
-
             $this->destructor->delete($order, $actor->id);
-            $deleted[] = $id;
+            $deleted[] = $order->id;
         }
 
-        return $deleted;
+        return [
+            'deleted' => $deleted,
+            'skipped' => $requestedIds
+                ->diff($orders->pluck('id'))
+                ->values()
+                ->all(),
+        ];
     }
 }
