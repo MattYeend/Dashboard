@@ -392,10 +392,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [DealController::class, 'index'])->name('index');
         Route::get('/create', [DealController::class, 'create'])->name('create');
         Route::post('/', [DealController::class, 'store'])->name('store');
-        Route::get('/{deal_status}', [DealController::class, 'show'])->name('show');
-        Route::get('/{deal_status}/edit', [DealController::class, 'edit'])->name('edit');
-        Route::match(['put', 'patch'], '/{deal_status}', [DealController::class, 'update'])->name('update');
-        Route::delete('/{deal_status}', [DealController::class, 'destroy'])->name('destroy');
+        Route::get('/{deal}', [DealController::class, 'show'])->name('show');
+        Route::get('/{deal}/edit', [DealController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{deal}', [DealController::class, 'update'])->name('update');
+        Route::delete('/{deal}', [DealController::class, 'destroy'])->name('destroy');
     });
 });
 

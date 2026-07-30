@@ -114,9 +114,9 @@ class DealController extends Controller
     ): Response {
         $this->authorize('update', $deal);
 
-        $data = $this->query->getById(
-            $request->user(),
-            $deal->id
+        $data = array_merge(
+            $this->query->getById($request->user(), $deal->id),
+            $this->query->getFormData()
         );
 
         return Inertia::render('Deals/Edit', $data);
