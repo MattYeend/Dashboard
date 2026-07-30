@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -69,6 +70,16 @@ class PipelineStage extends Model implements Auditable
     public function pipeline(): BelongsTo
     {
         return $this->belongsTo(Pipeline::class);
+    }
+
+    /**
+     * Get the deals currently sitting in this stage.
+     *
+     * @return HasMany<Deal, $this>
+     */
+    public function deals(): HasMany
+    {
+        return $this->hasMany(Deal::class, 'stage_id');
     }
 
     /**

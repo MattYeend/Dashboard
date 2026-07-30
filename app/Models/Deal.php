@@ -3,12 +3,11 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
-use Database\Factories\PipelineFactory;
+use Database\Factories\DealFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -16,8 +15,16 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $title
  * @property string|null $description
- * @property bool $is_default
+ * @property int|null $pipeline_id
+ * @property int|null $stage_id
  * @property int|null $status_id
+ * @property int|null $company_id
+ * @property int|null $invoice_id
+ * @property int $value
+ * @property string $currency
+ * @property int $probability
+ * @property Carbon|null $expected_close_date
+ * @property Carbon|null $closed_at
  * @property array<string, mixed>|null $meta
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -27,7 +34,11 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property-read PipelineStatus|null $status
+ * @property-read Pipeline|null $pipeline
+ * @property-read PipelineStage|null $stage
+ * @property-read DealStatus|null $status
+ * @property-read Company|null $company
+ * @property-read Invoice|null $invoice
  * @property-read User|null $creator
  * @property-read User|null $updater
  * @property-read User|null $deleter
@@ -36,8 +47,16 @@ use Illuminate\Support\Carbon;
 #[Fillable([
     'title',
     'description',
-    'is_default',
+    'pipeline_id',
+    'stage_id',
     'status_id',
+    'company_id',
+    'invoice_id',
+    'value',
+    'currency',
+    'probability',
+    'expected_close_date',
+    'closed_at',
     'meta',
     'created_by',
     'created_at',
@@ -48,44 +67,66 @@ use Illuminate\Support\Carbon;
     'restored_by',
     'restored_at',
 ])]
-class Pipeline extends Model implements Auditable
+class Deal extends Model implements Auditable
 {
-    /** @use HasFactory<PipelineFactory> */
+    /**
+     * @use HasFactory<DealFactory>
+     */
     use HasFactory,
         SoftDeletes;
 
     /**
-     * Get the status assigned to this pipeline.
+     * Get the pipeline this deal belongs to.
      *
-     * @return BelongsTo<PipelineStatus, $this>
+     * @return BelongsTo<Pipeline, $this>
+     */
+    public function pipeline(): BelongsTo
+    {
+        return $this->belongsTo(Pipeline::class);
+    }
+
+    /**
+     * Get the pipeline stage this deal currently sits in.
+     *
+     * @return BelongsTo<PipelineStage, $this>
+     */
+    public function stage(): BelongsTo
+    {
+        return $this->belongsTo(PipelineStage::class, 'stage_id');
+    }
+
+    /**
+     * Get the status of this deal.
+     *
+     * @return BelongsTo<DealStatus, $this>
      */
     public function status(): BelongsTo
     {
-        return $this->belongsTo(PipelineStatus::class, 'status_id');
+        return $this->belongsTo(DealStatus::class, 'status_id');
     }
 
     /**
-     * Get the stages that belong to this pipeline, ordered by position.
+     * Get the company this deal belongs to.
      *
-     * @return HasMany<PipelineStage, $this>
+     * @return BelongsTo<Company, $this>
      */
-    public function stages(): HasMany
+    public function company(): BelongsTo
     {
-        return $this->hasMany(PipelineStage::class)->orderBy('position');
+        return $this->belongsTo(Company::class);
     }
 
     /**
-     * Get the deals that belong to this pipeline.
+     * Get the invoice raised from this deal.
      *
-     * @return HasMany<Deal, $this>
+     * @return BelongsTo<Invoice, $this>
      */
-    public function deals(): HasMany
+    public function invoice(): BelongsTo
     {
-        return $this->hasMany(Deal::class);
+        return $this->belongsTo(Invoice::class);
     }
 
     /**
-     * Get the user who created this pipeline.
+     * Get the user who created this deal.
      *
      * @return BelongsTo<User, $this>
      */
@@ -95,7 +136,7 @@ class Pipeline extends Model implements Auditable
     }
 
     /**
-     * Get the user who last updated this pipeline.
+     * Get the user who last updated this deal.
      *
      * @return BelongsTo<User, $this>
      */
@@ -105,7 +146,7 @@ class Pipeline extends Model implements Auditable
     }
 
     /**
-     * Get the user who deleted this pipeline.
+     * Get the user who deleted this deal.
      *
      * @return BelongsTo<User, $this>
      */
@@ -115,7 +156,7 @@ class Pipeline extends Model implements Auditable
     }
 
     /**
-     * Get the user who restored this pipeline.
+     * Get the user who restored this deal.
      *
      * @return BelongsTo<User, $this>
      */
@@ -125,7 +166,7 @@ class Pipeline extends Model implements Auditable
     }
 
     /**
-     * Get a snapshot of the pipeline's auditable attributes.
+     * Get a snapshot of the deal's auditable attributes.
      *
      * Used by the audit log to capture before/after state on create,
      * update, delete and restore actions.
@@ -138,8 +179,16 @@ class Pipeline extends Model implements Auditable
             'id',
             'title',
             'description',
-            'is_default',
+            'pipeline_id',
+            'stage_id',
             'status_id',
+            'company_id',
+            'invoice_id',
+            'value',
+            'currency',
+            'probability',
+            'expected_close_date',
+            'closed_at',
             'meta',
         ]);
     }
@@ -152,10 +201,13 @@ class Pipeline extends Model implements Auditable
     protected function casts(): array
     {
         return [
-            'is_default' => 'boolean',
+            'value' => 'integer',
+            'probability' => 'integer',
+            'expected_close_date' => 'date',
+            'closed_at' => 'date',
             'meta' => 'array',
-            'restored_at' => 'datetime',
             'deleted_at' => 'datetime',
+            'restored_at' => 'datetime',
         ];
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -54,6 +55,16 @@ class PipelineStatus extends Model implements Auditable
      */
     use HasFactory,
         SoftDeletes;
+
+    /**
+     * Get the pipelines with this status.
+     *
+     * @return HasMany<Pipeline, $this>
+     */
+    public function pipelines(): HasMany
+    {
+        return $this->hasMany(Pipeline::class, 'status_id');
+    }
 
     /**
      * Get the user who created this task status.

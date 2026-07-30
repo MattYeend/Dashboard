@@ -7,23 +7,23 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import {
-    index as pipelinesIndex,
-    show as pipelinesShow,
-    create as pipelinesCreate,
-    edit as pipelinesEdit,
-    destroy as pipelinesDestroy,
-} from '@/routes/pipelines';
-import pipelinesBulk from '@/routes/pipelines/bulk';
 import type {
+    Deal,
     Pagination as PaginationMeta,
     PermissionsMeta,
-    Pipeline,
 } from '@/types';
+import {
+    index as dealsIndex,
+    show as dealsShow,
+    create as dealsCreate,
+    edit as dealsEdit,
+    destroy as dealsDestroy,
+} from '@/routes/deals';
+import dealsBulk from '@/routes/deals/bulk';
 
 interface Props {
-    pipelines: {
-        data: Pipeline[];
+    deals: {
+        data: Deal[];
         links: Array<{ url: string | null; label: string; active: boolean }>;
         meta: PaginationMeta;
     };
@@ -46,7 +46,7 @@ const filters = ref({
 const selectedIds = ref<Array<number | string>>([]);
 
 const deleteDialogOpen = ref(false);
-const selectedPipelineId = ref<number | null>(null);
+const selectedDealId = ref<number | null>(null);
 const deleteProcessing = ref(false);
 
 const bulkDeleteDialogOpen = ref(false);
@@ -55,15 +55,17 @@ const bulkDeleteProcessing = ref(false);
 
 const columns: ResourceTableColumn[] = [
     { key: 'title', label: 'Title' },
-    { key: 'is_default', label: 'Default' },
+    { key: 'stage', label: 'Stage' },
     { key: 'status', label: 'Status' },
+    { key: 'value', label: 'Value' },
+    { key: 'company', label: 'Company' },
 ];
 
 const filterFields = [
     {
         key: 'search',
         type: 'text' as const,
-        placeholder: 'Search pipelines…',
+        placeholder: 'Search deals…',
     },
     {
         key: 'trashed',
@@ -98,30 +100,30 @@ const filterFields = [
 ];
 
 function applyFilters(): void {
-    router.get(pipelinesIndex.url(), filters.value, {
+    router.get(dealsIndex.url(), filters.value, {
         preserveState: true,
         replace: true,
     });
 }
 
 function requestDestroy(id: number): void {
-    selectedPipelineId.value = id;
+    selectedDealId.value = id;
     deleteDialogOpen.value = true;
 }
 
 function destroy(): void {
-    if (selectedPipelineId.value === null) {
+    if (selectedDealId.value === null) {
         return;
     }
 
     deleteProcessing.value = true;
 
-    router.delete(pipelinesDestroy.url(selectedPipelineId.value), {
+    router.delete(dealsDestroy.url(selectedDealId.value), {
         preserveScroll: true,
         onFinish: () => {
             deleteProcessing.value = false;
             deleteDialogOpen.value = false;
-            selectedPipelineId.value = null;
+            selectedDealId.value = null;
         },
     });
 }
@@ -143,7 +145,7 @@ function bulkDelete(): void {
     bulkDeleteProcessing.value = true;
 
     router.post(
-        pipelinesBulk.delete.url(),
+        dealsBulk.delete.url(),
         { ids: pendingBulkIds.value },
         {
             preserveScroll: true,
@@ -164,9 +166,9 @@ function bulkDelete(): void {
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <IndexHeader
-                title="Pipelines"
-                :create-href="pipelinesCreate.url()"
-                create-label="Add Pipeline"
+                title="Deals"
+                :create-href="dealsCreate.url()"
+                create-label="Add Deal"
                 :can-create="permissions_meta.can_create"
             />
 
@@ -178,14 +180,25 @@ function bulkDelete(): void {
 
             <ResourceTable
                 v-model:selected="selectedIds"
-                :rows="pipelines.data"
+                :rows="deals.data"
                 :columns="columns"
                 row-key="id"
                 selectable
-                empty-message="No pipelines found."
+                empty-message="No deals found."
             >
-                <template #cell-is_default="{ row }">
-                    {{ row.is_default ? 'Yes' : 'No' }}
+                <template #cell-stage="{ row }">
+                    <span
+                        v-if="row.stage"
+                        :style="{
+                            backgroundColor:
+                                row.stage.background_colour ?? '#e2e8f0',
+                            color: row.stage.text_colour ?? '#1a202c',
+                        }"
+                        class="rounded px-2 py-0.5 text-xs font-medium"
+                    >
+                        {{ row.stage.title }}
+                    </span>
+                    <span v-else>-</span>
                 </template>
                 <template #cell-status="{ row }">
                     <span
@@ -201,6 +214,12 @@ function bulkDelete(): void {
                     </span>
                     <span v-else>-</span>
                 </template>
+                <template #cell-value="{ row }">
+                    {{ row.currency }} {{ row.value }}
+                </template>
+                <template #cell-company="{ row }">
+                    {{ row.company?.name ?? '-' }}
+                </template>
 
                 <template #bulk-actions="{ selected }">
                     <button
@@ -213,8 +232,8 @@ function bulkDelete(): void {
                 </template>
 
                 <template #actions="{ row }">
-                    <Link :href="pipelinesShow.url(row.id)">View</Link>
-                    <Link :href="pipelinesEdit.url(row.id)">Edit</Link>
+                    <Link :href="dealsShow.url(row.id)">View</Link>
+                    <Link :href="dealsEdit.url(row.id)">Edit</Link>
                     <button
                         type="button"
                         class="text-red-600 hover:text-red-900"
@@ -226,16 +245,16 @@ function bulkDelete(): void {
             </ResourceTable>
 
             <Pagination
-                :meta="pipelines.meta"
-                :links="pipelines.links"
-                resource-label="pipelines"
+                :meta="deals.meta"
+                :links="deals.links"
+                resource-label="deals"
             />
         </div>
 
         <ConfirmDialog
             v-model:open="deleteDialogOpen"
-            title="Delete pipeline"
-            description="This pipeline will be moved to trash."
+            title="Delete deal"
+            description="This deal will be moved to trash."
             confirm-label="Delete"
             :processing="deleteProcessing"
             @confirm="destroy"
@@ -243,8 +262,8 @@ function bulkDelete(): void {
 
         <ConfirmDialog
             v-model:open="bulkDeleteDialogOpen"
-            title="Delete pipelines"
-            :description="`${pendingBulkIds.length} pipeline(s) will be moved to trash.`"
+            title="Delete deals"
+            :description="`${pendingBulkIds.length} deal(s) will be moved to trash.`"
             confirm-label="Delete"
             :processing="bulkDeleteProcessing"
             @confirm="bulkDelete"

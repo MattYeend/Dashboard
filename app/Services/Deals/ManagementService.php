@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\DealStatuses;
+namespace App\Services\Deals;
 
-use App\Http\Requests\DealStatuses\StoreDealStatusRequest;
-use App\Http\Requests\DealStatuses\UpdateDealStatusRequest;
-use App\Models\DealStatus;
+use App\Http\Requests\Deals\StoreDealRequest;
+use App\Http\Requests\Deals\UpdateDealRequest;
+use App\Models\Deal;
 use App\Models\User;
 
 class ManagementService
@@ -20,11 +20,11 @@ class ManagementService
     ) {}
 
     /**
-     * Create a new deal status.
+     * Create a new deal.
      */
     public function store(
-        StoreDealStatusRequest $request
-    ): DealStatus {
+        StoreDealRequest $request
+    ): Deal {
         return $this->creator->create(
             $request->validated(),
             $request->user()->id
@@ -32,55 +32,55 @@ class ManagementService
     }
 
     /**
-     * Update an existing deal status.
+     * Update an existing deal.
      */
     public function update(
-        UpdateDealStatusRequest $request,
-        DealStatus $dealStatus
-    ): DealStatus {
+        UpdateDealRequest $request,
+        Deal $deal
+    ): Deal {
         return $this->updater->update(
-            $dealStatus,
+            $deal,
             $request->validated(),
             $request->user()->id
         );
     }
 
     /**
-     * Soft delete a deal status.
+     * Soft delete a deal.
      */
     public function destroy(
-        DealStatus $dealStatus,
+        Deal $deal,
         User $actor
     ): void {
-        $this->destructor->delete($dealStatus, $actor->id);
+        $this->destructor->delete($deal, $actor->id);
     }
 
     /**
-     * Restore a soft-deleted deal status.
+     * Restore a soft-deleted deal.
      */
     public function restore(
         int $id,
         User $actor
-    ): DealStatus {
-        $dealStatus = DealStatus::withTrashed()->findOrFail($id);
+    ): Deal {
+        $deal = Deal::withTrashed()->findOrFail($id);
 
-        return $this->restorer->restore($dealStatus, $actor->id);
+        return $this->restorer->restore($deal, $actor->id);
     }
 
     /**
-     * Force delete a deal status, permanently removing it from the
+     * Force delete a deal, permanently removing it from the
      * database.
      */
     public function forceDelete(
         int $id,
         User $actor
     ): void {
-        $dealStatus = DealStatus::withTrashed()->findOrFail($id);
-        $this->destructor->forceDelete($dealStatus, $actor->id);
+        $deal = Deal::withTrashed()->findOrFail($id);
+        $this->destructor->forceDelete($deal, $actor->id);
     }
 
     /**
-     * Bulk restore deal statuses.
+     * Bulk restore deals.
      */
     public function bulkRestore(
         array $ids,
@@ -89,30 +89,30 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $dealStatuses = DealStatus::onlyTrashed()
+        $deals = Deal::onlyTrashed()
             ->whereIn('id', $requestedIds)
             ->get();
 
         $restored = [];
 
-        foreach ($dealStatuses as $dealStatus) {
-            /** @var DealStatus $dealStatus */
-            $authoriseCallback($dealStatus);
-            $this->restorer->restore($dealStatus, $actor->id);
-            $restored[] = $dealStatus->id;
+        foreach ($deals as $deal) {
+            /** @var Deal $deal */
+            $authoriseCallback($deal);
+            $this->restorer->restore($deal, $actor->id);
+            $restored[] = $deal->id;
         }
 
         return [
             'restored' => $restored,
             'skipped' => $requestedIds
-                ->diff($dealStatuses->pluck('id'))
+                ->diff($deals->pluck('id'))
                 ->values()
                 ->all(),
         ];
     }
 
     /**
-     * Bulk soft delete deal statuses.
+     * Bulk soft delete deals.
      */
     public function bulkDelete(
         array $ids,
@@ -121,22 +121,22 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $dealStatuses = DealStatus::whereIn('id', $requestedIds)
+        $deals = Deal::whereIn('id', $requestedIds)
             ->get();
 
         $deleted = [];
 
-        foreach ($dealStatuses as $dealStatus) {
-            /** @var DealStatus $dealStatus */
-            $authoriseCallback($dealStatus);
-            $this->destructor->delete($dealStatus, $actor->id);
-            $deleted[] = $dealStatus->id;
+        foreach ($deals as $deal) {
+            /** @var Deal $deal */
+            $authoriseCallback($deal);
+            $this->destructor->delete($deal, $actor->id);
+            $deleted[] = $deal->id;
         }
 
         return [
             'deleted' => $deleted,
             'skipped' => $requestedIds
-                ->diff($dealStatuses->pluck('id'))
+                ->diff($deals->pluck('id'))
                 ->values()
                 ->all(),
         ];

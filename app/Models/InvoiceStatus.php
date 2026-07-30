@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -51,6 +52,16 @@ class InvoiceStatus extends Model implements Auditable
     /** @use HasFactory<InvoiceStatusFactory> */
     use HasFactory,
         SoftDeletes;
+
+    /**
+     * Get the invoices with this status.
+     *
+     * @return HasMany<Invoice, $this>
+     */
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class, 'status_id');
+    }
 
     /**
      * Get the user who created this invoice status.

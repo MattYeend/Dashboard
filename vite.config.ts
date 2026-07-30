@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue';
 import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
 import { defineConfig } from 'vite';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
     plugins: [
@@ -29,6 +30,12 @@ export default defineConfig({
         }),
         wayfinder({
             formVariants: true,
+        }),
+        visualizer({
+            filename: './public/build/stats.json',
+            json: true,
+            gzipSize: true,
+            brotliSize: true,
         }),
     ],
     build: {
