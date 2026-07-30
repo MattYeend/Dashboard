@@ -119,16 +119,25 @@ class ManagementService
         User $actor,
         callable $authoriseCallback
     ): array {
+        $requestedIds = collect($ids)->unique()->values();
+
+        $pipelineStatuses = PipelineStatus::whereIn('id', $requestedIds)->get();
+
         $deleted = [];
 
-        foreach ($ids as $id) {
-            $pipelineStatus = PipelineStatus::findOrFail($id);
+        foreach ($pipelineStatuses as $pipelineStatus) {
+            /** @var PipelineStatus $pipelineStatus */
             $authoriseCallback($pipelineStatus);
-
             $this->destructor->delete($pipelineStatus, $actor->id);
-            $deleted[] = $id;
+            $deleted[] = $pipelineStatus->id;
         }
 
-        return $deleted;
+        return [
+            'deleted' => $deleted,
+            'skipped' => $requestedIds
+                ->diff($pipelineStatuses->pluck('id'))
+                ->values()
+                ->all(),
+        ];
     }
 }
