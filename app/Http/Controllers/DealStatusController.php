@@ -234,20 +234,20 @@ class DealStatusController extends Controller
     {
         $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:deal_statuses,id'],
+            'ids.*' => ['required', 'integer'],
         ]);
 
         $actor = $request->user();
         $ids = $request->input('ids');
 
-        $this->management->bulkDelete(
+        $result = $this->management->bulkDelete(
             $ids,
             $actor,
             fn (DealStatus $dealStatus) => $this->authorize('delete', $dealStatus)
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('deal-statuses.index');
@@ -262,17 +262,17 @@ class DealStatusController extends Controller
     {
         $validated = $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:deal_statuses,id'],
+            'ids.*' => ['required', 'integer'],
         ]);
 
-        $this->management->bulkRestore(
+        $result = $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
             fn (DealStatus $dealStatus) => $this->authorize('restore', $dealStatus)
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('deal-statuses.index');

@@ -228,20 +228,20 @@ class ContactController extends Controller
     {
         $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:contacts,id'],
+            'ids.*' => ['required', 'integer'],
         ]);
 
         $actor = $request->user();
         $ids = $request->input('ids');
 
-        $this->management->bulkDelete(
+        $result = $this->management->bulkDelete(
             $ids,
             $actor,
             fn (Contact $contact) => $this->authorize('delete', $contact)
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('contacts.index');
@@ -256,17 +256,17 @@ class ContactController extends Controller
     {
         $validated = $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:contacts,id'],
+            'ids.*' => ['required', 'integer'],
         ]);
 
-        $this->management->bulkRestore(
+        $result = $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
             fn (Contact $contact) => $this->authorize('restore', $contact)
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('contacts.index');

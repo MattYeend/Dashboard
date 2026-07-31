@@ -228,20 +228,20 @@ class AddressController extends Controller
     {
         $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:addresses,id'],
+            'ids.*' => ['required', 'integer'],
         ]);
 
         $actor = $request->user();
         $ids = $request->input('ids');
 
-        $this->management->bulkDelete(
+        $result = $this->management->bulkDelete(
             $ids,
             $actor,
             fn (Address $address) => $this->authorize('delete', $address)
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('addresses.index');
@@ -256,17 +256,17 @@ class AddressController extends Controller
     {
         $validated = $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:addresses,id'],
+            'ids.*' => ['required', 'integer'],
         ]);
 
-        $this->management->bulkRestore(
+        $result = $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
             fn (Address $address) => $this->authorize('restore', $address)
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('addresses.index');
