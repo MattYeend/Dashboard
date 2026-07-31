@@ -8,6 +8,7 @@ import InvoiceStatsCard from '@/pages/Dashboard/components/InvoiceStatsCard.vue'
 import LatestPostsCard from '@/pages/Dashboard/components/LatestPostsCard.vue';
 import OrderStatsCard from '@/pages/Dashboard/components/OrderStatsCard.vue';
 import TaskStatsCard from '@/pages/Dashboard/components/TaskStatsCard.vue';
+import PipelineStatsCard from '@/pages/Dashboard/components/PipelineStatsCard.vue';
 
 const props = defineProps<{
     stats: DashboardStats;
@@ -44,6 +45,11 @@ defineOptions({
                 :total="props.stats.deals.total"
                 :won="props.stats.deals.won"
                 :lost="props.stats.deals.lost"
+            />
+            <PipelineStatsCard
+                :total="props.stats.pipelines.total"
+                :won="props.stats.pipelines.won"
+                :lost="props.stats.pipelines.lost"
             />
             <OrderStatsCard
                 :total="props.stats.orders.total"

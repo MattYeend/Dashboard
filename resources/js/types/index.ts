@@ -657,6 +657,11 @@ export interface DashboardStats {
         won: number;
         lost: number;
     };
+    pipelines: {
+        total: number;
+        won: number;
+        lost: number;
+    };
     orders: {
         total: number;
         completed: number;
