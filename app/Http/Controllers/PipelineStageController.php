@@ -12,7 +12,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -256,11 +255,18 @@ class PipelineStageController extends Controller
             'ids.*' => [
                 'required',
                 'integer',
-                Rule::exists('pipeline_stages', 'id')->where('pipeline_id', $pipeline->id),
+                function (string $attribute, mixed $value, \Closure $fail) use ($pipeline) {
+                    $stage = PipelineStage::withTrashed()->find($value);
+
+                    if ($stage && $stage->pipeline_id !== $pipeline->id) {
+                        $fail('The selected '.$attribute.' is invalid.');
+                    }
+                },
             ],
         ]);
 
         $result = $this->management->bulkDelete(
+            $pipeline,
             $validated['ids'],
             $request->user(),
             fn (PipelineStage $stage) => $this->authorize('delete', $stage)
@@ -285,11 +291,18 @@ class PipelineStageController extends Controller
             'ids.*' => [
                 'required',
                 'integer',
-                Rule::exists('pipeline_stages', 'id')->where('pipeline_id', $pipeline->id),
+                function (string $attribute, mixed $value, \Closure $fail) use ($pipeline) {
+                    $stage = PipelineStage::withTrashed()->find($value);
+
+                    if ($stage && $stage->pipeline_id !== $pipeline->id) {
+                        $fail('The selected '.$attribute.' is invalid.');
+                    }
+                },
             ],
         ]);
 
         $result = $this->management->bulkRestore(
+            $pipeline,
             $validated['ids'],
             $request->user(),
             fn (PipelineStage $stage) => $this->authorize('restore', $stage)

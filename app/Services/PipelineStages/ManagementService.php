@@ -86,13 +86,15 @@ class ManagementService
      * Bulk restore pipeline stages.
      */
     public function bulkRestore(
+        Pipeline $pipeline,
         array $ids,
         User $actor,
         callable $authoriseCallback
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $pipelineStages = PipelineStage::onlyTrashed()
+        $pipelineStages = $pipeline->stages()
+            ->onlyTrashed()
             ->whereIn('id', $requestedIds)
             ->get();
 
@@ -118,13 +120,16 @@ class ManagementService
      * Bulk soft delete pipeline stages.
      */
     public function bulkDelete(
+        Pipeline $pipeline,
         array $ids,
         User $actor,
         callable $authoriseCallback
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $pipelineStages = PipelineStage::whereIn('id', $requestedIds)->get();
+        $pipelineStages = $pipeline->stages()
+            ->whereIn('id', $requestedIds)
+            ->get();
 
         $deleted = [];
 

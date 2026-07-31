@@ -515,7 +515,11 @@ describe('bulk delete', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/tasks/bulk/delete', ['ids' => $ids])
-            ->assertStatus(204);
+            ->assertStatus(200)
+            ->assertJson([
+                'deleted' => $ids,
+                'skipped' => [],
+            ]);
 
         foreach ($ids as $id) {
             $this->assertSoftDeleted('tasks', ['id' => $id]);
@@ -531,13 +535,16 @@ describe('bulk delete', function () {
             ->assertJsonValidationErrors(['ids']);
     });
 
-    test('bulk delete fails validation with non-existent ids', function () {
+    test('bulk delete skips non-existent ids', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
             ->postJson('/tasks/bulk/delete', ['ids' => [99999]])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['ids.0']);
+            ->assertStatus(200)
+            ->assertJson([
+                'deleted' => [],
+                'skipped' => [99999],
+            ]);
     });
 
     test('user without permission cannot bulk delete tasks', function () {
@@ -560,7 +567,11 @@ describe('bulk restore', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/tasks/bulk/restore', ['ids' => $ids])
-            ->assertStatus(204);
+            ->assertStatus(200)
+            ->assertJson([
+                'restored' => $ids,
+                'skipped' => [],
+            ]);
 
         foreach ($ids as $id) {
             $this->assertDatabaseHas('tasks', [
@@ -579,13 +590,16 @@ describe('bulk restore', function () {
             ->assertJsonValidationErrors(['ids']);
     });
 
-    test('bulk restore fails validation with non-existent ids', function () {
+    test('bulk restore skips non-existent ids', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
             ->postJson('/tasks/bulk/restore', ['ids' => [99999]])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['ids.0']);
+            ->assertStatus(200)
+            ->assertJson([
+                'restored' => [],
+                'skipped' => [99999],
+            ]);
     });
 
     test('user without permission cannot bulk restore tasks', function () {
