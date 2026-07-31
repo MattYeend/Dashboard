@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\DealStatusController;
 use App\Http\Controllers\IndustryController;
@@ -41,7 +42,7 @@ Route::get('register/thanks', fn () => Inertia::render('auth/RegisterThanks'))
     ->name('register.thanks');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('users')->name('users.')->group(function () {
         Route::post('/bulk/delete', [UserController::class, 'bulkDelete'])->name('bulk.delete');
