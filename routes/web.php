@@ -191,6 +191,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [AddressController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [AddressController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [AddressController::class, 'export'])->name('export');
+        Route::post('/import', [AddressController::class, 'import'])->name('import');
+
         Route::get('/', [AddressController::class, 'index'])->name('index');
         Route::get('/create', [AddressController::class, 'create'])->name('create');
         Route::post('/', [AddressController::class, 'store'])->name('store');
@@ -212,6 +215,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/bulk/restore', [CategoryController::class, 'bulkRestore'])->name('bulk.restore');
         Route::post('/{id}/restore', [CategoryController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [CategoryController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/export', [CategoryController::class, 'export'])->name('export');
+        Route::post('/import', [CategoryController::class, 'import'])->name('import');
 
         Route::get('/', [CategoryController::class, 'index'])->name('index');
         Route::get('/create', [CategoryController::class, 'create'])->name('create');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Addresses\ImportAddressRequest;
 use App\Http\Requests\Addresses\StoreAddressRequest;
 use App\Http\Requests\Addresses\UpdateAddressRequest;
 use App\Models\Address;
@@ -13,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AddressController extends Controller
 {
@@ -270,6 +272,38 @@ class AddressController extends Controller
         }
 
         return redirect()->route('addresses.index');
+    }
+
+    /**
+     * Import addresses from an uploaded CSV file.
+     *
+     * Authorisation is handled by ImportAddressRequest::authorize().
+     */
+    public function import(ImportAddressRequest $request): JsonResponse|RedirectResponse
+    {
+        $result = $this->management->import($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('addresses.index')
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export addresses matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    {
+        $this->authorize('export', Address::class);
+
+        return $this->management->export(
+            $request->only(['search', 'trashed'])
+        );
     }
 
     /**

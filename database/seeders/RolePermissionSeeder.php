@@ -777,6 +777,7 @@ class RolePermissionSeeder extends Seeder
             'edit categories',
             'delete categories',
             'restore categories',
+            'force delete categories',
             'import categories',
             'export categories',
             'assign category',

@@ -149,7 +149,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
             $this->hasRole('Admin') => 'admin',
             default => 'user',
         };
-    
+
         $this->forceFill(['role' => $role])->save();
     }
 
@@ -168,7 +168,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
             'admin' => ['Admin'],
             default => ['User'],
         });
-    
+
         $this->syncDisplayRoleFromSpatie();
     }
 
