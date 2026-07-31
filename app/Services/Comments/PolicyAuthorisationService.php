@@ -146,6 +146,22 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can import comments.
+     */
+    public function canImport(User $actor): bool
+    {
+        return $actor->can('import comments');
+    }
+
+    /**
+     * Determine whether the user can export comments.
+     */
+    public function canExport(User $actor): bool
+    {
+        return $actor->can('export comments');
+    }
+
+    /**
      * Determine whether the comment was created by a user who outranks the actor.
      *
      * Prevents admins from deleting comments created by super admins.

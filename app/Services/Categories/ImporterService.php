@@ -18,8 +18,10 @@ class ImporterService
      *
      * @return array{imported: int, skipped: array<int, array{row: int, reason: string}>}
      */
-    public function import(UploadedFile $file, int $actorId): array
-    {
+    public function import(
+        UploadedFile $file,
+        int $actorId
+    ): array {
         $handle = fopen($file->getRealPath(), 'r');
 
         $header = fgetcsv($handle);

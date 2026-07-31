@@ -7,6 +7,7 @@ use App\Models\Comment;
 use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
+use Illuminate\Support\Facades\DB;
 
 class DeleterService
 {
@@ -25,9 +26,10 @@ class DeleterService
      */
     public function delete(
         Comment $comment,
-        int $deletedBy
+        int $deletedBy,
+        ?User $actor = null
     ): bool {
-        $actor = User::findOrFail($deletedBy);
+        $actor ??= User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
             $comment,
@@ -43,5 +45,49 @@ class DeleterService
                     ['before' => $this->auditLogService->snapshot($comment)],
                 );
             });
+    }
+
+    /**
+     * Force delete a comment (permanent deletion).
+     *
+     * @throws \Exception
+     */
+    public function forceDelete(Comment $comment, int $deletedBy): bool
+    {
+        $actor = User::findOrFail($deletedBy);
+
+        return $this->deleteResource->forceHandle(
+            $comment,
+            function (Comment $comment) use ($actor): void {
+                $this->auditLogService->record(
+                    Log::ACTION_FORCE_DELETE_COMMENT,
+                    $actor,
+                    $comment,
+                    ['before' => $this->auditLogService->snapshot($comment)],
+                );
+            });
+    }
+
+    /**
+     * Delete multiple comments.
+     *
+     * @throws \Exception
+     */
+    public function deleteMultiple(array $commentIds, int $deletedBy): int
+    {
+        $count = 0;
+
+        DB::transaction(function () use ($commentIds, $deletedBy, &$count) {
+            $actor = User::findOrFail($deletedBy);
+            $comments = Comment::whereIn('id', $commentIds)->get();
+
+            foreach ($comments as $comment) {
+                if ($this->delete($comment, $deletedBy, $actor)) {
+                    $count++;
+                }
+            }
+        });
+
+        return $count;
     }
 }

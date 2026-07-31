@@ -159,6 +159,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [CompanyController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [CompanyController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [CompanyController::class, 'export'])->name('export');
+        Route::post('/import', [CompanyController::class, 'import'])->name('import');
+
         Route::get('/', [CompanyController::class, 'index'])->name('index');
         Route::get('/create', [CompanyController::class, 'create'])->name('create');
         Route::post('/', [CompanyController::class, 'store'])->name('store');
@@ -246,6 +249,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/{post}/like', [PostController::class, 'unlike'])->name('unlike');
 
         Route::prefix('/{post}/comments')->name('comments.')->group(function () {
+            Route::post('/bulk/delete', [CommentController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [CommentController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [CommentController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [CommentController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/export', [CommentController::class, 'export'])->name('export');
+            Route::post('/import', [CommentController::class, 'import'])->name('import');
+
             Route::post('/', [CommentController::class, 'store'])->name('store');
             Route::put('/{comment}', [CommentController::class, 'update'])->name('update');
             Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('destroy');

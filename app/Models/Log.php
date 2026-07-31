@@ -552,6 +552,11 @@ class Log extends Model
 
     public const ACTION_CHANGE_DEAL_STATUS = 258;
 
+    // Additional Comment Management
+    public const ACTION_IMPORT_COMMENT = 259;
+
+    public const ACTION_EXPORT_COMMENT = 260;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
