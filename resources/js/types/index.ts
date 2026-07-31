@@ -642,3 +642,37 @@ export interface AuthUser {
     email: string;
     avatar?: string;
 }
+
+export interface DashboardStats {
+    tasks: {
+        completed: number;
+        outstanding: number;
+    };
+    companies: {
+        total: number;
+        created_this_month: number;
+    };
+    deals: {
+        total: number;
+        won: number;
+        lost: number;
+    };
+    orders: {
+        total: number;
+        completed: number;
+        outstanding: number;
+    };
+    invoices: {
+        total: number;
+        paid: number;
+        outstanding: number;
+    };
+    posts: DashboardLatestPost[];
+}
+
+export interface DashboardLatestPost {
+    id: number;
+    title: string;
+    created_at: string;
+    creator?: { name: string };
+}
