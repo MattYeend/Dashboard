@@ -247,17 +247,7 @@ class InvoiceItemController extends Controller
     ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => [
-                'required',
-                'integer',
-                function (string $attribute, mixed $value, \Closure $fail) use ($invoice) {
-                    $invoiceItem = InvoiceItem::withTrashed()->find($value);
-
-                    if ($invoiceItem && $invoiceItem->invoice_id !== $invoice->id) {
-                        $fail('The selected '.$attribute.' is invalid.');
-                    }
-                },
-            ],
+            'ids.*' => ['required', 'integer'],
         ]);
 
         $result = $this->management->bulkDelete(
@@ -286,17 +276,7 @@ class InvoiceItemController extends Controller
     ): JsonResponse|RedirectResponse {
         $validated = $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => [
-                'required',
-                'integer',
-                function (string $attribute, mixed $value, \Closure $fail) use ($invoice) {
-                    $invoiceItem = InvoiceItem::withTrashed()->find($value);
-
-                    if ($invoiceItem && $invoiceItem->invoice_id !== $invoice->id) {
-                        $fail('The selected '.$attribute.' is invalid.');
-                    }
-                },
-            ],
+            'ids.*' => ['required', 'integer'],
         ]);
 
         $result = $this->management->bulkRestore(
