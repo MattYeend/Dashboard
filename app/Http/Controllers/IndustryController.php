@@ -226,20 +226,20 @@ class IndustryController extends Controller
     {
         $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:industries,id'],
+            'ids.*' => ['required', 'integer'],
         ]);
 
         $actor = $request->user();
         $ids = $request->input('ids');
 
-        $this->management->bulkDelete(
+        $result = $this->management->bulkDelete(
             $ids,
             $actor,
             fn (Industry $industry) => $this->authorize('delete', $industry)
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('industries.index');
@@ -254,17 +254,17 @@ class IndustryController extends Controller
     {
         $validated = $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:industries,id'],
+            'ids.*' => ['required', 'integer'],
         ]);
 
-        $this->management->bulkRestore(
+        $result = $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
             fn (Industry $industry) => $this->authorize('restore', $industry)
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('industries.index');

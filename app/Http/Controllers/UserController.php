@@ -228,20 +228,20 @@ class UserController extends Controller
     {
         $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:users,id'],
+            'ids.*' => ['required', 'integer'],
         ]);
 
         $actor = $request->user();
         $ids = $request->input('ids');
 
-        $this->management->bulkDelete(
+        $result = $this->management->bulkDelete(
             $ids,
             $actor,
             fn (User $user) => $this->authorize('delete', $user)
         );
 
         if (request()->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('users.index');
@@ -256,17 +256,17 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:users,id'],
+            'ids.*' => ['required', 'integer'],
         ]);
 
-        $this->management->bulkRestore(
+        $result = $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
             fn (User $user) => $this->authorize('restore', $user)
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('users.index');

@@ -153,17 +153,17 @@ class RegistrationInterestController extends Controller
     {
         $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:registration_interests,id'],
+            'ids.*' => ['required', 'integer'],
         ]);
 
-        $this->management->bulkDelete(
+        $result = $this->management->bulkDelete(
             $request->input('ids'),
             $request->user(),
             fn (RegistrationInterest $interest) => $this->authorize('delete', $interest)
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('registration-interests.index');
@@ -178,17 +178,17 @@ class RegistrationInterestController extends Controller
     {
         $validated = $request->validate([
             'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:registration_interests,id'],
+            'ids.*' => ['required', 'integer'],
         ]);
 
-        $this->management->bulkRestore(
+        $result = $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
             fn (RegistrationInterest $interest) => $this->authorize('restore', $interest)
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('registration-interests.index');

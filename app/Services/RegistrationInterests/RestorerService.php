@@ -32,20 +32,24 @@ class RestorerService
      * Bulk restore multiple soft-deleted registration interests.
      *
      * @param  array<int, int>  $ids
+     * @return array<int, int>
      */
-    public function bulkRestore(array $ids, User $actor, callable $authorize): void
+    public function bulkRestore(array $ids, User $actor, callable $authorize): array
     {
-        RegistrationInterest::onlyTrashed()->whereIn('id', $ids)->get()->each(function (RegistrationInterest $interest) use ($actor, $authorize) {
-            $authorize($interest);
+        return RegistrationInterest::onlyTrashed()->whereIn('id', $ids)->get()
+            ->each(function (RegistrationInterest $interest) use ($actor, $authorize) {
+                $authorize($interest);
 
-            $this->restoreResource->handle($interest, function (RegistrationInterest $interest) use ($actor) {
-                $interest->update([
-                    'restored_by' => $actor->id,
-                    'restored_at' => now(),
-                ]);
+                $this->restoreResource->handle($interest, function (RegistrationInterest $interest) use ($actor) {
+                    $interest->update([
+                        'restored_by' => $actor->id,
+                        'restored_at' => now(),
+                    ]);
 
-                Log::log(Log::ACTION_RESTORE_REGISTRATION_INTEREST, $interest->auditSnapshot(), $actor->id);
-            });
-        });
+                    Log::log(Log::ACTION_RESTORE_REGISTRATION_INTEREST, $interest->auditSnapshot(), $actor->id);
+                });
+            })
+            ->pluck('id')
+            ->all();
     }
 }

@@ -260,14 +260,14 @@ class PipelineStageController extends Controller
             ],
         ]);
 
-        $this->management->bulkDelete(
+        $result = $this->management->bulkDelete(
             $validated['ids'],
             $request->user(),
             fn (PipelineStage $stage) => $this->authorize('delete', $stage)
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('pipelines.stages.index', $pipeline);
@@ -289,14 +289,14 @@ class PipelineStageController extends Controller
             ],
         ]);
 
-        $this->management->bulkRestore(
+        $result = $this->management->bulkRestore(
             $validated['ids'],
             $request->user(),
             fn (PipelineStage $stage) => $this->authorize('restore', $stage)
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('pipelines.stages.index', $pipeline);

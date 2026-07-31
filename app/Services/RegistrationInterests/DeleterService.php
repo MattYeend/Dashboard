@@ -39,13 +39,17 @@ class DeleterService
      * Bulk soft delete multiple registration interests.
      *
      * @param  array<int, int>  $ids
+     * @return array<int, int>
      */
-    public function bulkDelete(array $ids, User $actor, callable $authorize): void
+    public function bulkDelete(array $ids, User $actor, callable $authorize): array
     {
-        RegistrationInterest::whereIn('id', $ids)->get()->each(function (RegistrationInterest $interest) use ($actor, $authorize) {
-            $authorize($interest);
+        return RegistrationInterest::whereIn('id', $ids)->get()
+            ->each(function (RegistrationInterest $interest) use ($actor, $authorize) {
+                $authorize($interest);
 
-            $this->delete($interest, $actor);
-        });
+                $this->delete($interest, $actor);
+            })
+            ->pluck('id')
+            ->all();
     }
 }

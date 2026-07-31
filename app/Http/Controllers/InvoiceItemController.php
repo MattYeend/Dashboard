@@ -255,15 +255,15 @@ class InvoiceItemController extends Controller
             ],
         ]);
 
-        $this->management->bulkDelete(
+        $result = $this->management->bulkDelete(
             $invoice,
             $validated['ids'],
             $request->user(),
             fn (InvoiceItem $invoiceItem) => $this->authorize('delete', $invoiceItem)
         );
 
-        if (request()->wantsJson()) {
-            return response()->json(null, 204);
+        if ($request->wantsJson()) {
+            return response()->json($result);
         }
 
         return redirect()->route('invoices.items.index', $invoice->id);
@@ -288,7 +288,7 @@ class InvoiceItemController extends Controller
             ],
         ]);
 
-        $this->management->bulkRestore(
+        $result = $this->management->bulkRestore(
             $invoice,
             $validated['ids'],
             $request->user(),
@@ -296,7 +296,7 @@ class InvoiceItemController extends Controller
         );
 
         if ($request->wantsJson()) {
-            return response()->json(null, 204);
+            return response()->json($result);
         }
 
         return redirect()->route('invoices.items.index', $invoice->id);

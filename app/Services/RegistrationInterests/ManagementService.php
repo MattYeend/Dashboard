@@ -62,8 +62,8 @@ class ManagementService
         array $ids,
         User $actor,
         callable $authorize
-    ): void {
-        $this->deleter->bulkDelete($ids, $actor, $authorize);
+    ): array {
+        return $this->deleter->bulkDelete($ids, $actor, $authorize);
     }
 
     /**
@@ -75,7 +75,7 @@ class ManagementService
         array $ids,
         User $actor,
         callable $authorize
-    ): void {
-        $this->restorer->bulkRestore($ids, $actor, $authorize);
+    ): array {
+        return $this->restorer->bulkRestore($ids, $actor, $authorize);
     }
 }
