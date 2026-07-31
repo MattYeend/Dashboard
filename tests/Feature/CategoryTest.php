@@ -619,7 +619,7 @@ describe('bulk delete', function () {
             ->postJson('/categories/bulk/delete', ['ids' => $ids])
             ->assertStatus(200)
             ->assertJson([
-               'deleted' => $ids,
+                'deleted' => $ids,
                 'skipped' => [],
             ]);
 
