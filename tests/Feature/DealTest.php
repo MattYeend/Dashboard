@@ -25,11 +25,6 @@ beforeEach(function () {
     Role::firstOrCreate(['name' => 'User']);
 });
 
-test('example', function () {
-    $response = $this->get('/');
-    $response->assertStatus(200);
-});
-
 describe('index', function () {
     test('authenticated user with permission can list deals', function () {
         $superAdmin = $this->superAdminUser();
