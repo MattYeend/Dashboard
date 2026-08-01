@@ -13,6 +13,7 @@ use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceItemController;
 use App\Http\Controllers\InvoiceStatusController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PipelineController;
@@ -43,6 +44,13 @@ Route::get('register/thanks', fn () => Inertia::render('auth/RegisterThanks'))
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::middleware('can:view notifications')->prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/unread', [NotificationController::class, 'unread'])->name('unread');
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::post('/{id}/read', [NotificationController::class, 'markAsRead'])->name('read');
+        Route::post('/read-all', [NotificationController::class, 'markAllAsRead'])->name('read-all');
+    });
 
     Route::prefix('users')->name('users.')->group(function () {
         Route::post('/bulk/delete', [UserController::class, 'bulkDelete'])->name('bulk.delete');

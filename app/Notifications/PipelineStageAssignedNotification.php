@@ -7,7 +7,7 @@ use App\Models\Pipeline;
 class PipelineStageAssignedNotification extends BaseNotification
 {
     /**
-     * @param Pipeline $pipeline The pipeline the user has been assigned to.
+     * @param  Pipeline  $pipeline  The pipeline the user has been assigned to.
      */
     public function __construct(protected Pipeline $pipeline) {}
 

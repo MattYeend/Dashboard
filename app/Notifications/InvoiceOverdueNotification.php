@@ -7,7 +7,7 @@ use App\Models\Invoice;
 class InvoiceOverdueNotification extends BaseNotification
 {
     /**
-     * @param Invoice $invoice The invoice that is overdue.
+     * @param  Invoice  $invoice  The invoice that is overdue.
      */
     public function __construct(protected Invoice $invoice) {}
 

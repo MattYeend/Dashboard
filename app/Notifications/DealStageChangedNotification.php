@@ -7,7 +7,7 @@ use App\Models\Deal;
 class DealStageChangedNotification extends BaseNotification
 {
     /**
-     * @param Deal $deal The deal that has changed stage.
+     * @param  Deal  $deal  The deal that has changed stage.
      */
     public function __construct(protected Deal $deal) {}
 

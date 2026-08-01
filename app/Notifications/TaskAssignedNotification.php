@@ -7,7 +7,7 @@ use App\Models\Task;
 class TaskAssignedNotification extends BaseNotification
 {
     /**
-     * @param Task $task The task that has been assigned.
+     * @param  Task  $task  The task that has been assigned.
      */
     public function __construct(protected Task $task) {}
 

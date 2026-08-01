@@ -24,6 +24,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $due_date
  * @property Carbon|null $sent_at
  * @property Carbon|null $paid_at
+ * @property Carbon|null $overdue_notified_at
  * @property int $subtotal
  * @property int $tax_total
  * @property int $total
@@ -57,6 +58,7 @@ use Illuminate\Support\Carbon;
     'due_date',
     'sent_at',
     'paid_at',
+    'overdue_notified_at',
     'subtotal',
     'tax_total',
     'total',
@@ -210,6 +212,7 @@ class Invoice extends Model implements Auditable
             'due_date',
             'sent_at',
             'paid_at',
+            'overdue_notified_at',
             'subtotal',
             'tax_total',
             'total',
@@ -231,6 +234,7 @@ class Invoice extends Model implements Auditable
             'due_date' => 'date',
             'sent_at' => 'datetime',
             'paid_at' => 'datetime',
+            'overdue_notified_at' => 'datetime',
             'subtotal' => 'integer',
             'tax_total' => 'integer',
             'total' => 'integer',

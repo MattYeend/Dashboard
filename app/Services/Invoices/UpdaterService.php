@@ -9,6 +9,7 @@ use App\Models\Invoice;
 use App\Models\InvoiceStatus;
 use App\Models\Log;
 use App\Models\User;
+use App\Notifications\InvoiceOverdueNotification;
 use App\Services\AuditLogService;
 
 class UpdaterService
@@ -149,5 +150,18 @@ class UpdaterService
         );
 
         return $fresh;
+    }
+
+    /**
+     * Notify the invoice's account manager that the invoice is overdue,
+     * and stamp it so it isn't notified again.
+     */
+    public function markOverdueNotified(Invoice $invoice): Invoice
+    {
+        $invoice->company?->accountManager?->notify(new InvoiceOverdueNotification($invoice));
+
+        $invoice->update(['overdue_notified_at' => now()]);
+
+        return $invoice->fresh();
     }
 }

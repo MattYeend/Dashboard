@@ -14,7 +14,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 class NewRegistrationInterestNotification extends BaseNotification
 {
     /**
-     * @param RegistrationInterest $interest The submitted interest record.
+     * @param  RegistrationInterest  $interest  The submitted interest record.
      */
     public function __construct(protected RegistrationInterest $interest) {}
 
