@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Industries\ImportIndustryRequest;
 use App\Http\Requests\Industries\StoreIndustryRequest;
 use App\Http\Requests\Industries\UpdateIndustryRequest;
 use App\Models\Industry;
@@ -13,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class IndustryController extends Controller
 {
@@ -268,5 +270,37 @@ class IndustryController extends Controller
         }
 
         return redirect()->route('industries.index');
+    }
+
+    /**
+     * Import industries from an uploaded CSV file.
+     *
+     * Authorisation is handled by ImportIndustryRequest::authorize().
+     */
+    public function import(ImportIndustryRequest $request): JsonResponse|RedirectResponse
+    {
+        $result = $this->management->import($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('industries.index')
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export industries matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    {
+        $this->authorize('export', Industry::class);
+
+        return $this->management->export(
+            $request->only(['search', 'trashed'])
+        );
     }
 }
