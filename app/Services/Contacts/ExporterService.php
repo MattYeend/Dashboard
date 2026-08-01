@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Categories;
+namespace App\Services\Contacts;
 
-use App\Models\Category;
+use App\Models\Contact;
 use App\Models\Log;
 use App\Services\AuditLogService;
 use Illuminate\Support\Facades\Auth;
@@ -18,28 +18,31 @@ class ExporterService
     ) {}
 
     /**
-     * Stream all matching categories as a CSV download.
+     * Stream contacts as a CSV download.
      *
      * @param  array<string, mixed>  $filters
      */
     public function export(array $filters): StreamedResponse
     {
-        $query = Category::query();
+        $query = Contact::query();
 
-        if (! empty($filters['trashed']) && $filters['trashed'] === 'with') {
+        if (($filters['trashed'] ?? null) === 'with') {
             $query->withTrashed();
+        } elseif (($filters['trashed'] ?? null) === 'only') {
+            $query->onlyTrashed();
         }
 
         if (! empty($filters['search'])) {
-            $search = $filters['search'];
-
-            $query->where('name', 'like', "%{$search}%");
+            $query->where(function ($inner) use ($filters) {
+                $inner->where('phone', 'like', '%'.$filters['search'].'%')
+                    ->orWhere('email', 'like', '%'.$filters['search'].'%');
+            });
         }
 
-        $columns = ['id', 'name', 'slug', 'description', 'parent_id', 'created_at'];
+        $columns = ['id', 'contactable_type', 'contactable_id', 'phone', 'email', 'created_by', 'created_at'];
 
         $this->auditLogService->record(
-            Log::ACTION_EXPORT_CATEGORY,
+            Log::ACTION_EXPORT_CONTACT,
             Auth::user(),
             null,
             ['filters' => $filters, 'count' => (clone $query)->count()],
@@ -49,9 +52,9 @@ class ExporterService
             $handle = fopen('php://output', 'w');
             fputcsv($handle, $columns);
 
-            $query->orderBy('id')->chunk(500, function ($categories) use ($handle, $columns) {
-                foreach ($categories as $category) {
-                    fputcsv($handle, $category->only($columns));
+            $query->orderBy('id')->chunk(500, function ($contacts) use ($handle, $columns) {
+                foreach ($contacts as $contact) {
+                    fputcsv($handle, $contact->only($columns));
                 }
             });
 
@@ -60,7 +63,7 @@ class ExporterService
 
         return response()->streamDownload(
             $callback,
-            'categories-'.now()->format('Y-m-d-His').'.csv',
+            'contacts-'.now()->format('Y-m-d-His').'.csv',
             ['Content-Type' => 'text/csv']
         );
     }

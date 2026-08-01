@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Contacts\ImportContactRequest;
 use App\Http\Requests\Contacts\StoreContactRequest;
 use App\Http\Requests\Contacts\UpdateContactRequest;
 use App\Models\Contact;
@@ -13,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ContactController extends Controller
 {
@@ -270,6 +272,38 @@ class ContactController extends Controller
         }
 
         return redirect()->route('contacts.index');
+    }
+
+    /**
+     * Import contacts from an uploaded CSV file.
+     *
+     * Authorisation is handled by ImportContactRequest::authorize().
+     */
+    public function import(ImportContactRequest $request): JsonResponse|RedirectResponse
+    {
+        $result = $this->management->import($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('contacts.index')
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export contacts matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): StreamedResponse
+    {
+        $this->authorize('export', Contact::class);
+
+        return $this->management->export(
+            $request->only(['search', 'trashed'])
+        );
     }
 
     /**
