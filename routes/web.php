@@ -415,6 +415,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [DealController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [DealController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [DealController::class, 'export'])->name('export');
+        Route::post('/import', [DealController::class, 'import'])->name('import');
+
         Route::get('/', [DealController::class, 'index'])->name('index');
         Route::get('/create', [DealController::class, 'create'])->name('create');
         Route::post('/', [DealController::class, 'store'])->name('store');
