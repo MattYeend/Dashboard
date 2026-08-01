@@ -508,6 +508,7 @@ export interface Pipeline {
     description: string | null;
     is_default: boolean;
     status_id: number | null;
+    assigned_to: number | null;
     meta: Record<string, unknown> | null;
     created_by: number | null;
     updated_by: number | null;
@@ -523,6 +524,7 @@ export interface Pipeline {
         background_colour: string | null;
         text_colour: string | null;
     } | null;
+    assignee?: { id: number; name: string } | null;
     stages?: PipelineStage[];
     stages_count?: number;
     creator?: { name: string };

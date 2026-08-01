@@ -6,6 +6,7 @@ use App\Actions\UpdateResource;
 use App\Models\Log;
 use App\Models\Pipeline;
 use App\Models\User;
+use App\Notifications\PipelineStageAssignedNotification;
 use App\Services\AuditLogService;
 
 class UpdaterService
@@ -34,13 +35,14 @@ class UpdaterService
         $actor = User::findOrFail($updatedBy);
 
         $before = $this->auditLogService->snapshot($pipeline);
+        $previousAssignedTo = $pipeline->assigned_to;
 
         $pipelineData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
 
         return $this->updateResource->handle(
             $pipeline,
             $pipelineData,
-            function (Pipeline $pipeline) use ($actor, $before): void {
+            function (Pipeline $pipeline) use ($actor, $before, $previousAssignedTo): void {
                 $fresh = $pipeline->fresh();
 
                 $this->auditLogService->record(
@@ -52,6 +54,10 @@ class UpdaterService
                         'after' => $this->auditLogService->snapshot($fresh),
                     ],
                 );
+
+                if ($fresh->assigned_to !== $previousAssignedTo && $fresh->assigned_to) {
+                    $fresh->assignee?->notify(new PipelineStageAssignedNotification($fresh));
+                }
             });
     }
 }

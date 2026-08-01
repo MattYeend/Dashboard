@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -92,6 +93,16 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
     public function addresses(): MorphMany
     {
         return $this->morphMany(Address::class, 'addressable');
+    }
+
+    /**
+     * Get the pipelines assigned to this user.
+     *
+     * @return HasMany<Pipeline, $this>
+     */
+    public function pipelines(): HasMany
+    {
+        return $this->hasMany(Pipeline::class, 'assigned_to');
     }
 
     /**

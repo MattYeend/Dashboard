@@ -18,6 +18,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $description
  * @property bool $is_default
  * @property int|null $status_id
+ * @property int|null $assigned_to
  * @property array<string, mixed>|null $meta
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -28,6 +29,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read PipelineStatus|null $status
+ * @property-read User|null $assignee
  * @property-read User|null $creator
  * @property-read User|null $updater
  * @property-read User|null $deleter
@@ -38,6 +40,7 @@ use Illuminate\Support\Carbon;
     'description',
     'is_default',
     'status_id',
+    'assigned_to',
     'meta',
     'created_by',
     'created_at',
@@ -82,6 +85,16 @@ class Pipeline extends Model implements Auditable
     public function deals(): HasMany
     {
         return $this->hasMany(Deal::class);
+    }
+
+    /**
+     * Get the user assigned to this pipeline.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function assignee(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 
     /**
@@ -140,6 +153,7 @@ class Pipeline extends Model implements Auditable
             'description',
             'is_default',
             'status_id',
+            'assigned_to',
             'meta',
         ]);
     }
