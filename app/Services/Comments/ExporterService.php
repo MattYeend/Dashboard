@@ -2,11 +2,21 @@
 
 namespace App\Services\Comments;
 
+use App\Models\Log;
 use App\Models\Post;
+use App\Services\AuditLogService;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ExporterService
 {
+    /**
+     * Inject the audit log service.
+     */
+    public function __construct(
+        protected readonly AuditLogService $auditLogService,
+    ) {}
+
     /**
      * Stream comments belonging to the given post as a CSV download.
      *
@@ -25,6 +35,13 @@ class ExporterService
         }
 
         $columns = ['id', 'post_id', 'content', 'created_by', 'created_at'];
+
+        $this->auditLogService->record(
+            Log::ACTION_EXPORT_COMMENT,
+            Auth::user(),
+            $post,
+            ['filters' => $filters, 'count' => (clone $query)->count()],
+        );
 
         $callback = function () use ($query, $columns) {
             $handle = fopen('php://output', 'w');

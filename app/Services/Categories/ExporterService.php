@@ -3,10 +3,20 @@
 namespace App\Services\Categories;
 
 use App\Models\Category;
+use App\Models\Log;
+use App\Services\AuditLogService;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ExporterService
 {
+    /**
+     * Inject the audit log service.
+     */
+    public function __construct(
+        protected readonly AuditLogService $auditLogService,
+    ) {}
+
     /**
      * Stream all matching categories as a CSV download.
      *
@@ -28,6 +38,13 @@ class ExporterService
 
         $columns = ['id', 'name', 'slug', 'description', 'parent_id', 'created_at'];
 
+        $this->auditLogService->record(
+            Log::ACTION_EXPORT_CATEGORY,
+            Auth::user(),
+            null,
+            ['filters' => $filters, 'count' => (clone $query)->count()],
+        );
+    
         $callback = function () use ($query, $columns) {
             $handle = fopen('php://output', 'w');
             fputcsv($handle, $columns);

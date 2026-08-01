@@ -3,10 +3,20 @@
 namespace App\Services\Companies;
 
 use App\Models\Company;
+use App\Models\Log;
+use App\Services\AuditLogService;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ExporterService
 {
+    /**
+     * Inject the audit log service.
+     */
+    public function __construct(
+        protected readonly AuditLogService $auditLogService,
+    ) {}
+
     /**
      * Stream all matching companies as a CSV download.
      *
@@ -36,6 +46,13 @@ class ExporterService
             'industry_id', 'account_manager_id', 'employee_count',
             'founded_year', 'created_at',
         ];
+
+        $this->auditLogService->record(
+            Log::ACTION_EXPORT_COMPANY,
+            Auth::user(),
+            null,
+            ['filters' => $filters, 'count' => (clone $query)->count()],
+        );
 
         $callback = function () use ($query, $columns) {
             $handle = fopen('php://output', 'w');

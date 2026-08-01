@@ -3,10 +3,20 @@
 namespace App\Services\Addresses;
 
 use App\Models\Address;
+use App\Models\Log;
+use App\Services\AuditLogService;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ExporterService
 {
+    /**
+     * Inject the audit log service.
+     */
+    public function __construct(
+        protected readonly AuditLogService $auditLogService,
+    ) {}
+
     /**
      * Stream all matching addresses as a CSV download.
      *
@@ -35,6 +45,13 @@ class ExporterService
             'address_line_two', 'town', 'city', 'county', 'postcode',
             'country', 'is_primary', 'created_at',
         ];
+
+        $this->auditLogService->record(
+            Log::ACTION_EXPORT_ADDRESS,
+            Auth::user(),
+            null,
+            ['filters' => $filters, 'count' => (clone $query)->count()],
+        );
 
         $callback = function () use ($query, $columns) {
             $handle = fopen('php://output', 'w');

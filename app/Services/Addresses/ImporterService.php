@@ -3,6 +3,9 @@
 namespace App\Services\Addresses;
 
 use App\Models\Address;
+use App\Models\Log;
+use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
@@ -22,6 +25,7 @@ class ImporterService
      */
     public function __construct(
         protected readonly AddressableTypeRegistryService $typeRegistry,
+        protected readonly AuditLogService $auditLogService,
     ) {}
 
     /**
@@ -55,8 +59,9 @@ class ImporterService
         $imported = 0;
         $skipped = [];
         $rowNumber = 1;
+        $actor = User::findOrFail($actorId);
 
-        DB::transaction(function () use ($handle, $header, $actorId, &$imported, &$skipped, &$rowNumber) {
+        DB::transaction(function () use ($handle, $header, $actor, $actorId, &$imported, &$skipped, &$rowNumber) {
             while (($row = fgetcsv($handle)) !== false) {
                 $rowNumber++;
 
@@ -70,7 +75,7 @@ class ImporterService
                     continue;
                 }
 
-                Address::create([
+                $address = Address::create([
                     'addressable_type' => $this->typeRegistry->modelClassForKey(
                         strtolower(trim($data['addressable_type']))
                     ),
@@ -85,6 +90,13 @@ class ImporterService
                     'is_primary' => filter_var($data['is_primary'] ?? false, FILTER_VALIDATE_BOOLEAN),
                     'created_by' => $actorId,
                 ]);
+
+                $this->auditLogService->record(
+                    Log::ACTION_IMPORT_ADDRESS,
+                    $actor,
+                    $address,
+                    ['after' => $this->auditLogService->snapshot($address)],
+                );
 
                 $imported++;
             }
