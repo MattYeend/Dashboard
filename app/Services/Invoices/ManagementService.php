@@ -169,4 +169,27 @@ class ManagementService
     ): Invoice {
         return $this->updater->markAsUnpaid($invoice, $actor->id);
     }
+
+    /**
+     * Find invoices that have become overdue and haven't yet been
+     * notified, notify each invoice's account manager, and stamp
+     * them so they aren't notified again.
+     *
+     * @return int Number of invoices notified.
+     */
+    public function notifyOverdue(): int
+    {
+        $overdueInvoices = Invoice::query()
+            ->whereNull('paid_at')
+            ->whereNotNull('due_date')
+            ->where('due_date', '<', now())
+            ->whereNull('overdue_notified_at')
+            ->get();
+
+        foreach ($overdueInvoices as $invoice) {
+            $this->updater->markOverdueNotified($invoice);
+        }
+
+        return $overdueInvoices->count();
+    }
 }

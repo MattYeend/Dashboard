@@ -27,15 +27,17 @@ class PipelineSeeder extends Seeder
             $this->command->warn('No pipeline statuses found, pipelines will be seeded without a status...');
         }
 
-        $creator = User::orderBy('id')->first();
+        $users = User::orderBy('id')->get();
 
-        if ($creator === null) {
+        if ($users->isEmpty()) {
             $this->command->warn('No users found, skipping pipeline seeding...');
 
             return;
         }
 
-        foreach ($this->getPipelines($statuses) as $pipeline) {
+        $creator = $users->first();
+
+        foreach ($this->getPipelines($statuses, $users) as $pipeline) {
             Pipeline::create([
                 ...$pipeline,
                 'created_by' => $creator->id,
@@ -47,9 +49,10 @@ class PipelineSeeder extends Seeder
      * Get the predefined pipeline records to seed.
      *
      * @param  Collection<string, PipelineStatus>  $statuses
+     * @param  Collection<int, User>  $users
      * @return array<int, array<string, string|bool|int|null>>
      */
-    private function getPipelines($statuses): array
+    private function getPipelines($statuses, $users): array
     {
         return [
             [
@@ -57,18 +60,21 @@ class PipelineSeeder extends Seeder
                 'description' => 'Tracks prospective deals from initial enquiry through to close.',
                 'is_default' => true,
                 'status_id' => $statuses->get('Open')?->id,
+                'assigned_to' => $users->first()?->id,
             ],
             [
                 'title' => 'Recruitment Pipeline',
                 'description' => 'Tracks candidates from application through to offer.',
                 'is_default' => false,
                 'status_id' => $statuses->get('Open')?->id,
+                'assigned_to' => $users->get(1)?->id ?? $users->first()?->id,
             ],
             [
                 'title' => 'Support Pipeline',
                 'description' => 'Tracks support tickets from raised through to resolved.',
                 'is_default' => false,
                 'status_id' => $statuses->get('Open')?->id,
+                'assigned_to' => $users->get(2)?->id ?? $users->first()?->id,
             ],
         ];
     }

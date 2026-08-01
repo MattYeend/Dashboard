@@ -6,6 +6,7 @@ use App\Actions\UpdateResource;
 use App\Models\Deal;
 use App\Models\Log;
 use App\Models\User;
+use App\Notifications\DealStageChangedNotification;
 use App\Services\AuditLogService;
 
 class UpdaterService
@@ -34,13 +35,14 @@ class UpdaterService
         $actor = User::findOrFail($updatedBy);
 
         $before = $this->auditLogService->snapshot($deal);
+        $previousStageId = $deal->stage_id;
 
         $dealData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
 
         return $this->updateResource->handle(
             $deal,
             $dealData,
-            function (Deal $deal) use ($actor, $before): void {
+            function (Deal $deal) use ($actor, $before, $previousStageId): void {
                 $fresh = $deal->fresh();
 
                 $this->auditLogService->record(
@@ -52,6 +54,10 @@ class UpdaterService
                         'after' => $this->auditLogService->snapshot($fresh),
                     ],
                 );
+
+                if ($fresh->stage_id !== $previousStageId && $fresh->assigned_to) {
+                    $fresh->assignee?->notify(new DealStageChangedNotification($fresh));
+                }
             });
     }
 }
