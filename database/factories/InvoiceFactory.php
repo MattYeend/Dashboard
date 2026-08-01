@@ -27,6 +27,7 @@ class InvoiceFactory extends Factory
             'due_date' => (clone $issueDate)->modify('+30 days'),
             'sent_at' => null,
             'paid_at' => null,
+            'overdue_notified_at' => null,
             'subtotal' => $subtotal,
             'tax_total' => $taxTotal,
             'total' => $subtotal + $taxTotal,
@@ -84,7 +85,7 @@ class InvoiceFactory extends Factory
     }
 
     /**
-     * Indicate that the invoice is overdue.
+     * Indicate that the invoice is overdue and has not yet been notified.
      */
     public function overdue(): static
     {
@@ -92,6 +93,20 @@ class InvoiceFactory extends Factory
             'status_id' => InvoiceStatus::where('title', 'Overdue')->value('id'),
             'sent_at' => now()->subDays(20),
             'due_date' => now()->subDays(14),
+            'overdue_notified_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the invoice is overdue and has already been notified.
+     */
+    public function overdueNotified(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status_id' => InvoiceStatus::where('title', 'Overdue')->value('id'),
+            'sent_at' => now()->subDays(20),
+            'due_date' => now()->subDays(14),
+            'overdue_notified_at' => now()->subDay(),
         ]);
     }
 

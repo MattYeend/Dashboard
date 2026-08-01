@@ -31,6 +31,7 @@ class PipelineFactory extends Factory
             'description' => $this->faker->boolean(70) ? $this->faker->sentence() : null,
             'is_default' => false,
             'status_id' => null,
+            'assigned_to' => User::factory(),
             'meta' => null,
         ];
     }
@@ -52,6 +53,26 @@ class PipelineFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'status_id' => $status->id,
+        ]);
+    }
+
+    /**
+     * Associate the pipeline with a given assignee.
+     */
+    public function assignedTo(User $user): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'assigned_to' => $user->id,
+        ]);
+    }
+
+    /**
+     * Indicate that the pipeline has no assignee.
+     */
+    public function unassigned(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'assigned_to' => null,
         ]);
     }
 
