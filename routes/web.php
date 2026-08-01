@@ -400,6 +400,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [DealStatusController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [DealStatusController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [DealStatusController::class, 'export'])->name('export');
+        Route::post('/import', [DealStatusController::class, 'import'])->name('import');
+
         Route::get('/', [DealStatusController::class, 'index'])->name('index');
         Route::get('/create', [DealStatusController::class, 'create'])->name('create');
         Route::post('/', [DealStatusController::class, 'store'])->name('store');
