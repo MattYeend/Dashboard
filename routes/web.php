@@ -323,6 +323,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [InvoiceController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [InvoiceController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [InvoiceController::class, 'export'])->name('export');
+        Route::post('/import', [InvoiceController::class, 'import'])->name('import');
+
         Route::post('/{invoice}/send', [InvoiceController::class, 'send'])->name('send');
         Route::post('/{invoice}/mark-as-paid', [InvoiceController::class, 'markAsPaid'])->name('mark-as-paid');
         Route::post('/{invoice}/mark-as-unpaid', [InvoiceController::class, 'markAsUnpaid'])->name('mark-as-unpaid');

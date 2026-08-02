@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Requests\Industries;
+namespace App\Http\Requests\Invoices;
 
-use App\Models\Industry;
+use App\Models\Invoice;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ImportIndustryRequest extends FormRequest
+class ImportInvoiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorised to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('import', Industry::class);
+        return $this->user()->can('import', Invoice::class);
     }
 
     /**

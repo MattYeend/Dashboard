@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Industries;
+namespace App\Services\Invoices;
 
-use App\Models\Industry;
+use App\Models\Invoice;
 use App\Models\Log;
 use App\Services\AuditLogService;
 use Illuminate\Support\Facades\Auth;
@@ -18,13 +18,13 @@ class ExporterService
     ) {}
 
     /**
-     * Stream all matching industries as a CSV download.
+     * Stream all matching invoices as a CSV download.
      *
      * @param  array<string, mixed>  $filters
      */
     public function export(array $filters): StreamedResponse
     {
-        $query = Industry::query();
+        $query = Invoice::query()->with(['company', 'order', 'status']);
 
         if (! empty($filters['trashed']) && $filters['trashed'] === 'with') {
             $query->withTrashed();
@@ -34,18 +34,19 @@ class ExporterService
             $search = $filters['search'];
 
             $query->where(function ($inner) use ($search) {
-                $inner->where('title', 'like', "%{$search}%")
-                    ->orWhere('code', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
+                $inner->where('invoice_number', 'like', "%{$search}%")
+                    ->orWhere('notes', 'like', "%{$search}%");
             });
         }
 
         $columns = [
-            'id', 'title', 'code', 'description', 'created_at',
+            'id', 'invoice_number', 'company_id', 'order_id', 'status_id',
+            'issue_date', 'due_date', 'sent_at', 'paid_at', 'subtotal',
+            'tax_total', 'total', 'currency', 'created_at',
         ];
 
         $this->auditLogService->record(
-            Log::ACTION_EXPORT_INDUSTRY,
+            Log::ACTION_EXPORT_INVOICE,
             Auth::user(),
             null,
             ['filters' => $filters, 'count' => (clone $query)->count()],
@@ -55,9 +56,9 @@ class ExporterService
             $handle = fopen('php://output', 'w');
             fputcsv($handle, $columns);
 
-            $query->orderBy('id')->chunk(500, function ($industries) use ($handle, $columns) {
-                foreach ($industries as $industry) {
-                    fputcsv($handle, $industry->only($columns));
+            $query->orderBy('id')->chunk(500, function ($invoices) use ($handle, $columns) {
+                foreach ($invoices as $invoice) {
+                    fputcsv($handle, $invoice->only($columns));
                 }
             });
 
@@ -66,7 +67,7 @@ class ExporterService
 
         return response()->streamDownload(
             $callback,
-            'industries-'.now()->format('Y-m-d-His').'.csv',
+            'invoices-'.now()->format('Y-m-d-His').'.csv',
             ['Content-Type' => 'text/csv']
         );
     }
