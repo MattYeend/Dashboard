@@ -1,6 +1,15 @@
 <script setup lang="ts">
+import Blockquote from '@tiptap/extension-blockquote';
+import Bold from '@tiptap/extension-bold';
+import BulletList from '@tiptap/extension-bullet-list';
+import Document from '@tiptap/extension-document';
+import Heading from '@tiptap/extension-heading';
+import History from '@tiptap/extension-history';
+import Italic from '@tiptap/extension-italic';
 import Link from '@tiptap/extension-link';
-import StarterKit from '@tiptap/starter-kit';
+import ListItem from '@tiptap/extension-list-item';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
 import { EditorContent, useEditor } from '@tiptap/vue-3';
 import { watch } from 'vue';
 import InputError from '@/components/InputError.vue';
@@ -18,7 +27,19 @@ defineProps<Props>();
 
 const editor = useEditor({
     content: description.value,
-    extensions: [StarterKit, Link.configure({ openOnClick: false })],
+    extensions: [
+        Document,
+        Paragraph,
+        Text,
+        Bold,
+        Italic,
+        Heading.configure({ levels: [2] }),
+        Blockquote,
+        BulletList,
+        ListItem,
+        History,
+        Link.configure({ openOnClick: false }),
+    ],
     onUpdate: ({ editor: currentEditor }) => {
         description.value = currentEditor.getHTML();
     },

@@ -17,7 +17,7 @@ class DataPreparationService
     {
         return [
             'title' => $data['title'],
-            'description' => Purifier::clean($data['description']),
+            'description' => Purifier::clean($data['description'], 'posts'),
             'image' => $this->storeImage($data['image'] ?? null),
             'meta' => $data['meta'] ?? null,
             'created_by' => $createdBy,
@@ -54,7 +54,7 @@ class DataPreparationService
             }
 
             $payload[$field] = match ($field) {
-                'description' => Purifier::clean($data[$field]),
+                'description' => Purifier::clean($data['description'], 'posts'),
                 'image' => $this->storeImage($data[$field]),
                 default => $data[$field],
             };
