@@ -2,11 +2,13 @@
 
 namespace App\Services\InvoiceItems;
 
+use App\Http\Requests\InvoiceItems\ImportInvoiceItemRequest;
 use App\Http\Requests\InvoiceItems\StoreInvoiceItemRequest;
 use App\Http\Requests\InvoiceItems\UpdateInvoiceItemRequest;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\User;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ManagementService
 {
@@ -17,7 +19,9 @@ class ManagementService
         protected readonly CreatorService $creator,
         protected readonly UpdaterService $updater,
         protected readonly DeleterService $destructor,
-        protected readonly RestorerService $restorer
+        protected readonly RestorerService $restorer,
+        protected readonly ImporterService $importer,
+        protected readonly ExporterService $exporter,
     ) {}
 
     /**
@@ -169,5 +173,31 @@ class ManagementService
                 ->values()
                 ->all(),
         ];
+    }
+
+    /**
+     * Import invoice items from an uploaded file, scoped to one invoice.
+     *
+     * @return array{imported: int, skipped: array<int, array{row: int, reason: string}>}
+     */
+    public function import(
+        ImportInvoiceItemRequest $request,
+        Invoice $invoice
+    ): array {
+        return $this->importer->import(
+            $request->file('file'),
+            $invoice,
+            $request->user()->id
+        );
+    }
+
+    /**
+     * Export a single invoice's items matching the given filters as a CSV download.
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    public function export(Invoice $invoice, array $filters): StreamedResponse
+    {
+        return $this->exporter->export($invoice, $filters);
     }
 }

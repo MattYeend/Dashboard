@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InvoiceItems\ImportInvoiceItemRequest;
 use App\Http\Requests\InvoiceItems\StoreInvoiceItemRequest;
 use App\Http\Requests\InvoiceItems\UpdateInvoiceItemRequest;
 use App\Models\Invoice;
@@ -14,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class InvoiceItemController extends Controller
 {
@@ -291,5 +293,43 @@ class InvoiceItemController extends Controller
         }
 
         return redirect()->route('invoices.items.index', $invoice->id);
+    }
+
+    /**
+     * Import invoice items from an uploaded CSV file, scoped to one invoice.
+     *
+     * Authorisation is handled by ImportInvoiceItemRequest::authorize().
+     */
+    public function import(
+        ImportInvoiceItemRequest $request,
+        Invoice $invoice
+    ): JsonResponse|RedirectResponse {
+        $result = $this->management->import($request, $invoice);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('invoices.items.index', $invoice->id)
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export a single invoice's items matching the current filters as a
+     * CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(
+        Invoice $invoice,
+        Request $request
+    ): JsonResponse|RedirectResponse|StreamedResponse {
+        $this->authorize('export', InvoiceItem::class);
+
+        return $this->management->export(
+            $invoice,
+            $request->only(['search', 'trashed'])
+        );
     }
 }
