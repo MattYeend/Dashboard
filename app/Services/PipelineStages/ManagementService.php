@@ -2,11 +2,13 @@
 
 namespace App\Services\PipelineStages;
 
+use App\Http\Requests\PipelineStages\ImportPipelineStageRequest;
 use App\Http\Requests\PipelineStages\StorePipelineStageRequest;
 use App\Http\Requests\PipelineStages\UpdatePipelineStageRequest;
 use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\User;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ManagementService
 {
@@ -18,6 +20,8 @@ class ManagementService
         protected readonly UpdaterService $updater,
         protected readonly DeleterService $destructor,
         protected readonly RestorerService $restorer,
+        protected readonly ImporterService $importer,
+        protected readonly ExporterService $exporter,
     ) {}
 
     /**
@@ -147,5 +151,31 @@ class ManagementService
                 ->values()
                 ->all(),
         ];
+    }
+
+    /**
+     * Import pipeline stages from an uploaded file, scoped to one pipeline.
+     *
+     * @return array{imported: int, skipped: array<int, array{row: int, reason: string}>}
+     */
+    public function import(
+        ImportPipelineStageRequest $request,
+        Pipeline $pipeline
+    ): array {
+        return $this->importer->import(
+            $request->file('file'),
+            $pipeline,
+            $request->user()->id
+        );
+    }
+
+    /**
+     * Export a single pipeline's stages matching the given filters as a CSV download.
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    public function export(Pipeline $pipeline, array $filters): StreamedResponse
+    {
+        return $this->exporter->export($pipeline, $filters);
     }
 }

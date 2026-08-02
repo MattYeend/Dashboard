@@ -402,6 +402,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/{id}/restore', [PipelineStageController::class, 'restore'])->name('restore');
             Route::delete('/{id}/force', [PipelineStageController::class, 'forceDelete'])->name('force-delete');
 
+            Route::get('/export', [PipelineStageController::class, 'export'])->name('export');
+            Route::post('/import', [PipelineStageController::class, 'import'])->name('import');
+
             Route::get('/', [PipelineStageController::class, 'index'])->name('index');
             Route::get('/create', [PipelineStageController::class, 'create'])->name('create');
             Route::post('/', [PipelineStageController::class, 'store'])->name('store');

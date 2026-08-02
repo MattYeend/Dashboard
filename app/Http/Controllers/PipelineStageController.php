@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PipelineStages\ImportPipelineStageRequest;
 use App\Http\Requests\PipelineStages\StorePipelineStageRequest;
 use App\Http\Requests\PipelineStages\UpdatePipelineStageRequest;
 use App\Models\Pipeline;
@@ -14,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PipelineStageController extends Controller
 {
@@ -313,5 +315,43 @@ class PipelineStageController extends Controller
         }
 
         return redirect()->route('pipelines.stages.index', $pipeline);
+    }
+
+    /**
+     * Import pipeline stages from an uploaded CSV file, scoped to one pipeline.
+     *
+     * Authorisation is handled by ImportPipelineStageRequest::authorize().
+     */
+    public function import(
+        ImportPipelineStageRequest $request,
+        Pipeline $pipeline
+    ): JsonResponse|RedirectResponse {
+        $result = $this->management->import($request, $pipeline);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('pipelines.stages.index', $pipeline->id)
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export a single pipeline's stages matching the current filters as a
+     * CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(
+        Pipeline $pipeline,
+        Request $request
+    ): JsonResponse|RedirectResponse|StreamedResponse {
+        $this->authorize('export', PipelineStage::class);
+
+        return $this->management->export(
+            $pipeline,
+            $request->only(['search', 'trashed'])
+        );
     }
 }
