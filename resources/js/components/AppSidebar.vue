@@ -31,152 +31,277 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import type { NavItem } from '@/types';
+import type { NavGroup, NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
+// const mainNavItems: NavItem[] = [
+//     {
+//         title: 'Dashboard',
+//         href: dashboard(),
+//         icon: LayoutGrid,
+//     },
+//     {
+//         title: 'Contacts',
+//         href: '/contacts',
+//         icon: Contact2,
+//     },
+//     {
+//         title: 'Addresses',
+//         href: '/addresses',
+//         icon: MapPin,
+//     },
+//     {
+//         title: 'Companies',
+//         href: '#',
+//         icon: FolderGit2,
+//         children: [
+//             {
+//                 title: 'All Companies',
+//                 href: '/companies',
+//             },
+//             {
+//                 title: 'Industries',
+//                 href: '/industries',
+//             },
+//         ],
+//     },
+//     {
+//         title: 'Plans',
+//         href: '/plans',
+//         icon: CreditCard,
+//     },
+//     {
+//         title: 'Orders',
+//         href: '#',
+//         icon: ClipboardList,
+//         children: [
+//             {
+//                 title: 'All Orders',
+//                 href: '/orders',
+//             },
+//             {
+//                 title: 'Order Statuses',
+//                 href: '/order-statuses',
+//             },
+//         ],
+//     },
+//     {
+//         title: 'Invoices',
+//         href: '#',
+//         icon: Receipt,
+//         children: [
+//             {
+//                 title: 'All Invoices',
+//                 href: '/invoices',
+//             },
+//             {
+//                 title: 'Invoice Statuses',
+//                 href: '/invoice-statuses',
+//             },
+//         ],
+//     },
+//     {
+//         title: 'Pipelines',
+//         href: '#',
+//         icon: Workflow,
+//         children: [
+//             {
+//                 title: 'All Pipelines',
+//                 href: '/pipelines',
+//             },
+//             {
+//                 title: 'Pipeline Statuses',
+//                 href: '/pipeline-statuses',
+//             },
+//         ],
+//     },
+//     {
+//         title: 'Deals',
+//         href: '#',
+//         icon: HandCoins,
+//         children: [
+//             {
+//                 title: 'All Deals',
+//                 href: '/deals',
+//             },
+//             {
+//                 title: 'Deal Statuses',
+//                 href: '/deal-statuses',
+//             },
+//         ],
+//     },
+//     {
+//         title: 'Tasks',
+//         href: '#',
+//         icon: SquareCheckBig,
+//         children: [
+//             {
+//                 title: 'All Tasks',
+//                 href: '/tasks',
+//             },
+//             {
+//                 title: 'Task Statuses',
+//                 href: '/task-statuses',
+//             },
+//         ],
+//     },
+//     {
+//         title: 'Posts',
+//         href: '#',
+//         icon: Newspaper,
+//         children: [
+//             {
+//                 title: 'All Posts',
+//                 href: '/posts',
+//             },
+//             {
+//                 title: 'Categories',
+//                 href: '/categories',
+//             },
+//             {
+//                 title: 'Tags',
+//                 href: '/tags',
+//             },
+//         ],
+//     },
+//     {
+//         title: 'Users',
+//         href: '/users',
+//         icon: User2,
+//     },
+//     {
+//         title: 'Registration Interests',
+//         href: '/registration-interests',
+//         icon: UserPlus,
+//     },
+//     {
+//         title: 'API Tokens',
+//         href: '/api-tokens',
+//         icon: KeyRound,
+//     },
+// ];
+
+const pinnedNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
     },
+];
+
+const navGroups: NavGroup[] = [
     {
-        title: 'Contacts',
-        href: '/contacts',
-        icon: Contact2,
-    },
-    {
-        title: 'Addresses',
-        href: '/addresses',
-        icon: MapPin,
-    },
-    {
-        title: 'Companies',
-        href: '#',
-        icon: FolderGit2,
-        children: [
+        title: 'CRM',
+        items: [
             {
-                title: 'All Companies',
+                title: 'Contacts',
+                href: '/contacts',
+                icon: Contact2,
+            },
+            {
+                title: 'Companies',
                 href: '/companies',
+                icon: FolderGit2,
+                children: [
+                    { title: 'All Companies', href: '/companies' },
+                    { title: 'Industries', href: '/industries' },
+                ],
             },
             {
-                title: 'Industries',
-                href: '/industries',
-            },
-        ],
-    },
-    {
-        title: 'Plans',
-        href: '/plans',
-        icon: CreditCard,
-    },
-    {
-        title: 'Orders',
-        href: '#',
-        icon: ClipboardList,
-        children: [
-            {
-                title: 'All Orders',
-                href: '/orders',
-            },
-            {
-                title: 'Order Statuses',
-                href: '/order-statuses',
+                title: 'Addresses',
+                href: '/addresses',
+                icon: MapPin,
             },
         ],
     },
     {
-        title: 'Invoices',
-        href: '#',
-        icon: Receipt,
-        children: [
+        title: 'Sales',
+        items: [
             {
-                title: 'All Invoices',
-                href: '/invoices',
-            },
-            {
-                title: 'Invoice Statuses',
-                href: '/invoice-statuses',
-            },
-        ],
-    },
-    {
-        title: 'Pipelines',
-        href: '#',
-        icon: Workflow,
-        children: [
-            {
-                title: 'All Pipelines',
+                title: 'Pipelines',
                 href: '/pipelines',
+                icon: Workflow,
+                children: [
+                    { title: 'All Pipelines', href: '/pipelines' },
+                    { title: 'Pipeline Statuses', href: '/pipeline-statuses' },
+                ],
             },
             {
-                title: 'Pipeline Statuses',
-                href: '/pipeline-statuses',
-            },
-        ],
-    },
-    {
-        title: 'Deals',
-        href: '#',
-        icon: HandCoins,
-        children: [
-            {
-                title: 'All Deals',
+                title: 'Deals',
                 href: '/deals',
+                icon: HandCoins,
+                children: [
+                    { title: 'All Deals', href: '/deals' },
+                    { title: 'Deal Statuses', href: '/deal-statuses' },
+                ],
             },
             {
-                title: 'Deal Statuses',
-                href: '/deal-statuses',
+                title: 'Invoices',
+                href: '/invoices',
+                icon: Receipt,
+                children: [
+                    { title: 'All Invoices', href: '/invoices' },
+                    { title: 'Invoice Statuses', href: '/invoice-statuses' },
+                ],
+            },
+            {
+                title: 'Orders',
+                href: '/orders',
+                icon: ClipboardList,
+                children: [
+                    { title: 'All Orders', href: '/orders' },
+                    { title: 'Order Statuses', href: '/order-statuses' },
+                ],
             },
         ],
     },
     {
-        title: 'Tasks',
-        href: '#',
-        icon: SquareCheckBig,
-        children: [
+        title: 'Operations',
+        items: [
             {
-                title: 'All Tasks',
+                title: 'Tasks',
                 href: '/tasks',
+                icon: SquareCheckBig,
+                children: [
+                    { title: 'All Tasks', href: '/tasks' },
+                    { title: 'Task Statuses', href: '/task-statuses' },
+                ],
             },
             {
-                title: 'Task Statuses',
-                href: '/task-statuses',
-            },
-        ],
-    },
-    {
-        title: 'Posts',
-        href: '#',
-        icon: Newspaper,
-        children: [
-            {
-                title: 'All Posts',
+                title: 'Posts',
                 href: '/posts',
-            },
-            {
-                title: 'Categories',
-                href: '/categories',
-            },
-            {
-                title: 'Tags',
-                href: '/tags',
+                icon: Newspaper,
+                children: [
+                    { title: 'All Posts', href: '/posts' },
+                    { title: 'Categories', href: '/categories' },
+                    { title: 'Tags', href: '/tags' },
+                ],
             },
         ],
     },
     {
-        title: 'Users',
-        href: '/users',
-        icon: User2,
-    },
-    {
-        title: 'Registration Interests',
-        href: '/registration-interests',
-        icon: UserPlus,
-    },
-    {
-        title: 'API Tokens',
-        href: '/api-tokens',
-        icon: KeyRound,
+        title: 'Administration',
+        items: [
+            {
+                title: 'Users',
+                href: '/users',
+                icon: User2,
+            },
+            {
+                title: 'API Tokens',
+                href: '/api-tokens',
+                icon: KeyRound,
+            },
+            {
+                title: 'Plans',
+                href: '/plans',
+                icon: CreditCard,
+            },
+            {
+                title: 'Registration Interests',
+                href: '/registration-interests',
+                icon: UserPlus,
+            },
+        ],
     },
 ];
 
@@ -209,7 +334,7 @@ const footerNavItems: NavItem[] = [
         </SidebarHeader>
 
         <SidebarContent>
-            <NavMain :items="mainNavItems" />
+            <NavMain :items="pinnedNavItems" :groups="navGroups" />
         </SidebarContent>
 
         <SidebarFooter>
