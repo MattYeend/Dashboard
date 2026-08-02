@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DealStatuses\ImportDealStatusRequest;
 use App\Http\Requests\DealStatuses\StoreDealStatusRequest;
 use App\Http\Requests\DealStatuses\UpdateDealStatusRequest;
 use App\Models\DealStatus;
@@ -13,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DealStatusController extends Controller
 {
@@ -276,5 +278,37 @@ class DealStatusController extends Controller
         }
 
         return redirect()->route('deal-statuses.index');
+    }
+
+    /**
+     * Import deal statuses from an uploaded CSV file.
+     *
+     * Authorisation is handled by ImportDealStatusRequest::authorize().
+     */
+    public function import(ImportDealStatusRequest $request): JsonResponse|RedirectResponse
+    {
+        $result = $this->management->import($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('deal-statuses.index')
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export deal statuses matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    {
+        $this->authorize('export', DealStatus::class);
+
+        return $this->management->export(
+            $request->only(['search', 'trashed'])
+        );
     }
 }

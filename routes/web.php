@@ -152,6 +152,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [IndustryController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [IndustryController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [IndustryController::class, 'export'])->name('export');
+        Route::post('/import', [IndustryController::class, 'import'])->name('import');
+
         Route::get('/', [IndustryController::class, 'index'])->name('index');
         Route::get('/create', [IndustryController::class, 'create'])->name('create');
         Route::post('/', [IndustryController::class, 'store'])->name('store');
@@ -279,6 +282,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [InvoiceStatusController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [InvoiceStatusController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [InvoiceStatusController::class, 'export'])->name('export');
+        Route::post('/import', [InvoiceStatusController::class, 'import'])->name('import');
+
         Route::get('/', [InvoiceStatusController::class, 'index'])->name('index');
         Route::get('/create', [InvoiceStatusController::class, 'create'])->name('create');
         Route::post('/', [InvoiceStatusController::class, 'store'])->name('store');
@@ -319,6 +325,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/bulk/restore', [InvoiceController::class, 'bulkRestore'])->name('bulk.restore');
         Route::post('/{id}/restore', [InvoiceController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [InvoiceController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/export', [InvoiceController::class, 'export'])->name('export');
+        Route::post('/import', [InvoiceController::class, 'import'])->name('import');
 
         Route::post('/{invoice}/send', [InvoiceController::class, 'send'])->name('send');
         Route::post('/{invoice}/mark-as-paid', [InvoiceController::class, 'markAsPaid'])->name('mark-as-paid');
@@ -400,6 +409,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [DealStatusController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [DealStatusController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [DealStatusController::class, 'export'])->name('export');
+        Route::post('/import', [DealStatusController::class, 'import'])->name('import');
+
         Route::get('/', [DealStatusController::class, 'index'])->name('index');
         Route::get('/create', [DealStatusController::class, 'create'])->name('create');
         Route::post('/', [DealStatusController::class, 'store'])->name('store');
@@ -414,6 +426,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/bulk/restore', [DealController::class, 'bulkRestore'])->name('bulk.restore');
         Route::post('/{id}/restore', [DealController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [DealController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/export', [DealController::class, 'export'])->name('export');
+        Route::post('/import', [DealController::class, 'import'])->name('import');
 
         Route::get('/', [DealController::class, 'index'])->name('index');
         Route::get('/create', [DealController::class, 'create'])->name('create');

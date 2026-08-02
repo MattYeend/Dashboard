@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Invoice\GenerateInvoicePdf;
+use App\Http\Requests\Invoices\ImportInvoiceRequest;
 use App\Http\Requests\Invoices\StoreInvoiceRequest;
 use App\Http\Requests\Invoices\UpdateInvoiceRequest;
 use App\Models\Invoice;
@@ -15,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class InvoiceController extends Controller
 {
@@ -369,5 +371,37 @@ class InvoiceController extends Controller
 
         return $generateInvoicePdf->execute($invoice)
             ->download('invoice-'.($invoice->invoice_number ?? $invoice->id).'.pdf');
+    }
+
+    /**
+     * Import invoices from an uploaded CSV file.
+     *
+     * Authorisation is handled by ImportInvoiceRequest::authorize().
+     */
+    public function import(ImportInvoiceRequest $request): JsonResponse|RedirectResponse
+    {
+        $result = $this->management->import($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('invoices.index')
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export invoices matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    {
+        $this->authorize('export', Invoice::class);
+
+        return $this->management->export(
+            $request->only(['search', 'trashed'])
+        );
     }
 }

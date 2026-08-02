@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InvoiceStatuses\ImportInvoiceStatusRequest;
 use App\Http\Requests\InvoiceStatuses\StoreInvoiceStatusRequest;
 use App\Http\Requests\InvoiceStatuses\UpdateInvoiceStatusRequest;
 use App\Models\InvoiceStatus;
@@ -13,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class InvoiceStatusController extends Controller
 {
@@ -276,5 +278,37 @@ class InvoiceStatusController extends Controller
         }
 
         return redirect()->route('invoice-statuses.index');
+    }
+
+    /**
+     * Import invoice statuses from an uploaded CSV file.
+     *
+     * Authorisation is handled by ImportInvoiceStatusRequest::authorize().
+     */
+    public function import(ImportInvoiceStatusRequest $request): JsonResponse|RedirectResponse
+    {
+        $result = $this->management->import($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('invoice-statuses.index')
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export invoice statuses matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    {
+        $this->authorize('export', InvoiceStatus::class);
+
+        return $this->management->export(
+            $request->only(['search', 'trashed'])
+        );
     }
 }

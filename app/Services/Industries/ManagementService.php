@@ -2,10 +2,12 @@
 
 namespace App\Services\Industries;
 
+use App\Http\Requests\Industries\ImportIndustryRequest;
 use App\Http\Requests\Industries\StoreIndustryRequest;
 use App\Http\Requests\Industries\UpdateIndustryRequest;
 use App\Models\Industry;
 use App\Models\User;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ManagementService
 {
@@ -16,7 +18,9 @@ class ManagementService
         protected readonly CreatorService $creator,
         protected readonly UpdaterService $updater,
         protected readonly DeleterService $destructor,
-        protected readonly RestorerService $restorer
+        protected readonly RestorerService $restorer,
+        protected readonly ImporterService $importer,
+        protected readonly ExporterService $exporter,
     ) {}
 
     /**
@@ -138,5 +142,29 @@ class ManagementService
                 ->values()
                 ->all(),
         ];
+    }
+
+    /**
+     * Import industries from an uploaded file.
+     *
+     * @return array{imported: int, skipped: array<int, array{row: int, reason: string}>}
+     */
+    public function import(
+        ImportIndustryRequest $request
+    ): array {
+        return $this->importer->import(
+            $request->file('file'),
+            $request->user()->id
+        );
+    }
+
+    /**
+     * Export industries matching the given filters as a CSV download.
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    public function export(array $filters): StreamedResponse
+    {
+        return $this->exporter->export($filters);
     }
 }
