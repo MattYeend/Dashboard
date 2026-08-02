@@ -282,6 +282,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [InvoiceStatusController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [InvoiceStatusController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [InvoiceStatusController::class, 'export'])->name('export');
+        Route::post('/import', [InvoiceStatusController::class, 'import'])->name('import');
+
         Route::get('/', [InvoiceStatusController::class, 'index'])->name('index');
         Route::get('/create', [InvoiceStatusController::class, 'create'])->name('create');
         Route::post('/', [InvoiceStatusController::class, 'store'])->name('store');
