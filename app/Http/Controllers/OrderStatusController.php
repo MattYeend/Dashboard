@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderStatuses\ImportOrderStatusRequest;
 use App\Http\Requests\OrderStatuses\StoreOrderStatusRequest;
 use App\Http\Requests\OrderStatuses\UpdateOrderStatusRequest;
 use App\Models\OrderStatus;
@@ -13,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class OrderStatusController extends Controller
 {
@@ -276,5 +278,37 @@ class OrderStatusController extends Controller
         }
 
         return redirect()->route('order-statuses.index');
+    }
+
+    /**
+     * Import order statuses from an uploaded CSV file.
+     *
+     * Authorisation is handled by ImportOrderStatusRequest::authorize().
+     */
+    public function import(ImportOrderStatusRequest $request): JsonResponse|RedirectResponse
+    {
+        $result = $this->management->import($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('order-statuses.index')
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export order statuses matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    {
+        $this->authorize('export', OrderStatus::class);
+
+        return $this->management->export(
+            $request->only(['search', 'trashed'])
+        );
     }
 }
