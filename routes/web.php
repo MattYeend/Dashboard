@@ -137,6 +137,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [OrderController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [OrderController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [OrderController::class, 'export'])->name('export');
+        Route::post('/import', [OrderController::class, 'import'])->name('import');
+
         Route::get('/', [OrderController::class, 'index'])->name('index');
         Route::get('/create', [OrderController::class, 'create'])->name('create');
         Route::post('/', [OrderController::class, 'store'])->name('store');

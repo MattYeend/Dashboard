@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Orders\ImportOrderRequest;
 use App\Http\Requests\Orders\StoreOrderRequest;
 use App\Http\Requests\Orders\UpdateOrderRequest;
 use App\Models\Order;
@@ -13,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class OrderController extends Controller
 {
@@ -268,6 +270,38 @@ class OrderController extends Controller
         }
 
         return redirect()->route('orders.index');
+    }
+
+    /**
+     * Import orders from an uploaded CSV file.
+     *
+     * Authorisation is handled by ImportOrderRequest::authorize().
+     */
+    public function import(ImportOrderRequest $request): JsonResponse|RedirectResponse
+    {
+        $result = $this->management->import($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('orders.index')
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export orders matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    {
+        $this->authorize('export', Order::class);
+
+        return $this->management->export(
+            $request->only(['search', 'trashed'])
+        );
     }
 
     /**
