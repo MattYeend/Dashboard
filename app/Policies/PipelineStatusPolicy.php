@@ -70,4 +70,20 @@ class PipelineStatusPolicy
     {
         return $this->authorisation->canForceDelete($user, $pipelineStatus);
     }
+
+    /**
+     * Determine whether the user can import pipeline statuses.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisation->canImport($user);
+    }
+
+    /**
+     * Determine whether the user can export pipeline statuses.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisation->canExport($user);
+    }
 }

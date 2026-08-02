@@ -2,10 +2,12 @@
 
 namespace App\Services\PipelineStatuses;
 
+use App\Http\Requests\PipelineStatuses\ImportPipelineStatusRequest;
 use App\Http\Requests\PipelineStatuses\StorePipelineStatusRequest;
 use App\Http\Requests\PipelineStatuses\UpdatePipelineStatusRequest;
 use App\Models\PipelineStatus;
 use App\Models\User;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ManagementService
 {
@@ -17,6 +19,8 @@ class ManagementService
         protected readonly UpdaterService $updater,
         protected readonly DeleterService $destructor,
         protected readonly RestorerService $restorer,
+        protected readonly ImporterService $importer,
+        protected readonly ExporterService $exporter,
     ) {}
 
     /**
@@ -139,5 +143,29 @@ class ManagementService
                 ->values()
                 ->all(),
         ];
+    }
+
+    /**
+     * Import pipeline statuses from an uploaded file.
+     *
+     * @return array{imported: int, skipped: array<int, array{row: int, reason: string}>}
+     */
+    public function import(
+        ImportPipelineStatusRequest $request
+    ): array {
+        return $this->importer->import(
+            $request->file('file'),
+            $request->user()->id
+        );
+    }
+
+    /**
+     * Export pipeline statuses matching the given filters as a CSV download.
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    public function export(array $filters): StreamedResponse
+    {
+        return $this->exporter->export($filters);
     }
 }

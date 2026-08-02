@@ -370,6 +370,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [PipelineStatusController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [PipelineStatusController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [PipelineStatusController::class, 'export'])->name('export');
+        Route::post('/import', [PipelineStatusController::class, 'import'])->name('import');
+
         Route::get('/', [PipelineStatusController::class, 'index'])->name('index');
         Route::get('/create', [PipelineStatusController::class, 'create'])->name('create');
         Route::post('/', [PipelineStatusController::class, 'store'])->name('store');

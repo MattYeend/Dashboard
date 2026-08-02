@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PipelineStatuses\ImportPipelineStatusRequest;
 use App\Http\Requests\PipelineStatuses\StorePipelineStatusRequest;
 use App\Http\Requests\PipelineStatuses\UpdatePipelineStatusRequest;
 use App\Models\PipelineStatus;
@@ -13,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PipelineStatusController extends Controller
 {
@@ -276,5 +278,37 @@ class PipelineStatusController extends Controller
         }
 
         return redirect()->route('pipeline-statuses.index');
+    }
+
+    /**
+     * Import pipeline statuses from an uploaded CSV file.
+     *
+     * Authorisation is handled by ImportPipelineStatusRequest::authorize().
+     */
+    public function import(ImportPipelineStatusRequest $request): JsonResponse|RedirectResponse
+    {
+        $result = $this->management->import($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('pipeline-statuses.index')
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export pipeline statuses matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    {
+        $this->authorize('export', PipelineStatus::class);
+
+        return $this->management->export(
+            $request->only(['search', 'trashed'])
+        );
     }
 }
