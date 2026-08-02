@@ -385,6 +385,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [PipelineController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [PipelineController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [PipelineController::class, 'export'])->name('export');
+        Route::post('/import', [PipelineController::class, 'import'])->name('import');
+
         Route::get('/', [PipelineController::class, 'index'])->name('index');
         Route::get('/create', [PipelineController::class, 'create'])->name('create');
         Route::post('/', [PipelineController::class, 'store'])->name('store');

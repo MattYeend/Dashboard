@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Pipelines\ImportPipelineRequest;
 use App\Http\Requests\Pipelines\StorePipelineRequest;
 use App\Http\Requests\Pipelines\UpdatePipelineRequest;
 use App\Models\Pipeline;
@@ -13,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PipelineController extends Controller
 {
@@ -276,5 +278,37 @@ class PipelineController extends Controller
         }
 
         return redirect()->route('pipelines.index');
+    }
+
+    /**
+     * Import pipelines from an uploaded CSV file.
+     *
+     * Authorisation is handled by ImportPipelineRequest::authorize().
+     */
+    public function import(ImportPipelineRequest $request): JsonResponse|RedirectResponse
+    {
+        $result = $this->management->import($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('pipelines.index')
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export pipelines matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    {
+        $this->authorize('export', Pipeline::class);
+
+        return $this->management->export(
+            $request->only(['search', 'trashed'])
+        );
     }
 }
