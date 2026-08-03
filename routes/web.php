@@ -58,6 +58,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [UserController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [UserController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [UserController::class, 'export'])->name('export');
+        Route::post('/import', [UserController::class, 'import'])->name('import');
+
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/create', [UserController::class, 'create'])->name('create');
         Route::post('/', [UserController::class, 'store'])->name('store');
