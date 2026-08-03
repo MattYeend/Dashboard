@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskStatuses\ImportTaskStatusRequest;
 use App\Http\Requests\TaskStatuses\StoreTaskStatusRequest;
 use App\Http\Requests\TaskStatuses\UpdateTaskStatusRequest;
 use App\Models\TaskStatus;
@@ -13,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TaskStatusController extends Controller
 {
@@ -276,5 +278,37 @@ class TaskStatusController extends Controller
         }
 
         return redirect()->route('task-statuses.index');
+    }
+
+    /**
+     * Import task statuses from an uploaded CSV file.
+     *
+     * Authorisation is handled by ImportTaskStatusRequest::authorize().
+     */
+    public function import(ImportTaskStatusRequest $request): JsonResponse|RedirectResponse
+    {
+        $result = $this->management->import($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('task-statuses.index')
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export task statuses matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    {
+        $this->authorize('export', TaskStatus::class);
+
+        return $this->management->export(
+            $request->only(['search', 'trashed'])
+        );
     }
 }

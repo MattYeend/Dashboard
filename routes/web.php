@@ -90,6 +90,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [TaskStatusController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [TaskStatusController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [TaskStatusController::class, 'export'])->name('export');
+        Route::post('/import', [TaskStatusController::class, 'import'])->name('import');
+
         Route::get('/', [TaskStatusController::class, 'index'])->name('index');
         Route::get('/create', [TaskStatusController::class, 'create'])->name('create');
         Route::post('/', [TaskStatusController::class, 'store'])->name('store');
