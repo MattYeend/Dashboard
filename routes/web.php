@@ -254,6 +254,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [PostController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [PostController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [PostController::class, 'export'])->name('export');
+        Route::post('/import', [PostController::class, 'import'])->name('import');
+
         Route::get('/', [PostController::class, 'index'])->name('index');
         Route::get('/create', [PostController::class, 'create'])->name('create');
         Route::post('/', [PostController::class, 'store'])->name('store');

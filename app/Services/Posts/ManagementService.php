@@ -4,10 +4,12 @@ namespace App\Services\Posts;
 
 use App\Actions\Like\LikePost;
 use App\Actions\Like\UnlikePost;
+use App\Http\Requests\Posts\ImportPostRequest;
 use App\Http\Requests\Posts\StorePostRequest;
 use App\Http\Requests\Posts\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\User;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ManagementService
 {
@@ -21,6 +23,8 @@ class ManagementService
         protected readonly RestorerService $restorer,
         protected readonly LikePost $likePost,
         protected readonly UnlikePost $unlikePost,
+        protected readonly ImporterService $importer,
+        protected readonly ExporterService $exporter,
     ) {}
 
     /**
@@ -168,5 +172,29 @@ class ManagementService
         User $actor
     ): void {
         $this->unlikePost->handle($post, $actor);
+    }
+
+    /**
+     * Import posts from an uploaded file.
+     *
+     * @return array{imported: int, skipped: array<int, array{row: int, reason: string}>}
+     */
+    public function import(
+        ImportPostRequest $request
+    ): array {
+        return $this->importer->import(
+            $request->file('file'),
+            $request->user()->id
+        );
+    }
+
+    /**
+     * Export posts matching the given filters as a CSV download.
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    public function export(array $filters): StreamedResponse
+    {
+        return $this->exporter->export($filters);
     }
 }
