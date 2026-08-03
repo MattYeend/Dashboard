@@ -557,6 +557,9 @@ class Log extends Model
 
     public const ACTION_EXPORT_COMMENT = 260;
 
+    // Registration Interest Management
+    public const ACTION_EXPORT_REGISTRATION_INTEREST = 261;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed

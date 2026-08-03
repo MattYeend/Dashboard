@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class RegistrationInterestController extends Controller
 {
@@ -192,5 +193,19 @@ class RegistrationInterestController extends Controller
         }
 
         return redirect()->route('registration-interests.index');
+    }
+
+    /**
+     * Export registration interests matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    {
+        $this->authorize('export', RegistrationInterest::class);
+
+        return $this->management->export(
+            $request->only(['search', 'trashed'])
+        );
     }
 }

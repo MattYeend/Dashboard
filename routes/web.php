@@ -324,6 +324,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [RegistrationInterestController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [RegistrationInterestController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [RegistrationInterestController::class, 'export'])->name('export');
+
         Route::get('/', [RegistrationInterestController::class, 'index'])->name('index');
         Route::get('/{registration_interest}', [RegistrationInterestController::class, 'show'])->name('show');
         Route::delete('/{registration_interest}', [RegistrationInterestController::class, 'destroy'])->name('destroy');
