@@ -105,6 +105,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [TaskController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [TaskController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [TaskController::class, 'export'])->name('export');
+        Route::post('/import', [TaskController::class, 'import'])->name('import');
+
         Route::get('/', [TaskController::class, 'index'])->name('index');
         Route::get('/create', [TaskController::class, 'create'])->name('create');
         Route::post('/', [TaskController::class, 'store'])->name('store');

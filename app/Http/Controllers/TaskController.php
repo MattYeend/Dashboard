@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Tasks\ImportTaskRequest;
 use App\Http\Requests\Tasks\StoreTaskRequest;
 use App\Http\Requests\Tasks\UpdateTaskRequest;
 use App\Models\Task;
@@ -13,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TaskController extends Controller
 {
@@ -286,5 +288,37 @@ class TaskController extends Controller
         }
 
         return redirect()->route('tasks.index');
+    }
+
+    /**
+     * Import tasks from an uploaded CSV file.
+     *
+     * Authorisation is handled by ImportTaskRequest::authorize().
+     */
+    public function import(ImportTaskRequest $request): JsonResponse|RedirectResponse
+    {
+        $result = $this->management->import($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('tasks.index')
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export tasks matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    {
+        $this->authorize('export', Task::class);
+
+        return $this->management->export(
+            $request->only(['search', 'trashed', 'status_id', 'assigned_to'])
+        );
     }
 }
