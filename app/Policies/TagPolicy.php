@@ -70,4 +70,20 @@ class TagPolicy
     {
         return $this->authorisation->canForceDelete($user, $tag);
     }
+
+    /**
+     * Determine whether the user can import models.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisation->canImport($user);
+    }
+
+    /**
+     * Determine whether the user can export models.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisation->canExport($user);
+    }
 }

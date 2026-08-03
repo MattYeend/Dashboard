@@ -151,4 +151,20 @@ class PolicyAuthorisationService
 
         return $this->roleChecker->isSuperAdmin($creator);
     }
+
+    /**
+     * Determine whether the user can import tags.
+     */
+    public function canImport(User $actor): bool
+    {
+        return $actor->can('import tags');
+    }
+
+    /**
+     * Determine whether the user can export tags.
+     */
+    public function canExport(User $actor): bool
+    {
+        return $actor->can('export tags');
+    }
 }

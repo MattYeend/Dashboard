@@ -309,6 +309,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [TagController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [TagController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [TagController::class, 'export'])->name('export');
+        Route::post('/import', [TagController::class, 'import'])->name('import');
+
         Route::get('/', [TagController::class, 'index'])->name('index');
         Route::get('/create', [TagController::class, 'create'])->name('create');
         Route::post('/', [TagController::class, 'store'])->name('store');
