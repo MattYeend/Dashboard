@@ -19,6 +19,7 @@ class FormatterService
             'description' => $pipeline->description,
             'is_default' => $pipeline->is_default,
             'status_id' => $pipeline->status_id,
+            'assigned_to' => $pipeline->assigned_to,
             'meta' => $pipeline->meta,
             'created_at' => $pipeline->created_at,
             'updated_at' => $pipeline->updated_at,

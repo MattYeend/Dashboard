@@ -3,6 +3,7 @@
 namespace App\Services\Pipelines;
 
 use App\Models\Pipeline;
+use App\Models\PipelineStatus;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -76,7 +77,14 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Pipeline::query()->with('status', 'assignee', 'creator', 'updater', 'deleter', 'restorer')->withCount('stages');
+        $query = Pipeline::query()->with(
+            'status',
+            'assignee',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer'
+        )->withCount('stages');
         $query = $this->filterService->applyAll(
             $query,
             $filters
@@ -145,6 +153,10 @@ class QueryService
                 ->select('id', 'name')
                 ->orderBy('name')
                 ->get(),
+            'statuses' => PipelineStatus::query()
+                ->select('id', 'title', 'background_colour', 'text_colour')
+                ->orderBy('title')
+                ->get(),
         ];
     }
 
@@ -155,7 +167,15 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Pipeline {
-        $query = Pipeline::query()->with('status', 'stages', 'assignee', 'creator', 'updater', 'deleter', 'restorer');
+        $query = Pipeline::query()->with(
+            'status',
+            'stages',
+            'assignee',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer'
+        );
 
         if ($withTrashed) {
             $query->withTrashed();
