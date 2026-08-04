@@ -21,7 +21,7 @@ class FormatterService
             'email' => $user->email,
             'email_verified_at' => $user->email_verified_at,
             'role' => $user->role,
-            'roles' => $user->getRoleNames()->all(),
+            'roles' => array_values(array_diff($user->getRoleNames()->all(), User::TIER_ROLES)),
             'meta' => $user->meta,
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at,

@@ -32,6 +32,7 @@ class StoreUserRequest extends FormRequest
             'email' => $this->emailRules(),
             'password' => $this->passwordRules(),
             'role' => $this->roleRules(),
+            'roles' => $this->rolesRules(),
             'roles.*' => $this->rolesWildcardRules(),
             'meta' => $this->metaRules(),
         ];

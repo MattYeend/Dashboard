@@ -43,6 +43,10 @@ class DataPreparationService
         $payload = [];
 
         foreach ($allowed as $field) {
+            if ($field === 'password' && empty($data['password'])) {
+                continue;
+            }
+
             if (array_key_exists($field, $data)) {
                 $payload[$field] = $data[$field];
             }

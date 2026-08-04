@@ -32,6 +32,7 @@ class UpdateUserRequest extends FormRequest
             'email' => $this->emailRules(),
             'password' => $this->optionalPasswordRules(),
             'role' => $this->roleRules(),
+            'roles' => $this->rolesRules(),
             'roles.*' => $this->rolesWildcardRules(),
             'meta' => $this->metaRules(),
         ];
