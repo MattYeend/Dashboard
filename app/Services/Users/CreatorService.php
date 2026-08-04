@@ -17,6 +17,7 @@ class CreatorService
         protected readonly DataPreparationService $dataPreparation,
         protected readonly AuditLogService $auditLogService,
         protected readonly CreateResource $createResource,
+        protected readonly PolicyAuthorisationService $policyAuthorisationService,
     ) {}
 
     /**
@@ -30,16 +31,21 @@ class CreatorService
     {
         $actor = User::findOrFail($createdBy);
 
+        $displayRole = $data['role'] ?? 'user';
+        $tierRole = User::tierRoleNameFor($displayRole);
+        $functionalRoles = $data['roles'] ?? [];
+
+        $this->policyAuthorisationService->authoriseRoleAssignmentOnCreate($actor, $tierRole, $functionalRoles);
+
         /** @var User $user */
         return $this->createResource->handle(
             $data,
-            function (array $data) use ($createdBy, $actor): User {
+            function (array $data) use ($createdBy, $actor, $tierRole, $functionalRoles): User {
                 $userData = $this->dataPreparation->prepareForCreation($data, $createdBy);
-                $displayRole = $userData['role'] ?? 'user';
 
                 $newUser = User::create($userData);
                 $newUser->plainPassword = $userData['password'];
-                $newUser->assignApplicationRole($displayRole);
+                $newUser->assignRoles($tierRole, $functionalRoles);
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_USER,

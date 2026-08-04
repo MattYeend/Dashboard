@@ -4,6 +4,7 @@ namespace App\Services\Users;
 
 use App\Models\User;
 use App\Services\UserRoleCheckerService;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class PolicyAuthorisationService
 {
@@ -145,6 +146,70 @@ class PolicyAuthorisationService
     public function canExport(User $actor): bool
     {
         return $actor->can('export users');
+    }
+
+    /**
+     * Determine whether the actor may assign the given tier role and
+     * additional functional roles to the target user.
+     *
+     * @param  array<int, string>  $functionalRoles
+     *
+     * @throws AuthorizationException
+     */
+    public function authoriseRoleAssignment(User $actor, User $target, string $tierRole, array $functionalRoles = []): void
+    {
+        if (! $actor->can('assign roles')) {
+            throw new AuthorizationException('You are not permitted to assign roles.');
+        }
+
+        if ($this->targetOutranksActor($actor, $target)) {
+            throw new AuthorizationException('You cannot modify the roles of a user who outranks you.');
+        }
+
+        $this->assertValidTierAndFunctionalRoles($actor, $tierRole, $functionalRoles);
+    }
+
+    /**
+     * Determine whether the actor may create a new user with the given
+     * tier role and additional functional roles. No target user exists
+     * yet, so there is no outranking check.
+     *
+     * @param  array<int, string>  $functionalRoles
+     *
+     * @throws AuthorizationException
+     */
+    public function authoriseRoleAssignmentOnCreate(User $actor, string $tierRole, array $functionalRoles = []): void
+    {
+        if (! $actor->can('create users')) {
+            throw new AuthorizationException('You are not permitted to create users.');
+        }
+
+        $this->assertValidTierAndFunctionalRoles($actor, $tierRole, $functionalRoles);
+    }
+
+    /**
+     * Shared tier/functional role validation used by both the create
+     * and update authorisation entry points.
+     *
+     * @param  array<int, string>  $functionalRoles
+     *
+     * @throws AuthorizationException
+     */
+    private function assertValidTierAndFunctionalRoles(User $actor, string $tierRole, array $functionalRoles): void
+    {
+        if ($tierRole === 'Super Admin' && ! $this->roleChecker->isSuperAdmin($actor)) {
+            throw new AuthorizationException('Only a Super Admin can grant the Super Admin role.');
+        }
+
+        if ($tierRole === 'Admin' && ! $this->roleChecker->isAdmin($actor)) {
+            throw new AuthorizationException('Only an Admin or Super Admin can grant the Admin role.');
+        }
+
+        foreach ($functionalRoles as $role) {
+            if (! in_array($role, User::FUNCTIONAL_ROLES, true)) {
+                throw new AuthorizationException("\"{$role}\" is not a valid functional role.");
+            }
+        }
     }
 
     /**

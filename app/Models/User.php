@@ -165,6 +165,35 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
     }
 
     /**
+     * The three mutually exclusive application tier roles. A user
+     * holds exactly one of these at a time, driving the `role` column.
+     *
+     * @var list<string>
+     */
+    public const TIER_ROLES = ['Super Admin', 'Admin', 'User'];
+
+    /**
+     * Functional (non-tier) roles that can be layered on top of a
+     * user's primary tier role.
+     *
+     * @var list<string>
+     */
+    public const FUNCTIONAL_ROLES = ['Manager', 'Editor', 'Viewer', 'Moderator', 'Support', 'Analyst', 'Guest'];
+
+    /**
+     * Map a display role string (`role` column value) to its
+     * corresponding Spatie tier role name.
+     */
+    public static function tierRoleNameFor(string $displayRole): string
+    {
+        return match ($displayRole) {
+            'super_admin' => 'Super Admin',
+            'admin' => 'Admin',
+            default => 'User',
+        };
+    }
+
+    /**
      * Assign a Spatie role to the user based on the given application role string.
      *
      * Accepts a display role string (e.g. `'super_admin'`, `'admin'`, `'user'`),
@@ -174,11 +203,23 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
      */
     public function assignApplicationRole(string $role): void
     {
-        $this->syncRoles(match ($role) {
-            'super_admin' => ['Super Admin'],
-            'admin' => ['Admin'],
-            default => ['User'],
-        });
+        $this->syncRoles([self::tierRoleNameFor($role)]);
+
+        $this->syncDisplayRoleFromSpatie();
+    }
+
+    /**
+     * Assign a primary tier role plus zero or more additional functional
+     * roles (e.g. Moderator, Support), replacing the user's full role
+     * set in one operation.
+     *
+     * @param  array<int, string>  $functionalRoles
+     */
+    public function assignRoles(string $tierRole, array $functionalRoles = []): void
+    {
+        $functionalRoles = array_diff($functionalRoles, self::TIER_ROLES);
+
+        $this->syncRoles([$tierRole, ...array_values($functionalRoles)]);
 
         $this->syncDisplayRoleFromSpatie();
     }

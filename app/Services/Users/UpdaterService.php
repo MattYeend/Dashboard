@@ -16,6 +16,7 @@ class UpdaterService
         protected readonly DataPreparationService $dataPreparation,
         protected readonly AuditLogService $auditLogService,
         protected readonly UpdateResource $updateResource,
+        protected readonly PolicyAuthorisationService $policyAuthorisationService,
     ) {}
 
     /**
@@ -36,12 +37,25 @@ class UpdaterService
 
         $userData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
 
+        if (isset($userData['role']) || array_key_exists('roles', $data)) {
+            $tierRole = User::tierRoleNameFor($userData['role'] ?? $user->role);
+
+            $this->policyAuthorisationService->authoriseRoleAssignment(
+                $actor,
+                $user,
+                $tierRole,
+                $data['roles'] ?? []
+            );
+        }
+
         return $this->updateResource->handle(
             $user,
             $userData,
-            function (User $user) use ($actor, $before, $userData): void {
-                if (isset($userData['role'])) {
-                    $user->assignApplicationRole($userData['role']);
+            function (User $user) use ($actor, $before, $userData, $data): void {
+                if (isset($userData['role']) || array_key_exists('roles', $data)) {
+                    $tierRole = User::tierRoleNameFor($userData['role'] ?? $user->role);
+
+                    $user->assignRoles($tierRole, $data['roles'] ?? []);
                 }
 
                 $fresh = $user->fresh();
