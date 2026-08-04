@@ -60,7 +60,9 @@ class UserController extends Controller
     {
         $this->authorize('create', User::class);
 
-        return Inertia::render('Users/Create');
+        return Inertia::render('Users/Create', [
+            'availableRoles' => User::FUNCTIONAL_ROLES,
+        ]);
     }
 
     /**

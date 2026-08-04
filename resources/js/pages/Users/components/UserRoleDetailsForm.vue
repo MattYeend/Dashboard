@@ -9,30 +9,30 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
- 
+
 const role = defineModel<string>('role', { required: true });
 const roles = defineModel<string[]>('roles', { required: true });
- 
+
 interface Props {
     availableRoles: string[];
     errors: Partial<Record<'role' | 'roles', string>>;
 }
- 
+
 defineProps<Props>();
- 
+
 const tierRoleOptions = [
     { value: 'user', label: 'User' },
     { value: 'admin', label: 'Admin' },
     { value: 'super_admin', label: 'Super Admin' },
 ];
- 
+
 function toggleFunctionalRole(roleName: string, checked: boolean): void {
     roles.value = checked
         ? [...roles.value, roleName]
         : roles.value.filter((r) => r !== roleName);
 }
 </script>
- 
+
 <template>
     <div class="space-y-6">
         <div>
@@ -53,7 +53,7 @@ function toggleFunctionalRole(roleName: string, checked: boolean): void {
             </Select>
             <InputError :message="errors.role" />
         </div>
- 
+
         <div class="space-y-3">
             <Label>Additional roles</Label>
             <div class="grid grid-cols-2 gap-2">
@@ -66,10 +66,14 @@ function toggleFunctionalRole(roleName: string, checked: boolean): void {
                         :id="`role-${roleName}`"
                         :model-value="roles.includes(roleName)"
                         @update:model-value="
-                            (checked) => toggleFunctionalRole(roleName, !!checked)
+                            (checked) =>
+                                toggleFunctionalRole(roleName, !!checked)
                         "
                     />
-                    <Label :for="`role-${roleName}`" class="font-normal text-gray-300">
+                    <Label
+                        :for="`role-${roleName}`"
+                        class="font-normal text-gray-300"
+                    >
                         {{ roleName }}
                     </Label>
                 </div>

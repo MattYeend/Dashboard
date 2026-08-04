@@ -6,6 +6,7 @@ import type { User } from '@/types';
 
 interface Props {
     user: User;
+    availableRoles: string[];
 }
 
 const props = defineProps<Props>();
@@ -16,6 +17,7 @@ const form = useForm({
     password: '',
     password_confirmation: '',
     role: props.user.role,
+    roles: props.user.roles ?? [],
 });
 
 function submit(): void {
@@ -33,6 +35,8 @@ function submit(): void {
                 v-model:password="form.password"
                 v-model:password-confirmation="form.password_confirmation"
                 v-model:role="form.role"
+                v-model:roles="form.roles"
+                :available-roles="availableRoles"
                 :is-editing="true"
                 :processing="form.processing"
                 :errors="form.errors"

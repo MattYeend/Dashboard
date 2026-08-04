@@ -14,7 +14,7 @@ interface UserFormData {
     role: string;
     roles: string[];
 }
- 
+
 interface Props {
     isEditing: boolean;
     processing: boolean;
@@ -24,7 +24,7 @@ interface Props {
 
 defineProps<Props>();
 defineEmits<{ submit: [] }>();
- 
+
 const name = defineModel<string>('name', { required: true });
 const email = defineModel<string>('email', { required: true });
 const password = defineModel<string>('password', { required: true });
@@ -46,11 +46,11 @@ const roles = defineModel<string[]>('roles', { required: true });
             :errors="errors"
         />
         <UserRoleDetailsForm
-    v-model:role="role"
-    v-model:roles="roles"
-    :available-roles="availableRoles"
-    :errors="errors"
-/>
+            v-model:role="role"
+            v-model:roles="roles"
+            :available-roles="availableRoles"
+            :errors="errors"
+        />
 
         <div class="flex items-center justify-end space-x-3">
             <Button as-child variant="outline">

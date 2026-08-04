@@ -127,7 +127,7 @@ class QueryService
         return [
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
-            'available_roles' => User::FUNCTIONAL_ROLES,
+            'availableRoles' => User::FUNCTIONAL_ROLES,
         ];
     }
 

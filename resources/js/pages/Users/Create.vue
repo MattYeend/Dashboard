@@ -3,12 +3,18 @@ import { useForm } from '@inertiajs/vue3';
 import UserForm from '@/pages/Users/components/UserForm.vue';
 import { store as usersStore } from '@/routes/users';
 
+interface Props {
+    availableRoles: string[];
+}
+
+defineProps<Props>();
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
     role: 'user',
+    roles: [] as string[],
 });
 
 function submit(): void {
@@ -28,7 +34,8 @@ function submit(): void {
                 v-model:password="form.password"
                 v-model:password-confirmation="form.password_confirmation"
                 v-model:role="form.role"
-                :available-roles="['user', 'admin', 'super_admin']"
+                v-model:roles="form.roles"
+                :available-roles="availableRoles"
                 :is-editing="false"
                 :processing="form.processing"
                 :errors="form.errors"
