@@ -48,6 +48,12 @@ defineProps<Props>();
                     <span v-else>-</span>
                 </dd>
             </div>
+            <div>
+                <dt class="text-xs text-gray-400">Assigned to</dt>
+                <dd class="text-sm">
+                    {{ pipeline.assignee?.name ?? 'Unassigned' }}
+                </dd>
+            </div>
         </dl>
     </div>
 </template>

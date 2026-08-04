@@ -12,17 +12,19 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import type { PipelineStatus } from '@/types';
+import type { PipelineStatus, UserOption } from '@/types';
 
 interface PipelineBasicFormData {
     title: string;
     description: string | null;
     is_default: boolean;
     status_id: number | null;
+    assigned_to: number | null;
 }
 
 interface Props {
     statuses: PipelineStatus[];
+    users: UserOption[];
     errors: Partial<InertiaFormProps<PipelineBasicFormData>['errors']>;
 }
 
@@ -34,6 +36,7 @@ const description = defineModel<string | null>('description', {
 });
 const isDefault = defineModel<boolean>('isDefault', { required: true });
 const statusId = defineModel<number | null>('statusId', { default: null });
+const assignedTo = defineModel<number | null>('assignedTo', { default: null });
 </script>
 
 <template>
@@ -88,6 +91,24 @@ const statusId = defineModel<number | null>('statusId', { default: null });
                 </SelectContent>
             </Select>
             <InputError :message="errors.status_id" />
+        </div>
+        <div>
+            <Label for="assigned_to">Assigned to</Label>
+            <Select v-model="assignedTo">
+                <SelectTrigger id="assigned_to" class="mt-1 w-full">
+                    <SelectValue placeholder="Unassigned" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem
+                        v-for="user in users"
+                        :key="user.id"
+                        :value="user.id"
+                    >
+                        {{ user.name }}
+                    </SelectItem>
+                </SelectContent>
+            </Select>
+            <InputError :message="errors.assigned_to" />
         </div>
     </div>
 </template>

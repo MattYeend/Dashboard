@@ -102,4 +102,12 @@ class PipelinePolicy
     {
         return $this->authorisationService->canExport($user);
     }
+
+    /**
+     * Determine whether the user can assign the pipeline.
+     */
+    public function assign(User $user, Pipeline $pipeline): bool
+    {
+        return $this->authorisationService->canAssign($user, $pipeline);
+    }
 }

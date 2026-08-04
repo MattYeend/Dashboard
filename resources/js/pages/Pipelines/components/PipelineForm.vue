@@ -4,13 +4,14 @@ import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import PipelineBasicDetailsForm from '@/pages/Pipelines/components/PipelineBasicDetailsForm.vue';
 import { index as pipelinesIndex } from '@/routes/pipelines';
-import type { PipelineStatus } from '@/types';
+import type { PipelineStatus, UserOption } from '@/types';
 
 interface PipelineFormData {
     title: string;
     description: string | null;
     is_default: boolean;
     status_id: number | null;
+    assigned_to: number | null;
 }
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
     processing: boolean;
     errors: Partial<InertiaFormProps<PipelineFormData>['errors']>;
     statuses: PipelineStatus[];
+    users: UserOption[];
 }
 
 defineProps<Props>();
@@ -29,6 +31,7 @@ const description = defineModel<string | null>('description', {
 });
 const isDefault = defineModel<boolean>('isDefault', { required: true });
 const statusId = defineModel<number | null>('statusId', { default: null });
+const assignedTo = defineModel<number | null>('assignedTo', { default: null });
 </script>
 
 <template>
@@ -38,7 +41,9 @@ const statusId = defineModel<number | null>('statusId', { default: null });
             v-model:description="description"
             v-model:is-default="isDefault"
             v-model:status-id="statusId"
+            v-model:assigned-to="assignedTo"
             :statuses="statuses"
+            :users="users"
             :errors="errors"
         />
 

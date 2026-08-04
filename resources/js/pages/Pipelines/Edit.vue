@@ -3,11 +3,12 @@ import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank, numberOrNull } from '@/lib/forms';
 import PipelineForm from '@/pages/Pipelines/components/PipelineForm.vue';
 import { update as pipelinesUpdate } from '@/routes/pipelines';
-import type { Pipeline, PipelineStatus } from '@/types';
+import type { Pipeline, PipelineStatus, UserOption } from '@/types';
 
 interface Props {
     pipeline: Pipeline;
     statuses: PipelineStatus[];
+    users: UserOption[];
 }
 
 const props = defineProps<Props>();
@@ -17,6 +18,7 @@ const form = useForm({
     description: props.pipeline.description ?? '',
     is_default: props.pipeline.is_default,
     status_id: props.pipeline.status_id,
+    assigned_to: props.pipeline.assigned_to,
 });
 
 function submit(): void {
@@ -24,6 +26,7 @@ function submit(): void {
         ...data,
         description: nullIfBlank(data.description),
         status_id: numberOrNull(data.status_id),
+        assigned_to: numberOrNull(data.assigned_to),
     })).put(pipelinesUpdate.url(props.pipeline.id));
 }
 </script>
@@ -40,7 +43,9 @@ function submit(): void {
                 v-model:description="form.description"
                 v-model:is-default="form.is_default"
                 v-model:status-id="form.status_id"
+                v-model:assigned-to="form.assigned_to"
                 :statuses="statuses"
+                :users="users"
                 :is-editing="true"
                 :processing="form.processing"
                 :errors="form.errors"
