@@ -2,10 +2,12 @@
 
 namespace App\Services\Tags;
 
+use App\Http\Requests\Tags\ImportTagRequest;
 use App\Http\Requests\Tags\StoreTagRequest;
 use App\Http\Requests\Tags\UpdateTagRequest;
 use App\Models\Tag;
 use App\Models\User;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ManagementService
 {
@@ -17,6 +19,8 @@ class ManagementService
         protected readonly UpdaterService $updater,
         protected readonly DeleterService $destructor,
         protected readonly RestorerService $restorer,
+        protected readonly ImporterService $importer,
+        protected readonly ExporterService $exporter,
     ) {}
 
     /**
@@ -130,5 +134,29 @@ class ManagementService
                 ->values()
                 ->all(),
         ];
+    }
+
+    /**
+     * Import tags from an uploaded file.
+     *
+     * @return array{imported: int, skipped: array<int, array{row: int, reason: string}>}
+     */
+    public function import(
+        ImportTagRequest $request
+    ): array {
+        return $this->importer->import(
+            $request->file('file'),
+            $request->user()->id
+        );
+    }
+
+    /**
+     * Export tags matching the given filters as a CSV download.
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    public function export(array $filters): StreamedResponse
+    {
+        return $this->exporter->export($filters);
     }
 }

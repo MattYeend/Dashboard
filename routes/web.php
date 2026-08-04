@@ -58,6 +58,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [UserController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [UserController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [UserController::class, 'export'])->name('export');
+        Route::post('/import', [UserController::class, 'import'])->name('import');
+
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/create', [UserController::class, 'create'])->name('create');
         Route::post('/', [UserController::class, 'store'])->name('store');
@@ -90,6 +93,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [TaskStatusController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [TaskStatusController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [TaskStatusController::class, 'export'])->name('export');
+        Route::post('/import', [TaskStatusController::class, 'import'])->name('import');
+
         Route::get('/', [TaskStatusController::class, 'index'])->name('index');
         Route::get('/create', [TaskStatusController::class, 'create'])->name('create');
         Route::post('/', [TaskStatusController::class, 'store'])->name('store');
@@ -104,6 +110,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/bulk/restore', [TaskController::class, 'bulkRestore'])->name('bulk.restore');
         Route::post('/{id}/restore', [TaskController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [TaskController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/export', [TaskController::class, 'export'])->name('export');
+        Route::post('/import', [TaskController::class, 'import'])->name('import');
 
         Route::get('/', [TaskController::class, 'index'])->name('index');
         Route::get('/create', [TaskController::class, 'create'])->name('create');
@@ -309,6 +318,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [TagController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [TagController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [TagController::class, 'export'])->name('export');
+        Route::post('/import', [TagController::class, 'import'])->name('import');
+
         Route::get('/', [TagController::class, 'index'])->name('index');
         Route::get('/create', [TagController::class, 'create'])->name('create');
         Route::post('/', [TagController::class, 'store'])->name('store');
@@ -323,6 +335,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/bulk/restore', [RegistrationInterestController::class, 'bulkRestore'])->name('bulk.restore');
         Route::post('/{id}/restore', [RegistrationInterestController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [RegistrationInterestController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/export', [RegistrationInterestController::class, 'export'])->name('export');
 
         Route::get('/', [RegistrationInterestController::class, 'index'])->name('index');
         Route::get('/{registration_interest}', [RegistrationInterestController::class, 'show'])->name('show');

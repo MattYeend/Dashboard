@@ -5,6 +5,7 @@ namespace App\Services\RegistrationInterests;
 use App\Http\Requests\RegistrationInterests\StoreRegistrationInterestRequest;
 use App\Models\RegistrationInterest;
 use App\Models\User;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ManagementService
 {
@@ -12,6 +13,7 @@ class ManagementService
         protected CreatorService $creator,
         protected DeleterService $deleter,
         protected RestorerService $restorer,
+        protected ExporterService $exporter,
     ) {}
 
     /**
@@ -77,5 +79,15 @@ class ManagementService
         callable $authorize
     ): array {
         return $this->restorer->bulkRestore($ids, $actor, $authorize);
+    }
+
+    /**
+     * Export registration interests matching the given filters as a CSV download.
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    public function export(array $filters): StreamedResponse
+    {
+        return $this->exporter->export($filters);
     }
 }
