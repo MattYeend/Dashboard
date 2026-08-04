@@ -13,7 +13,15 @@ class StorePipelineRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('create', Pipeline::class);
+        if (! $this->user()->can('create', Pipeline::class)) {
+            return false;
+        }
+
+        if ($this->filled('assigned_to') && ! $this->user()->can('assign pipeline')) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -28,6 +36,7 @@ class StorePipelineRequest extends FormRequest
             'description' => $this->descriptionRules(),
             'is_default' => $this->isDefaultRules(),
             'status_id' => $this->statusIdRules(),
+            'assigned_to' => $this->assignedToRules(),
             'meta' => $this->metaRules(),
         ];
     }
@@ -44,6 +53,7 @@ class StorePipelineRequest extends FormRequest
             'title.max' => 'The title may not exceed 255 characters.',
             'is_default.boolean' => 'The default flag must be true or false.',
             'status_id.exists' => 'The selected status does not exist.',
+            'assigned_to.exists' => 'The selected assignee does not exist.',
         ];
     }
 
@@ -98,6 +108,20 @@ class StorePipelineRequest extends FormRequest
             'nullable',
             'integer',
             'exists:pipeline_statuses,id',
+        ];
+    }
+
+    /**
+     * Get validation rules for the assigned_to field.
+     *
+     * @return array<mixed>
+     */
+    protected function assignedToRules(): array
+    {
+        return [
+            'nullable',
+            'integer',
+            'exists:users,id',
         ];
     }
 

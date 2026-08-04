@@ -60,11 +60,23 @@ class QueryService
     }
 
     /**
+     * Get the data required to render the create-pipeline form, including
+     * the assignable users list and permissions for the current user.
+     */
+    public function getCreateData(User $user): array
+    {
+        return array_merge(
+            $this->getPermissions($user),
+            $this->baseData(),
+        );
+    }
+
+    /**
      * Build the base query with filters.
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Pipeline::query()->with('status', 'creator', 'updater', 'deleter', 'restorer')->withCount('stages');
+        $query = Pipeline::query()->with('status', 'assignee', 'creator', 'updater', 'deleter', 'restorer')->withCount('stages');
         $query = $this->filterService->applyAll(
             $query,
             $filters
@@ -129,6 +141,10 @@ class QueryService
         return [
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
+            'users' => User::query()
+                ->select('id', 'name')
+                ->orderBy('name')
+                ->get(),
         ];
     }
 
@@ -139,7 +155,7 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Pipeline {
-        $query = Pipeline::query()->with('status', 'stages', 'creator', 'updater', 'deleter', 'restorer');
+        $query = Pipeline::query()->with('status', 'stages', 'assignee', 'creator', 'updater', 'deleter', 'restorer');
 
         if ($withTrashed) {
             $query->withTrashed();

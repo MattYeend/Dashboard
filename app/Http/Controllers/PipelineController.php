@@ -58,11 +58,13 @@ class PipelineController extends Controller
      *
      * Authorises via the 'create' policy before rendering.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
         $this->authorize('create', Pipeline::class);
 
-        return Inertia::render('Pipelines/Create');
+        return Inertia::render('Pipelines/Create', [
+            ...$this->query->getCreateData($request->user()),
+        ]);
     }
 
     /**

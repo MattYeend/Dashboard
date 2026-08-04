@@ -17,6 +17,7 @@ class DataPreparationService
             'description' => $data['description'] ?? null,
             'is_default' => $data['is_default'] ?? false,
             'status_id' => $data['status_id'] ?? null,
+            'assigned_to' => $data['assigned_to'] ?? null,
             'meta' => $data['meta'] ?? null,
             'created_by' => $createdBy,
         ];
@@ -35,6 +36,7 @@ class DataPreparationService
             'description',
             'is_default',
             'status_id',
+            'assigned_to',
             'meta',
         ];
 

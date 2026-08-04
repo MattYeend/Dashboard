@@ -12,7 +12,17 @@ class UpdatePipelineRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('update', $this->route('pipeline'));
+        $pipeline = $this->route('pipeline');
+
+        if (! $this->user()->can('update', $pipeline)) {
+            return false;
+        }
+
+        if ($this->filled('assigned_to') && ! $this->user()->can('assign', $pipeline)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -27,6 +37,7 @@ class UpdatePipelineRequest extends FormRequest
             'description' => $this->descriptionRules(),
             'is_default' => $this->isDefaultRules(),
             'status_id' => $this->statusIdRules(),
+            'assigned_to' => $this->assignedToRules(),
             'meta' => $this->metaRules(),
         ];
     }
@@ -43,6 +54,7 @@ class UpdatePipelineRequest extends FormRequest
             'title.max' => 'The title may not exceed 255 characters.',
             'is_default.boolean' => 'The default flag must be true or false.',
             'status_id.exists' => 'The selected status does not exist.',
+            'assigned_to.exists' => 'The selected assignee does not exist.',
         ];
     }
 
@@ -101,6 +113,21 @@ class UpdatePipelineRequest extends FormRequest
             'nullable',
             'integer',
             'exists:pipeline_statuses,id',
+        ];
+    }
+
+    /**
+     * Get validation rules for the assigned_to field.
+     *
+     * @return array<mixed>
+     */
+    protected function assignedToRules(): array
+    {
+        return [
+            'sometimes',
+            'nullable',
+            'integer',
+            'exists:users,id',
         ];
     }
 
