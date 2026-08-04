@@ -1,7 +1,7 @@
 ---
 title: Frontend Vue Patterns
 # group: Guides              # Bucket this page sits under in the sidebar
-# order: 1                   # Lower numbers appear first; omit to sort alphabetically
+order: 7
 # description: A short summary used for <meta> tags and SEO
 # slug: custom-url           # Override the URL slug (defaults to the file path)
 # hidden: true               # Hide from the sidebar and listings
