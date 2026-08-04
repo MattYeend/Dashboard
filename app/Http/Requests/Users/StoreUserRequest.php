@@ -32,6 +32,7 @@ class StoreUserRequest extends FormRequest
             'email' => $this->emailRules(),
             'password' => $this->passwordRules(),
             'role' => $this->roleRules(),
+            'roles.*' => $this->rolesWildcardRules(),
             'meta' => $this->metaRules(),
         ];
     }
@@ -52,6 +53,8 @@ class StoreUserRequest extends FormRequest
             'email.max' => 'The email address may not exceed 255 characters.',
             'email.unique' => 'The email address is already taken.',
             'role.in' => 'The selected role is invalid.',
+            'roles.array' => 'The roles field must be an array.',
+            'roles.*.in' => 'One or more selected roles are invalid.',
         ];
     }
 
@@ -94,6 +97,32 @@ class StoreUserRequest extends FormRequest
         return [
             'nullable',
             Rule::in(['user', 'admin', 'super_admin']),
+        ];
+    }
+
+    /**
+     * Get validation rules for the roles field.
+     *
+     * @return array<mixed>
+     */
+    protected function rolesRules(): array
+    {
+        return [
+            'sometimes',
+            'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for each entry in the roles field.
+     *
+     * @return array<mixed>
+     */
+    protected function rolesWildcardRules(): array
+    {
+        return [
+            'string',
+            Rule::in(User::FUNCTIONAL_ROLES),
         ];
     }
 

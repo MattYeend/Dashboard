@@ -21,6 +21,7 @@ class FormatterService
             'email' => $user->email,
             'email_verified_at' => $user->email_verified_at,
             'role' => $user->role,
+            'roles' => $user->getRoleNames()->all(),
             'meta' => $user->meta,
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at,
