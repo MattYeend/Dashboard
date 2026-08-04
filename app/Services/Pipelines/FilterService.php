@@ -61,6 +61,21 @@ class FilterService
     }
 
     /**
+     * Apply an assignee filter to the query.
+     *
+     * @param  Builder<Pipeline>  $query
+     * @return Builder<Pipeline>
+     */
+    public function applyAssignedTo(Builder $query, ?int $assignedTo): Builder
+    {
+        if ($assignedTo === null) {
+            return $query;
+        }
+
+        return $query->where('assigned_to', $assignedTo);
+    }
+
+    /**
      * Apply all filters to the query.
      *
      * @param  Builder<Pipeline>  $query
@@ -71,7 +86,8 @@ class FilterService
     {
         $query = $this->applySearch($query, $filters['search'] ?? null);
         $query = $this->applyStatus($query, $filters['status_id'] ?? null);
+        $query = $this->applyIsDefault($query, $filters['is_default'] ?? null);
 
-        return $this->applyIsDefault($query, $filters['is_default'] ?? null);
+        return $this->applyAssignedTo($query, $filters['assigned_to'] ?? null);
     }
 }

@@ -34,6 +34,10 @@ class FormatterService
                 'background_colour' => $pipeline->status->background_colour,
                 'text_colour' => $pipeline->status->text_colour,
             ] : null,
+            'assignee' => $pipeline->assignee ? [
+                'id' => $pipeline->assignee->id,
+                'name' => $pipeline->assignee->name,
+            ] : null,
             'stages' => $pipeline->relationLoaded('stages')
                 ? $pipeline->stages->map(fn ($stage) => [
                     'id' => $stage->id,

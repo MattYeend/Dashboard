@@ -47,6 +47,7 @@ class PipelineController extends Controller
                 'sort_direction',
                 'trashed',
                 'per_page',
+                'assigned_to',
             ])
         );
 
@@ -62,9 +63,7 @@ class PipelineController extends Controller
     {
         $this->authorize('create', Pipeline::class);
 
-        return Inertia::render('Pipelines/Create', [
-            ...$this->query->getCreateData($request->user()),
-        ]);
+        return Inertia::render('Pipelines/Create', $this->query->getCreateData($request->user()));
     }
 
     /**
