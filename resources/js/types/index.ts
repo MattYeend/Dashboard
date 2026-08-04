@@ -90,6 +90,7 @@ export interface User {
     email: string;
     email_verified_at: string | null;
     role: 'user' | 'admin' | 'super_admin';
+    roles: string[];
     meta: Record<string, unknown> | null;
     created_by: number | null;
     updated_by: number | null;

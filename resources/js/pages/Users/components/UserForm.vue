@@ -12,17 +12,19 @@ interface UserFormData {
     password: string;
     password_confirmation: string;
     role: string;
+    roles: string[];
 }
-
+ 
 interface Props {
     isEditing: boolean;
     processing: boolean;
+    availableRoles: string[];
     errors: Partial<InertiaFormProps<UserFormData>['errors']>;
 }
 
 defineProps<Props>();
 defineEmits<{ submit: [] }>();
-
+ 
 const name = defineModel<string>('name', { required: true });
 const email = defineModel<string>('email', { required: true });
 const password = defineModel<string>('password', { required: true });
@@ -30,6 +32,7 @@ const passwordConfirmation = defineModel<string>('passwordConfirmation', {
     required: true,
 });
 const role = defineModel<string>('role', { required: true });
+const roles = defineModel<string[]>('roles', { required: true });
 </script>
 
 <template>
@@ -42,7 +45,12 @@ const role = defineModel<string>('role', { required: true });
             :is-editing="isEditing"
             :errors="errors"
         />
-        <UserRoleDetailsForm v-model:role="role" :errors="errors" />
+        <UserRoleDetailsForm
+    v-model:role="role"
+    v-model:roles="roles"
+    :available-roles="availableRoles"
+    :errors="errors"
+/>
 
         <div class="flex items-center justify-end space-x-3">
             <Button as-child variant="outline">

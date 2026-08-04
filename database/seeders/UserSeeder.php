@@ -15,38 +15,38 @@ class UserSeeder extends Seeder
     {
         // Create Super Admin User
         $superAdmin = User::updateOrCreate(
-            ['email' => 'superadmin@example.com'],
-            [
-                'name' => 'Super Admin',
-                'role' => 'super_admin',
-                'email_verified_at' => now(),
-                'password' => Hash::make('password'),
-                'meta' => json_encode([
-                    'department' => 'Management',
-                    'position' => 'Super Administrator',
-                    'phone' => '+1-555-0100',
-                ]),
-            ]
-        );
-        $superAdmin->assignRole('Super Admin');
+    ['email' => 'superadmin@example.com'],
+    [
+        'name' => 'Super Admin',
+        'role' => 'super_admin',
+        'email_verified_at' => now(),
+        'password' => Hash::make('password'),
+        'meta' => json_encode([
+            'department' => 'Management',
+            'position' => 'Super Administrator',
+            'phone' => '+1-555-0100',
+        ]),
+    ]
+);
+$superAdmin->assignRoles('Super Admin', ['Support']);
 
         // Create Admin Users
         $admin1 = User::updateOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Admin User',
-                'role' => 'admin',
-                'email_verified_at' => now(),
-                'password' => Hash::make('password'),
-                'created_by' => $superAdmin->id,
-                'meta' => json_encode([
-                    'department' => 'Management',
-                    'position' => 'Administrator',
-                    'phone' => '+1-555-0101',
-                ]),
-            ]
-        );
-        $admin1->assignRole('Admin');
+    ['email' => 'admin@example.com'],
+    [
+        'name' => 'Admin User',
+        'role' => 'admin',
+        'email_verified_at' => now(),
+        'password' => Hash::make('password'),
+        'created_by' => $superAdmin->id,
+        'meta' => json_encode([
+            'department' => 'Management',
+            'position' => 'Administrator',
+            'phone' => '+1-555-0101',
+        ]),
+    ]
+);
+$admin1->assignRoles('Admin', ['Moderator']);
 
         $admin2 = User::updateOrCreate(
             ['email' => 'john.admin@example.com'],

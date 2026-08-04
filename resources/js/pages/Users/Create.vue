@@ -28,6 +28,7 @@ function submit(): void {
                 v-model:password="form.password"
                 v-model:password-confirmation="form.password_confirmation"
                 v-model:role="form.role"
+                :available-roles="['user', 'admin', 'super_admin']"
                 :is-editing="false"
                 :processing="form.processing"
                 :errors="form.errors"

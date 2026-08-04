@@ -77,7 +77,10 @@ function destroy(): void {
 
             <div class="space-y-6">
                 <UserBasicDetails :user="user" />
-                <UserRoleDetails :user="user" />
+                <UserRoleDetails 
+                    :role="user.role"
+                    :roles="user.roles"
+                />
                 <UserAuditDetails :user="user" />
             </div>
         </div>
