@@ -148,6 +148,16 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
     }
 
     /**
+     * Get the custom dashboard widgets created by this user.
+     *
+     * @return HasMany<CustomDashboardWidget, $this>
+     */
+    public function customDashboardWidgets(): HasMany
+    {
+        return $this->hasMany(CustomDashboardWidget::class);
+    }
+
+    /**
      * Get the user who created this user.
      *
      * @return BelongsTo<User, $this>
