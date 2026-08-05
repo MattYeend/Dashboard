@@ -20,6 +20,39 @@ use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Collection;
+use Carbon\CarbonImmutable;
+
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property CarbonImmutable|null $email_verified_at
+ * @property string $password
+ * @property string $role
+ * @property array<string, mixed>|null $meta
+ * @property string|null $two_factor_secret
+ * @property string|null $two_factor_recovery_codes
+ * @property CarbonImmutable|null $two_factor_confirmed_at
+ * @property string|null $remember_token
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property int|null $deleted_by
+ * @property int|null $restored_by
+ * @property CarbonImmutable|null $restored_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
+ * @property-read CarbonImmutable|null $deleted_at
+ * @property-read User|null $creator
+ * @property-read User|null $updater
+ * @property-read User|null $deleter
+ * @property-read User|null $restorer
+ * @property-read Collection<int, Contact> $contacts
+ * @property-read Collection<int, Order> $orders
+ * @property-read Collection<int, Address> $addresses
+ * @property-read Collection<int, Pipeline> $pipelines
+ * @property-read Collection<int, DashboardWidgetPreference> $dashboardWidgetPreferences
+ */
 
 #[Fillable([
     'name',
@@ -104,6 +137,16 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
     {
         return $this->hasMany(Pipeline::class, 'assigned_to');
     }
+
+    /**
+     * Get the dashboard widget layout preferences for this user.
+     *
+     * @return HasMany<DashboardWidgetPreference, $this>
+     */
+    public function dashboardWidgetPreferences(): HasMany
+{
+    return $this->hasMany(DashboardWidgetPreference::class);
+}
 
     /**
      * Get the user who created this user.
