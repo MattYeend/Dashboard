@@ -80,65 +80,36 @@ async function deleteCustomWidget(widget: DashboardWidget): Promise<void> {
         return;
     }
 
-    await fetch(destroyCustomWidget.url({ customDashboardWidget: widget.id }), {
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN':
-                document
-                    .querySelector('meta[name="csrf-token"]')
-                    ?.getAttribute('content') ?? '',
-        },
-    });
+    await window.axios.delete(
+        destroyCustomWidget.url({ customDashboardWidget: widget.id }),
+    );
 
     layout.value = layout.value.filter((w) => w.key !== widget.key);
     reindexPositions();
-}
-
-function csrfHeader(): Record<string, string> {
-    return {
-        'X-CSRF-TOKEN':
-            document
-                .querySelector('meta[name="csrf-token"]')
-                ?.getAttribute('content') ?? '',
-    };
 }
 
 async function persist(): Promise<void> {
     const builtIn = layout.value.filter((widget) => widget.type === 'builtin');
     const custom = layout.value.filter((widget) => widget.type === 'custom');
 
-    await fetch(updateWidgets.url(), {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            ...csrfHeader(),
-        },
-        body: JSON.stringify({
-            widgets: builtIn.map((widget) => ({
-                key: widget.key,
-                position: widget.position,
-                is_visible: widget.is_visible,
-            })),
-        }),
+    await window.axios.put(updateWidgets.url(), {
+        widgets: builtIn.map((widget) => ({
+            key: widget.key,
+            position: widget.position,
+            is_visible: widget.is_visible,
+        })),
     });
 
     await Promise.all(
         custom.map((widget) =>
             widget.id
-                ? fetch(
+                ? window.axios.put(
                       updateCustomWidget.url({
                           customDashboardWidget: widget.id,
                       }),
                       {
-                          method: 'PUT',
-                          headers: {
-                              'Content-Type': 'application/json',
-                              ...csrfHeader(),
-                          },
-                          body: JSON.stringify({
-                              position: widget.position,
-                              is_visible: widget.is_visible,
-                          }),
+                          position: widget.position,
+                          is_visible: widget.is_visible,
                       },
                   )
                 : Promise.resolve(),

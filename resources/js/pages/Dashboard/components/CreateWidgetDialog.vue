@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import axios from 'axios';
 import { Plus } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { Button } from '@/components/ui/button';
@@ -52,29 +53,19 @@ async function submit(): Promise<void> {
     isSubmitting.value = true;
 
     try {
-        const response = await fetch(storeCustomWidget.url(), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN':
-                    document
-                        .querySelector('meta[name="csrf-token"]')
-                        ?.getAttribute('content') ?? '',
-            },
-            body: JSON.stringify({
-                label: label.value,
-                metric_key: metricKey.value,
-                date_range: dateRange.value,
-            }),
+        await axios.post(storeCustomWidget.url(), {
+            label: label.value,
+            metric_key: metricKey.value,
+            date_range: dateRange.value,
         });
 
-        if (response.ok) {
-            label.value = '';
-            metricKey.value = '';
-            dateRange.value = 'all_time';
-            isOpen.value = false;
-            emit('created');
-        }
+        label.value = '';
+        metricKey.value = '';
+        dateRange.value = 'all_time';
+        isOpen.value = false;
+        emit('created');
+    } catch (error) {
+        console.error('Failed to create widget:', error);
     } finally {
         isSubmitting.value = false;
     }

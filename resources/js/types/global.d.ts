@@ -1,3 +1,4 @@
+import type { AxiosStatic } from 'axios';
 import type { Auth } from '@/types/auth';
 
 // Extend ImportMeta interface for Vite...
@@ -36,4 +37,10 @@ declare module 'vue' {
 declare global {
     function route(name?: string, params?: unknown, absolute?: boolean): string;
     const Ziggy: unknown;
+
+    interface Window {
+        axios: AxiosStatic;
+    }
 }
+
+export {};
