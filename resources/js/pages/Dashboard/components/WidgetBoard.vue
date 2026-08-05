@@ -93,6 +93,7 @@ function toggleEditing(): void {
         reindexPositions();
         persist();
     }
+
     isEditing.value = !isEditing.value;
 }
 </script>
