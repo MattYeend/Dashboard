@@ -118,6 +118,7 @@ function toggleEditing(): void {
                 :key="widget.key"
                 :draggable="isEditing"
                 class="relative"
+                :class="{ 'sm:col-span-2 lg:col-span-4': widget.key === 'latest_posts' }"
                 @dragstart="onDragStart(widget.key)"
                 @dragover.prevent
                 @drop="onDrop(widget.key)"

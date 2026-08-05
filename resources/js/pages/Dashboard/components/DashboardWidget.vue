@@ -12,17 +12,23 @@ const component = computed(() => dashboardWidgetComponents[props.widget.key]);
 
 const widgetProps = computed<Record<string, unknown>>(() => {
     switch (props.widget.key) {
-        case 'tasks':
-            return props.stats.tasks;
+        case 'tasks_completed':
+            return { completed: props.stats.tasks.completed };
+        case 'tasks_outstanding':
+            return { outstanding: props.stats.tasks.outstanding };
         case 'companies':
             return {
                 total: props.stats.companies.total,
                 createdThisMonth: props.stats.companies.created_this_month,
             };
-        case 'deals':
-            return props.stats.deals;
-        case 'pipelines':
-            return props.stats.pipelines;
+        case 'deals_created':
+            return { total: props.stats.deals.total };
+        case 'deals_won':
+            return { won: props.stats.deals.won, lost: props.stats.deals.lost };
+        case 'pipelines_total':
+            return { total: props.stats.pipelines.total };
+        case 'pipelines_won':
+            return { won: props.stats.pipelines.won, lost: props.stats.pipelines.lost };
         case 'orders':
             return props.stats.orders;
         case 'invoices':
