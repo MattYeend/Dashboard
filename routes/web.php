@@ -7,6 +7,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardWidgetPreferenceController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\DealStatusController;
 use App\Http\Controllers\IndustryController;
@@ -44,6 +45,11 @@ Route::get('register/thanks', fn () => Inertia::render('auth/RegisterThanks'))
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::prefix('dashboard/widgets')->name('dashboard.widgets.')->group(function () {
+    Route::get('/', [DashboardWidgetPreferenceController::class, 'index'])->name('index');
+    Route::put('/', [DashboardWidgetPreferenceController::class, 'update'])->name('update');
+});
 
     Route::middleware('can:view notifications')->prefix('notifications')->name('notifications.')->group(function () {
         Route::get('/unread', [NotificationController::class, 'unread'])->name('unread');
