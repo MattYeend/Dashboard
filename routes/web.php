@@ -47,9 +47,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('dashboard/widgets')->name('dashboard.widgets.')->group(function () {
-    Route::get('/', [DashboardWidgetPreferenceController::class, 'index'])->name('index');
-    Route::put('/', [DashboardWidgetPreferenceController::class, 'update'])->name('update');
-});
+        Route::get('/', [DashboardWidgetPreferenceController::class, 'index'])->name('index');
+        Route::put('/', [DashboardWidgetPreferenceController::class, 'update'])->name('update');
+    });
 
     Route::middleware('can:view notifications')->prefix('notifications')->name('notifications.')->group(function () {
         Route::get('/unread', [NotificationController::class, 'unread'])->name('unread');

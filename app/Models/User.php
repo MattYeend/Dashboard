@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use Carbon\CarbonImmutable;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,8 +22,6 @@ use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Database\Eloquent\Collection;
-use Carbon\CarbonImmutable;
 
 /**
  * @property int $id
@@ -53,7 +53,6 @@ use Carbon\CarbonImmutable;
  * @property-read Collection<int, Pipeline> $pipelines
  * @property-read Collection<int, DashboardWidgetPreference> $dashboardWidgetPreferences
  */
-
 #[Fillable([
     'name',
     'email',
@@ -144,9 +143,9 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
      * @return HasMany<DashboardWidgetPreference, $this>
      */
     public function dashboardWidgetPreferences(): HasMany
-{
-    return $this->hasMany(DashboardWidgetPreference::class);
-}
+    {
+        return $this->hasMany(DashboardWidgetPreference::class);
+    }
 
     /**
      * Get the user who created this user.
