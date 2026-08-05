@@ -696,3 +696,11 @@ export interface DashboardLatestPost {
     created_at: string;
     creator?: { name: string };
 }
+
+export interface DashboardWidget {
+    key: string;
+    label: string;
+    group: string;
+    position: number;
+    is_visible: boolean;
+}
