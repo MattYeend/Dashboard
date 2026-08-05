@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Dashboard;
 
 use App\Support\DashboardWidgetRegistry;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

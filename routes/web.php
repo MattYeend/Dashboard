@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CustomDashboardWidgetController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardWidgetPreferenceController;
 use App\Http\Controllers\DealController;
@@ -49,6 +50,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('dashboard/widgets')->name('dashboard.widgets.')->group(function () {
         Route::get('/', [DashboardWidgetPreferenceController::class, 'index'])->name('index');
         Route::put('/', [DashboardWidgetPreferenceController::class, 'update'])->name('update');
+    });
+
+    Route::prefix('dashboard/custom-widgets')->name('dashboard.custom-widgets.')->group(function () {
+        Route::get('/metrics', [CustomDashboardWidgetController::class, 'metrics'])->name('metrics');
+        Route::post('/', [CustomDashboardWidgetController::class, 'store'])->name('store');
+        Route::put('/{customDashboardWidget}', [CustomDashboardWidgetController::class, 'update'])->name('update');
+        Route::delete('/{customDashboardWidget}', [CustomDashboardWidgetController::class, 'destroy'])->name('destroy');
     });
 
     Route::middleware('can:view notifications')->prefix('notifications')->name('notifications.')->group(function () {
