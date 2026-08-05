@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { DashboardStats, DashboardWidget } from '@/types';
+import DynamicStatCard from '@/pages/Dashboard/components/DynamicStatCard.vue';
 import { dashboardWidgetComponents } from '@/pages/Dashboard/widgetComponents';
+import type { DashboardStats, DashboardWidget } from '@/types';
 
 const props = defineProps<{
     widget: DashboardWidget;
@@ -28,7 +29,10 @@ const widgetProps = computed<Record<string, unknown>>(() => {
         case 'pipelines_total':
             return { total: props.stats.pipelines.total };
         case 'pipelines_won':
-            return { won: props.stats.pipelines.won, lost: props.stats.pipelines.lost };
+            return {
+                won: props.stats.pipelines.won,
+                lost: props.stats.pipelines.lost,
+            };
         case 'orders':
             return props.stats.orders;
         case 'invoices':
@@ -42,5 +46,10 @@ const widgetProps = computed<Record<string, unknown>>(() => {
 </script>
 
 <template>
-    <component :is="component" v-if="component" v-bind="widgetProps" />
+    <DynamicStatCard
+        v-if="widget.type === 'custom'"
+        :label="widget.label"
+        :value="widget.value ?? 0"
+    />
+    <component :is="component" v-else-if="component" v-bind="widgetProps" />
 </template>

@@ -29,6 +29,11 @@ class MetricCalculatorService
         return $query->count();
     }
 
+    /**
+     * Constrain the query to the given date range.
+     *
+     * All time is a no-op — the query is returned unfiltered.
+     */
     protected function applyDateRange(Builder $query, DashboardDateRange $dateRange): void
     {
         match ($dateRange) {

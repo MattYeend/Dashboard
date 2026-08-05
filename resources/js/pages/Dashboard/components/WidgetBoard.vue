@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { Pencil, Plus, X } from 'lucide-vue-next';
+import { router } from '@inertiajs/vue3';
+import { Pencil, Trash2, X } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
-import type { DashboardStats, DashboardWidget } from '@/types';
+import CreateWidgetDialog from '@/pages/Dashboard/components/CreateWidgetDialog.vue';
 import DashboardWidgetComponent from '@/pages/Dashboard/components/DashboardWidget.vue';
 import { update as updateWidgets } from '@/routes/dashboard/widgets';
+import {
+    update as updateCustomWidget,
+    destroy as destroyCustomWidget,
+} from '@/routes/dashboard/custom-widgets';
+import type { DashboardMetric, DashboardStats, DashboardWidget } from '@/types';
 
 const props = defineProps<{
     widgets: DashboardWidget[];
     stats: DashboardStats;
+    metrics: DashboardMetric[];
 }>();
 
 const layout = ref<DashboardWidget[]>(
@@ -68,24 +75,75 @@ function hideWidget(key: string): void {
     persist();
 }
 
-function persist(): void {
-    fetch(updateWidgets.url(), {
-        method: 'PUT',
+async function deleteCustomWidget(widget: DashboardWidget): Promise<void> {
+    if (widget.type !== 'custom' || !widget.id) {
+        return;
+    }
+
+    await fetch(destroyCustomWidget.url({ customDashboardWidget: widget.id }), {
+        method: 'DELETE',
         headers: {
-            'Content-Type': 'application/json',
             'X-CSRF-TOKEN':
                 document
                     .querySelector('meta[name="csrf-token"]')
                     ?.getAttribute('content') ?? '',
         },
+    });
+
+    layout.value = layout.value.filter((w) => w.key !== widget.key);
+    reindexPositions();
+}
+
+function csrfHeader(): Record<string, string> {
+    return {
+        'X-CSRF-TOKEN':
+            document
+                .querySelector('meta[name="csrf-token"]')
+                ?.getAttribute('content') ?? '',
+    };
+}
+
+async function persist(): Promise<void> {
+    const builtIn = layout.value.filter((widget) => widget.type === 'builtin');
+    const custom = layout.value.filter((widget) => widget.type === 'custom');
+
+    await fetch(updateWidgets.url(), {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            ...csrfHeader(),
+        },
         body: JSON.stringify({
-            widgets: layout.value.map((widget) => ({
+            widgets: builtIn.map((widget) => ({
                 key: widget.key,
                 position: widget.position,
                 is_visible: widget.is_visible,
             })),
         }),
     });
+
+    await Promise.all(
+        custom.map((widget) =>
+            widget.id
+                ? fetch(
+                      updateCustomWidget.url({
+                          customDashboardWidget: widget.id,
+                      }),
+                      {
+                          method: 'PUT',
+                          headers: {
+                              'Content-Type': 'application/json',
+                              ...csrfHeader(),
+                          },
+                          body: JSON.stringify({
+                              position: widget.position,
+                              is_visible: widget.is_visible,
+                          }),
+                      },
+                  )
+                : Promise.resolve(),
+        ),
+    );
 }
 
 function toggleEditing(): void {
@@ -96,20 +154,30 @@ function toggleEditing(): void {
 
     isEditing.value = !isEditing.value;
 }
+
+function onWidgetCreated(): void {
+    router.reload({ only: ['widgets'] });
+}
 </script>
 
 <template>
     <div>
         <div class="mb-4 flex items-center justify-between">
             <h2 class="text-lg font-semibold text-gray-300">Overview</h2>
-            <button
-                type="button"
-                class="inline-flex items-center gap-1 rounded-md border border-sidebar-border/70 px-3 py-1.5 text-sm text-gray-300 dark:border-sidebar-border"
-                @click="toggleEditing"
-            >
-                <Pencil class="size-4" />
-                {{ isEditing ? 'Done' : 'Edit layout' }}
-            </button>
+            <div class="flex items-center gap-2">
+                <CreateWidgetDialog
+                    :metrics="metrics"
+                    @created="onWidgetCreated"
+                />
+                <button
+                    type="button"
+                    class="inline-flex items-center gap-1 rounded-md border border-sidebar-border/70 px-3 py-1.5 text-sm text-gray-300 dark:border-sidebar-border"
+                    @click="toggleEditing"
+                >
+                    <Pencil class="size-4" />
+                    {{ isEditing ? 'Done' : 'Edit layout' }}
+                </button>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -118,19 +186,34 @@ function toggleEditing(): void {
                 :key="widget.key"
                 :draggable="isEditing"
                 class="relative"
-                :class="{ 'sm:col-span-2 lg:col-span-4': widget.key === 'latest_posts' }"
+                :class="{
+                    'sm:col-span-2 lg:col-span-4':
+                        widget.key === 'latest_posts',
+                }"
                 @dragstart="onDragStart(widget.key)"
                 @dragover.prevent
                 @drop="onDrop(widget.key)"
             >
-                <button
+                <div
                     v-if="isEditing"
-                    type="button"
-                    class="absolute -top-2 -right-2 z-10 rounded-full border border-sidebar-border/70 bg-background p-1 text-gray-400 dark:border-sidebar-border"
-                    @click="hideWidget(widget.key)"
+                    class="absolute -top-2 -right-2 z-10 flex gap-1"
                 >
-                    <X class="size-3" />
-                </button>
+                    <button
+                        v-if="widget.type === 'custom'"
+                        type="button"
+                        class="rounded-full border border-sidebar-border/70 bg-background p-1 text-gray-400 dark:border-sidebar-border"
+                        @click="deleteCustomWidget(widget)"
+                    >
+                        <Trash2 class="size-3" />
+                    </button>
+                    <button
+                        type="button"
+                        class="rounded-full border border-sidebar-border/70 bg-background p-1 text-gray-400 dark:border-sidebar-border"
+                        @click="hideWidget(widget.key)"
+                    >
+                        <X class="size-3" />
+                    </button>
+                </div>
                 <DashboardWidgetComponent :widget="widget" :stats="stats" />
             </div>
         </div>

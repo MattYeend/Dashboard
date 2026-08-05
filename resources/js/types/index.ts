@@ -698,9 +698,18 @@ export interface DashboardLatestPost {
 }
 
 export interface DashboardWidget {
+    id?: number;
     key: string;
     label: string;
     group: string;
+    type: 'builtin' | 'custom';
     position: number;
     is_visible: boolean;
+    value?: number;
+}
+
+export interface DashboardMetric {
+    key: string;
+    label: string;
+    model: string;
 }

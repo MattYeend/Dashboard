@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\Dashboard\DashboardStatsService;
 use App\Services\DashboardWidgets\QueryService as DashboardWidgetQueryService;
+use App\Support\DashboardMetricRegistry;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -23,6 +24,7 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'stats' => $this->dashboardStatsService->forUser($request->user()),
             'widgets' => $this->dashboardWidgetQueryService->forUser($request->user()),
+            'metrics' => DashboardMetricRegistry::all(),
         ]);
     }
 }
