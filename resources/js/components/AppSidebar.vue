@@ -5,6 +5,7 @@ import {
     Contact2,
     CreditCard,
     FolderGit2,
+    MessageSquareWarning,
     HandCoins,
     KeyRound,
     LayoutGrid,
@@ -162,6 +163,11 @@ const footerNavItems: NavItem[] = [
         title: 'Repository',
         href: 'https://github.com/MattYeend/Dashboard',
         icon: FolderGit2,
+    },
+    {
+        title: 'Report an Issue',
+        href: 'https://github.com/MattYeend/Dashboard/issues',
+        icon: MessageSquareWarning,
     },
 ];
 </script>
