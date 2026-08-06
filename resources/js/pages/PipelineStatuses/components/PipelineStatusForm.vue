@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
+import { index as pipelineStatusesIndex } from '@/routes/pipeline-statuses';
 import PipelineStatusBasicDetailsForm from './PipelineStatusBasicDetailsForm.vue';
 import PipelineStatusColourForm from './PipelineStatusColourForm.vue';
-import { index as pipelineStatusesIndex } from '@/routes/pipeline-statuses';
 
 export interface PipelineStatusFormData {
     title: string;

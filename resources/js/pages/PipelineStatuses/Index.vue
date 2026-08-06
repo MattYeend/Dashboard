@@ -7,11 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import type {
-    PipelineStatus,
-    Pagination as PaginationMeta,
-    PermissionsMeta,
-} from '@/types';
 import {
     index as pipelineStatusesIndex,
     create as pipelineStatusesCreate,
@@ -20,6 +15,11 @@ import {
     destroy as pipelineStatusesDestroy,
 } from '@/routes/pipeline-statuses';
 import pipelineStatusesBulk from '@/routes/pipeline-statuses/bulk';
+import type {
+    PipelineStatus,
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+} from '@/types';
 
 interface Props {
     pipelineStatuses: {

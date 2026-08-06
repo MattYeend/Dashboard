@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
+import { update as pipelineStatusesUpdate } from '@/routes/pipeline-statuses';
 import type { PipelineStatus } from '@/types';
 import PipelineStatusForm from './components/PipelineStatusForm.vue';
 import type { PipelineStatusFormData } from './components/PipelineStatusForm.vue';
-import { update as pipelineStatusesUpdate } from '@/routes/pipeline-statuses';
 
 const props = defineProps<{
     pipelineStatus: PipelineStatus;

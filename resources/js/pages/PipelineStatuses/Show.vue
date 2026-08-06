@@ -2,15 +2,15 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import type { PipelineStatus, PermissionsMeta } from '@/types';
-import PipelineStatusAuditDetails from './components/PipelineStatusAuditDetails.vue';
-import PipelineStatusBasicDetails from './components/PipelineStatusBasicDetails.vue';
-import PipelineStatusColourDetails from './components/PipelineStatusColourDetails.vue';
 import {
     edit as pipelineStatusesEdit,
     destroy as pipelineStatusesDestroy,
     index as pipelineStatusesIndex,
 } from '@/routes/pipeline-statuses';
+import type { PipelineStatus, PermissionsMeta } from '@/types';
+import PipelineStatusAuditDetails from './components/PipelineStatusAuditDetails.vue';
+import PipelineStatusBasicDetails from './components/PipelineStatusBasicDetails.vue';
+import PipelineStatusColourDetails from './components/PipelineStatusColourDetails.vue';
 
 interface Props {
     pipelineStatus: PipelineStatus;
