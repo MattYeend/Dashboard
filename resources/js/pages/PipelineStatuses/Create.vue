@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
+import { store as pipelineStatusesStore } from '@/routes/pipeline-statuses';
 import PipelineStatusForm from './components/PipelineStatusForm.vue';
 import type { PipelineStatusFormData } from './components/PipelineStatusForm.vue';
-import { store as pipelineStatusesStore } from '@/routes/pipeline-statuses';
 
 const form = useForm<PipelineStatusFormData>({
     title: '',

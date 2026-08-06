@@ -6,6 +6,7 @@ import DealBasicDetailsForm from '@/pages/Deals/components/DealBasicDetailsForm.
 import DealPipelineDetailsForm from '@/pages/Deals/components/DealPipelineDetailsForm.vue';
 import DealRelationsDetailsForm from '@/pages/Deals/components/DealRelationsDetailsForm.vue';
 import DealValueDetailsForm from '@/pages/Deals/components/DealValueDetailsForm.vue';
+import { index as dealsIndex } from '@/routes/deals';
 import type {
     Company,
     DealStatus,
@@ -13,7 +14,6 @@ import type {
     Pipeline,
     PipelineStage,
 } from '@/types';
-import { index as dealsIndex } from '@/routes/deals';
 
 interface DealFormData {
     title: string;

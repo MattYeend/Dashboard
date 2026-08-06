@@ -7,12 +7,12 @@ import DealBasicDetails from '@/pages/Deals/components/DealBasicDetails.vue';
 import DealPipelineDetails from '@/pages/Deals/components/DealPipelineDetails.vue';
 import DealRelationsDetails from '@/pages/Deals/components/DealRelationsDetails.vue';
 import DealValueDetails from '@/pages/Deals/components/DealValueDetails.vue';
-import type { Deal } from '@/types';
 import {
     edit as dealsEdit,
     destroy as dealsDestroy,
     index as dealsIndex,
 } from '@/routes/deals';
+import type { Deal } from '@/types';
 
 interface Props {
     deal: Deal;
