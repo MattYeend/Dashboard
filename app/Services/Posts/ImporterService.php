@@ -64,6 +64,19 @@ class ImporterService
             while (($row = fgetcsv($handle)) !== false) {
                 $rowNumber++;
 
+                if (count($row) !== count($header)) {
+                    $skipped[] = [
+                        'row' => $rowNumber,
+                        'reason' => sprintf(
+                            'Expected %d columns but found %d',
+                            count($header),
+                            count($row),
+                        ),
+                    ];
+
+                    continue;
+                }
+
                 $data = array_combine($header, $row);
 
                 $error = $this->validateRow($data);
