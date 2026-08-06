@@ -6,6 +6,7 @@ defineProps<{
     value: number | string;
     icon?: Component;
     hint?: string;
+    description?: string | null;
 }>();
 </script>
 
@@ -21,5 +22,8 @@ defineProps<{
             value
         }}</span>
         <span v-if="hint" class="mt-1 text-xs text-gray-400">{{ hint }}</span>
+        <span v-if="description" class="mt-1 text-xs text-gray-400">{{
+            description
+        }}</span>
     </div>
 </template>

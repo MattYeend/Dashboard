@@ -21,8 +21,8 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { store as storeCustomWidget } from '@/routes/dashboard/custom-widgets';
 import type { DashboardMetric } from '@/types';
+import { store as storeCustomWidget } from '@/routes/dashboard/custom-widgets';
 
 const props = defineProps<{
     metrics: DashboardMetric[];
