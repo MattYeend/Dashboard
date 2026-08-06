@@ -7,11 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import type {
-    DealStatus,
-    Pagination as PaginationMeta,
-    PermissionsMeta,
-} from '@/types';
 import {
     index as dealStatusesIndex,
     create as dealStatusesCreate,
@@ -20,6 +15,11 @@ import {
     destroy as dealStatusesDestroy,
 } from '@/routes/deal-statuses';
 import dealStatusesBulk from '@/routes/deal-statuses/bulk';
+import type {
+    DealStatus,
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+} from '@/types';
 
 interface Props {
     dealStatuses: {

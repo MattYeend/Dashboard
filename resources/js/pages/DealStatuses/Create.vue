@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
+import { store as dealStatusesStore } from '@/routes/deal-statuses';
 import DealStatusForm from './components/DealStatusForm.vue';
 import type { DealStatusFormData } from './components/DealStatusForm.vue';
-import { store as dealStatusesStore } from '@/routes/deal-statuses';
 
 const form = useForm<DealStatusFormData>({
     title: '',

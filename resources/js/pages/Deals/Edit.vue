@@ -2,6 +2,7 @@
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank, numberOrNull } from '@/lib/forms';
 import DealForm from '@/pages/Deals/components/DealForm.vue';
+import { update as dealsUpdate } from '@/routes/deals';
 import type {
     Company,
     Deal,
@@ -10,7 +11,6 @@ import type {
     Pipeline,
     PipelineStage,
 } from '@/types';
-import { update as dealsUpdate } from '@/routes/deals';
 
 interface Props {
     deal: Deal;

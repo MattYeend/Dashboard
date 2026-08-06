@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
+import { index as dealStatusesIndex } from '@/routes/deal-statuses';
 import DealStatusBasicDetailsForm from './DealStatusBasicDetailsForm.vue';
 import DealStatusColourForm from './DealStatusColourForm.vue';
-import { index as dealStatusesIndex } from '@/routes/deal-statuses';
 
 export interface DealStatusFormData {
     title: string;
