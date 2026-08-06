@@ -20,6 +20,7 @@ class CustomDashboardWidgetFactory extends Factory
         return [
             'user_id' => User::factory(),
             'label' => $this->faker->words(2, true),
+            'description' => $this->faker->optional()->sentence(),
             'metric_key' => $this->faker->randomElement(DashboardMetricRegistry::keys()),
             'date_range' => $this->faker->randomElement(array_column(DashboardDateRange::cases(), 'value')),
             'position' => $this->faker->numberBetween(0, 10),

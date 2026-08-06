@@ -13,7 +13,7 @@ class QueryService
     ) {}
 
     /**
-     * @return array<int, array{id: int, key: string, label: string, group: string, type: string, position: int, is_visible: bool, value: int}>
+     * @return array<int, array{id: int, key: string, label: string, description: string|null, group: string, type: string, position: int, is_visible: bool, value: int}>
      */
     public function forUser(User $user): array
     {
@@ -23,6 +23,7 @@ class QueryService
                 'id' => $widget->id,
                 'key' => 'custom_'.$widget->id,
                 'label' => $widget->label,
+                'description' => $widget->description,
                 'group' => 'custom',
                 'type' => 'custom',
                 'position' => $widget->position,

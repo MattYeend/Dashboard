@@ -20,6 +20,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { store as storeCustomWidget } from '@/routes/dashboard/custom-widgets';
 import type { DashboardMetric } from '@/types';
 
@@ -42,6 +43,7 @@ const dateRangeOptions = [
 const isOpen = ref(false);
 const isSubmitting = ref(false);
 const label = ref('');
+const description = ref('');
 const metricKey = ref('');
 const dateRange = ref('all_time');
 
@@ -55,11 +57,13 @@ async function submit(): Promise<void> {
     try {
         await axios.post(storeCustomWidget.url(), {
             label: label.value,
+            description: description.value || null,
             metric_key: metricKey.value,
             date_range: dateRange.value,
         });
 
         label.value = '';
+        description.value = '';
         metricKey.value = '';
         dateRange.value = 'all_time';
         isOpen.value = false;
@@ -92,6 +96,16 @@ async function submit(): Promise<void> {
                         id="widget-label"
                         v-model="label"
                         placeholder="e.g. New contacts"
+                    />
+                </div>
+
+                <div class="space-y-2">
+                    <Label for="widget-description">Description</Label>
+                    <Textarea
+                        id="widget-description"
+                        v-model="description"
+                        placeholder="Optional note about what this widget shows"
+                        rows="3"
                     />
                 </div>
 

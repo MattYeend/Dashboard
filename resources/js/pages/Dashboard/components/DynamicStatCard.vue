@@ -4,10 +4,16 @@ import StatCard from '@/pages/Dashboard/components/StatCard.vue';
 
 defineProps<{
     label: string;
+    description?: string | null;
     value: number;
 }>();
 </script>
 
 <template>
-    <StatCard :label="label" :value="value" :icon="BarChart3" />
+    <StatCard
+        :label="label"
+        :description="description"
+        :value="value"
+        :icon="BarChart3"
+    />
 </template>

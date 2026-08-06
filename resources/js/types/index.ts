@@ -701,6 +701,7 @@ export interface DashboardWidget {
     id?: number;
     key: string;
     label: string;
+    description?: string | null;
     group: string;
     type: 'builtin' | 'custom';
     position: number;

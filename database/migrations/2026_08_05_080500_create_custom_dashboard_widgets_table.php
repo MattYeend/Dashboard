@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('label');
+            $table->text('description')->nullable();
             $table->string('metric_key');
             $table->string('date_range')->default('all_time');
             $table->unsignedInteger('position')->default(0);

@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable([
     'user_id',
     'label',
+    'description',
     'metric_key',
     'date_range',
     'position',

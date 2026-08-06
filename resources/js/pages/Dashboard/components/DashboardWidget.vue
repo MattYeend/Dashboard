@@ -49,6 +49,7 @@ const widgetProps = computed<Record<string, unknown>>(() => {
     <DynamicStatCard
         v-if="widget.type === 'custom'"
         :label="widget.label"
+        :description="widget.description"
         :value="widget.value ?? 0"
     />
     <component :is="component" v-else-if="component" v-bind="widgetProps" />

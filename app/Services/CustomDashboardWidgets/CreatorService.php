@@ -8,7 +8,7 @@ use App\Models\User;
 class CreatorService
 {
     /**
-     * @param  array{label: string, metric_key: string, date_range: string}  $data
+     * @param  array{label: string, description?: string|null, metric_key: string, date_range: string}  $data
      */
     public function create(User $user, array $data): CustomDashboardWidget
     {
