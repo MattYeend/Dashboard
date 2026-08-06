@@ -44,4 +44,17 @@ class CustomDashboardWidget extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'position' => 'integer',
+            'is_visible' => 'boolean',
+        ];
+    }
 }
