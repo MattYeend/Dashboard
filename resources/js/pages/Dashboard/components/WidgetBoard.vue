@@ -4,11 +4,11 @@ import { Pencil, Trash2, X } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import CreateWidgetDialog from '@/pages/Dashboard/components/CreateWidgetDialog.vue';
 import DashboardWidgetComponent from '@/pages/Dashboard/components/DashboardWidget.vue';
-import { update as updateWidgets } from '@/routes/dashboard/widgets';
 import {
     update as updateCustomWidget,
     destroy as destroyCustomWidget,
 } from '@/routes/dashboard/custom-widgets';
+import { update as updateWidgets } from '@/routes/dashboard/widgets';
 import type { DashboardMetric, DashboardStats, DashboardWidget } from '@/types';
 
 const props = defineProps<{
