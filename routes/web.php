@@ -28,6 +28,7 @@ use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
+use App\Http\Controllers\TicketPriorityController;
 use App\Http\Controllers\TicketStatusController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -502,6 +503,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{ticket_status}/edit', [TicketStatusController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{ticket_status}', [TicketStatusController::class, 'update'])->name('update');
         Route::delete('/{ticket_status}', [TicketStatusController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('ticket-priorities')->name('ticket-priorities.')->group(function () {
+        Route::post('/bulk/delete', [TicketPriorityController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [TicketPriorityController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [TicketPriorityController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [TicketPriorityController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/export', [TicketPriorityController::class, 'export'])->name('export');
+        Route::post('/import', [TicketPriorityController::class, 'import'])->name('import');
+
+        Route::get('/', [TicketPriorityController::class, 'index'])->name('index');
+        Route::get('/create', [TicketPriorityController::class, 'create'])->name('create');
+        Route::post('/', [TicketPriorityController::class, 'store'])->name('store');
+        Route::get('/{ticket_priority}', [TicketPriorityController::class, 'show'])->name('show');
+        Route::get('/{ticket_priority}/edit', [TicketPriorityController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{ticket_priority}', [TicketPriorityController::class, 'update'])->name('update');
+        Route::delete('/{ticket_priority}', [TicketPriorityController::class, 'destroy'])->name('destroy');
     });
 });
 
