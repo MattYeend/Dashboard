@@ -378,6 +378,42 @@ class RolePermissionSeeder extends Seeder
             'export deal',
             'assign deal',
             'change deal status',
+
+            // Ticket priority management
+            'view ticket priorities',
+            'create ticket priorities',
+            'edit ticket priorities',
+            'delete ticket priorities',
+            'restore ticket priorities',
+            'force delete ticket priorities',
+            'import ticket priorities',
+            'export ticket priorities',
+            'assign ticket priorities',
+
+            // Ticket status management
+            'view ticket statuses',
+            'create ticket statuses',
+            'edit ticket statuses',
+            'delete ticket statuses',
+            'restore ticket statuses',
+            'force delete ticket statuses',
+            'import ticket statuses',
+            'export ticket statuses',
+            'assign ticket statuses',
+
+            // Ticket management
+            'view any ticket',
+            'view ticket',
+            'create ticket',
+            'edit ticket',
+            'delete ticket',
+            'restore ticket',
+            'force delete ticket',
+            'import ticket',
+            'export ticket',
+            'assign ticket',
+            'change ticket status',
+            'change ticket priority',
         ];
 
         foreach ($permissions as $permission) {
@@ -657,6 +693,35 @@ class RolePermissionSeeder extends Seeder
             'export deal',
             'assign deal',
             'change deal status',
+            'view ticket priorities',
+            'create ticket priorities',
+            'edit ticket priorities',
+            'delete ticket priorities',
+            'restore ticket priorities',
+            'force delete ticket priorities',
+            'import ticket priorities',
+            'export ticket priorities',
+            'assign ticket priorities',
+            'view ticket statuses',
+            'create ticket statuses',
+            'edit ticket statuses',
+            'delete ticket statuses',
+            'restore ticket statuses',
+            'force delete ticket statuses',
+            'import ticket statuses',
+            'export ticket statuses',
+            'assign ticket statuses',
+            'view any ticket',
+            'view ticket',
+            'create ticket',
+            'edit ticket',
+            'delete ticket',
+            'restore ticket',
+            'import ticket',
+            'export ticket',
+            'assign ticket',
+            'change ticket status',
+            'change ticket priority',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -887,6 +952,35 @@ class RolePermissionSeeder extends Seeder
             'export deal',
             'assign deal',
             'change deal status',
+            'view ticket priorities',
+            'create ticket priorities',
+            'edit ticket priorities',
+            'delete ticket priorities',
+            'restore ticket priorities',
+            'force delete ticket priorities',
+            'import ticket priorities',
+            'export ticket priorities',
+            'assign ticket priorities',
+            'view ticket statuses',
+            'create ticket statuses',
+            'edit ticket statuses',
+            'delete ticket statuses',
+            'restore ticket statuses',
+            'force delete ticket statuses',
+            'import ticket statuses',
+            'export ticket statuses',
+            'assign ticket statuses',
+            'view any ticket',
+            'view ticket',
+            'create ticket',
+            'edit ticket',
+            'delete ticket',
+            'restore ticket',
+            'import ticket',
+            'export ticket',
+            'assign ticket',
+            'change ticket status',
+            'change ticket priority',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1040,6 +1134,27 @@ class RolePermissionSeeder extends Seeder
             'restore deal',
             'assign deal',
             'change deal status',
+            'view ticket priorities',
+            'create ticket priorities',
+            'edit ticket priorities',
+            'delete ticket priorities',
+            'restore ticket priorities',
+            'assign ticket priorities',
+            'view ticket statuses',
+            'create ticket statuses',
+            'edit ticket statuses',
+            'delete ticket statuses',
+            'restore ticket statuses',
+            'assign ticket statuses',
+            'view any ticket',
+            'view ticket',
+            'create ticket',
+            'edit ticket',
+            'delete ticket',
+            'restore ticket',
+            'assign ticket',
+            'change ticket status',
+            'change ticket priority',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -1085,6 +1200,10 @@ class RolePermissionSeeder extends Seeder
             'view pipeline stage',
             'view any deal',
             'view deal',
+            'view ticket priorities',
+            'view ticket statuses',
+            'view any ticket',
+            'view ticket',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -1180,6 +1299,16 @@ class RolePermissionSeeder extends Seeder
             'view deal',
             'create deal',
             'edit deal',
+            'view ticket priorities',
+            'create ticket priorities',
+            'edit ticket priorities',
+            'view ticket statuses',
+            'create ticket statuses',
+            'edit ticket statuses',
+            'view any ticket',
+            'view ticket',
+            'create ticket',
+            'edit ticket',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
 
@@ -1377,6 +1506,33 @@ class RolePermissionSeeder extends Seeder
             'export deal',
             'assign deal',
             'change deal status',
+            'view ticket priorities',
+            'create ticket priorities',
+            'edit ticket priorities',
+            'delete ticket priorities',
+            'restore ticket priorities',
+            'import ticket priorities',
+            'export ticket priorities',
+            'assign ticket priorities',
+            'view ticket statuses',
+            'create ticket statuses',
+            'edit ticket statuses',
+            'delete ticket statuses',
+            'restore ticket statuses',
+            'import ticket statuses',
+            'export ticket statuses',
+            'assign ticket statuses',
+            'view ticket',
+            'view any ticket',
+            'create ticket',
+            'edit ticket',
+            'delete ticket',
+            'restore ticket',
+            'import ticket',
+            'export ticket',
+            'assign ticket',
+            'change ticket status',
+            'change ticket priority',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -1461,6 +1617,16 @@ class RolePermissionSeeder extends Seeder
             'view deal',
             'export deal',
             'assign deal',
+            'view ticket priorities',
+            'export ticket priorities',
+            'assign ticket priorities',
+            'view ticket statuses',
+            'export ticket statuses',
+            'assign ticket statuses',
+            'view any ticket',
+            'view ticket',
+            'export ticket',
+            'assign ticket',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
@@ -1504,6 +1670,10 @@ class RolePermissionSeeder extends Seeder
             'view pipeline stage',
             'view any deal',
             'view deal',
+            'view ticket priorities',
+            'view ticket statuses',
+            'view any ticket',
+            'view ticket',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -1534,6 +1704,10 @@ class RolePermissionSeeder extends Seeder
             'view pipeline stage',
             'view any deal',
             'view deal',
+            'view ticket priorities',
+            'view ticket statuses',
+            'view any ticket',
+            'view ticket',
         ];
         $guest->givePermissionTo($guestPermissions);
 
@@ -1588,5 +1762,8 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Pipeline Stages');
         $this->command->info('- Deal Statuses');
         $this->command->info('- Deals');
+        $this->command->info('- Ticket Priorities');
+        $this->command->info('- Ticket Statuses');
+        $this->command->info('- Tickets');
     }
 }
