@@ -37,6 +37,9 @@ class DatabaseSeeder extends Seeder
             PipelineStageSeeder::class,
             DealStatusSeeder::class,
             DealSeeder::class,
+            TicketPrioritySeeder::class,
+            TicketStatusSeeder::class,
+            TicketSeeder::class,
         ]);
     }
 }
