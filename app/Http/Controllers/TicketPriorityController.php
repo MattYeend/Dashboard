@@ -31,7 +31,7 @@ class TicketPriorityController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * Passes paginated ticket priorities to the PipelineStatuses/Index Inertia page.
+     * Passes paginated ticket priorities to the TicketPriorities/Index Inertia page.
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
@@ -50,7 +50,7 @@ class TicketPriorityController extends Controller
             ])
         );
 
-        return Inertia::render('PipelineStatuses/Index', $data);
+        return Inertia::render('TicketPriorities/Index', $data);
     }
 
     /**
@@ -62,7 +62,7 @@ class TicketPriorityController extends Controller
     {
         $this->authorize('create', TicketPriority::class);
 
-        return Inertia::render('PipelineStatuses/Create');
+        return Inertia::render('TicketPriorities/Create');
     }
 
     /**
@@ -88,7 +88,7 @@ class TicketPriorityController extends Controller
     /**
      * Display the specified resource.
      *
-     * Passes a single ticketPriority to the PipelineStatuses/Show Inertia page.
+     * Passes a single ticketPriority to the TicketPriorities/Show Inertia page.
      *
      * Authorises via the 'view' and 'access' policies before rendering.
      */
@@ -103,7 +103,7 @@ class TicketPriorityController extends Controller
             $ticketPriority->id
         );
 
-        return Inertia::render('PipelineStatuses/Show', $data);
+        return Inertia::render('TicketPriorities/Show', $data);
     }
 
     /**
@@ -117,7 +117,7 @@ class TicketPriorityController extends Controller
 
         $data = $this->query->getById($request->user(), $ticketPriority->id);
 
-        return Inertia::render('PipelineStatuses/Edit', $data);
+        return Inertia::render('TicketPriorities/Edit', $data);
     }
 
     /**
