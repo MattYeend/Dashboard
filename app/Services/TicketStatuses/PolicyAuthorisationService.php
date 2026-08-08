@@ -49,23 +49,23 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can view any task statuses.
+     * Determine whether the user can view any ticket statuses.
      */
     public function canViewAny(User $actor): bool
     {
-        return $actor->can('view task statuses');
+        return $actor->can('view ticket statuses');
     }
 
     /**
-     * Determine whether the user can create task statuses.
+     * Determine whether the user can create ticket statuses.
      */
     public function canCreate(User $actor): bool
     {
-        return $actor->can('create task statuses');
+        return $actor->can('create ticket statuses');
     }
 
     /**
-     * Determine whether the user can view the task status.
+     * Determine whether the user can view the ticket status.
      */
     public function canView(User $actor, TicketStatus $target): bool
     {
@@ -73,12 +73,12 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view task statuses')
+        return $actor->can('view ticket statuses')
             && $this->activeChecker->isActive($target);
     }
 
     /**
-     * Determine whether the user can update the task status.
+     * Determine whether the user can update the ticket status.
      */
     public function canUpdate(User $actor, TicketStatus $target): bool
     {
@@ -86,12 +86,12 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit task statuses')
+        return $actor->can('edit ticket statuses')
             && $this->activeChecker->isActive($target);
     }
 
     /**
-     * Determine whether the user can delete the task status.
+     * Determine whether the user can delete the ticket status.
      */
     public function canDelete(User $actor, TicketStatus $target): bool
     {
@@ -99,12 +99,12 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete task statuses')
+        return $actor->can('delete ticket statuses')
             && $this->activeChecker->canBeModified($target);
     }
 
     /**
-     * Determine whether the user can restore the task status.
+     * Determine whether the user can restore the ticket status.
      */
     public function canRestore(User $actor, TicketStatus $target): bool
     {
@@ -112,12 +112,12 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('restore task statuses')
+        return $actor->can('restore ticket statuses')
             && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
-     * Determine whether the user can permanently delete the task status.
+     * Determine whether the user can permanently delete the ticket status.
      */
     public function canForceDelete(User $actor, TicketStatus $target): bool
     {
@@ -133,7 +133,7 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can assign the task status.
+     * Determine whether the user can assign the ticket status.
      */
     public function canAssign(User $actor, TicketStatus $target): bool
     {
@@ -141,29 +141,29 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('assign task statuses') && $this->activeChecker->isActive($target);
+        return $actor->can('assign ticket statuses') && $this->activeChecker->isActive($target);
     }
 
     /**
-     * Determine whether the user can import task statuses.
+     * Determine whether the user can import ticket statuses.
      */
     public function canImport(User $actor): bool
     {
-        return $actor->can('import task statuses');
+        return $actor->can('import ticket statuses');
     }
 
     /**
-     * Determine whether the user can export task statuses.
+     * Determine whether the user can export ticket statuses.
      */
     public function canExport(User $actor): bool
     {
-        return $actor->can('export task statuses');
+        return $actor->can('export ticket statuses');
     }
 
     /**
-     * Determine whether the task status was created by a user who outranks the actor.
+     * Determine whether the ticket status was created by a user who outranks the actor.
      *
-     * Prevents admins from managing task statuses created by super admins.
+     * Prevents admins from managing ticket statuses created by super admins.
      */
     private function targetOutranksActor(User $actor, TicketStatus $target): bool
     {

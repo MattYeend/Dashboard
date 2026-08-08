@@ -4,16 +4,23 @@ namespace App\Policies;
 
 use App\Models\TicketPriority;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\TicketPriorities\PolicyAuthorisationService;
 
 class TicketPriorityPolicy
 {
+    /**
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**
@@ -21,7 +28,7 @@ class TicketPriorityPolicy
      */
     public function view(User $user, TicketPriority $ticketPriority): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $ticketPriority);
     }
 
     /**
@@ -29,7 +36,7 @@ class TicketPriorityPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canCreate($user);
     }
 
     /**
@@ -37,7 +44,7 @@ class TicketPriorityPolicy
      */
     public function update(User $user, TicketPriority $ticketPriority): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $ticketPriority);
     }
 
     /**
@@ -45,7 +52,7 @@ class TicketPriorityPolicy
      */
     public function delete(User $user, TicketPriority $ticketPriority): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $ticketPriority);
     }
 
     /**
@@ -53,14 +60,38 @@ class TicketPriorityPolicy
      */
     public function restore(User $user, TicketPriority $ticketPriority): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $ticketPriority);
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can permanently delete the models.
      */
     public function forceDelete(User $user, TicketPriority $ticketPriority): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $ticketPriority);
+    }
+
+    /**
+     * Determine whether the user can assign the task status.
+     */
+    public function assign(User $user, TicketPriority $ticketPriority): bool
+    {
+        return $this->authorisationService->canAssign($user, $ticketPriority);
+    }
+
+    /**
+     * Determine whether the user can import models.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisationService->canImport($user);
+    }
+
+    /**
+     * Determine whether the user can export models.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->canExport($user);
     }
 }

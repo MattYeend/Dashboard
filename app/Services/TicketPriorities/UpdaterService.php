@@ -2,10 +2,56 @@
 
 namespace App\Services\TicketPriorities;
 
+use App\Actions\UpdateResource;
+use App\Models\Log;
+use App\Models\TicketPriority;
+use App\Models\User;
+use App\Services\AuditLogService;
+
 class UpdaterService
 {
-    public function __construct()
-    {
-        //
+    /**
+     * Inject the required services into the updater service.
+     */
+    public function __construct(
+        protected readonly DataPreparationService $dataPreparation,
+        protected readonly AuditLogService $auditLogService,
+        protected readonly UpdateResource $updateResource,
+    ) {}
+
+    /**
+     * Update an existing ticket priority.
+     *
+     * @param  array<string, mixed>  $data
+     *
+     * @throws \Exception
+     */
+    public function update(
+        TicketPriority $ticketPriority,
+        array $data,
+        int $updatedBy
+    ): TicketPriority {
+        $actor = User::findOrFail($updatedBy);
+
+        $before = $this->auditLogService->snapshot($ticketPriority);
+
+        $ticketPriorityData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+
+        return $this->updateResource->handle(
+            $ticketPriority,
+            $ticketPriorityData,
+            function (TicketPriority $ticketPriority) use ($actor, $before): void {
+                $fresh = $ticketPriority->fresh();
+
+                $this->auditLogService->record(
+                    Log::ACTION_UPDATE_TICKET_PRIORITY,
+                    $actor,
+                    $fresh,
+                    [
+                        'before' => $before,
+                        'after' => $this->auditLogService->snapshot($fresh),
+                    ],
+                );
+            });
     }
 }
