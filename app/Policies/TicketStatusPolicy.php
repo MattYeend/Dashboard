@@ -4,16 +4,23 @@ namespace App\Policies;
 
 use App\Models\TicketStatus;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\TicketStatuses\PolicyAuthorisationService;
 
 class TicketStatusPolicy
 {
+    /**
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**
@@ -21,7 +28,7 @@ class TicketStatusPolicy
      */
     public function view(User $user, TicketStatus $ticketStatus): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $ticketStatus);
     }
 
     /**
@@ -29,7 +36,7 @@ class TicketStatusPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canCreate($user);
     }
 
     /**
@@ -37,7 +44,7 @@ class TicketStatusPolicy
      */
     public function update(User $user, TicketStatus $ticketStatus): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $ticketStatus);
     }
 
     /**
@@ -45,7 +52,7 @@ class TicketStatusPolicy
      */
     public function delete(User $user, TicketStatus $ticketStatus): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $ticketStatus);
     }
 
     /**
@@ -53,14 +60,38 @@ class TicketStatusPolicy
      */
     public function restore(User $user, TicketStatus $ticketStatus): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $ticketStatus);
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can permanently delete the models.
      */
     public function forceDelete(User $user, TicketStatus $ticketStatus): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $ticketStatus);
+    }
+
+    /**
+     * Determine whether the user can assign the task status.
+     */
+    public function assign(User $user, TicketStatus $ticketStatus): bool
+    {
+        return $this->authorisationService->canAssign($user, $ticketStatus);
+    }
+
+    /**
+     * Determine whether the user can import models.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisationService->canImport($user);
+    }
+
+    /**
+     * Determine whether the user can export models.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->canExport($user);
     }
 }

@@ -28,6 +28,7 @@ use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
+use App\Http\Controllers\TicketStatusController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -483,6 +484,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{deal}/edit', [DealController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{deal}', [DealController::class, 'update'])->name('update');
         Route::delete('/{deal}', [DealController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('ticket-statuses')->name('ticket-statuses.')->group(function () {
+        Route::post('/bulk/delete', [TicketStatusController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [TicketStatusController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [TicketStatusController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [TicketStatusController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/export', [TicketStatusController::class, 'export'])->name('export');
+        Route::post('/import', [TicketStatusController::class, 'import'])->name('import');
+
+        Route::get('/', [TicketStatusController::class, 'index'])->name('index');
+        Route::get('/create', [TicketStatusController::class, 'create'])->name('create');
+        Route::post('/', [TicketStatusController::class, 'store'])->name('store');
+        Route::get('/{ticket_status}', [TicketStatusController::class, 'show'])->name('show');
+        Route::get('/{ticket_status}/edit', [TicketStatusController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{ticket_status}', [TicketStatusController::class, 'update'])->name('update');
+        Route::delete('/{ticket_status}', [TicketStatusController::class, 'destroy'])->name('destroy');
     });
 });
 

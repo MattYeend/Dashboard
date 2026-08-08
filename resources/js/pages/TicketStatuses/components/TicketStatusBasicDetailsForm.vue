@@ -3,7 +3,7 @@ import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import type { TaskStatusFormData } from './TaskStatusForm.vue';
+import type { TicketStatusFormData } from './TicketStatusForm.vue';
 
 interface Errors {
     title?: string;
@@ -11,17 +11,17 @@ interface Errors {
 }
 
 const props = defineProps<{
-    form: TaskStatusFormData;
+    form: TicketStatusFormData;
     errors: Errors;
 }>();
 
 const emit = defineEmits<{
-    (e: 'update:form', value: TaskStatusFormData): void;
+    (e: 'update:form', value: TicketStatusFormData): void;
 }>();
 
-function update<K extends keyof TaskStatusFormData>(
+function update<K extends keyof TicketStatusFormData>(
     field: K,
-    value: TaskStatusFormData[K],
+    value: TicketStatusFormData[K],
 ): void {
     emit('update:form', { ...props.form, [field]: value });
 }
