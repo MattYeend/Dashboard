@@ -23,6 +23,9 @@ use App\Models\Subscription;
 use App\Models\Tag;
 use App\Models\Task;
 use App\Models\TaskStatus;
+use App\Models\Ticket;
+use App\Models\TicketPriority;
+use App\Models\TicketStatus;
 use App\Models\User;
 use App\Observers\UserObserver;
 use App\Policies\AddressPolicy;
@@ -46,6 +49,9 @@ use App\Policies\PostPolicy;
 use App\Policies\TagPolicy;
 use App\Policies\TaskPolicy;
 use App\Policies\TaskStatusPolicy;
+use App\Policies\TicketPolicy;
+use App\Policies\TicketPriorityPolicy;
+use App\Policies\TicketStatusPolicy;
 use App\Policies\UserPolicy;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -107,6 +113,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Tag::class, TagPolicy::class);
         Gate::policy(Task::class, TaskPolicy::class);
         Gate::policy(TaskStatus::class, TaskStatusPolicy::class);
+        Gate::policy(Ticket::class, TicketPolicy::class);
+        Gate::policy(TicketStatus::class, TicketStatusPolicy::class);
+        Gate::policy(TicketPriority::class, TicketPriorityPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
 
         Route::bind('invoiceItem', function ($value, $route) {
