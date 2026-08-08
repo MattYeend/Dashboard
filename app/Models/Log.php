@@ -565,6 +565,71 @@ class Log extends Model
 
     public const ACTION_EXPORT_TAG = 263;
 
+    // Ticket Priority Management
+    public const ACTION_CREATE_TICKET_PRIORITY = 264;
+
+    public const ACTION_UPDATE_TICKET_PRIORITY = 265;
+
+    public const ACTION_VIEW_TICKET_PRIORITY = 266;
+
+    public const ACTION_DELETE_TICKET_PRIORITY = 267;
+
+    public const ACTION_FORCE_DELETE_TICKET_PRIORITY = 268;
+
+    public const ACTION_RESTORE_TICKET_PRIORITY = 269;
+
+    public const ACTION_IMPORT_TICKET_PRIORITY = 270;
+
+    public const ACTION_EXPORT_TICKET_PRIORITY = 271;
+
+    public const ACTION_TICKET_PRIORITY_UPDATED_BY_CRON = 272;
+
+    // Ticket Status Management
+    public const ACTION_CREATE_TICKET_STATUS = 273;
+
+    public const ACTION_UPDATE_TICKET_STATUS = 274;
+
+    public const ACTION_VIEW_TICKET_STATUS = 275;
+
+    public const ACTION_DELETE_TICKET_STATUS = 276;
+
+    public const ACTION_FORCE_DELETE_TICKET_STATUS = 277;
+
+    public const ACTION_RESTORE_TICKET_STATUS = 278;
+
+    public const ACTION_IMPORT_TICKET_STATUS = 279;
+
+    public const ACTION_EXPORT_TICKET_STATUS = 280;
+
+    public const ACTION_TICKET_STATUS_UPDATED_BY_CRON = 281;
+
+    // Ticket Management
+    public const ACTION_CREATE_TICKET = 282;
+
+    public const ACTION_UPDATE_TICKET = 283;
+
+    public const ACTION_VIEW_TICKET = 284;
+
+    public const ACTION_DELETE_TICKET = 285;
+
+    public const ACTION_FORCE_DELETE_TICKET = 286;
+
+    public const ACTION_RESTORE_TICKET = 287;
+
+    public const ACTION_IMPORT_TICKET = 288;
+
+    public const ACTION_EXPORT_TICKET = 289;
+
+    public const ACTION_TICKET_UPDATED_BY_CRON = 290;
+
+    public const ACTION_ASSIGN_TICKET = 291;
+
+    public const ACTION_UNASSIGN_TICKET = 292;
+
+    public const ACTION_CHANGE_TICKET_STATUS = 293;
+
+    public const ACTION_CHANGE_TICKET_PRIORITY = 294;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed

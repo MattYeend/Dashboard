@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('ticket_statuses', function (Blueprint $table) {
             $table->id();
             $table->string('title')->unique();
+            $table->string('description')->nullable();
             $table->string('background_colour')->default('#6b7280');
             $table->string('text_colour')->default('#ffffff');
             $table->json('meta')->nullable();
