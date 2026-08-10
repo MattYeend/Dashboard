@@ -369,7 +369,11 @@ export interface InvoiceStatus {
 
 export interface Comment {
     id: number;
-    post_id: number;
+    commentable_id: number;
+    commentable_type: string;
+    commentable_type_key: string | null;
+    commentable_type_label: string | null;
+    commentable_name: string | null;
     content: string;
     meta: Record<string, unknown> | null;
     likes_count?: number;
