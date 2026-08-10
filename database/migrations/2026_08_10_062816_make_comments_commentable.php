@@ -31,6 +31,7 @@ return new class extends Migration
             $table->index(['commentable_type', 'commentable_id']);
 
             $table->dropForeign(['post_id']);
+            $table->dropIndex('comments_post_id_created_at_index');
             $table->dropColumn('post_id');
         });
     }
@@ -50,6 +51,8 @@ return new class extends Migration
 
         Schema::table('comments', function (Blueprint $table) {
             $table->foreignId('post_id')->nullable(false)->change();
+
+            $table->index(['post_id', 'created_at'], 'comments_post_id_created_at_index');
 
             $table->dropIndex(['commentable_type', 'commentable_id']);
             $table->dropColumn(['commentable_type', 'commentable_id']);

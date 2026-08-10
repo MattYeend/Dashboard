@@ -292,22 +292,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::post('/{post}/like', [PostController::class, 'like'])->name('like');
         Route::delete('/{post}/like', [PostController::class, 'unlike'])->name('unlike');
-
-        Route::prefix('/{post}/comments')->name('comments.')->group(function () {
-            Route::post('/bulk/delete', [CommentController::class, 'bulkDelete'])->name('bulk.delete');
-            Route::post('/bulk/restore', [CommentController::class, 'bulkRestore'])->name('bulk.restore');
-            Route::post('/{id}/restore', [CommentController::class, 'restore'])->name('restore');
-            Route::delete('/{id}/force', [CommentController::class, 'forceDelete'])->name('force-delete');
-
-            Route::get('/export', [CommentController::class, 'export'])->name('export');
-            Route::post('/import', [CommentController::class, 'import'])->name('import');
-
-            Route::post('/', [CommentController::class, 'store'])->name('store');
-            Route::put('/{comment}', [CommentController::class, 'update'])->name('update');
-            Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('destroy');
-            Route::post('/{comment}/like', [CommentController::class, 'like'])->name('like');
-            Route::delete('/{comment}/like', [CommentController::class, 'unlike'])->name('unlike');
-        });
     });
 
     Route::prefix('invoice-statuses')->name('invoice-statuses.')->group(function () {
@@ -521,6 +505,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{ticket_priority}/edit', [TicketPriorityController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{ticket_priority}', [TicketPriorityController::class, 'update'])->name('update');
         Route::delete('/{ticket_priority}', [TicketPriorityController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('comments')->name('comments.')->group(function () {
+        Route::get('/commentable-options', [CommentController::class, 'commentableOptions'])->name('commentable-options');
+
+        Route::post('/bulk/delete', [CommentController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [CommentController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [CommentController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [CommentController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/export', [CommentController::class, 'export'])->name('export');
+        Route::post('/import', [CommentController::class, 'import'])->name('import');
+
+        Route::get('/', [CommentController::class, 'index'])->name('index');
+        Route::post('/', [CommentController::class, 'store'])->name('store');
+        Route::get('/{comment}', [CommentController::class, 'show'])->name('show');
+        Route::match(['put', 'patch'], '/{comment}', [CommentController::class, 'update'])->name('update');
+        Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('destroy');
+
+        Route::post('/{comment}/like', [CommentController::class, 'like'])->name('like');
+        Route::delete('/{comment}/like', [CommentController::class, 'unlike'])->name('unlike');
     });
 });
 

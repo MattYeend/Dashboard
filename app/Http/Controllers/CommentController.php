@@ -6,7 +6,7 @@ use App\Http\Requests\Comments\ImportCommentRequest;
 use App\Http\Requests\Comments\StoreCommentRequest;
 use App\Http\Requests\Comments\UpdateCommentRequest;
 use App\Models\Comment;
-use App\Models\Post;
+use App\Services\Comments\CommentableTypeRegistryService;
 use App\Services\Comments\ManagementService;
 use App\Services\Comments\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -27,24 +27,27 @@ class CommentController extends Controller
     public function __construct(
         protected readonly ManagementService $management,
         protected readonly QueryService $query,
+        protected readonly CommentableTypeRegistryService $registry,
     ) {}
 
     /**
-     * Display a paginated listing of comments for the given post.
+     * Display a paginated listing of comments.
      *
      * Authorises via the 'viewAny' policy before returning data.
      */
-    public function index(Post $post, Request $request): Response
+    public function index(Request $request): Response
     {
         $this->authorize('viewAny', Comment::class);
 
         $data = $this->query->getPaginated(
             $request->user(),
-            $post,
-            $request->only(['search', 'sort_by', 'sort_direction', 'trashed', 'per_page'])
+            $request->only([
+                'search', 'sort_by', 'sort_direction', 'trashed',
+                'per_page', 'commentable_type', 'commentable_id',
+            ])
         );
 
-        return Inertia::render('Posts/Comments/Index', $data);
+        return Inertia::render('Comments/Index', $data);
     }
 
     /**
@@ -52,25 +55,28 @@ class CommentController extends Controller
      *
      * Authorises via the 'view' policy before rendering.
      */
-    public function show(Post $post, Comment $comment): Response
-    {
+    public function show(
+        Comment $comment,
+        Request $request
+    ): Response {
         $this->authorize('view', $comment);
 
-        $data = $this->query->getById($post, $comment->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $comment->id
+        );
 
-        return Inertia::render('Posts/Comments/Show', $data);
+        return Inertia::render('Comments/Show', $data);
     }
 
     /**
-     * Store a newly created comment on the given post.
+     * Store a newly created comment.
      *
      * Authorisation is handled upstream by StoreCommentRequest.
      */
-    public function store(
-        StoreCommentRequest $request,
-        Post $post
-    ): JsonResponse|RedirectResponse {
-        $comment = $this->management->store($request, $post);
+    public function store(StoreCommentRequest $request): JsonResponse|RedirectResponse
+    {
+        $comment = $this->management->store($request);
 
         if ($request->wantsJson()) {
             return response()->json($comment, 201);
@@ -84,11 +90,8 @@ class CommentController extends Controller
      *
      * Authorisation is handled upstream by UpdateCommentRequest.
      */
-    public function update(
-        UpdateCommentRequest $request,
-        Post $post,
-        Comment $comment
-    ): JsonResponse|RedirectResponse {
+    public function update(UpdateCommentRequest $request, Comment $comment): JsonResponse|RedirectResponse
+    {
         $comment = $this->management->update($request, $comment);
 
         if ($request->wantsJson()) {
@@ -103,11 +106,8 @@ class CommentController extends Controller
      *
      * Authorises via the 'delete' policy before proceeding.
      */
-    public function destroy(
-        Post $post,
-        Comment $comment,
-        Request $request
-    ): JsonResponse|RedirectResponse {
+    public function destroy(Comment $comment, Request $request): JsonResponse|RedirectResponse
+    {
         $this->authorize('delete', $comment);
 
         $this->management->destroy($comment, $request->user());
@@ -127,12 +127,9 @@ class CommentController extends Controller
      *
      * Authorises via the 'restore' policy before proceeding.
      */
-    public function restore(
-        Post $post,
-        int $id,
-        Request $request
-    ): JsonResponse|RedirectResponse {
-        $comment = Comment::onlyTrashed()->where('post_id', $post->id)->findOrFail($id);
+    public function restore(int $id, Request $request): JsonResponse|RedirectResponse
+    {
+        $comment = Comment::onlyTrashed()->findOrFail($id);
 
         $this->authorize('restore', $comment);
 
@@ -150,12 +147,9 @@ class CommentController extends Controller
      *
      * Authorises via the 'forceDelete' policy before proceeding.
      */
-    public function forceDelete(
-        Post $post,
-        int $id,
-        Request $request
-    ): JsonResponse|RedirectResponse {
-        $comment = Comment::onlyTrashed()->where('post_id', $post->id)->findOrFail($id);
+    public function forceDelete(int $id, Request $request): JsonResponse|RedirectResponse
+    {
+        $comment = Comment::onlyTrashed()->findOrFail($id);
 
         $this->authorize('forceDelete', $comment);
 
@@ -169,11 +163,11 @@ class CommentController extends Controller
     }
 
     /**
-     * Bulk soft-delete multiple comments belonging to the given post.
+     * Bulk soft-delete multiple comments.
      *
      * Authorises each comment individually via the 'delete' policy.
      */
-    public function bulkDelete(Post $post, Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
     {
         $request->validate([
             'ids' => ['required', 'array'],
@@ -194,11 +188,11 @@ class CommentController extends Controller
     }
 
     /**
-     * Bulk restore multiple soft-deleted comments belonging to the given post.
+     * Bulk restore multiple soft-deleted comments.
      *
      * Authorises each comment individually via the 'restore' policy.
      */
-    public function bulkRestore(Post $post, Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
     {
         $validated = $request->validate([
             'ids' => ['required', 'array'],
@@ -219,13 +213,13 @@ class CommentController extends Controller
     }
 
     /**
-     * Import comments from an uploaded CSV file, scoped to the given post.
+     * Import comments from an uploaded CSV file.
      *
      * Authorisation is handled by ImportCommentRequest::authorize().
      */
-    public function import(ImportCommentRequest $request, Post $post): JsonResponse|RedirectResponse
+    public function import(ImportCommentRequest $request): JsonResponse|RedirectResponse
     {
-        $result = $this->management->import($request, $post);
+        $result = $this->management->import($request);
 
         if ($request->wantsJson()) {
             return response()->json($result);
@@ -235,32 +229,28 @@ class CommentController extends Controller
     }
 
     /**
-     * Export a post's comments matching the current filters as a CSV download.
+     * Export comments matching the current filters as a CSV download.
      *
      * Authorises via the 'export' policy before proceeding.
      */
-    public function export(Post $post, Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
     {
         $this->authorize('export', Comment::class);
 
         return $this->management->export(
-            $post,
-            $request->only(['search', 'trashed'])
+            $request->only(['search', 'trashed', 'commentable_type', 'commentable_id'])
         );
     }
 
     /**
      * Like the given comment for the currently authenticated user.
      *
-     * Authorises via the 'view' policy on the parent post, since
-     * liking a comment requires being able to see the post it's on.
+     * Authorises via the 'view' policy on the comment itself, since
+     * liking a comment requires being able to see it.
      */
-    public function like(
-        Post $post,
-        Comment $comment,
-        Request $request
-    ): RedirectResponse {
-        $this->authorize('view', $post);
+    public function like(Comment $comment, Request $request): RedirectResponse
+    {
+        $this->authorize('view', $comment);
 
         $this->management->like($comment, $request->user());
 
@@ -269,16 +259,28 @@ class CommentController extends Controller
 
     /**
      * Unlike the given comment for the currently authenticated user.
+     *
+     * Authorises via the 'view' policy on the comment itself, since
+     * unliking a comment requires being able to see it.
      */
-    public function unlike(
-        Post $post,
-        Comment $comment,
-        Request $request
-    ): RedirectResponse {
-        $this->authorize('view', $post);
+    public function unlike(Comment $comment, Request $request): RedirectResponse
+    {
+        $this->authorize('view', $comment);
 
         $this->management->unlike($comment, $request->user());
 
         return back();
+    }
+
+    /**
+     * Get the list of selectable "owner" options for a given commentable type.
+     */
+    public function commentableOptions(Request $request): JsonResponse
+    {
+        $type = $request->query('type', '');
+
+        $options = $this->query->getCommentableOptions($type);
+
+        return response()->json($options);
     }
 }
