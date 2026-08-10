@@ -3,30 +3,45 @@
 namespace Database\Factories;
 
 use App\Models\Comment;
-use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @extends Factory<Comment>
  */
 class CommentFactory extends Factory
 {
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var class-string<Comment>
+     */
     protected $model = Comment::class;
 
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
     public function definition(): array
     {
         return [
-            'post_id' => Post::factory(),
+            'commentable_type' => null,
+            'commentable_id' => null,
             'content' => $this->faker->paragraph(),
             'meta' => null,
             'created_by' => User::factory(),
         ];
+    }
+
+    /**
+     * Associate the comment with a given morphable model.
+     */
+    public function forModel(Model $model): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'commentable_type' => $model->getMorphClass(),
+            'commentable_id' => $model->getKey(),
+        ]);
     }
 
     /**
