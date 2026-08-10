@@ -7,16 +7,26 @@ use App\Models\User;
 
 class FormatterService
 {
+    public function __construct(
+        private readonly CommentableTypeRegistryService $registry,
+    ) {}
+
     /**
-     * Format a single comment with all data.
-     *
      * @return array<string, mixed>
      */
     public function format(Comment $comment, ?User $viewer = null): array
     {
         return [
             'id' => $comment->id,
-            'post_id' => $comment->post_id,
+            'commentable_type' => $comment->commentable_type,
+            'commentable_id' => $comment->commentable_id,
+            'commentable_type_key' => $this->registry->keyForModel($comment->commentable_type),
+            'commentable_type_label' => $this->registry->labelForModel($comment->commentable_type),
+            'commentable_name' => $comment->commentable
+                ? ($comment->commentable->name
+                    ?? $comment->commentable->title
+                    ?? '#'.$comment->commentable->id)
+                : null,
             'content' => $comment->content,
             'meta' => $comment->meta,
             'likes_count' => $comment->likes_count ?? 0,

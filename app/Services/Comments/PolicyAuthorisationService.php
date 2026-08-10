@@ -3,9 +3,7 @@
 namespace App\Services\Comments;
 
 use App\Models\Comment;
-use App\Models\Post;
 use App\Models\User;
-use App\Services\Posts\PolicyAuthorisationService as PostPolicyAuthorisationService;
 use App\Services\UserRoleCheckerService;
 
 class PolicyAuthorisationService
@@ -16,7 +14,6 @@ class PolicyAuthorisationService
     public function __construct(
         protected readonly ActiveCheckerService $activeChecker,
         protected readonly UserRoleCheckerService $roleChecker,
-        protected readonly PostPolicyAuthorisationService $postAuthorisation
     ) {}
 
     /**
@@ -102,14 +99,15 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can comment on the given post.
+     * Determine whether the user can create a comment.
      *
-     * Mirrors Post's own view gate, since commenting requires the
-     * same access as viewing the post.
+     * A plain permission check rather than mirroring a specific
+     * parent's view gate, since comments no longer have a single
+     * fixed parent type.
      */
-    public function canCreate(User $actor, Post $post): bool
+    public function canCreate(User $actor): bool
     {
-        return $this->postAuthorisation->canView($actor, $post);
+        return $actor->can('create comments');
     }
 
     /**

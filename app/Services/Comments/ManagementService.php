@@ -8,7 +8,6 @@ use App\Http\Requests\Comments\ImportCommentRequest;
 use App\Http\Requests\Comments\StoreCommentRequest;
 use App\Http\Requests\Comments\UpdateCommentRequest;
 use App\Models\Comment;
-use App\Models\Post;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -29,14 +28,11 @@ class ManagementService
     ) {}
 
     /**
-     * Create a new comment on the given post.
+     * Create a new comment.
      */
-    public function store(
-        StoreCommentRequest $request,
-        Post $post
-    ): Comment {
+    public function store(StoreCommentRequest $request): Comment
+    {
         return $this->creator->create(
-            $post,
             $request->validated(),
             $request->user()->id
         );
@@ -111,6 +107,8 @@ class ManagementService
 
     /**
      * Bulk restore comments.
+     *
+     * @return array{restored: array<int, int>, skipped: array<int, int>}
      */
     public function bulkRestore(
         array $ids,
@@ -140,6 +138,8 @@ class ManagementService
 
     /**
      * Bulk soft delete comments.
+     *
+     * @return array{deleted: array<int, int>, skipped: array<int, int>}
      */
     public function bulkDelete(
         array $ids,
@@ -166,28 +166,25 @@ class ManagementService
     }
 
     /**
-     * Import comments from an uploaded file, scoped to the given post.
+     * Import comments from an uploaded file.
      *
      * @return array{imported: int, skipped: array<int, array{row: int, reason: string}>}
      */
-    public function import(
-        ImportCommentRequest $request,
-        Post $post
-    ): array {
+    public function import(ImportCommentRequest $request): array
+    {
         return $this->importer->import(
             $request->file('file'),
-            $post,
             $request->user()->id
         );
     }
 
     /**
-     * Export a post's comments matching the given filters as a CSV download.
+     * Export comments matching the given filters as a CSV download.
      *
      * @param  array<string, mixed>  $filters
      */
-    public function export(Post $post, array $filters): StreamedResponse
+    public function export(array $filters): StreamedResponse
     {
-        return $this->exporter->export($post, $filters);
+        return $this->exporter->export($filters);
     }
 }

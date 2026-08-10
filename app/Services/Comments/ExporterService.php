@@ -2,8 +2,8 @@
 
 namespace App\Services\Comments;
 
+use App\Models\Comment;
 use App\Models\Log;
-use App\Models\Post;
 use App\Services\AuditLogService;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -11,35 +11,34 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class ExporterService
 {
     /**
-     * Inject the audit log service.
+     * Inject the required services into the exporter service.
      */
     public function __construct(
         protected readonly AuditLogService $auditLogService,
+        protected readonly FilterService $filterService,
     ) {}
 
     /**
-     * Stream comments belonging to the given post as a CSV download.
+     * Stream comments as a CSV download.
      *
      * @param  array<string, mixed>  $filters
      */
-    public function export(Post $post, array $filters): StreamedResponse
+    public function export(array $filters): StreamedResponse
     {
-        $query = $post->comments();
+        $query = Comment::query();
 
         if (($filters['trashed'] ?? null) === 'with') {
             $query->withTrashed();
         }
 
-        if (! empty($filters['search'])) {
-            $query->where('content', 'like', '%'.$filters['search'].'%');
-        }
+        $query = $this->filterService->applyAll($query, $filters);
 
-        $columns = ['id', 'post_id', 'content', 'created_by', 'created_at'];
+        $columns = ['id', 'commentable_type', 'commentable_id', 'content', 'created_by', 'created_at'];
 
         $this->auditLogService->record(
             Log::ACTION_EXPORT_COMMENT,
             Auth::user(),
-            $post,
+            null,
             ['filters' => $filters, 'count' => (clone $query)->count()],
         );
 
@@ -58,7 +57,7 @@ class ExporterService
 
         return response()->streamDownload(
             $callback,
-            "post-{$post->id}-comments-".now()->format('Y-m-d-His').'.csv',
+            'comments-'.now()->format('Y-m-d-His').'.csv',
             ['Content-Type' => 'text/csv']
         );
     }
