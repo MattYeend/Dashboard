@@ -4,7 +4,6 @@ namespace App\Services\Comments;
 
 use App\Models\Comment;
 use App\Models\Log;
-use App\Models\Post;
 use App\Models\User;
 use App\Services\AuditLogService;
 use Illuminate\Http\UploadedFile;
@@ -12,25 +11,18 @@ use Illuminate\Support\Facades\DB;
 
 class ImporterService
 {
-    protected const REQUIRED_COLUMNS = ['content'];
+    protected const REQUIRED_COLUMNS = ['commentable_type', 'commentable_id', 'content'];
 
-    /**
-     * Inject the required services into the importer service.
-     */
     public function __construct(
         protected readonly AuditLogService $auditLogService,
+        protected readonly CommentableTypeRegistryService $registry,
     ) {}
 
     /**
-     * Import comments from an uploaded CSV file, scoped to the given post.
-     *
      * @return array{imported: int, skipped: array<int, array{row: int, reason: string}>}
      */
-    public function import(
-        UploadedFile $file,
-        Post $post,
-        int $actorId
-    ): array {
+    public function import(UploadedFile $file, int $actorId): array
+    {
         $handle = fopen($file->getRealPath(), 'r');
 
         $header = fgetcsv($handle);
@@ -55,18 +47,14 @@ class ImporterService
         $rowNumber = 1;
         $actor = User::findOrFail($actorId);
 
-        DB::transaction(function () use ($handle, $header, $post, $actor, $actorId, &$imported, &$skipped, &$rowNumber) {
+        DB::transaction(function () use ($handle, $header, $actor, $actorId, &$imported, &$skipped, &$rowNumber) {
             while (($row = fgetcsv($handle)) !== false) {
                 $rowNumber++;
 
                 if (count($row) !== count($header)) {
                     $skipped[] = [
                         'row' => $rowNumber,
-                        'reason' => sprintf(
-                            'Expected %d columns but found %d',
-                            count($header),
-                            count($row),
-                        ),
+                        'reason' => sprintf('Expected %d columns but found %d', count($header), count($row)),
                     ];
 
                     continue;
@@ -86,8 +74,23 @@ class ImporterService
                     continue;
                 }
 
+                $modelClass = $this->registry->modelClassForKey($data['commentable_type'] ?? '');
+
+                if (! $modelClass) {
+                    $skipped[] = ['row' => $rowNumber, 'reason' => "Unrecognised 'commentable_type'"];
+
+                    continue;
+                }
+
+                if (empty($data['commentable_id']) || ! $modelClass::query()->whereKey($data['commentable_id'])->exists()) {
+                    $skipped[] = ['row' => $rowNumber, 'reason' => "'commentable_id' does not exist for the given type"];
+
+                    continue;
+                }
+
                 $comment = Comment::create([
-                    'post_id' => $post->id,
+                    'commentable_type' => $modelClass,
+                    'commentable_id' => $data['commentable_id'],
                     'content' => $data['content'],
                     'created_by' => $actorId,
                 ]);

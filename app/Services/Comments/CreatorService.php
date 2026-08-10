@@ -5,7 +5,6 @@ namespace App\Services\Comments;
 use App\Actions\CreateResource;
 use App\Models\Comment;
 use App\Models\Log;
-use App\Models\Post;
 use App\Models\User;
 use App\Services\AuditLogService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -22,20 +21,20 @@ class CreatorService
     ) {}
 
     /**
-     * Create a new comment on the given post.
+     * Create a new comment.
      *
      * @param  array<string, mixed>  $data
      *
      * @throws ModelNotFoundException
      */
-    public function create(Post $post, array $data, int $createdBy): Comment
+    public function create(array $data, int $createdBy): Comment
     {
         $actor = User::findOrFail($createdBy);
 
         return $this->createResource->handle(
             $data,
-            function (array $data) use ($post, $createdBy, $actor): Comment {
-                $commentData = $this->dataPreparation->prepareForCreation($data, $post->id, $createdBy);
+            function (array $data) use ($createdBy, $actor): Comment {
+                $commentData = $this->dataPreparation->prepareForCreation($data, $createdBy);
 
                 $newComment = Comment::create($commentData);
 

@@ -49,6 +49,7 @@ class ActiveCheckerService
     ): bool {
         return match ($action) {
             'modify' => $this->roleChecker->isAdmin($actor) && $this->canBeModified($target),
+            'restoreOrForceDelete' => $this->roleChecker->isAdmin($actor) && $this->isTrashed($target),
             default => false,
         };
     }

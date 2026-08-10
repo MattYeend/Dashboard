@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\Comment;
-use App\Models\Post;
 use App\Models\User;
 use App\Services\Comments\PolicyAuthorisationService;
 
@@ -17,11 +16,11 @@ class CommentPolicy
     ) {}
 
     /**
-     * Determine whether the user can comment on the given post.
+     * Determine whether the user can create a comment.
      */
-    public function create(User $user, Post $post): bool
+    public function create(User $user): bool
     {
-        return $this->authorisationService->canCreate($user, $post);
+        return $this->authorisationService->canCreate($user);
     }
 
     /**
@@ -35,8 +34,8 @@ class CommentPolicy
     /**
      * Determine whether the user can delete the given comment.
      */
-    public function delete(User $user, Comment $comment
-    ): bool {
+    public function delete(User $user, Comment $comment): bool
+    {
         return $this->authorisationService->canDelete($user, $comment);
     }
 
@@ -93,7 +92,7 @@ class CommentPolicy
      */
     public function import(User $user): bool
     {
-        return $this->authorisationService->isAdmin($user);
+        return $this->authorisationService->canImport($user);
     }
 
     /**
@@ -101,6 +100,6 @@ class CommentPolicy
      */
     public function export(User $user): bool
     {
-        return $this->authorisationService->isUser($user);
+        return $this->authorisationService->canExport($user);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Comments;
 
 use App\Models\Comment;
-use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ImportCommentRequest extends FormRequest
@@ -13,15 +12,10 @@ class ImportCommentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        /** @var Post $post */
-        $post = $this->route('post');
-
-        return $this->user()->can('import', [Comment::class, $post]);
+        return $this->user()->can('import', Comment::class);
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
      * @return array<string, mixed>
      */
     public function rules(): array

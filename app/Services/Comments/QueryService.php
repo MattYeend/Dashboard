@@ -2,71 +2,218 @@
 
 namespace App\Services\Comments;
 
-use App\Models\Post;
+use App\Models\Comment;
 use App\Models\User;
+use App\Services\TrashFilterService;
+use Illuminate\Database\Eloquent\Builder;
 
 class QueryService
 {
     /**
-     * Allow-listed sortable columns, to prevent arbitrary column names
-     * (from query string input) reaching the query builder.
-     *
-     * @var array<int, string>
+     * Inject the required services into the query service.
      */
-    protected const SORTABLE_COLUMNS = ['id', 'created_at', 'updated_at'];
+    public function __construct(
+        protected readonly SortingService $sortingService,
+        protected readonly TrashFilterService $trashFilterService,
+        protected readonly FilterService $filterService,
+        protected readonly FormatterService $formatterService,
+        protected readonly CommentableTypeRegistryService $registry,
+    ) {}
 
     /**
-     * Get a paginated list of comments belonging to the given post.
-     *
-     * @param  array<string, mixed>  $filters
-     * @return array<string, mixed>
+     * Get paginated comments with filters.
      */
-    public function getPaginated(User $actor, Post $post, array $filters): array
+    public function getPaginated(
+        User $actor,
+        array $filters = []
+    ): array {
+        $query = $this->buildQuery($filters);
+        $paginated = $this->paginate(
+            $query,
+            min((int) ($filters['per_page'] ?? 15), 100),
+            $actor
+        );
+
+        return array_merge(
+            $paginated,
+            $this->getPermissions($actor),
+            $this->baseData(),
+        );
+    }
+
+    /**
+     * Get a single comment by ID.
+     */
+    public function getById(
+        User $user,
+        int $id,
+        bool $withTrashed = false
+    ): array {
+        $comment = $this->findComment($id, $withTrashed);
+
+        return array_merge(
+            ['comment' => $this->formatterService->format($comment, $user)],
+            $this->getFormData(),
+            $this->getPermissions($user),
+            $this->baseData(),
+        );
+    }
+
+    /**
+     * Get the data needed to render the "Create Comment" form.
+     */
+    public function getFormData(): array
     {
-        $query = $post->comments()->with(['creator', 'updater']);
-
-        if (($filters['trashed'] ?? null) === 'with') {
-            $query->withTrashed();
-        } elseif (($filters['trashed'] ?? null) === 'only') {
-            $query->onlyTrashed();
-        }
-
-        if (! empty($filters['search'])) {
-            $query->where('content', 'like', '%'.$filters['search'].'%');
-        }
-
-        $sortBy = in_array($filters['sort_by'] ?? null, self::SORTABLE_COLUMNS, true)
-            ? $filters['sort_by']
-            : 'created_at';
-
-        $sortDirection = ($filters['sort_direction'] ?? null) === 'asc' ? 'asc' : 'desc';
-
-        $perPage = min((int) ($filters['per_page'] ?? 15), 100);
-
-        $comments = $query
-            ->orderBy($sortBy, $sortDirection)
-            ->paginate($perPage)
-            ->withQueryString();
-
         return [
-            'comments' => $comments,
-            'post' => $post,
+            'commentableTypes' => $this->registry->types(),
         ];
     }
 
     /**
-     * Get a single comment by ID, scoped to the given post.
+     * Get the "owner" options for a given commentable type, for the dependent dropdown on the Create/Edit comment form.
      */
-    public function getById(Post $post, int $id): array
+    public function getCommentableOptions(string $type): array
     {
-        $comment = $post->comments()
-            ->withTrashed()
-            ->with(['creator', 'updater', 'deleter', 'restorer'])
-            ->findOrFail($id);
+        return $this->registry->optionsFor($type);
+    }
+
+    /**
+     * Get all comments for a specific commentable model, formatted
+     * and ready to attach to that model's Show page props.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function getForCommentable(
+        User $actor,
+        string $commentableType,
+        int $commentableId
+    ): array {
+        $comments = Comment::query()
+            ->where('commentable_type', $commentableType)
+            ->where('commentable_id', $commentableId)
+            ->with(['creator', 'likes'])
+            ->latest()
+            ->get();
+
+        return $comments->map(
+            fn (Comment $comment) => $this->formatterService->format($comment, $actor)
+        )->all();
+    }
+
+    /**
+     * Build the base query with filters.
+     */
+    protected function buildQuery(array $filters): Builder
+    {
+        $query = Comment::query()->with([
+            'commentable',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
+
+        $query = $this->filterService->applyAll($query, $filters);
+
+        return $this->applySorting($query, $filters);
+    }
+
+    /**
+     * Paginate the query and return as plain array.
+     */
+    protected function paginate(
+        Builder $query,
+        int $perPage,
+        User $actor
+    ): array {
+        $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
-            'comment' => $comment,
-            'post' => $post,
+            'comments' => [
+                'data' => array_map(
+                    fn (Comment $comment) => $this->formatterService->format($comment, $actor),
+                    $paginator->items()
+                ),
+                'links' => $paginator->linkCollection()->toArray(),
+                'meta' => [
+                    'current_page' => $paginator->currentPage(),
+                    'last_page' => $paginator->lastPage(),
+                    'per_page' => $paginator->perPage(),
+                    'total' => $paginator->total(),
+                    'from' => $paginator->firstItem(),
+                    'to' => $paginator->lastItem(),
+                ],
+            ],
         ];
+    }
+
+    /**
+     * Get user permissions for the authenticated user.
+     */
+    protected function getPermissions(User $user): array
+    {
+        if (! $user) {
+            return ['permissions_meta' => []];
+        }
+
+        return [
+            'permissions_meta' => [
+                'can_create' => $user->can('create', Comment::class),
+                'can_view_any' => $user->can('viewAny', Comment::class),
+            ],
+        ];
+    }
+
+    /**
+     * Get base data for the view.
+     */
+    protected function baseData(): array
+    {
+        return [
+            'sort_fields' => $this->sortingService->getAvailableSortFields(),
+            'trash_filters' => $this->trashFilterService->getFilterOptions(),
+            'commentableTypes' => $this->registry->types(),
+        ];
+    }
+
+    /**
+     * Find a comment by ID with optional trashed records.
+     */
+    private function findComment(
+        int $id,
+        bool $withTrashed = false
+    ): Comment {
+        $query = Comment::query()->with([
+            'commentable',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
+
+        if ($withTrashed) {
+            $query->withTrashed();
+        }
+
+        return $query->findOrFail($id);
+    }
+
+    /**
+     * Apply trash filtering and sorting to the query.
+     */
+    private function applySorting(
+        Builder $query,
+        array $filters
+    ): Builder {
+        $query = $this->trashFilterService->applyFilter(
+            $query,
+            $filters['trashed'] ?? null
+        );
+
+        return $this->sortingService->applySorting(
+            $query,
+            $filters['sort_by'] ?? 'created_at',
+            $filters['sort_direction'] ?? 'desc'
+        );
     }
 }

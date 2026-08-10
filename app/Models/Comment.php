@@ -9,12 +9,14 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int $post_id
+ * @property string $commentable_type
+ * @property int $commentable_id
  * @property string $content
  * @property array<string, mixed>|null $meta
  * @property int|null $created_by
@@ -25,14 +27,15 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property-read Post $post
+ * @property-read Model $commentable
  * @property-read User|null $creator
  * @property-read User|null $updater
  * @property-read User|null $deleter
  * @property-read User|null $restorer
  */
 #[Fillable([
-    'post_id',
+    'commentable_type',
+    'commentable_id',
     'content',
     'meta',
     'created_by',
@@ -52,13 +55,13 @@ class Comment extends Model implements Auditable
         SoftDeletes;
 
     /**
-     * Get the post this comment belongs to.
+     * Get the parent commentable model (e.g. Post).
      *
-     * @return BelongsTo<Post, $this>
+     * @return MorphTo<Model, $this>
      */
-    public function post(): BelongsTo
+    public function commentable(): MorphTo
     {
-        return $this->belongsTo(Post::class);
+        return $this->morphTo();
     }
 
     /**
@@ -110,7 +113,8 @@ class Comment extends Model implements Auditable
     {
         return $this->only([
             'id',
-            'post_id',
+            'commentable_id',
+            'commentable_type',
             'content',
             'meta',
         ]);

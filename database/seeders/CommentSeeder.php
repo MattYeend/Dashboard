@@ -20,18 +20,12 @@ class CommentSeeder extends Seeder
             return;
         }
 
-        $users = User::all()->keyBy('email');
-
-        if ($users->isEmpty()) {
-            $this->command->warn('No users found, skipping address seeding...');
-
-            return;
-        }
-
         $posts = Post::all();
         $users = User::all();
 
         if ($posts->isEmpty() || $users->isEmpty()) {
+            $this->command->warn('No posts or users found, skipping comment seeding...');
+
             return;
         }
 
@@ -46,13 +40,12 @@ class CommentSeeder extends Seeder
         foreach ($posts as $index => $post) {
             $author = $users[$index % $users->count()];
 
-            Comment::firstOrCreate(
-                [
-                    'post_id' => $post->id,
+            Comment::factory()
+                ->forModel($post)
+                ->create([
                     'created_by' => $author->id,
                     'content' => $comments[$index % count($comments)],
-                ],
-            );
+                ]);
         }
     }
 }
