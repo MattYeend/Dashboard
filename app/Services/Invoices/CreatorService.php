@@ -38,7 +38,7 @@ class CreatorService
 
                 $newInvoice = Invoice::create($invoiceData);
 
-                $contactData = $this->dataPreparation->prepareContactForCreation($data);
+                $contactData = $this->dataPreparation->prepareForContactCreation($data);
 
                 if ($contactData !== null) {
                     $newInvoice->contact()->create($contactData);

@@ -630,6 +630,29 @@ class Log extends Model
 
     public const ACTION_CHANGE_TICKET_PRIORITY = 294;
 
+    // Label Management
+    public const ACTION_CREATE_LABEL = 295;
+
+    public const ACTION_UPDATE_LABEL = 296;
+
+    public const ACTION_VIEW_LABEL = 297;
+
+    public const ACTION_DELETE_LABEL = 298;
+
+    public const ACTION_FORCE_DELETE_LABEL = 299;
+
+    public const ACTION_RESTORE_LABEL = 300;
+
+    public const ACTION_IMPORT_LABEL = 301;
+
+    public const ACTION_EXPORT_LABEL = 302;
+
+    public const ACTION_LABEL_UPDATED_BY_CRON = 303;
+
+    public const ACTION_ASSIGN_LABEL = 304;
+
+    public const ACTION_UNASSIGN_LABEL = 305;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed

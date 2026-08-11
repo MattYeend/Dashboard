@@ -15,6 +15,7 @@ use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceItemController;
 use App\Http\Controllers\InvoiceStatusController;
+use App\Http\Controllers\LabelController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
@@ -526,6 +527,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::post('/{comment}/like', [CommentController::class, 'like'])->name('like');
         Route::delete('/{comment}/like', [CommentController::class, 'unlike'])->name('unlike');
+    });
+
+    Route::prefix('labels')->name('labels.')->group(function () {
+        Route::post('/bulk/delete', [LabelController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [LabelController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [LabelController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [LabelController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/export', [LabelController::class, 'export'])->name('export');
+        Route::post('/import', [LabelController::class, 'import'])->name('import');
+
+        Route::get('/', [LabelController::class, 'index'])->name('index');
+        Route::get('/create', [LabelController::class, 'create'])->name('create');
+        Route::post('/', [LabelController::class, 'store'])->name('store');
+        Route::get('/{label}', [LabelController::class, 'show'])->name('show');
+        Route::get('/{label}/edit', [LabelController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{label}', [LabelController::class, 'update'])->name('update');
+        Route::delete('/{label}', [LabelController::class, 'destroy'])->name('destroy');
     });
 });
 

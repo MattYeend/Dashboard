@@ -75,7 +75,7 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>|null
      */
-    public function prepareContactForCreation(array $data): ?array
+    public function prepareForContactCreation(array $data): ?array
     {
         if (! isset($data['contact']) || ! is_array($data['contact'])) {
             return null;
@@ -100,7 +100,7 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>|null
      */
-    public function prepareContactForUpdate(array $data): ?array
+    public function prepareUpdate(array $data): ?array
     {
         if (! isset($data['contact']) || ! is_array($data['contact'])) {
             return null;
