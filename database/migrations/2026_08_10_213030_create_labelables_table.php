@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('labelables', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('label_id')->constrained()->cascadeOnDelete();
+            $table->morphs('labelable');
             $table->timestamps();
+
+            $table->unique(['label_id', 'labelable_id', 'labelable_type'], 'labelables_unique');
         });
     }
 

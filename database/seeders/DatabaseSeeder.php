@@ -39,7 +39,8 @@ class DatabaseSeeder extends Seeder
             DealSeeder::class,
             TicketPrioritySeeder::class,
             TicketStatusSeeder::class,
-            TicketSeeder::class,
+            LabelSeeder::class,
+            // TicketSeeder::class,
         ]);
     }
 }
