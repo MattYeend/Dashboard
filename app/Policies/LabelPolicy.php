@@ -4,16 +4,23 @@ namespace App\Policies;
 
 use App\Models\Label;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\Labels\PolicyAuthorisationService;
 
 class LabelPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
+    /**
+     * Determine whether the user can view any labels.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
@@ -21,15 +28,15 @@ class LabelPolicy
      */
     public function view(User $user, Label $label): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $label);
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create labels.
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
@@ -37,7 +44,7 @@ class LabelPolicy
      */
     public function update(User $user, Label $label): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $label);
     }
 
     /**
@@ -45,7 +52,7 @@ class LabelPolicy
      */
     public function delete(User $user, Label $label): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $label);
     }
 
     /**
@@ -53,7 +60,7 @@ class LabelPolicy
      */
     public function restore(User $user, Label $label): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $label);
     }
 
     /**
@@ -61,6 +68,30 @@ class LabelPolicy
      */
     public function forceDelete(User $user, Label $label): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $label);
+    }
+
+    /**
+     * Determine whether the user can import labels.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisationService->canImport($user);
+    }
+
+    /**
+     * Determine whether the user can export labels.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->canExport($user);
+    }
+
+    /**
+     * Determine whether the user can assign the label to a record.
+     */
+    public function assign(User $user, Label $label): bool
+    {
+        return $this->authorisationService->canAssign($user, $label);
     }
 }

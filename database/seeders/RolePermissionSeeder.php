@@ -414,6 +414,18 @@ class RolePermissionSeeder extends Seeder
             'assign ticket',
             'change ticket status',
             'change ticket priority',
+
+            // Label Management
+            'view any labels',
+            'view labels',
+            'create labels',
+            'edit labels',
+            'delete labels',
+            'restore labels',
+            'force delete labels',
+            'import labels',
+            'export labels',
+            'assign labels',
         ];
 
         foreach ($permissions as $permission) {
@@ -722,6 +734,16 @@ class RolePermissionSeeder extends Seeder
             'assign ticket',
             'change ticket status',
             'change ticket priority',
+            'view any labels',
+            'view labels',
+            'create labels',
+            'edit labels',
+            'delete labels',
+            'restore labels',
+            'force delete labels',
+            'import labels',
+            'export labels',
+            'assign labels',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -981,6 +1003,15 @@ class RolePermissionSeeder extends Seeder
             'assign ticket',
             'change ticket status',
             'change ticket priority',
+            'view any labels',
+            'view labels',
+            'create labels',
+            'edit labels',
+            'delete labels',
+            'restore labels',
+            'import labels',
+            'export labels',
+            'assign labels',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1155,6 +1186,13 @@ class RolePermissionSeeder extends Seeder
             'assign ticket',
             'change ticket status',
             'change ticket priority',
+            'view any labels',
+            'view labels',
+            'create labels',
+            'edit labels',
+            'delete labels',
+            'restore labels',
+            'assign labels',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -1204,6 +1242,8 @@ class RolePermissionSeeder extends Seeder
             'view ticket statuses',
             'view any ticket',
             'view ticket',
+            'view any labels',
+            'view labels',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -1309,6 +1349,11 @@ class RolePermissionSeeder extends Seeder
             'view ticket',
             'create ticket',
             'edit ticket',
+            'view any labels',
+            'view labels',
+            'create labels',
+            'edit labels',
+            'assign labels',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
 
@@ -1533,6 +1578,15 @@ class RolePermissionSeeder extends Seeder
             'assign ticket',
             'change ticket status',
             'change ticket priority',
+            'view any labels',
+            'view labels',
+            'create labels',
+            'edit labels',
+            'delete labels',
+            'restore labels',
+            'import labels',
+            'export labels',
+            'assign labels',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -1627,6 +1681,9 @@ class RolePermissionSeeder extends Seeder
             'view ticket',
             'export ticket',
             'assign ticket',
+            'view any labels',
+            'view labels',
+            'export labels',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
@@ -1674,6 +1731,8 @@ class RolePermissionSeeder extends Seeder
             'view ticket statuses',
             'view any ticket',
             'view ticket',
+            'view any labels',
+            'view labels',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -1708,6 +1767,8 @@ class RolePermissionSeeder extends Seeder
             'view ticket statuses',
             'view any ticket',
             'view ticket',
+            'view any labels',
+            'view labels',
         ];
         $guest->givePermissionTo($guestPermissions);
 
@@ -1765,5 +1826,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Ticket Priorities');
         $this->command->info('- Ticket Statuses');
         $this->command->info('- Tickets');
+        $this->command->info('- Labels');
     }
 }
