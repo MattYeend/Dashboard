@@ -24,9 +24,9 @@ class ImportTicketPriorityRequest extends FormRequest
     {
         return [
             'file' => [
-                'required', 
-                'file', 
-                'mimes:csv,txt', 
+                'required',
+                'file',
+                'mimes:csv,txt',
                 'max:5120', // 5MB
             ],
         ];

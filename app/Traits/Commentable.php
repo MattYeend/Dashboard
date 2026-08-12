@@ -3,11 +3,12 @@
 namespace App\Traits;
 
 use App\Models\Comment;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * @mixin Model
+ *
  * @method MorphMany morphMany(string $related, string $name, string $type = null, string $id = null, string $localKey = null)
  */
 trait Commentable

@@ -2,9 +2,7 @@
 
 namespace App\Services\Labels;
 
-use App\Models\Company;
 use App\Models\Label;
-use App\Models\InvoiceStatus;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;

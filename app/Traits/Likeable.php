@@ -4,13 +4,14 @@ namespace App\Traits;
 
 use App\Models\Like;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * Provides like/unlike behaviour for any model that can be liked.
  *
  * @mixin Model
+ *
  * @see Like
  */
 trait Likeable

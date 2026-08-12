@@ -87,14 +87,14 @@ class QueryService
     {
         $query = Ticket::query()
             ->with([
-                'creator', 
-                'updater', 
-                'deleter', 
-                'restorer', 
-                'status', 
-                'priority', 
-                'assignee', 
-                'labels'
+                'creator',
+                'updater',
+                'deleter',
+                'restorer',
+                'status',
+                'priority',
+                'assignee',
+                'labels',
             ]);
 
         $query = $this->filterService->applyAll($query, $filters);
@@ -168,14 +168,14 @@ class QueryService
     ): Ticket {
         $query = Ticket::query()
             ->with([
-                'creator', 
-                'updater', 
-                'deleter', 
-                'restorer', 
-                'status', 
-                'priority', 
-                'assignee', 
-                'labels'
+                'creator',
+                'updater',
+                'deleter',
+                'restorer',
+                'status',
+                'priority',
+                'assignee',
+                'labels',
             ]);
 
         if ($withTrashed) {

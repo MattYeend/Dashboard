@@ -40,7 +40,7 @@ class UpdaterService
         return $this->updateResource->handle(
             $label,
             $labelData,
-            function (Label $label) use ($actor, $before, $data): void {
+            function (Label $label) use ($actor, $before): void {
                 $fresh = $label->fresh();
 
                 $this->auditLogService->record(

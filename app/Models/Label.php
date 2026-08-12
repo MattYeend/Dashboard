@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
-use App\Models\User;
 use Database\Factories\LabelFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -104,11 +103,11 @@ class Label extends Model implements Auditable
     public function auditSnapshot(): array
     {
         return $this->only([
-            'name', 
-            'slug', 
-            'background_colour', 
-            'text_colour', 
-            'meta'
+            'name',
+            'slug',
+            'background_colour',
+            'text_colour',
+            'meta',
         ]);
     }
 
