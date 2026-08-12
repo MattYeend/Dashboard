@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
             TicketPrioritySeeder::class,
             TicketStatusSeeder::class,
             LabelSeeder::class,
-            // TicketSeeder::class,
+            TicketSeeder::class,
         ]);
     }
 }
