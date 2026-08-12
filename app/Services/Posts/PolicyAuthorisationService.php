@@ -65,7 +65,7 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can view the order status.
+     * Determine whether the user can view the post.
      */
     public function canView(User $actor, Post $target): bool
     {
@@ -78,7 +78,7 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can update the order status.
+     * Determine whether the user can update the post.
      */
     public function canUpdate(User $actor, Post $target): bool
     {
@@ -91,7 +91,7 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can delete the order status.
+     * Determine whether the user can delete the post.
      */
     public function canDelete(User $actor, Post $target): bool
     {
@@ -104,7 +104,7 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can restore the order status.
+     * Determine whether the user can restore the post.
      */
     public function canRestore(User $actor, Post $target): bool
     {
@@ -117,7 +117,7 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can permanently delete the order status.
+     * Determine whether the user can permanently delete the post.
      */
     public function canForceDelete(User $actor, Post $target): bool
     {
@@ -149,9 +149,9 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the order status was created by a user who outranks the actor.
+     * Determine whether the post was created by a user who outranks the actor.
      *
-     * Prevents admins from managing order statuses created by super admins.
+     * Prevents admins from managing posts created by super admins.
      */
     private function targetOutranksActor(User $actor, Post $target): bool
     {

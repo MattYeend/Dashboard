@@ -28,7 +28,7 @@ class ManagementService
     ) {}
 
     /**
-     * Create a new order status.
+     * Create a new post.
      */
     public function store(
         StorePostRequest $request
@@ -40,7 +40,7 @@ class ManagementService
     }
 
     /**
-     * Update an existing order status.
+     * Update an existing post.
      */
     public function update(
         UpdatePostRequest $request,
@@ -54,7 +54,7 @@ class ManagementService
     }
 
     /**
-     * Soft delete a order status.
+     * Soft delete a post.
      */
     public function destroy(
         Post $post,
@@ -64,7 +64,7 @@ class ManagementService
     }
 
     /**
-     * Restore a soft-deleted order status.
+     * Restore a soft-deleted post.
      */
     public function restore(
         int $id,
@@ -76,7 +76,7 @@ class ManagementService
     }
 
     /**
-     * Force delete a order status, permanently removing it from the
+     * Force delete a post, permanently removing it from the
      * database.
      */
     public function forceDelete(
@@ -89,7 +89,7 @@ class ManagementService
     }
 
     /**
-     * Bulk restore order statuses.
+     * Bulk restore posts.
      */
     public function bulkRestore(
         array $ids,
@@ -123,7 +123,7 @@ class ManagementService
     }
 
     /**
-     * Bulk soft delete order statuses.
+     * Bulk soft delete posts.
      */
     public function bulkDelete(
         array $ids,
