@@ -72,10 +72,11 @@ class UpdateLabelRequest extends FormRequest
     {
         return [
             'sometimes',
-            'nullable',
+            'required',
             'string',
+            'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
             'max:255',
-            Rule::unique('labels', 'slug')->whereNull('deleted_at')->ignore($this->route('label')),
+            Rule::unique('labels', 'slug')->ignore($this->route('label')),
         ];
     }
 

@@ -2,10 +2,15 @@
 
 namespace App\Services\Labels;
 
-use Illuminate\Support\Str;
+use App\Models\Label;
+use App\Services\SlugService;
 
 class DataPreparationService
 {
+    public function __construct(
+        protected SlugService $slugService,
+    ) {}
+
     /**
      * Prepare label data for creation.
      *
@@ -16,7 +21,7 @@ class DataPreparationService
     {
         return [
             'name' => $data['name'],
-            'slug' => $data['slug'] ?? Str::slug($data['name']),
+            'slug' => $data['slug'] ?? $this->slugService->generateUnique(Label::class, $data['name']),
             'background_colour' => $data['background_colour'] ?? '#6b7280',
             'text_colour' => $data['text_colour'] ?? '#ffffff',
             'meta' => $data['meta'] ?? null,
@@ -30,8 +35,11 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForUpdate(array $data, int $updatedBy): array
-    {
+    public function prepareForUpdate(
+        array $data,
+        int $updatedBy,
+        ?int $id = null
+    ): array {
         $allowed = [
             'name',
             'slug',
@@ -48,8 +56,10 @@ class DataPreparationService
             }
         }
 
-        if (array_key_exists('name', $data) && ! array_key_exists('slug', $data)) {
-            $payload['slug'] = Str::slug($data['name']);
+        // Regenerate the slug if the name changes but no explicit slug was given,
+        // so it stays in sync rather than going stale against a renamed label.
+        if (array_key_exists('name', $payload) && ! array_key_exists('slug', $data)) {
+            $payload['slug'] = $this->slugService->generateUnique(Label::class, $payload['name'], $id);
         }
 
         $payload['updated_by'] = $updatedBy;

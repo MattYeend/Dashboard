@@ -5,7 +5,6 @@ namespace App\Http\Requests\Labels;
 use App\Models\Label;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreLabelRequest extends FormRequest
 {
@@ -74,7 +73,8 @@ class StoreLabelRequest extends FormRequest
             'nullable',
             'string',
             'max:255',
-            Rule::unique('labels', 'slug')->whereNull('deleted_at'),
+            'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+            'unique:labels,slug',
         ];
     }
 
