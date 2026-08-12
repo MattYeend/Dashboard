@@ -29,6 +29,7 @@ use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketPriorityController;
 use App\Http\Controllers\TicketStatusController;
 use App\Http\Controllers\UserController;
@@ -545,6 +546,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{label}/edit', [LabelController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{label}', [LabelController::class, 'update'])->name('update');
         Route::delete('/{label}', [LabelController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('tickets')->name('tickets.')->group(function () {
+        Route::post('/bulk/delete', [TicketController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [TicketController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [TicketController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [TicketController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/export', [TicketController::class, 'export'])->name('export');
+        Route::post('/import', [TicketController::class, 'import'])->name('import');
+
+        Route::get('/', [TicketController::class, 'index'])->name('index');
+        Route::get('/create', [TicketController::class, 'create'])->name('create');
+        Route::post('/', [TicketController::class, 'store'])->name('store');
+        Route::get('/{ticket}', [TicketController::class, 'show'])->name('show');
+        Route::get('/{ticket}/edit', [TicketController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{ticket}', [TicketController::class, 'update'])->name('update');
+        Route::delete('/{ticket}', [TicketController::class, 'destroy'])->name('destroy');
     });
 });
 
