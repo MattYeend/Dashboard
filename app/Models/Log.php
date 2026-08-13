@@ -656,6 +656,8 @@ class Log extends Model
     // Additional Task Management
     public const ACTION_RESOLVE_TICKET = 306;
 
+    public const ACTION_UNRESOLVE_TICKET = 307;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed

@@ -89,4 +89,35 @@ class UpdaterService
                 );
             });
     }
+
+    /**
+     * Mark a resolved ticket as unresolved, clearing resolved_at.
+     *
+     * @throws \Exception
+     */
+    public function unresolve(
+        Ticket $ticket,
+        int $unresolvedBy
+    ): Ticket {
+        $actor = User::findOrFail($unresolvedBy);
+
+        $before = $this->auditLogService->snapshot($ticket);
+
+        return $this->updateResource->handle(
+            $ticket,
+            ['resolved_at' => null, 'updated_by' => $unresolvedBy],
+            function (Ticket $ticket) use ($actor, $before): void {
+                $fresh = $ticket->fresh();
+
+                $this->auditLogService->record(
+                    Log::ACTION_UNRESOLVE_TICKET,
+                    $actor,
+                    $fresh,
+                    [
+                        'before' => $before,
+                        'after' => $this->auditLogService->snapshot($fresh),
+                    ],
+                );
+            });
+    }
 }

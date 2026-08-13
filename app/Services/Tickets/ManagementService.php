@@ -60,6 +60,16 @@ class ManagementService
     }
 
     /**
+     * Mark a ticket as unresolved.
+     */
+    public function unresolve(
+        Ticket $ticket,
+        User $actor
+    ): Ticket {
+        return $this->updater->unresolve($ticket, $actor->id);
+    }
+
+    /**
      * Soft delete a ticket.
      */
     public function destroy(

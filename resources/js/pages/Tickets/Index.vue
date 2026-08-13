@@ -58,6 +58,7 @@ const columns: ResourceTableColumn[] = [
     { key: 'status', label: 'Status' },
     { key: 'priority', label: 'Priority' },
     { key: 'assignee', label: 'Assignee' },
+    { key: 'resolved', label: 'Resolution' },
 ];
 
 const filterFields = [
@@ -217,6 +218,10 @@ function bulkDelete(): void {
 
                 <template #cell-assignee="{ row }">
                     {{ row.assignee?.name ?? 'Unassigned' }}
+                </template>
+
+                <template #cell-resolved="{ row }">
+                    {{ row.resolved_at ? 'Resolved' : 'Unresolved' }}
                 </template>
 
                 <template #bulk-actions="{ selected }">

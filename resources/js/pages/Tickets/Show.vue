@@ -14,6 +14,7 @@ import {
     edit as ticketsEdit,
     destroy as ticketsDestroy,
     resolve as ticketsResolve,
+    unresolve as ticketsUnresolve,
     index as ticketsIndex,
 } from '@/routes/tickets';
 
@@ -26,6 +27,7 @@ const props = defineProps<Props>();
 const deleteDialogOpen = ref(false);
 const deleteProcessing = ref(false);
 const resolveProcessing = ref(false);
+const unresolveProcessing = ref(false);
 
 function requestDestroy(): void {
     deleteDialogOpen.value = true;
@@ -56,6 +58,21 @@ function resolve(): void {
         },
     );
 }
+
+function unresolve(): void {
+    unresolveProcessing.value = true;
+
+    router.post(
+        ticketsUnresolve.url(props.ticket.id),
+        {},
+        {
+            preserveScroll: true,
+            onFinish: () => {
+                unresolveProcessing.value = false;
+            },
+        },
+    );
+}
 </script>
 
 <template>
@@ -75,11 +92,20 @@ function resolve(): void {
                     <button
                         v-if="!ticket.resolved_at"
                         type="button"
-                        class="inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-500 disabled:opacity-50"
+                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium disabled:opacity-50"
                         :disabled="resolveProcessing"
                         @click="resolve"
                     >
                         Mark as resolved
+                    </button>
+                    <button
+                        v-else
+                        type="button"
+                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium disabled:opacity-50"
+                        :disabled="unresolveProcessing"
+                        @click="unresolve"
+                    >
+                        Mark as unresolved
                     </button>
                     <Link
                         :href="ticketsEdit.url(props.ticket.id)"

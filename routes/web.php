@@ -564,6 +564,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{ticket}/edit', [TicketController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{ticket}', [TicketController::class, 'update'])->name('update');
         Route::post('/{ticket}/resolve', [TicketController::class, 'resolve'])->name('resolve');
+        Route::post('/{ticket}/unresolve', [TicketController::class, 'unresolve'])->name('unresolve');
         Route::delete('/{ticket}', [TicketController::class, 'destroy'])->name('destroy');
     });
 });
