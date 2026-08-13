@@ -58,4 +58,35 @@ class UpdaterService
                 );
             });
     }
+
+    /**
+     * Mark a ticket as resolved, stamping resolved_at with the current time.
+     *
+     * @throws \Exception
+     */
+    public function resolve(
+        Ticket $ticket,
+        int $resolvedBy
+    ): Ticket {
+        $actor = User::findOrFail($resolvedBy);
+
+        $before = $this->auditLogService->snapshot($ticket);
+
+        return $this->updateResource->handle(
+            $ticket,
+            ['resolved_at' => now(), 'updated_by' => $resolvedBy],
+            function (Ticket $ticket) use ($actor, $before): void {
+                $fresh = $ticket->fresh();
+
+                $this->auditLogService->record(
+                    Log::ACTION_RESOLVE_TICKET,
+                    $actor,
+                    $fresh,
+                    [
+                        'before' => $before,
+                        'after' => $this->auditLogService->snapshot($fresh),
+                    ],
+                );
+            });
+    }
 }

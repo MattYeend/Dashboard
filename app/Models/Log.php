@@ -653,6 +653,9 @@ class Log extends Model
 
     public const ACTION_UNASSIGN_LABEL = 305;
 
+    // Additional Task Management
+    public const ACTION_RESOLVE_TICKET = 306;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed

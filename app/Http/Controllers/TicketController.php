@@ -155,6 +155,26 @@ class TicketController extends Controller
     }
 
     /**
+     * Mark the specified ticket as resolved.
+     *
+     * Authorises via the 'update' policy before proceeding.
+     */
+    public function resolve(
+        Request $request,
+        Ticket $ticket
+    ): JsonResponse|RedirectResponse {
+        $this->authorize('update', $ticket);
+
+        $ticket = $this->management->resolve($ticket, $request->user());
+
+        if ($request->wantsJson()) {
+            return response()->json($ticket);
+        }
+
+        return redirect()->route('tickets.show', $ticket->id);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * Authorises via the 'delete' policy before proceeding.

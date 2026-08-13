@@ -2,6 +2,7 @@
 
 namespace App\Services\Tickets;
 
+use App\Models\Label;
 use App\Models\Ticket;
 use App\Models\TicketPriority;
 use App\Models\TicketStatus;
@@ -74,6 +75,7 @@ class QueryService
             'ticket_statuses' => TicketStatus::orderBy('title')->get(['id', 'title']),
             'ticket_priorities' => TicketPriority::orderBy('title')->get(['id', 'title']),
             'users' => User::orderBy('name')->get(['id', 'name']),
+            'labels' => Label::orderBy('name')->get(['id', 'name']),
         ];
     }
 

@@ -563,6 +563,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{ticket}', [TicketController::class, 'show'])->name('show');
         Route::get('/{ticket}/edit', [TicketController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{ticket}', [TicketController::class, 'update'])->name('update');
+        Route::post('/{ticket}/resolve', [TicketController::class, 'resolve'])->name('resolve');
         Route::delete('/{ticket}', [TicketController::class, 'destroy'])->name('destroy');
     });
 });
