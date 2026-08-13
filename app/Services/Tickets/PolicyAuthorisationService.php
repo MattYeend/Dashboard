@@ -53,7 +53,7 @@ class PolicyAuthorisationService
      */
     public function canViewAny(User $actor): bool
     {
-        return $actor->can('view any tickets');
+        return $actor->can('view any ticket');
     }
 
     /**
@@ -61,7 +61,7 @@ class PolicyAuthorisationService
      */
     public function canCreate(User $actor): bool
     {
-        return $actor->can('create tickets');
+        return $actor->can('create ticket');
     }
 
     /**
@@ -73,7 +73,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view tickets')
+        return $actor->can('view ticket')
             && $this->activeChecker->isActive($target);
     }
 
@@ -86,7 +86,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit tickets')
+        return $actor->can('edit ticket')
             && $this->activeChecker->isActive($target);
     }
 
@@ -99,7 +99,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete tickets')
+        return $actor->can('delete ticket')
             && $this->activeChecker->canBeModified($target);
     }
 
@@ -112,7 +112,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('restore tickets')
+        return $actor->can('restore ticket')
             && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
@@ -137,7 +137,7 @@ class PolicyAuthorisationService
      */
     public function canImport(User $actor): bool
     {
-        return $actor->can('import tickets');
+        return $actor->can('import ticket');
     }
 
     /**
@@ -145,7 +145,7 @@ class PolicyAuthorisationService
      */
     public function canExport(User $actor): bool
     {
-        return $actor->can('export tickets');
+        return $actor->can('export ticket');
     }
 
     /**

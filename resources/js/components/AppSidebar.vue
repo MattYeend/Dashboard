@@ -14,6 +14,7 @@ import {
     Receipt,
     SquareCheckBig,
     Tag,
+    Ticket,
     User2,
     UserPlus,
     Workflow,
@@ -128,6 +129,16 @@ const navGroups: NavGroup[] = [
                     { title: 'All Posts', href: '/posts' },
                     { title: 'Categories', href: '/categories' },
                     { title: 'Tags', href: '/tags' },
+                ],
+            },
+            {
+                title: 'Tickets',
+                href: '/tickets',
+                icon: Ticket,
+                children: [
+                    { title: 'All Tickets', href: '/tickets' },
+                    { title: 'Ticket Statuses', href: '/ticket-statuses' },
+                    { title: 'Ticket Priorities', href: '/ticket-priorities' },
                 ],
             },
             {
