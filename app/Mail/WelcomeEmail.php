@@ -19,7 +19,6 @@ class WelcomeEmail extends Mailable implements ShouldQueue
      */
     public function __construct(
         public User $user,
-        public ?string $password = null,
     ) {}
 
     /**
@@ -42,7 +41,6 @@ class WelcomeEmail extends Mailable implements ShouldQueue
             with: [
                 'name' => $this->user->name,
                 'email' => $this->user->email,
-                'password' => $this->password,
             ]
         );
     }

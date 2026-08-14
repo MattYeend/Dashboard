@@ -7,6 +7,7 @@ use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Password;
 
 class CreatorService
 {
@@ -44,8 +45,9 @@ class CreatorService
                 $userData = $this->dataPreparation->prepareForCreation($data, $createdBy);
 
                 $newUser = User::create($userData);
-                $newUser->plainPassword = $userData['password'];
                 $newUser->assignRoles($tierRole, $functionalRoles);
+
+                Password::sendResetLink(['email' => $newUser->email]);
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_USER,
