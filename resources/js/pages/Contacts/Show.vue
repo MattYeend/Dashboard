@@ -9,10 +9,11 @@ import {
     destroy as contactsDestroy,
     index as contactsIndex,
 } from '@/routes/contacts';
-import type { Contact } from '@/types';
+import type { Contact, PermissionsMeta } from '@/types';
 
 interface Props {
     contact: Contact;
+    permissions_meta: PermissionsMeta;
 }
 
 const props = defineProps<Props>();

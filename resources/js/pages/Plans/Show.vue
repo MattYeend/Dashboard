@@ -67,7 +67,6 @@ function destroy(): void {
                         Edit
                     </Link>
                     <button
-                        v-if="permissions_meta.can_create"
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
                         @click="requestDestroy"

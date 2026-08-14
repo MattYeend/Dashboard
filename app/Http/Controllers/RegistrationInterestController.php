@@ -54,11 +54,16 @@ class RegistrationInterestController extends Controller
      *
      * Authorises via the 'view' policy before rendering.
      */
-    public function show(RegistrationInterest $registrationInterest): Response
-    {
+    public function show(
+        RegistrationInterest $registrationInterest,
+        Request $request
+    ): Response {
         $this->authorize('view', $registrationInterest);
 
-        $data = $this->query->getById($registrationInterest->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $registrationInterest->id
+        );
 
         return Inertia::render('RegistrationInterests/Show', $data);
     }

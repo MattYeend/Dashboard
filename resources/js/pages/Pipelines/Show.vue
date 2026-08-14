@@ -10,10 +10,11 @@ import {
     index as pipelinesIndex,
 } from '@/routes/pipelines';
 import { index as pipelineStagesIndex } from '@/routes/pipelines/stages';
-import type { Pipeline } from '@/types';
+import type { Pipeline, PermissionsMeta } from '@/types';
 
 interface Props {
     pipeline: Pipeline;
+    permissions_meta: PermissionsMeta;
 }
 
 const props = defineProps<Props>();

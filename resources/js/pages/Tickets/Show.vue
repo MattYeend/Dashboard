@@ -9,7 +9,6 @@ import TicketComments from '@/pages/Tickets/components/TicketComments.vue';
 import TicketLabels from '@/pages/Tickets/components/TicketLabels.vue';
 import TicketPriorityDetails from '@/pages/Tickets/components/TicketPriorityDetails.vue';
 import TicketStatusDetails from '@/pages/Tickets/components/TicketStatusDetails.vue';
-import type { Ticket } from '@/types';
 import {
     edit as ticketsEdit,
     destroy as ticketsDestroy,
@@ -17,9 +16,11 @@ import {
     unresolve as ticketsUnresolve,
     index as ticketsIndex,
 } from '@/routes/tickets';
+import type { PermissionsMeta, Ticket } from '@/types';
 
 interface Props {
     ticket: Ticket;
+    permissions_meta: PermissionsMeta;
 }
 
 const props = defineProps<Props>();

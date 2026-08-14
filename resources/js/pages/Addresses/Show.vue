@@ -9,10 +9,11 @@ import {
     destroy as addressesDestroy,
     index as addressesIndex,
 } from '@/routes/addresses';
-import type { Address } from '@/types';
+import type { Address, PermissionsMeta } from '@/types';
 
 interface Props {
     address: Address;
+    permissions_meta: PermissionsMeta;
 }
 
 const props = defineProps<Props>();

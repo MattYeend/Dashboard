@@ -9,10 +9,11 @@ import {
     destroy as categoriesDestroy,
     index as categoriesIndex,
 } from '@/routes/categories';
-import type { Category } from '@/types';
+import type { Category, PermissionsMeta } from '@/types';
 
 interface Props {
     category: Category;
+    permissions_meta: PermissionsMeta;
 }
 
 const props = defineProps<Props>();

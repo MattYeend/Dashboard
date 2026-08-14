@@ -9,10 +9,11 @@ import {
     destroy as ordersDestroy,
     index as ordersIndex,
 } from '@/routes/orders';
-import type { Order } from '@/types';
+import type { Order, PermissionsMeta } from '@/types';
 
 interface Props {
     order: Order;
+    permissions_meta: PermissionsMeta;
 }
 
 const props = defineProps<Props>();

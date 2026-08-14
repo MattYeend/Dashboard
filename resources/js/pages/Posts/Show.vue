@@ -13,10 +13,11 @@ import {
     destroy as postsDestroy,
     index as postsIndex,
 } from '@/routes/posts';
-import type { Post } from '@/types';
+import type { PermissionsMeta, Post } from '@/types';
 
 interface Props {
     post: Post;
+    permissions_meta: PermissionsMeta;
 }
 
 const props = defineProps<Props>();

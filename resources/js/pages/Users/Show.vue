@@ -10,10 +10,11 @@ import {
     destroy as usersDestroy,
     index as usersIndex,
 } from '@/routes/users';
-import type { User } from '@/types';
+import type { PermissionsMeta, User } from '@/types';
 
 interface Props {
     user: User;
+    permissions_meta: PermissionsMeta;
 }
 
 const props = defineProps<Props>();
