@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { index as registrationInterestsIndex } from '@/routes/registration-interests';
-import type { RegistrationInterest } from '@/types';
+import type { PermissionsMeta, RegistrationInterest } from '@/types';
 import RegistrationInterestAuditDetails from './components/RegistrationInterestAuditDetails.vue';
 import RegistrationInterestBasicDetails from './components/RegistrationInterestBasicDetails.vue';
 import RegistrationInterestMessageDetails from './components/RegistrationInterestMessageDetails.vue';
 
 defineProps<{
     interest: RegistrationInterest;
+    permissions_meta: PermissionsMeta;
 }>();
 </script>
 

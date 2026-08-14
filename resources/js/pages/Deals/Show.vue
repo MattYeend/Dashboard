@@ -12,10 +12,11 @@ import {
     destroy as dealsDestroy,
     index as dealsIndex,
 } from '@/routes/deals';
-import type { Deal } from '@/types';
+import type { Deal, PermissionsMeta } from '@/types';
 
 interface Props {
     deal: Deal;
+    permissions_meta: PermissionsMeta;
 }
 
 const props = defineProps<Props>();

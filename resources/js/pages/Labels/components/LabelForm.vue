@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
+import { index as labelsIndex } from '@/routes/labels';
 import LabelBasicDetailsForm from './LabelBasicDetailsForm.vue';
 import LabelColourForm from './LabelColourForm.vue';
-import { index as labelsIndex } from '@/routes/labels';
 
 export interface LabelFormData {
     name: string;

@@ -41,7 +41,7 @@ class QueryService
                 'from' => $interests->firstItem(),
                 'to' => $interests->lastItem(),
             ],
-            'permissions' => [
+            'permissions_meta' => [
                 'can_create' => false,
                 'can_view_any' => $user->can('viewAny', RegistrationInterest::class),
             ],
@@ -53,12 +53,16 @@ class QueryService
      *
      * @return array<string, mixed>
      */
-    public function getById(int $id): array
+    public function getById(User $user, int $id): array
     {
         $interest = RegistrationInterest::withTrashed()->findOrFail($id);
 
         return [
             'interest' => $this->formatter->format($interest),
+            'permissions_meta' => [
+                'can_create' => false,
+                'can_view_any' => $user->can('viewAny', RegistrationInterest::class),
+            ],
         ];
     }
 }

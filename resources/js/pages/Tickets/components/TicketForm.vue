@@ -7,8 +7,8 @@ import TicketBasicDetailsForm from '@/pages/Tickets/components/TicketBasicDetail
 import TicketLabelsForm from '@/pages/Tickets/components/TicketLabelsForm.vue';
 import TicketPriorityForm from '@/pages/Tickets/components/TicketPriorityForm.vue';
 import TicketStatusForm from '@/pages/Tickets/components/TicketStatusForm.vue';
-import type { Label, TicketPriority, TicketStatus, UserOption } from '@/types';
 import { index as ticketsIndex } from '@/routes/tickets';
+import type { Label, TicketPriority, TicketStatus, UserOption } from '@/types';
 
 interface TicketFormData {
     title: string;

@@ -2,6 +2,7 @@
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank, numberOrNull } from '@/lib/forms';
 import TicketForm from '@/pages/Tickets/components/TicketForm.vue';
+import { update as ticketsUpdate } from '@/routes/tickets';
 import type {
     Label,
     Ticket,
@@ -9,7 +10,6 @@ import type {
     TicketStatus,
     UserOption,
 } from '@/types';
-import { update as ticketsUpdate } from '@/routes/tickets';
 
 interface Props {
     ticket: Ticket;

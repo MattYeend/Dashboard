@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
+import { index as ticketStatusesIndex } from '@/routes/ticket-statuses';
 import TicketStatusBasicDetailsForm from './TicketStatusBasicDetailsForm.vue';
 import TicketStatusColourForm from './TicketStatusColourForm.vue';
-import { index as ticketStatusesIndex } from '@/routes/ticket-statuses';
 
 export interface TicketStatusFormData {
     title: string;

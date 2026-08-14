@@ -13,6 +13,7 @@ import {
 } from '@/routes/registration-interests';
 import bulk from '@/routes/registration-interests/bulk';
 import type {
+    PermissionsMeta,
     RegistrationInterest,
     Pagination as PaginationMeta,
 } from '@/types';
@@ -25,10 +26,7 @@ defineProps<{
         label: string;
         active: boolean;
     }[];
-    permissions: {
-        can_create: boolean;
-        can_view_any: boolean;
-    };
+    permissions_meta: PermissionsMeta;
 }>();
 
 const selected = ref<number[]>([]);

@@ -7,11 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import type {
-    TicketPriority,
-    Pagination as PaginationMeta,
-    PermissionsMeta,
-} from '@/types';
 import {
     index as ticketPrioritiesIndex,
     create as ticketPrioritiesCreate,
@@ -20,6 +15,11 @@ import {
     destroy as ticketPrioritiesDestroy,
 } from '@/routes/ticket-priorities';
 import ticketPrioritiesBulk from '@/routes/ticket-priorities/bulk';
+import type {
+    TicketPriority,
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+} from '@/types';
 
 interface Props {
     ticketPriorities: {

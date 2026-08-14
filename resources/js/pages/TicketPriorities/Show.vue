@@ -2,15 +2,15 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import type { TicketPriority, PermissionsMeta } from '@/types';
-import TicketPriorityAuditDetails from './components/TicketPriorityAuditDetails.vue';
-import TicketPriorityBasicDetails from './components/TicketPriorityBasicDetails.vue';
-import TicketPriorityColourDetails from './components/TicketPriorityColourDetails.vue';
 import {
     edit as ticketPrioritiesEdit,
     destroy as ticketPrioritiesDestroy,
     index as ticketPrioritiesIndex,
 } from '@/routes/ticket-priorities';
+import type { TicketPriority, PermissionsMeta } from '@/types';
+import TicketPriorityAuditDetails from './components/TicketPriorityAuditDetails.vue';
+import TicketPriorityBasicDetails from './components/TicketPriorityBasicDetails.vue';
+import TicketPriorityColourDetails from './components/TicketPriorityColourDetails.vue';
 
 interface Props {
     ticketPriority: TicketPriority;
@@ -67,7 +67,6 @@ function destroy(): void {
                         Edit
                     </Link>
                     <button
-                        v-if="permissions_meta.can_create"
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
                         @click="requestDestroy"

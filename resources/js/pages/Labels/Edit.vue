@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
+import { update as labelsUpdate } from '@/routes/labels';
 import type { Label } from '@/types';
 import LabelForm from './components/LabelForm.vue';
 import type { LabelFormData } from './components/LabelForm.vue';
-import { update as labelsUpdate } from '@/routes/labels';
 
 const props = defineProps<{
     label: Label;
