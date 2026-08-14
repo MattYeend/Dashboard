@@ -45,6 +45,9 @@ class CreatorService
 
                 $newUser = User::create($userData);
                 $newUser->plainPassword = $userData['password'];
+
+                $newUser->forceFill(['created_by' => $createdBy])->save();
+
                 $newUser->assignRoles($tierRole, $functionalRoles);
 
                 $this->auditLogService->record(

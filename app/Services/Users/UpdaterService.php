@@ -37,8 +37,8 @@ class UpdaterService
 
         $userData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
 
-        if (isset($userData['role']) || array_key_exists('roles', $data)) {
-            $tierRole = User::tierRoleNameFor($userData['role'] ?? $user->role);
+        if (isset($data['role']) || array_key_exists('roles', $data)) {
+            $tierRole = User::tierRoleNameFor($data['role'] ?? $user->role);
 
             $this->policyAuthorisationService->authoriseRoleAssignment(
                 $actor,
@@ -51,9 +51,11 @@ class UpdaterService
         return $this->updateResource->handle(
             $user,
             $userData,
-            function (User $user) use ($actor, $before, $userData, $data): void {
-                if (isset($userData['role']) || array_key_exists('roles', $data)) {
-                    $tierRole = User::tierRoleNameFor($userData['role'] ?? $user->role);
+            function (User $user) use ($actor, $before, $data, $updatedBy): void {
+                $user->forceFill(['updated_by' => $updatedBy])->save();
+
+                if (isset($data['role']) || array_key_exists('roles', $data)) {
+                    $tierRole = User::tierRoleNameFor($data['role'] ?? $user->role);
 
                     $user->assignRoles($tierRole, $data['roles'] ?? []);
                 }

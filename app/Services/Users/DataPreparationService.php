@@ -18,9 +18,7 @@ class DataPreparationService
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => $data['password'],
-            'role' => $data['role'] ?? 'user',
             'meta' => $data['meta'] ?? null,
-            'created_by' => $createdBy,
         ];
     }
 
@@ -36,7 +34,6 @@ class DataPreparationService
             'name',
             'email',
             'password',
-            'role',
             'meta',
         ];
 
@@ -51,8 +48,6 @@ class DataPreparationService
                 $payload[$field] = $data[$field];
             }
         }
-
-        $payload['updated_by'] = $updatedBy;
 
         return $payload;
     }
