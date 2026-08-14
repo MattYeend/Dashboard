@@ -45,6 +45,9 @@ class CreatorService
                 $userData = $this->dataPreparation->prepareForCreation($data, $createdBy);
 
                 $newUser = User::create($userData);
+
+                $newUser->forceFill(['created_by' => $createdBy])->save();
+
                 $newUser->assignRoles($tierRole, $functionalRoles);
 
                 Password::sendResetLink(['email' => $newUser->email]);
