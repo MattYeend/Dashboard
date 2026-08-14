@@ -57,7 +57,6 @@ use Spatie\Permission\Traits\HasRoles;
     'name',
     'email',
     'password',
-    'role',
     'meta',
 ])]
 #[Hidden([
