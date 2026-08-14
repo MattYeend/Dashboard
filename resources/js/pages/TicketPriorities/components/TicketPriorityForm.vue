@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
+import { index as ticketPrioritiesIndex } from '@/routes/ticket-priorities';
 import TicketPriorityBasicDetailsForm from './TicketPriorityBasicDetailsForm.vue';
 import TicketPriorityColourForm from './TicketPriorityColourForm.vue';
-import { index as ticketPrioritiesIndex } from '@/routes/ticket-priorities';
 
 export interface TicketPriorityFormData {
     title: string;

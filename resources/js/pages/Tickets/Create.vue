@@ -2,8 +2,8 @@
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank, numberOrNull } from '@/lib/forms';
 import TicketForm from '@/pages/Tickets/components/TicketForm.vue';
-import type { Label, TicketPriority, TicketStatus, UserOption } from '@/types';
 import { store as ticketsStore } from '@/routes/tickets';
+import type { Label, TicketPriority, TicketStatus, UserOption } from '@/types';
 
 interface Props {
     ticket_statuses: TicketStatus[];

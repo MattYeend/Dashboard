@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import { store as ticketPrioritiesStore } from '@/routes/ticket-priorities';
 import TicketPriorityForm from './components/TicketPriorityForm.vue';
 import type { TicketPriorityFormData } from './components/TicketPriorityForm.vue';
-import { store as ticketPrioritiesStore } from '@/routes/ticket-priorities';
 
 const form = useForm<TicketPriorityFormData>({
     title: '',

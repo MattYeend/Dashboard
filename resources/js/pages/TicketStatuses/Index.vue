@@ -7,11 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import type {
-    TicketStatus,
-    Pagination as PaginationMeta,
-    PermissionsMeta,
-} from '@/types';
 import {
     index as ticketStatusesIndex,
     create as ticketStatusesCreate,
@@ -20,6 +15,11 @@ import {
     destroy as ticketStatusesDestroy,
 } from '@/routes/ticket-statuses';
 import ticketStatusesBulk from '@/routes/ticket-statuses/bulk';
+import type {
+    TicketStatus,
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+} from '@/types';
 
 interface Props {
     ticketStatuses: {

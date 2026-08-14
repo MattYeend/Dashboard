@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
+import { store as ticketStatusesStore } from '@/routes/ticket-statuses';
 import TicketStatusForm from './components/TicketStatusForm.vue';
 import type { TicketStatusFormData } from './components/TicketStatusForm.vue';
-import { store as ticketStatusesStore } from '@/routes/ticket-statuses';
 
 const form = useForm<TicketStatusFormData>({
     title: '',

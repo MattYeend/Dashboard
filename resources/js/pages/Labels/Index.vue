@@ -7,11 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import type {
-    Label,
-    Pagination as PaginationMeta,
-    PermissionsMeta,
-} from '@/types';
 import {
     index as labelsIndex,
     create as labelsCreate,
@@ -20,6 +15,12 @@ import {
     destroy as labelsDestroy,
 } from '@/routes/labels';
 import labelsBulk from '@/routes/labels/bulk';
+import type {
+    Label,
+    Pagination as PaginationMeta,
+    PermissionsMeta,
+} from '@/types';
+
 interface Props {
     labels: {
         data: Label[];
