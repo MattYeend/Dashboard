@@ -87,8 +87,11 @@ class UpdaterService
         $invoice->update([
             'status_id' => $status?->id,
             'sent_at' => now(),
-            'updated_by' => $actorId,
         ]);
+
+        $invoice->forceFill([
+            'updated_by' => $actorId,
+        ])->save();
 
         $fresh = $invoice->fresh();
 
@@ -120,7 +123,10 @@ class UpdaterService
             Log::ACTION_MARK_INVOICE_PAID,
             $actor,
             $fresh,
-            ['before' => $before, 'after' => $this->auditLogService->snapshot($fresh)],
+            [
+                'before' => $before,
+                'after' => $this->auditLogService->snapshot($fresh),
+            ],
         );
 
         return $fresh;
@@ -141,8 +147,11 @@ class UpdaterService
         $invoice->update([
             'status_id' => $status?->id,
             'paid_at' => null,
-            'updated_by' => $actorId,
         ]);
+
+        $invoice->forceFill([
+            'updated_by' => $actorId,
+        ])->save();
 
         $fresh = $invoice->fresh();
 
@@ -150,7 +159,10 @@ class UpdaterService
             Log::ACTION_MARK_INVOICE_UNPAID,
             $actor,
             $fresh,
-            ['before' => $before, 'after' => $this->auditLogService->snapshot($fresh)],
+            [
+                'before' => $before,
+                'after' => $this->auditLogService->snapshot($fresh),
+            ],
         );
 
         return $fresh;
@@ -164,7 +176,9 @@ class UpdaterService
     {
         $invoice->company?->accountManager?->notify(new InvoiceOverdueNotification($invoice));
 
-        $invoice->update(['overdue_notified_at' => now()]);
+        $invoice->update([
+            'overdue_notified_at' => now(),
+        ]);
 
         return $invoice->fresh();
     }

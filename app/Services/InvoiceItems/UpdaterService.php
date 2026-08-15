@@ -46,14 +46,17 @@ class UpdaterService
         $data['current_tax_rate'] = $invoiceItem->tax_rate;
 
         $invoiceItemData = $this->dataPreparation->prepareForUpdate(
-            $data,
-            $updatedBy
+            $data
         );
 
         return $this->updateResource->handle(
             $invoiceItem,
             $invoiceItemData,
-            function (InvoiceItem $invoiceItem) use ($actor, $before): void {
+            function (InvoiceItem $invoiceItem) use ($actor, $before, $updatedBy): void {
+                $invoiceItem->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
+
                 $fresh = $invoiceItem->fresh();
 
                 $this->recalculateInvoiceTotal->execute(

@@ -13,7 +13,6 @@ class DataPreparationService
     public function prepareForCreation(
         array $data,
         int $invoiceItemId,
-        int $createdBy
     ): array {
         $quantity = (int) ($data['quantity'] ?? 1);
         $unitPrice = (int) ($data['unit_price'] ?? 0);
@@ -28,7 +27,6 @@ class DataPreparationService
             'total' => $this->calculateTotal($quantity, $unitPrice, $taxRate),
             'position' => $data['position'] ?? 0,
             'meta' => $data['meta'] ?? null,
-            'created_by' => $createdBy,
         ];
     }
 
@@ -39,8 +37,7 @@ class DataPreparationService
      * @return array<string, mixed>
      */
     public function prepareForUpdate(
-        array $data,
-        int $updatedBy
+        array $data
     ): array {
         $allowed = [
             'description',
@@ -66,8 +63,6 @@ class DataPreparationService
                 (string) ($payload['tax_rate'] ?? $data['current_tax_rate'])
             );
         }
-
-        $payload['updated_by'] = $updatedBy;
 
         return $payload;
     }

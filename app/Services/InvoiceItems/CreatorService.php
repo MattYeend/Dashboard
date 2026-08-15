@@ -41,13 +41,16 @@ class CreatorService
             function (array $data) use ($invoiceId, $createdBy, $actor): InvoiceItem {
                 $invoiceItemData = $this->dataPreparation->prepareForCreation(
                     $data,
-                    $invoiceId,
-                    $createdBy
+                    $invoiceId
                 );
 
                 $newInvoiceItem = InvoiceItem::create(
                     $invoiceItemData
                 );
+
+                $newInvoiceItem->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->recalculateInvoiceTotal->execute(
                     $newInvoiceItem->invoice
