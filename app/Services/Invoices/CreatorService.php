@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Invoice {
-                $invoiceData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $invoiceData = $this->dataPreparation->prepareForCreation($data);
 
                 $newInvoice = Invoice::create($invoiceData);
+
+                $newInvoice->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $contactData = $this->dataPreparation->prepareForContactCreation($data);
 

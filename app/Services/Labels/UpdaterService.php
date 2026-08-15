@@ -35,12 +35,15 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($label);
 
-        $labelData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $labelData = $this->dataPreparation->prepareForUpdate($data, $label->id);
 
         return $this->updateResource->handle(
             $label,
             $labelData,
-            function (Label $label) use ($actor, $before): void {
+            function (Label $label) use ($actor, $before, $updatedBy): void {
+                $label->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
                 $fresh = $label->fresh();
 
                 $this->auditLogService->record(

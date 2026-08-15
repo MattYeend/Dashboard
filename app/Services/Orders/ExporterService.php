@@ -40,10 +40,21 @@ class ExporterService
         }
 
         $columns = [
-            'id', 'orderable_type', 'orderable_id', 'order_number', 'title',
-            'description', 'subtotal', 'discount_amount', 'tax_amount',
-            'total_amount', 'ordered_at', 'due_at', 'completed_at',
-            'status_id', 'created_at',
+            'id',
+            'orderable_type',
+            'orderable_id',
+            'order_number',
+            'title',
+            'description',
+            'subtotal',
+            'discount_amount',
+            'tax_amount',
+            'total_amount',
+            'ordered_at',
+            'due_at',
+            'completed_at',
+            'status_id',
+            'created_at',
         ];
 
         $this->auditLogService->record(

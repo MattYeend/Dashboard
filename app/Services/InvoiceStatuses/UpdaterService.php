@@ -35,12 +35,15 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($invoiceStatus);
 
-        $invoiceStatusData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $invoiceStatusData = $this->dataPreparation->prepareForUpdate($data);
 
         return $this->updateResource->handle(
             $invoiceStatus,
             $invoiceStatusData,
-            function (InvoiceStatus $invoiceStatus) use ($actor, $before): void {
+            function (InvoiceStatus $invoiceStatus) use ($actor, $before, $updatedBy): void {
+                $invoiceStatus->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
                 $fresh = $invoiceStatus->fresh();
 
                 $this->auditLogService->record(

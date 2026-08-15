@@ -18,7 +18,6 @@ class DataPreparationService
         array $data,
         string $orderableType,
         int $orderableId,
-        int $createdBy
     ): array {
         return [
             'orderable_type' => $this->resolveOrderableType($orderableType),
@@ -35,7 +34,6 @@ class DataPreparationService
             'completed_at' => $data['completed_at'] ?? null,
             'status_id' => $data['status_id'] ?? null,
             'meta' => $data['meta'] ?? null,
-            'created_by' => $createdBy,
         ];
     }
 
@@ -45,7 +43,7 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string,mixed>
      */
-    public function prepareForUpdate(array $data, int $updatedBy): array
+    public function prepareForUpdate(array $data): array
     {
         $allowed = [
             'orderable_type',
@@ -73,8 +71,6 @@ class DataPreparationService
                     : $data[$field];
             }
         }
-
-        $payload['updated_by'] = $updatedBy;
 
         return $payload;
     }
