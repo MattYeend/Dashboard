@@ -41,7 +41,13 @@ class ExporterService
         }
 
         $columns = [
-            'id', 'name', 'email', 'phone', 'company', 'message', 'created_at',
+            'id',
+            'name',
+            'email',
+            'phone',
+            'company',
+            'message',
+            'created_at',
         ];
 
         $this->auditLogService->record(

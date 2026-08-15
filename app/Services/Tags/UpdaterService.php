@@ -35,12 +35,15 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($tag);
 
-        $tagData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $tagData = $this->dataPreparation->prepareForUpdate($data, $tag->id);
 
         return $this->updateResource->handle(
             $tag,
             $tagData,
-            function (Tag $tag) use ($actor, $before): void {
+            function (Tag $tag) use ($actor, $before, $updatedBy): void {
+                $tag->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
                 $fresh = $tag->fresh();
 
                 $this->auditLogService->record(

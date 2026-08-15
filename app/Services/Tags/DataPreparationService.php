@@ -17,7 +17,7 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForCreation(array $data, int $createdBy): array
+    public function prepareForCreation(array $data): array
     {
         $name = strip_tags($data['name']);
 
@@ -25,7 +25,6 @@ class DataPreparationService
             'name' => $name,
             'slug' => $data['slug'] ?? $this->slugService->generateUnique(Tag::class, $data['name']),
             'meta' => $data['meta'] ?? null,
-            'created_by' => $createdBy,
         ];
     }
 
@@ -37,7 +36,6 @@ class DataPreparationService
      */
     public function prepareForUpdate(
         array $data,
-        int $updatedBy,
         ?int $id = null
     ): array {
         $payload = [];
@@ -53,8 +51,6 @@ class DataPreparationService
         if (array_key_exists('meta', $data)) {
             $payload['meta'] = $data['meta'];
         }
-
-        $payload['updated_by'] = $updatedBy;
 
         return $payload;
     }

@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Tag {
-                $tagData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $tagData = $this->dataPreparation->prepareForCreation($data);
 
                 $newTag = Tag::create($tagData);
+
+                $newTag->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_TAG,

@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): TaskStatus {
-                $taskStatusData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $taskStatusData = $this->dataPreparation->prepareForCreation($data);
 
                 $newTaskStatus = TaskStatus::create($taskStatusData);
+
+                $newTaskStatus->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_TASK_STATUS,

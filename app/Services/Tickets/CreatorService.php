@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Ticket {
-                $ticketData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $ticketData = $this->dataPreparation->prepareForCreation($data);
 
                 $newTicket = Ticket::create($ticketData);
+
+                $newTicket->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $newTicket->labels()->sync($data['label_ids'] ?? []);
 

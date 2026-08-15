@@ -36,7 +36,12 @@ class ExporterService
             $query->where('name', 'like', "%{$search}%");
         }
 
-        $columns = ['id', 'name', 'slug', 'created_at'];
+        $columns = [
+            'id',
+            'name',
+            'slug',
+            'created_at',
+        ];
 
         // No dedicated ACTION_EXPORT_TAG constant exists yet - see flag in chat.
         $this->auditLogService->record(

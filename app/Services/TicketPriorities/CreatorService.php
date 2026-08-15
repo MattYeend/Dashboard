@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): TicketPriority {
-                $ticketPriorityData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $ticketPriorityData = $this->dataPreparation->prepareForCreation($data);
 
                 $newTicketPriority = TicketPriority::create($ticketPriorityData);
+
+                $newTicketPriority->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_TICKET_PRIORITY,

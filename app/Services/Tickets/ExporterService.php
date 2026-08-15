@@ -24,7 +24,12 @@ class ExporterService
      */
     public function export(array $filters): StreamedResponse
     {
-        $query = Ticket::query()->with(['status', 'priority', 'assignee', 'labels']);
+        $query = Ticket::query()->with([
+            'status',
+            'priority',
+            'assignee',
+            'labels',
+        ]);
 
         if (! empty($filters['trashed']) && $filters['trashed'] === 'with') {
             $query->withTrashed();
@@ -49,7 +54,16 @@ class ExporterService
         $callback = function () use ($query) {
             $handle = fopen('php://output', 'w');
             fputcsv($handle, [
-                'id', 'title', 'description', 'status', 'priority', 'assignee', 'due_date', 'resolved_at', 'labels', 'created_at',
+                'id',
+                'title',
+                'description',
+                'status',
+                'priority',
+                'assignee',
+                'due_date',
+                'resolved_at',
+                'labels',
+                'created_at',
             ]);
 
             $query->orderBy('id')->chunk(500, function ($tickets) use ($handle) {

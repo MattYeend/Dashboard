@@ -35,12 +35,15 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($taskStatus);
 
-        $taskStatusData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $taskStatusData = $this->dataPreparation->prepareForUpdate($data);
 
         return $this->updateResource->handle(
             $taskStatus,
             $taskStatusData,
-            function (TaskStatus $taskStatus) use ($actor, $before): void {
+            function (TaskStatus $taskStatus) use ($actor, $before, $updatedBy): void {
+                $taskStatus->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
                 $fresh = $taskStatus->fresh();
 
                 $this->auditLogService->record(

@@ -24,7 +24,10 @@ class RestorerService
                 'restored_at' => now(),
             ]);
 
-            Log::log(Log::ACTION_RESTORE_REGISTRATION_INTEREST, $interest->auditSnapshot(), $actor->id);
+            Log::log(
+                Log::ACTION_RESTORE_REGISTRATION_INTEREST,
+                $interest->auditSnapshot(), $actor->id
+            );
         });
     }
 
@@ -46,7 +49,10 @@ class RestorerService
                         'restored_at' => now(),
                     ]);
 
-                    Log::log(Log::ACTION_RESTORE_REGISTRATION_INTEREST, $interest->auditSnapshot(), $actor->id);
+                    Log::log(
+                        Log::ACTION_RESTORE_REGISTRATION_INTEREST,
+                        $interest->auditSnapshot(), $actor->id
+                    );
                 });
             })
             ->pluck('id')

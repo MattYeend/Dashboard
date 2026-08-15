@@ -35,12 +35,15 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($ticketPriority);
 
-        $ticketPriorityData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $ticketPriorityData = $this->dataPreparation->prepareForUpdate($data);
 
         return $this->updateResource->handle(
             $ticketPriority,
             $ticketPriorityData,
-            function (TicketPriority $ticketPriority) use ($actor, $before): void {
+            function (TicketPriority $ticketPriority) use ($actor, $before, $updatedBy): void {
+                $ticketPriority->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
                 $fresh = $ticketPriority->fresh();
 
                 $this->auditLogService->record(

@@ -13,14 +13,13 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForCreation(array $data, int $createdBy): array
+    public function prepareForCreation(array $data): array
     {
         return [
             'title' => $data['title'],
             'description' => Purifier::clean($data['description'], 'posts'),
             'image' => $this->storeImage($data['image'] ?? null),
             'meta' => $data['meta'] ?? null,
-            'created_by' => $createdBy,
         ];
     }
 
@@ -30,7 +29,7 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForUpdate(array $data, int $updatedBy): array
+    public function prepareForUpdate(array $data): array
     {
         $allowed = [
             'title',
@@ -59,8 +58,6 @@ class DataPreparationService
                 default => $data[$field],
             };
         }
-
-        $payload['updated_by'] = $updatedBy;
 
         return $payload;
     }
