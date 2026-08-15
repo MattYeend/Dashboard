@@ -177,12 +177,12 @@ class Order extends Model implements Auditable
             'discount_amount' => 'decimal:2',
             'tax_amount' => 'decimal:2',
             'total_amount' => 'decimal:2',
-            'ordered_at' => 'datetime',
-            'due_at' => 'datetime',
-            'completed_at' => 'datetime',
+            'ordered_at' => 'immutable_datetime',
+            'due_at' => 'immutable_datetime',
+            'completed_at' => 'immutable_datetime',
             'meta' => 'array',
-            'restored_at' => 'datetime',
-            'deleted_at' => 'datetime',
+            'restored_at' => 'immutable_datetime',
+            'deleted_at' => 'immutable_datetime',
         ];
     }
 

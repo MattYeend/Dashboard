@@ -118,8 +118,8 @@ class Industry extends Model implements Auditable
     {
         return [
             'meta' => 'array',
-            'restored_at' => 'datetime',
-            'deleted_at' => 'datetime',
+            'restored_at' => 'immutable_datetime',
+            'deleted_at' => 'immutable_datetime',
         ];
     }
 }

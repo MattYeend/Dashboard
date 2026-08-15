@@ -232,15 +232,15 @@ class Invoice extends Model implements Auditable
         return [
             'issue_date' => 'date',
             'due_date' => 'date',
-            'sent_at' => 'datetime',
-            'paid_at' => 'datetime',
-            'overdue_notified_at' => 'datetime',
+            'sent_at' => 'immutable_datetime',
+            'paid_at' => 'immutable_datetime',
+            'overdue_notified_at' => 'immutable_datetime',
             'subtotal' => 'integer',
             'tax_total' => 'integer',
             'total' => 'integer',
             'meta' => 'array',
-            'deleted_at' => 'datetime',
-            'restored_at' => 'datetime',
+            'deleted_at' => 'immutable_datetime',
+            'restored_at' => 'immutable_datetime',
         ];
     }
 }

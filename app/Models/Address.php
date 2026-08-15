@@ -144,8 +144,8 @@ class Address extends Model implements Auditable
         return [
             'meta' => 'array',
             'is_primary' => 'boolean',
-            'deleted_at' => 'datetime',
-            'restored_at' => 'datetime',
+            'deleted_at' => 'immutable_datetime',
+            'restored_at' => 'immutable_datetime',
         ];
     }
 }

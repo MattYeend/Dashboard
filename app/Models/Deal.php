@@ -206,8 +206,8 @@ class Deal extends Model implements Auditable
             'expected_close_date' => 'date',
             'closed_at' => 'date',
             'meta' => 'array',
-            'deleted_at' => 'datetime',
-            'restored_at' => 'datetime',
+            'deleted_at' => 'immutable_datetime',
+            'restored_at' => 'immutable_datetime',
         ];
     }
 }

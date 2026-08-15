@@ -146,8 +146,8 @@ class Category extends Model implements Auditable
     {
         return [
             'parent_id' => 'integer',
-            'deleted_at' => 'datetime',
-            'restored_at' => 'datetime',
+            'deleted_at' => 'immutable_datetime',
+            'restored_at' => 'immutable_datetime',
         ];
     }
 }

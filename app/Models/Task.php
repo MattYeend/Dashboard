@@ -164,8 +164,8 @@ class Task extends Model implements Auditable
             'due_date' => 'date',
             'assigned_date' => 'date',
             'meta' => 'array',
-            'deleted_at' => 'datetime',
-            'restored_at' => 'datetime',
+            'deleted_at' => 'immutable_datetime',
+            'restored_at' => 'immutable_datetime',
         ];
     }
 }

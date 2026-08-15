@@ -204,8 +204,8 @@ class Company extends Model implements Auditable
             'founded_year' => 'integer',
             'employee_count' => 'integer',
             'industry_id' => 'integer',
-            'deleted_at' => 'datetime',
-            'restored_at' => 'datetime',
+            'deleted_at' => 'immutable_datetime',
+            'restored_at' => 'immutable_datetime',
         ];
     }
 }
