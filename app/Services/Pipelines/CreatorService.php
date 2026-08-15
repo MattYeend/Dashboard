@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Pipeline {
-                $pipelineData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $pipelineData = $this->dataPreparation->prepareForCreation($data);
 
                 $newPipeline = Pipeline::create($pipelineData);
+
+                $newPipeline->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_PIPELINE,
