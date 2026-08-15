@@ -37,6 +37,16 @@ class AuthController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
+        if (! $user->hasVerifiedEmail()) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            throw ValidationException::withMessages([
+                'email' => ['Please verify your email address before signing in.'],
+            ]);
+        }
+
         if ($request->filled('device_name')) {
             $token = $user->createToken($credentials['device_name'])->plainTextToken;
 
