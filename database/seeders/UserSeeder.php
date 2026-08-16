@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
             ['email' => 'superadmin@example.com'],
             [
                 'name' => 'Super Admin',
+                'locale' => 'en_GB',
                 'role' => 'super_admin',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -35,6 +36,7 @@ class UserSeeder extends Seeder
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin User',
+                'locale' => 'en_GB',
                 'role' => 'admin',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -52,6 +54,7 @@ class UserSeeder extends Seeder
             ['email' => 'john.admin@example.com'],
             [
                 'name' => 'John Admin',
+                'locale' => 'en_GB',
                 'role' => 'admin',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -70,6 +73,7 @@ class UserSeeder extends Seeder
             ['email' => 'manager@example.com'],
             [
                 'name' => 'Sarah Manager',
+                'locale' => 'en_US',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -88,6 +92,7 @@ class UserSeeder extends Seeder
             ['email' => 'editor@example.com'],
             [
                 'name' => 'Emily Editor',
+                'locale' => 'en_US',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -106,6 +111,7 @@ class UserSeeder extends Seeder
             ['email' => 'moderator@example.com'],
             [
                 'name' => 'Mike Moderator',
+                'locale' => 'en_US',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -124,6 +130,7 @@ class UserSeeder extends Seeder
             ['email' => 'support@example.com'],
             [
                 'name' => 'Lisa Support',
+                'locale' => 'en_GB',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -142,6 +149,7 @@ class UserSeeder extends Seeder
             ['email' => 'analyst@example.com'],
             [
                 'name' => 'David Analyst',
+                'locale' => 'en_US',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -160,6 +168,7 @@ class UserSeeder extends Seeder
             ['email' => 'viewer@example.com'],
             [
                 'name' => 'Rachel Viewer',
+                'locale' => 'fr_FR',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -178,6 +187,7 @@ class UserSeeder extends Seeder
             ['email' => 'user@example.com'],
             [
                 'name' => 'Regular User',
+                'locale' => 'fr_FR',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -195,6 +205,7 @@ class UserSeeder extends Seeder
             ['email' => 'jane.smith@example.com'],
             [
                 'name' => 'Jane Smith',
+                'locale' => 'fr_FR',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -212,6 +223,7 @@ class UserSeeder extends Seeder
             ['email' => 'bob.johnson@example.com'],
             [
                 'name' => 'Bob Johnson',
+                'locale' => 'fr_FR',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -230,6 +242,7 @@ class UserSeeder extends Seeder
             ['email' => 'writer@example.com'],
             [
                 'name' => 'Anna Writer',
+                'locale' => 'de_DE',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -247,6 +260,7 @@ class UserSeeder extends Seeder
             ['email' => 'cs@example.com'],
             [
                 'name' => 'Tom Support',
+                'locale' => 'de_DE',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -264,6 +278,7 @@ class UserSeeder extends Seeder
             ['email' => 'data@example.com'],
             [
                 'name' => 'Kevin Data',
+                'locale' => 'de_DE',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -281,6 +296,7 @@ class UserSeeder extends Seeder
             ['email' => 'mod@example.com'],
             [
                 'name' => 'Chris Moderator',
+                'locale' => 'es_ES',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -299,6 +315,7 @@ class UserSeeder extends Seeder
             ['email' => 'guest@example.com'],
             [
                 'name' => 'Guest User',
+                'locale' => 'es_ES',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -317,6 +334,7 @@ class UserSeeder extends Seeder
             ['email' => 'unverified@example.com'],
             [
                 'name' => 'Unverified User',
+                'locale' => 'fr_FR',
                 'role' => 'user',
                 'email_verified_at' => null,
                 'password' => Hash::make('password'),
@@ -335,6 +353,7 @@ class UserSeeder extends Seeder
             ['email' => 'test@example.com'],
             [
                 'name' => 'Test User',
+                'locale' => 'es_ES',
                 'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),

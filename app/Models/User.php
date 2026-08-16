@@ -30,6 +30,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property CarbonImmutable|null $email_verified_at
  * @property string $password
  * @property string $role
+ * @property string $locale
  * @property array<string, mixed>|null $meta
  * @property string|null $two_factor_secret
  * @property string|null $two_factor_recovery_codes
@@ -57,6 +58,7 @@ use Spatie\Permission\Traits\HasRoles;
     'name',
     'email',
     'password',
+    'locale',
     'meta',
 ])]
 #[Hidden([
@@ -197,12 +199,29 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
     }
 
     /**
+     * Supported locale codes and their display labels.
+     *
+     * @var array<string, string>
+     */
+    public const LOCALES = [
+        'en_GB' => 'English (UK)',
+        'en_US' => 'English (US)',
+        'fr_FR' => 'French',
+        'de_DE' => 'German',
+        'es_ES' => 'Spanish',
+    ];
+
+    /**
      * The three mutually exclusive application tier roles. A user
      * holds exactly one of these at a time, driving the `role` column.
      *
      * @var list<string>
      */
-    public const TIER_ROLES = ['Super Admin', 'Admin', 'User'];
+    public const TIER_ROLES = [
+        'Super Admin', 
+        'Admin', 
+        'User'
+        ];
 
     /**
      * Functional (non-tier) roles that can be layered on top of a
@@ -210,7 +229,15 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
      *
      * @var list<string>
      */
-    public const FUNCTIONAL_ROLES = ['Manager', 'Editor', 'Viewer', 'Moderator', 'Support', 'Analyst', 'Guest'];
+    public const FUNCTIONAL_ROLES = [
+        'Manager', 
+        'Editor', 
+        'Viewer', 
+        'Moderator', 
+        'Support', 
+        'Analyst', 
+        'Guest'
+    ];
 
     /**
      * Map a display role string (`role` column value) to its
@@ -272,6 +299,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
             'email',
             'email_verified_at',
             'role',
+            'locale',
             'meta',
         ]);
     }
