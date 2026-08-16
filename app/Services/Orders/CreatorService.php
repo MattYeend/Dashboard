@@ -38,10 +38,13 @@ class CreatorService
                     $data,
                     $data['orderable_type'],
                     $data['orderable_id'],
-                    $createdBy,
                 );
 
                 $newOrder = Order::create($orderData);
+
+                $newOrder->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_ORDER,

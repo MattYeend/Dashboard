@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): OrderStatus {
-                $orderStatusData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $orderStatusData = $this->dataPreparation->prepareForCreation($data);
 
                 $newOrderStatus = OrderStatus::create($orderStatusData);
+
+                $newOrderStatus->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_ORDER_STATUS,

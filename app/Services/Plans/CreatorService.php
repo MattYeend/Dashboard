@@ -34,13 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Plan {
-                $planData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $planData = $this->dataPreparation->prepareForCreation($data);
 
                 $newPlan = Plan::create($planData);
 
-                $newPlan->created_by = $createdBy;
-                $newPlan->created_at = now();
-                $newPlan->save();
+                $newPlan->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_PLAN,

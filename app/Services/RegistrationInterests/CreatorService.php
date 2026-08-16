@@ -24,7 +24,10 @@ class CreatorService
         $interest = $this->createResource->handle($data, function (array $data): RegistrationInterest {
             $interest = RegistrationInterest::create($data);
 
-            Log::log(Log::ACTION_CREATE_REGISTRATION_INTEREST, $interest->auditSnapshot());
+            Log::log(
+                Log::ACTION_CREATE_REGISTRATION_INTEREST,
+                $interest->auditSnapshot()
+            );
 
             return $interest;
         });

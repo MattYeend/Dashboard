@@ -41,9 +41,19 @@ class ExporterService
         }
 
         $columns = [
-            'id', 'addressable_type', 'addressable_id', 'address_line_one',
-            'address_line_two', 'town', 'city', 'county', 'postcode',
-            'country', 'is_primary', 'created_at',
+            'id',
+            'addressable_type',
+            'addressable_id',
+            'address_line_one',
+            'address_line_two',
+            'town',
+            'city',
+            'county',
+            'postcode',
+            'country',
+            'is_primary',
+            'created_by',
+            'created_at',
         ];
 
         $this->auditLogService->record(

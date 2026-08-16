@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Label {
-                $labelData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $labelData = $this->dataPreparation->prepareForCreation($data);
 
                 $newLabel = Label::create($labelData);
+
+                $newLabel->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_LABEL,

@@ -36,7 +36,15 @@ class ExporterService
             $query->where('name', 'like', "%{$search}%");
         }
 
-        $columns = ['id', 'name', 'slug', 'description', 'parent_id', 'created_at'];
+        $columns = [
+            'id',
+            'name',
+            'slug',
+            'description',
+            'parent_id',
+            'created_by',
+            'created_at',
+        ];
 
         $this->auditLogService->record(
             Log::ACTION_EXPORT_CATEGORY,

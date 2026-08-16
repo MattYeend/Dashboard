@@ -312,12 +312,12 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            'email_verified_at' => 'immutable_datetime',
             'password' => 'hashed',
-            'two_factor_confirmed_at' => 'datetime',
+            'two_factor_confirmed_at' => 'immutable_datetime',
             'meta' => 'array',
-            'deleted_at' => 'datetime',
-            'restored_at' => 'datetime',
+            'deleted_at' => 'immutable_datetime',
+            'restored_at' => 'immutable_datetime',
         ];
     }
 }

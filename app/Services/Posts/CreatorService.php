@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Post {
-                $postData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $postData = $this->dataPreparation->prepareForCreation($data);
 
                 $newPost = Post::create($postData);
+
+                $newPost->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $newPost->categories()->sync($data['category_ids'] ?? []);
                 $newPost->tags()->sync($data['tag_ids'] ?? []);

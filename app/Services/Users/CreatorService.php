@@ -46,7 +46,9 @@ class CreatorService
 
                 $newUser = User::create($userData);
 
-                $newUser->forceFill(['created_by' => $createdBy])->save();
+                $newUser->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $newUser->assignRoles($tierRole, $functionalRoles);
 

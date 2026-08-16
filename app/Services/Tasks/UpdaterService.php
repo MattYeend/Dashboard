@@ -37,12 +37,15 @@ class UpdaterService
         $before = $this->auditLogService->snapshot($task);
         $previousAssignedTo = $task->assigned_to;
 
-        $taskData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $taskData = $this->dataPreparation->prepareForUpdate($data);
 
         return $this->updateResource->handle(
             $task,
             $taskData,
-            function (Task $task) use ($actor, $before, $previousAssignedTo): void {
+            function (Task $task) use ($actor, $before, $previousAssignedTo, $updatedBy): void {
+                $task->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
                 $fresh = $task->fresh();
 
                 $this->auditLogService->record(

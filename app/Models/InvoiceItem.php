@@ -146,8 +146,8 @@ class InvoiceItem extends Model implements Auditable
             'total' => 'integer',
             'position' => 'integer',
             'meta' => 'array',
-            'restored_at' => 'datetime',
-            'deleted_at' => 'datetime',
+            'restored_at' => 'immutable_datetime',
+            'deleted_at' => 'immutable_datetime',
         ];
     }
 }

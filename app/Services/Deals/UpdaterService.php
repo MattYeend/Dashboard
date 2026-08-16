@@ -21,7 +21,7 @@ class UpdaterService
     ) {}
 
     /**
-     * Update an existing deal status.
+     * Update an existing deal.
      *
      * @param  array<string, mixed>  $data
      *
@@ -37,12 +37,15 @@ class UpdaterService
         $before = $this->auditLogService->snapshot($deal);
         $previousStageId = $deal->stage_id;
 
-        $dealData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $dealData = $this->dataPreparation->prepareForUpdate($data);
 
         return $this->updateResource->handle(
             $deal,
             $dealData,
-            function (Deal $deal) use ($actor, $before, $previousStageId): void {
+            function (Deal $deal) use ($actor, $before, $previousStageId, $updatedBy): void {
+                $deal->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
                 $fresh = $deal->fresh();
 
                 $this->auditLogService->record(

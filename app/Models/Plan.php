@@ -135,8 +135,8 @@ class Plan extends Model implements Auditable
         return [
             'price_per_user_per_month' => 'integer',
             'is_active' => 'boolean',
-            'deleted_at' => 'datetime',
-            'restored_at' => 'datetime',
+            'deleted_at' => 'immutable_datetime',
+            'restored_at' => 'immutable_datetime',
         ];
     }
 }

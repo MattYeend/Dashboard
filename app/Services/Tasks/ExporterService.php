@@ -48,8 +48,15 @@ class ExporterService
         }
 
         $columns = [
-            'id', 'title', 'description', 'due_date', 'assigned_date',
-            'assigned_to', 'status_id', 'created_at',
+            'id',
+            'title',
+            'description',
+            'due_date',
+            'assigned_date',
+            'assigned_to',
+            'status_id',
+            'created_by',
+            'created_at',
         ];
 
         $this->auditLogService->record(

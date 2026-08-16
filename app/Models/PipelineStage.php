@@ -157,8 +157,8 @@ class PipelineStage extends Model implements Auditable
             'is_won' => 'boolean',
             'is_lost' => 'boolean',
             'meta' => 'array',
-            'restored_at' => 'datetime',
-            'deleted_at' => 'datetime',
+            'restored_at' => 'immutable_datetime',
+            'deleted_at' => 'immutable_datetime',
         ];
     }
 }

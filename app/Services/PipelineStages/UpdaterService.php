@@ -35,12 +35,15 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($pipelineStage);
 
-        $pipelineStageData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $pipelineStageData = $this->dataPreparation->prepareForUpdate($data);
 
         return $this->updateResource->handle(
             $pipelineStage,
             $pipelineStageData,
-            function (PipelineStage $pipelineStage) use ($actor, $before): void {
+            function (PipelineStage $pipelineStage) use ($actor, $before, $updatedBy): void {
+                $pipelineStage->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
                 $fresh = $pipelineStage->fresh();
 
                 $this->auditLogService->record(

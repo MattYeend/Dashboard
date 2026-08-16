@@ -39,7 +39,15 @@ class ExporterService
             });
         }
 
-        $columns = ['id', 'contactable_type', 'contactable_id', 'phone', 'email', 'created_by', 'created_at'];
+        $columns = [
+            'id',
+            'contactable_type',
+            'contactable_id',
+            'phone',
+            'email',
+            'created_by',
+            'created_at',
+        ];
 
         $this->auditLogService->record(
             Log::ACTION_EXPORT_CONTACT,

@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): TicketStatus {
-                $ticketStatusData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $ticketStatusData = $this->dataPreparation->prepareForCreation($data);
 
                 $newTicketStatus = TicketStatus::create($ticketStatusData);
+
+                $newTicketStatus->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_TICKET_STATUS,

@@ -35,12 +35,16 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($ticket);
 
-        $ticketData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $ticketData = $this->dataPreparation->prepareForUpdate($data);
 
         return $this->updateResource->handle(
             $ticket,
             $ticketData,
-            function (Ticket $ticket) use ($actor, $before, $data): void {
+            function (Ticket $ticket) use ($actor, $before, $data, $updatedBy): void {
+                $ticket->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
+
                 if (array_key_exists('label_ids', $data)) {
                     $ticket->labels()->sync($data['label_ids'] ?? []);
                 }
@@ -74,8 +78,12 @@ class UpdaterService
 
         return $this->updateResource->handle(
             $ticket,
-            ['resolved_at' => now(), 'updated_by' => $resolvedBy],
-            function (Ticket $ticket) use ($actor, $before): void {
+            ['resolved_at' => now()],
+            function (Ticket $ticket) use ($actor, $before, $resolvedBy): void {
+                $ticket->forceFill([
+                    'updated_by' => $resolvedBy,
+                ])->save();
+
                 $fresh = $ticket->fresh();
 
                 $this->auditLogService->record(
@@ -105,8 +113,12 @@ class UpdaterService
 
         return $this->updateResource->handle(
             $ticket,
-            ['resolved_at' => null, 'updated_by' => $unresolvedBy],
-            function (Ticket $ticket) use ($actor, $before): void {
+            ['resolved_at' => null],
+            function (Ticket $ticket) use ($actor, $before, $unresolvedBy): void {
+                $ticket->forceFill([
+                    'updated_by' => $unresolvedBy,
+                ])->save();
+
                 $fresh = $ticket->fresh();
 
                 $this->auditLogService->record(

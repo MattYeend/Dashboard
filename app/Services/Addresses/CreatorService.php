@@ -38,10 +38,13 @@ class CreatorService
                     $data,
                     $data['addressable_type'],
                     $data['addressable_id'],
-                    $createdBy,
                 );
 
                 $newAddress = Address::create($addressData);
+
+                $newAddress->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_ADDRESS,

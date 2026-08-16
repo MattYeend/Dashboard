@@ -19,7 +19,11 @@ class DeleterService
         $this->deleteResource->handle($interest, function (RegistrationInterest $interest) use ($actor) {
             $interest->update(['deleted_by' => $actor->id]);
 
-            Log::log(Log::ACTION_DELETE_REGISTRATION_INTEREST, $interest->auditSnapshot(), $actor->id);
+            Log::log(
+                Log::ACTION_DELETE_REGISTRATION_INTEREST,
+                $interest->auditSnapshot(),
+                $actor->id
+            );
         });
 
         return $interest->fresh();
@@ -31,7 +35,11 @@ class DeleterService
     public function forceDelete(RegistrationInterest $interest, User $actor): void
     {
         $this->deleteResource->forceHandle($interest, function (RegistrationInterest $interest) use ($actor) {
-            Log::log(Log::ACTION_FORCE_DELETE_REGISTRATION_INTEREST, $interest->auditSnapshot(), $actor->id);
+            Log::log(
+                Log::ACTION_FORCE_DELETE_REGISTRATION_INTEREST,
+                $interest->auditSnapshot(),
+                $actor->id
+            );
         });
     }
 

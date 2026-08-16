@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Industry {
-                $industryData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $industryData = $this->dataPreparation->prepareForCreation($data);
 
                 $newIndustry = Industry::create($industryData);
+
+                $newIndustry->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_INDUSTRY,

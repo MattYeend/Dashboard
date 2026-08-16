@@ -35,12 +35,15 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($address);
 
-        $addressData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $addressData = $this->dataPreparation->prepareForUpdate($data);
 
         return $this->updateResource->handle(
             $address,
             $addressData,
-            function (Address $address) use ($actor, $before): void {
+            function (Address $address) use ($actor, $before, $updatedBy): void {
+                $address->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
                 $fresh = $address->fresh();
 
                 $this->auditLogService->record(

@@ -42,6 +42,7 @@ class ExporterService
             'description',
             'background_colour',
             'text_colour',
+            'created_by',
             'created_at',
         ];
 

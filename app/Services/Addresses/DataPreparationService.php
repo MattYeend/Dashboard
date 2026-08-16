@@ -18,7 +18,6 @@ class DataPreparationService
         array $data,
         string $addressableType,
         int $addressableId,
-        int $createdBy
     ): array {
         return [
             'addressable_type' => $this->resolveAddressableType($addressableType),
@@ -32,7 +31,6 @@ class DataPreparationService
             'country' => $data['country'],
             'is_primary' => $data['is_primary'] ?? false,
             'meta' => $data['meta'] ?? null,
-            'created_by' => $createdBy,
         ];
     }
 
@@ -42,7 +40,7 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForUpdate(array $data, int $updatedBy): array
+    public function prepareForUpdate(array $data): array
     {
         $allowed = [
             'addressable_type',
@@ -67,8 +65,6 @@ class DataPreparationService
                     : $data[$field];
             }
         }
-
-        $payload['updated_by'] = $updatedBy;
 
         return $payload;
     }

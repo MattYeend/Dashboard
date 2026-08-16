@@ -168,8 +168,8 @@ class Pipeline extends Model implements Auditable
         return [
             'is_default' => 'boolean',
             'meta' => 'array',
-            'restored_at' => 'datetime',
-            'deleted_at' => 'datetime',
+            'restored_at' => 'immutable_datetime',
+            'deleted_at' => 'immutable_datetime',
         ];
     }
 }

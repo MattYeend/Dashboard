@@ -49,7 +49,14 @@ class ExporterService
         $callback = function () use ($query) {
             $handle = fopen('php://output', 'w');
             fputcsv($handle, [
-                'id', 'title', 'description', 'image', 'categories', 'tags', 'created_at',
+                'id',
+                'title',
+                'description',
+                'image',
+                'categories',
+                'tags',
+                'created_by',
+                'created_at',
             ]);
 
             $query->orderBy('id')->chunk(500, function ($posts) use ($handle) {

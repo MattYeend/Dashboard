@@ -33,7 +33,14 @@ class ExporterService
 
         $query = $this->filterService->applyAll($query, $filters);
 
-        $columns = ['id', 'commentable_type', 'commentable_id', 'content', 'created_by', 'created_at'];
+        $columns = [
+            'id',
+            'commentable_type',
+            'commentable_id',
+            'content',
+            'created_by',
+            'created_at',
+        ];
 
         $this->auditLogService->record(
             Log::ACTION_EXPORT_COMMENT,

@@ -52,7 +52,9 @@ class UpdaterService
             $user,
             $userData,
             function (User $user) use ($actor, $before, $data, $updatedBy): void {
-                $user->forceFill(['updated_by' => $updatedBy])->save();
+                $user->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
 
                 if (isset($data['role']) || array_key_exists('roles', $data)) {
                     $tierRole = User::tierRoleNameFor($data['role'] ?? $user->role);

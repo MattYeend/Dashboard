@@ -38,10 +38,13 @@ class CreatorService
                     $data,
                     $data['contactable_type'],
                     $data['contactable_id'],
-                    $createdBy,
                 );
 
                 $newContact = Contact::create($contactData);
+
+                $newContact->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_CONTACT,

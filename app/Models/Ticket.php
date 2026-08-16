@@ -166,7 +166,7 @@ class Ticket extends Model implements Auditable
             'due_date' => 'date',
             'resolved_at' => 'immutable_datetime',
             'meta' => 'array',
-            'deleted_at' => 'datetime',
+            'deleted_at' => 'immutable_datetime',
             'restored_at' => 'immutable_datetime',
         ];
     }

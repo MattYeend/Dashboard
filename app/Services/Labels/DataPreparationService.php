@@ -17,7 +17,7 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForCreation(array $data, int $createdBy): array
+    public function prepareForCreation(array $data): array
     {
         return [
             'name' => $data['name'],
@@ -25,7 +25,6 @@ class DataPreparationService
             'background_colour' => $data['background_colour'] ?? '#6b7280',
             'text_colour' => $data['text_colour'] ?? '#ffffff',
             'meta' => $data['meta'] ?? null,
-            'created_by' => $createdBy,
         ];
     }
 
@@ -37,7 +36,6 @@ class DataPreparationService
      */
     public function prepareForUpdate(
         array $data,
-        int $updatedBy,
         ?int $id = null
     ): array {
         $allowed = [
@@ -61,8 +59,6 @@ class DataPreparationService
         if (array_key_exists('name', $payload) && ! array_key_exists('slug', $data)) {
             $payload['slug'] = $this->slugService->generateUnique(Label::class, $payload['name'], $id);
         }
-
-        $payload['updated_by'] = $updatedBy;
 
         return $payload;
     }
