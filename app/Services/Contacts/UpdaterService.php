@@ -35,12 +35,15 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($contact);
 
-        $contactData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $contactData = $this->dataPreparation->prepareForUpdate($data);
 
         return $this->updateResource->handle(
             $contact,
             $contactData,
-            function (Contact $contact) use ($actor, $before): void {
+            function (Contact $contact) use ($actor, $before, $updatedBy): void {
+                $contact->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
                 $fresh = $contact->fresh();
 
                 $this->auditLogService->record(

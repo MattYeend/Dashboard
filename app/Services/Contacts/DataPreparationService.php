@@ -18,7 +18,6 @@ class DataPreparationService
         array $data,
         string $contactableType,
         int $contactableId,
-        int $createdBy
     ): array {
         return [
             'contactable_type' => $this->resolveContactableType($contactableType),
@@ -26,7 +25,6 @@ class DataPreparationService
             'phone' => $data['phone'] ?? null,
             'email' => $data['email'] ?? null,
             'meta' => $data['meta'] ?? null,
-            'created_by' => $createdBy,
         ];
     }
 
@@ -36,7 +34,7 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string,mixed>
      */
-    public function prepareForUpdate(array $data, int $updatedBy): array
+    public function prepareForUpdate(array $data): array
     {
         $allowed = [
             'contactable_type',
@@ -55,8 +53,6 @@ class DataPreparationService
                     : $data[$field];
             }
         }
-
-        $payload['updated_by'] = $updatedBy;
 
         return $payload;
     }

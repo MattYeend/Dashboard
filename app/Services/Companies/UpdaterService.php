@@ -37,14 +37,16 @@ class UpdaterService
 
         $companyData = $this->dataPreparation->prepareForUpdate(
             $data,
-            $updatedBy,
             $company->id
         );
 
         return $this->updateResource->handle(
             $company,
             $companyData,
-            function (Company $company) use ($actor, $before): void {
+            function (Company $company) use ($actor, $before, $updatedBy): void {
+                $company->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
                 $fresh = $company->fresh();
 
                 $this->auditLogService->record(

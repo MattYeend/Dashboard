@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Deal {
-                $dealData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $dealData = $this->dataPreparation->prepareForCreation($data);
 
                 $newDeal = Deal::create($dealData);
+
+                $newDeal->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_DEAL,
