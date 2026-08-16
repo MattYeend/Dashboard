@@ -218,10 +218,10 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
      * @var list<string>
      */
     public const TIER_ROLES = [
-        'Super Admin', 
-        'Admin', 
-        'User'
-        ];
+        'Super Admin',
+        'Admin',
+        'User',
+    ];
 
     /**
      * Functional (non-tier) roles that can be layered on top of a
@@ -230,13 +230,13 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
      * @var list<string>
      */
     public const FUNCTIONAL_ROLES = [
-        'Manager', 
-        'Editor', 
-        'Viewer', 
-        'Moderator', 
-        'Support', 
-        'Analyst', 
-        'Guest'
+        'Manager',
+        'Editor',
+        'Viewer',
+        'Moderator',
+        'Support',
+        'Analyst',
+        'Guest',
     ];
 
     /**

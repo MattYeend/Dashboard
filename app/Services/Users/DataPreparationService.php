@@ -12,12 +12,12 @@ class DataPreparationService
      */
     public function prepareForCreation(
         array $data,
-        int $createdBy
     ): array {
         return [
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => $data['password'],
+            'locale' => $data['locale'] ?? 'en_GB',
             'meta' => $data['meta'] ?? null,
         ];
     }
@@ -28,12 +28,13 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string,mixed>
      */
-    public function prepareForUpdate(array $data, int $updatedBy): array
+    public function prepareForUpdate(array $data): array
     {
         $allowed = [
             'name',
             'email',
             'password',
+            'locale',
             'meta',
         ];
 

@@ -3,6 +3,7 @@ import type { User } from '@/types';
 
 interface Props {
     user: User;
+    availableLocales: Record<string, string>;
 }
 
 defineProps<Props>();
@@ -41,6 +42,13 @@ function formatDateTime(value: string | null): string {
                             ? formatDateTime(user.email_verified_at)
                             : 'Not verified'
                     }}
+                </dd>
+            </div>
+
+            <div>
+                <dt class="text-xs text-gray-400">Locale</dt>
+                <dd class="text-sm">
+                    {{ availableLocales[user.locale] ?? user.locale }}
                 </dd>
             </div>
         </dl>

@@ -7,6 +7,7 @@ import type { User } from '@/types';
 interface Props {
     user: User;
     availableRoles: string[];
+    availableLocales: Record<string, string>;
 }
 
 const props = defineProps<Props>();
@@ -18,6 +19,7 @@ const form = useForm({
     password_confirmation: '',
     role: props.user.role,
     roles: props.user.roles ?? [],
+    locale: props.user.locale,
 });
 
 function submit(): void {
@@ -36,7 +38,9 @@ function submit(): void {
                 v-model:password-confirmation="form.password_confirmation"
                 v-model:role="form.role"
                 v-model:roles="form.roles"
+                v-model:locale="form.locale"
                 :available-roles="availableRoles"
+                :available-locales="availableLocales"
                 :is-editing="true"
                 :processing="form.processing"
                 :errors="form.errors"

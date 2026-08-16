@@ -5,6 +5,7 @@ import { store as usersStore } from '@/routes/users';
 
 interface Props {
     availableRoles: string[];
+    availableLocales: Record<string, string>;
 }
 
 defineProps<Props>();
@@ -15,6 +16,7 @@ const form = useForm({
     password_confirmation: '',
     role: 'user',
     roles: [] as string[],
+    locale: 'en_GB',
 });
 
 function submit(): void {
@@ -35,7 +37,9 @@ function submit(): void {
                 v-model:password-confirmation="form.password_confirmation"
                 v-model:role="form.role"
                 v-model:roles="form.roles"
+                v-model:locale="form.locale"
                 :available-roles="availableRoles"
+                :available-locales="availableLocales"
                 :is-editing="false"
                 :processing="form.processing"
                 :errors="form.errors"

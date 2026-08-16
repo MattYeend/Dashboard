@@ -64,6 +64,7 @@ class UserController extends Controller
 
         return Inertia::render('Users/Create', [
             'availableRoles' => User::FUNCTIONAL_ROLES,
+            'availableLocales' => User::LOCALES,
         ]);
     }
 

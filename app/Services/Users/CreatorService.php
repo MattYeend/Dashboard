@@ -42,7 +42,7 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor, $tierRole, $functionalRoles): User {
-                $userData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $userData = $this->dataPreparation->prepareForCreation($data);
 
                 $newUser = User::create($userData);
 

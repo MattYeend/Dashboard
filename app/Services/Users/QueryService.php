@@ -128,6 +128,7 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
             'availableRoles' => User::FUNCTIONAL_ROLES,
+            'availableLocales' => User::LOCALES,
         ];
     }
 

@@ -35,7 +35,7 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($user);
 
-        $userData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $userData = $this->dataPreparation->prepareForUpdate($data);
 
         if (isset($data['role']) || array_key_exists('roles', $data)) {
             $tierRole = User::tierRoleNameFor($data['role'] ?? $user->role);

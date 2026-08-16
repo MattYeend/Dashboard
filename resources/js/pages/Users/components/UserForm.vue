@@ -13,12 +13,14 @@ interface UserFormData {
     password_confirmation: string;
     role: string;
     roles: string[];
+    locale: string;
 }
 
 interface Props {
     isEditing: boolean;
     processing: boolean;
     availableRoles: string[];
+    availableLocales: Record<string, string>;
     errors: Partial<InertiaFormProps<UserFormData>['errors']>;
 }
 
@@ -33,6 +35,7 @@ const passwordConfirmation = defineModel<string>('passwordConfirmation', {
 });
 const role = defineModel<string>('role', { required: true });
 const roles = defineModel<string[]>('roles', { required: true });
+const locale = defineModel<string>('locale', { required: true });
 </script>
 
 <template>
@@ -42,7 +45,9 @@ const roles = defineModel<string[]>('roles', { required: true });
             v-model:email="email"
             v-model:password="password"
             v-model:password-confirmation="passwordConfirmation"
+            v-model:locale="locale"
             :is-editing="isEditing"
+            :available-locales="availableLocales"
             :errors="errors"
         />
         <UserRoleDetailsForm

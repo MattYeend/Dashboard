@@ -15,6 +15,7 @@ import type { PermissionsMeta, User } from '@/types';
 interface Props {
     user: User;
     permissions_meta: PermissionsMeta;
+    availableLocales: Record<string, string>;
 }
 
 const props = defineProps<Props>();
@@ -77,7 +78,10 @@ function destroy(): void {
             </div>
 
             <div class="space-y-6">
-                <UserBasicDetails :user="user" />
+                <UserBasicDetails
+                    :user="user"
+                    :available-locales="availableLocales"
+                />
                 <UserRoleDetails :user="user" />
                 <UserAuditDetails :user="user" />
             </div>
