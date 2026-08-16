@@ -35,12 +35,15 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($comment);
 
-        $commentData = $this->dataPreparation->prepareForUpdate($data, $updatedBy);
+        $commentData = $this->dataPreparation->prepareForUpdate($data);
 
         return $this->updateResource->handle(
             $comment,
             $commentData,
-            function (Comment $comment) use ($actor, $before): void {
+            function (Comment $comment) use ($actor, $before, $updatedBy): void {
+                $comment->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
                 $fresh = $comment->fresh();
 
                 $this->auditLogService->record(

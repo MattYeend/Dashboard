@@ -46,7 +46,8 @@ class ExporterService
             'phone',
             'email',
             'created_by',
-            'created_at'];
+            'created_at',
+        ];
 
         $this->auditLogService->record(
             Log::ACTION_EXPORT_CONTACT,

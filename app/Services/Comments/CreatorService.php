@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Comment {
-                $commentData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $commentData = $this->dataPreparation->prepareForCreation($data);
 
                 $newComment = Comment::create($commentData);
+
+                $newComment->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_COMMENT,

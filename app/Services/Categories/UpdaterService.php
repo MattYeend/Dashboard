@@ -37,14 +37,16 @@ class UpdaterService
 
         $categoryData = $this->dataPreparation->prepareForUpdate(
             $data,
-            $updatedBy,
             $category->id
         );
 
         return $this->updateResource->handle(
             $category,
             $categoryData,
-            function (Category $category) use ($actor, $before): void {
+            function (Category $category) use ($actor, $before, $updatedBy): void {
+                $category->forceFill([
+                    'updated_by' => $updatedBy,
+                ])->save();
                 $fresh = $category->fresh();
 
                 $this->auditLogService->record(

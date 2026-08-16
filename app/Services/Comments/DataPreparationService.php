@@ -20,14 +20,13 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForCreation(array $data, int $createdBy): array
+    public function prepareForCreation(array $data): array
     {
         return [
             'commentable_type' => $this->resolveCommentableType($data['commentable_type']),
             'commentable_id' => $data['commentable_id'],
             'content' => Purifier::clean($data['content']),
             'meta' => $data['meta'] ?? null,
-            'created_by' => $createdBy,
         ];
     }
 
@@ -37,11 +36,10 @@ class DataPreparationService
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    public function prepareForUpdate(array $data, int $updatedBy): array
+    public function prepareForUpdate(array $data): array
     {
         return [
             'content' => Purifier::clean($data['content']),
-            'updated_by' => $updatedBy,
         ];
     }
 

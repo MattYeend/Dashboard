@@ -34,9 +34,13 @@ class CreatorService
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor): Category {
-                $categoryData = $this->dataPreparation->prepareForCreation($data, $createdBy);
+                $categoryData = $this->dataPreparation->prepareForCreation($data);
 
                 $newCategory = Category::create($categoryData);
+
+                $newCategory->forceFill([
+                    'created_by' => $createdBy,
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_CATEGORY,
