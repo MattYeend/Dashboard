@@ -39,6 +39,7 @@ class ExporterService
             'tax_rate',
             'total',
             'position',
+            'created_by',
             'created_at',
         ];
 

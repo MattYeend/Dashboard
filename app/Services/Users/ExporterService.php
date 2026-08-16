@@ -48,6 +48,7 @@ class ExporterService
             'email',
             'role',
             'email_verified_at',
+            'created_by',
             'created_at',
         ];
 

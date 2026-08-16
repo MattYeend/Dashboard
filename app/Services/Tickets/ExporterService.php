@@ -44,6 +44,20 @@ class ExporterService
             });
         }
 
+        $columns = [
+            'id',
+            'title',
+            'description',
+            'status',
+            'priority',
+            'assignee',
+            'due_date',
+            'resolved_at',
+            'labels',
+            'created_by',
+            'created_at',
+        ];
+
         $this->auditLogService->record(
             Log::ACTION_EXPORT_TICKET,
             Auth::user(),
@@ -51,20 +65,9 @@ class ExporterService
             ['filters' => $filters, 'count' => (clone $query)->count()],
         );
 
-        $callback = function () use ($query) {
+        $callback = function () use ($query, $columns) {
             $handle = fopen('php://output', 'w');
-            fputcsv($handle, [
-                'id',
-                'title',
-                'description',
-                'status',
-                'priority',
-                'assignee',
-                'due_date',
-                'resolved_at',
-                'labels',
-                'created_at',
-            ]);
+            fputcsv($handle, $columns);
 
             $query->orderBy('id')->chunk(500, function ($tickets) use ($handle) {
                 foreach ($tickets as $ticket) {

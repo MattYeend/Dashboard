@@ -45,6 +45,7 @@ class ExporterService
             'title',
             'code',
             'description',
+            'created_by',
             'created_at',
         ];
 

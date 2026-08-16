@@ -54,6 +54,7 @@ class ExporterService
             'due_at',
             'completed_at',
             'status_id',
+            'created_by',
             'created_at',
         ];
 

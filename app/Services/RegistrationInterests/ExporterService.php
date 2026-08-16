@@ -47,6 +47,7 @@ class ExporterService
             'phone',
             'company',
             'message',
+            'created_by',
             'created_at',
         ];
 

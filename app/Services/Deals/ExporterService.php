@@ -53,6 +53,7 @@ class ExporterService
             'probability',
             'expected_close_date',
             'closed_at',
+            'created_by',
             'created_at',
         ];
 

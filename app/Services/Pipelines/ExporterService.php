@@ -46,6 +46,7 @@ class ExporterService
             'is_default',
             'status_id',
             'assigned_to',
+            'created_by',
             'created_at',
         ];
 

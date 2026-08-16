@@ -53,6 +53,7 @@ class ExporterService
             'tax_total',
             'total',
             'currency',
+            'created_by',
             'created_at',
         ];
 

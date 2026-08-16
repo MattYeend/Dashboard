@@ -55,6 +55,7 @@ class ExporterService
                 'image',
                 'categories',
                 'tags',
+                'created_by',
                 'created_at',
             ]);
 

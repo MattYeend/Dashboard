@@ -40,6 +40,7 @@ class ExporterService
             'text_colour',
             'is_won',
             'is_lost',
+            'created_by',
             'created_at',
         ];
 
