@@ -32,6 +32,7 @@ class UpdateUserRequest extends FormRequest
             'email' => $this->emailRules(),
             'password' => $this->optionalPasswordRules(),
             'role' => $this->roleRules(),
+            'locale' => $this->localeRules(),
             'roles' => $this->rolesRules(),
             'roles.*' => $this->rolesWildcardRules(),
             'meta' => $this->metaRules(),
@@ -54,6 +55,7 @@ class UpdateUserRequest extends FormRequest
             'role.in' => 'The selected role is invalid.',
             'roles.array' => 'The roles field must be an array.',
             'roles.*.in' => 'One or more selected roles are invalid.',
+            'locale.in' => 'The selected locale is invalid.',
         ];
     }
 
@@ -97,6 +99,21 @@ class UpdateUserRequest extends FormRequest
             'sometimes',
             'nullable',
             Rule::in(['user', 'admin', 'super_admin']),
+        ];
+    }
+
+    /**
+     * Get validation rules for the locale field.
+     *
+     * @return array<mixed>
+     */
+    protected function localeRules(): array
+    {
+        return [
+            'sometimes',
+            'nullable',
+            'string',
+            Rule::in(array_keys(User::LOCALES)),
         ];
     }
 

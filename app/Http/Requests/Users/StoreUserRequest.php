@@ -32,6 +32,7 @@ class StoreUserRequest extends FormRequest
             'email' => $this->emailRules(),
             'password' => $this->passwordRules(),
             'role' => $this->roleRules(),
+            'locale' => $this->localeRules(),
             'roles' => $this->rolesRules(),
             'roles.*' => $this->rolesWildcardRules(),
             'meta' => $this->metaRules(),
@@ -56,6 +57,7 @@ class StoreUserRequest extends FormRequest
             'role.in' => 'The selected role is invalid.',
             'roles.array' => 'The roles field must be an array.',
             'roles.*.in' => 'One or more selected roles are invalid.',
+            'locale.in' => 'The selected locale is invalid.',
         ];
     }
 
@@ -98,6 +100,20 @@ class StoreUserRequest extends FormRequest
         return [
             'nullable',
             Rule::in(['user', 'admin', 'super_admin']),
+        ];
+    }
+
+    /**
+     * Get validation rules for the locale field.
+     *
+     * @return array<mixed>
+     */
+    protected function localeRules(): array
+    {
+        return [
+            'nullable',
+            'string',
+            Rule::in(array_keys(User::LOCALES)),
         ];
     }
 
