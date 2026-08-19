@@ -658,6 +658,11 @@ class Log extends Model
 
     public const ACTION_UNRESOLVE_TICKET = 307;
 
+    // System maintenance
+    public const ACTION_ENABLE_MAINTENANCE = 308;
+
+    public const ACTION_DISABLE_MAINTENANCE = 309;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
