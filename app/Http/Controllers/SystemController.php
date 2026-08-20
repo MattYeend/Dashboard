@@ -12,8 +12,7 @@ use Inertia\Response;
 
 class SystemController extends Controller
 {
-    public function __construct(protected SystemManagementService $systemManagementService)
-    {}
+    public function __construct(protected SystemManagementService $systemManagementService) {}
 
     /**
      * Show the system maintenance page.

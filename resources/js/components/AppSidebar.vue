@@ -12,6 +12,7 @@ import {
     MapPin,
     Newspaper,
     Receipt,
+    Settings,
     SquareCheckBig,
     Tag,
     Ticket,
@@ -34,6 +35,7 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import type { NavGroup, NavItem } from '@/types';
+import { index as systemIndex } from '@/routes/system';
 
 const pinnedNavItems: NavItem[] = [
     {
@@ -170,6 +172,11 @@ const navGroups: NavGroup[] = [
                 title: 'Registration Interests',
                 href: '/registration-interests',
                 icon: UserPlus,
+            },
+            {
+                title: 'System',
+                href: systemIndex(),
+                icon: Settings,
             },
         ],
     },

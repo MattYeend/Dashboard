@@ -18,8 +18,7 @@ class SystemManagementService
         protected DisableMaintenanceMode $disableMaintenanceMode,
         protected GetSystemInfo $getSystemInfo,
         protected AuditLogService $auditLogService,
-    ) {
-    }
+    ) {}
 
     /**
      * Get a snapshot of the current system state.
