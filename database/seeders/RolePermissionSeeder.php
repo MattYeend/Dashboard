@@ -56,16 +56,6 @@ class RolePermissionSeeder extends Seeder
             'change own password',
             'view other profiles',
 
-            // Content management
-            'view content',
-            'create content',
-            'edit content',
-            'delete content',
-            'restore content',
-            'force delete content',
-            'publish content',
-            'unpublish content',
-
             // Settings
             'view settings',
             'edit settings',
@@ -463,13 +453,6 @@ class RolePermissionSeeder extends Seeder
             'edit own profile',
             'change own password',
             'view other profiles',
-            'view content',
-            'create content',
-            'edit content',
-            'delete content',
-            'restore content',
-            'publish content',
-            'unpublish content',
             'view settings',
             'edit settings',
             'view notifications',
@@ -766,12 +749,6 @@ class RolePermissionSeeder extends Seeder
             'edit own profile',
             'change own password',
             'view other profiles',
-            'view content',
-            'create content',
-            'edit content',
-            'delete content',
-            'publish content',
-            'unpublish content',
             'view settings',
             'view notifications',
             'create notifications',
@@ -1023,12 +1000,6 @@ class RolePermissionSeeder extends Seeder
             'view own profile',
             'edit own profile',
             'change own password',
-            'view content',
-            'create content',
-            'edit content',
-            'delete content',
-            'publish content',
-            'unpublish content',
             'view notifications',
             'view files',
             'upload files',
@@ -1206,7 +1177,6 @@ class RolePermissionSeeder extends Seeder
             'view own profile',
             'edit own profile',
             'change own password',
-            'view content',
             'view notifications',
             'view reports',
             'view files',
@@ -1259,13 +1229,6 @@ class RolePermissionSeeder extends Seeder
             'edit own profile',
             'change own password',
             'view other profiles',
-            'view content',
-            'create content',
-            'edit content',
-            'delete content',
-            'restore content',
-            'publish content',
-            'unpublish content',
             'view notifications',
             'create notifications',
             'send notifications',
@@ -1367,7 +1330,6 @@ class RolePermissionSeeder extends Seeder
             'edit own profile',
             'change own password',
             'view other profiles',
-            'view content',
             'view notifications',
             'create notifications',
             'send notifications',
@@ -1602,7 +1564,6 @@ class RolePermissionSeeder extends Seeder
             'view own profile',
             'edit own profile',
             'change own password',
-            'view content',
             'view activity logs',
             'export activity logs',
             'view reports',
@@ -1694,7 +1655,6 @@ class RolePermissionSeeder extends Seeder
             'view own profile',
             'edit own profile',
             'change own password',
-            'view content',
             'view notifications',
             'view files',
             'upload files',
@@ -1740,7 +1700,6 @@ class RolePermissionSeeder extends Seeder
         $guest = Role::firstOrCreate(['name' => 'Guest']);
         $guestPermissions = [
             'view dashboard',
-            'view content',
             'view task statuses',
             'view any task',
             'view task',
@@ -1793,7 +1752,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- User Management');
         $this->command->info('- Role & Permission Management');
         $this->command->info('- Profile Management');
-        $this->command->info('- Content Management');
         $this->command->info('- Settings & Configuration');
         $this->command->info('- Notifications');
         $this->command->info('- Activity Logs & Audit Trail');
