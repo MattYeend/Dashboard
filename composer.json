@@ -22,6 +22,7 @@
         "laravel/tinker": "^3.0",
         "laravel/wayfinder": "^0.1.14",
         "mews/purifier": "^3.4",
+        "opcodesio/log-viewer": "^3.24",
         "petebishwhip/laradocs": "^0.3.0",
         "spatie/laravel-permission": "^7.4"
     },

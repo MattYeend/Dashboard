@@ -26,6 +26,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegistrationInterestController;
 use App\Http\Controllers\StripeWebhookController;
+use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
@@ -566,6 +567,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{ticket}/resolve', [TicketController::class, 'resolve'])->name('resolve');
         Route::post('/{ticket}/unresolve', [TicketController::class, 'unresolve'])->name('unresolve');
         Route::delete('/{ticket}', [TicketController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('system')->name('system.')->group(function () {
+        Route::get('/', [SystemController::class, 'index'])
+            ->middleware('can:view system info')
+            ->name('index');
+
+        Route::post('/cache/clear', [SystemController::class, 'clearCache'])
+            ->middleware('can:clear cache')
+            ->name('cache.clear');
+
+        Route::post('/maintenance/enable', [SystemController::class, 'enableMaintenance'])
+            ->middleware('can:run maintenance')
+            ->name('maintenance.enable');
+
+        Route::post('/maintenance/disable', [SystemController::class, 'disableMaintenance'])
+            ->middleware('can:run maintenance')
+            ->name('maintenance.disable');
     });
 });
 

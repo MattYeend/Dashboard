@@ -822,3 +822,17 @@ export interface DashboardMetric {
     label: string;
     model: string;
 }
+
+export interface SystemInfo {
+    php_version: string;
+    laravel_version: string;
+    environment: string;
+    debug_mode: boolean;
+    maintenance_mode: boolean;
+    database_connection: 'connected' | 'disconnected';
+    cache_driver: string;
+    queue_driver: string;
+    disk_free_space: string;
+    disk_total_space: string;
+    server_time: string;
+}
