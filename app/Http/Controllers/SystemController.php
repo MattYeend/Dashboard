@@ -19,14 +19,7 @@ class SystemController extends Controller
      */
     public function index(): Response
     {
-        return Inertia::render('System/Index', [
-            'systemInfo' => $this->systemManagementService->getSystemInfo(),
-            'permissions' => [
-                'can_clear_cache' => Gate::allows('clear cache'),
-                'can_run_maintenance' => Gate::allows('run maintenance'),
-                'can_view_logs' => Gate::allows('view logs'),
-            ],
-        ]);
+        return Inertia::render('System/Index', $this->pageProps());
     }
 
     /**
@@ -41,15 +34,22 @@ class SystemController extends Controller
 
     /**
      * Enable maintenance mode.
+     *
+     * Returns the page directly rather than redirecting - the very next
+     * request from this browser would otherwise hit the 503 page before
+     * the bypass link had a chance to render.
      */
-    public function enableMaintenance(EnableMaintenanceModeRequest $request): RedirectResponse
+    public function enableMaintenance(EnableMaintenanceModeRequest $request): Response
     {
-        $this->systemManagementService->enableMaintenanceMode(
+        $secret = $this->systemManagementService->enableMaintenanceMode(
             Auth::user(),
             $request->validated(),
         );
 
-        return back()->with('success', 'Maintenance mode enabled.');
+        return Inertia::render('System/Index', [
+            ...$this->pageProps(),
+            'maintenanceBypassUrl' => url("/{$secret}"),
+        ]);
     }
 
     /**
@@ -60,5 +60,22 @@ class SystemController extends Controller
         $this->systemManagementService->disableMaintenanceMode(Auth::user());
 
         return back()->with('success', 'Maintenance mode disabled.');
+    }
+
+    /**
+     * Shared props for the system page.
+     *
+     * @return array<string, mixed>
+     */
+    protected function pageProps(): array
+    {
+        return [
+            'systemInfo' => $this->systemManagementService->getSystemInfo(),
+            'permissions' => [
+                'can_clear_cache' => Gate::allows('clear cache'),
+                'can_run_maintenance' => Gate::allows('run maintenance'),
+                'can_view_logs' => Gate::allows('view logs'),
+            ],
+        ];
     }
 }

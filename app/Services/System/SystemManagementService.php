@@ -47,16 +47,21 @@ class SystemManagementService
      * Enable maintenance mode and record the action.
      *
      * @param  array<string, mixed>  $options
+     * @return string The generated secret bypass token.
      */
-    public function enableMaintenanceMode(User $actor, array $options = []): void
-    {
-        $this->enableMaintenanceMode->handle($options);
+    public function enableMaintenanceMode(
+        User $actor,
+        array $options = []
+    ): string {
+        $secret = $this->enableMaintenanceMode->handle($options);
 
         $this->auditLogService->record(
             actionId: Log::ACTION_ENABLE_MAINTENANCE,
             actor: $actor,
             data: ['options' => $options],
         );
+
+        return $secret;
     }
 
     /**

@@ -7,6 +7,7 @@ import { enable, disable } from '@/routes/system/maintenance';
 
 const props = defineProps<{
     maintenanceMode: boolean;
+    bypassUrl?: string;
 }>();
 
 const form = useForm({
@@ -41,6 +42,14 @@ const submit = () => {
             {{ maintenanceMode ? 'Disable' : 'Enable' }} maintenance mode
         </Button>
 
+        <p
+            v-if="bypassUrl"
+            class="rounded border border-gray-500 p-2 text-sm break-all text-gray-300"
+        >
+            You will be locked out too. Visit this link now to regain access:
+            <a :href="bypassUrl" class="underline">{{ bypassUrl }}</a>
+        </p>
+
         <ConfirmDialog
             v-model:open="showConfirm"
             :title="
@@ -51,7 +60,7 @@ const submit = () => {
             :description="
                 maintenanceMode
                     ? 'The application will become accessible to all users again.'
-                    : 'The application will become inaccessible to all users except any allowed IPs.'
+                    : 'Everyone, including you, will be locked out. A bypass link will be shown after enabling - visit it immediately.'
             "
             @confirm="submit"
         />
