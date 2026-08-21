@@ -24,6 +24,7 @@
         "mews/purifier": "^3.4",
         "opcodesio/log-viewer": "^3.24",
         "petebishwhip/laradocs": "^0.3.0",
+        "spatie/laravel-backup": "^10.3",
         "spatie/laravel-permission": "^7.4"
     },
     "require-dev": {
