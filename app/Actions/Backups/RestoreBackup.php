@@ -6,6 +6,7 @@ use App\Exceptions\BackupNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 use Spatie\Backup\BackupDestination\BackupDestinationFactory;
+use Spatie\Backup\Config\Config;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Symfony\Component\Process\Process;
 use Throwable;
@@ -13,6 +14,8 @@ use ZipArchive;
 
 class RestoreBackup
 {
+    public function __construct(protected Config $config) {}
+
     /**
      * Restore the MySQL database dump contained in a backup zip.
      *
@@ -33,10 +36,12 @@ class RestoreBackup
     {
         $filename = basename($filename);
 
-        $destination = BackupDestinationFactory::createFromArray(
-            config('backup.backup'),
-            $disk
-        );
+        $destination = BackupDestinationFactory::createFromArray($this->config)
+            ->first(fn ($destination) => $destination->diskName() === $disk);
+
+        if ($destination === null) {
+            throw new BackupNotFoundException("No backup destination configured for disk [{$disk}].");
+        }
 
         $backup = $destination->backups()->first(
             fn ($backup) => basename($backup->path()) === $filename

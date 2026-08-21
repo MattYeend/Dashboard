@@ -22,7 +22,9 @@ defineProps<{
 
     <div class="py-6">
         <div class="mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8">
-            <h1 class="text-xl font-semibold text-gray-300">System maintenance</h1>
+            <h1 class="text-xl font-semibold text-gray-300">
+                System maintenance
+            </h1>
 
             <SystemInfoDetails :system-info="systemInfo" />
 

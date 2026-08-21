@@ -597,14 +597,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->middleware('can:create backups')
             ->name('store');
 
-        Route::post('/import', [BackupController::class, 'import'])
+        Route::post('/upload', [BackupController::class, 'upload'])
             ->middleware('can:import backups')
-            ->name('import');
+            ->name('upload');
 
-        Route::get('/{filename}/export', [BackupController::class, 'export'])
+        Route::get('/{filename}/download', [BackupController::class, 'download'])
             ->where('filename', '[A-Za-z0-9_\-\.]+\.zip')
             ->middleware('can:export backups')
-            ->name('export');
+            ->name('download');
 
         Route::post('/{filename}/restore', [BackupController::class, 'restore'])
             ->where('filename', '[A-Za-z0-9_\-\.]+\.zip')

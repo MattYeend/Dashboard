@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import {
+    Archive,
     ClipboardList,
     Contact2,
     CreditCard,
@@ -35,6 +36,7 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import type { NavGroup, NavItem } from '@/types';
+import { index as backupsIndex } from '@/routes/backups';
 import { index as systemIndex } from '@/routes/system';
 
 const pinnedNavItems: NavItem[] = [
@@ -177,6 +179,11 @@ const navGroups: NavGroup[] = [
                 title: 'System',
                 href: systemIndex(),
                 icon: Settings,
+            },
+            {
+                title: 'Backups',
+                href: backupsIndex(),
+                icon: Archive,
             },
         ],
     },

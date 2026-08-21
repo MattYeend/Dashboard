@@ -45,9 +45,9 @@ class BackupController extends Controller
     }
 
     /**
-     * Import an uploaded zip as a backup.
+     * Upload a zip file to be stored as a backup.
      */
-    public function import(ImportBackupRequest $request): JsonResponse|RedirectResponse
+    public function upload(ImportBackupRequest $request): JsonResponse|RedirectResponse
     {
         $result = $this->backups->import(Auth::user(), $request->file('file'));
 
@@ -61,7 +61,7 @@ class BackupController extends Controller
     /**
      * Download a backup.
      */
-    public function export(string $filename): StreamedResponse
+    public function download(string $filename): StreamedResponse
     {
         $disk = config('backup.backup.destination.disks')[0];
 

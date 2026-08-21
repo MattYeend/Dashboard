@@ -836,3 +836,11 @@ export interface SystemInfo {
     disk_total_space: string;
     server_time: string;
 }
+
+export interface Backup {
+    filename: string;
+    disk: string;
+    size: number;
+    size_human: string;
+    date: string;
+}

@@ -7,10 +7,13 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Backup\BackupDestination\BackupDestination;
 use Spatie\Backup\BackupDestination\BackupDestinationFactory;
+use Spatie\Backup\Config\Config;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ExportBackup
 {
+    public function __construct(protected Config $config) {}
+
     /**
      * Stream a backup file to the browser as a download.
      */
