@@ -2,26 +2,34 @@
 
 namespace App\Services\ApiTokens;
 
-use Illuminate\Support\Carbon;
+use App\Actions\ApiTokens\UpdateApiToken;
+use App\Models\Log;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class UpdaterService
 {
+    public function __construct(
+        private readonly UpdateApiToken $updateApiToken,
+    ) {}
+
     /**
-     * Update a token's name, abilities, and/or expiry.
-     *
      * @param  array<string, mixed>  $data
      */
     public function update(PersonalAccessToken $token, array $data): PersonalAccessToken
     {
-        $token->fill([
-            'name' => $data['name'] ?? $token->name,
-            'abilities' => $data['abilities'] ?? $token->abilities,
-            'expires_at' => array_key_exists('expires_at', $data)
-                ? ($data['expires_at'] ? Carbon::parse($data['expires_at']) : null)
-                : $token->expires_at,
-        ])->save();
+        $before = $token->only(['name', 'abilities', 'expires_at']);
 
-        return $token;
+        $updated = $this->updateApiToken->handle($token, $data);
+
+        Log::log(
+            action: Log::ACTION_UPDATE_API_TOKEN,
+            data: [
+                'before' => $before,
+                'after' => $updated->only(['name', 'abilities', 'expires_at']),
+            ],
+            relatedToUserId: $updated->tokenable_id,
+        );
+
+        return $updated;
     }
 }

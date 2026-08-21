@@ -12,16 +12,15 @@ class ApiTokenPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->can('view api keys');
     }
 
     /**
-     * Determine if the user owns the given token.
+     * Determine if the user can view the given token.
      */
     public function view(User $user, PersonalAccessToken $token): bool
     {
-        return $token->tokenable_id === $user->id
-            && $token->tokenable_type === $user->getMorphClass();
+        return $user->can('view api keys') && $this->owns($user, $token);
     }
 
     /**
@@ -29,7 +28,7 @@ class ApiTokenPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->can('create api keys');
     }
 
     /**
@@ -37,7 +36,7 @@ class ApiTokenPolicy
      */
     public function update(User $user, PersonalAccessToken $token): bool
     {
-        return $this->view($user, $token);
+        return $user->can('create api keys') && $this->owns($user, $token);
     }
 
     /**
@@ -45,6 +44,19 @@ class ApiTokenPolicy
      */
     public function delete(User $user, PersonalAccessToken $token): bool
     {
-        return $this->view($user, $token);
+        return $user->can('revoke api keys') && $this->owns($user, $token);
+    }
+
+    /**
+     * Whether the given token belongs to the given user.
+     *
+     * Sanctum's polymorphic tokenable columns are the only reliable way to
+     * establish ownership here, since PersonalAccessToken has no direct
+     * user_id column of its own.
+     */
+    private function owns(User $user, PersonalAccessToken $token): bool
+    {
+        return $token->tokenable_id === $user->id
+            && $token->tokenable_type === $user->getMorphClass();
     }
 }
