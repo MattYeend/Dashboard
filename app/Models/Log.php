@@ -658,10 +658,17 @@ class Log extends Model
 
     public const ACTION_UNRESOLVE_TICKET = 307;
 
-    // System maintenance
+    // System Maintenance
     public const ACTION_ENABLE_MAINTENANCE = 308;
 
     public const ACTION_DISABLE_MAINTENANCE = 309;
+
+    // API Management
+    public const ACTION_CREATE_API_TOKEN = 310;
+
+    public const ACTION_UPDATE_API_TOKEN = 311;
+
+    public const ACTION_REVOKE_API_TOKEN = 312;
 
     // New Logging Actions should go here to be reviewed
 
