@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
@@ -93,17 +93,17 @@ function confirmRestore(): void {
             empty-message="No backups found."
         >
             <template #actions="{ row }">
-                <a
+                <Link
                     v-if="canExport"
                     :href="download(row.filename).url"
-                    class="text-gray-300 underline"
+                    class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-gray-300"
                 >
                     Download
-                </a>
+                </Link>
                 <button
                     v-if="canRestore"
                     type="button"
-                    class="text-amber-500 hover:text-amber-400"
+                    class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-amber-500"
                     @click="requestRestore(row)"
                 >
                     Restore
@@ -111,7 +111,7 @@ function confirmRestore(): void {
                 <button
                     v-if="canDelete"
                     type="button"
-                    class="text-red-600 hover:text-red-500"
+                    class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
                     @click="requestDelete(row)"
                 >
                     Delete

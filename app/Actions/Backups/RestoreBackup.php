@@ -9,7 +9,6 @@ use Spatie\Backup\BackupDestination\BackupDestinationFactory;
 use Spatie\Backup\Config\Config;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Symfony\Component\Process\Process;
-use Throwable;
 use ZipArchive;
 
 class RestoreBackup
