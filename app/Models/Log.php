@@ -663,6 +663,17 @@ class Log extends Model
 
     public const ACTION_DISABLE_MAINTENANCE = 309;
 
+    // Backup management
+    public const ACTION_CREATE_BACKUP = 310;
+
+    public const ACTION_DELETE_BACKUP = 311;
+
+    public const ACTION_RESTORE_BACKUP = 312;
+
+    public const ACTION_IMPORT_BACKUP = 313;
+
+    public const ACTION_EXPORT_BACKUP = 314;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed

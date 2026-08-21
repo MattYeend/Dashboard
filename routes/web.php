@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ApiTokenController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
@@ -585,6 +586,35 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/maintenance/disable', [SystemController::class, 'disableMaintenance'])
             ->middleware('can:run maintenance')
             ->name('maintenance.disable');
+    });
+
+    Route::prefix('backups')->name('backups.')->group(function () {
+        Route::get('/', [BackupController::class, 'index'])
+            ->middleware('can:view backups')
+            ->name('index');
+
+        Route::post('/', [BackupController::class, 'store'])
+            ->middleware('can:create backups')
+            ->name('store');
+
+        Route::post('/import', [BackupController::class, 'import'])
+            ->middleware('can:import backups')
+            ->name('import');
+
+        Route::get('/{filename}/export', [BackupController::class, 'export'])
+            ->where('filename', '[A-Za-z0-9_\-\.]+\.zip')
+            ->middleware('can:export backups')
+            ->name('export');
+
+        Route::post('/{filename}/restore', [BackupController::class, 'restore'])
+            ->where('filename', '[A-Za-z0-9_\-\.]+\.zip')
+            ->middleware('can:restore backups')
+            ->name('restore');
+
+        Route::delete('/{filename}', [BackupController::class, 'destroy'])
+            ->where('filename', '[A-Za-z0-9_\-\.]+\.zip')
+            ->middleware('can:delete backups')
+            ->name('destroy');
     });
 });
 
