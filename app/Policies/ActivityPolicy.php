@@ -4,55 +4,96 @@ namespace App\Policies;
 
 use App\Models\Activity;
 use App\Models\User;
+use App\Services\Activities\PolicyAuthorisationService;
 
 class ActivityPolicy
 {
     /**
+     * The authorisation service handling permission checks.
+     */
+    protected PolicyAuthorisationService $authorisationService;
+
+    /**
+     * Inject the required service into the policy.
+     */
+    public function __construct(
+        PolicyAuthorisationService $authorisationService
+    ) {
+        $this->authorisationService = $authorisationService;
+    }
+
+    /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
-    {
-        return false;
+    public function viewAny(
+        User $user
+    ): bool {
+        return $this->authorisationService->canViewAny(
+            $user
+        );
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Activity $activity): bool
-    {
-        return false;
+    public function view(
+        User $user,
+        Activity $activity
+    ): bool {
+        return $this->authorisationService->canView(
+            $user,
+            $activity
+        );
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
-    {
-        return false;
+    public function create(
+        User $user
+    ): bool {
+        return $this->authorisationService->canCreate(
+            $user
+        );
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Activity $activity): bool
-    {
-        return false;
+    public function update(
+        User $user,
+        Activity $activity
+    ): bool {
+        return $this->authorisationService->canUpdate(
+            $user,
+            $activity
+        );
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Activity $activity): bool
-    {
-        return false;
+    public function delete(
+        User $user,
+        Activity $activity
+    ): bool {
+        return $this->authorisationService->canDelete(
+            $user,
+            $activity
+        );
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Activity $activity): bool
-    {
-        return false;
+    public function restore(
+        User $user,
+        Activity $activity
+    ): bool {
+        return $this->authorisationService->canRestore(
+            $user,
+            $activity
+        );
     }
 
     /**
@@ -60,6 +101,42 @@ class ActivityPolicy
      */
     public function forceDelete(User $user, Activity $activity): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete(
+            $user,
+            $activity
+        );
+    }
+
+    /**
+     * Determine whether the user can bulk delete models.
+     */
+    public function bulkDelete(
+        User $user
+    ): bool {
+        return $this->authorisationService->isAdmin(
+            $user
+        );
+    }
+
+    /**
+     * Determine whether the user can bulk restore models.
+     */
+    public function bulkRestore(
+        User $user
+    ): bool {
+        return $this->authorisationService->isAdmin(
+            $user
+        );
+    }
+
+    /**
+     * Determine whether the user can export models.
+     */
+    public function export(
+        User $user
+    ): bool {
+        return $this->authorisationService->canExport(
+            $user
+        );
     }
 }
