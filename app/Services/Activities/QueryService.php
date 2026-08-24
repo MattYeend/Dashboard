@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 class QueryService
 {
+    /**
+     * Inject the required services into the query service.
+     */
     public function __construct(
         protected readonly SortingService $sortingService,
         protected readonly TrashFilterService $trashFilterService,
@@ -18,18 +21,19 @@ class QueryService
     ) {}
 
     /**
-     * Paginated timeline for a single activityable record, shaped for
-     * either Inertia props or a lightweight JSON fetch from
-     * ActivityTimeline.vue.
+     * Get paginated activities for a single activityable record, with
+     * filters. Matches the (User $actor, array $filters) call shape used
+     * by every other module's QueryService::getPaginated().
      */
-    public function getPaginatedTimeline(
-        User $actor, 
-        string $activityableType, 
-        int $activityableId, 
+    public function getPaginated(
+        User $actor,
         array $filters = []
     ): array {
-        $query = $this->buildQuery($activityableType, $activityableId, $filters);
-        $paginated = $this->paginate($query, min((int) ($filters['per_page'] ?? 25), 100));
+        $query = $this->buildQuery($filters);
+        $paginated = $this->paginate(
+            $query,
+            min((int) ($filters['per_page'] ?? 25), 100)
+        );
 
         return array_merge(
             $paginated,
@@ -41,15 +45,12 @@ class QueryService
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(
-        string $activityableType, 
-        int $activityableId, 
-        array $filters
-    ): Builder {
+    protected function buildQuery(array $filters): Builder
+    {
         $query = Activity::query()
             ->with(['creator', 'updater', 'deleter', 'restorer'])
-            ->where('activityable_type', $activityableType)
-            ->where('activityable_id', $activityableId);
+            ->where('activityable_type', $filters['activityable_type'] ?? null)
+            ->where('activityable_id', $filters['activityable_id'] ?? null);
 
         $query = $this->filterService->applyAll($query, $filters);
         $query = $this->trashFilterService->applyFilter($query, $filters['trashed'] ?? null);
@@ -65,7 +66,7 @@ class QueryService
      * Paginate the query and return as plain array.
      */
     protected function paginate(
-        Builder $query, 
+        Builder $query,
         int $perPage
     ): array {
         $paginator = $query->paginate($perPage)->withQueryString();

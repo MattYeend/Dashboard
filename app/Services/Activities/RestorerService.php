@@ -26,8 +26,8 @@ class RestorerService
      * @throws \Exception
      */
     public function restore(
-        Activity $activity, 
-        int $restoredBy, 
+        Activity $activity,
+        int $restoredBy,
         ?User $actor = null
     ): Activity {
         $actor ??= User::findOrFail($restoredBy);
@@ -56,7 +56,7 @@ class RestorerService
      * @throws \Exception
      */
     public function restoreMultiple(
-        array $activityIds, 
+        array $activityIds,
         int $restoredBy
     ): int {
         $count = 0;

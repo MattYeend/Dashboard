@@ -673,7 +673,7 @@ class Log extends Model
     public const ACTION_IMPORT_BACKUP = 313;
 
     public const ACTION_EXPORT_BACKUP = 314;
-    
+
     // API Management
     public const ACTION_CREATE_API_TOKEN = 315;
 
@@ -681,11 +681,11 @@ class Log extends Model
 
     public const ACTION_REVOKE_API_TOKEN = 317;
 
-    //Activity Management
+    // Activity Management
     public const ACTION_CREATE_ACTIVITY = 318;
-    
+
     public const ACTION_UPDATE_ACTIVITY = 319;
-    
+
     public const ACTION_DELETE_ACTIVITY = 320;
 
     public const ACTION_FORCE_DELETE_ACTIVITY = 321;

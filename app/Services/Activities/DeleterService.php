@@ -25,8 +25,8 @@ class DeleterService
      * @throws \Exception
      */
     public function delete(
-        Activity $activity, 
-        int $deletedBy, 
+        Activity $activity,
+        int $deletedBy,
         ?User $actor = null
     ): bool {
         $actor ??= User::findOrFail($deletedBy);
@@ -53,7 +53,7 @@ class DeleterService
      * @throws \Exception
      */
     public function forceDelete(
-        Activity $activity, 
+        Activity $activity,
         int $deletedBy
     ): bool {
         $actor = User::findOrFail($deletedBy);
@@ -76,7 +76,7 @@ class DeleterService
      * @throws \Exception
      */
     public function deleteMultiple(
-        array $activityIds, 
+        array $activityIds,
         int $deletedBy
     ): int {
         $count = 0;

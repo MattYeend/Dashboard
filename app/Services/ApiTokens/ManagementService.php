@@ -20,9 +20,9 @@ class ManagementService
      * @param  array<int, string>  $abilities
      */
     public function create(
-        User $user, 
-        string $name, 
-        array $abilities, 
+        User $user,
+        string $name,
+        array $abilities,
         ?string $expiresAt = null
     ): NewAccessToken {
         return $this->creatorService->create($user, $name, $abilities, $expiresAt);
@@ -32,7 +32,7 @@ class ManagementService
      * @param  array<string, mixed>  $data
      */
     public function update(
-        PersonalAccessToken $token, 
+        PersonalAccessToken $token,
         array $data
     ): PersonalAccessToken {
         return $this->updaterService->update($token, $data);

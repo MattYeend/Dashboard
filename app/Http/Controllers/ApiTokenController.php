@@ -52,7 +52,7 @@ class ApiTokenController extends Controller
      * Update an existing token's name, abilities, or expiry.
      */
     public function update(
-        UpdateApiTokenRequest $request, 
+        UpdateApiTokenRequest $request,
         PersonalAccessToken $apiToken
     ): RedirectResponse {
         $this->managementService->update($apiToken, $request->validated());
@@ -64,7 +64,7 @@ class ApiTokenController extends Controller
      * Revoke an existing token.
      */
     public function destroy(
-        Request $request, 
+        Request $request,
         PersonalAccessToken $apiToken
     ): RedirectResponse {
         $this->authorize('delete', $apiToken);

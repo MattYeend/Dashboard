@@ -25,8 +25,8 @@ class ExporterService
      * @param  array<string, mixed>  $filters
      */
     public function export(
-        ?string $activityableType, 
-        ?int $activityableId, 
+        ?string $activityableType,
+        ?int $activityableId,
         array $filters = []
     ): StreamedResponse {
         $query = $activityableType && $activityableId
@@ -37,10 +37,10 @@ class ExporterService
             : $this->queryService->forExportAll($filters);
 
         $columns = [
-            'id', 
-            'type', 
-            'description', 
-            'occurred_at', 
+            'id',
+            'type',
+            'description',
+            'occurred_at',
             'created_by',
             'created_at',
         ];

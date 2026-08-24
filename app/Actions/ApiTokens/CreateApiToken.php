@@ -22,9 +22,9 @@ class CreateApiToken
      * @param  array<int, string>  $abilities
      */
     public function handle(
-        User $user, 
-        string $name, 
-        array $abilities, 
+        User $user,
+        string $name,
+        array $abilities,
         ?string $expiresAt = null
     ): NewAccessToken {
         return $user->createToken(

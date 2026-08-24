@@ -28,7 +28,7 @@ class ManagementService
         StoreActivityRequest $request
     ): Activity {
         return $this->creator->create(
-            $request->validated(), 
+            $request->validated(),
             $request->user()->id
         );
     }
@@ -37,12 +37,12 @@ class ManagementService
      * Update an existing activity.
      */
     public function update(
-        UpdateActivityRequest $request, 
+        UpdateActivityRequest $request,
         Activity $activity
     ): Activity {
         return $this->updater->update(
-            $activity, 
-            $request->validated(), 
+            $activity,
+            $request->validated(),
             $request->user()->id
         );
     }
@@ -51,7 +51,7 @@ class ManagementService
      * Soft delete a activity.
      */
     public function destroy(
-        Activity $activity, 
+        Activity $activity,
         User $actor
     ): void {
         $this->destructor->delete($activity, $actor->id);
@@ -61,7 +61,7 @@ class ManagementService
      * Restore a soft-deleted activity.
      */
     public function restore(
-        int $id, 
+        int $id,
         User $actor
     ): Activity {
         $activity = Activity::withTrashed()->findOrFail($id);
@@ -74,7 +74,7 @@ class ManagementService
      * database.
      */
     public function forceDelete(
-        int $id, 
+        int $id,
         User $actor
     ): void {
         $activity = Activity::withTrashed()->findOrFail($id);
@@ -114,8 +114,8 @@ class ManagementService
      * Bulk soft delete activities.
      */
     public function bulkDelete(
-        array $ids, 
-        User $actor, 
+        array $ids,
+        User $actor,
         callable $authoriseCallback
     ): array {
         $requestedIds = collect($ids)->unique()->values();

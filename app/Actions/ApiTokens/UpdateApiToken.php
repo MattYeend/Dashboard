@@ -19,7 +19,7 @@ class UpdateApiToken
      * @param  array<string, mixed>  $data
      */
     public function handle(
-        PersonalAccessToken $token, 
+        PersonalAccessToken $token,
         array $data
     ): PersonalAccessToken {
         $token->fill([
