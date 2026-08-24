@@ -19,6 +19,13 @@ class FormatterService
             'id' => $activity->id,
             'activityable_type' => $activity->activityable_type,
             'activityable_id' => $activity->activityable_id,
+            'activityable_type_key' => $this->registry->keyForModel($activity->activityable_type),
+            'activityable_type_label' => $activity->activityable_type
+                ? ($this->registry->labelForModel($activity->activityable_type) ?? class_basename($activity->activityable_type))
+                : null,
+            'activityable_name' => $activity->activityable
+                ? ($activity->activityable->name ?? $activity->activityable->title ?? '#'.$activity->activityable->id)
+                : null,
             'type' => $activity->type->value,
             'type_label' => $activity->type->label(),
             'description' => $activity->description,
@@ -31,10 +38,6 @@ class FormatterService
             'updater' => $activity->updater ? ['id' => $activity->updater->id, 'name' => $activity->updater->name] : null,
             'deleter' => $activity->deleter ? ['id' => $activity->deleter->id, 'name' => $activity->deleter->name] : null,
             'restorer' => $activity->restorer ? ['id' => $activity->restorer->id, 'name' => $activity->restorer->name] : null,
-            'activityable_type_label' => $activity->activityable_type
-                ? ($this->registry->labelForModel($activity->activityable_type) ?? class_basename($activity->activityable_type))
-                : null,
-            'activityable_type_key' => $this->registry->keyForModel($activity->activityable_type),
         ];
     }
 
