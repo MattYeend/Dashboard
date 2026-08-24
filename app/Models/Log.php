@@ -681,6 +681,19 @@ class Log extends Model
 
     public const ACTION_REVOKE_API_TOKEN = 317;
 
+    //Activity Management
+    public const ACTION_CREATE_ACTIVITY = 318;
+    
+    public const ACTION_UPDATE_ACTIVITY = 319;
+    
+    public const ACTION_DELETE_ACTIVITY = 320;
+
+    public const ACTION_FORCE_DELETE_ACTIVITY = 321;
+
+    public const ACTION_RESTORE_ACTIVITY = 322;
+
+    public const ACTION_EXPORT_ACTIVITY = 323;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed

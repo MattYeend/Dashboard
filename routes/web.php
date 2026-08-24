@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ApiTokenController;
 use App\Http\Controllers\BackupController;
@@ -568,6 +569,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{ticket}/resolve', [TicketController::class, 'resolve'])->name('resolve');
         Route::post('/{ticket}/unresolve', [TicketController::class, 'unresolve'])->name('unresolve');
         Route::delete('/{ticket}', [TicketController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('activities')->name('activities.')->group(function () {
+        Route::post('/bulk/delete', [ActivityController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [ActivityController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [ActivityController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [ActivityController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/export', [ActivityController::class, 'export'])->name('export');
+
+        Route::get('/', [ActivityController::class, 'index'])->name('index');
+        Route::post('/', [ActivityController::class, 'store'])->name('store');
+        Route::match(['put', 'patch'], '/{activity}', [ActivityController::class, 'update'])->name('update');
+        Route::delete('/{activity}', [ActivityController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('system')->name('system.')->group(function () {
