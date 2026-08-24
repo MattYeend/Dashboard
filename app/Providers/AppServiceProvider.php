@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Activity;
 use App\Models\Address;
 use App\Models\Category;
 use App\Models\Comment;
@@ -29,6 +30,7 @@ use App\Models\TicketPriority;
 use App\Models\TicketStatus;
 use App\Models\User;
 use App\Observers\UserObserver;
+use App\Policies\ActivityPolicy;
 use App\Policies\AddressPolicy;
 use App\Policies\ApiTokenPolicy;
 use App\Policies\CategoryPolicy;
@@ -94,6 +96,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        Gate::policy(Activity::class, ActivityPolicy::class);
         Gate::policy(Address::class, AddressPolicy::class);
         Gate::policy(Category::class, CategoryPolicy::class);
         Gate::policy(Comment::class, CommentPolicy::class);
