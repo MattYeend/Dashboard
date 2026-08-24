@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Companies\ImportCompanyRequest;
 use App\Http\Requests\Companies\StoreCompanyRequest;
 use App\Http\Requests\Companies\UpdateCompanyRequest;
+use App\Models\Activity;
 use App\Models\Company;
+use App\Services\Activities\PolicyAuthorisationService as ActivityPolicyAuthorisationService;
 use App\Services\Companies\ManagementService;
 use App\Services\Companies\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -103,6 +105,11 @@ class CompanyController extends Controller
             $request->user(),
             $company->id
         );
+
+        $data['activity_permissions_meta'] = [
+            'can_create' => $request->user()->can('create', Activity::class),
+            'can_export' => app(ActivityPolicyAuthorisationService::class)->canExport($request->user(), $company->id),
+        ];
 
         return Inertia::render('Companies/Show', $data);
     }

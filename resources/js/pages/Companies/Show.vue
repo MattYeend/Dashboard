@@ -2,12 +2,17 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import ActivityTimeline from '@/pages/Activities/components/ActivityTimeline.vue';
 import {
     edit as companiesEdit,
     destroy as companiesDestroy,
     index as companiesIndex,
 } from '@/routes/companies';
-import type { Company, PermissionsMeta } from '@/types';
+import type {
+    Company,
+    PermissionsMeta,
+    ActivityPermissionsMeta,
+} from '@/types';
 import CompanyAuditDetails from './components/CompanyAuditDetails.vue';
 import CompanyBasicDetails from './components/CompanyBasicDetails.vue';
 import CompanyContactDetails from './components/CompanyContactDetails.vue';
@@ -16,6 +21,7 @@ import CompanyRegistrationDetails from './components/CompanyRegistrationDetails.
 interface Props {
     company: Company;
     permissions_meta: PermissionsMeta;
+    activity_permissions_meta: ActivityPermissionsMeta;
 }
 
 const props = defineProps<Props>();
@@ -82,6 +88,12 @@ function destroy(): void {
                 <CompanyContactDetails :company="company" />
                 <CompanyRegistrationDetails :company="company" />
                 <CompanyAuditDetails :company="company" />
+                <ActivityTimeline
+                    activityable-type="company"
+                    :activityable-id="company.id"
+                    :can-create="activity_permissions_meta.can_create"
+                    :can-export="activity_permissions_meta.can_export"
+                />
             </div>
         </div>
 

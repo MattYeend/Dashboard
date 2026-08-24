@@ -70,6 +70,14 @@ function formatDateTime(value: string | null): string {
     });
 }
 
+function truncate(value: string | null, length = 20): string {
+    if (!value) {
+        return '-';
+    }
+
+    return value.length > length ? `${value.slice(0, length)}…` : value;
+}
+
 async function fetchActivities(page = 1): Promise<void> {
     loading.value = true;
 
@@ -152,9 +160,15 @@ onMounted(() => fetchActivities());
             :columns="columns"
             row-key="id"
             :empty-message="loading ? 'Loading...' : 'No activity yet.'"
+            class="text-xs [&_table]:table-fixed [&_td]:py-1.5 [&_td]:break-words [&_td]:whitespace-normal [&_th]:py-1.5"
         >
             <template #cell-type="{ row }">
                 <ActivityItem :activity="row" />
+            </template>
+            <template #cell-description="{ row }">
+                <span :title="row.description ?? undefined">{{
+                    truncate(row.description)
+                }}</span>
             </template>
             <template #cell-occurred_at="{ row }">
                 {{ formatDateTime(row.occurred_at) }}

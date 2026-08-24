@@ -877,3 +877,8 @@ export interface Backup {
     size_human: string;
     date: string;
 }
+
+export interface ActivityPermissionsMeta {
+    can_create: boolean;
+    can_export: boolean;
+}

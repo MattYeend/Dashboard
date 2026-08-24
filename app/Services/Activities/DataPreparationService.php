@@ -2,8 +2,6 @@
 
 namespace App\Services\Activities;
 
-use Mews\Purifier\Facades\Purifier;
-
 class DataPreparationService
 {
     public function __construct(
@@ -20,7 +18,7 @@ class DataPreparationService
             'activityable_type' => $this->resolveActivityableType($activityableType),
             'activityable_id' => $activityableId,
             'type' => $data['type'],
-            'description' => isset($data['description']) ? Purifier::clean($data['description']) : null,
+            'description' => isset($data['description']) ? strip_tags($data['description']) : null,
             'meta' => $data['meta'] ?? null,
             'occurred_at' => $data['occurred_at'] ?? now(),
         ];
@@ -39,7 +37,7 @@ class DataPreparationService
         foreach ($allowed as $field) {
             if (array_key_exists($field, $data)) {
                 $payload[$field] = $field === 'description' && $data[$field] !== null
-                    ? Purifier::clean($data[$field])
+                    ? strip_tags($data[$field])
                     : $data[$field];
             }
         }
