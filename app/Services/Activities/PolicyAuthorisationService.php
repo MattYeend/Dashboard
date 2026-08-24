@@ -49,11 +49,11 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can view any activities.
+     * Determine whether the user can view activities.
      */
     public function canViewAny(User $actor): bool
     {
-        return $actor->can('view any activities');
+        return $actor->can('view activities');
     }
 
     /**

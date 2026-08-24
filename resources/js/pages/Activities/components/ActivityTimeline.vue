@@ -15,7 +15,9 @@ import {
 import ActivityItem from '@/pages/Activities/components/ActivityItem.vue';
 import ActivityNoteForm from '@/pages/Activities/components/ActivityNoteForm.vue';
 import type { Activity } from '@/types';
-import activitiesRoutes, { index as activitiesIndex } from '@/routes/activities';
+import activitiesRoutes, {
+    index as activitiesIndex,
+} from '@/routes/activities';
 
 interface Props {
     activityableType: string;

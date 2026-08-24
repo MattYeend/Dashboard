@@ -416,6 +416,14 @@ class RolePermissionSeeder extends Seeder
             'import labels',
             'export labels',
             'assign labels',
+
+            // Activity Management
+            'view activities',
+            'create activities',
+            'delete activities',
+            'restore activities',
+            'force delete activities',
+            'export activities',
         ];
 
         foreach ($permissions as $permission) {
@@ -727,6 +735,11 @@ class RolePermissionSeeder extends Seeder
             'import labels',
             'export labels',
             'assign labels',
+            'view activities',
+            'create activities',
+            'delete activities',
+            'restore activities',
+            'export activities',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -989,6 +1002,11 @@ class RolePermissionSeeder extends Seeder
             'import labels',
             'export labels',
             'assign labels',
+            'view activities',
+            'create activities',
+            'delete activities',
+            'restore activities',
+            'export activities',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1164,6 +1182,9 @@ class RolePermissionSeeder extends Seeder
             'delete labels',
             'restore labels',
             'assign labels',
+            'view activities',
+            'create activities',
+            'delete activities',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -1216,6 +1237,7 @@ class RolePermissionSeeder extends Seeder
             'view ticket',
             'view any labels',
             'view labels',
+            'view activities',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -1319,6 +1341,10 @@ class RolePermissionSeeder extends Seeder
             'create labels',
             'edit labels',
             'assign labels',
+            'view activities',
+            'create activities',
+            'delete activities',
+            'restore activities',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
 
@@ -1551,6 +1577,11 @@ class RolePermissionSeeder extends Seeder
             'import labels',
             'export labels',
             'assign labels',
+            'view activities',
+            'create activities',
+            'delete activities',
+            'restore activities',
+            'export activities',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -1647,6 +1678,8 @@ class RolePermissionSeeder extends Seeder
             'view any labels',
             'view labels',
             'export labels',
+            'view activities',
+            'export activities',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
@@ -1695,6 +1728,7 @@ class RolePermissionSeeder extends Seeder
             'view ticket',
             'view any labels',
             'view labels',
+            'view activities',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -1787,5 +1821,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Ticket Statuses');
         $this->command->info('- Tickets');
         $this->command->info('- Labels');
+        $this->command->info('- Activities');
     }
 }

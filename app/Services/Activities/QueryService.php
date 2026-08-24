@@ -22,14 +22,18 @@ class QueryService
 
     /**
      * Get paginated activities for a single activityable record, with
-     * filters. Matches the (User $actor, array $filters) call shape used
-     * by every other module's QueryService::getPaginated().
+     * filters.
+     *
+     * The activityable_type supplied by the client is a short registry key
+     * such as "company". The database stores the fully-qualified model
+     * class name, such as App\Models\Company.
      */
     public function getPaginated(
         User $actor,
         array $filters = []
     ): array {
         $query = $this->buildQuery($filters);
+
         $paginated = $this->paginate(
             $query,
             min((int) ($filters['per_page'] ?? 25), 100)
@@ -48,12 +52,56 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = Activity::query()
-            ->with(['creator', 'updater', 'deleter', 'restorer'])
-            ->where('activityable_type', $filters['activityable_type'] ?? null)
-            ->where('activityable_id', $filters['activityable_id'] ?? null);
+            ->with([
+                'creator',
+                'updater',
+                'deleter',
+                'restorer',
+            ]);
+
+        /*
+         * Resolve the UI-facing activityable type into the actual model
+         * class stored in the database.
+         */
+        if (isset($filters['activityable_type'])) {
+            $activityableType = $this->registry->modelClassForKey(
+                $filters['activityable_type']
+            );
+
+            /*
+             * An unknown activityable type should return no results rather
+             * than querying with an untrusted/raw class name.
+             */
+            if ($activityableType === null) {
+                $query->whereRaw('1 = 0');
+
+                return $query;
+            }
+
+            $query->where('activityable_type', $activityableType);
+        }
+
+        /*
+         * Only apply the ID restriction when one was actually supplied.
+         */
+        if (isset($filters['activityable_id'])) {
+            $query->where(
+                'activityable_id',
+                $filters['activityable_id']
+            );
+        }
 
         $query = $this->filterService->applyAll($query, $filters);
-        $query = $this->trashFilterService->applyFilter($query, $filters['trashed'] ?? null);
+
+        /*
+         * Eloquent's normal query already excludes soft-deleted records.
+         * TrashFilterService controls whether normal, trashed or all
+         * records should be returned.
+         */
+        $query = $this->trashFilterService->applyFilter(
+            $query,
+            $filters['trashed'] ?? null
+        );
 
         return $this->sortingService->applySorting(
             $query,
@@ -69,7 +117,9 @@ class QueryService
         Builder $query,
         int $perPage
     ): array {
-        $paginator = $query->paginate($perPage)->withQueryString();
+        $paginator = $query
+            ->paginate($perPage)
+            ->withQueryString();
 
         return [
             'activities' => [
@@ -77,7 +127,11 @@ class QueryService
                     fn (Activity $activity) => $this->formatterService->format($activity),
                     $paginator->items()
                 ),
-                'links' => $paginator->linkCollection()->toArray(),
+
+                'links' => $paginator
+                    ->linkCollection()
+                    ->toArray(),
+
                 'meta' => [
                     'current_page' => $paginator->currentPage(),
                     'last_page' => $paginator->lastPage(),
@@ -97,8 +151,15 @@ class QueryService
     {
         return [
             'permissions_meta' => [
-                'can_create' => $user->can('create', Activity::class),
-                'can_view_any' => $user->can('viewAny', Activity::class),
+                'can_create' => $user->can(
+                    'create',
+                    Activity::class
+                ),
+
+                'can_view_any' => $user->can(
+                    'viewAny',
+                    Activity::class
+                ),
             ],
         ];
     }
@@ -110,19 +171,63 @@ class QueryService
     {
         return [
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
+
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
+
             'activityableTypes' => $this->registry->types(),
         ];
     }
 
     /**
-     * Unscoped query across every activityable record — admin-only export.
+     * Unscoped query across every activityable record.
+     *
+     * Used by the admin-only export.
      */
     public function forExportAll(array $filters = []): Builder
     {
-        $query = Activity::query()->with(['creator', 'activityable']);
+        $query = Activity::query()
+            ->with([
+                'creator',
+                'activityable',
+            ]);
 
-        $query = $this->filterService->applyAll($query, $filters);
+        /*
+         * Export may be scoped to an activityable record.
+         * Resolve the UI key to the stored FQCN here as well.
+         */
+        if (isset($filters['activityable_type'])) {
+            $activityableType = $this->registry->modelClassForKey(
+                $filters['activityable_type']
+            );
+
+            if ($activityableType === null) {
+                $query->whereRaw('1 = 0');
+
+                return $query;
+            }
+
+            $query->where(
+                'activityable_type',
+                $activityableType
+            );
+        }
+
+        if (isset($filters['activityable_id'])) {
+            $query->where(
+                'activityable_id',
+                $filters['activityable_id']
+            );
+        }
+
+        $query = $this->filterService->applyAll(
+            $query,
+            $filters
+        );
+
+        $query = $this->trashFilterService->applyFilter(
+            $query,
+            $filters['trashed'] ?? null
+        );
 
         return $this->sortingService->applySorting(
             $query,
