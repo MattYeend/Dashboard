@@ -909,3 +909,7 @@ export interface ActivityPermissionsMeta {
     can_create: boolean;
     can_export: boolean;
 }
+
+export interface InteractionLogPermissionsMeta {
+    can_create: boolean;
+}
