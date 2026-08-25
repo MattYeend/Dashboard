@@ -694,6 +694,15 @@ class Log extends Model
 
     public const ACTION_EXPORT_ACTIVITY = 323;
 
+    // Interaction Log Management
+    public const ACTION_CREATE_INTERACTION = 324;
+
+    public const ACTION_UPDATE_INTERACTION = 325;
+
+    public const ACTION_DELETE_INTERACTION = 326;
+
+    public const ACTION_FORCE_DELETE_INTERACTION = 327;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed

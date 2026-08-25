@@ -14,6 +14,7 @@ use App\Http\Controllers\DashboardWidgetPreferenceController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\DealStatusController;
 use App\Http\Controllers\IndustryController;
+use App\Http\Controllers\InteractionLogController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceItemController;
 use App\Http\Controllers\InvoiceStatusController;
@@ -583,6 +584,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/', [ActivityController::class, 'store'])->name('store');
         Route::match(['put', 'patch'], '/{activity}', [ActivityController::class, 'update'])->name('update');
         Route::delete('/{activity}', [ActivityController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('interaction-logs')->name('interaction-logs.')->group(function () {
+        Route::delete('/{id}/force', [InteractionLogController::class, 'forceDelete'])->name('force-delete');
+        Route::post('/', [InteractionLogController::class, 'store'])->name('store');
+        Route::match(['put', 'patch'], '/{interaction_log}', [InteractionLogController::class, 'update'])->name('update');
+        Route::delete('/{interaction_log}', [InteractionLogController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('system')->name('system.')->group(function () {

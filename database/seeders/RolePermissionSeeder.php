@@ -424,6 +424,12 @@ class RolePermissionSeeder extends Seeder
             'restore activities',
             'force delete activities',
             'export activities',
+
+            // Interaction log management
+            'create interaction logs',
+            'update interaction logs',
+            'delete interaction logs',
+            'force delete interaction logs',
         ];
 
         foreach ($permissions as $permission) {
@@ -740,6 +746,10 @@ class RolePermissionSeeder extends Seeder
             'delete activities',
             'restore activities',
             'export activities',
+            'create interaction logs',
+            'update interaction logs',
+            'delete interaction logs',
+            'force delete interaction logs',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -1007,6 +1017,9 @@ class RolePermissionSeeder extends Seeder
             'delete activities',
             'restore activities',
             'export activities',
+            'create interaction logs',
+            'update interaction logs',
+            'delete interaction logs',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1185,6 +1198,8 @@ class RolePermissionSeeder extends Seeder
             'view activities',
             'create activities',
             'delete activities',
+            'create interaction logs',
+            'update interaction logs',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -1345,6 +1360,8 @@ class RolePermissionSeeder extends Seeder
             'create activities',
             'delete activities',
             'restore activities',
+            'create interaction logs',
+            'update interaction logs',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
 
@@ -1582,6 +1599,9 @@ class RolePermissionSeeder extends Seeder
             'delete activities',
             'restore activities',
             'export activities',
+            'create interaction logs',
+            'update interaction logs',
+            'delete interaction logs',
         ];
         $support->givePermissionTo($supportPermissions);
 
