@@ -4,8 +4,8 @@ import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import type { Backup } from '@/types';
 import { destroy, download, restore } from '@/routes/backups';
+import type { Backup } from '@/types';
 
 interface BackupRow extends Backup {
     id: string;

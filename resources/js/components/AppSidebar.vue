@@ -35,9 +35,9 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import type { NavGroup, NavItem } from '@/types';
 import { index as backupsIndex } from '@/routes/backups';
 import { index as systemIndex } from '@/routes/system';
+import type { NavGroup, NavItem } from '@/types';
 
 const pinnedNavItems: NavItem[] = [
     {

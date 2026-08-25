@@ -14,10 +14,10 @@ import {
 } from '@/components/ui/select';
 import ActivityItem from '@/pages/Activities/components/ActivityItem.vue';
 import ActivityNoteForm from '@/pages/Activities/components/ActivityNoteForm.vue';
-import type { Activity } from '@/types';
 import activitiesRoutes, {
     index as activitiesIndex,
 } from '@/routes/activities';
+import type { Activity } from '@/types';
 
 interface Props {
     activityableType: string;
