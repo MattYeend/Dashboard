@@ -59,6 +59,7 @@ class InteractionLog extends Model implements Auditable
      * @use HasFactory<InteractionLogFactory>
      */
     use HasFactory;
+
     use SoftDeletes;
 
     /**

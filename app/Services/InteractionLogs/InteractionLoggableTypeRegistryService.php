@@ -17,19 +17,19 @@ class InteractionLoggableTypeRegistryService
      */
     private array $registry = [
         'company' => [
-            'class' => Company::class, 
+            'class' => Company::class,
             'label_field' => 'name', '
-            label' => 'Company'
+            label' => 'Company',
         ],
         'contact' => [
-            'class' => Contact::class, 
-            'label_field' => 'name', 
-            'label' => 'Contact'
+            'class' => Contact::class,
+            'label_field' => 'name',
+            'label' => 'Contact',
         ],
         'deal' => [
-            'class' => Deal::class, 
-            'label_field' => 'title', 
-            'label' => 'Deal'
+            'class' => Deal::class,
+            'label_field' => 'title',
+            'label' => 'Deal',
         ],
     ];
 
