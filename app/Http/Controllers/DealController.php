@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Deals\ImportDealRequest;
 use App\Http\Requests\Deals\StoreDealRequest;
 use App\Http\Requests\Deals\UpdateDealRequest;
+use App\Models\Activity;
 use App\Models\Deal;
+use App\Services\Activities\PolicyAuthorisationService as ActivityPolicyAuthorisationService;
 use App\Services\Deals\ManagementService;
 use App\Services\Deals\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -101,6 +103,11 @@ class DealController extends Controller
             $request->user(),
             $deal->id
         );
+
+        $data['activity_permissions_meta'] = [
+            'can_create' => $request->user()->can('create', Activity::class),
+            'can_export' => app(ActivityPolicyAuthorisationService::class)->canExport($request->user(), $deal->id),
+        ];
 
         return Inertia::render('Deals/Show', $data);
     }

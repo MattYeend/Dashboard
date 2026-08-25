@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import ActivityTimeline from '@/pages/Activities/components/ActivityTimeline.vue';
 import DealAuditDetails from '@/pages/Deals/components/DealAuditDetails.vue';
 import DealBasicDetails from '@/pages/Deals/components/DealBasicDetails.vue';
 import DealPipelineDetails from '@/pages/Deals/components/DealPipelineDetails.vue';
@@ -12,11 +13,12 @@ import {
     destroy as dealsDestroy,
     index as dealsIndex,
 } from '@/routes/deals';
-import type { Deal, PermissionsMeta } from '@/types';
+import type { Deal, PermissionsMeta, ActivityPermissionsMeta } from '@/types';
 
 interface Props {
     deal: Deal;
     permissions_meta: PermissionsMeta;
+    activity_permissions_meta: ActivityPermissionsMeta;
 }
 
 const props = defineProps<Props>();
@@ -76,6 +78,12 @@ function destroy(): void {
                 <DealValueDetails :deal="deal" />
                 <DealRelationsDetails :deal="deal" />
                 <DealAuditDetails :deal="deal" />
+                <ActivityTimeline
+                    activityable-type="deal"
+                    :activityable-id="deal.id"
+                    :can-create="activity_permissions_meta.can_create"
+                    :can-export="activity_permissions_meta.can_export"
+                />
             </div>
         </div>
 
