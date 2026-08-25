@@ -28,15 +28,15 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['interactable_type', 'interactable_id', 'occurred_at']);
+            $table->index(['interactable_type', 'interactable_id', 'occurred_at'], 'interaction_logs_interactable_occurred_index');
             $table->index('type');
-            $table->index(['contact_id', 'occurred_at']);
+            $table->index(['contact_id', 'occurred_at'], 'interaction_logs_contact_occurred_index');
             $table->index('occurred_at');
             $table->index('restored_at');
             $table->index('created_at');
             $table->index('updated_at');
             $table->index('deleted_at');
-            $table->index(['deleted_at', 'type']);
+            $table->index(['deleted_at', 'type'], 'interaction_logs_deleted_type_index');
         });
     }
 
