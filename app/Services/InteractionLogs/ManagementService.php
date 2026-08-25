@@ -28,7 +28,12 @@ class ManagementService
     public function store(StoreInteractionLogRequest $request): array
     {
         $actor = User::findOrFail($request->user()->id);
-        $data = $this->dataPreparationService->prepareForCreate($request);
+        $validated = $request->validated();
+        $data = $this->dataPreparationService->prepareForCreation(
+            $validated,
+            $validated['interactable_type'],
+            (int) $validated['interactable_id'],
+        );
 
         $interactionLog = $this->creatorService->create($data, $actor->id);
 
@@ -45,7 +50,7 @@ class ManagementService
         InteractionLog $interactionLog
     ): array {
         $actor = User::findOrFail($request->user()->id);
-        $data = $this->dataPreparationService->prepareForUpdate($request);
+        $data = $this->dataPreparationService->prepareForUpdate($request->validated());
 
         $interactionLog = $this->updaterService->update(
             $interactionLog,

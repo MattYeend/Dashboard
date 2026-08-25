@@ -22,14 +22,15 @@ class InteractionLogController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreInteractionLogRequest $request): JsonResponse|RedirectResponse
-    {
-        $interactionLog = $this->managementService->store($request);
+    public function store(
+        StoreInteractionLogRequest $request
+    ): JsonResponse|RedirectResponse {
+        $formattedLog = $this->managementService->store($request);
 
         if ($request->wantsJson()) {
             return response()->json([
                 'message' => 'Interaction logged successfully.',
-                'interaction_log' => $interactionLog,
+                'interaction_log' => $formattedLog,
             ], 201);
         }
 
@@ -39,14 +40,16 @@ class InteractionLogController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateInteractionLogRequest $request, InteractionLog $interactionLog): JsonResponse|RedirectResponse
-    {
-        $interactionLog = $this->managementService->update($request, $interactionLog);
+    public function update(
+        UpdateInteractionLogRequest $request,
+        InteractionLog $interactionLog
+    ): JsonResponse|RedirectResponse {
+        $formattedLog = $this->managementService->update($request, $interactionLog);
 
         if ($request->wantsJson()) {
             return response()->json([
                 'message' => 'Interaction log updated successfully.',
-                'interaction_log' => $interactionLog,
+                'interaction_log' => $formattedLog,
             ]);
         }
 

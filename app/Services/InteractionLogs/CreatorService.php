@@ -3,51 +3,42 @@
 namespace App\Services\InteractionLogs;
 
 use App\Actions\CreateResource;
+use App\Actions\LogInteractionActivity;
 use App\Models\InteractionLog;
 use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreatorService
 {
-    /**
-     * Inject the required services into the creator service.
-     */
     public function __construct(
-        protected readonly AuditLogService $auditLogService,
-        protected readonly CreateResource $createResource,
+        private readonly CreateResource $createResource,
+        private readonly AuditLogService $auditLogService,
+        private readonly LogInteractionActivity $logInteractionActivity,
     ) {}
 
     /**
      * Create a new interaction log.
      *
      * @param  array<string, mixed>  $data
-     *
-     * @throws ModelNotFoundException
      */
-    public function create(array $data, int $createdBy): InteractionLog
+    public function create(array $data, User $actor): InteractionLog
     {
-        $actor = User::findOrFail($createdBy);
+        return $this->createResource->handle($data, function (array $data) use ($actor): InteractionLog {
+            $data['created_by'] = $actor->id;
 
-        return $this->createResource->handle(
-            $data,
-            function (array $data) use ($createdBy, $actor): InteractionLog {
-                $interactionLog = InteractionLog::create($data);
+            $interactionLog = InteractionLog::create($data);
 
-                $interactionLog->forceFill([
-                    'created_by' => $createdBy,
-                ])->save();
+            $this->auditLogService->record(
+                Log::ACTION_CREATE_INTERACTION_LOG,
+                $actor,
+                $interactionLog,
+                ['after' => $this->auditLogService->snapshot($interactionLog)],
+            );
 
-                $this->auditLogService->record(
-                    Log::ACTION_CREATE_INTERACTION_LOG,
-                    $actor,
-                    $interactionLog,
-                    ['after' => $this->auditLogService->snapshot($interactionLog)],
-                );
+            $this->logInteractionActivity->handle($interactionLog, $actor);
 
-                return $interactionLog;
-            }
-        );
+            return $interactionLog;
+        });
     }
 }
