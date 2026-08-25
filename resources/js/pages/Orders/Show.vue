@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import ActivityTimeline from '@/pages/Activities/components/ActivityTimeline.vue';
 import OrderAuditDetails from '@/pages/Orders/components/OrderAuditDetails.vue';
 import OrderBasicDetails from '@/pages/Orders/components/OrderBasicDetails.vue';
 import {
@@ -9,11 +10,12 @@ import {
     destroy as ordersDestroy,
     index as ordersIndex,
 } from '@/routes/orders';
-import type { Order, PermissionsMeta } from '@/types';
+import type { Order, PermissionsMeta, ActivityPermissionsMeta } from '@/types';
 
 interface Props {
     order: Order;
     permissions_meta: PermissionsMeta;
+    activity_permissions_meta: ActivityPermissionsMeta;
 }
 
 const props = defineProps<Props>();
@@ -68,6 +70,12 @@ function destroy(): void {
             <div class="space-y-6">
                 <OrderBasicDetails :order="order" />
                 <OrderAuditDetails :order="order" />
+                <ActivityTimeline
+                    activityable-type="order"
+                    :activityable-id="order.id"
+                    :can-create="activity_permissions_meta.can_create"
+                    :can-export="activity_permissions_meta.can_export"
+                />
             </div>
         </div>
 

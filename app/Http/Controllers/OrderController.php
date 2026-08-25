@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Orders\ImportOrderRequest;
 use App\Http\Requests\Orders\StoreOrderRequest;
 use App\Http\Requests\Orders\UpdateOrderRequest;
+use App\Models\Activity;
 use App\Models\Order;
+use App\Services\Activities\PolicyAuthorisationService as ActivityPolicyAuthorisationService;
 use App\Services\Orders\ManagementService;
 use App\Services\Orders\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -101,6 +103,11 @@ class OrderController extends Controller
             $request->user(),
             $order->id
         );
+
+        $data['activity_permissions_meta'] = [
+            'can_create' => $request->user()->can('create', Activity::class),
+            'can_export' => app(ActivityPolicyAuthorisationService::class)->canExport($request->user(), $order->id),
+        ];
 
         return Inertia::render('Orders/Show', $data);
     }
