@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import ActivityTimeline from '@/pages/Activities/components/ActivityTimeline.vue';
 import ContactAuditDetails from '@/pages/Contacts/components/ContactAuditDetails.vue';
 import ContactBasicDetails from '@/pages/Contacts/components/ContactBasicDetails.vue';
 import {
@@ -9,11 +10,16 @@ import {
     destroy as contactsDestroy,
     index as contactsIndex,
 } from '@/routes/contacts';
-import type { Contact, PermissionsMeta } from '@/types';
+import type {
+    Contact,
+    PermissionsMeta,
+    ActivityPermissionsMeta,
+} from '@/types';
 
 interface Props {
     contact: Contact;
     permissions_meta: PermissionsMeta;
+    activity_permissions_meta: ActivityPermissionsMeta;
 }
 
 const props = defineProps<Props>();
@@ -68,6 +74,12 @@ function destroy(): void {
             <div class="space-y-6">
                 <ContactBasicDetails :contact="contact" />
                 <ContactAuditDetails :contact="contact" />
+                <ActivityTimeline
+                    activityable-type="contact"
+                    :activityable-id="contact.id"
+                    :can-create="activity_permissions_meta.can_create"
+                    :can-export="activity_permissions_meta.can_export"
+                />
             </div>
         </div>
 

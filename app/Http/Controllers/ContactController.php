@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Contacts\ImportContactRequest;
 use App\Http\Requests\Contacts\StoreContactRequest;
 use App\Http\Requests\Contacts\UpdateContactRequest;
+use App\Models\Activity;
 use App\Models\Contact;
+use App\Services\Activities\PolicyAuthorisationService as ActivityPolicyAuthorisationService;
 use App\Services\Contacts\ManagementService;
 use App\Services\Contacts\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -103,6 +105,11 @@ class ContactController extends Controller
             $request->user(),
             $contact->id
         );
+
+        $data['activity_permissions_meta'] = [
+            'can_create' => $request->user()->can('create', Activity::class),
+            'can_export' => app(ActivityPolicyAuthorisationService::class)->canExport($request->user(), $contact->id),
+        ];
 
         return Inertia::render('Contacts/Show', $data);
     }
