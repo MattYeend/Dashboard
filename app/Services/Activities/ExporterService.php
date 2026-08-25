@@ -17,6 +17,7 @@ class ExporterService
         protected readonly QueryService $queryService,
         protected readonly FormatterService $formatterService,
         protected readonly AuditLogService $auditLogService,
+        protected readonly ActivityableTypeRegistryService $registry,
     ) {}
 
     /**
@@ -29,28 +30,25 @@ class ExporterService
         ?int $activityableId,
         array $filters = []
     ): StreamedResponse {
-        $query = $activityableType && $activityableId
+        $resolvedType = $activityableType
+            ? $this->registry->modelClassForKey($activityableType)
+            : null;
+
+        $query = $resolvedType && $activityableId
             ? Activity::query()
                 ->with('creator')
-                ->where('activityable_type', $activityableType)
+                ->where('activityable_type', $resolvedType)
                 ->where('activityable_id', $activityableId)
             : $this->queryService->forExportAll($filters);
 
-        $columns = [
-            'id',
-            'type',
-            'description',
-            'occurred_at',
-            'created_by',
-            'created_at',
-        ];
+        $columns = ['ID', 'Type', 'Description', 'Occurred at', 'Logged by'];
 
         $this->auditLogService->record(
             Log::ACTION_EXPORT_ACTIVITY,
             Auth::user(),
             null,
             [
-                'scope' => $activityableType && $activityableId ? "{$activityableType}:{$activityableId}" : 'all',
+                'scope' => $resolvedType && $activityableId ? "{$resolvedType}:{$activityableId}" : 'all',
                 'filters' => $filters,
                 'count' => (clone $query)->count(),
             ],
