@@ -38,19 +38,17 @@ const form = useForm({
 });
 
 function submit(): void {
-    form
-        .transform((data) => ({
-            ...data,
-            outcome: nullIfBlank(data.outcome),
-            notes: nullIfBlank(data.notes),
-        }))
-        .post(store().url, {
-            preserveScroll: true,
-            onSuccess: () => {
-                open.value = false;
-                form.reset();
-            },
-        });
+    form.transform((data) => ({
+        ...data,
+        outcome: nullIfBlank(data.outcome),
+        notes: nullIfBlank(data.notes),
+    })).post(store().url, {
+        preserveScroll: true,
+        onSuccess: () => {
+            open.value = false;
+            form.reset();
+        },
+    });
 }
 </script>
 
@@ -80,7 +78,9 @@ function submit(): void {
 
             <DialogFooter>
                 <Button variant="outline" @click="open = false">Cancel</Button>
-                <Button :disabled="form.processing" @click="submit">Save</Button>
+                <Button :disabled="form.processing" @click="submit"
+                    >Save</Button
+                >
             </DialogFooter>
         </DialogContent>
     </Dialog>

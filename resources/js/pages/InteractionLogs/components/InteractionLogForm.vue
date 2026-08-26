@@ -12,7 +12,9 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 
 interface Props {
-    errors?: Partial<Record<'type' | 'subject' | 'outcome' | 'occurredAt' | 'notes', string>>;
+    errors?: Partial<
+        Record<'type' | 'subject' | 'outcome' | 'occurredAt' | 'notes', string>
+    >;
 }
 
 defineProps<Props>();
