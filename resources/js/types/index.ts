@@ -882,3 +882,17 @@ export interface ActivityPermissionsMeta {
     can_create: boolean;
     can_export: boolean;
 }
+
+export interface SearchResultItem {
+    id: number;
+    label: string;
+    url: string;
+}
+
+export interface SearchResults {
+    users: SearchResultItem[];
+    companies: SearchResultItem[];
+    contacts: SearchResultItem[];
+    orders: SearchResultItem[];
+    deals: SearchResultItem[];
+}

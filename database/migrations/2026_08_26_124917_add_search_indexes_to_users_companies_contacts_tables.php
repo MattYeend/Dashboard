@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) { 
-            $table->index('name'); 
-            $table->index('locale'); 
+        Schema::table('users', function (Blueprint $table) {
+            $table->index('name');
+            $table->index('locale');
         });
-        
-        Schema::table('contacts', function (Blueprint $table) { 
-            $table->index('phone'); 
+
+        Schema::table('contacts', function (Blueprint $table) {
+            $table->index('phone');
         });
     }
 
@@ -26,13 +26,13 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) { 
-            $table->dropIndex(['name']); 
-            $table->dropIndex(['locale']); 
-        }); 
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropIndex(['name']);
+            $table->dropIndex(['locale']);
+        });
 
-        Schema::table('contacts', function (Blueprint $table) { 
-            $table->dropIndex(['phone']); 
+        Schema::table('contacts', function (Blueprint $table) {
+            $table->dropIndex(['phone']);
         });
     }
 };
