@@ -3,6 +3,7 @@ import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import ActivityTimeline from '@/pages/Activities/components/ActivityTimeline.vue';
+import QuickLogModal from '@/pages/InteractionLogs/components/QuickLogModal.vue';
 import {
     edit as companiesEdit,
     destroy as companiesDestroy,
@@ -12,6 +13,7 @@ import type {
     Company,
     PermissionsMeta,
     ActivityPermissionsMeta,
+    InteractionLogPermissionsMeta,
 } from '@/types';
 import CompanyAuditDetails from './components/CompanyAuditDetails.vue';
 import CompanyBasicDetails from './components/CompanyBasicDetails.vue';
@@ -22,6 +24,7 @@ interface Props {
     company: Company;
     permissions_meta: PermissionsMeta;
     activity_permissions_meta: ActivityPermissionsMeta;
+    interaction_log_permissions_meta: InteractionLogPermissionsMeta;
 }
 
 const props = defineProps<Props>();
@@ -73,6 +76,11 @@ function destroy(): void {
                     >
                         Edit
                     </Link>
+                    <QuickLogModal
+                        v-if="interaction_log_permissions_meta.can_create"
+                        interactable-type="company"
+                        :interactable-id="company.id"
+                    />
                     <button
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"

@@ -8,17 +8,24 @@ import DealBasicDetails from '@/pages/Deals/components/DealBasicDetails.vue';
 import DealPipelineDetails from '@/pages/Deals/components/DealPipelineDetails.vue';
 import DealRelationsDetails from '@/pages/Deals/components/DealRelationsDetails.vue';
 import DealValueDetails from '@/pages/Deals/components/DealValueDetails.vue';
+import QuickLogModal from '@/pages/InteractionLogs/components/QuickLogModal.vue';
 import {
     edit as dealsEdit,
     destroy as dealsDestroy,
     index as dealsIndex,
 } from '@/routes/deals';
-import type { Deal, PermissionsMeta, ActivityPermissionsMeta } from '@/types';
+import type {
+    Deal,
+    PermissionsMeta,
+    ActivityPermissionsMeta,
+    InteractionLogPermissionsMeta,
+} from '@/types';
 
 interface Props {
     deal: Deal;
     permissions_meta: PermissionsMeta;
     activity_permissions_meta: ActivityPermissionsMeta;
+    interaction_log_permissions_meta: InteractionLogPermissionsMeta;
 }
 
 const props = defineProps<Props>();
@@ -62,6 +69,11 @@ function destroy(): void {
                     >
                         Edit
                     </Link>
+                    <QuickLogModal
+                        v-if="interaction_log_permissions_meta.can_create"
+                        interactable-type="deal"
+                        :interactable-id="deal.id"
+                    />
                     <button
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
