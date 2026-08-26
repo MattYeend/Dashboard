@@ -5,12 +5,14 @@ namespace App\Actions;
 use App\Enums\ActivityType;
 use App\Models\InteractionLog;
 use App\Models\User;
+use App\Services\Activities\ActivityableTypeRegistryService;
 use App\Services\Activities\CreatorService as ActivityCreatorService;
 
 class LogInteractionActivity
 {
     public function __construct(
         private readonly ActivityCreatorService $activityCreatorService,
+        private readonly ActivityableTypeRegistryService $activityableTypeRegistryService,
     ) {}
 
     /**
@@ -23,7 +25,7 @@ class LogInteractionActivity
             : ActivityType::EmailLogged;
 
         $this->activityCreatorService->create([
-            'activityable_type' => $interactionLog->interactable_type,
+            'activityable_type' => $this->activityableTypeRegistryService->keyForModel($interactionLog->interactable_type),
             'activityable_id' => $interactionLog->interactable_id,
             'type' => $type,
             'description' => "{$interactionLog->type->label()} logged: {$interactionLog->subject}",

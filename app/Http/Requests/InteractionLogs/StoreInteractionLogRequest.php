@@ -69,7 +69,7 @@ class StoreInteractionLogRequest extends FormRequest
         return [
             'required',
             'string',
-            Rule::in($registryService->types()->pluck('key')->all()),
+            Rule::in(array_column($registryService->types(), 'value')),
         ];
     }
 

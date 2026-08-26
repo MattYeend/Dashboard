@@ -35,7 +35,7 @@ class ManagementService
             (int) $validated['interactable_id'],
         );
 
-        $interactionLog = $this->creatorService->create($data, $actor->id);
+        $interactionLog = $this->creatorService->create($data, $actor);
 
         return $this->formatterService->format($interactionLog);
     }

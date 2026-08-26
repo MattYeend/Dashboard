@@ -5,88 +5,114 @@ namespace App\Services\InteractionLogs;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Models\Deal;
-use Illuminate\Support\Collection;
-use InvalidArgumentException;
 
 class InteractionLoggableTypeRegistryService
 {
     /**
-     * Allow-listed interactable types: short UI key => [FQCN, label field, label].
-     *
-     * @var array<string, array{class: class-string, label_field: string, label: string}>
-     */
-    private array $registry = [
-        'company' => [
-            'class' => Company::class,
-            'label_field' => 'name', '
-            label' => 'Company',
-        ],
-        'contact' => [
-            'class' => Contact::class,
-            'label_field' => 'name',
-            'label' => 'Contact',
-        ],
-        'deal' => [
-            'class' => Deal::class,
-            'label_field' => 'title',
-            'label' => 'Deal',
-        ],
-    ];
-
-    /**
-     * Get the full registry.
-     *
-     * @return array<string, array{class: class-string, label_field: string, label: string}>
+     * Allow-list of interactable types. Keys are short, UI-facing
+     * identifiers. 'model' is the FQCN actually stored in
+     * interaction_logs.interactable_type (no morph map aliasing).
      */
     public function all(): array
     {
-        return $this->registry;
+        return [
+            'company' => [
+                'label' => 'Company', 
+                'model' => Company::class, 
+                'label_field' => 'name'
+                ],
+            'contact' => [
+                'label' => 'Contact', 
+                'model' => Contact::class, 
+                'label_field' => 'name'
+            ],
+            'deal' => [
+                'label' => 'Deal', 
+                'model' => Deal::class, 
+                'label_field' => 'title'
+            ],
+        ];
     }
 
     /**
-     * Get the list of types for a UI <select>.
+     * Short keys + labels for populating the "interactable type" <select>.
      *
-     * @return Collection<int, array{key: string, label: string}>
+     * @return array<int, array{value: string, label: string}>
      */
-    public function types(): Collection
+    public function types(): array
     {
-        return collect($this->registry)->map(fn (array $entry, string $key) => [
-            'key' => $key,
-            'label' => $entry['label'],
-        ])->values();
+        return collect($this->all())
+            ->map(fn ($config, $key) => [
+                'value' => $key,
+                'label' => $config['label'],
+            ])
+            ->values()
+            ->all();
     }
 
     /**
-     * Get dependent dropdown options for a given type key.
+     * Options for the "interactable owner" <select>, keyed by short type.
      *
-     * @return Collection<int, array{id: int, name: string}>
+     * @return array<int, array{value: int, label: string}>
      */
-    public function optionsFor(string $type): Collection
+    public function optionsFor(string $type): array
     {
-        if (! array_key_exists($type, $this->registry)) {
-            throw new InvalidArgumentException("Unrecognised interactable type [{$type}].");
+        $allowed = $this->all();
+
+        // Normalise either a short key or a stored FQCN back to a short key
+        $resolvedType = $this->resolveTypeKey($type, $allowed);
+
+        $config = $allowed[$resolvedType] ?? null;
+
+        if ($config === null) {
+            return [];
         }
 
-        $entry = $this->registry[$type];
-        $labelField = $entry['label_field'];
+        // Only ever use pre-registered model classes - never user-supplied class names
+        $model = $config['model'];
+        $field = $config['label_field'];
 
-        return $entry['class']::query()
-            ->orderBy($labelField)
-            ->get(['id', $labelField])
-            ->map(fn ($model) => [
-                'id' => $model->id,
-                'name' => $model->{$labelField},
-            ]);
+        return $model::query()
+            ->orderBy($field)
+            ->get(['id', $field])
+            ->map(fn ($item) => [
+                'value' => $item->id,
+                'label' => $item->{$field},
+            ])
+            ->all();
     }
 
     /**
-     * Get the short UI key for a given model FQCN.
+     * Resolve a stored FQCN (e.g. "App\Models\Company") to its short UI key
+     * (e.g. "company"). Used when hydrating the edit form.
      */
-    public function keyForModel(?string $fqcn): ?string
+    public function keyForModel(?string $modelClass): string
     {
-        foreach ($this->registry as $key => $entry) {
-            if ($entry['class'] === $fqcn) {
+        if (! $modelClass) {
+            return '';
+        }
+
+        foreach ($this->all() as $key => $config) {
+            if ($config['model'] === $modelClass) {
                 return $key;
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * Resolve the human-readable label for a stored FQCN.
+     */
+    public function labelForModel(?string $modelClass): ?string
+    {
+        if (! $modelClass) {
+            return null;
+        }
+
+        foreach ($this->all() as $config) {
+            if ($config['model'] === $modelClass) {
+                return $config['label'];
             }
         }
 
@@ -94,26 +120,35 @@ class InteractionLoggableTypeRegistryService
     }
 
     /**
-     * Get the human-readable label for a given model FQCN.
+     * Resolve the FQCN that should actually be persisted to
+     * interaction_logs.interactable_type, given a short key submitted by
+     * the form (e.g. "company" -> "App\Models\Company"). Returns null if
+     * the key isn't in the allow-list — never trust a raw class name
+     * from the client.
      */
-    public function labelForModel(?string $fqcn): ?string
+    public function modelClassForKey(string $key): ?string
     {
-        $key = $this->keyForModel($fqcn);
-
-        return $key !== null ? $this->registry[$key]['label'] : null;
+        return $this->all()[$key]['model'] ?? null;
     }
 
     /**
-     * Resolve a short UI key submitted by the form into the FQCN to persist.
-     *
-     * @return class-string
+     * Resolve a type string to a registered short key.
+     * Accepts either the short key (e.g. "company") or the fully
+     * qualified class name (e.g. "App\Models\Company"), but only
+     * returns keys that exist in the allow-list.
      */
-    public function modelClassForKey(string $key): string
+    private function resolveTypeKey(string $type, array $allowed): string
     {
-        if (! array_key_exists($key, $this->registry)) {
-            throw new InvalidArgumentException("Unrecognised interactable type [{$key}].");
+        if (isset($allowed[$type])) {
+            return $type;
         }
 
-        return $this->registry[$key]['class'];
+        foreach ($allowed as $key => $config) {
+            if ($config['model'] === $type) {
+                return $key;
+            }
+        }
+
+        return '';
     }
 }
