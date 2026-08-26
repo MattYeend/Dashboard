@@ -24,7 +24,7 @@ class UpdaterService
     {
         $before = $this->auditLogService->snapshot($interactionLog);
 
-        return $this->updateResource->handle($interactionLog, $data, function (InteractionLog $interactionLog, array $data) use ($actor, $before): InteractionLog {
+        return $this->updateResource->handle($interactionLog, $data, function (InteractionLog $interactionLog) use ($data, $actor, $before): InteractionLog {
             $interactionLog->fill($data);
             $interactionLog->updated_by = $actor->id;
             $interactionLog->save();
@@ -33,7 +33,10 @@ class UpdaterService
                 Log::ACTION_UPDATE_INTERACTION_LOG,
                 $actor,
                 $interactionLog,
-                ['before' => $before, 'after' => $this->auditLogService->snapshot($interactionLog)],
+                [
+                    'before' => $before,
+                    'after' => $this->auditLogService->snapshot($interactionLog),
+                ],
             );
 
             return $interactionLog;

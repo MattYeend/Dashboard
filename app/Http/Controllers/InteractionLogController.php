@@ -77,7 +77,7 @@ class InteractionLogController extends Controller
      */
     public function forceDelete(Request $request, int $id): JsonResponse|RedirectResponse
     {
-        $interactionLog = InteractionLog::withTrashed()->findOrFail($id);
+        $interactionLog = InteractionLog::onlyTrashed()->findOrFail($id);
 
         $this->authorize('forceDelete', $interactionLog);
 

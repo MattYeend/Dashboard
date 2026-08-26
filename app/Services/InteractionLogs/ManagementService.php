@@ -55,7 +55,7 @@ class ManagementService
         $interactionLog = $this->updaterService->update(
             $interactionLog,
             $data,
-            $actor->id
+            $actor
         );
 
         return $this->formatterService->format($interactionLog);
@@ -70,7 +70,8 @@ class ManagementService
     ): void {
         $this->deleterService->delete(
             $interactionLog,
-            $actor->id
+            $actor->id,
+            $actor
         );
     }
 

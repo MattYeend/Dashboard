@@ -18,24 +18,24 @@ class ActivityableTypeRegistryService
     {
         return [
             'company' => [
-                'label' => 'Company', 
-                'model' => Company::class, 
-                'label_field' => 'name'
+                'label' => 'Company',
+                'model' => Company::class,
+                'label_field' => 'name',
             ],
             'contact' => [
-                'label' => 'Contact', 
-                'model' => Contact::class, 
-                'label_field' => 'title'
+                'label' => 'Contact',
+                'model' => Contact::class,
+                'label_field' => 'title',
             ],
             'deal' => [
-                'label' => 'Deal', 
-                'model' => Deal::class, 
-                'label_field' => 'name'
+                'label' => 'Deal',
+                'model' => Deal::class,
+                'label_field' => 'name',
             ],
             'order' => [
-                'label' => 'Order', 
-                'model' => Order::class, 
-                'label_field' => 'reference'
+                'label' => 'Order',
+                'model' => Order::class,
+                'label_field' => 'reference',
             ],
         ];
     }

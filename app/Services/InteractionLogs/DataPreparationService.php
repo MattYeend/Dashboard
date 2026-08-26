@@ -69,6 +69,6 @@ class DataPreparationService
     private function resolveInteractableType(string $interactableType): string
     {
         return $this->registryService->modelClassForKey($interactableType)
-            ?? throw new \InvalidArgumentException("Unrecognised interactable type: {$interactableType}");
+            ?? throw new InvalidArgumentException("Unrecognised interactable type: {$interactableType}");
     }
 }

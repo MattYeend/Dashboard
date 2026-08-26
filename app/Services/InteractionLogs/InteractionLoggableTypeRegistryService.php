@@ -17,19 +17,19 @@ class InteractionLoggableTypeRegistryService
     {
         return [
             'company' => [
-                'label' => 'Company', 
-                'model' => Company::class, 
-                'label_field' => 'name'
-                ],
+                'label' => 'Company',
+                'model' => Company::class,
+                'label_field' => 'name',
+            ],
             'contact' => [
-                'label' => 'Contact', 
-                'model' => Contact::class, 
-                'label_field' => 'name'
+                'label' => 'Contact',
+                'model' => Contact::class,
+                'label_field' => 'name',
             ],
             'deal' => [
-                'label' => 'Deal', 
-                'model' => Deal::class, 
-                'label_field' => 'title'
+                'label' => 'Deal',
+                'model' => Deal::class,
+                'label_field' => 'title',
             ],
         ];
     }
