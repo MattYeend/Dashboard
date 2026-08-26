@@ -27,6 +27,7 @@ use App\Http\Controllers\PipelineStatusController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegistrationInterestController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TagController;
@@ -631,6 +632,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->middleware('can:delete backups')
             ->name('destroy');
     });
+
+    Route::get('/search', [SearchController::class, 'index'])
+        ->middleware('throttle:30,1')
+        ->name('search');
 });
 
 require __DIR__.'/settings.php';

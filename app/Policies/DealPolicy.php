@@ -20,7 +20,7 @@ class DealPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $this->authorisationService->isAdmin($user);
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**

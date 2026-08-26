@@ -49,6 +49,14 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can view any deals.
+     */
+    public function canViewAny(User $actor): bool
+    {
+        return $actor->can('view any deal');
+    }
+
+    /**
      * Determine whether the user can view the deal.
      */
     public function canView(User $actor, Deal $target): bool
