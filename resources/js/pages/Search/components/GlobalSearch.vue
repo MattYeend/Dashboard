@@ -53,12 +53,21 @@ const handleClickOutside = (event: MouseEvent) => {
     }
 };
 
-onMounted(() => document.addEventListener('click', handleClickOutside));
-onUnmounted(() => document.removeEventListener('click', handleClickOutside));
+onMounted(() => {
+    document.addEventListener('click', handleClickOutside);
+});
+
+onUnmounted(() => {
+    document.removeEventListener('click', handleClickOutside);
+
+    if (debounceTimer) {
+        clearTimeout(debounceTimer);
+    }
+});
 </script>
 
 <template>
-    <div ref="wrapper" class="relative">
+    <div ref="wrapper" class="relative z-50 w-full max-w-md">
         <Input
             v-model="term"
             type="search"

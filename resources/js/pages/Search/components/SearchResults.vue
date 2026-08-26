@@ -56,26 +56,31 @@ defineExpose({ onKeydown });
 
 <template>
     <div
-        class="absolute z-50 mt-1 w-full rounded border border-gray-500"
+        class="absolute top-full right-0 left-0 mt-2 overflow-hidden rounded-md border bg-background shadow-lg"
         tabindex="-1"
         @keydown="onKeydown"
     >
-        <p v-if="loading" class="p-3 text-sm text-gray-400">Searching...</p>
+        <p v-if="loading" class="p-3 text-sm text-muted-foreground">
+            Searching...
+        </p>
 
         <template v-else-if="groups.length">
             <div
                 v-for="group in groups"
                 :key="group.key"
-                class="border-b border-gray-500 last:border-b-0"
+                class="border-b last:border-b-0"
             >
-                <p class="px-3 pt-2 text-xs text-gray-400 uppercase">
+                <p
+                    class="px-3 pt-2 text-xs font-medium text-muted-foreground uppercase"
+                >
                     {{ group.label }}
                 </p>
+
                 <a
                     v-for="item in group.items"
                     :key="`${group.key}-${item.id}`"
                     :href="item.url"
-                    class="block px-3 py-2 text-sm"
+                    class="block px-3 py-2 text-sm hover:bg-muted"
                     @click.prevent="router.visit(item.url)"
                 >
                     {{ item.label }}
@@ -83,6 +88,8 @@ defineExpose({ onKeydown });
             </div>
         </template>
 
-        <p v-else class="p-3 text-sm text-gray-400">No results found.</p>
+        <p v-else class="p-3 text-sm text-muted-foreground">
+            No results found.
+        </p>
     </div>
 </template>
