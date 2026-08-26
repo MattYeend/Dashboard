@@ -6,6 +6,7 @@ use App\Models\Deal;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
@@ -20,6 +21,11 @@ beforeEach(function () {
     Role::firstOrCreate(['name' => 'Admin']);
     Role::firstOrCreate(['name' => 'Super Admin']);
     Role::firstOrCreate(['name' => 'User']);
+
+    Permission::firstOrCreate([
+        'name' => 'view companies',
+        'guard_name' => 'web',
+    ]);
 });
 
 describe('index', function () {
@@ -59,7 +65,7 @@ describe('index', function () {
             'name' => 'company-viewer',
         ]);
 
-        $role->givePermissionTo('view any companies');
+        $role->givePermissionTo('view companies');
 
         $user = User::factory()->create();
         $user->assignRole($role);
@@ -71,7 +77,8 @@ describe('index', function () {
         $this->actingAs($user)
             ->getJson('/search?q=Acme')
             ->assertOk()
-            ->assertJsonPath('companies.0.id', $company->id);
+            ->assertJsonPath('companies.0.id', $company->id)
+            ->assertJsonPath('companies.0.label', 'Acme Search Target');
     });
 
     test('does not search when query is shorter than two characters', function () {
@@ -198,22 +205,31 @@ describe('contacts', function () {
     test('returns matching contacts when actor has permission', function () {
         $user = $this->superAdminUser();
 
-        $contact = Contact::factory()->create([
-            'email' => 'acme@example.com',
-        ]);
+        $company = Company::factory()->create();
+
+        $contact = Contact::factory()
+            ->forModel($company)
+            ->create([
+                'email' => 'acme@example.com',
+            ]);
 
         $this->actingAs($user)
             ->getJson('/search?q=acme@example.com')
             ->assertOk()
-            ->assertJsonPath('contacts.0.id', $contact->id);
+            ->assertJsonPath('contacts.0.id', $contact->id)
+            ->assertJsonPath('contacts.0.label', 'acme@example.com');
     });
 
     test('does not return contacts when actor lacks permission', function () {
         $user = $this->userWithNoPermissions();
 
-        Contact::factory()->create([
-            'email' => 'acme@example.com',
-        ]);
+        $company = Company::factory()->create();
+
+        Contact::factory()
+            ->forModel($company)
+            ->create([
+                'email' => 'acme@example.com',
+            ]);
 
         $this->actingAs($user)
             ->getJson('/search?q=acme@example.com')
@@ -226,9 +242,13 @@ describe('orders', function () {
     test('returns matching orders when actor has permission', function () {
         $user = $this->superAdminUser();
 
-        $order = Order::factory()->create([
-            'order_number' => 'ACME-1001',
-        ]);
+        $company = Company::factory()->create();
+
+        $order = Order::factory()
+            ->forModel($company)
+            ->create([
+                'order_number' => 'ACME-1001',
+            ]);
 
         $this->actingAs($user)
             ->getJson('/search?q=ACME-1001')
@@ -240,9 +260,13 @@ describe('orders', function () {
     test('does not return orders when actor lacks permission', function () {
         $user = $this->userWithNoPermissions();
 
-        Order::factory()->create([
-            'order_number' => 'ACME-1001',
-        ]);
+        $company = Company::factory()->create();
+
+        Order::factory()
+            ->forModel($company)
+            ->create([
+                'order_number' => 'ACME-1001',
+            ]);
 
         $this->actingAs($user)
             ->getJson('/search?q=ACME-1001')
