@@ -111,6 +111,10 @@ class CompanyController extends Controller
             'can_export' => app(ActivityPolicyAuthorisationService::class)->canExport($request->user(), $company->id),
         ];
 
+        $data['interaction_log_permissions_meta'] = [
+            'can_create' => $request->user()->can('create interaction logs'),
+        ];
+
         return Inertia::render('Companies/Show', $data);
     }
 

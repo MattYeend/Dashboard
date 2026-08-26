@@ -111,6 +111,10 @@ class ContactController extends Controller
             'can_export' => app(ActivityPolicyAuthorisationService::class)->canExport($request->user(), $contact->id),
         ];
 
+        $data['interaction_log_permissions_meta'] = [
+            'can_create' => $request->user()->can('create interaction logs'),
+        ];
+
         return Inertia::render('Contacts/Show', $data);
     }
 
