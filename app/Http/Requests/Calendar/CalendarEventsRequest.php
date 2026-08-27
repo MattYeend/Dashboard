@@ -12,7 +12,7 @@ class CalendarEventsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,18 @@ class CalendarEventsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'start' => ['required', 'date'],
+            'end' => ['required', 'date', 'after_or_equal:start'],
         ];
+    }
+
+    protected function passedValidation(): void
+    {
+        $start = $this->date('start');
+        $end = $this->date('end');
+
+        if ($start->diffInDays($end) > 92) {
+            abort(422, 'Date range cannot exceed 92 days.');
+        }
     }
 }
