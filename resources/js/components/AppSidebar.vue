@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import {
     Archive,
+    CalendarDays,
     ClipboardList,
     Contact2,
     CreditCard,
@@ -36,6 +37,7 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as backupsIndex } from '@/routes/backups';
+import { index as calendarIndex } from '@/routes/calendar';
 import { index as systemIndex } from '@/routes/system';
 import type { NavGroup, NavItem } from '@/types';
 
@@ -116,6 +118,11 @@ const navGroups: NavGroup[] = [
     {
         title: 'Operations',
         items: [
+            {
+                title: 'Calendar',
+                href: calendarIndex(),
+                icon: CalendarDays,
+            },
             {
                 title: 'Tasks',
                 href: '/tasks',

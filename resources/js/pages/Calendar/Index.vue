@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { ref, computed, onMounted } from 'vue';
+import IndexHeader from '@/components/table/IndexHeader.vue';
 import CalendarGrid from './components/CalendarGrid.vue';
-import { events as eventsRoute } from '@/routes/calendar';
+import { events as calendarEventsRoute } from '@/routes/calendar';
 import type { CalendarEvent } from '@/types';
 
 type ViewMode = 'month' | 'week';
@@ -43,7 +44,7 @@ const fetchEvents = async (): Promise<void> => {
     isLoading.value = true;
 
     try {
-        const response = await axios.get(eventsRoute().url, {
+        const response = await axios.get(calendarEventsRoute.url(), {
             params: {
                 start: formatDate(rangeStart.value),
                 end: formatDate(rangeEnd.value),
@@ -96,46 +97,81 @@ onMounted(fetchEvents);
 </script>
 
 <template>
-    <div>
-        <div class="mb-4 flex items-center justify-between">
-            <div class="flex gap-2">
-                <button @click="goToPrevious" class="text-sm text-gray-300">
-                    Previous
-                </button>
-                <button @click="goToToday" class="text-sm text-gray-300">
-                    Today
-                </button>
-                <button @click="goToNext" class="text-sm text-gray-300">
-                    Next
-                </button>
-            </div>
-            <div class="flex gap-2">
-                <button
-                    @click="setViewMode('month')"
-                    :class="
-                        viewMode === 'month' ? 'text-white' : 'text-gray-400'
-                    "
-                    class="text-sm"
-                >
-                    Month
-                </button>
-                <button
-                    @click="setViewMode('week')"
-                    :class="
-                        viewMode === 'week' ? 'text-white' : 'text-gray-400'
-                    "
-                    class="text-sm"
-                >
-                    Week
-                </button>
-            </div>
-        </div>
+    <div class="py-6">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <IndexHeader title="Calendar" :can-create="false" />
 
-        <CalendarGrid
-            :view-mode="viewMode"
-            :current-date="currentDate"
-            :events="calendarEvents"
-            :is-loading="isLoading"
-        />
+            <div class="mb-4 flex items-center justify-between">
+                <div class="flex gap-2">
+                    <button
+                        type="button"
+                        class="text-sm text-gray-300 hover:text-gray-100"
+                        @click="goToPrevious"
+                    >
+                        Previous
+                    </button>
+
+                    <button
+                        type="button"
+                        class="text-sm text-gray-300 hover:text-gray-100"
+                        @click="goToToday"
+                    >
+                        Today
+                    </button>
+
+                    <button
+                        type="button"
+                        class="text-sm text-gray-300 hover:text-gray-100"
+                        @click="goToNext"
+                    >
+                        Next
+                    </button>
+                </div>
+
+                <div class="text-sm text-gray-300">
+                    {{
+                        currentDate.toLocaleDateString('en-GB', {
+                            month: 'long',
+                            year: 'numeric',
+                        })
+                    }}
+                </div>
+
+                <div class="flex gap-2">
+                    <button
+                        type="button"
+                        class="text-sm"
+                        :class="
+                            viewMode === 'month'
+                                ? 'text-white'
+                                : 'text-gray-400 hover:text-gray-200'
+                        "
+                        @click="setViewMode('month')"
+                    >
+                        Month
+                    </button>
+
+                    <button
+                        type="button"
+                        class="text-sm"
+                        :class="
+                            viewMode === 'week'
+                                ? 'text-white'
+                                : 'text-gray-400 hover:text-gray-200'
+                        "
+                        @click="setViewMode('week')"
+                    >
+                        Week
+                    </button>
+                </div>
+            </div>
+
+            <CalendarGrid
+                :view-mode="viewMode"
+                :current-date="currentDate"
+                :events="calendarEvents"
+                :is-loading="isLoading"
+            />
+        </div>
     </div>
 </template>
