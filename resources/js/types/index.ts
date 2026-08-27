@@ -926,3 +926,12 @@ export interface SearchResults {
 export interface InteractionLogPermissionsMeta {
     can_create: boolean;
 }
+
+export interface CalendarEvent {
+    id: number;
+    title: string;
+    start: string;
+    background_colour: string | null;
+    text_colour: string | null;
+    show_url: string;
+}
