@@ -31,21 +31,6 @@ class FilterService
     }
 
     /**
-     * Apply country filter to query.
-     *
-     * @param  Builder<Contact>  $query
-     * @return Builder<Contact>
-     */
-    public function applyCountry(Builder $query, ?string $country): Builder
-    {
-        if ($country === null) {
-            return $query;
-        }
-
-        return $query->where('country', $country);
-    }
-
-    /**
      * Apply all filters to query.
      *
      * @param  Builder<Contact>  $query
