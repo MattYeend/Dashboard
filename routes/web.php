@@ -4,6 +4,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ApiTokenController;
 use App\Http\Controllers\BackupController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
@@ -644,6 +645,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/search', [SearchController::class, 'index'])
         ->middleware('throttle:30,1')
         ->name('search');
+
+    Route::prefix('calendar')->name('calendar.')->group(function () {
+        Route::get('/', [CalendarController::class, 'index'])->name('index');
+        Route::get('/events', [CalendarController::class, 'events'])->name('events');
+    });
 });
 
 require __DIR__.'/settings.php';
