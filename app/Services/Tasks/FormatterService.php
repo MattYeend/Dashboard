@@ -42,4 +42,16 @@ class FormatterService
             ] : null,
         ];
     }
+
+    public function formatForCalendar(Task $task): array
+    {
+        return [
+            'id' => $task->id,
+            'title' => $task->title,
+            'start' => $task->due_date?->toDateString() ?? $task->assigned_date?->toDateString(),
+            'background_colour' => $task->status?->background_colour,
+            'text_colour' => $task->status?->text_colour,
+            'show_url' => route('tasks.show', $task->id),
+        ];
+    }
 }

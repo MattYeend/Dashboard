@@ -73,6 +73,17 @@ class QueryService
         ];
     }
 
+    public function forDateRange(string $start, string $end): Collection
+    {
+        return Task::query()
+            ->where(function ($query) use ($start, $end) {
+                $query->whereBetween('due_date', [$start, $end])
+                    ->orWhereBetween('assigned_date', [$start, $end]);
+            })
+            ->with(['assignee', 'status'])
+            ->get();
+    }
+
     /**
      * Build the base query with filters.
      */

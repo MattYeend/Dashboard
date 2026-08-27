@@ -425,11 +425,14 @@ class RolePermissionSeeder extends Seeder
             'force delete activities',
             'export activities',
 
-            // Interaction log management
+            // Interaction log Management
             'create interaction logs',
             'update interaction logs',
             'delete interaction logs',
             'force delete interaction logs',
+
+            // Calendar Management
+            'view calendar',
         ];
 
         foreach ($permissions as $permission) {
@@ -750,6 +753,7 @@ class RolePermissionSeeder extends Seeder
             'update interaction logs',
             'delete interaction logs',
             'force delete interaction logs',
+            'view calendar',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -1749,6 +1753,7 @@ class RolePermissionSeeder extends Seeder
             'view any labels',
             'view labels',
             'view activities',
+            'view calendar',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -1842,5 +1847,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Tickets');
         $this->command->info('- Labels');
         $this->command->info('- Activities');
+        $this->command->info('- Calendars');
     }
 }
