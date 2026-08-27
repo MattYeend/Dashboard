@@ -4,46 +4,67 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Attachments\StoreAttachmentRequest;
 use App\Models\Attachment;
+use App\Services\Attachments\ManagementService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Storage;
 
 class AttachmentController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct(
+        protected readonly ManagementService $management,
+    ) {}
+
     /**
-     * Display a listing of the resource.
+     * Store a newly uploaded attachment.
+     *
+     * Validation (including MIME/size checks) is handled upstream by
+     * StoreAttachmentRequest.
      */
-    public function index()
+    public function store(StoreAttachmentRequest $request): JsonResponse|RedirectResponse
     {
-        //
+        $attachment = $this->management->store($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($attachment, 201);
+        }
+
+        return redirect()->back();
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Download an attachment's file.
+     *
+     * The file is streamed from the private disk — never a public URL —
+     * and gated by the 'download' policy on every request.
      */
-    public function create()
+    public function download(Attachment $attachment): StreamedResponse
     {
-        //
+        $this->authorize('download', $attachment);
+
+        return Storage::disk(Attachment::DISK)->download(
+            $attachment->disk_path,
+            $attachment->original_filename,
+        );
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Soft delete an attachment.
      */
-    public function store(StoreAttachmentRequest $request)
+    public function destroy(Attachment $attachment): JsonResponse|RedirectResponse
     {
-        //
-    }
+        $this->authorize('delete', $attachment);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Attachment $attachment)
-    {
-        //
-    }
+        $this->management->destroy($attachment, request()->user());
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Attachment $attachment)
-    {
-        //
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->back();
     }
 }
