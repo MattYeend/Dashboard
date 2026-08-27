@@ -126,6 +126,7 @@ class QueryService
             'permissions_meta' => [
                 'can_create' => $user->can('create', PipelineStage::class),
                 'can_view_any' => $user->can('viewAny', PipelineStage::class),
+                'can_export' => $user->can('export', PipelineStage::class),
             ],
         ];
     }

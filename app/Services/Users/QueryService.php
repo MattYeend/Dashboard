@@ -113,6 +113,7 @@ class QueryService
             'permissions_meta' => [
                 'can_create' => $user->can('create', User::class),
                 'can_view_any' => $user->can('viewAny', User::class),
+                'can_export' => $user->can('export', User::class),
             ],
         ];
     }

@@ -16,6 +16,7 @@ import {
     destroy as invoiceItemsDestroy,
     restore as invoiceItemsRestore,
     forceDelete as invoiceItemsForceDelete,
+    exportMethod as invoiceItemsExport,
 } from '@/routes/invoices/items';
 import invoiceItemsBulk from '@/routes/invoices/items/bulk';
 import type {
@@ -303,6 +304,8 @@ function formatMoney(pence: number): string {
                 :create-href="invoiceItemsCreate.url({ invoice: invoice.id })"
                 create-label="Add Item"
                 :can-create="permissions_meta.can_create"
+                :export-href="invoiceItemsExport.url({ invoice: invoice.id })"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

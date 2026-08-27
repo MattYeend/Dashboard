@@ -13,6 +13,7 @@ import {
     create as contactsCreate,
     edit as contactsEdit,
     destroy as contactsDestroy,
+    exportMethod as contactsExport,
 } from '@/routes/contacts';
 import contactsBulk from '@/routes/contacts/bulk';
 import type {
@@ -171,6 +172,8 @@ function bulkDelete(): void {
                 :create-href="contactsCreate.url()"
                 create-label="Add Contact"
                 :can-create="permissions_meta.can_create"
+                :export-href="contactsExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

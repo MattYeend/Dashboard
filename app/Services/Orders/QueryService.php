@@ -145,14 +145,11 @@ class QueryService
      */
     protected function getPermissions(User $user): array
     {
-        if (! $user) {
-            return ['permissions_meta' => []];
-        }
-
         return [
             'permissions_meta' => [
                 'can_create' => $user->can('create', Order::class),
                 'can_view_any' => $user->can('viewAny', Order::class),
+                'can_export' => $user->can('export', Order::class),
             ],
         ];
     }

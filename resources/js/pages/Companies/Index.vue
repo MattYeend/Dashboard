@@ -13,6 +13,7 @@ import {
     show as companiesShow,
     edit as companiesEdit,
     destroy as companiesDestroy,
+    exportMethod as companiesExport,
 } from '@/routes/companies';
 import companiesBulk from '@/routes/companies/bulk';
 import type {
@@ -176,6 +177,8 @@ function truncate(value: string | null | undefined, length = 30): string {
                 :create-href="companiesCreate.url()"
                 create-label="Add Company"
                 :can-create="permissions_meta.can_create"
+                :export-href="companiesExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

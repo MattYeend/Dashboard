@@ -13,6 +13,7 @@ import {
     show as ticketStatusesShow,
     edit as ticketStatusesEdit,
     destroy as ticketStatusesDestroy,
+    exportMethod as ticketStatusesExport,
 } from '@/routes/ticket-statuses';
 import ticketStatusesBulk from '@/routes/ticket-statuses/bulk';
 import type {
@@ -179,6 +180,8 @@ function formatDate(value: string | null): string {
                 :create-href="ticketStatusesCreate.url()"
                 create-label="Add Ticket Status"
                 :can-create="permissions_meta.can_create"
+                :export-href="ticketStatusesExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

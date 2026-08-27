@@ -13,6 +13,7 @@ import {
     show as ticketPrioritiesShow,
     edit as ticketPrioritiesEdit,
     destroy as ticketPrioritiesDestroy,
+    exportMethod as ticketPrioritiesExport,
 } from '@/routes/ticket-priorities';
 import ticketPrioritiesBulk from '@/routes/ticket-priorities/bulk';
 import type {
@@ -200,6 +201,8 @@ function formatDate(value: string | null): string {
                 :create-href="ticketPrioritiesCreate.url()"
                 create-label="Add Ticket Priority"
                 :can-create="permissions_meta.can_create"
+                :export-href="ticketPrioritiesExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

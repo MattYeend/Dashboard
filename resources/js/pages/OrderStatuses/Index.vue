@@ -13,6 +13,7 @@ import {
     show as orderStatusesShow,
     edit as orderStatusesEdit,
     destroy as orderStatusesDestroy,
+    exportMethod as orderStatusesExport,
 } from '@/routes/order-statuses';
 import orderStatusesBulk from '@/routes/order-statuses/bulk';
 import type {
@@ -166,6 +167,8 @@ function bulkDelete(): void {
                 :create-href="orderStatusesCreate.url()"
                 create-label="Add Order Status"
                 :can-create="permissions_meta.can_create"
+                :export-href="orderStatusesExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

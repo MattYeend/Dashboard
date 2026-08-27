@@ -13,6 +13,7 @@ import {
     create as addressesCreate,
     edit as addressesEdit,
     destroy as addressesDestroy,
+    exportMethod as addressesExport,
 } from '@/routes/addresses';
 import addressesBulk from '@/routes/addresses/bulk';
 import type {
@@ -171,6 +172,8 @@ function bulkDelete(): void {
                 :create-href="addressesCreate.url()"
                 create-label="Add Address"
                 :can-create="permissions_meta.can_create"
+                :export-href="addressesExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

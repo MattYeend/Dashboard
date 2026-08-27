@@ -102,6 +102,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [ContactController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [ContactController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [ContactController::class, 'export'])->name('export');
+        Route::post('/import', [ContactController::class, 'import'])->name('import');
+
         Route::get('/', [ContactController::class, 'index'])->name('index');
         Route::get('/create', [ContactController::class, 'create'])->name('create');
         Route::post('/', [ContactController::class, 'store'])->name('store');
@@ -378,6 +381,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/bulk/restore', [InvoiceItemController::class, 'bulkRestore'])->name('bulk.restore');
             Route::post('/{id}/restore', [InvoiceItemController::class, 'restore'])->name('restore');
             Route::delete('/{id}/force', [InvoiceItemController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/export', [InvoiceItemController::class, 'export'])->name('export');
+            Route::post('/import', [InvoiceItemController::class, 'import'])->name('import');
 
             Route::get('/', [InvoiceItemController::class, 'index'])->name('index');
             Route::get('/create', [InvoiceItemController::class, 'create'])->name('create');

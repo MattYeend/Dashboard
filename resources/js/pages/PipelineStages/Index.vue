@@ -17,6 +17,7 @@ import {
     destroy as pipelineStagesDestroy,
     restore as pipelineStagesRestore,
     forceDelete as pipelineStagesForceDelete,
+    exportMethod as pipelineStagesExport,
 } from '@/routes/pipelines/stages';
 import pipelineStagesBulk from '@/routes/pipelines/stages/bulk';
 import type {
@@ -298,6 +299,10 @@ function bulkRestore(): void {
                 "
                 create-label="Add Stage"
                 :can-create="permissions_meta.can_create"
+                :export-href="
+                    pipelineStagesExport.url({ pipeline: pipeline.id })
+                "
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

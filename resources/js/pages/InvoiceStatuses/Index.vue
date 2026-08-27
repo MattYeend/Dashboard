@@ -13,6 +13,7 @@ import {
     show as invoiceStatusesShow,
     edit as invoiceStatusesEdit,
     destroy as invoiceStatusesDestroy,
+    exportMethod as invoiceStatusesExport,
 } from '@/routes/invoice-statuses';
 import invoiceStatusesBulk from '@/routes/invoice-statuses/bulk';
 import type {
@@ -166,6 +167,8 @@ function bulkDelete(): void {
                 :create-href="invoiceStatusesCreate.url()"
                 create-label="Add Invoice Status"
                 :can-create="permissions_meta.can_create"
+                :export-href="invoiceStatusesExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar
