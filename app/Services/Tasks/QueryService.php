@@ -7,6 +7,7 @@ use App\Models\TaskStatus;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 class QueryService
 {
@@ -73,6 +74,9 @@ class QueryService
         ];
     }
 
+    /**
+     * Get tasks whose due date or assigned date falls within the given range.
+     */
     public function forDateRange(string $start, string $end): Collection
     {
         return Task::query()

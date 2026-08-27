@@ -43,6 +43,11 @@ class FormatterService
         ];
     }
 
+    /**
+     * Format a task as a slim calendar event (title, date, status colours, link).
+     *
+     * @return array<string, mixed>
+     */
     public function formatForCalendar(Task $task): array
     {
         return [

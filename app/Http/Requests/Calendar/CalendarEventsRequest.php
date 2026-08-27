@@ -28,6 +28,9 @@ class CalendarEventsRequest extends FormRequest
         ];
     }
 
+    /**
+     * Reject ranges wider than the calendar is allowed to load in one request.
+     */
     protected function passedValidation(): void
     {
         $start = $this->date('start');
