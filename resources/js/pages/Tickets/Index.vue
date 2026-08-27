@@ -13,6 +13,7 @@ import {
     create as ticketsCreate,
     edit as ticketsEdit,
     destroy as ticketsDestroy,
+    exportMethod as ticketsExport,
 } from '@/routes/tickets';
 import ticketsBulk from '@/routes/tickets/bulk';
 import type {
@@ -170,6 +171,8 @@ function bulkDelete(): void {
                 :create-href="ticketsCreate.url()"
                 create-label="Add Ticket"
                 :can-create="permissions_meta.can_create"
+                :export-href="ticketsExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

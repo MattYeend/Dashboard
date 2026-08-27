@@ -13,6 +13,7 @@ import {
     create as ordersCreate,
     edit as ordersEdit,
     destroy as ordersDestroy,
+    exportMethod as ordersExport,
 } from '@/routes/orders';
 import ordersBulk from '@/routes/orders/bulk';
 import type {
@@ -184,6 +185,8 @@ function formatDate(value: string | null): string {
                 :create-href="ordersCreate.url()"
                 create-label="Add Order"
                 :can-create="permissions_meta.can_create"
+                :export-href="ordersExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

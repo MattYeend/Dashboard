@@ -13,6 +13,7 @@ import {
     show as industriesShow,
     edit as industriesEdit,
     destroy as industriesDestroy,
+    exportMethod as industriesExport,
 } from '@/routes/industries';
 import industriesBulk from '@/routes/industries/bulk';
 import type {
@@ -187,6 +188,8 @@ function formatDate(value: string | null): string {
                 :create-href="industriesCreate.url()"
                 create-label="Add Industry"
                 :can-create="permissions_meta.can_create"
+                :export-href="industriesExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

@@ -13,6 +13,7 @@ import {
     create as categoriesCreate,
     edit as categoriesEdit,
     destroy as categoriesDestroy,
+    exportMethod as categoriesExport,
 } from '@/routes/categories';
 import categoriesBulk from '@/routes/categories/bulk';
 import type {
@@ -169,6 +170,8 @@ function bulkDelete(): void {
                 :create-href="categoriesCreate.url()"
                 create-label="Add Category"
                 :can-create="permissions_meta.can_create"
+                :export-href="categoriesExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

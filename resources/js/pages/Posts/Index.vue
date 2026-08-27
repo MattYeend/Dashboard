@@ -14,6 +14,7 @@ import {
     create as postsCreate,
     edit as postsEdit,
     destroy as postsDestroy,
+    exportMethod as postsExport,
 } from '@/routes/posts';
 import postsBulk from '@/routes/posts/bulk';
 import type {
@@ -201,6 +202,8 @@ function formatDate(value: string | null): string {
                 :create-href="postsCreate.url()"
                 create-label="Add Post"
                 :can-create="permissions_meta.can_create"
+                :export-href="postsExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

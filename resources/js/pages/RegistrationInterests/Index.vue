@@ -10,6 +10,7 @@ import {
     index as registrationInterestsIndex,
     show as registrationInterestShow,
     destroy as registrationInterestDestroy,
+    exportMethod as registrationInterestsExport,
 } from '@/routes/registration-interests';
 import bulk from '@/routes/registration-interests/bulk';
 import type {
@@ -108,7 +109,12 @@ const requestDestroy = (id: number) => {
 
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <IndexHeader title="Registration interests" :can-create="false" />
+            <IndexHeader
+                title="Registration interests"
+                :can-create="false"
+                :export-href="registrationInterestsExport.url()"
+                :can-export="permissions_meta.can_export"
+            />
 
             <FilterBar
                 v-model="filters"

@@ -382,7 +382,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/{id}/force', [InvoiceItemController::class, 'forceDelete'])->name('force-delete');
 
             Route::get('/export', [InvoiceItemController::class, 'export'])->name('export');
-            Route::post('/import', [InvoiceItemController::class, 'import'])->name('import');            
+            Route::post('/import', [InvoiceItemController::class, 'import'])->name('import');
 
             Route::get('/', [InvoiceItemController::class, 'index'])->name('index');
             Route::get('/create', [InvoiceItemController::class, 'create'])->name('create');

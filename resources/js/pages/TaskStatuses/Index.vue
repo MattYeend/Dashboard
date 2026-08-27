@@ -13,6 +13,7 @@ import {
     show as taskStatusesShow,
     edit as taskStatusesEdit,
     destroy as taskStatusesDestroy,
+    exportMethod as taskStatusesExport,
 } from '@/routes/task-statuses';
 import taskStatusesBulk from '@/routes/task-statuses/bulk';
 import type {
@@ -179,6 +180,8 @@ function formatDate(value: string | null): string {
                 :create-href="taskStatusesCreate.url()"
                 create-label="Add Task Status"
                 :can-create="permissions_meta.can_create"
+                :export-href="taskStatusesExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

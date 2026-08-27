@@ -13,6 +13,7 @@ import {
     create as pipelinesCreate,
     edit as pipelinesEdit,
     destroy as pipelinesDestroy,
+    exportMethod as pipelinesExport,
 } from '@/routes/pipelines';
 import pipelinesBulk from '@/routes/pipelines/bulk';
 import type {
@@ -168,6 +169,8 @@ function bulkDelete(): void {
                 :create-href="pipelinesCreate.url()"
                 create-label="Add Pipeline"
                 :can-create="permissions_meta.can_create"
+                :export-href="pipelinesExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

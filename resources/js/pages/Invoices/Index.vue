@@ -13,6 +13,7 @@ import {
     show as invoicesShow,
     edit as invoicesEdit,
     destroy as invoicesDestroy,
+    exportMethod as invoicesExport,
 } from '@/routes/invoices';
 import invoicesBulk from '@/routes/invoices/bulk';
 import type {
@@ -189,6 +190,8 @@ function formatMoney(pence: number, currency: string): string {
                 :create-href="invoicesCreate.url()"
                 create-label="Add Invoice"
                 :can-create="permissions_meta.can_create"
+                :export-href="invoicesExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

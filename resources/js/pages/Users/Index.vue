@@ -13,6 +13,7 @@ import {
     create as usersCreate,
     edit as usersEdit,
     destroy as usersDestroy,
+    exportMethod as usersExport,
 } from '@/routes/users';
 import usersBulk from '@/routes/users/bulk';
 import type {
@@ -181,6 +182,8 @@ function formatDate(value: string | null): string {
                 :create-href="usersCreate.url()"
                 create-label="Add User"
                 :can-create="permissions_meta.can_create"
+                :export-href="usersExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

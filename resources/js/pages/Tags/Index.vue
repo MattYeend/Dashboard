@@ -13,6 +13,7 @@ import {
     show as tagsShow,
     edit as tagsEdit,
     destroy as tagsDestroy,
+    exportMethod as tagsExport,
 } from '@/routes/tags';
 import tagsBulk from '@/routes/tags/bulk';
 import type {
@@ -178,6 +179,8 @@ function formatDate(value: string | null): string {
                 :create-href="tagsCreate.url()"
                 create-label="Add Tag"
                 :can-create="permissions_meta.can_create"
+                :export-href="tagsExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

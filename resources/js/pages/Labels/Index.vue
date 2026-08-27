@@ -13,6 +13,7 @@ import {
     show as labelsShow,
     edit as labelsEdit,
     destroy as labelsDestroy,
+    exportMethod as labelsExport,
 } from '@/routes/labels';
 import labelsBulk from '@/routes/labels/bulk';
 import type {
@@ -166,6 +167,8 @@ function bulkDelete(): void {
                 :create-href="labelsCreate.url()"
                 create-label="Add Label"
                 :can-create="permissions_meta.can_create"
+                :export-href="labelsExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

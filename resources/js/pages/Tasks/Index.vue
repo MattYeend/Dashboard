@@ -13,6 +13,7 @@ import {
     show as tasksShow,
     edit as tasksEdit,
     destroy as tasksDestroy,
+    exportMethod as tasksExport,
 } from '@/routes/tasks';
 import tasksBulk from '@/routes/tasks/bulk';
 import type {
@@ -181,6 +182,8 @@ function formatDate(value: string | null): string {
                 :create-href="tasksCreate.url()"
                 create-label="Add Task"
                 :can-create="permissions_meta.can_create"
+                :export-href="tasksExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar

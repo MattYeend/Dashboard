@@ -13,6 +13,7 @@ import {
     create as dealsCreate,
     edit as dealsEdit,
     destroy as dealsDestroy,
+    exportMethod as dealsExport,
 } from '@/routes/deals';
 import dealsBulk from '@/routes/deals/bulk';
 import type {
@@ -170,6 +171,8 @@ function bulkDelete(): void {
                 :create-href="dealsCreate.url()"
                 create-label="Add Deal"
                 :can-create="permissions_meta.can_create"
+                :export-href="dealsExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
             <FilterBar
