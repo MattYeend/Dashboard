@@ -101,6 +101,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [ContactController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [ContactController::class, 'forceDelete'])->name('force-delete');
 
+        Route::get('/export', [ContactController::class, 'export'])->name('export');
+        Route::post('/import', [ContactController::class, 'import'])->name('import');
+
         Route::get('/', [ContactController::class, 'index'])->name('index');
         Route::get('/create', [ContactController::class, 'create'])->name('create');
         Route::post('/', [ContactController::class, 'store'])->name('store');
