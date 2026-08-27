@@ -144,6 +144,7 @@ class QueryService
             'permissions_meta' => [
                 'can_create' => $user->can('create', Ticket::class),
                 'can_view_any' => $user->can('viewAny', Ticket::class),
+                'can_export' => $user->can('export', Ticket::class),
             ],
         ];
     }

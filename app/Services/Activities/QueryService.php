@@ -151,15 +151,9 @@ class QueryService
     {
         return [
             'permissions_meta' => [
-                'can_create' => $user->can(
-                    'create',
-                    Activity::class
-                ),
-
-                'can_view_any' => $user->can(
-                    'viewAny',
-                    Activity::class
-                ),
+                'can_create' => $user->can('create', Activity::class),
+                'can_view_any' => $user->can('viewAny', Activity::class),
+                'can_export' => $user->can('export', Activity::class),
             ],
         ];
     }

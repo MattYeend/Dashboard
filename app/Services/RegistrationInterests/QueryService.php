@@ -62,6 +62,7 @@ class QueryService
             'permissions_meta' => [
                 'can_create' => false,
                 'can_view_any' => $user->can('viewAny', RegistrationInterest::class),
+                'can_export' => $user->can('export', RegistrationInterest::class),
             ],
         ];
     }

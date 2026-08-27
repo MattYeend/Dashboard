@@ -110,14 +110,11 @@ class QueryService
      */
     protected function getPermissions(User $user): array
     {
-        if (! $user) {
-            return ['permissions_meta' => []];
-        }
-
         return [
             'permissions_meta' => [
                 'can_create' => $user->can('create', PipelineStatus::class),
                 'can_view_any' => $user->can('viewAny', PipelineStatus::class),
+                'can_export' => $user->can('export', PipelineStatus::class),
             ],
         ];
     }
