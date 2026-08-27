@@ -433,6 +433,15 @@ class RolePermissionSeeder extends Seeder
 
             // Calendar Management
             'view calendar',
+
+            // Attachment management
+            'view any attachments',
+            'view attachments',
+            'create attachments',
+            'delete attachments',
+            'restore attachments',
+            'force delete attachments',
+            'download attachments',
         ];
 
         foreach ($permissions as $permission) {
@@ -754,6 +763,13 @@ class RolePermissionSeeder extends Seeder
             'delete interaction logs',
             'force delete interaction logs',
             'view calendar',
+            'view any attachments',
+            'view attachments',
+            'create attachments',
+            'delete attachments',
+            'restore attachments',
+            'force delete attachments',
+            'download attachments',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -1024,6 +1040,12 @@ class RolePermissionSeeder extends Seeder
             'create interaction logs',
             'update interaction logs',
             'delete interaction logs',
+            'view any attachments',
+            'view attachments',
+            'create attachments',
+            'delete attachments',
+            'restore attachments',
+            'download attachments',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1204,6 +1226,11 @@ class RolePermissionSeeder extends Seeder
             'delete activities',
             'create interaction logs',
             'update interaction logs',
+            'view any attachments',
+            'view attachments',
+            'create attachments',
+            'delete attachments',
+            'download attachments',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -1257,6 +1284,9 @@ class RolePermissionSeeder extends Seeder
             'view any labels',
             'view labels',
             'view activities',
+            'view any attachments',
+            'view attachments',
+            'download attachments',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -1366,6 +1396,11 @@ class RolePermissionSeeder extends Seeder
             'restore activities',
             'create interaction logs',
             'update interaction logs',
+            'view any attachments',
+            'view attachments',
+            'create attachments',
+            'delete attachments',
+            'download attachments',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
 
@@ -1606,6 +1641,11 @@ class RolePermissionSeeder extends Seeder
             'create interaction logs',
             'update interaction logs',
             'delete interaction logs',
+            'view any attachments',
+            'view attachments',
+            'create attachments',
+            'delete attachments',
+            'download attachments',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -1848,5 +1888,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Labels');
         $this->command->info('- Activities');
         $this->command->info('- Calendars');
+        $this->command->info('- Attachments');
     }
 }

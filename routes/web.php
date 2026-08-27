@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ApiTokenController;
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoryController;
@@ -655,6 +656,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('calendar')->name('calendar.')->group(function () {
         Route::get('/', [CalendarController::class, 'index'])->name('index');
         Route::get('/events', [CalendarController::class, 'events'])->name('events');
+    });
+
+    Route::prefix('attachments')->name('attachments.')->group(function () {
+        Route::post('/', [AttachmentController::class, 'store'])->name('store');
+        Route::get('/{attachment}/download', [AttachmentController::class, 'download'])->name('download');
+        Route::delete('/{attachment}', [AttachmentController::class, 'destroy'])->name('destroy');
     });
 });
 
