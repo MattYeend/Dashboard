@@ -796,6 +796,7 @@ export interface InteractionLog {
 export interface PermissionsMeta {
     can_create: boolean;
     can_view_any: boolean;
+    can_export?: boolean;
 }
 
 export interface Pagination {
