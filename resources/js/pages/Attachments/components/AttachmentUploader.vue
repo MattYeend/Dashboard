@@ -65,7 +65,7 @@ function submit() {
 
             if (fileInput.value) {
                 fileInput.value.value = '';
-            
+
                 emit('uploaded');
             }
         },

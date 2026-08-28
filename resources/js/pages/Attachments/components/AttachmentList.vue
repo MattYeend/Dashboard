@@ -20,11 +20,15 @@ function destroy(attachment: Attachment) {
             class="flex items-center justify-between py-2"
         >
             <div>
-                <a :href="attachment.download_url" class="text-sm text-gray-300 hover:underline">
+                <a
+                    :href="attachment.download_url"
+                    class="text-sm text-gray-300 hover:underline"
+                >
                     {{ attachment.original_filename }}
                 </a>
                 <p class="text-xs text-gray-400">
-                    {{ attachment.size_human }} · uploaded by {{ attachment.creator?.name ?? 'System' }}
+                    {{ attachment.size_human }} · uploaded by
+                    {{ attachment.creator?.name ?? 'System' }}
                 </p>
             </div>
             <button

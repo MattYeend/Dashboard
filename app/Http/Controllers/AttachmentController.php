@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Attachments\StoreAttachmentRequest;
 use App\Models\Attachment;
 use App\Services\Attachments\ManagementService;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AttachmentController extends Controller
 {
@@ -46,7 +47,7 @@ class AttachmentController extends Controller
     {
         $this->authorize('download', $attachment);
 
-        /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+        /** @var FilesystemAdapter $disk */
         $disk = Storage::disk(Attachment::DISK);
 
         return $disk->download(
