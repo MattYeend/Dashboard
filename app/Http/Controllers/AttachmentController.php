@@ -46,7 +46,10 @@ class AttachmentController extends Controller
     {
         $this->authorize('download', $attachment);
 
-        return Storage::disk(Attachment::DISK)->download(
+        /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+        $disk = Storage::disk(Attachment::DISK);
+
+        return $disk->download(
             $attachment->disk_path,
             $attachment->original_filename,
         );

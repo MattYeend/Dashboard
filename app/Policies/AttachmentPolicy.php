@@ -4,24 +4,22 @@ namespace App\Policies;
 
 use App\Models\Attachment;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\Attachments\PolicyAuthorisationService;
 
 class AttachmentPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * The authorisation service handling permission checks.
      */
-    public function viewAny(User $user): bool
-    {
-        return false;
-    }
+    protected PolicyAuthorisationService $authorisationService;
 
     /**
-     * Determine whether the user can view the model.
+     * Inject the required service into the policy.
      */
-    public function view(User $user, Attachment $attachment): bool
-    {
-        return false;
+    public function __construct(
+        PolicyAuthorisationService $authorisationService
+    ) {
+        $this->authorisationService = $authorisationService;
     }
 
     /**
@@ -29,15 +27,19 @@ class AttachmentPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canCreate($user);
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can download the model's file.
+     *
+     * This is the sole gate standing between a request and the
+     * physical file on disk - the download route has no other
+     * authorisation check.
      */
-    public function update(User $user, Attachment $attachment): bool
+    public function download(User $user, Attachment $attachment): bool
     {
-        return false;
+        return $this->authorisationService->canDownload($user, $attachment);
     }
 
     /**
@@ -45,7 +47,7 @@ class AttachmentPolicy
      */
     public function delete(User $user, Attachment $attachment): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $attachment);
     }
 
     /**
@@ -53,7 +55,7 @@ class AttachmentPolicy
      */
     public function restore(User $user, Attachment $attachment): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $attachment);
     }
 
     /**
@@ -61,6 +63,6 @@ class AttachmentPolicy
      */
     public function forceDelete(User $user, Attachment $attachment): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $attachment);
     }
 }
