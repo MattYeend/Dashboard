@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Activity;
 use App\Models\Address;
+use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Company;
@@ -34,6 +35,7 @@ use App\Observers\UserObserver;
 use App\Policies\ActivityPolicy;
 use App\Policies\AddressPolicy;
 use App\Policies\ApiTokenPolicy;
+use App\Policies\AttachmentPolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\CommentPolicy;
 use App\Policies\CompanyPolicy;
@@ -100,6 +102,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
         Gate::policy(Activity::class, ActivityPolicy::class);
         Gate::policy(Address::class, AddressPolicy::class);
+        Gate::policy(Attachment::class, AttachmentPolicy::class);
         Gate::policy(Category::class, CategoryPolicy::class);
         Gate::policy(Comment::class, CommentPolicy::class);
         Gate::policy(Company::class, CompanyPolicy::class);

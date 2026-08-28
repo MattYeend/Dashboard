@@ -703,6 +703,15 @@ class Log extends Model
 
     public const ACTION_FORCE_DELETE_INTERACTION_LOG = 327;
 
+    // Attachment Managemetn
+    public const ACTION_CREATE_ATTACHMENT = 328;
+
+    public const ACTION_DELETE_ATTACHMENT = 329;
+
+    public const ACTION_FORCE_DELETE_ATTACHMENT = 330;
+
+    public const ACTION_RESTORE_ATTACHMENT = 331;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
