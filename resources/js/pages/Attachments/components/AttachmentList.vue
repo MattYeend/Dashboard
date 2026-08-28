@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Attachment } from '@/types';
 import { router } from '@inertiajs/vue3';
+import type { Attachment } from '@/types';
 
 defineProps<{
     attachments: Attachment[];

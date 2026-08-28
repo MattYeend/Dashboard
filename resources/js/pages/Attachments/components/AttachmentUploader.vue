@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
-import { Input } from '@/components/ui/input';
+import { ref } from 'vue';
 import InputError from '@/components/InputError.vue';
+import { Input } from '@/components/ui/input';
 
 const props = defineProps<{
     attachableType: string;
@@ -42,11 +42,13 @@ function onFileSelected(event: Event) {
 
     if (!allowedMimeTypes.includes(file.type)) {
         clientError.value = 'That file type is not permitted.';
+
         return;
     }
 
     if (file.size > maxSizeBytes) {
         clientError.value = 'The file may not be larger than 10MB.';
+
         return;
     }
 
@@ -60,8 +62,12 @@ function submit() {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();
-            if (fileInput.value) fileInput.value.value = '';
-            emit('uploaded');
+
+            if (fileInput.value) {
+                fileInput.value.value = '';
+            
+                emit('uploaded');
+            }
         },
     });
 }
