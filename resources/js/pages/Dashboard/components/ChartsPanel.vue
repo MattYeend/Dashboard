@@ -20,10 +20,7 @@ const props = defineProps<Props>();
             </p>
 
             <div class="grid grid-cols-3 gap-4">
-                <div
-                    v-for="item in chart.data"
-                    :key="item.label"
-                >
+                <div v-for="item in chart.data" :key="item.label">
                     <p class="text-xs text-gray-400">
                         {{ item.label }}
                     </p>
@@ -35,10 +32,7 @@ const props = defineProps<Props>();
             </div>
         </div>
 
-        <p
-            v-if="props.charts.length === 0"
-            class="text-sm text-gray-400"
-        >
+        <p v-if="props.charts.length === 0" class="text-sm text-gray-400">
             No charts configured yet.
         </p>
     </div>

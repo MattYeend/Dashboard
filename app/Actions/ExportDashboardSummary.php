@@ -25,6 +25,6 @@ class ExportDashboardSummary
      */
     private function sanitiseCell(string $value): string
     {
-        return preg_match('/^[=+\-@]/', $value) ? "'" . $value : $value;
+        return preg_match('/^[=+\-@]/', $value) ? "'".$value : $value;
     }
 }

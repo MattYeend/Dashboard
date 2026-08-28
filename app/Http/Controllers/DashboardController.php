@@ -84,7 +84,7 @@ class DashboardController extends Controller
             }
 
             fclose($handle);
-        }, 'dashboard-summary-' . now()->format('Y-m-d') . '.csv', [
+        }, 'dashboard-summary-'.now()->format('Y-m-d').'.csv', [
             'Content-Type' => 'text/csv',
         ]);
     }

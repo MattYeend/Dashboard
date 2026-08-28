@@ -7,12 +7,10 @@ use App\Models\User;
 class DashboardChartsService
 {
     public function __construct(
-        protected DealStatsService $dealStatsService,
+        protected DashboardStatsService $dashboardStatsService,
     ) {}
 
     /**
-     * Build the dashboard chart data for the given user.
-     *
      * @return array<int, array{
      *     key: string,
      *     label: string,
@@ -21,27 +19,75 @@ class DashboardChartsService
      */
     public function forUser(User $user): array
     {
-        $deals = $this->dealStatsService->summary();
+        $stats = $this->dashboardStatsService->forUser($user);
 
-        return [
-            [
-                'key' => 'deals',
+        $groups = [
+            'tasks' => [
+                'label' => 'Tasks',
+                'metrics' => [
+                    'completed' => 'Completed',
+                    'outstanding' => 'Outstanding',
+                ],
+            ],
+            'companies' => [
+                'label' => 'Companies',
+                'metrics' => [
+                    'total' => 'Total',
+                    'created_this_month' => 'New this month',
+                ],
+            ],
+            'deals' => [
                 'label' => 'Deals',
-                'data' => [
-                    [
-                        'label' => 'Total',
-                        'value' => $deals['total'],
-                    ],
-                    [
-                        'label' => 'Won',
-                        'value' => $deals['won'],
-                    ],
-                    [
-                        'label' => 'Lost',
-                        'value' => $deals['lost'],
-                    ],
+                'metrics' => [
+                    'total' => 'Total',
+                    'won' => 'Won',
+                    'lost' => 'Lost',
+                ],
+            ],
+            'pipelines' => [
+                'label' => 'Pipelines',
+                'metrics' => [
+                    'total' => 'Total',
+                    'won' => 'Won',
+                    'lost' => 'Lost',
+                ],
+            ],
+            'orders' => [
+                'label' => 'Orders',
+                'metrics' => [
+                    'total' => 'Total',
+                    'completed' => 'Completed',
+                    'outstanding' => 'Outstanding',
+                ],
+            ],
+            'invoices' => [
+                'label' => 'Invoices',
+                'metrics' => [
+                    'total' => 'Total',
+                    'paid' => 'Paid',
+                    'outstanding' => 'Outstanding',
                 ],
             ],
         ];
+
+        $charts = [];
+
+        foreach ($groups as $key => $group) {
+            $values = $stats[$key] ?? [];
+
+            $charts[] = [
+                'key' => $key,
+                'label' => $group['label'],
+                'data' => collect($group['metrics'])
+                    ->map(fn (string $label, string $metricKey) => [
+                        'label' => $label,
+                        'value' => $values[$metricKey] ?? 0,
+                    ])
+                    ->values()
+                    ->all(),
+            ];
+        }
+
+        return $charts;
     }
 }

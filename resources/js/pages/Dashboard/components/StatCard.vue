@@ -18,12 +18,12 @@ defineProps<{
             <span class="text-sm font-medium text-gray-400">{{ label }}</span>
             <component :is="icon" v-if="icon" class="size-4 text-gray-400" />
         </div>
-        <span class="mt-2 text-2xl font-semibold text-gray-300">{{
-            value
-        }}</span>
+        <span class="mt-2 text-2xl font-semibold text-gray-300">
+            {{ value }}
+        </span>
         <span v-if="hint" class="mt-1 text-xs text-gray-400">{{ hint }}</span>
-        <span v-if="description" class="mt-1 text-xs text-gray-400">{{
-            description
-        }}</span>
+        <span v-if="description" class="mt-1 text-xs text-gray-400">
+            {{ description }}
+        </span>
     </div>
 </template>
