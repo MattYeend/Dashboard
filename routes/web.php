@@ -55,7 +55,23 @@ Route::get('register/thanks', fn () => Inertia::render('auth/RegisterThanks'))
     ->name('register.thanks');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])
+        ->middleware('can:view dashboard')
+        ->name('dashboard');
+
+    Route::prefix('dashboard')->name('dashboard.')->group(function () {
+        Route::get('/statistics', [DashboardController::class, 'statistics'])
+            ->middleware('can:view statistics')
+            ->name('statistics');
+
+        Route::get('/charts', [DashboardController::class, 'charts'])
+            ->middleware('can:view charts')
+            ->name('charts');
+
+        Route::get('/export', [DashboardController::class, 'export'])
+            ->middleware('can:export dashboard data')
+            ->name('export-data');
+    });
 
     Route::prefix('dashboard/widgets')->name('dashboard.widgets.')->group(function () {
         Route::get('/', [DashboardWidgetPreferenceController::class, 'index'])->name('index');

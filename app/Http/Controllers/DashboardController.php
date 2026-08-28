@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\ExportDashboardSummary;
+use App\Services\Dashboard\DashboardChartsService;
 use App\Services\Dashboard\DashboardStatsService;
 use App\Services\DashboardWidgets\QueryService as DashboardWidgetQueryService;
 use App\Support\DashboardMetricRegistry;
@@ -17,64 +18,60 @@ class DashboardController extends Controller
     public function __construct(
         protected DashboardStatsService $dashboardStatsService,
         protected DashboardWidgetQueryService $dashboardWidgetQueryService,
+        protected DashboardChartsService $dashboardChartsService,
     ) {}
 
     /**
-     * Display the dashboard with stats for the authenticated user.
+     * Display the dashboard with stats, charts and widgets for the
+     * authenticated user. Gated by 'view dashboard' at the route level.
      */
     public function index(Request $request): Response
     {
-        abort_unless($request->user()->can('view dashboard'), 403);
+        $user = $request->user();
 
         return Inertia::render('Dashboard', [
-            'stats' => $this->dashboardStatsService->forUser($request->user()),
-            'widgets' => $this->dashboardWidgetQueryService->forUser($request->user()),
+            'stats' => $this->dashboardStatsService->forUser($user),
+            'widgets' => $this->dashboardWidgetQueryService->forUser($user),
             'metrics' => DashboardMetricRegistry::all(),
+            'charts' => $this->dashboardChartsService->forUser($user),
+            'permissions' => [
+                'can_view_statistics' => $user->can('view statistics'),
+                'can_view_charts' => $user->can('view charts'),
+                'can_export' => $user->can('export dashboard data'),
+            ],
         ]);
     }
 
     /**
-     * JSON endpoint for refreshing just the stats, gated separately from
-     * the main dashboard so a user could have stats access without full
-     * dashboard access.
-     *
-     * NOTE: reuses DashboardStatsService::forUser() as-is - if there's a
-     * lighter/different payload intended for standalone stats refreshes,
-     * swap this for the appropriate method.
+     * JSON endpoint for refreshing just the stats. Gated by 'view statistics'
+     * at the route level, independent of the main 'view dashboard' gate.
      */
     public function statistics(Request $request): JsonResponse
     {
-        abort_unless($request->user()->can('view statistics'), 403);
-
         return response()->json(
             $this->dashboardStatsService->forUser($request->user())
         );
     }
 
     /**
-     * JSON endpoint for refreshing just the chart/widget data.
-     *
-     * NOTE: reuses DashboardWidgetQueryService::forUser() as-is - same
-     * caveat as statistics() above if a narrower "charts only" method
-     * exists or should be added.
+     * JSON endpoint for refreshing just the chart data. Gated by
+     * 'view charts' at the route level.
      */
     public function charts(Request $request): JsonResponse
     {
-        abort_unless($request->user()->can('view charts'), 403);
-
         return response()->json(
-            $this->dashboardWidgetQueryService->forUser($request->user())
+            $this->dashboardChartsService->forUser($request->user())
         );
     }
 
     /**
-     * Streams the dashboard stats as a CSV download. Streamed rather than
-     * built in memory first, so this scales if more metrics are added.
+     * Streams the dashboard stats as a CSV download. Gated by
+     * 'export dashboard data' at the route level.
      */
-    public function export(Request $request, ExportDashboardSummary $action): StreamedResponse
-    {
-        abort_unless($request->user()->can('export dashboard data'), 403);
-
+    public function export(
+        Request $request,
+        ExportDashboardSummary $action,
+    ): StreamedResponse {
         $rows = $action->handle(
             $this->dashboardStatsService->forUser($request->user())
         );

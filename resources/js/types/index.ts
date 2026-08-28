@@ -928,6 +928,21 @@ export interface InteractionLogPermissionsMeta {
     can_create: boolean;
 }
 
+export interface DashboardPermissionsMeta {
+    can_view_statistics: boolean;
+    can_view_charts: boolean;
+    can_export: boolean;
+}
+
+export interface DashboardChart {
+    key: string;
+    label: string;
+    data: Array<{
+        label: string;
+        value: number;
+    }>;
+}
+
 export interface CalendarEvent {
     id: number;
     title: string;

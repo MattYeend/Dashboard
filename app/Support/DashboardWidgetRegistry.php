@@ -10,16 +10,16 @@ class DashboardWidgetRegistry
     public static function all(): array
     {
         return [
-            ['key' => 'tasks_completed', 'label' => 'Tasks completed', 'group' => 'productivity'],
-            ['key' => 'tasks_outstanding', 'label' => 'Tasks outstanding', 'group' => 'productivity'],
-            ['key' => 'companies', 'label' => 'Companies', 'group' => 'crm'],
-            ['key' => 'deals_created', 'label' => 'Deals created', 'group' => 'crm'],
-            ['key' => 'deals_won', 'label' => 'Deals won', 'group' => 'crm'],
-            ['key' => 'pipelines_total', 'label' => 'Pipelines', 'group' => 'crm'],
-            ['key' => 'pipelines_won', 'label' => 'Pipelines won', 'group' => 'crm'],
-            ['key' => 'orders', 'label' => 'Orders', 'group' => 'sales'],
-            ['key' => 'invoices', 'label' => 'Invoices', 'group' => 'sales'],
-            ['key' => 'latest_posts', 'label' => 'Latest posts', 'group' => 'content'],
+            ['key' => 'tasks_completed', 'label' => 'Tasks completed', 'group' => 'Productivity'],
+            ['key' => 'tasks_outstanding', 'label' => 'Tasks outstanding', 'group' => 'Productivity'],
+            ['key' => 'companies', 'label' => 'Companies', 'group' => 'CRM'],
+            ['key' => 'deals_created', 'label' => 'Deals created', 'group' => 'CRM'],
+            ['key' => 'deals_won', 'label' => 'Deals won', 'group' => 'CRM'],
+            ['key' => 'pipelines_total', 'label' => 'Pipelines', 'group' => 'CRM'],
+            ['key' => 'pipelines_won', 'label' => 'Pipelines won', 'group' => 'CRM'],
+            ['key' => 'orders', 'label' => 'Orders', 'group' => 'Sales'],
+            ['key' => 'invoices', 'label' => 'Invoices', 'group' => 'Sales'],
+            ['key' => 'latest_posts', 'label' => 'Latest posts', 'group' => 'Content'],
         ];
     }
 
