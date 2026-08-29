@@ -727,15 +727,15 @@ class Log extends Model
 
     public const ACTION_SEND_NOTIFICATION_BROADCAST = 338;
 
+    public const ACTION_MERGE_COMPANY = 339;
+
+    public const ACTION_MERGE_CONTACT = 340;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
-
-    public const ACTION_MERGE_COMPANY = 332;
-
-    public const ACTION_MERGE_CONTACT = 333;
 
     // Empty constants
     public const ACTION_NONE = 000;
