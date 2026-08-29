@@ -2,10 +2,19 @@
 import { router, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import FilterBar from '@/components/table/FilterBar.vue';
 import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
-import { Button } from '@/components/ui/button';
-import { create, destroy, edit, send } from '@/routes/notification-broadcasts';
+import ResourceTable from '@/components/table/ResourceTable.vue';
+import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
+import {
+    index as notificationBroadcastsIndex,
+    create as notificationBroadcastsCreate,
+    edit as notificationBroadcastsEdit,
+    destroy as notificationBroadcastsDestroy,
+    send as notificationBroadcastsSend,
+} from '@/routes/notification-broadcasts';
+import notificationBroadcastsBulk from '@/routes/notification-broadcasts/bulk';
 import type {
     NotificationBroadcast,
     Pagination as PaginationMeta,
@@ -18,17 +27,85 @@ interface Props {
         links: Array<{ url: string | null; label: string; active: boolean }>;
         meta: PaginationMeta;
     };
-    permissions: PermissionsMeta;
+    permissions_meta: PermissionsMeta;
+    sort_fields: Record<string, string>;
+    trash_filters: Record<string, string>;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const urlParams = new URLSearchParams(window.location.search);
+
+const filters = ref({
+    search: urlParams.get('search') ?? '',
+    trashed: urlParams.get('trashed') ?? '',
+    sort_by: urlParams.get('sort_by') ?? 'created_at',
+    sort_direction: urlParams.get('sort_direction') ?? 'desc',
+});
+
+const selectedIds = ref<Array<number | string>>([]);
 
 const deleteDialogOpen = ref(false);
 const selectedBroadcastId = ref<number | null>(null);
 const deleteProcessing = ref(false);
 
+const bulkDeleteDialogOpen = ref(false);
+const pendingBulkIds = ref<Array<number | string>>([]);
+const bulkDeleteProcessing = ref(false);
+
+const columns: ResourceTableColumn[] = [
+    { key: 'title', label: 'Title' },
+    { key: 'audience_type', label: 'Audience' },
+    { key: 'sent_at', label: 'Sent' },
+];
+
+const filterFields = [
+    {
+        key: 'search',
+        type: 'text' as const,
+        placeholder: 'Search notifications…',
+    },
+    {
+        key: 'trashed',
+        type: 'select' as const,
+        get options() {
+            return Object.entries(props.trash_filters).map(
+                ([value, label]) => ({
+                    value,
+                    label,
+                }),
+            );
+        },
+    },
+    {
+        key: 'sort_by',
+        type: 'select' as const,
+        get options() {
+            return Object.entries(props.sort_fields).map(([value, label]) => ({
+                value,
+                label: `Sort by ${label}`,
+            }));
+        },
+    },
+    {
+        key: 'sort_direction',
+        type: 'select' as const,
+        options: [
+            { value: 'asc', label: 'Ascending' },
+            { value: 'desc', label: 'Descending' },
+        ],
+    },
+];
+
+function applyFilters(): void {
+    router.get(notificationBroadcastsIndex.url(), filters.value, {
+        preserveState: true,
+        replace: true,
+    });
+}
+
 function sendNow(notificationBroadcast: NotificationBroadcast): void {
-    router.post(send(notificationBroadcast.id).url);
+    router.post(notificationBroadcastsSend.url(notificationBroadcast.id));
 }
 
 function requestDestroy(id: number): void {
@@ -36,14 +113,14 @@ function requestDestroy(id: number): void {
     deleteDialogOpen.value = true;
 }
 
-function remove(): void {
+function destroy(): void {
     if (selectedBroadcastId.value === null) {
         return;
     }
 
     deleteProcessing.value = true;
 
-    router.delete(destroy(selectedBroadcastId.value).url, {
+    router.delete(notificationBroadcastsDestroy.url(selectedBroadcastId.value), {
         preserveScroll: true,
         onFinish: () => {
             deleteProcessing.value = false;
@@ -52,67 +129,141 @@ function remove(): void {
         },
     });
 }
+
+function requestBulkDelete(ids: Array<number | string>): void {
+    if (!ids.length) {
+        return;
+    }
+
+    pendingBulkIds.value = ids;
+    bulkDeleteDialogOpen.value = true;
+}
+
+function bulkDelete(): void {
+    if (!pendingBulkIds.value.length) {
+        return;
+    }
+
+    bulkDeleteProcessing.value = true;
+
+    router.post(
+        notificationBroadcastsBulk.delete.url(),
+        { ids: pendingBulkIds.value },
+        {
+            preserveScroll: true,
+            onSuccess: () => {
+                selectedIds.value = [];
+            },
+            onFinish: () => {
+                bulkDeleteProcessing.value = false;
+                bulkDeleteDialogOpen.value = false;
+                pendingBulkIds.value = [];
+            },
+        },
+    );
+}
+
+function formatDate(value: string | null): string {
+    if (!value) {
+        return '-';
+    }
+
+    return new Date(value).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
+}
 </script>
 
 <template>
-    <div>
-        <IndexHeader
-            title="Notifications"
-            :create-href="create().url"
-            create-label="New notification"
-            :can-create="permissions.can_create"
-        />
+    <div class="py-6">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <IndexHeader
+                title="Notifications"
+                :create-href="notificationBroadcastsCreate.url()"
+                create-label="New notification"
+                :can-create="permissions_meta.can_create"
+            />
 
-        <table class="w-full text-sm">
-            <thead>
-                <tr class="text-left text-xs text-gray-400">
-                    <th>Title</th>
-                    <th>Audience</th>
-                    <th>Sent</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr
-                    v-for="notificationBroadcast in notificationBroadcasts.data"
-                    :key="notificationBroadcast.id"
-                >
-                    <td>{{ notificationBroadcast.title }}</td>
-                    <td>{{ notificationBroadcast.audience_type }}</td>
-                    <td>{{ notificationBroadcast.sent_at ?? 'Not sent' }}</td>
-                    <td class="space-x-2 text-right">
-                        <Button
-                            v-if="!notificationBroadcast.sent_at"
-                            variant="secondary"
-                            as-child
-                        >
-                            <Link :href="edit(notificationBroadcast.id).url"
-                                >Edit</Link
-                            >
-                        </Button>
-                        <Button
-                            v-if="!notificationBroadcast.sent_at"
-                            variant="default"
-                            @click="sendNow(notificationBroadcast)"
+            <FilterBar
+                v-model="filters"
+                :fields="filterFields"
+                @change="applyFilters"
+            />
+
+            <ResourceTable
+                v-model:selected="selectedIds"
+                :rows="notificationBroadcasts.data"
+                :columns="columns"
+                row-key="id"
+                selectable
+                empty-message="No notifications found."
+            >
+                <template #bulk-actions="{ selected }">
+                    <button
+                        type="button"
+                        class="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-500"
+                        @click="requestBulkDelete(selected)"
+                    >
+                        Delete selected
+                    </button>
+                </template>
+
+                <template #cell-title="{ row }">
+                    <span class="font-medium text-gray-300">
+                        {{ row.title }}
+                    </span>
+                </template>
+
+                <template #cell-audience_type="{ row }">
+                    {{ row.audience_type }}
+                </template>
+
+                <template #cell-sent_at="{ row }">
+                    <span
+                        v-if="row.sent_at"
+                        class="rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800"
+                    >
+                        Sent {{ formatDate(row.sent_at) }}
+                    </span>
+                    <span
+                        v-else
+                        class="rounded bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-800"
+                    >
+                        Not sent
+                    </span>
+                </template>
+
+                <template #actions="{ row }">
+                    <template v-if="!row.sent_at">
+                        <Link :href="notificationBroadcastsEdit.url(row.id)">
+                            Edit
+                        </Link>
+                        <button
+                            type="button"
+                            class="text-blue-600 hover:text-blue-900"
+                            @click="sendNow(row)"
                         >
                             Send
-                        </Button>
-                        <Button
-                            variant="destructive"
-                            @click="requestDestroy(notificationBroadcast.id)"
-                        >
-                            Delete
-                        </Button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        </button>
+                    </template>
+                    <button
+                        type="button"
+                        class="text-red-600 hover:text-red-900"
+                        @click="requestDestroy(row.id)"
+                    >
+                        Delete
+                    </button>
+                </template>
+            </ResourceTable>
 
-        <Pagination
-            :meta="notificationBroadcasts.meta"
-            :links="notificationBroadcasts.links"
-            resource-label="notifications"
-        />
+            <Pagination
+                :meta="notificationBroadcasts.meta"
+                :links="notificationBroadcasts.links"
+                resource-label="notifications"
+            />
+        </div>
 
         <ConfirmDialog
             v-model:open="deleteDialogOpen"
@@ -120,7 +271,16 @@ function remove(): void {
             description="This cannot be undone."
             confirm-label="Delete"
             :processing="deleteProcessing"
-            @confirm="remove"
+            @confirm="destroy"
+        />
+
+        <ConfirmDialog
+            v-model:open="bulkDeleteDialogOpen"
+            title="Delete notifications"
+            :description="`${pendingBulkIds.length} notification(s) will be moved to trash.`"
+            confirm-label="Delete"
+            :processing="bulkDeleteProcessing"
+            @confirm="bulkDelete"
         />
     </div>
 </template>
