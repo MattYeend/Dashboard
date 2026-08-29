@@ -8,7 +8,9 @@ use App\Http\Requests\Contacts\UpdateContactRequest;
 use App\Models\Activity;
 use App\Models\Contact;
 use App\Services\Activities\PolicyAuthorisationService as ActivityPolicyAuthorisationService;
+use App\Services\Contacts\DuplicateDetectionService;
 use App\Services\Contacts\ManagementService;
+use App\Services\Contacts\MergeService;
 use App\Services\Contacts\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
@@ -28,6 +30,8 @@ class ContactController extends Controller
     public function __construct(
         protected readonly ManagementService $management,
         protected readonly QueryService $query,
+        protected readonly DuplicateDetectionService $duplicateDetection,
+        protected readonly MergeService $mergeService,
     ) {}
 
     /**
@@ -327,5 +331,62 @@ class ContactController extends Controller
         $options = $this->query->getContactableOptions($type);
 
         return response()->json($options);
+    }
+
+    /**
+     * Display likely duplicate contact pairs for review.
+     *
+     * Authorises via the 'viewAny' policy before returning data.
+     */
+    public function duplicates(Request $request): Response
+    {
+        $this->authorize('viewAny', Contact::class);
+
+        $candidates = $this->duplicateDetection->findCandidates()
+            ->map(fn (array $pair) => [
+                'contact' => [
+                    'id' => $pair['contact']->id,
+                    'contactable_name' => $pair['contact']->contactable?->name ?? null,
+                    'email' => $pair['contact']->email,
+                    'phone' => $pair['contact']->phone,
+                ],
+                'duplicate' => [
+                    'id' => $pair['duplicate']->id,
+                    'contactable_name' => $pair['duplicate']->contactable?->name ?? null,
+                    'email' => $pair['duplicate']->email,
+                    'phone' => $pair['duplicate']->phone,
+                ],
+                'reason' => $pair['reason'],
+            ]);
+
+        return Inertia::render('Contacts/Duplicates', [
+            'candidates' => $candidates,
+            'permissions_meta' => [
+                'can_merge' => $request->user()->can('merge contacts'),
+            ],
+        ]);
+    }
+
+    /**
+     * Merge the duplicate contact into the given survivor.
+     *
+     * Authorises via the 'merge' policy on both records before
+     * proceeding.
+     */
+    public function merge(
+        Contact $contact,
+        Contact $duplicate,
+        Request $request
+    ): JsonResponse|RedirectResponse {
+        $this->authorize('merge', $contact);
+        $this->authorize('merge', $duplicate);
+
+        $survivor = $this->mergeService->merge($contact, $duplicate, $request->user());
+
+        if ($request->wantsJson()) {
+            return response()->json($survivor);
+        }
+
+        return redirect()->route('contacts.show', $survivor->id);
     }
 }

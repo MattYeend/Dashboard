@@ -149,6 +149,18 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can merge the given contact.
+     */
+    public function canMerge(User $user, Contact $contact): bool
+    {
+        if ($this->targetOutranksActor($user, $contact)) {
+            return false;
+        }
+
+        return $user->can('merge contacts');
+    }
+
+    /**
      * Determine whether the target user outranks the acting user.
      *
      * A Super Admin cannot be managed by anyone other than another Super Admin.

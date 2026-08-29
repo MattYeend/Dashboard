@@ -79,6 +79,15 @@ class ContactPolicy
     }
 
     /**
+     * Determine whether the user can merge the given contact into
+     * another.
+     */
+    public function merge(User $user, Contact $contact): bool
+    {
+        return $this->authorisationService->canMerge($user, $contact);
+    }
+
+    /**
      * Determine whether the user can bulk delete models.
      */
     public function bulkDelete(User $user): bool

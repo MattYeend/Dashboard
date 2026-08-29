@@ -733,6 +733,10 @@ class Log extends Model
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
 
+    public const ACTION_MERGE_COMPANY = 332;
+
+    public const ACTION_MERGE_CONTACT = 333;
+
     // Empty constants
     public const ACTION_NONE = 000;
 

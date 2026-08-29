@@ -87,6 +87,15 @@ class CompanyPolicy
     }
 
     /**
+     * Determine whether the user can merge the given company into
+     * another.
+     */
+    public function merge(User $user, Company $company): bool
+    {
+        return $this->authorisationService->canMerge($user, $company);
+    }
+
+    /**
      * Determine whether the user can bulk delete models.
      */
     public function bulkDelete(User $user): bool

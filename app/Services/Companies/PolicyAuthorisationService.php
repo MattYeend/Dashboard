@@ -162,6 +162,18 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can merge the given company.
+     */
+    public function canMerge(User $user, Company $company): bool
+    {
+        if ($this->targetOutranksActor($user, $company)) {
+            return false;
+        }
+
+        return $user->can('merge companies');
+    }
+
+    /**
      * Determine whether the company was created by a user who outranks the actor.
      *
      * Prevents admins from managing companies created by super admins.

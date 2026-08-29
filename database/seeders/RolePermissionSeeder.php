@@ -126,6 +126,7 @@ class RolePermissionSeeder extends Seeder
             'force delete contact information',
             'import contact information',
             'export contact information',
+            'merge contacts',
 
             // Task status management
             'view task statuses',
@@ -196,6 +197,7 @@ class RolePermissionSeeder extends Seeder
             'import companies',
             'export companies',
             'change company industry',
+            'merge companies',
 
             // Plan management
             'view any plans',
@@ -522,6 +524,7 @@ class RolePermissionSeeder extends Seeder
             'restore contact information',
             'import contact information',
             'export contact information',
+            'merge contacts',
             'view task statuses',
             'create task statuses',
             'edit task statuses',
@@ -578,6 +581,7 @@ class RolePermissionSeeder extends Seeder
             'import companies',
             'export companies',
             'change company industry',
+            'merge companies',
             'view any plans',
             'view plans',
             'create plans',
@@ -815,6 +819,7 @@ class RolePermissionSeeder extends Seeder
             'restore contact information',
             'import contact information',
             'export contact information',
+            'merge contacts',
             'view task statuses',
             'create task statuses',
             'edit task statuses',
@@ -871,6 +876,7 @@ class RolePermissionSeeder extends Seeder
             'import companies',
             'export companies',
             'change company industry',
+            'merge companies',
             'view any plans',
             'view plans',
             'create plans',

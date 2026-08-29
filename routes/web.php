@@ -123,6 +123,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/export', [ContactController::class, 'export'])->name('export');
         Route::post('/import', [ContactController::class, 'import'])->name('import');
 
+        Route::get('/duplicates', [ContactController::class, 'duplicates'])->name('duplicates');
+        Route::post('/{contact}/merge/{duplicate}', [ContactController::class, 'merge'])->name('merge');
+
         Route::get('/', [ContactController::class, 'index'])->name('index');
         Route::get('/create', [ContactController::class, 'create'])->name('create');
         Route::post('/', [ContactController::class, 'store'])->name('store');
@@ -232,6 +235,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/export', [CompanyController::class, 'export'])->name('export');
         Route::post('/import', [CompanyController::class, 'import'])->name('import');
+
+        Route::get('/duplicates', [CompanyController::class, 'duplicates'])->name('duplicates');
+        Route::post('/{company}/merge/{duplicate}', [CompanyController::class, 'merge'])->name('merge');
 
         Route::get('/', [CompanyController::class, 'index'])->name('index');
         Route::get('/create', [CompanyController::class, 'create'])->name('create');
