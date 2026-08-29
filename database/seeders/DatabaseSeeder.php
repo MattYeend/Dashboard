@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
             TicketSeeder::class,
             ActivitySeeder::class,
             InteractionLogSeeder::class,
+            NotificationBroadcastSeeder::class,
         ]);
     }
 }
