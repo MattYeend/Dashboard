@@ -12,6 +12,7 @@ import {
     KeyRound,
     LayoutGrid,
     MapPin,
+    Megaphone,
     Newspaper,
     Receipt,
     Settings,
@@ -38,6 +39,7 @@ import {
 import { dashboard } from '@/routes';
 import { index as backupsIndex } from '@/routes/backups';
 import { index as calendarIndex } from '@/routes/calendar';
+import { index as notificationBroadcastsIndex } from '@/routes/notification-broadcasts';
 import { index as systemIndex } from '@/routes/system';
 import type { NavGroup, NavItem } from '@/types';
 
@@ -166,6 +168,11 @@ const navGroups: NavGroup[] = [
                 title: 'Users',
                 href: '/users',
                 icon: User2,
+            },
+            {
+                title: 'Notification Broadcasts',
+                href: notificationBroadcastsIndex(),
+                icon: Megaphone,
             },
             {
                 title: 'API Tokens',
