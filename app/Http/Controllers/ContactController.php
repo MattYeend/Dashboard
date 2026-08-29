@@ -333,7 +333,7 @@ class ContactController extends Controller
         return response()->json($options);
     }
 
-        /**
+    /**
      * Display likely duplicate contact pairs for review.
      *
      * Authorises via the 'viewAny' policy before returning data.

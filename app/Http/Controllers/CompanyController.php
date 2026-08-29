@@ -321,7 +321,7 @@ class CompanyController extends Controller
         );
     }
 
-        /**
+    /**
      * Display likely duplicate company pairs for review.
      *
      * Authorises via the 'viewAny' policy before returning data.
