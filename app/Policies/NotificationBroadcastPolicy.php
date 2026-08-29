@@ -4,16 +4,30 @@ namespace App\Policies;
 
 use App\Models\NotificationBroadcast;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\NotificationBroadcasts\PolicyAuthorisationService;
 
 class NotificationBroadcastPolicy
 {
+    /**
+     * The authorisation service handling permission checks.
+     */
+    protected PolicyAuthorisationService $authorisationService;
+
+    /**
+     * Inject the required service into the policy.
+     */
+    public function __construct(
+        PolicyAuthorisationService $authorisationService
+    ) {
+        $this->authorisationService = $authorisationService;
+    }
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**
@@ -21,7 +35,7 @@ class NotificationBroadcastPolicy
      */
     public function view(User $user, NotificationBroadcast $notificationBroadcast): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $notificationBroadcast);
     }
 
     /**
@@ -29,7 +43,7 @@ class NotificationBroadcastPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canCreate($user);
     }
 
     /**
@@ -37,7 +51,7 @@ class NotificationBroadcastPolicy
      */
     public function update(User $user, NotificationBroadcast $notificationBroadcast): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $notificationBroadcast);
     }
 
     /**
@@ -45,7 +59,7 @@ class NotificationBroadcastPolicy
      */
     public function delete(User $user, NotificationBroadcast $notificationBroadcast): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $notificationBroadcast);
     }
 
     /**
@@ -53,7 +67,7 @@ class NotificationBroadcastPolicy
      */
     public function restore(User $user, NotificationBroadcast $notificationBroadcast): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
@@ -61,6 +75,30 @@ class NotificationBroadcastPolicy
      */
     public function forceDelete(User $user, NotificationBroadcast $notificationBroadcast): bool
     {
-        return false;
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can bulk delete models.
+     */
+    public function bulkDelete(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can bulk restore models.
+     */
+    public function bulkRestore(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can send the model.
+     */
+    public function send(User $user, NotificationBroadcast $notificationBroadcast): bool
+    {
+        return $this->authorisationService->canSend($user, $notificationBroadcast);
     }
 }
