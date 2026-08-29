@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Http\Requests\Notifications;
+namespace App\Http\Requests\NotificationBroadcasts;
 
-use App\Models\NotificationBroadcast;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreNotificationBroadcastRequest extends FormRequest
+class UpdateNotificationBroadcastRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('create', NotificationBroadcast::class);
+        return $this->user()->can('update', $this->route('notification_broadcast'));
     }
 
     /**
@@ -59,6 +58,7 @@ class StoreNotificationBroadcastRequest extends FormRequest
     protected function titleRules(): array
     {
         return [
+            'sometimes',
             'required',
             'string',
             'max:255',
@@ -73,6 +73,7 @@ class StoreNotificationBroadcastRequest extends FormRequest
     protected function bodyRules(): array
     {
         return [
+            'sometimes',
             'required',
             'string',
             'max:5000',
@@ -87,6 +88,7 @@ class StoreNotificationBroadcastRequest extends FormRequest
     protected function audienceTypeRules(): array
     {
         return [
+            'sometimes',
             'required',
             Rule::in(['all', 'role', 'users']),
         ];
@@ -100,6 +102,7 @@ class StoreNotificationBroadcastRequest extends FormRequest
     protected function audienceIdsRules(): array
     {
         return [
+            'sometimes',
             'nullable',
             'array',
             'required_unless:audience_type,all',

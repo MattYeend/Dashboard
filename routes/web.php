@@ -21,6 +21,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceItemController;
 use App\Http\Controllers\InvoiceStatusController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\NotificationBroadcastController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
@@ -678,6 +679,33 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/', [AttachmentController::class, 'store'])->name('store');
         Route::get('/{attachment}/download', [AttachmentController::class, 'download'])->name('download');
         Route::delete('/{attachment}', [AttachmentController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::middleware('can:view notifications')->prefix('notification-broadcasts')->name('notification-broadcasts.')->group(function () {
+        Route::get('/', [NotificationBroadcastController::class, 'index'])->name('index');
+        Route::get('/{notification_broadcast}', [NotificationBroadcastController::class, 'show'])->name('show');
+
+        Route::middleware('can:create notifications')->group(function () {
+            Route::get('/create', [NotificationBroadcastController::class, 'create'])->name('create');
+            Route::post('/', [NotificationBroadcastController::class, 'store'])->name('store');
+        });
+
+        Route::middleware('can:edit notifications')->group(function () {
+            Route::get('/{notification_broadcast}/edit', [NotificationBroadcastController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{notification_broadcast}', [NotificationBroadcastController::class, 'update'])->name('update');
+        });
+
+        Route::middleware('can:delete notifications')->group(function () {
+            Route::post('/bulk/delete', [NotificationBroadcastController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [NotificationBroadcastController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [NotificationBroadcastController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [NotificationBroadcastController::class, 'forceDelete'])->name('force-delete');
+            Route::delete('/{notification_broadcast}', [NotificationBroadcastController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::middleware('can:send notifications')->group(function () {
+            Route::post('/{notification_broadcast}/send', [NotificationBroadcastController::class, 'send'])->name('send');
+        });
     });
 });
 
