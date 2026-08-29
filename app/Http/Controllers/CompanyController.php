@@ -8,7 +8,9 @@ use App\Http\Requests\Companies\UpdateCompanyRequest;
 use App\Models\Activity;
 use App\Models\Company;
 use App\Services\Activities\PolicyAuthorisationService as ActivityPolicyAuthorisationService;
+use App\Services\Companies\DuplicateDetectionService;
 use App\Services\Companies\ManagementService;
+use App\Services\Companies\MergeService;
 use App\Services\Companies\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
@@ -28,6 +30,8 @@ class CompanyController extends Controller
     public function __construct(
         protected readonly ManagementService $management,
         protected readonly QueryService $query,
+        protected readonly DuplicateDetectionService $duplicateDetection,
+        protected readonly MergeService $mergeService,
     ) {}
 
     /**
@@ -315,5 +319,62 @@ class CompanyController extends Controller
         return $this->management->export(
             $request->only(['search', 'trashed'])
         );
+    }
+
+        /**
+     * Display likely duplicate company pairs for review.
+     *
+     * Authorises via the 'viewAny' policy before returning data.
+     */
+    public function duplicates(Request $request): Response
+    {
+        $this->authorize('viewAny', Company::class);
+
+        $candidates = $this->duplicateDetection->findCandidates()
+            ->map(fn (array $pair) => [
+                'company' => [
+                    'id' => $pair['company']->id,
+                    'name' => $pair['company']->name,
+                    'email' => $pair['company']->email,
+                    'phone' => $pair['company']->phone,
+                ],
+                'duplicate' => [
+                    'id' => $pair['duplicate']->id,
+                    'name' => $pair['duplicate']->name,
+                    'email' => $pair['duplicate']->email,
+                    'phone' => $pair['duplicate']->phone,
+                ],
+                'reason' => $pair['reason'],
+            ]);
+
+        return Inertia::render('Companies/Duplicates', [
+            'candidates' => $candidates,
+            'permissions_meta' => [
+                'can_merge' => $request->user()->can('merge companies'),
+            ],
+        ]);
+    }
+
+    /**
+     * Merge the duplicate company into the given survivor.
+     *
+     * Authorises via the 'merge' policy on both records before
+     * proceeding.
+     */
+    public function merge(
+        Company $company,
+        Company $duplicate,
+        Request $request
+    ): JsonResponse|RedirectResponse {
+        $this->authorize('merge', $company);
+        $this->authorize('merge', $duplicate);
+
+        $survivor = $this->mergeService->merge($company, $duplicate, $request->user());
+
+        if ($request->wantsJson()) {
+            return response()->json($survivor);
+        }
+
+        return redirect()->route('companies.show', $survivor->id);
     }
 }
