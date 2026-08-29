@@ -793,6 +793,23 @@ export interface InteractionLog {
     can_delete?: boolean;
 }
 
+export interface NotificationBroadcast {
+    id: number;
+    title: string;
+    body: string;
+    audience_type: 'all' | 'role' | 'users';
+    audience_ids: string[] | null;
+    sent_at: string | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    creator?: { name: string };
+    updater?: { name: string };
+    deleter?: { name: string };
+    restorer?: { name: string };
+    sender?: { name: string };
+}
+
 export interface PermissionsMeta {
     can_create: boolean;
     can_view_any: boolean;
