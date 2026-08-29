@@ -712,6 +712,21 @@ class Log extends Model
 
     public const ACTION_RESTORE_ATTACHMENT = 331;
 
+    // Notification Broadcast Management
+    public const ACTION_CREATE_NOTIFICATION_BROADCAST = 332;
+
+    public const ACTION_UPDATE_NOTIFICATION_BROADCAST = 333;
+
+    public const ACTION_VIEW_NOTIFICATION_BROADCAST = 334;
+
+    public const ACTION_DELETE_NOTIFICATION_BROADCAST = 335;
+
+    public const ACTION_FORCE_DELETE_NOTIFICATION_BROADCAST = 336;
+
+    public const ACTION_RESTORE_NOTIFICATION_BROADCAST = 337;
+
+    public const ACTION_SEND_NOTIFICATION_BROADCAST = 338;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
