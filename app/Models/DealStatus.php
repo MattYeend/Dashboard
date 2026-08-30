@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property string $title
+ * @property bool $is_closing
  * @property string|null $description
  * @property string $background_colour
  * @property string $text_colour
@@ -34,6 +35,7 @@ use Illuminate\Support\Carbon;
  */
 #[Fillable([
     'title',
+    'is_closing',
     'description',
     'background_colour',
     'text_colour',
@@ -61,6 +63,14 @@ class DealStatus extends Model implements Auditable
     public function deals(): HasMany
     {
         return $this->hasMany(Deal::class, 'status_id');
+    }
+
+    /**
+     * Pipeline stages that close a deal into this status.
+     */
+    public function stages(): HasMany
+    {
+        return $this->hasMany(PipelineStage::class, 'deal_status_id');
     }
 
     /**
