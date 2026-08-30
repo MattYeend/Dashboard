@@ -47,7 +47,7 @@ async function submit(): Promise<void> {
         const response = await axios.post(
             pipelineStageStore.url(props.pipelineId),
             { title: title.value },
-            { headers: { Accept: 'application/json' } }
+            { headers: { Accept: 'application/json' } },
         );
 
         emit('stage-added', {
@@ -66,8 +66,14 @@ async function submit(): Promise<void> {
 </script>
 
 <template>
-    <div class="flex w-72 shrink-0 flex-col rounded border border-dashed border-gray-500">
-        <form v-if="isAdding" class="flex flex-col gap-2 p-2" @submit.prevent="submit">
+    <div
+        class="flex w-72 shrink-0 flex-col rounded border border-dashed border-gray-500"
+    >
+        <form
+            v-if="isAdding"
+            class="flex flex-col gap-2 p-2"
+            @submit.prevent="submit"
+        >
             <input
                 v-model="title"
                 type="text"
