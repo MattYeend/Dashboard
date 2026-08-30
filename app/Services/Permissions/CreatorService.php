@@ -38,6 +38,7 @@ class CreatorService
 
                 $newPermission = Permission::create($permissionData);
 
+                /** @var Permission $newPermission */
                 $newPermission->forceFill([
                     'created_by' => $createdBy,
                 ])->save();

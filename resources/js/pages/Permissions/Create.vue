@@ -19,7 +19,11 @@ function submit() {
         <h1 class="mb-6 text-lg font-semibold">Create permission</h1>
 
         <form @submit.prevent="submit" class="space-y-6">
-            <PermissionForm v-model:name="form.name" v-model:guard-name="form.guard_name" :errors="form.errors" />
+            <PermissionForm
+                v-model:name="form.name"
+                v-model:guard-name="form.guard_name"
+                :errors="form.errors"
+            />
 
             <Button type="submit" :disabled="form.processing">Create</Button>
         </form>

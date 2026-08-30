@@ -9,7 +9,9 @@ interface Props {
 
 defineProps<Props>();
 
-const selectedRoleIds = defineModel<number[]>('selectedRoleIds', { required: true });
+const selectedRoleIds = defineModel<number[]>('selectedRoleIds', {
+    required: true,
+});
 
 function toggle(roleId: number, checked: boolean) {
     if (checked) {
@@ -17,7 +19,9 @@ function toggle(roleId: number, checked: boolean) {
             selectedRoleIds.value = [...selectedRoleIds.value, roleId];
         }
     } else {
-        selectedRoleIds.value = selectedRoleIds.value.filter((id) => id !== roleId);
+        selectedRoleIds.value = selectedRoleIds.value.filter(
+            (id) => id !== roleId,
+        );
     }
 }
 </script>
@@ -26,13 +30,21 @@ function toggle(roleId: number, checked: boolean) {
     <div class="space-y-2">
         <Label>Assigned roles</Label>
         <div class="grid grid-cols-2 gap-2 sm:grid-cols-3">
-            <div v-for="role in roles" :key="role.id" class="flex items-center gap-2">
+            <div
+                v-for="role in roles"
+                :key="role.id"
+                class="flex items-center gap-2"
+            >
                 <Checkbox
                     :id="`role-${role.id}`"
                     :model-value="selectedRoleIds.includes(role.id)"
-                    @update:model-value="(checked) => toggle(role.id, Boolean(checked))"
+                    @update:model-value="
+                        (checked) => toggle(role.id, Boolean(checked))
+                    "
                 />
-                <Label :for="`role-${role.id}`" class="text-sm font-normal">{{ role.name }}</Label>
+                <Label :for="`role-${role.id}`" class="text-sm font-normal">
+                    {{ role.name }}
+                </Label>
             </div>
         </div>
     </div>

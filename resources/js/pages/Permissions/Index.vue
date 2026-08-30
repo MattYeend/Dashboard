@@ -2,12 +2,15 @@
 import { router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import FilterBar from '@/components/table/FilterBar.vue';
+import IndexHeader from '@/components/table/IndexHeader.vue';
+import PaginationComponent from '@/components/table/Pagination.vue';
+import ResourceTable from '@/components/table/ResourceTable.vue';
 import Button from '@/components/ui/button/Button.vue';
-import FilterBar from '@/components/FilterBar.vue';
-import IndexHeader from '@/components/IndexHeader.vue';
-import PaginationComponent from '@/components/Pagination.vue';
-import ResourceTable from '@/components/ResourceTable.vue';
-import { index as permissionsIndex, create as permissionsCreate } from '@/routes/permissions';
+import {
+    index as permissionsIndex,
+    create as permissionsCreate,
+} from '@/routes/permissions';
 import { matrix as permissionsMatrix } from '@/routes/permissions';
 import type { Permission, PermissionsMeta, Pagination } from '@/types';
 
@@ -35,7 +38,7 @@ function performDelete() {
     if (confirmingDeleteId.value === null) {
         return;
     }
-    
+
     router.delete(`/permissions/${confirmingDeleteId.value}`, {
         onFinish: () => {
             confirmingDeleteId.value = null;
@@ -61,9 +64,18 @@ function performDelete() {
 
         <FilterBar :action="permissionsIndex().url" />
 
-        <ResourceTable :columns="columns" :data="props.permissions.data" v-model:selected="selected" selectable>
+        <ResourceTable
+            :columns="columns"
+            :data="props.permissions.data"
+            v-model:selected="selected"
+            selectable
+        >
             <template #cell-roles="{ row }">
-                {{ row.roles?.map((r: { name: string }) => r.name).join(', ') || '—' }}
+                {{
+                    row.roles
+                        ?.map((r: { name: string }) => r.name)
+                        .join(', ') || '—'
+                }}
             </template>
             <template #actions="{ row }">
                 <a :href="`/permissions/${row.id}`">View</a>
@@ -72,14 +84,16 @@ function performDelete() {
             </template>
         </ResourceTable>
 
-        <PaginationComponent :meta="props.permissions" resource-label="permissions" />
+        <PaginationComponent
+            :meta="props.permissions"
+            resource-label="permissions"
+        />
 
         <ConfirmDialog
             :open="confirmingDeleteId !== null"
             title="Delete permission"
-            message="Are you sure you want to delete this permission?"
+            description="Are you sure you want to delete this permission?"
             @confirm="performDelete"
-            @cancel="confirmingDeleteId = null"
         />
     </div>
 </template>

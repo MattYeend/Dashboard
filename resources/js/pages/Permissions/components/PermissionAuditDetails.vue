@@ -7,8 +7,12 @@ function formatDate(value: string | null): string {
     if (!value) {
         return '—';
     }
-    
-    return new Date(value).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    return new Date(value).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    });
 }
 </script>
 
@@ -28,7 +32,13 @@ function formatDate(value: string | null): string {
         </div>
         <div>
             <dt class="text-xs text-gray-400">Restored</dt>
-            <dd class="text-sm">{{ permission.restorer ? `${permission.restorer.name} on ${formatDate(permission.restored_at)}` : '—' }}</dd>
+            <dd class="text-sm">
+                {{
+                    permission.restorer
+                        ? `${permission.restorer.name} on ${formatDate(permission.restored_at)}`
+                        : '—'
+                }}
+            </dd>
         </div>
     </dl>
 </template>
