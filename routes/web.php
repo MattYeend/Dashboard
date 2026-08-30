@@ -717,7 +717,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('permissions')->name('permissions.')->group(function () {
-        Route::get('/matrix', [PermissionMatrixController::class, 'index'])->name('matrix');
+        Route::get('/matrix', [PermissionMatrixController::class, 'index'])->name('matrix.index');
         Route::patch('/matrix', [PermissionMatrixController::class, 'update'])->name('matrix.update');
 
         Route::post('/bulk/delete', [PermissionController::class, 'bulkDelete'])->name('bulk.delete');
