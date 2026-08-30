@@ -4,7 +4,10 @@ import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import AddStageColumn from '@/pages/Deals/components/AddStageColumn.vue';
 import DealStageColumn from '@/pages/Deals/components/DealStageColumn.vue';
-import { index as dealsIndex, updateStage as dealsUpdateStage } from '@/routes/deals';
+import {
+    index as dealsIndex,
+    updateStage as dealsUpdateStage,
+} from '@/routes/deals';
 import type { Deal } from '@/types';
 
 interface BoardStage {
@@ -45,7 +48,10 @@ function onStageAdded(stage: BoardStage): void {
                 <h1 class="text-xl font-semibold text-gray-200">
                     {{ pipelineName }} Board
                 </h1>
-                <Link :href="dealsIndex.url()" class="text-sm text-gray-400 hover:text-gray-200">
+                <Link
+                    :href="dealsIndex.url()"
+                    class="text-sm text-gray-400 hover:text-gray-200"
+                >
                     View as list
                 </Link>
             </div>
@@ -57,7 +63,10 @@ function onStageAdded(stage: BoardStage): void {
                     :stage="stage"
                     @deal-moved="onDealMoved"
                 />
-                <AddStageColumn :pipeline-id="pipelineId" @stage-added="onStageAdded" />
+                <AddStageColumn
+                    :pipeline-id="pipelineId"
+                    @stage-added="onStageAdded"
+                />
             </div>
         </div>
     </div>
