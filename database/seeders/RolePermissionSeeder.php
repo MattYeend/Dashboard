@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
+use App\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
@@ -43,10 +43,13 @@ class RolePermissionSeeder extends Seeder
             'assign roles',
 
             // Permission management
+            'view any permissions',
             'view permissions',
             'create permissions',
             'edit permissions',
             'delete permissions',
+            'restore permissions',
+            'force delete permissions',
             'assign permissions',
 
             // Profile management
@@ -475,7 +478,13 @@ class RolePermissionSeeder extends Seeder
             'edit roles',
             'delete roles',
             'assign roles',
+            'view any permissions',
             'view permissions',
+            'create permissions',
+            'edit permissions',
+            'delete permissions',
+            'restore permissions',
+            'force delete permissions',
             'assign permissions',
             'view own profile',
             'edit own profile',

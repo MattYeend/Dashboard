@@ -25,6 +25,8 @@ use App\Http\Controllers\NotificationBroadcastController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PermissionMatrixController;
 use App\Http\Controllers\PipelineController;
 use App\Http\Controllers\PipelineStageController;
 use App\Http\Controllers\PipelineStatusController;
@@ -712,6 +714,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::middleware('can:send notifications')->group(function () {
             Route::post('/{notification_broadcast}/send', [NotificationBroadcastController::class, 'send'])->name('send');
         });
+    });
+
+    Route::prefix('permissions')->name('permissions.')->group(function () {
+        Route::get('/matrix', [PermissionMatrixController::class, 'index'])->name('matrix');
+        Route::patch('/matrix', [PermissionMatrixController::class, 'update'])->name('matrix.update');
+
+        Route::post('/bulk/delete', [PermissionController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [PermissionController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [PermissionController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [PermissionController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [PermissionController::class, 'index'])->name('index');
+        Route::get('/create', [PermissionController::class, 'create'])->name('create');
+        Route::post('/', [PermissionController::class, 'store'])->name('store');
+        Route::get('/{id}', [PermissionController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [PermissionController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{permission}', [PermissionController::class, 'update'])->name('update');
+        Route::patch('/{permission}/assign-roles', [PermissionController::class, 'assignRoles'])->name('assign-roles');
+        Route::delete('/{permission}', [PermissionController::class, 'destroy'])->name('destroy');
     });
 });
 
