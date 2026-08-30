@@ -154,6 +154,19 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can move the deal to a different pipeline stage.
+     */
+    public function canUpdateStage(User $actor, Deal $target): bool
+    {
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('edit deal')
+            && $this->activeChecker->isActive($target);
+    }
+
+    /**
      * Determine whether the user can change the status of the deal.
      */
     public function canChangeStatus(User $actor, Deal $target): bool

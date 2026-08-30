@@ -492,6 +492,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('deals')->name('deals.')->group(function () {
+        Route::get('/board', [DealController::class, 'board'])->name('board');
+
         Route::post('/bulk/delete', [DealController::class, 'bulkDelete'])->name('bulk.delete');
         Route::post('/bulk/restore', [DealController::class, 'bulkRestore'])->name('bulk.restore');
         Route::post('/{id}/restore', [DealController::class, 'restore'])->name('restore');
@@ -499,6 +501,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/export', [DealController::class, 'export'])->name('export');
         Route::post('/import', [DealController::class, 'import'])->name('import');
+
+        Route::patch('/{deal}/stage', [DealController::class, 'updateStage'])->name('update-stage');
 
         Route::get('/', [DealController::class, 'index'])->name('index');
         Route::get('/create', [DealController::class, 'create'])->name('create');
