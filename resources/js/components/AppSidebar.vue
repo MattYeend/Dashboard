@@ -39,6 +39,7 @@ import {
 import { dashboard } from '@/routes';
 import { index as backupsIndex } from '@/routes/backups';
 import { index as calendarIndex } from '@/routes/calendar';
+import { board as dealsBoard } from '@/routes/deals';
 import { index as notificationBroadcastsIndex } from '@/routes/notification-broadcasts';
 import { index as systemIndex } from '@/routes/system';
 import type { NavGroup, NavItem } from '@/types';
@@ -94,6 +95,7 @@ const navGroups: NavGroup[] = [
                 icon: HandCoins,
                 children: [
                     { title: 'All Deals', href: '/deals' },
+                    { title: 'Board', href: dealsBoard() },
                     { title: 'Deal Statuses', href: '/deal-statuses' },
                 ],
             },
