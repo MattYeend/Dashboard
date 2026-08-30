@@ -15,11 +15,6 @@ class DuplicateDetectionService
     /**
      * Find likely duplicate company pairs based on normalised email,
      * phone, and name matches.
-     *
-     * Note: this compares every non-trashed company against every
-     * other, so cost grows quadratically with the dataset. Fine for
-     * a CRM-scale table; revisit with blocking (e.g. by first letter
-     * of normalised name) if this ever becomes slow.
      */
     public function findCandidates(): Collection
     {
