@@ -102,4 +102,12 @@ class DealPolicy
     {
         return $this->authorisationService->canChangeStatus($user, $deal);
     }
+
+    /**
+     * Determine whether the user can move the deal to a different pipeline stage.
+     */
+    public function updateStage(User $user, Deal $deal): bool
+    {
+        return $this->authorisationService->canUpdateStage($user, $deal);
+    }
 }

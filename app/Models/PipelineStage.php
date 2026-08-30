@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property int $pipeline_id
+ * @property int|null $deal_status_id
  * @property string $title
  * @property string|null $description
  * @property int $position
@@ -39,6 +40,7 @@ use Illuminate\Support\Carbon;
  */
 #[Fillable([
     'pipeline_id',
+    'deal_status_id',
     'title',
     'description',
     'position',
@@ -80,6 +82,14 @@ class PipelineStage extends Model implements Auditable
     public function deals(): HasMany
     {
         return $this->hasMany(Deal::class, 'stage_id');
+    }
+
+    /**
+     * The deal status this stage closes a deal into, if any.
+     */
+    public function dealStatus(): BelongsTo
+    {
+        return $this->belongsTo(DealStatus::class);
     }
 
     /**

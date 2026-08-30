@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Deals\ImportDealRequest;
 use App\Http\Requests\Deals\StoreDealRequest;
 use App\Http\Requests\Deals\UpdateDealRequest;
+use App\Http\Requests\DealStages\UpdateDealStageRequest;
 use App\Models\Activity;
 use App\Models\Deal;
+use App\Models\Pipeline;
+use App\Models\PipelineStage;
 use App\Services\Activities\PolicyAuthorisationService as ActivityPolicyAuthorisationService;
+use App\Services\Deals\FormatterService;
 use App\Services\Deals\ManagementService;
+use App\Services\Deals\PipelineStageUpdaterService;
 use App\Services\Deals\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
@@ -28,6 +33,8 @@ class DealController extends Controller
     public function __construct(
         protected readonly ManagementService $management,
         protected readonly QueryService $query,
+        protected readonly PipelineStageUpdaterService $pipelineStageUpdaterService,
+        protected readonly FormatterService $formatterService,
     ) {}
 
     /**
@@ -313,5 +320,52 @@ class DealController extends Controller
         return $this->management->export(
             $request->only(['search', 'trashed'])
         );
+    }
+
+    /**
+     * Display the Kanban board for the deal's pipeline.
+     */
+    public function board(Request $request): Response
+    {
+        $this->authorize('viewAny', Deal::class);
+
+        $pipeline = Pipeline::with(['stages' => fn ($query) => $query->orderBy('position')])
+            ->findOrFail($request->integer('pipeline_id') ?: Pipeline::query()->value('id'));
+
+        $stages = $pipeline->stages->map(fn (PipelineStage $stage) => [
+            'id' => $stage->id,
+            'name' => $stage->name,
+            'deals' => $stage->deals()
+                ->whereNull('deleted_at')
+                ->with('company')
+                ->get()
+                ->map(fn (Deal $deal) => $this->formatterService->format($deal)),
+        ]);
+
+        return Inertia::render('Deals/Board', [
+            'pipelineId' => $pipeline->id,
+            'pipelineName' => $pipeline->name,
+            'stages' => $stages,
+        ]);
+    }
+
+    /**
+     * Move the deal to a different pipeline stage.
+     */
+    public function updateStage(UpdateDealStageRequest $request, Deal $deal): JsonResponse|RedirectResponse
+    {
+        $this->authorize('updateStage', $deal);
+
+        $deal = $this->pipelineStageUpdaterService->move(
+            $deal,
+            $request->validated('stage_id'),
+            $request->user()->id
+        );
+
+        if ($request->wantsJson()) {
+            return response()->json($this->formatterService->format($deal));
+        }
+
+        return redirect()->route('deals.board')->with('success', 'Deal stage updated.');
     }
 }
