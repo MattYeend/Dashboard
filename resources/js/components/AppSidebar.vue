@@ -16,6 +16,7 @@ import {
     Newspaper,
     Receipt,
     Settings,
+    ShieldCheck,
     SquareCheckBig,
     Tag,
     Ticket,
@@ -168,6 +169,15 @@ const navGroups: NavGroup[] = [
                 title: 'Users',
                 href: '/users',
                 icon: User2,
+            },
+            {
+                title: 'Permissions',
+                href: '/permissions',
+                icon: ShieldCheck,
+                children: [
+                    { title: 'All Permissions', href: '/permissions' },
+                    { title: 'Assignment Matrix', href: '/permissions/matrix' },
+                ],
             },
             {
                 title: 'Notification Broadcasts',
