@@ -731,6 +731,19 @@ class Log extends Model
 
     public const ACTION_MERGE_CONTACT = 340;
 
+    // Permission Management
+    public const ACTION_CREATE_PERMISSION = 341;
+
+    public const ACTION_UPDATE_PERMISSION = 342;
+
+    public const ACTION_DELETE_PERMISSION = 343;
+
+    public const ACTION_FORCE_DELETE_PERMISSION = 344;
+
+    public const ACTION_RESTORE_PERMISSION = 345;
+
+    public const ACTION_ASSIGN_PERMISSION = 346;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
