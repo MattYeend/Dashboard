@@ -744,7 +744,10 @@ class Log extends Model
 
     public const ACTION_ASSIGN_PERMISSION = 346;
 
+    // Additional Deal Management
     public const ACTION_UPDATE_DEAL_STAGE = 347;
+
+
     // New Logging Actions should go here to be reviewed
 
 
