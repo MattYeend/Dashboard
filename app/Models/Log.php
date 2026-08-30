@@ -732,7 +732,7 @@ class Log extends Model
     public const ACTION_MERGE_CONTACT = 340;
 
     // New Logging Actions should go here to be reviewed
-
+    public const ACTION_UPDATE_DEAL_STAGE = 341;
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.

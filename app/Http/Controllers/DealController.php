@@ -11,9 +11,10 @@ use App\Models\Deal;
 use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Services\Activities\PolicyAuthorisationService as ActivityPolicyAuthorisationService;
+use App\Services\Deals\FormatterService;
 use App\Services\Deals\ManagementService;
+use App\Services\Deals\PipelineStageUpdaterService;
 use App\Services\Deals\QueryService;
-use App\Services\PipelineStages\PipelineStageUpdaterService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -33,6 +34,7 @@ class DealController extends Controller
         protected readonly ManagementService $management,
         protected readonly QueryService $query,
         protected readonly PipelineStageUpdaterService $pipelineStageUpdaterService,
+        protected readonly FormatterService $formatterService,
     ) {}
 
     /**

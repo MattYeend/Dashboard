@@ -120,14 +120,17 @@ function destroy(): void {
 
     deleteProcessing.value = true;
 
-    router.delete(notificationBroadcastsDestroy.url(selectedBroadcastId.value), {
-        preserveScroll: true,
-        onFinish: () => {
-            deleteProcessing.value = false;
-            deleteDialogOpen.value = false;
-            selectedBroadcastId.value = null;
+    router.delete(
+        notificationBroadcastsDestroy.url(selectedBroadcastId.value),
+        {
+            preserveScroll: true,
+            onFinish: () => {
+                deleteProcessing.value = false;
+                deleteDialogOpen.value = false;
+                selectedBroadcastId.value = null;
+            },
         },
-    });
+    );
 }
 
 function requestBulkDelete(ids: Array<number | string>): void {
