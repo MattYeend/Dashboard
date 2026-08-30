@@ -31,8 +31,9 @@ function onChange(event: { added?: { element: Deal } }): void {
                 {{ stage.name }}
             </h3>
             <p class="text-xs text-gray-400">
-                {{ stage.deals.length }} deal
-                {{ stage.deals.length === 1 ? '' : 's' }}
+                {{ stage.deals.length }} deal{{
+                    stage.deals.length === 1 ? '' : 's'
+                }}
             </p>
         </div>
 

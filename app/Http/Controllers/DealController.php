@@ -343,6 +343,7 @@ class DealController extends Controller
         ]);
 
         return Inertia::render('Deals/Board', [
+            'pipelineId' => $pipeline->id,
             'pipelineName' => $pipeline->name,
             'stages' => $stages,
         ]);
@@ -365,6 +366,6 @@ class DealController extends Controller
             return response()->json($this->formatterService->format($deal));
         }
 
-        return redirect()->route('deals.show', $deal)->with('success', 'Deal stage updated.');
+        return redirect()->route('deals.board')->with('success', 'Deal stage updated.');
     }
 }
