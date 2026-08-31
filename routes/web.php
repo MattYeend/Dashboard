@@ -742,8 +742,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/', [SettingController::class, 'index'])->name('index');
+
+        Route::get('/general', [SettingController::class, 'general'])->name('general');
         Route::put('/general', [SettingController::class, 'updateGeneral'])->name('general.update');
+
+        Route::get('/system', [SettingController::class, 'system'])->name('system');
         Route::put('/system', [SettingController::class, 'updateSystem'])->name('system.update');
+
+        Route::get('/security-policy', [SettingController::class, 'securityPolicy'])->name('security-policy');
         Route::put('/security', [SettingController::class, 'updateSecurity'])->name('security.update');
     });
 });

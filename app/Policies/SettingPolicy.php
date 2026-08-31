@@ -15,6 +15,20 @@ class SettingPolicy
     ) {}
 
     /**
+     * Determine whether the user can view the settings landing page.
+     *
+     * True if the user can view at least one of the three settings
+     * groups — the page itself uses the `permissions` prop to decide
+     * which group links to show.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $this->authorisationService->canViewGeneral($user)
+            || $this->authorisationService->canViewSystem($user)
+            || $this->authorisationService->canViewSecurity($user);
+    }
+
+    /**
      * Determine whether the user can view the general settings group.
      */
     public function viewGeneral(User $user): bool
