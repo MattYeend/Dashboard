@@ -747,9 +747,7 @@ class Log extends Model
     // Additional Deal Management
     public const ACTION_UPDATE_DEAL_STAGE = 347;
 
-
     // New Logging Actions should go here to be reviewed
-
 
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.

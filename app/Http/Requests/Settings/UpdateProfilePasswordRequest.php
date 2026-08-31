@@ -25,13 +25,13 @@ class UpdateProfilePasswordRequest extends FormRequest
     {
         return [
             'current_password' => [
-                'required', 
-                'current_password'
+                'required',
+                'current_password',
             ],
             'password' => [
-                'required', 
-                'confirmed', 
-                Password::defaults()
+                'required',
+                'confirmed',
+                Password::defaults(),
             ],
         ];
     }

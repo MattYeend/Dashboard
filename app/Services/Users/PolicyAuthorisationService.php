@@ -157,9 +157,9 @@ class PolicyAuthorisationService
      * @throws AuthorizationException
      */
     public function authoriseRoleAssignment(
-        User $actor, 
-        User $target, 
-        string $tierRole, 
+        User $actor,
+        User $target,
+        string $tierRole,
         array $functionalRoles = []
     ): void {
         if (! $actor->can('assign roles')) {
@@ -183,8 +183,8 @@ class PolicyAuthorisationService
      * @throws AuthorizationException
      */
     public function authoriseRoleAssignmentOnCreate(
-        User $actor, 
-        string $tierRole, 
+        User $actor,
+        string $tierRole,
         array $functionalRoles = []
     ): void {
         if (! $actor->can('create users')) {
@@ -243,7 +243,7 @@ class PolicyAuthorisationService
      * @throws AuthorizationException
      */
     private function assertValidTierAndFunctionalRoles(
-        User $actor, 
+        User $actor,
         string $tierRole,
         array $functionalRoles
     ): void {
@@ -267,7 +267,7 @@ class PolicyAuthorisationService
      *
      * A Super Admin cannot be managed by anyone other than another Super Admin.
      */
-    private function targetOutranksActor(User $actor, User $target): bool 
+    private function targetOutranksActor(User $actor, User $target): bool
     {
         if ($this->roleChecker->isSuperAdmin($actor)) {
             return false;

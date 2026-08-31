@@ -97,13 +97,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/read-all', [NotificationController::class, 'markAllAsRead'])->name('read-all');
     });
 
-    Route::prefix('profile')->name('profile.')->group(function () {
-        Route::get('/', [ProfileController::class, 'show'])->name('show');
-        Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
-        Route::match(['put', 'patch'], '/', [ProfileController::class, 'update'])->name('update');
-        Route::match(['put', 'patch'], '/password', [ProfileController::class, 'updatePassword'])->name('password.update');
-        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
-    });
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::match(['put', 'patch'], '/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
 
     Route::get('/users/{user}/profile', [ProfileController::class, 'showOther'])->name('profile.show-other');
 
