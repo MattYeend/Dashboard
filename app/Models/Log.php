@@ -747,6 +747,12 @@ class Log extends Model
     // Additional Deal Management
     public const ACTION_UPDATE_DEAL_STAGE = 347;
 
+    // Settings Management
+    public const ACTION_UPDATE_GENERAL_SETTINGS = 348;
+
+    public const ACTION_UPDATE_SYSTEM_SETTINGS = 349;
+
+    public const ACTION_UPDATE_SECURITY_SETTINGS = 350;
 
     // New Logging Actions should go here to be reviewed
 

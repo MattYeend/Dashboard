@@ -4,63 +4,62 @@ namespace App\Policies;
 
 use App\Models\Setting;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\Settings\PolicyAuthorisationService;
 
 class SettingPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Inject the required services into the policy.
      */
-    public function viewAny(User $user): bool
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
+    /**
+     * Determine whether the user can view the general settings group.
+     */
+    public function viewGeneral(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewGeneral($user);
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can update the general settings group.
      */
-    public function view(User $user, Setting $setting): bool
+    public function updateGeneral(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canUpdateGeneral($user);
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can view the system settings group.
      */
-    public function create(User $user): bool
+    public function viewSystem(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewSystem($user);
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can update the system settings group.
      */
-    public function update(User $user, Setting $setting): bool
+    public function updateSystem(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canUpdateSystem($user);
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can view the security settings group.
      */
-    public function delete(User $user, Setting $setting): bool
+    public function viewSecurity(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewSecurity($user);
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can update the security settings group.
      */
-    public function restore(User $user, Setting $setting): bool
+    public function updateSecurity(User $user): bool
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Setting $setting): bool
-    {
-        return false;
+        return $this->authorisationService->canUpdateSecurity($user);
     }
 }
