@@ -1316,7 +1316,6 @@ class RolePermissionSeeder extends Seeder
             'view own profile',
             'edit own profile',
             'change own password',
-            'view other profiles',
             'view notifications',
             'create notifications',
             'send notifications',
