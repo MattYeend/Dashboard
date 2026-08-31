@@ -1,12 +1,26 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use Tests\Concerns\CreatesUsers;
 
-uses(RefreshDatabase::class);
+uses(
+    LazilyRefreshDatabase::class,
+    CreatesUsers::class,
+);
+
+beforeEach(function () {
+    setPermissionsTeamId(1);
+
+    Role::firstOrCreate(['name' => 'Admin']);
+    Role::firstOrCreate(['name' => 'Super Admin']);
+    Role::firstOrCreate(['name' => 'User']);
+});
 
 test('profile page is displayed', function () {
-    $user = User::factory()->create();
+    $user = $this->normalUser();
 
     $response = $this
         ->actingAs($user)
@@ -16,7 +30,7 @@ test('profile page is displayed', function () {
 });
 
 test('profile information can be updated', function () {
-    $user = User::factory()->create();
+    $user = $this->normalUser();
 
     $response = $this
         ->actingAs($user)
@@ -37,7 +51,7 @@ test('profile information can be updated', function () {
 });
 
 test('email verification status is unchanged when the email address is unchanged', function () {
-    $user = User::factory()->create();
+    $user = $this->normalUser();
 
     $response = $this
         ->actingAs($user)
@@ -54,7 +68,8 @@ test('email verification status is unchanged when the email address is unchanged
 });
 
 test('user can delete their account', function () {
-    $user = User::factory()->create();
+    $user = $this->normalUser();
+    $user->forceFill(['password' => Hash::make('password')])->save();
 
     $response = $this
         ->actingAs($user)
@@ -72,7 +87,8 @@ test('user can delete their account', function () {
 });
 
 test('correct password must be provided to delete account', function () {
-    $user = User::factory()->create();
+    $user = $this->normalUser();
+    $user->forceFill(['password' => Hash::make('password')])->save();
 
     $response = $this
         ->actingAs($user)
