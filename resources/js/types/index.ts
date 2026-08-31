@@ -1006,3 +1006,30 @@ export interface Permission {
     deleter?: { name: string };
     restorer?: { name: string };
 }
+
+export interface Setting {
+    id: number;
+    site_name: string;
+    support_email: string;
+    timezone: string;
+    date_format: string;
+    maintenance_mode: boolean;
+    allow_registrations: boolean;
+    default_pagination: number;
+    default_locale: string;
+    two_factor_required: boolean;
+    session_timeout_minutes: number;
+    max_login_attempts: number;
+    password_expiry_days: number | null;
+    updater?: { id: number; name: string };
+    updated_at: string;
+}
+
+export interface SettingsPermissions {
+    can_view_general: boolean;
+    can_edit_general: boolean;
+    can_view_system: boolean;
+    can_edit_system: boolean;
+    can_view_security: boolean;
+    can_edit_security: boolean;
+}

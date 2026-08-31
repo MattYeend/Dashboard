@@ -29,8 +29,8 @@ class UpdaterService
     public function updateGeneral(array $data, int $updatedBy): Setting
     {
         return $this->apply(
-            $data, 
-            $updatedBy, 
+            $data,
+            $updatedBy,
             Log::ACTION_UPDATE_GENERAL_SETTINGS
         );
     }
@@ -45,8 +45,8 @@ class UpdaterService
     public function updateSystem(array $data, int $updatedBy): Setting
     {
         return $this->apply(
-            $data, 
-            $updatedBy, 
+            $data,
+            $updatedBy,
             Log::ACTION_UPDATE_SYSTEM_SETTINGS
         );
     }
@@ -61,8 +61,8 @@ class UpdaterService
     public function updateSecurity(array $data, int $updatedBy): Setting
     {
         return $this->apply(
-            $data, 
-            $updatedBy, 
+            $data,
+            $updatedBy,
             Log::ACTION_UPDATE_SECURITY_SETTINGS
         );
     }

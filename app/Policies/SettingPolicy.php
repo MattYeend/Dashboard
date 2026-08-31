@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Models\Setting;
 use App\Models\User;
 use App\Services\Settings\PolicyAuthorisationService;
 

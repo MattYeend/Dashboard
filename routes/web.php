@@ -34,6 +34,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegistrationInterestController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TagController;
@@ -737,6 +738,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::match(['put', 'patch'], '/{permission}', [PermissionController::class, 'update'])->name('update');
         Route::patch('/{permission}/assign-roles', [PermissionController::class, 'assignRoles'])->name('assign-roles');
         Route::delete('/{permission}', [PermissionController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('settings')->name('settings.')->group(function () {
+        Route::get('/', [SettingController::class, 'index'])->name('index');
+        Route::put('/general', [SettingController::class, 'updateGeneral'])->name('general.update');
+        Route::put('/system', [SettingController::class, 'updateSystem'])->name('system.update');
+        Route::put('/security', [SettingController::class, 'updateSecurity'])->name('security.update');
     });
 });
 

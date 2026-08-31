@@ -756,7 +756,6 @@ class Log extends Model
 
     // New Logging Actions should go here to be reviewed
 
-
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
