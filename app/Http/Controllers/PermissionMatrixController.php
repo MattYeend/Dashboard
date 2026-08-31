@@ -6,7 +6,7 @@ use App\Models\Permission;
 use App\Services\Permissions\ManagementService;
 use App\Services\Permissions\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -41,7 +41,7 @@ class PermissionMatrixController extends Controller
      * Each row is individually authorised via the 'assign' policy before
      * any writes take place.
      */
-    public function update(Request $request): JsonResponse
+    public function update(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'assignments' => ['required', 'array'],
@@ -57,6 +57,6 @@ class PermissionMatrixController extends Controller
 
         $this->management->syncMatrix($validated['assignments'], $request->user());
 
-        return response()->json(['status' => 'ok']);
+        return redirect()->back()->with('success', 'Permissions updated.');
     }
 }
