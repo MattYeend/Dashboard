@@ -34,6 +34,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegistrationInterestController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TagController;
@@ -95,6 +96,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/read', [NotificationController::class, 'markAsRead'])->name('read');
         Route::post('/read-all', [NotificationController::class, 'markAllAsRead'])->name('read-all');
     });
+
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'show'])->name('show');
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/', [ProfileController::class, 'update'])->name('update');
+        Route::match(['put', 'patch'], '/password', [ProfileController::class, 'updatePassword'])->name('password.update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::get('/users/{user}/profile', [ProfileController::class, 'showOther'])->name('profile.show-other');
 
     Route::prefix('users')->name('users.')->group(function () {
         Route::post('/bulk/delete', [UserController::class, 'bulkDelete'])->name('bulk.delete');
