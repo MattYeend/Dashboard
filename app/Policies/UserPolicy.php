@@ -110,4 +110,44 @@ class UserPolicy
     {
         return $this->authorisationService->canExport($user);
     }
+
+    /**
+     * Determine whether the user can view their own profile.
+     */
+    public function viewOwnProfile(User $user, User $target): bool
+    {
+        return $this->authorisationService->canViewOwnProfile($user, $target);
+    }
+
+    /**
+     * Determine whether the user can edit their own profile.
+     */
+    public function editOwnProfile(User $user, User $target): bool
+    {
+        return $this->authorisationService->canEditOwnProfile($user, $target);
+    }
+
+    /**
+     * Determine whether the user can delete their own profile.
+     */
+    public function deleteOwnProfile(User $user, User $target): bool
+    {
+        return $this->authorisationService->canDeleteOwnProfile($user, $target);
+    }
+
+    /**
+     * Determine whether the user can change their own password.
+     */
+    public function changeOwnPassword(User $user, User $target): bool
+    {
+        return $this->authorisationService->canChangeOwnPassword($user, $target);
+    }
+
+    /**
+     * Determine whether the user can view another user's profile.
+     */
+    public function viewOtherProfile(User $user, User $target): bool
+    {
+        return $this->authorisationService->canViewOtherProfile($user, $target);
+    }
 }

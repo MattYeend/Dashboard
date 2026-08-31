@@ -35,6 +35,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegistrationInterestController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TagController;
@@ -96,6 +97,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/read', [NotificationController::class, 'markAsRead'])->name('read');
         Route::post('/read-all', [NotificationController::class, 'markAllAsRead'])->name('read-all');
     });
+
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::match(['put', 'patch'], '/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
+
+    Route::get('/users/{user}/profile', [ProfileController::class, 'showOther'])->name('profile.show-other');
 
     Route::prefix('users')->name('users.')->group(function () {
         Route::post('/bulk/delete', [UserController::class, 'bulkDelete'])->name('bulk.delete');

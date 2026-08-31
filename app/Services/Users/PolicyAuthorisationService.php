@@ -156,8 +156,12 @@ class PolicyAuthorisationService
      *
      * @throws AuthorizationException
      */
-    public function authoriseRoleAssignment(User $actor, User $target, string $tierRole, array $functionalRoles = []): void
-    {
+    public function authoriseRoleAssignment(
+        User $actor,
+        User $target,
+        string $tierRole,
+        array $functionalRoles = []
+    ): void {
         if (! $actor->can('assign roles')) {
             throw new AuthorizationException('You are not permitted to assign roles.');
         }
@@ -178,13 +182,56 @@ class PolicyAuthorisationService
      *
      * @throws AuthorizationException
      */
-    public function authoriseRoleAssignmentOnCreate(User $actor, string $tierRole, array $functionalRoles = []): void
-    {
+    public function authoriseRoleAssignmentOnCreate(
+        User $actor,
+        string $tierRole,
+        array $functionalRoles = []
+    ): void {
         if (! $actor->can('create users')) {
             throw new AuthorizationException('You are not permitted to create users.');
         }
 
         $this->assertValidTierAndFunctionalRoles($actor, $tierRole, $functionalRoles);
+    }
+
+    /**
+     * Determine whether the user can view their own profile.
+     */
+    public function canViewOwnProfile(User $user, User $target): bool
+    {
+        return $user->id === $target->id && $user->can('view own profile');
+    }
+
+    /**
+     * Determine whether the user can edit their own profile.
+     */
+    public function canEditOwnProfile(User $user, User $target): bool
+    {
+        return $user->id === $target->id && $user->can('edit own profile');
+    }
+
+    /**
+     * Determine whether the user can delete their own profile.
+     */
+    public function canDeleteOwnProfile(User $user, User $target): bool
+    {
+        return $user->id === $target->id && $user->can('delete own profile');
+    }
+
+    /**
+     * Determine whether the user can change their own password.
+     */
+    public function canChangeOwnPassword(User $user, User $target): bool
+    {
+        return $user->id === $target->id && $user->can('change own password');
+    }
+
+    /**
+     * Determine whether the user can view another user's profile.
+     */
+    public function canViewOtherProfile(User $user, User $target): bool
+    {
+        return $user->id !== $target->id && $user->can('view other profiles');
     }
 
     /**
@@ -195,8 +242,11 @@ class PolicyAuthorisationService
      *
      * @throws AuthorizationException
      */
-    private function assertValidTierAndFunctionalRoles(User $actor, string $tierRole, array $functionalRoles): void
-    {
+    private function assertValidTierAndFunctionalRoles(
+        User $actor,
+        string $tierRole,
+        array $functionalRoles
+    ): void {
         if ($tierRole === 'Super Admin' && ! $this->roleChecker->isSuperAdmin($actor)) {
             throw new AuthorizationException('Only a Super Admin can grant the Super Admin role.');
         }
