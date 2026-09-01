@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 
-class Log extends Model
+class Log extends Model implements Auditable
 {
     // Login/Logout
     public const ACTION_LOGIN = 1;
@@ -754,6 +755,11 @@ class Log extends Model
 
     public const ACTION_UPDATE_SECURITY_SETTINGS = 350;
 
+    // Activity Log Viewer Management
+    public const ACTION_EXPORT_ACTIVITY_LOG = 351;
+
+    public const ACTION_DELETE_ACTIVITY_LOG = 352;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
@@ -841,5 +847,57 @@ class Log extends Model
             'action_id',
             $action
         );
+    }
+
+    /**
+     * Get a snapshot of the log's attributes for audit purposes.
+     *
+     * @return array<string, mixed>
+     */
+    public function auditSnapshot(): array
+    {
+        return $this->only([
+            'id',
+            'action_id',
+            'data',
+            'logged_in_user_id',
+            'related_to_user_id',
+            'created_at',
+        ]);
+    }
+
+    /**
+     * Get the human-readable label for a given action ID.
+     */
+    public static function actionLabel(int $actionId): string
+    {
+        return self::actionLabels()[$actionId] ?? 'Unknown action';
+    }
+
+    /**
+     * Get a map of action ID to human-readable label, derived from the
+     * ACTION_* class constants so it stays in sync automatically.
+     *
+     * @return array<int, string>
+     */
+    public static function actionLabels(): array
+    {
+        static $labels = null;
+
+        if ($labels !== null) {
+            return $labels;
+        }
+
+        $labels = [];
+
+        foreach ((new \ReflectionClass(self::class))->getConstants() as $name => $value) {
+            if (! str_starts_with($name, 'ACTION_') || ! is_int($value)) {
+                continue;
+            }
+
+            $labels[$value] = ucfirst(strtolower(str_replace('_', ' ', substr($name, 7))));
+        }
+
+        return $labels;
     }
 }
