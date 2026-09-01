@@ -7,6 +7,7 @@ import {
     Contact2,
     CreditCard,
     FolderGit2,
+    History,
     MessageSquareWarning,
     HandCoins,
     KeyRound,
@@ -38,6 +39,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { index as activityLogsIndex } from '@/routes/activity-logs';
 import { index as backupsIndex } from '@/routes/backups';
 import { index as calendarIndex } from '@/routes/calendar';
 import { board as dealsBoard } from '@/routes/deals';
@@ -200,6 +202,11 @@ const navGroups: NavGroup[] = [
                 title: 'Registration Interests',
                 href: '/registration-interests',
                 icon: UserPlus,
+            },
+            {
+                title: 'Activity Logs',
+                href: activityLogsIndex(),
+                icon: History,
             },
             {
                 title: 'System',

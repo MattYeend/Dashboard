@@ -29,6 +29,7 @@ class QueryService
             $paginated,
             $this->getPermissions($actor),
             $this->baseData(),
+            ['filters' => $filters],
         );
     }
 
