@@ -4,63 +4,54 @@ namespace App\Policies;
 
 use App\Models\Log;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\Logs\PolicyAuthorisationService;
 
 class LogPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected readonly PolicyAuthorisationService $authorisation
+    ) {}
+
+    /**
+     * Determine whether the user can view any activity logs.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisation->canViewAny($user);
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can view the activity log.
      */
     public function view(User $user, Log $log): bool
     {
-        return false;
+        return $this->authorisation->canView($user, $log);
     }
 
     /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Log $log): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete the activity log.
      */
     public function delete(User $user, Log $log): bool
     {
-        return false;
+        return $this->authorisation->canDelete($user, $log);
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can export activity logs.
      */
-    public function restore(User $user, Log $log): bool
+    public function export(User $user): bool
     {
-        return false;
+        return $this->authorisation->canExport($user);
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can bulk delete activity logs.
      */
-    public function forceDelete(User $user, Log $log): bool
+    public function bulkDelete(User $user): bool
     {
-        return false;
+        return $this->authorisation->isAdmin($user);
     }
 }

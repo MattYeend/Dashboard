@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\Log\DeleterService;
+use App\Services\Logs\DeleterService;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
