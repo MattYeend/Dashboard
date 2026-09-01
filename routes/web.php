@@ -758,6 +758,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/security-policy', [SettingController::class, 'securityPolicy'])->name('security-policy');
         Route::put('/security', [SettingController::class, 'updateSecurity'])->name('security.update');
     });
+
+    Route::prefix('activity-logs')->name('activity-logs.')->group(function () {
+        Route::post('/bulk/delete', [ActivityLogController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::get('/export', [ActivityLogController::class, 'export'])->name('export');
+        Route::get('/', [ActivityLogController::class, 'index'])->name('index');
+        Route::delete('/{log}', [ActivityLogController::class, 'destroy'])->name('destroy');
+    });
 });
 
 require __DIR__.'/settings.php';
