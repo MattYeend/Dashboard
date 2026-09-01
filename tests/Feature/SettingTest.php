@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Log;
-use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Spatie\Permission\Models\Role;
