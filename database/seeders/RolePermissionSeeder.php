@@ -75,6 +75,7 @@ class RolePermissionSeeder extends Seeder
             'send notifications',
 
             // Activity logs
+            'view any activity logs',
             'view activity logs',
             'export activity logs',
             'delete activity logs',
@@ -439,7 +440,7 @@ class RolePermissionSeeder extends Seeder
             // Calendar Management
             'view calendar',
 
-            // Attachment management
+            // Attachment Management
             'view any attachments',
             'view attachments',
             'create attachments',
@@ -498,8 +499,10 @@ class RolePermissionSeeder extends Seeder
             'edit notifications',
             'delete notifications',
             'send notifications',
+            'view any activity logs',
             'view activity logs',
             'export activity logs',
+            'delete activity logs',
             'view reports',
             'create reports',
             'edit reports',
@@ -811,8 +814,10 @@ class RolePermissionSeeder extends Seeder
             'view notifications',
             'create notifications',
             'send notifications',
+            'view any activity logs',
             'view activity logs',
             'export activity logs',
+            'delete activity logs',
             'view reports',
             'create reports',
             'edit reports',
