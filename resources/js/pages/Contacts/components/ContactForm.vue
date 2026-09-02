@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { InertiaFormProps } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
+import TagPicker from '@/components/TagPicker.vue';
 import { Button } from '@/components/ui/button';
 import ContactBasicDetailsForm from '@/pages/Contacts/components/ContactBasicDetailsForm.vue';
 import ContactTypeForm from '@/pages/Contacts/components/ContactTypeForm.vue';
@@ -23,6 +24,7 @@ interface Props {
     errors: Partial<InertiaFormProps<ContactFormData>['errors']>;
     contactableTypes: { value: string; label: string }[];
     contactableOptions: { value: number; label: string }[];
+    tags: { id: number; name: string }[];
 }
 
 defineProps<Props>();
@@ -36,6 +38,7 @@ const contactableType = defineModel<string>('contactableType', {
 const contactableId = defineModel<number | null>('contactableId', {
     required: true,
 });
+const tagIds = defineModel<number[]>('tagIds', { default: () => [] });
 </script>
 
 <template>
@@ -53,6 +56,8 @@ const contactableId = defineModel<number | null>('contactableId', {
             :contactable-options="contactableOptions"
             :errors="errors"
         />
+
+        <TagPicker v-model:tag-ids="tagIds" :tags="tags" :can-create="true" />
 
         <div class="flex justify-end space-x-3">
             <Button as-child variant="outline">

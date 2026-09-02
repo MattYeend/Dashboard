@@ -290,8 +290,9 @@ class UpdateCompanyRequest extends FormRequest
     protected function tagIdRules(): array
     {
         return [
+            'sometimes',
             'integer',
-            'exists:tags,id',
+            Rule::exists('tags', 'id'),
         ];
     }
 }

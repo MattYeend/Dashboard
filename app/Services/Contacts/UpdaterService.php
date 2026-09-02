@@ -40,10 +40,15 @@ class UpdaterService
         return $this->updateResource->handle(
             $contact,
             $contactData,
-            function (Contact $contact) use ($actor, $before, $updatedBy): void {
+            function (Contact $contact) use ($actor, $before, $data, $updatedBy): void {
                 $contact->forceFill([
                     'updated_by' => $updatedBy,
                 ])->save();
+
+                if (array_key_exists('tag_ids', $data)) {
+                    $contact->tags()->sync($data['tag_ids'] ?? []);
+                }
+
                 $fresh = $contact->fresh();
 
                 $this->auditLogService->record(

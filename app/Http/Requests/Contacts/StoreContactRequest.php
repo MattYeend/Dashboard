@@ -32,6 +32,8 @@ class StoreContactRequest extends FormRequest
             'phone' => $this->phoneRules(),
             'email' => $this->emailRules(),
             'meta' => $this->metaRules(),
+            'tag_ids' => $this->tagIdsRules(),
+            'tag_ids.*' => $this->tagIdRules(),
         ];
     }
 
@@ -53,6 +55,8 @@ class StoreContactRequest extends FormRequest
             'email.email' => 'The email address must be a valid email.',
             'email.max' => 'The email address may not exceed 255 characters.',
             'phone.max' => 'The phone number may not exceed 255 characters.',
+            'tag_ids.array' => 'Tags must be provided as a list.',
+            'tag_ids.*.exists' => 'One or more selected tags are invalid.',
         ];
     }
 
@@ -124,6 +128,32 @@ class StoreContactRequest extends FormRequest
         return [
             'nullable',
             'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for the tag_ids field.
+     *
+     * @return array<mixed>
+     */
+    protected function tagIdsRules(): array
+    {
+        return [
+            'nullable',
+            'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for each tag_ids entry.
+     *
+     * @return array<mixed>
+     */
+    protected function tagIdRules(): array
+    {
+        return [
+            'integer',
+            'exists:tags,id',
         ];
     }
 

@@ -24,6 +24,10 @@ class FormatterService
             'phone' => $contact->phone,
             'email' => $contact->email,
             'meta' => $contact->meta,
+            'tags' => $contact->tags->map(fn ($tag) => [
+                'id' => $tag->id,
+                'name' => $tag->name,
+            ])->all(),
             'created_at' => $contact->created_at,
             'updated_at' => $contact->updated_at,
             'deleted_at' => $contact->deleted_at,

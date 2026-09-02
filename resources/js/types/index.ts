@@ -138,6 +138,7 @@ export interface Contact {
     phone: string | null;
     email: string | null;
     meta: Record<string, unknown> | null;
+    tags?: { id: number; name: string }[];
     created_by: number | null;
     updated_by: number | null;
     deleted_by: number | null;

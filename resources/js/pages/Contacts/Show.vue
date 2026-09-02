@@ -5,6 +5,7 @@ import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import ActivityTimeline from '@/pages/Activities/components/ActivityTimeline.vue';
 import ContactAuditDetails from '@/pages/Contacts/components/ContactAuditDetails.vue';
 import ContactBasicDetails from '@/pages/Contacts/components/ContactBasicDetails.vue';
+import ContactTagsDetails from '@/pages/Contacts/components/ContactTagsDetails.vue';
 import QuickLogModal from '@/pages/InteractionLogs/components/QuickLogModal.vue';
 import {
     edit as contactsEdit,
@@ -82,6 +83,7 @@ function destroy(): void {
 
             <div class="space-y-6">
                 <ContactBasicDetails :contact="contact" />
+                <ContactTagsDetails :contact="contact" />
                 <ContactAuditDetails :contact="contact" />
                 <ActivityTimeline
                     activityable-type="contact"

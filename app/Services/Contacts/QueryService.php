@@ -87,6 +87,7 @@ class QueryService
             'updater',
             'deleter',
             'restorer',
+            'tags',
         ]);
 
         $query = $this->filterService->applyAll($query, $filters);
@@ -161,6 +162,7 @@ class QueryService
             'updater',
             'deleter',
             'restorer',
+            'tags',
         ]);
 
         if ($withTrashed) {

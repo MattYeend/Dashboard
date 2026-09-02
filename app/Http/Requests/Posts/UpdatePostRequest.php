@@ -4,6 +4,7 @@ namespace App\Http\Requests\Posts;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePostRequest extends FormRequest
 {
@@ -137,7 +138,7 @@ class UpdatePostRequest extends FormRequest
     {
         return [
             'integer',
-            'exists:categories,id',
+            Rule::exists('categories', 'id'),
         ];
     }
 
@@ -164,7 +165,7 @@ class UpdatePostRequest extends FormRequest
     {
         return [
             'integer',
-            'exists:tags,id',
+            Rule::exists('tags', 'id'),
         ];
     }
 }

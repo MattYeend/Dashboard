@@ -10,6 +10,7 @@ import type { Contact } from '@/types';
 interface Props {
     contact: Contact;
     contactableTypes: { value: string; label: string }[];
+    tags: { id: number; name: string }[];
 }
 
 const props = defineProps<Props>();
@@ -19,6 +20,7 @@ const form = useForm({
     contactable_id: props.contact.contactable_id as number | null,
     phone: props.contact.phone ?? '',
     email: props.contact.email ?? '',
+    tag_ids: props.contact.tags?.map((tag) => tag.id) ?? [],
 });
 
 interface ContactableOption {
@@ -68,6 +70,7 @@ function submit(): void {
                 v-model:phone="form.phone"
                 :is-editing="true"
                 :processing="form.processing"
+                :tags="tags"
                 :errors="form.errors"
                 @submit="submit"
             />
