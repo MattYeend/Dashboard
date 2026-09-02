@@ -71,26 +71,11 @@ class QueryService
     public function getFormData(): array
     {
         return [
-            'pipelines' => Pipeline::query()
-                ->select('id', 'title')
-                ->orderBy('title')
-                ->get(),
-            'pipeline_stages' => PipelineStage::query()
-                ->select('id', 'pipeline_id', 'title')
-                ->orderBy('position')
-                ->get(),
-            'deal_statuses' => DealStatus::query()
-                ->select('id', 'title', 'background_colour', 'text_colour')
-                ->orderBy('title')
-                ->get(),
-            'companies' => Company::query()
-                ->select('id', 'name')
-                ->orderBy('name')
-                ->get(),
-            'invoices' => Invoice::query()
-                ->select('id', 'invoice_number')
-                ->orderBy('invoice_number')
-                ->get(),
+            'pipelines' => Pipeline::orderBy('title')->get(['id', 'title']),
+            'pipeline_stages' => PipelineStage::orderBy('position')->get(['id', 'pipeline_id', 'title']),
+            'deal_statuses' => DealStatus::orderBy('title')->get(['id', 'title', 'background_colour', 'text_colour']),
+            'companies' => Company::orderBy('name')->get(['id', 'name']),
+            'invoices' => Invoice::orderBy('invoice_number')->get(['id', 'invoice_number']),
             'tags' => Tag::orderBy('name')->get(['id', 'name']),
         ];
     }
