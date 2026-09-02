@@ -816,6 +816,12 @@ export interface PermissionsMeta {
     can_export?: boolean;
 }
 
+export interface PaginationLink {
+    url: string | null;
+    label: string;
+    active: boolean;
+}
+
 export interface Pagination {
     current_page: number;
     last_page: number;

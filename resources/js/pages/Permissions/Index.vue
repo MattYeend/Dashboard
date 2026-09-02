@@ -257,6 +257,10 @@ function bulkRestore(): void {
         },
     );
 }
+
+function formatRoles(roles?: Array<{ name: string }>): string {
+    return roles?.map((role) => role.name).join(', ') || '—';
+}
 </script>
 
 <template>
@@ -312,11 +316,7 @@ function bulkRestore(): void {
                 </template>
 
                 <template #cell-roles="{ row }">
-                    {{
-                        row.roles
-                            ?.map((r: { name: string }) => r.name)
-                            .join(', ') || '—'
-                    }}
+                    {{ formatRoles(row.roles) }}
                 </template>
 
                 <template #actions="{ row }">
