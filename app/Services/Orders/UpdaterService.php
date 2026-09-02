@@ -40,10 +40,15 @@ class UpdaterService
         return $this->updateResource->handle(
             $order,
             $orderData,
-            function (Order $order) use ($actor, $before, $updatedBy): void {
+            function (Order $order) use ($actor, $before, $data, $updatedBy): void {
                 $order->forceFill([
                     'updated_by' => $updatedBy,
                 ])->save();
+
+                if (array_key_exists('tag_ids', $data)) {
+                    $order->tags()->sync($data['tag_ids'] ?? []);
+                }
+
                 $fresh = $order->fresh();
 
                 $this->auditLogService->record(

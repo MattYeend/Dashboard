@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { InertiaFormProps } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
+import TagPicker from '@/components/TagPicker.vue';
 import { Button } from '@/components/ui/button';
 import OrderBasicDetailsForm from '@/pages/Orders/components/OrderBasicDetailsForm.vue';
 import OrderTypeForm from '@/pages/Orders/components/OrderTypeForm.vue';
@@ -30,6 +31,7 @@ interface Props {
     statuses: OrderStatus[];
     orderableTypes: { value: string; label: string }[];
     orderableOptions: { value: number; label: string }[];
+    tags: { id: number; name: string }[];
 }
 
 defineProps<Props>();
@@ -58,6 +60,7 @@ const orderableType = defineModel<string>('orderableType', {
 const orderableId = defineModel<number | null>('orderableId', {
     required: true,
 });
+const tagIds = defineModel<number[]>('tagIds', { default: () => [] });
 </script>
 
 <template>
@@ -85,6 +88,8 @@ const orderableId = defineModel<number | null>('orderableId', {
             :orderable-options="orderableOptions"
             :errors="errors"
         />
+
+        <TagPicker v-model:tag-ids="tagIds" :tags="tags" :can-create="true" />
 
         <div class="flex justify-end space-x-3">
             <Button as-child variant="outline">

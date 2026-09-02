@@ -11,6 +11,7 @@ interface Props {
     order: Order;
     statuses: OrderStatus[];
     orderableTypes: { value: string; label: string }[];
+    tags: { id: number; name: string }[];
 }
 
 const props = defineProps<Props>();
@@ -29,6 +30,7 @@ const form = useForm({
     status_id: props.order.status_id,
     orderable_type: props.order.orderable_type_key,
     orderable_id: props.order.orderable_id as number | null,
+    tag_ids: props.order.tags?.map((tag) => tag.id) ?? [],
 });
 
 interface OrderableOption {
@@ -86,9 +88,11 @@ function submit(): void {
                 v-model:status-id="form.status_id"
                 v-model:orderable-type="form.orderable_type"
                 v-model:orderable-id="form.orderable_id"
+                v-model:tag-ids="form.tag_ids"
                 :statuses="props.statuses"
                 :orderable-types="props.orderableTypes"
                 :orderable-options="orderableOptions"
+                :tags="props.tags"
                 :is-editing="true"
                 :processing="form.processing"
                 :errors="form.errors"

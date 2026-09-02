@@ -34,6 +34,10 @@ class FormatterService
             'completed_at' => $order->completed_at?->format('Y-m-d\TH:i'),
             'status_id' => $order->status_id,
             'meta' => $order->meta,
+            'tags' => $order->tags->map(fn ($tag) => [
+                'id' => $tag->id,
+                'name' => $tag->name,
+            ])->all(),
             'created_at' => $order->created_at,
             'updated_at' => $order->updated_at,
             'deleted_at' => $order->deleted_at,

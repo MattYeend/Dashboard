@@ -99,6 +99,7 @@ export interface Order {
         background_colour: string | null;
         text_colour: string | null;
     } | null;
+    tags?: { id: number; name: string }[];
     creator?: { name: string };
     updater?: { name: string };
     deleter?: { name: string };

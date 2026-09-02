@@ -10,6 +10,7 @@ import type { OrderStatus } from '@/types';
 interface Props {
     statuses: OrderStatus[];
     orderableTypes: { value: string; label: string }[];
+    tags: { id: number; name: string }[];
 }
 
 const props = defineProps<Props>();
@@ -28,6 +29,7 @@ const form = useForm({
     status_id: null as number | null,
     orderable_type: '',
     orderable_id: null as number | null,
+    tag_ids: [] as number[],
 });
 
 interface OrderableOption {
@@ -90,6 +92,7 @@ function submit(): void {
                 :statuses="props.statuses"
                 :orderable-types="props.orderableTypes"
                 :orderable-options="orderableOptions"
+                :tags="tags"
                 :is-editing="false"
                 :processing="form.processing"
                 :errors="form.errors"

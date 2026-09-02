@@ -46,6 +46,8 @@ class CreatorService
                     'created_by' => $createdBy,
                 ])->save();
 
+                $newOrder->tags()->sync($data['tag_ids'] ?? []);
+
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_ORDER,
                     $actor,

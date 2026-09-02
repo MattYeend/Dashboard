@@ -99,6 +99,7 @@ class QueryService
             'deleter',
             'restorer',
             'status',
+            'tags',
         ]);
 
         $query = $this->filterService->applyAll(
@@ -179,6 +180,7 @@ class QueryService
             'deleter',
             'restorer',
             'status',
+            'tags',
         ]);
 
         if ($withTrashed) {

@@ -5,6 +5,7 @@ import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import ActivityTimeline from '@/pages/Activities/components/ActivityTimeline.vue';
 import OrderAuditDetails from '@/pages/Orders/components/OrderAuditDetails.vue';
 import OrderBasicDetails from '@/pages/Orders/components/OrderBasicDetails.vue';
+import OrderTagsDetails from '@/pages/Orders/components/OrderTagsDetails.vue';
 import {
     edit as ordersEdit,
     destroy as ordersDestroy,
@@ -70,6 +71,7 @@ function destroy(): void {
             <div class="space-y-6">
                 <OrderBasicDetails :order="order" />
                 <OrderAuditDetails :order="order" />
+                <OrderTagsDetails :order="order" />
                 <ActivityTimeline
                     activityable-type="order"
                     :activityable-id="order.id"

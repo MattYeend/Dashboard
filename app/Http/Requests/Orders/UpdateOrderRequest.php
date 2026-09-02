@@ -40,6 +40,8 @@ class UpdateOrderRequest extends FormRequest
             'completed_at' => $this->completedAtRules(),
             'status_id' => $this->statusIdRules(),
             'meta' => $this->metaRules(),
+            'tag_ids' => $this->tagIdsRules(),
+            'tag_ids.*' => $this->tagIdRules(),
         ];
     }
 
@@ -65,6 +67,8 @@ class UpdateOrderRequest extends FormRequest
             'tax_amount.min' => 'The tax amount cannot be negative.',
             'total_amount.min' => 'The total amount cannot be negative.',
             'status_id.exists' => 'The selected status does not exist.',
+            'tag_ids.array' => 'Tags must be provided as a list.',
+            'tag_ids.*.exists' => 'One or more selected tags are invalid.',
         ];
     }
 
@@ -276,6 +280,33 @@ class UpdateOrderRequest extends FormRequest
             'sometimes',
             'nullable',
             'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for the tag_ids field.
+     *
+     * @return array<mixed>
+     */
+    protected function tagIdsRules(): array
+    {
+        return [
+            'sometimes',
+            'nullable',
+            'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for each tag_ids entry.
+     *
+     * @return array<mixed>
+     */
+    protected function tagIdRules(): array
+    {
+        return [
+            'integer',
+            'exists:tags,id',
         ];
     }
 
