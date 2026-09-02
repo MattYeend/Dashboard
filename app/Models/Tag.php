@@ -57,6 +57,46 @@ class Tag extends Model implements Auditable
     {
         return $this->belongsToMany(Post::class);
     }
+    
+    /**
+     * Get the companies associated with this tag.
+     *
+     * @return BelongsToMany<Company, $this>
+     */
+    public function companies(): BelongsToMany
+    {
+        return $this->belongsToMany(Company::class);
+    }
+
+    /**
+     * Get the contacts associated with this tag.
+     *
+     * @return BelongsToMany<Contact, $this>
+     */
+    public function contacts(): BelongsToMany
+    {
+        return $this->belongsToMany(Contact::class);
+    }
+
+    /**
+     * Get the deals associated with this tag.
+     *
+     * @return BelongsToMany<Deal, $this>
+     */
+    public function deals(): BelongsToMany
+    {
+        return $this->belongsToMany(Deal::class);
+    }
+
+    /**
+     * Get the tasks associated with this tag.
+     *
+     * @return BelongsToMany<Task, $this>
+     */
+    public function tasks(): BelongsToMany
+    {
+        return $this->belongsToMany(Task::class, 'task_tag');
+    }
 
     /**
      * Get the user who created this tag.

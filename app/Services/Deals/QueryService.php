@@ -185,8 +185,8 @@ class QueryService
     ): Deal {
         $query = Deal::query()->with([
             'pipeline',
-            'pipelineStage',
-            'dealStatus',
+            'stage',
+            'status',
             'company',
             'invoice',
             'tags',

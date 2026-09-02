@@ -99,7 +99,7 @@ class Task extends Model implements Auditable
      */
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class, 'task_tag');
     }
 
     /**
