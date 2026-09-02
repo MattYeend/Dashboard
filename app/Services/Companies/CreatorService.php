@@ -42,6 +42,8 @@ class CreatorService
                     'created_by' => $createdBy,
                 ])->save();
 
+                $newCompany->tags()->sync($data['tag_ids'] ?? []);
+
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_COMPANY,
                     $actor,

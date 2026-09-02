@@ -28,6 +28,10 @@ class FormatterService
             'employee_count' => $company->employee_count,
             'founded_year' => $company->founded_year,
             'meta' => $company->meta,
+            'tags' => $company->tags->map(fn ($tag) => [
+                'id' => $tag->id,
+                'name' => $tag->name,
+            ])->all(),
             'created_at' => $company->created_at,
             'updated_at' => $company->updated_at,
             'deleted_at' => $company->deleted_at,

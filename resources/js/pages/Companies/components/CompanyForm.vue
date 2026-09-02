@@ -29,6 +29,7 @@ interface Props {
     processing: boolean;
     industries: Industry[];
     users: UserOption[];
+    tags: { id: number; name: string }[];
     errors: Partial<InertiaFormProps<CompanyFormData>['errors']>;
 }
 
@@ -56,6 +57,7 @@ const foundedYear = defineModel<number | null>('foundedYear', {
 const description = defineModel<string | null>('description', {
     default: null,
 });
+const tagIds = defineModel<number[]>('tagIds', { default: () => [] });
 </script>
 
 <template>
@@ -85,6 +87,7 @@ const description = defineModel<string | null>('description', {
             v-model:description="description"
             :errors="errors"
         />
+        <TagPicker v-model:tag-ids="tagIds" :tags="tags" :can-create="true" />
 
         <div class="flex items-center justify-end space-x-3">
             <Button as-child variant="outline">

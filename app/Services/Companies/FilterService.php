@@ -32,6 +32,23 @@ class FilterService
     }
 
     /**
+     * Apply a tag filter to the query.
+     *
+     * @param  Builder<Company>  $query
+     * @return Builder<Company>
+     */
+    public function applyTag(Builder $query, int|string|null $tagId): Builder
+    {
+        if ($tagId === null || $tagId === '') {
+            return $query;
+        }
+
+        return $query->whereHas('tags', function (Builder $q) use ($tagId): void {
+            $q->where('tags.id', $tagId);
+        });
+    }
+
+    /**
      * Apply all filters to the query.
      *
      * @param  Builder<Company>  $query
@@ -41,6 +58,7 @@ class FilterService
     public function applyAll(Builder $query, array $filters): Builder
     {
         $query = $this->applySearch($query, $filters['search'] ?? null);
+        $query = $this->applyTag($query, $filters['tag_id'] ?? null);
 
         return $query;
     }

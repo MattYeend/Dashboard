@@ -8,6 +8,7 @@ import CompanyForm from './components/CompanyForm.vue';
 defineProps<{
     industries: Industry[];
     users: UserOption[];
+    tags: { id: number; name: string }[];
 }>();
 
 const form = useForm({
@@ -22,6 +23,7 @@ const form = useForm({
     account_manager_id: null,
     employee_count: null,
     founded_year: null,
+    tag_ids: [] as number[],
 });
 
 function submit(): void {
@@ -63,6 +65,7 @@ function submit(): void {
                 :processing="form.processing"
                 :industries="industries"
                 :users="users"
+                :tags="tags"
                 :errors="form.errors"
                 @submit="submit"
             />

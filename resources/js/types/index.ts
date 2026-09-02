@@ -232,6 +232,7 @@ export interface Company {
     deleted_at: string | null;
     industry?: { id: number; title: string } | null;
     account_manager?: { id: number; name: string } | null;
+    tags?: { id: number; name: string }[];
     creator?: { name: string };
     updater?: { name: string };
     deleter?: { name: string };

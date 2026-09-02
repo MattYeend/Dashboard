@@ -37,6 +37,8 @@ class UpdateCompanyRequest extends FormRequest
             'employee_count' => $this->employeeCountRules(),
             'founded_year' => $this->foundedYearRules(),
             'meta' => $this->metaRules(),
+            'tag_ids' => $this->tagIdsRules(),
+            'tag_ids.*' => $this->tagIdRules(),
         ];
     }
 
@@ -63,6 +65,8 @@ class UpdateCompanyRequest extends FormRequest
             'account_manager_id.exists' => 'The selected account manager does not exist.',
             'email.email' => 'Please provide a valid email address.',
             'website.url' => 'Please provide a valid website URL.',
+            'tag_ids.array' => 'Tags must be provided as a list.',
+            'tag_ids.*.exists' => 'One or more selected tags are invalid.',
         ];
     }
 
@@ -261,6 +265,33 @@ class UpdateCompanyRequest extends FormRequest
             'sometimes',
             'nullable',
             'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for the tag_ids field.
+     *
+     * @return array<mixed>
+     */
+    protected function tagIdsRules(): array
+    {
+        return [
+            'sometimes',
+            'nullable',
+            'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for each tag_ids entry.
+     *
+     * @return array<mixed>
+     */
+    protected function tagIdRules(): array
+    {
+        return [
+            'integer',
+            'exists:tags,id',
         ];
     }
 }

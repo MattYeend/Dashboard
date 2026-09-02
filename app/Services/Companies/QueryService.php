@@ -81,6 +81,7 @@ class QueryService
             'restorer',
             'industry',
             'accountManager',
+            'tags',
         ]);
         $query = $this->filterService->applyAll($query, $filters);
 
@@ -154,6 +155,7 @@ class QueryService
             'restorer',
             'industry',
             'accountManager',
+            'tags',
         ]);
 
         if ($withTrashed) {

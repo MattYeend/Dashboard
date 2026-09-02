@@ -18,7 +18,7 @@ import type {
 import CompanyAuditDetails from './components/CompanyAuditDetails.vue';
 import CompanyBasicDetails from './components/CompanyBasicDetails.vue';
 import CompanyContactDetails from './components/CompanyContactDetails.vue';
-import CompanyRegistrationDetails from './components/CompanyRegistrationDetails.vue';
+import CompanyTagsDetails from './components/CompanyTagsDetails.vue';
 
 interface Props {
     company: Company;
@@ -95,6 +95,7 @@ function destroy(): void {
                 <CompanyBasicDetails :company="company" />
                 <CompanyContactDetails :company="company" />
                 <CompanyRegistrationDetails :company="company" />
+                <CompanyTagsDetails :company="company" />
                 <CompanyAuditDetails :company="company" />
                 <ActivityTimeline
                     activityable-type="company"

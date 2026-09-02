@@ -43,10 +43,15 @@ class UpdaterService
         return $this->updateResource->handle(
             $company,
             $companyData,
-            function (Company $company) use ($actor, $before, $updatedBy): void {
+            function (Company $company) use ($actor, $before, $data, $updatedBy): void {
                 $company->forceFill([
                     'updated_by' => $updatedBy,
                 ])->save();
+
+                if (array_key_exists('tag_ids', $data)) {
+                    $company->tags()->sync($data['tag_ids'] ?? []);
+                }
+
                 $fresh = $company->fresh();
 
                 $this->auditLogService->record(

@@ -9,6 +9,7 @@ interface Props {
     company: Company;
     industries: Industry[];
     users: UserOption[];
+    tags: { id: number; name: string }[];
 }
 
 const props = defineProps<Props>();
@@ -25,6 +26,7 @@ const form = useForm({
     account_manager_id: props.company.account_manager_id,
     employee_count: props.company.employee_count,
     founded_year: props.company.founded_year,
+    tag_ids: props.company.tags?.map((tag) => tag.id) ?? [],
 });
 
 function submit(): void {
@@ -66,6 +68,7 @@ function submit(): void {
                 :processing="form.processing"
                 :industries="industries"
                 :users="users"
+                :tags="tags"
                 :errors="form.errors"
                 @submit="submit"
             />
