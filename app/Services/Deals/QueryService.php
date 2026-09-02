@@ -8,6 +8,7 @@ use App\Models\DealStatus;
 use App\Models\Invoice;
 use App\Models\Pipeline;
 use App\Models\PipelineStage;
+use App\Models\Tag;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -90,6 +91,7 @@ class QueryService
                 ->select('id', 'invoice_number')
                 ->orderBy('invoice_number')
                 ->get(),
+            'tags' => Tag::orderBy('name')->get(['id', 'name']),
         ];
     }
 

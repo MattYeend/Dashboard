@@ -4,6 +4,7 @@ namespace App\Services\Orders;
 
 use App\Models\Order;
 use App\Models\OrderStatus;
+use App\Models\Tag;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -74,6 +75,7 @@ class QueryService
                 'background_colour',
                 'text_colour',
             ]),
+            'tags' => Tag::orderBy('name')->get(['id', 'name']),
             'orderableTypes' => $this->registry->types(),
         ];
     }

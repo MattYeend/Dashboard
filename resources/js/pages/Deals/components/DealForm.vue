@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { InertiaFormProps } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
-import TagPicker from '@/components/TagPicker.vue';
 import { Button } from '@/components/ui/button';
 import DealBasicDetailsForm from '@/pages/Deals/components/DealBasicDetailsForm.vue';
 import DealPipelineDetailsForm from '@/pages/Deals/components/DealPipelineDetailsForm.vue';
 import DealRelationsDetailsForm from '@/pages/Deals/components/DealRelationsDetailsForm.vue';
+import DealTagsForm from '@/pages/Deals/components/DealTagsForm.vue';
 import DealValueDetailsForm from '@/pages/Deals/components/DealValueDetailsForm.vue';
 import { index as dealsIndex } from '@/routes/deals';
 import type {
@@ -19,6 +19,7 @@ import type {
 interface DealFormData {
     title: string;
     description: string | null;
+    tag_ids: number[];
     pipeline_id: number | null;
     stage_id: number | null;
     status_id: number | null;
@@ -100,7 +101,7 @@ const tagIds = defineModel<number[]>('tagIds', { default: () => [] });
             :errors="errors"
         />
 
-        <TagPicker v-model:tag-ids="tagIds" :tags="tags" :can-create="true" />
+        <DealTagsForm v-model:tag-ids="tagIds" :tags="tags" :errors="errors" />
 
         <div class="flex justify-end space-x-3">
             <Button as-child variant="outline">

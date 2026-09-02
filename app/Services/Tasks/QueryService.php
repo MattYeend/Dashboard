@@ -2,6 +2,7 @@
 
 namespace App\Services\Tasks;
 
+use App\Models\Tag;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
@@ -70,6 +71,7 @@ class QueryService
                 'background_colour',
                 'text_colour',
             ]),
+            'tags' => Tag::orderBy('name')->get(['id', 'name']),
             'users' => User::orderBy('name')->get(['id', 'name']),
         ];
     }

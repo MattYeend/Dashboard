@@ -4,6 +4,7 @@ namespace App\Services\Companies;
 
 use App\Models\Company;
 use App\Models\Industry;
+use App\Models\Tag;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -65,6 +66,7 @@ class QueryService
     {
         return [
             'industries' => Industry::orderBy('title')->get(['id', 'title']),
+            'tags' => Tag::orderBy('name')->get(['id', 'name']),
             'users' => User::orderBy('name')->get(['id', 'name']),
         ];
     }
