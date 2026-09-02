@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import CalendarEvent from './CalendarEvent.vue';
 import type { CalendarEvent as CalendarEventType } from '@/types';
+import CalendarEvent from './CalendarEvent.vue';
 
 interface Props {
     viewMode: 'month' | 'week';

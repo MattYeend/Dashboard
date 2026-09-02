@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { DashboardStats } from '@/types';
 import { buildDashboardStatGroups } from './dashboardStatGroups';
 import StatCard from './StatCard.vue';
-import type { DashboardStats } from '@/types';
 
 const props = defineProps<{
     stats: DashboardStats;

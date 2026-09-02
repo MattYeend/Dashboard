@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import ProfileDetailsForm from './components/ProfileDetailsForm.vue';
-import ProfilePasswordForm from './components/ProfilePasswordForm.vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { nullIfBlank } from '@/lib/forms';
 import { update, updatePassword, destroy } from '@/routes/profile';
 import type { AuthUser } from '@/types';
+import ProfileDetailsForm from './components/ProfileDetailsForm.vue';
+import ProfilePasswordForm from './components/ProfilePasswordForm.vue';
 
 const props = defineProps<{
     user: AuthUser;
