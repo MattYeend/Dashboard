@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { InertiaFormProps } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
-import TagPicker from '@/components/TagPicker.vue';
 import { Button } from '@/components/ui/button';
 import TaskAssignmentDetailsForm from '@/pages/Tasks/components/TaskAssignmentDetailsForm.vue';
 import TaskBasicDetailsForm from '@/pages/Tasks/components/TaskBasicDetailsForm.vue';
 import TaskDateDetailsForm from '@/pages/Tasks/components/TaskDateDetailsForm.vue';
 import { index as tasksIndex } from '@/routes/tasks';
 import type { TaskStatus, UserOption } from '@/types';
+import TaskTagsForm from '@/pages/Tasks/components/TaskTagsForm.vue';
 
 interface TaskFormData {
     title: string;
@@ -16,6 +16,7 @@ interface TaskFormData {
     assigned_date: string | null;
     assigned_to: number | null;
     status_id: number | null;
+    tag_ids: number[];
 }
 
 interface Props {
@@ -62,7 +63,11 @@ const tagIds = defineModel<number[]>('tagIds', { default: () => [] });
             v-model:assigned-date="assignedDate"
             :errors="errors"
         />
-        <TagPicker v-model:tag-ids="tagIds" :tags="tags" :can-create="true" />
+        <TaskTagsForm
+            v-model:tag-ids="tagIds"
+            :tags="tags"
+            :errors="errors"
+        />
 
         <div class="flex items-center justify-end space-x-3">
             <Button as-child variant="outline">

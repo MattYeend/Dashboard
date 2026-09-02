@@ -6,6 +6,7 @@ import CompanyBasicDetailsForm from '@/pages/Companies/components/CompanyBasicDe
 import CompanyContactDetailsForm from '@/pages/Companies/components/CompanyContactDetailsForm.vue';
 import CompanyDescriptionForm from '@/pages/Companies/components/CompanyDescriptionForm.vue';
 import CompanyRegistrationDetailsForm from '@/pages/Companies/components/CompanyRegistrationDetailsForm.vue';
+import CompanyTagsForm from '@/pages/Companies/components/CompanyTagsForm.vue';
 import { index as companiesIndex } from '@/routes/companies';
 import type { Industry, UserOption } from '@/types';
 
@@ -22,6 +23,7 @@ interface CompanyFormData {
     account_manager_id: number | null;
     employee_count: number | null;
     founded_year: number | null;
+    tag_ids: number[];
 }
 
 interface Props {
@@ -87,7 +89,11 @@ const tagIds = defineModel<number[]>('tagIds', { default: () => [] });
             v-model:description="description"
             :errors="errors"
         />
-        <TagPicker v-model:tag-ids="tagIds" :tags="tags" :can-create="true" />
+        <CompanyTagsForm
+            v-model:tag-ids="tagIds"
+            :tags="tags"
+            :errors="errors"
+        />
 
         <div class="flex items-center justify-end space-x-3">
             <Button as-child variant="outline">
