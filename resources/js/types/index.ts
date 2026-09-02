@@ -183,6 +183,7 @@ export interface Task {
         background_colour: string | null;
         text_colour: string | null;
     } | null;
+    tags?: { id: number; name: string }[];
     creator?: { name: string };
     updater?: { name: string };
     deleter?: { name: string };
@@ -625,6 +626,7 @@ export interface Deal {
     expected_close_date: string | null;
     closed_at: string | null;
     meta: Record<string, unknown> | null;
+    tags?: { id: number; name: string }[];
     created_by: number | null;
     updated_by: number | null;
     deleted_by: number | null;

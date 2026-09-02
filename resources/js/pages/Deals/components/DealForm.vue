@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { InertiaFormProps } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
+import TagPicker from '@/components/TagPicker.vue';
 import { Button } from '@/components/ui/button';
 import DealBasicDetailsForm from '@/pages/Deals/components/DealBasicDetailsForm.vue';
 import DealPipelineDetailsForm from '@/pages/Deals/components/DealPipelineDetailsForm.vue';
@@ -39,6 +40,7 @@ interface Props {
     statuses: DealStatus[];
     companies: Company[];
     invoices: Invoice[];
+    tags: { id: number; name: string }[];
 }
 
 defineProps<Props>();
@@ -60,6 +62,7 @@ const expectedCloseDate = defineModel<string | null>('expectedCloseDate', {
     default: null,
 });
 const closedAt = defineModel<string | null>('closedAt', { default: null });
+const tagIds = defineModel<number[]>('tagIds', { default: () => [] });
 </script>
 
 <template>
@@ -96,6 +99,8 @@ const closedAt = defineModel<string | null>('closedAt', { default: null });
             v-model:closed-at="closedAt"
             :errors="errors"
         />
+
+        <TagPicker v-model:tag-ids="tagIds" :tags="tags" :can-create="true" />
 
         <div class="flex justify-end space-x-3">
             <Button as-child variant="outline">

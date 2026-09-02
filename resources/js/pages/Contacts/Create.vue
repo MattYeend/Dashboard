@@ -68,9 +68,10 @@ function submit(): void {
                 :contactable-options="contactableOptions"
                 v-model:email="form.email"
                 v-model:phone="form.phone"
+                v-model:tag-ids="form.tag_ids"
+                :tags="tags"
                 :is-editing="false"
                 :processing="form.processing"
-                :tags="tags"
                 :errors="form.errors"
                 @submit="submit"
             />

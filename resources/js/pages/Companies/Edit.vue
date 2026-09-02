@@ -64,6 +64,7 @@ function submit(): void {
                 v-model:employee-count="form.employee_count"
                 v-model:founded-year="form.founded_year"
                 v-model:description="form.description"
+                v-model:tag-ids="form.tag_ids"
                 :is-editing="true"
                 :processing="form.processing"
                 :industries="industries"

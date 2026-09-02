@@ -89,6 +89,7 @@ function submit(): void {
                 v-model:status-id="form.status_id"
                 v-model:orderable-type="form.orderable_type"
                 v-model:orderable-id="form.orderable_id"
+                v-model:tag-ids="form.tag_ids"
                 :statuses="props.statuses"
                 :orderable-types="props.orderableTypes"
                 :orderable-options="orderableOptions"

@@ -8,6 +8,7 @@ import TaskForm from './components/TaskForm.vue';
 defineProps<{
     statuses: TaskStatus[];
     users: UserOption[];
+    tags: { id: number; name: string }[];
 }>();
 
 const form = useForm({
@@ -17,6 +18,7 @@ const form = useForm({
     assigned_date: null,
     assigned_to: null,
     status_id: null,
+    tag_ids: [] as number[],
 });
 
 function submit(): void {
@@ -44,10 +46,12 @@ function submit(): void {
                 v-model:assigned-date="form.assigned_date"
                 v-model:assigned-to="form.assigned_to"
                 v-model:status-id="form.status_id"
+                v-model:tag-ids="form.tag_ids"
                 :is-editing="false"
                 :processing="form.processing"
                 :statuses="statuses"
                 :users="users"
+                :tags="tags"
                 :errors="form.errors"
                 @submit="submit"
             />

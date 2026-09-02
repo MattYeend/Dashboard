@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { InertiaFormProps } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
+import TagPicker from '@/components/TagPicker.vue';
 import { Button } from '@/components/ui/button';
 import TaskAssignmentDetailsForm from '@/pages/Tasks/components/TaskAssignmentDetailsForm.vue';
 import TaskBasicDetailsForm from '@/pages/Tasks/components/TaskBasicDetailsForm.vue';
@@ -23,6 +24,7 @@ interface Props {
     statuses: TaskStatus[];
     users: UserOption[];
     errors: Partial<InertiaFormProps<TaskFormData>['errors']>;
+    tags: { id: number; name: string }[];
 }
 
 defineProps<Props>();
@@ -38,6 +40,7 @@ const assignedDate = defineModel<string | null>('assignedDate', {
 });
 const assignedTo = defineModel<number | null>('assignedTo', { default: null });
 const statusId = defineModel<number | null>('statusId', { default: null });
+const tagIds = defineModel<number[]>('tagIds', { default: () => [] });
 </script>
 
 <template>
@@ -59,6 +62,7 @@ const statusId = defineModel<number | null>('statusId', { default: null });
             v-model:assigned-date="assignedDate"
             :errors="errors"
         />
+        <TagPicker v-model:tag-ids="tagIds" :tags="tags" :can-create="true" />
 
         <div class="flex items-center justify-end space-x-3">
             <Button as-child variant="outline">

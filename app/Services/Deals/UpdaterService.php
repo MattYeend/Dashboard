@@ -50,7 +50,7 @@ class UpdaterService
                 if (array_key_exists('tag_ids', $data)) {
                     $deal->tags()->sync($data['tag_ids'] ?? []);
                 }
-                
+
                 $fresh = $deal->fresh();
 
                 $this->auditLogService->record(

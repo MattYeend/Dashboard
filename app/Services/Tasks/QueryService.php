@@ -94,7 +94,7 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = Task::query()->with([
-            'assignee', 
+            'assignee',
             'status',
             'tags',
             'creator',

@@ -9,6 +9,7 @@ interface Props {
     task: Task;
     statuses: TaskStatus[];
     users: UserOption[];
+    tags: { id: number; name: string }[];
 }
 
 const props = defineProps<Props>();
@@ -20,6 +21,7 @@ const form = useForm({
     assigned_date: props.task.assigned_date,
     assigned_to: props.task.assigned_to,
     status_id: props.task.status_id,
+    tag_ids: props.task.tags?.map((tag) => tag.id) ?? [],
 });
 
 function submit(): void {
@@ -45,10 +47,12 @@ function submit(): void {
                 v-model:assigned-date="form.assigned_date"
                 v-model:assigned-to="form.assigned_to"
                 v-model:status-id="form.status_id"
+                v-model:tag-ids="form.tag_ids"
                 :is-editing="true"
                 :processing="form.processing"
                 :statuses="statuses"
                 :users="users"
+                :tags="tags"
                 :errors="form.errors"
                 @submit="submit"
             />

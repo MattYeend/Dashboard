@@ -7,6 +7,7 @@ import DealAuditDetails from '@/pages/Deals/components/DealAuditDetails.vue';
 import DealBasicDetails from '@/pages/Deals/components/DealBasicDetails.vue';
 import DealPipelineDetails from '@/pages/Deals/components/DealPipelineDetails.vue';
 import DealRelationsDetails from '@/pages/Deals/components/DealRelationsDetails.vue';
+import DealTagsDetails from '@/pages/Deals/components/DealTagsDetails.vue';
 import DealValueDetails from '@/pages/Deals/components/DealValueDetails.vue';
 import QuickLogModal from '@/pages/InteractionLogs/components/QuickLogModal.vue';
 import {
@@ -89,6 +90,7 @@ function destroy(): void {
                 <DealPipelineDetails :deal="deal" />
                 <DealValueDetails :deal="deal" />
                 <DealRelationsDetails :deal="deal" />
+                <DealTagsDetails :deal="deal" />
                 <DealAuditDetails :deal="deal" />
                 <ActivityTimeline
                     activityable-type="deal"

@@ -17,6 +17,7 @@ interface Props {
     deal_statuses: DealStatus[];
     companies: Company[];
     invoices: Invoice[];
+    tags: { id: number; name: string }[];
 }
 
 defineProps<Props>();
@@ -34,6 +35,7 @@ const form = useForm({
     probability: 0,
     expected_close_date: '',
     closed_at: '',
+    tag_ids: [] as number[],
 });
 
 function submit(): void {
@@ -71,11 +73,13 @@ function submit(): void {
                 v-model:probability="form.probability"
                 v-model:expected-close-date="form.expected_close_date"
                 v-model:closed-at="form.closed_at"
+                v-model:tag-ids="form.tag_ids"
                 :pipelines="pipelines"
                 :pipeline-stages="pipeline_stages"
                 :statuses="deal_statuses"
                 :companies="companies"
                 :invoices="invoices"
+                :tags="tags"
                 :is-editing="false"
                 :processing="form.processing"
                 :errors="form.errors"
