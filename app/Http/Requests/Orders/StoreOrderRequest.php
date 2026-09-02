@@ -292,7 +292,7 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'integer',
-            'exists:tags,id',
+            Rule::exists('tags', 'id'),
         ];
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Requests\Tasks;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -30,6 +31,8 @@ class UpdateTaskRequest extends FormRequest
             'assigned_to' => $this->assignedToRules(),
             'status_id' => $this->statusIdRules(),
             'meta' => $this->metaRules(),
+            'tag_ids' => $this->tagIdsRules(),
+            'tag_ids.*' => $this->tagIdRules(),
         ];
     }
 
@@ -48,6 +51,8 @@ class UpdateTaskRequest extends FormRequest
             'assigned_date.date' => 'The assigned date must be a valid date.',
             'assigned_to.exists' => 'The selected user does not exist.',
             'status_id.exists' => 'The selected status does not exist.',
+            'tag_ids.array' => 'Tags must be provided as a list.',
+            'tag_ids.*.exists' => 'One or more selected tags are invalid.',
         ];
     }
 
@@ -119,7 +124,7 @@ class UpdateTaskRequest extends FormRequest
             'sometimes',
             'nullable',
             'integer',
-            'exists:users,id',
+            Rule::exists('users', 'id'),
         ];
     }
 
@@ -134,7 +139,7 @@ class UpdateTaskRequest extends FormRequest
             'sometimes',
             'nullable',
             'integer',
-            'exists:task_statuses,id',
+            Rule::exists('task_statuses', 'id'),
         ];
     }
 
@@ -149,6 +154,33 @@ class UpdateTaskRequest extends FormRequest
             'sometimes',
             'nullable',
             'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for the tag_ids field.
+     *
+     * @return array<mixed>
+     */
+    protected function tagIdsRules(): array
+    {
+        return [
+            'sometimes',
+            'nullable',
+            'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for each tag_ids entry.
+     *
+     * @return array<mixed>
+     */
+    protected function tagIdRules(): array
+    {
+        return [
+            'integer',
+            Rule::exists('tags', 'id'),
         ];
     }
 }

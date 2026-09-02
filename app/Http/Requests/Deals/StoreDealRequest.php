@@ -38,6 +38,8 @@ class StoreDealRequest extends FormRequest
             'expected_close_date' => $this->expectedCloseDateRules(),
             'closed_at' => $this->closedAtRules(),
             'meta' => $this->metaRules(),
+            'tag_ids' => $this->tagIdsRules(),
+            'tag_ids.*' => $this->tagIdRules(),
         ];
     }
 
@@ -62,6 +64,8 @@ class StoreDealRequest extends FormRequest
             'probability.min' => 'The probability cannot be less than 0.',
             'probability.max' => 'The probability cannot be greater than 100.',
             'closed_at.date' => 'The closed date must be a valid date.',
+            'tag_ids.array' => 'Tags must be provided as a list.',
+            'tag_ids.*.exists' => 'One or more selected tags are invalid.',
         ];
     }
 
@@ -242,6 +246,32 @@ class StoreDealRequest extends FormRequest
         return [
             'nullable',
             'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for the tag_ids field.
+     *
+     * @return array<mixed>
+     */
+    protected function tagIdsRules(): array
+    {
+        return [
+            'nullable',
+            'array',
+        ];
+    }
+
+    /**
+     * Get validation rules for each tag_ids entry.
+     *
+     * @return array<mixed>
+     */
+    protected function tagIdRules(): array
+    {
+        return [
+            'integer',
+            Rule::exists('tags', 'id'),
         ];
     }
 }
