@@ -182,6 +182,23 @@ class FilterService
     }
 
     /**
+     * Apply a tag filter to the query.
+     *
+     * @param  Builder<Deal>  $query
+     * @return Builder<Deal>
+     */
+    public function applyTag(Builder $query, int|string|null $tagId): Builder
+    {
+        if ($tagId === null || $tagId === '') {
+            return $query;
+        }
+
+        return $query->whereHas('tags', function (Builder $q) use ($tagId): void {
+            $q->where('tags.id', $tagId);
+        });
+    }
+
+    /**
      * Apply all filters to the query.
      *
      * @param  Builder<Deal>  $query
@@ -200,6 +217,7 @@ class FilterService
         $query = $this->applyProbabilityRange($query, $filters['min_probability'] ?? null, $filters['max_probability'] ?? null);
         $query = $this->applyExpectedCloseDateRange($query, $filters['expected_close_from'] ?? null, $filters['expected_close_to'] ?? null);
         $query = $this->applyClosedAtRange($query, $filters['closed_from'] ?? null, $filters['closed_to'] ?? null);
+        $query = $this->applyTag($query, $filters['tag_id'] ?? null);
 
         return $query;
     }

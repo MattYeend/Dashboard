@@ -67,6 +67,59 @@ class FilterService
     }
 
     /**
+     * Apply due date filter to the query.
+     *
+     * @param  Builder<Task>  $query
+     * @return Builder<Task>
+     */
+    public function applyDueDateFilter(Builder $query, ?string $dueDate): Builder
+    {
+        if ($dueDate === null) {
+            return $query;
+        }
+
+        return $query->whereDate(
+            'due_date',
+            $dueDate
+        );
+    }
+
+    /**
+     * Apply assigned date filter to the query.
+     *
+     * @param  Builder<Task>  $query
+     * @return Builder<Task>
+     */
+    public function applyAssignedDateFilter(Builder $query, ?string $assignedDate): Builder
+    {
+        if ($assignedDate === null) {
+            return $query;
+        }
+
+        return $query->whereDate(
+            'assigned_date',
+            $assignedDate
+        );
+    }
+
+    /**
+     * Apply a tag filter to the query.
+     *
+     * @param  Builder<Task>  $query
+     * @return Builder<Task>
+     */
+    public function applyTagFilter(Builder $query, int|string|null $tagId): Builder
+    {
+        if ($tagId === null || $tagId === '') {
+            return $query;
+        }
+
+        return $query->whereHas('tags', function (Builder $q) use ($tagId): void {
+            $q->where('tags.id', $tagId);
+        });
+    }
+
+    /**
      * Apply all filters to the query.
      *
      * @param  Builder<Task>  $query
@@ -78,6 +131,9 @@ class FilterService
         $query = $this->applySearch($query, $filters['search'] ?? null);
         $query = $this->applyStatusFilter($query, isset($filters['status_id']) ? (int) $filters['status_id'] : null);
         $query = $this->applyAssigneeFilter($query, isset($filters['assigned_to']) ? (int) $filters['assigned_to'] : null);
+        $query = $this->applyDueDateFilter($query, $filters['due_date'] ?? null);
+        $query = $this->applyAssignedDateFilter($query, $filters['assigned_date'] ?? null);
+        $query = $this->applyTagFilter($query, $filters['tag_id'] ?? null);
 
         return $query;
     }

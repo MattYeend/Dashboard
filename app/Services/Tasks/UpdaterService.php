@@ -42,10 +42,15 @@ class UpdaterService
         return $this->updateResource->handle(
             $task,
             $taskData,
-            function (Task $task) use ($actor, $before, $previousAssignedTo, $updatedBy): void {
+            function (Task $task) use ($actor, $before, $previousAssignedTo, $data, $updatedBy): void {
                 $task->forceFill([
                     'updated_by' => $updatedBy,
                 ])->save();
+
+                if (array_key_exists('tag_ids', $data)) {
+                    $task->tags()->sync($data['tag_ids'] ?? []);
+                }
+
                 $fresh = $task->fresh();
 
                 $this->auditLogService->record(

@@ -28,6 +28,10 @@ class FormatterService
             'expected_close_date' => $deal->expected_close_date,
             'closed_at' => $deal->closed_at,
             'meta' => $deal->meta,
+            'tags' => $deal->tags->map(fn ($tag) => [
+                'id' => $tag->id,
+                'name' => $tag->name,
+            ])->all(),
             'created_at' => $deal->created_at,
             'updated_at' => $deal->updated_at,
             'deleted_at' => $deal->deleted_at,

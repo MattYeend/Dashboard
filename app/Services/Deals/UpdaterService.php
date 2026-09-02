@@ -42,10 +42,15 @@ class UpdaterService
         return $this->updateResource->handle(
             $deal,
             $dealData,
-            function (Deal $deal) use ($actor, $before, $previousStageId, $updatedBy): void {
+            function (Deal $deal) use ($actor, $before, $previousStageId, $data, $updatedBy): void {
                 $deal->forceFill([
                     'updated_by' => $updatedBy,
                 ])->save();
+
+                if (array_key_exists('tag_ids', $data)) {
+                    $deal->tags()->sync($data['tag_ids'] ?? []);
+                }
+                
                 $fresh = $deal->fresh();
 
                 $this->auditLogService->record(

@@ -99,7 +99,19 @@ class QueryService
     protected function buildQuery(
         array $filters
     ): Builder {
-        $query = Deal::query();
+        $query = Deal::query()->with([
+            'pipeline',
+            'stage',
+            'status',
+            'company',
+            'invoice',
+            'tags',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
+
         $query = $this->filterService->applyAll(
             $query,
             $filters
@@ -171,7 +183,18 @@ class QueryService
         int $id,
         bool $withTrashed = false
     ): Deal {
-        $query = Deal::query();
+        $query = Deal::query()->with([
+            'pipeline',
+            'pipelineStage',
+            'dealStatus',
+            'company',
+            'invoice',
+            'tags',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         if ($withTrashed) {
             $query->withTrashed();

@@ -93,7 +93,15 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Task::query()->with(['assignee', 'status']);
+        $query = Task::query()->with([
+            'assignee', 
+            'status',
+            'tags',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
@@ -162,6 +170,11 @@ class QueryService
         $query = Task::query()->with([
             'assignee',
             'status',
+            'tags',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
         ]);
 
         if ($withTrashed) {

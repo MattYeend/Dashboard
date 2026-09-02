@@ -22,6 +22,10 @@ class FormatterService
             'assigned_to' => $task->assigned_to,
             'status_id' => $task->status_id,
             'meta' => $task->meta,
+            'tags' => $task->tags->map(fn ($tag) => [
+                'id' => $tag->id,
+                'name' => $tag->name,
+            ])->all(),
             'created_at' => $task->created_at,
             'updated_at' => $task->updated_at,
             'deleted_at' => $task->deleted_at,
