@@ -2,8 +2,8 @@
 import axios from 'axios';
 import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { Input } from '@/components/ui/input';
-import SearchResults from './SearchResults.vue';
 import type { SearchResults as SearchResultsType } from '@/types';
+import SearchResults from './SearchResults.vue';
 
 const term = ref('');
 const results = ref<SearchResultsType | null>(null);

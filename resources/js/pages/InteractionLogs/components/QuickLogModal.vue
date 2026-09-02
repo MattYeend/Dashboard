@@ -11,8 +11,8 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { nullIfBlank } from '@/lib/forms';
-import InteractionLogForm from './InteractionLogForm.vue';
 import { store } from '@/routes/interaction-logs';
+import InteractionLogForm from './InteractionLogForm.vue';
 
 interface Props {
     interactableType: 'company' | 'contact' | 'deal';

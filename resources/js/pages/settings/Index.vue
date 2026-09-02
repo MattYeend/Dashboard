@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { index as settingsIndex } from '@/routes/settings';
+import type { Setting, SettingsPermissions } from '@/types';
 import GeneralSettingsForm from './components/GeneralSettingsForm.vue';
 import SecuritySettingsForm from './components/SecuritySettingsForm.vue';
 import SystemSettingsForm from './components/SystemSettingsForm.vue';
-import type { Setting, SettingsPermissions } from '@/types';
-import { index as settingsIndex } from '@/routes/settings';
 
 defineOptions({
     layout: { breadcrumbs: [{ title: 'Settings', href: settingsIndex().url }] },

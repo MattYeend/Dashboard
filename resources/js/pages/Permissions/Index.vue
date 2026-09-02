@@ -7,8 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import permissionsBulk from '@/routes/permissions/bulk';
-import permissionsMatrix from '@/routes/permissions/matrix';
 import {
     index as permissionsIndex,
     show as permissionsShow,
@@ -18,6 +16,8 @@ import {
     restore as permissionsRestore,
     forceDelete as permissionsForceDelete,
 } from '@/routes/permissions';
+import permissionsBulk from '@/routes/permissions/bulk';
+import permissionsMatrix from '@/routes/permissions/matrix';
 import type {
     Pagination as PaginationMeta,
     Permission,
@@ -257,6 +257,10 @@ function bulkRestore(): void {
         },
     );
 }
+
+function formatRoles(roles?: Array<{ name: string }>): string {
+    return roles?.map((role) => role.name).join(', ') || '—';
+}
 </script>
 
 <template>
@@ -312,11 +316,7 @@ function bulkRestore(): void {
                 </template>
 
                 <template #cell-roles="{ row }">
-                    {{
-                        row.roles
-                            ?.map((r: { name: string }) => r.name)
-                            .join(', ') || '—'
-                    }}
+                    {{ formatRoles(row.roles) }}
                 </template>
 
                 <template #actions="{ row }">

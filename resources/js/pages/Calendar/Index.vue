@@ -2,9 +2,9 @@
 import axios from 'axios';
 import { ref, computed, onMounted } from 'vue';
 import IndexHeader from '@/components/table/IndexHeader.vue';
-import CalendarGrid from './components/CalendarGrid.vue';
 import { events as calendarEventsRoute } from '@/routes/calendar';
 import type { CalendarEvent } from '@/types';
+import CalendarGrid from './components/CalendarGrid.vue';
 
 type ViewMode = 'month' | 'week';
 
