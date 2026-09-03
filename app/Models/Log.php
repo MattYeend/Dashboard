@@ -761,6 +761,10 @@ class Log extends Model implements Auditable
     public const ACTION_DELETE_ACTIVITY_LOG = 352;
 
     // New Logging Actions should go here to be reviewed
+    // Impersonation
+    public const ACTION_START_IMPERSONATION = 358;
+
+    public const ACTION_STOP_IMPERSONATION = 359;
 
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
