@@ -54,11 +54,13 @@ describe('events', function () {
 
         $inRange = Task::factory()->create([
             'due_date' => '2026-09-10',
+            'assigned_date' => null,
             'status_id' => $status->id,
         ]);
 
         $outOfRange = Task::factory()->create([
             'due_date' => '2026-11-10',
+            'assigned_date' => null,
             'status_id' => $status->id,
         ]);
 
