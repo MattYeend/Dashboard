@@ -26,6 +26,9 @@ use App\Http\Controllers\NotificationBroadcastController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
+use App\Http\Controllers\OrganisationController;
+use App\Http\Controllers\OrganisationSelectController;
+use App\Http\Controllers\OrganisationSwitchController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PermissionMatrixController;
 use App\Http\Controllers\PipelineController;
@@ -63,8 +66,26 @@ Route::get('register/thanks', fn () => Inertia::render('auth/RegisterThanks'))
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])
-        ->middleware('can:view dashboard')
+        ->middleware(['can:view dashboard', 'tenant'])
         ->name('dashboard');
+
+    Route::get('/organisations/select', [OrganisationSelectController::class, 'index'])->name('organisations.select');
+    Route::post('/organisations/{organisation}/switch', [OrganisationSwitchController::class, 'update'])->name('organisations.switch');
+
+    Route::prefix('organisations')->name('organisations.')->group(function () {
+        Route::post('/bulk/delete', [OrganisationController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [OrganisationController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [OrganisationController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [OrganisationController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/', [OrganisationController::class, 'index'])->name('index');
+        Route::get('/create', [OrganisationController::class, 'create'])->name('create');
+        Route::post('/', [OrganisationController::class, 'store'])->name('store');
+        Route::get('/{organisation}', [OrganisationController::class, 'show'])->name('show');
+        Route::get('/{organisation}/edit', [OrganisationController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{organisation}', [OrganisationController::class, 'update'])->name('update');
+        Route::delete('/{organisation}', [OrganisationController::class, 'destroy'])->name('destroy');
+    });
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/statistics', [DashboardController::class, 'statistics'])
