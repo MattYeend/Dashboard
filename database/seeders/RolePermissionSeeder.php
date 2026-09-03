@@ -1933,5 +1933,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Activities');
         $this->command->info('- Calendars');
         $this->command->info('- Attachments');
+        $this->command->info('- Organisations');
     }
 }
