@@ -40,11 +40,15 @@ function destroy(): void {
 function switchToOrganisation(): void {
     switchProcessing.value = true;
 
-    router.post(`/organisations/${props.organisation.id}/switch`, {}, {
-        onFinish: () => {
-            switchProcessing.value = false;
+    router.post(
+        `/organisations/${props.organisation.id}/switch`,
+        {},
+        {
+            onFinish: () => {
+                switchProcessing.value = false;
+            },
         },
-    });
+    );
 }
 </script>
 
@@ -52,7 +56,9 @@ function switchToOrganisation(): void {
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <div class="mb-6 flex items-center justify-between">
-                <h1 class="text-2xl font-semibold text-gray-300">Organisation</h1>
+                <h1 class="text-2xl font-semibold text-gray-300">
+                    Organisation
+                </h1>
                 <div class="space-x-2">
                     <button
                         type="button"

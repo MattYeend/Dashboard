@@ -23,7 +23,10 @@ function selectOrganisation(id: number): void {
             </p>
 
             <ul v-else class="space-y-2">
-                <li v-for="organisation in organisations" :key="organisation.id">
+                <li
+                    v-for="organisation in organisations"
+                    :key="organisation.id"
+                >
                     <button
                         type="button"
                         class="w-full rounded-md border px-4 py-2 text-left text-sm font-medium"

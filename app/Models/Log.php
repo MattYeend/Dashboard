@@ -762,9 +762,13 @@ class Log extends Model implements Auditable
 
     // Organisation Management
     public const ACTION_CREATE_ORGANISATION = 353;
+
     public const ACTION_UPDATE_ORGANISATION = 354;
+
     public const ACTION_DELETE_ORGANISATION = 355;
+
     public const ACTION_RESTORE_ORGANISATION = 356;
+
     public const ACTION_FORCE_DELETE_ORGANISATION = 357;
 
     // New Logging Actions should go here to be reviewed

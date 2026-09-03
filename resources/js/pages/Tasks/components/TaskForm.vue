@@ -63,11 +63,7 @@ const tagIds = defineModel<number[]>('tagIds', { default: () => [] });
             v-model:assigned-date="assignedDate"
             :errors="errors"
         />
-        <TaskTagsForm
-            v-model:tag-ids="tagIds"
-            :tags="tags"
-            :errors="errors"
-        />
+        <TaskTagsForm v-model:tag-ids="tagIds" :tags="tags" :errors="errors" />
 
         <div class="flex items-center justify-end space-x-3">
             <Button as-child variant="outline">

@@ -102,10 +102,10 @@ class Organisation extends Tenant implements Auditable
     public function auditSnapshot(): array
     {
         return $this->only([
-            'id', 
-            'name', 
-            'slug', 
-            'meta'
+            'id',
+            'name',
+            'slug',
+            'meta',
         ]);
     }
 

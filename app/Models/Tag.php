@@ -57,7 +57,7 @@ class Tag extends Model implements Auditable
     {
         return $this->belongsToMany(Post::class);
     }
-    
+
     /**
      * Get the companies associated with this tag.
      *

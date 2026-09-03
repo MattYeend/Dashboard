@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
-use App\Models\Organisation;
 use Carbon\CarbonImmutable;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
