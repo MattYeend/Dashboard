@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { router, Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { router, Link, usePage } from '@inertiajs/vue3';
+import { computed, ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import FilterBar from '@/components/table/FilterBar.vue';
 import IndexHeader from '@/components/table/IndexHeader.vue';
@@ -14,6 +14,7 @@ import {
     edit as usersEdit,
     destroy as usersDestroy,
     exportMethod as usersExport,
+    impersonate as usersImpersonate,
 } from '@/routes/users';
 import usersBulk from '@/routes/users/bulk';
 import type {
@@ -172,6 +173,9 @@ function formatDate(value: string | null): string {
         year: 'numeric',
     });
 }
+
+const page = usePage();
+const authUser = computed(() => page.props.auth.user);
 </script>
 
 <template>
@@ -185,6 +189,16 @@ function formatDate(value: string | null): string {
                 :export-href="usersExport.url()"
                 :can-export="permissions_meta.can_export"
             />
+
+            <Link
+                v-if="authUser.can_impersonate"
+                :href="usersImpersonate.url(authUser.id)"
+                method="post"
+                as="button"
+                class="text-sm text-gray-300 hover:text-white"
+            >
+                Impersonate
+            </Link>
 
             <FilterBar
                 v-model="filters"

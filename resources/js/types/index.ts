@@ -115,6 +115,7 @@ export interface User {
     roles: string[];
     locale: string;
     meta: Record<string, unknown> | null;
+    can_impersonate: boolean;
     created_by: number | null;
     updated_by: number | null;
     deleted_by: number | null;

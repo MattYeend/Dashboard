@@ -34,6 +34,7 @@ class RolePermissionSeeder extends Seeder
             'force delete users',
             'import users',
             'export users',
+            'impersonate users',
 
             // Role management
             'view roles',

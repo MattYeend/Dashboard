@@ -9,6 +9,7 @@ import {
     edit as usersEdit,
     destroy as usersDestroy,
     index as usersIndex,
+    impersonate as usersImpersonate,
 } from '@/routes/users';
 import type { PermissionsMeta, User } from '@/types';
 
@@ -66,6 +67,15 @@ function destroy(): void {
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
                     >
                         Edit
+                    </Link>
+                    <Link
+                        v-if="user.can_impersonate"
+                        :href="usersImpersonate.url(user.id)"
+                        method="post"
+                        as="button"
+                        class="text-sm text-gray-300 hover:text-white"
+                    >
+                        Impersonate
                     </Link>
                     <button
                         type="button"
