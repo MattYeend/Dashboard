@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Symfony\Component\HttpFoundation\Response;
+use Spatie\Multitenancy\Http\Middleware\EnsureValidTenantSession;
+use Spatie\Multitenancy\Http\Middleware\NeedsTenant;
+use Spatie\Multitenancy\Exceptions\NoCurrentTenant;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -35,6 +38,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'stripe/webhook',
             'api/login',
         ]);
+
+        $middleware->group('tenant', [
+            NeedsTenant::class,
+            EnsureValidTenantSession::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
@@ -58,5 +66,15 @@ return Application::configure(basePath: dirname(__DIR__))
             }
 
             return $response;
+        });
+
+        $exceptions->render(function (NoCurrentTenant $e, Request $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'No organisation is currently selected.',
+                ], 409);
+            }
+
+            return redirect()->route('organisations.select');
         });
     })->create();
