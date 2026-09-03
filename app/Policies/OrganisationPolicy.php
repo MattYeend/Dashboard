@@ -4,16 +4,23 @@ namespace App\Policies;
 
 use App\Models\Organisation;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\Organisations\PolicyAuthorisationService;
 
 class OrganisationPolicy
 {
+    /**
+     * Inject the required service into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**
@@ -21,7 +28,7 @@ class OrganisationPolicy
      */
     public function view(User $user, Organisation $organisation): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $organisation);
     }
 
     /**
@@ -29,7 +36,7 @@ class OrganisationPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canCreate($user);
     }
 
     /**
@@ -37,7 +44,7 @@ class OrganisationPolicy
      */
     public function update(User $user, Organisation $organisation): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $organisation);
     }
 
     /**
@@ -45,7 +52,7 @@ class OrganisationPolicy
      */
     public function delete(User $user, Organisation $organisation): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $organisation);
     }
 
     /**
@@ -53,7 +60,7 @@ class OrganisationPolicy
      */
     public function restore(User $user, Organisation $organisation): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $organisation);
     }
 
     /**
@@ -61,6 +68,22 @@ class OrganisationPolicy
      */
     public function forceDelete(User $user, Organisation $organisation): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $organisation);
+    }
+
+    /**
+     * Determine whether the user can bulk delete models.
+     */
+    public function bulkDelete(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can bulk restore models.
+     */
+    public function bulkRestore(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
     }
 }
