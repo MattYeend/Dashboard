@@ -110,6 +110,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/restore', [UserController::class, 'restore'])->name('restore');
         Route::delete('/{id}/force', [UserController::class, 'forceDelete'])->name('force-delete');
 
+        Route::post('/{user}/impersonate', [UserController::class, 'impersonate'])->name('impersonate');
+        Route::post('/impersonate/stop', [UserController::class, 'stopImpersonating'])->name('impersonate.stop');
+
         Route::get('/export', [UserController::class, 'export'])->name('export');
         Route::post('/import', [UserController::class, 'import'])->name('import');
 

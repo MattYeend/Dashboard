@@ -80,6 +80,14 @@ class UserPolicy
     }
 
     /**
+     * Determine whether the user can impersonate the target user.
+     */
+    public function impersonate(User $user, User $target): bool
+    {
+        return $this->authorisationService->canImpersonate($user, $target);
+    }
+
+    /**
      * Determine whether the user can bulk delete models.
      */
     public function bulkDelete(User $user): bool

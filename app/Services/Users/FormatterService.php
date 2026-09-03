@@ -3,9 +3,17 @@
 namespace App\Services\Users;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class FormatterService
 {
+    /**
+     * Inject the required services into the formatter service.
+     */
+    public function __construct(
+        protected readonly PolicyAuthorisationService $authorisationService,
+    ) {}
+
     /**
      * Format a single user with all data.
      *
@@ -14,6 +22,8 @@ class FormatterService
     public function format(User $user): array
     {
         $user->loadMissing(['creator', 'updater', 'deleter', 'restorer']);
+
+        $actor = Auth::user();
 
         return [
             'id' => $user->id,
@@ -24,6 +34,7 @@ class FormatterService
             'roles' => array_values(array_diff($user->getRoleNames()->all(), User::TIER_ROLES)),
             'locale' => $user->locale,
             'meta' => $user->meta,
+            'can_impersonate' => $actor ? $this->authorisationService->canImpersonate($actor, $user) : false,
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at,
             'deleted_at' => $user->deleted_at,

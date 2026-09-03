@@ -6,6 +6,7 @@ use App\Http\Requests\Users\ImportUserRequest;
 use App\Http\Requests\Users\StoreUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
 use App\Models\User;
+use App\Services\Impersonation\ManagementService as ImpersonationManagementService;
 use App\Services\Users\ManagementService;
 use App\Services\Users\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -26,6 +27,7 @@ class UserController extends Controller
     public function __construct(
         protected readonly ManagementService $management,
         protected readonly QueryService $query,
+        protected readonly ImpersonationManagementService $impersonation,
     ) {}
 
     /**
@@ -273,6 +275,39 @@ class UserController extends Controller
         if ($request->wantsJson()) {
             return response()->json($result);
         }
+
+        return redirect()->route('users.index');
+    }
+
+    /**
+     * Start impersonating the specified user.
+     *
+     * Authorises via the 'impersonate' policy before proceeding.
+     */
+    public function impersonate(
+        User $user,
+        Request $request
+    ): RedirectResponse {
+        $this->authorize('impersonate', $user);
+
+        $this->impersonation->start($request->user(), $user);
+
+        return redirect()->route('dashboard');
+    }
+
+    /**
+     * Stop the current impersonation session and restore the
+     * original actor's identity.
+     *
+     * Guarded by session state rather than a policy, since the
+     * impersonated user won't hold the 'impersonate users'
+     * permission themselves.
+     */
+    public function stopImpersonating(Request $request): RedirectResponse
+    {
+        abort_unless($this->impersonation->isImpersonating(), 403);
+
+        $this->impersonation->stop($request->user());
 
         return redirect()->route('users.index');
     }

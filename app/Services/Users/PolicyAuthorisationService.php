@@ -133,6 +133,27 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the actor can impersonate the target user.
+     *
+     * Only a Super Admin may start an impersonation session, and
+     * never against themselves, a trashed user, or a user who
+     * outranks them.
+     */
+    public function canImpersonate(User $actor, User $target): bool
+    {
+        if ($actor->is($target) || $this->activeChecker->isTrashed($target)) {
+            return false;
+        }
+
+        if ($this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('impersonate users')
+            && $this->roleChecker->isSuperAdmin($actor);
+    }
+
+    /**
      * Determine whether the actor can import users.
      */
     public function canImport(User $actor): bool
