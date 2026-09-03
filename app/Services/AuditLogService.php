@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\Auditable;
 use App\Models\Log;
 use App\Models\User;
+use App\Services\Impersonation\ManagementService;
 use Illuminate\Database\Eloquent\Model;
 
 class AuditLogService
@@ -21,6 +22,13 @@ class AuditLogService
         array $data = [],
         ?User $relatedUser = null,
     ): Log {
+        $impersonationService = app(ManagementService::class);
+
+        if ($actor && $impersonationService->isImpersonating()) {
+            $data['impersonated_user_id'] = $actor->id;
+            $actor = $impersonationService->originalActor() ?? $actor;
+        }
+
         return Log::create([
             'action_id' => $actionId,
             'logged_in_user_id' => $actor?->id,
