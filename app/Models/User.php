@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -137,6 +138,17 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
     public function customDashboardWidgets(): HasMany
     {
         return $this->hasMany(CustomDashboardWidget::class);
+    }
+
+    /**
+     * Get the organisations this user belongs to.
+     *
+     * @return BelongsToMany<Organisation, $this>
+     */
+    public function organisations(): BelongsToMany
+    {
+        return $this->belongsToMany(Organisation::class, 'organisation_user')
+            ->withTimestamps();
     }
 
     /**

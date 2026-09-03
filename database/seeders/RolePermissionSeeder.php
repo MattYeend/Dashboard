@@ -449,6 +449,14 @@ class RolePermissionSeeder extends Seeder
             'restore attachments',
             'force delete attachments',
             'download attachments',
+
+            // Organisation Management
+            'view any organisations',
+            'view organisations',
+            'create organisations',
+            'edit organisations',
+            'delete organisations',
+            'restore organisations',
         ];
 
         foreach ($permissions as $permission) {
@@ -788,6 +796,12 @@ class RolePermissionSeeder extends Seeder
             'restore attachments',
             'force delete attachments',
             'download attachments',
+            'view any organisations',
+            'view organisations',
+            'create organisations',
+            'edit organisations',
+            'delete organisations',
+            'restore organisations',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -1920,5 +1934,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Activities');
         $this->command->info('- Calendars');
         $this->command->info('- Attachments');
+        $this->command->info('- Organisations');
     }
 }

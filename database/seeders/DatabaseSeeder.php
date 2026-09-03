@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
             InteractionLogSeeder::class,
             NotificationBroadcastSeeder::class,
             SettingSeeder::class,
+            OrganisationSeeder::class,
         ]);
     }
 }

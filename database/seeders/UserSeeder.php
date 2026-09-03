@@ -13,6 +13,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        setPermissionsTeamId(1);
+
         // Create Super Admin User
         $superAdmin = User::updateOrCreate(
             ['email' => 'superadmin@example.com'],

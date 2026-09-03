@@ -15,6 +15,7 @@ beforeEach(function () {
 });
 
 test('does not leak a plaintext password when creating a user', function () {
+    setPermissionsTeamId(1);
     Mail::fake();
     Notification::fake();
 
