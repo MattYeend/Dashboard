@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import {
     Archive,
+    Building2,
     CalendarDays,
     ClipboardList,
     Contact2,
@@ -72,6 +73,11 @@ const navGroups: NavGroup[] = [
                     { title: 'All Companies', href: '/companies' },
                     { title: 'Industries', href: '/industries' },
                 ],
+            },
+            {
+                title: 'Organisations',
+                href: '/organisations',
+                icon: Building2,
             },
             {
                 title: 'Addresses',
