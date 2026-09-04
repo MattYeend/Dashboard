@@ -44,8 +44,14 @@ class ManagementService
 
         Auth::login($target);
 
-        $this->request->session()->put(self::SESSION_ACTOR_KEY, $actor->id);
-        $this->request->session()->put(self::SESSION_STARTED_AT_KEY, now()->toISOString());
+        $this->request->session()->put(
+            self::SESSION_ACTOR_KEY, 
+            $actor->id
+        );
+        $this->request->session()->put(
+            self::SESSION_STARTED_AT_KEY, 
+            now()->toISOString()
+        );
 
         $this->auditLogService->record(
             Log::ACTION_START_IMPERSONATION,
@@ -78,7 +84,10 @@ class ManagementService
 
         Auth::login($actor);
 
-        $this->request->session()->forget([self::SESSION_ACTOR_KEY, self::SESSION_STARTED_AT_KEY]);
+        $this->request->session()->forget([
+            self::SESSION_ACTOR_KEY, 
+            self::SESSION_STARTED_AT_KEY
+        ]);
 
         $this->auditLogService->record(
             Log::ACTION_STOP_IMPERSONATION,
