@@ -10,8 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ResolveCurrentOrganisation
 {
     /**
-     * @param  SessionOrganisationFinder  $organisationFinder  Resolves the
-     *                                                         current organisation from the session.
+     * @param  SessionOrganisationFinder  $organisationFinder  Resolves the current organisation from the session.
      */
     public function __construct(
         protected SessionOrganisationFinder $organisationFinder,

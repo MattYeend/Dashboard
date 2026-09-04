@@ -55,6 +55,8 @@ class ApiTokenController extends Controller
         UpdateApiTokenRequest $request,
         PersonalAccessToken $apiToken
     ): RedirectResponse {
+        $this->authorize('update', $apiToken);
+
         $this->managementService->update($apiToken, $request->validated());
 
         return redirect()->route('api-tokens.index');

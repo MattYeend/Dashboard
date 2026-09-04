@@ -110,7 +110,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::before(function (User $user, string $ability) {
+        Gate::before(function (User $user, string $ability, array $arguments = []) {
+            if (self::isApiTokenAbility($arguments)) {
+                return null;
+            }
+
             return app(UserRoleCheckerService::class)->isSuperAdmin($user) ? true : null;
         });
         $this->configureDefaults();
@@ -228,5 +232,20 @@ class AppServiceProvider extends ServiceProvider
                 environment for safety."
             );
         });
+    }
+
+    /**
+     * Whether the ability being checked concerns a PersonalAccessToken.
+     *
+     * API tokens are personal credentials, so ownership must always be
+     * verified by ApiTokenPolicy — even for Super Admins — rather than
+     * short-circuited by the blanket role bypass above.
+     */
+    private static function isApiTokenAbility(array $arguments): bool
+    {
+        $subject = $arguments[0] ?? null;
+
+        return $subject instanceof PersonalAccessToken
+            || $subject === PersonalAccessToken::class;
     }
 }
