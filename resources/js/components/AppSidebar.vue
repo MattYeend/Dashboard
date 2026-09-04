@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import {
     Archive,
+    Bookmark,
     Building2,
     CalendarDays,
     ClipboardList,
@@ -152,7 +153,6 @@ const navGroups: NavGroup[] = [
                 children: [
                     { title: 'All Posts', href: '/posts' },
                     { title: 'Categories', href: '/categories' },
-                    { title: 'Tags', href: '/tags' },
                 ],
             },
             {
@@ -168,6 +168,11 @@ const navGroups: NavGroup[] = [
             {
                 title: 'Labels',
                 href: '/labels',
+                icon: Bookmark,
+            },
+            {
+                title: 'Tags',
+                href: '/tags',
                 icon: Tag,
             },
         ],
