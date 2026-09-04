@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\ResolveCurrentOrganisation;
 use App\Http\Middleware\ShareImpersonationStatus;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -11,9 +12,9 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Spatie\Multitenancy\Exceptions\NoCurrentTenant;
-use Spatie\Multitenancy\Http\Middleware\EnsureValidTenantSession;
+// use Spatie\Multitenancy\Http\Middleware\EnsureValidTenantSession;
 use Spatie\Multitenancy\Http\Middleware\NeedsTenant;
-use Symfony\Component\HttpFoundation\Response; 
+use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -30,6 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
             ShareImpersonationStatus::class,
+            ResolveCurrentOrganisation::class,
         ]);
 
         $middleware->api(prepend: [
@@ -43,7 +45,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->group('tenant', [
             NeedsTenant::class,
-            EnsureValidTenantSession::class,
+            // EnsureValidTenantSession::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -71,6 +71,7 @@ use App\Policies\TicketPolicy;
 use App\Policies\TicketPriorityPolicy;
 use App\Policies\TicketStatusPolicy;
 use App\Policies\UserPolicy;
+use App\Services\UserRoleCheckerService;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Console\Command;
@@ -109,6 +110,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::before(function (User $user, string $ability) {
+            return app(UserRoleCheckerService::class)->isSuperAdmin($user) ? true : null;
+        });
         $this->configureDefaults();
         Gate::policy(Activity::class, ActivityPolicy::class);
         Gate::policy(Address::class, AddressPolicy::class);

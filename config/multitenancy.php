@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Organisation;
-use App\Multitenancy\SessionOrganisationFinder;
+// use App\Multitenancy\SessionOrganisationFinder;
 use App\Multitenancy\Tasks\SwitchPermissionsTeamTask;
 use Illuminate\Broadcasting\BroadcastEvent;
 use Illuminate\Events\CallQueuedListener;
@@ -24,7 +24,7 @@ return [
      * This class should extend `Spatie\Multitenancy\TenantFinder\TenantFinder`
      *
      */
-    'tenant_finder' => SessionOrganisationFinder::class,
+    'tenant_finder' => null,
 
     /*
      * These fields are used by tenant:artisan command to match one or more tenant.

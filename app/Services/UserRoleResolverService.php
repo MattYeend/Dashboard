@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class UserRoleResolverService
 {
@@ -29,6 +31,16 @@ class UserRoleResolverService
      */
     public function hasSuperAdminRole(User $user): bool
     {
-        return $user->hasRole('Super Admin');
+        $roleId = Role::where('name', 'Super Admin')->value('id');
+
+        if ($roleId === null) {
+            return false;
+        }
+
+        return DB::table('model_has_roles')
+            ->where('model_id', $user->getKey())
+            ->where('model_type', $user->getMorphClass())
+            ->where('role_id', $roleId)
+            ->exists();
     }
 }

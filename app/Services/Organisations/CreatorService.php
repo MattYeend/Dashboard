@@ -8,6 +8,7 @@ use App\Models\Organisation;
 use App\Models\User;
 use App\Services\AuditLogService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Spatie\Permission\PermissionRegistrar;
 
 class CreatorService
 {
@@ -46,6 +47,8 @@ class CreatorService
                 // immediately switch into the organisation they made.
                 $newOrganisation->users()->attach($createdBy);
 
+                $this->assignCreatorAsAdmin($newOrganisation, $actor);
+
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_ORGANISATION,
                     $actor,
@@ -55,5 +58,32 @@ class CreatorService
 
                 return $newOrganisation;
             });
+    }
+
+    /**
+     * Give the creator the Admin role within the organisation they just
+     * made, so they aren't left a member with no permissions in it.
+     *
+     * Temporarily switches the active permissions team to the new
+     * organisation to make the assignment, then restores whatever team
+     * was active for the rest of the request.
+     */
+    protected function assignCreatorAsAdmin(Organisation $organisation, User $actor): void
+    {
+        $registrar = app(PermissionRegistrar::class);
+        $previousTeamId = $registrar->getPermissionsTeamId();
+
+        $actor->unsetRelation('roles')->unsetRelation('permissions');
+        $rolesToAssign = $actor->getRoleNames()->all();
+
+        $registrar->setPermissionsTeamId($organisation->id);
+        $actor->unsetRelation('roles')->unsetRelation('permissions');
+
+        if ($rolesToAssign !== []) {
+            $actor->assignRole($rolesToAssign);
+        }
+
+        $registrar->setPermissionsTeamId($previousTeamId);
+        $actor->unsetRelation('roles')->unsetRelation('permissions');
     }
 }
