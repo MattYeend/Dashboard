@@ -29,8 +29,11 @@ class FilterService
      * @param  Builder<Comment>  $query
      * @return Builder<Comment>
      */
-    public function applyCommentable(Builder $query, ?string $commentableType, ?int $commentableId): Builder
-    {
+    public function applyCommentable(
+        Builder $query, 
+        ?string $commentableType, 
+        ?int $commentableId
+    ): Builder {
         if ($commentableType !== null) {
             $query->where('commentable_type', $commentableType);
         }
