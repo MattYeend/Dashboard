@@ -775,6 +775,28 @@ class Log extends Model implements Auditable
     public const ACTION_START_IMPERSONATION = 358;
 
     public const ACTION_STOP_IMPERSONATION = 359;
+
+        // Report Management
+    public const ACTION_CREATE_REPORT = 360;
+
+    public const ACTION_UPDATE_REPORT = 361;
+
+    public const ACTION_VIEW_REPORT = 362;
+
+    public const ACTION_DELETE_REPORT = 363;
+
+    public const ACTION_FORCE_DELETE_REPORT = 364;
+
+    public const ACTION_RESTORE_REPORT = 365;
+
+    public const ACTION_IMPORT_REPORT = 366;
+
+    public const ACTION_EXPORT_REPORT = 367;
+
+    public const ACTION_REPORT_UPDATED_BY_CRON = 368;
+
+    public const ACTION_RUN_REPORT = 369;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
