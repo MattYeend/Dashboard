@@ -37,6 +37,7 @@ use App\Http\Controllers\PipelineStatusController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegistrationInterestController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Settings\ProfileController;
@@ -410,6 +411,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [RegistrationInterestController::class, 'index'])->name('index');
         Route::get('/{registration_interest}', [RegistrationInterestController::class, 'show'])->name('show');
         Route::delete('/{registration_interest}', [RegistrationInterestController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::post('/bulk/delete', [ReportController::class, 'bulkDelete'])->name('bulk.delete');
+        Route::post('/bulk/restore', [ReportController::class, 'bulkRestore'])->name('bulk.restore');
+        Route::post('/{id}/restore', [ReportController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force', [ReportController::class, 'forceDelete'])->name('force-delete');
+
+        Route::get('/export', [ReportController::class, 'export'])->name('export');
+        Route::post('/import', [ReportController::class, 'import'])->name('import');
+        Route::post('/{report}/run', [ReportController::class, 'run'])->name('run');
+
+        Route::get('/', [ReportController::class, 'index'])->name('index');
+        Route::get('/create', [ReportController::class, 'create'])->name('create');
+        Route::post('/', [ReportController::class, 'store'])->name('store');
+        Route::get('/{report}', [ReportController::class, 'show'])->name('show');
+        Route::get('/{report}/edit', [ReportController::class, 'edit'])->name('edit');
+        Route::match(['put', 'patch'], '/{report}', [ReportController::class, 'update'])->name('update');
+        Route::delete('/{report}', [ReportController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('invoices')->name('invoices.')->group(function () {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\RunScheduledReports;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -11,3 +12,5 @@ Artisan::command('inspire', function () {
 Schedule::command('logs:prune')->daily();
 
 Schedule::command('invoices:check-overdue')->dailyAt('08:00');
+
+Schedule::command(RunScheduledReports::class)->everyMinute();
