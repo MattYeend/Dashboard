@@ -5,8 +5,8 @@ namespace App\Services\Reports;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Auth;
-use Mews\Purifier\Facades\Purifier;
 use InvalidArgumentException;
+use Mews\Purifier\Facades\Purifier;
 
 class DataPreparationService
 {

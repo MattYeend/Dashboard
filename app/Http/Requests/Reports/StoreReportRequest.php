@@ -63,9 +63,9 @@ class StoreReportRequest extends FormRequest
     protected function titleRules(): array
     {
         return [
-            'required', 
-            'string', 
-            'max:255'
+            'required',
+            'string',
+            'max:255',
         ];
     }
 
@@ -77,8 +77,8 @@ class StoreReportRequest extends FormRequest
     protected function descriptionRules(): array
     {
         return [
-            'nullable', 
-            'string'
+            'nullable',
+            'string',
         ];
     }
 
@@ -90,10 +90,10 @@ class StoreReportRequest extends FormRequest
     protected function typeRules(): array
     {
         return [
-            'required', 
-            'string', 
-            'max:100'
-            ];
+            'required',
+            'string',
+            'max:100',
+        ];
     }
 
     /**
@@ -104,10 +104,10 @@ class StoreReportRequest extends FormRequest
     protected function formatRules(): array
     {
         return [
-            'required', 
-            'string', 
-            'in:pdf,csv,xlsx'
-            ];
+            'required',
+            'string',
+            'in:pdf,csv,xlsx',
+        ];
     }
 
     /**
@@ -118,9 +118,9 @@ class StoreReportRequest extends FormRequest
     protected function filtersRules(): array
     {
         return [
-            'nullable', 
-            'array'
-            ];
+            'nullable',
+            'array',
+        ];
     }
 
     /**
@@ -131,9 +131,9 @@ class StoreReportRequest extends FormRequest
     protected function isScheduledRules(): array
     {
         return [
-            'required', 
-            'boolean'
-            ];
+            'required',
+            'boolean',
+        ];
     }
 
     /**
@@ -144,11 +144,11 @@ class StoreReportRequest extends FormRequest
     protected function scheduleFrequencyRules(): array
     {
         return [
-            'nullable', 
-            'required_if:is_scheduled,true', 
-            'string', 
-            'in:daily,weekly,monthly'
-            ];
+            'nullable',
+            'required_if:is_scheduled,true',
+            'string',
+            'in:daily,weekly,monthly',
+        ];
     }
 
     /**
@@ -159,10 +159,10 @@ class StoreReportRequest extends FormRequest
     protected function scheduleTimeRules(): array
     {
         return [
-            'nullable', 
-            'required_if:is_scheduled,true', 
-            'date_format:H:i'
-            ];
+            'nullable',
+            'required_if:is_scheduled,true',
+            'date_format:H:i',
+        ];
     }
 
     /**
@@ -173,9 +173,9 @@ class StoreReportRequest extends FormRequest
     protected function recipientsRules(): array
     {
         return [
-            'nullable', 
-            'array'
-            ];
+            'nullable',
+            'array',
+        ];
     }
 
     /**
@@ -186,7 +186,7 @@ class StoreReportRequest extends FormRequest
     protected function recipientRules(): array
     {
         return [
-            'email'
-            ];
+            'email',
+        ];
     }
 }

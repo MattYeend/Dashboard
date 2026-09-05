@@ -45,11 +45,11 @@ class ManagementService
         Auth::login($target);
 
         $this->request->session()->put(
-            self::SESSION_ACTOR_KEY, 
+            self::SESSION_ACTOR_KEY,
             $actor->id
         );
         $this->request->session()->put(
-            self::SESSION_STARTED_AT_KEY, 
+            self::SESSION_STARTED_AT_KEY,
             now()->toISOString()
         );
 
@@ -85,8 +85,8 @@ class ManagementService
         Auth::login($actor);
 
         $this->request->session()->forget([
-            self::SESSION_ACTOR_KEY, 
-            self::SESSION_STARTED_AT_KEY
+            self::SESSION_ACTOR_KEY,
+            self::SESSION_STARTED_AT_KEY,
         ]);
 
         $this->auditLogService->record(

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
-import ReportForm from './components/ReportForm.vue';
 import { nullIfBlank } from '@/lib/forms';
-import { update as reportsUpdate } from '@/routes/reports';
 import type { Report, ReportType } from '@/types';
+import ReportForm from './components/ReportForm.vue';
+import { update as reportsUpdate } from '@/routes/reports';
 
 const props = defineProps<{
     report: Report;
@@ -23,17 +23,22 @@ const form = useForm({
 });
 
 function submit() {
-    form
-        .transform((data) => ({
-            ...data,
-            description: nullIfBlank(data.description),
-            schedule_frequency: data.is_scheduled ? nullIfBlank(data.schedule_frequency) : null,
-            schedule_time: data.is_scheduled ? nullIfBlank(data.schedule_time) : null,
-            recipients: data.is_scheduled
-                ? data.recipients.split(',').map((email) => email.trim()).filter(Boolean)
-                : null,
-        }))
-        .put(reportsUpdate(props.report.id).url);
+    form.transform((data) => ({
+        ...data,
+        description: nullIfBlank(data.description),
+        schedule_frequency: data.is_scheduled
+            ? nullIfBlank(data.schedule_frequency)
+            : null,
+        schedule_time: data.is_scheduled
+            ? nullIfBlank(data.schedule_time)
+            : null,
+        recipients: data.is_scheduled
+            ? data.recipients
+                  .split(',')
+                  .map((email) => email.trim())
+                  .filter(Boolean)
+            : null,
+    })).put(reportsUpdate(props.report.id).url);
 }
 </script>
 
@@ -56,7 +61,11 @@ function submit() {
                 :report-types="reportTypes"
             />
 
-            <button type="submit" :disabled="form.processing" class="text-sm text-gray-200 underline">
+            <button
+                type="submit"
+                :disabled="form.processing"
+                class="text-sm text-gray-200 underline"
+            >
                 Save Changes
             </button>
         </form>

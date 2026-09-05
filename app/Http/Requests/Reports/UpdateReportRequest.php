@@ -60,11 +60,11 @@ class UpdateReportRequest extends FormRequest
     protected function titleRules(): array
     {
         return [
-            'sometimes', 
-            'required', 
-            'string', 
-            'max:255'
-            ];
+            'sometimes',
+            'required',
+            'string',
+            'max:255',
+        ];
     }
 
     /**
@@ -75,10 +75,10 @@ class UpdateReportRequest extends FormRequest
     protected function descriptionRules(): array
     {
         return [
-            'sometimes', 
-            'nullable', 
-            'string'
-            ];
+            'sometimes',
+            'nullable',
+            'string',
+        ];
     }
 
     /**
@@ -89,10 +89,10 @@ class UpdateReportRequest extends FormRequest
     protected function typeRules(): array
     {
         return [
-            'sometimes', 
-            'required', 
-            'string', 
-            'max:100'
+            'sometimes',
+            'required',
+            'string',
+            'max:100',
         ];
     }
 
@@ -104,10 +104,10 @@ class UpdateReportRequest extends FormRequest
     protected function formatRules(): array
     {
         return [
-            'sometimes', 
-            'required', 
-            'string', 
-            'in:pdf,csv,xlsx'
+            'sometimes',
+            'required',
+            'string',
+            'in:pdf,csv,xlsx',
         ];
     }
 
@@ -119,9 +119,9 @@ class UpdateReportRequest extends FormRequest
     protected function filtersRules(): array
     {
         return [
-            'sometimes', 
-            'nullable', 
-            'array'
+            'sometimes',
+            'nullable',
+            'array',
         ];
     }
 
@@ -133,9 +133,9 @@ class UpdateReportRequest extends FormRequest
     protected function isScheduledRules(): array
     {
         return [
-            'sometimes', 
-            'required', 
-            'boolean'
+            'sometimes',
+            'required',
+            'boolean',
         ];
     }
 
@@ -147,11 +147,11 @@ class UpdateReportRequest extends FormRequest
     protected function scheduleFrequencyRules(): array
     {
         return [
-            'sometimes', 
-            'nullable', 
-            'required_if:is_scheduled,true', 
-            'string', 
-            'in:daily,weekly,monthly'
+            'sometimes',
+            'nullable',
+            'required_if:is_scheduled,true',
+            'string',
+            'in:daily,weekly,monthly',
         ];
     }
 
@@ -163,10 +163,10 @@ class UpdateReportRequest extends FormRequest
     protected function scheduleTimeRules(): array
     {
         return [
-            'sometimes', 
-            'nullable', 
-            'required_if:is_scheduled,true', 
-            'date_format:H:i'
+            'sometimes',
+            'nullable',
+            'required_if:is_scheduled,true',
+            'date_format:H:i',
         ];
     }
 
@@ -178,9 +178,9 @@ class UpdateReportRequest extends FormRequest
     protected function recipientsRules(): array
     {
         return [
-            'sometimes', 
-            'nullable', 
-            'array'
+            'sometimes',
+            'nullable',
+            'array',
         ];
     }
 
@@ -192,8 +192,8 @@ class UpdateReportRequest extends FormRequest
     protected function recipientRules(): array
     {
         return [
-            'sometimes', 
-            'email'
+            'sometimes',
+            'email',
         ];
     }
 }

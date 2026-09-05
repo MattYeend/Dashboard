@@ -1,15 +1,21 @@
 <script setup lang="ts">
+import type { ReportType } from '@/types';
 import ReportBasicDetailsForm from './ReportBasicDetailsForm.vue';
 import ReportScheduleDetailsForm from './ReportScheduleDetailsForm.vue';
-import type { ReportType } from '@/types';
 
 const title = defineModel<string>('title', { required: true });
-const description = defineModel<string | null>('description', { required: true });
+const description = defineModel<string | null>('description', {
+    required: true,
+});
 const type = defineModel<string>('type', { required: true });
 const format = defineModel<string>('format', { required: true });
 const isScheduled = defineModel<boolean>('isScheduled', { required: true });
-const scheduleFrequency = defineModel<string | null>('scheduleFrequency', { required: true });
-const scheduleTime = defineModel<string | null>('scheduleTime', { required: true });
+const scheduleFrequency = defineModel<string | null>('scheduleFrequency', {
+    required: true,
+});
+const scheduleTime = defineModel<string | null>('scheduleTime', {
+    required: true,
+});
 const recipients = defineModel<string>('recipients', { required: true });
 
 defineProps<{

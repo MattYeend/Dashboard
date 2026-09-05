@@ -42,15 +42,15 @@ class ReportController extends Controller
         $data = $this->query->getPaginated(
             $request->user(),
             $request->only([
-                'search', 
-                'type', 
-                'format', 
-                'is_scheduled', 
-                'sort_by', 
-                'sort_direction', 
-                'trashed', 
-                'per_page'
-                ])
+                'search',
+                'type',
+                'format',
+                'is_scheduled',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
         );
 
         return Inertia::render('Reports/Index', $data);
@@ -128,9 +128,9 @@ class ReportController extends Controller
      * implicitly authorises the operation via its authorize() method.
      */
     public function update(
-        UpdateReportRequest $request, 
+        UpdateReportRequest $request,
         Report $report
-        ): JsonResponse|RedirectResponse {
+    ): JsonResponse|RedirectResponse {
         $report = $this->management->update($request, $report);
 
         if ($request->wantsJson()) {
@@ -146,9 +146,9 @@ class ReportController extends Controller
      * Authorises via the 'delete' policy before proceeding.
      */
     public function destroy(
-        Request $request, 
+        Request $request,
         Report $report
-        ): JsonResponse|RedirectResponse {
+    ): JsonResponse|RedirectResponse {
         $this->authorize('delete', $report);
 
         $this->management->destroy($report, $request->user());
@@ -169,9 +169,9 @@ class ReportController extends Controller
      * Authorises via the 'restore' policy before proceeding.
      */
     public function restore(
-        int $id, 
+        int $id,
         Request $request
-        ): JsonResponse|RedirectResponse {
+    ): JsonResponse|RedirectResponse {
         $report = Report::onlyTrashed()->findOrFail($id);
 
         $this->authorize('restore', $report);
@@ -194,9 +194,9 @@ class ReportController extends Controller
      * Authorises via the 'forceDelete' policy before proceeding.
      */
     public function forceDelete(
-        int $id, 
+        int $id,
         Request $request
-        ): JsonResponse|RedirectResponse {
+    ): JsonResponse|RedirectResponse {
         $report = Report::onlyTrashed()->findOrFail($id);
 
         $this->authorize('forceDelete', $report);
@@ -287,12 +287,12 @@ class ReportController extends Controller
 
         return $this->management->export(
             $request->only([
-                'search', 
-                'type', 
-                'format', 
-                'trashed'
-                ])
-                );
+                'search',
+                'type',
+                'format',
+                'trashed',
+            ])
+        );
     }
 
     /**

@@ -30,8 +30,8 @@ class FilterService
      * @return Builder<Comment>
      */
     public function applyCommentable(
-        Builder $query, 
-        ?string $commentableType, 
+        Builder $query,
+        ?string $commentableType,
         ?int $commentableId
     ): Builder {
         if ($commentableType !== null) {

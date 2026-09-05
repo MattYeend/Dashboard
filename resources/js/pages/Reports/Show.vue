@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import type { Report } from '@/types';
+import ReportAuditDetails from './components/ReportAuditDetails.vue';
 import ReportBasicDetails from './components/ReportBasicDetails.vue';
 import ReportScheduleDetails from './components/ReportScheduleDetails.vue';
-import ReportAuditDetails from './components/ReportAuditDetails.vue';
-import type { Report } from '@/types';
 
 defineProps<{ report: Report }>();
 </script>

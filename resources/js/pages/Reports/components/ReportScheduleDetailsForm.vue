@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -8,12 +10,22 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import InputError from '@/components/InputError.vue';
 
 const isScheduled = defineModel<boolean>('isScheduled', { required: true });
-const scheduleFrequency = defineModel<string | null>('scheduleFrequency', { required: true });
-const scheduleTime = defineModel<string | null>('scheduleTime', { required: true });
+const scheduleFrequency = defineModel<string | null>('scheduleFrequency', {
+    required: true,
+});
+const scheduleTime = defineModel<string | null>('scheduleTime', {
+    required: true,
+});
 const recipients = defineModel<string>('recipients', { required: true });
+
+const scheduleTimeValue = computed({
+    get: () => scheduleTime.value ?? '',
+    set: (value: string) => {
+        scheduleTime.value = value === '' ? null : value;
+    },
+});
 
 defineProps<{
     errors: Partial<Record<string, string>>;
@@ -28,7 +40,9 @@ defineProps<{
                 type="checkbox"
                 :checked="isScheduled"
                 :disabled="!canSchedule"
-                @change="isScheduled = ($event.target as HTMLInputElement).checked"
+                @change="
+                    isScheduled = ($event.target as HTMLInputElement).checked
+                "
             />
             Run this report automatically
         </label>
@@ -54,7 +68,12 @@ defineProps<{
 
             <div>
                 <Label for="schedule_time">Time</Label>
-                <Input id="schedule_time" v-model="scheduleTime" type="time" :disabled="!canSchedule" />
+                <Input
+                    id="schedule_time"
+                    v-model="scheduleTimeValue"
+                    type="time"
+                    :disabled="!canSchedule"
+                />
                 <InputError :message="errors.schedule_time" />
             </div>
 

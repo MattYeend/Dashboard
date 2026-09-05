@@ -12,10 +12,14 @@ defineProps<{ report: Report }>();
             <dd class="text-sm text-gray-200">{{ report.title }}</dd>
 
             <dt class="text-xs text-gray-400">Description</dt>
-            <dd class="text-sm text-gray-200">{{ report.description ?? '—' }}</dd>
+            <dd class="text-sm text-gray-200">
+                {{ report.description ?? '—' }}
+            </dd>
 
             <dt class="text-xs text-gray-400">Covers</dt>
-            <dd class="text-sm text-gray-200">{{ report.type_label ?? report.type }}</dd>
+            <dd class="text-sm text-gray-200">
+                {{ report.type_label ?? report.type }}
+            </dd>
 
             <dt class="text-xs text-gray-400">Format</dt>
             <dd class="text-sm text-gray-200 uppercase">{{ report.format }}</dd>

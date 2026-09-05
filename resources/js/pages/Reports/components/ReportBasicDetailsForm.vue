@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -9,14 +11,21 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import InputError from '@/components/InputError.vue';
 import type { ReportType } from '@/types';
 
 const title = defineModel<string>('title', { required: true });
-const description = defineModel<string | null>('description', { required: true });
+const description = defineModel<string | null>('description', {
+    required: true,
+});
 const type = defineModel<string>('type', { required: true });
 const format = defineModel<string>('format', { required: true });
 
+const descriptionValue = computed({
+    get: () => description.value ?? '',
+    set: (value: string) => {
+        description.value = value;
+    },
+});
 defineProps<{
     errors: Partial<Record<string, string>>;
     reportTypes: ReportType[];
@@ -33,7 +42,7 @@ defineProps<{
 
         <div>
             <Label for="description">Description</Label>
-            <Textarea id="description" v-model="description" rows="3" />
+            <Textarea id="description" v-model="descriptionValue" rows="3" />
             <InputError :message="errors.description" />
         </div>
 
@@ -44,7 +53,11 @@ defineProps<{
                     <SelectValue placeholder="Select what the report covers" />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem v-for="option in reportTypes" :key="option.value" :value="option.value">
+                    <SelectItem
+                        v-for="option in reportTypes"
+                        :key="option.value"
+                        :value="option.value"
+                    >
                         {{ option.label }}
                     </SelectItem>
                 </SelectContent>

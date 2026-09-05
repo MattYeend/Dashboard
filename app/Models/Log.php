@@ -776,7 +776,7 @@ class Log extends Model implements Auditable
 
     public const ACTION_STOP_IMPERSONATION = 359;
 
-        // Report Management
+    // Report Management
     public const ACTION_CREATE_REPORT = 360;
 
     public const ACTION_UPDATE_REPORT = 361;
