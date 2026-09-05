@@ -119,6 +119,8 @@ class CompanyController extends Controller
             'can_create' => $request->user()->can('create interaction logs'),
         ];
 
+        $data = array_merge($data, $this->query->getRelatedSummaries($company));
+
         return Inertia::render('Companies/Show', $data);
     }
 

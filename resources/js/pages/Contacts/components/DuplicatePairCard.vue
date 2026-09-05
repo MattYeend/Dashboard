@@ -21,7 +21,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <div class="rounded-md border border-gray-500 p-4">
+    <div class="rounded-lg border p-4">
         <p class="text-xs text-gray-400">{{ reason }}</p>
 
         <div class="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">

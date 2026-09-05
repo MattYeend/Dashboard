@@ -10,7 +10,7 @@ defineProps<Props>();
 </script>
 
 <template>
-    <div class="rounded-md border border-gray-500 p-4">
+    <div class="rounded-lg border p-4">
         <dl>
             <dt class="text-sm font-medium text-gray-400">Tags</dt>
             <dd class="mt-1 text-sm text-gray-300">

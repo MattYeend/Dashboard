@@ -6,6 +6,9 @@ use App\Models\Company;
 use App\Models\Industry;
 use App\Models\Tag;
 use App\Models\User;
+use App\Services\Contacts\FormatterService as ContactFormatterService;
+use App\Services\Deals\FormatterService as DealFormatterService;
+use App\Services\Orders\FormatterService as OrderFormatterService;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -18,7 +21,10 @@ class QueryService
         protected readonly SortingService $sortingService,
         protected readonly TrashFilterService $trashFilterService,
         protected readonly FilterService $filterService,
-        protected readonly FormatterService $formatterService
+        protected readonly FormatterService $formatterService,
+        protected readonly ContactFormatterService $contactFormatterService,
+        protected readonly OrderFormatterService $orderFormatterService,
+        protected readonly DealFormatterService $dealFormatterService
     ) {}
 
     /**
@@ -68,6 +74,30 @@ class QueryService
             'industries' => Industry::orderBy('title')->get(['id', 'title']),
             'tags' => Tag::orderBy('name')->get(['id', 'name']),
             'users' => User::orderBy('name')->get(['id', 'name']),
+        ];
+    }
+
+    /**
+     * Get a capped, recent slice of related contacts, orders and deals for the Show page widget.
+     */
+    public function getRelatedSummaries(Company $company): array
+    {
+        $company->loadMissing([
+            'contacts' => fn ($query) => $query->latest()->limit(5),
+            'orders' => fn ($query) => $query->with('status')->latest('ordered_at')->limit(5),
+            'deals' => fn ($query) => $query->with(['stage', 'status'])->latest()->limit(5),
+        ]);
+
+        return [
+            'related_contacts' => $company->contacts
+                ->map(fn ($contact) => $this->contactFormatterService->format($contact))
+                ->all(),
+            'related_orders' => $company->orders
+                ->map(fn ($order) => $this->orderFormatterService->format($order))
+                ->all(),
+            'related_deals' => $company->deals
+                ->map(fn ($deal) => $this->dealFormatterService->format($deal))
+                ->all(),
         ];
     }
 
