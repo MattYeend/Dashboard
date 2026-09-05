@@ -5,7 +5,7 @@ defineProps<{ report: Report }>();
 </script>
 
 <template>
-    <div>
+    <div class="rounded-lg border p-4">
         <h2 class="text-sm font-semibold text-gray-300">Schedule</h2>
         <dl class="mt-2 grid grid-cols-2 gap-x-4 gap-y-2">
             <dt class="text-xs text-gray-400">Scheduled</dt>

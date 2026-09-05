@@ -443,16 +443,27 @@ describe('scheduled command', function () {
     test('reports:run-scheduled processes due reports and rolls next_run_at forward', function () {
         $superAdmin = $this->superAdminUser();
 
-        $due = Report::factory()->due()->create(['created_by' => $superAdmin->id, 'type' => 'orders']);
-        $notDue = Report::factory()->scheduled()->create(['created_by' => $superAdmin->id, 'type' => 'orders']);
+        $due = Report::factory()->due()->create([
+            'created_by' => $superAdmin->id,
+            'type' => 'orders',
+        ]);
+        $notDue = Report::factory()->scheduled()->create([
+            'created_by' => $superAdmin->id,
+            'type' => 'orders',
+        ]);
 
-        $this->artisan('reports:run-scheduled')->assertExitCode(0);
+        $this->artisan('reports:run-scheduled')
+            ->assertExitCode(0)
+            ->expectsOutput('Processed 1 scheduled report(s).');
 
         $due->refresh();
         $notDue->refresh();
 
-        expect($due->last_run_at)->not->toBeNull()
-            ->and($due->next_run_at->isFuture())->toBeTrue()
-            ->and($notDue->last_run_at)->toBeNull();
+        expect($due->last_run_at)
+            ->not->toBeNull()
+            ->and($due->next_run_at->isFuture())
+            ->toBeTrue()
+            ->and($notDue->last_run_at)
+            ->toBeNull();
     });
 });

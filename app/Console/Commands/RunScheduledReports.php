@@ -10,6 +10,7 @@ use App\Services\Reports\RunnerService;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
 
 #[Signature('reports:run-scheduled')]
 #[Description('Generates and distributes reports that are due to run')]
@@ -23,6 +24,8 @@ class RunScheduledReports extends Command
         DataPreparationService $dataPreparationService,
         AuditLogService $auditLogService
     ): int {
+        $this->ensureSessionIsBound();
+
         $due = Report::query()
             ->where('is_scheduled', true)
             ->where('next_run_at', '<=', now())
@@ -61,5 +64,22 @@ class RunScheduledReports extends Command
         );
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Bind a working session store to the current request.
+     *
+     * Console commands run outside an HTTP request, so anything that
+     * calls session() (e.g. tenant/organisation resolution triggered
+     * indirectly via another module's QueryService) throws "Session
+     * store not set on request." This gives the command a real,
+     * array-backed session so that code path succeeds instead.
+     */
+    private function ensureSessionIsBound(): void
+    {
+        $session = App::make('session')->driver('array');
+        $session->start();
+
+        App::make('request')->setLaravelSession($session);
     }
 }

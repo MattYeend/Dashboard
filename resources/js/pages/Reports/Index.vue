@@ -7,28 +7,28 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import {
-    index as pipelinesIndex,
-    show as pipelinesShow,
-    create as pipelinesCreate,
-    edit as pipelinesEdit,
-    destroy as pipelinesDestroy,
-    exportMethod as pipelinesExport,
-} from '@/routes/pipelines';
-import pipelinesBulk from '@/routes/pipelines/bulk';
 import type {
     Pagination as PaginationMeta,
-    PermissionsMeta,
-    Pipeline,
+    ReportPermissionsMeta,
+    Report,
 } from '@/types';
+import {
+    index as reportsIndex,
+    show as reportsShow,
+    create as reportsCreate,
+    edit as reportsEdit,
+    destroy as reportsDestroy,
+    exportMethod as reportsExport,
+} from '@/routes/reports';
+import reportsBulk from '@/routes/reports/bulk';
 
 interface Props {
-    pipelines: {
-        data: Pipeline[];
+    reports: {
+        data: Report[];
         links: Array<{ url: string | null; label: string; active: boolean }>;
         meta: PaginationMeta;
     };
-    permissions_meta: PermissionsMeta;
+    permissions_meta: ReportPermissionsMeta;
     sort_fields: Record<string, string>;
     trash_filters: Record<string, string>;
 }
@@ -40,14 +40,14 @@ const urlParams = new URLSearchParams(window.location.search);
 const filters = ref({
     search: urlParams.get('search') ?? '',
     trashed: urlParams.get('trashed') ?? '',
-    sort_by: urlParams.get('sort_by') ?? 'title',
-    sort_direction: urlParams.get('sort_direction') ?? 'asc',
+    sort_by: urlParams.get('sort_by') ?? 'created_at',
+    sort_direction: urlParams.get('sort_direction') ?? 'desc',
 });
 
 const selectedIds = ref<Array<number | string>>([]);
 
 const deleteDialogOpen = ref(false);
-const selectedPipelineId = ref<number | null>(null);
+const selectedReportId = ref<number | null>(null);
 const deleteProcessing = ref(false);
 
 const bulkDeleteDialogOpen = ref(false);
@@ -56,15 +56,16 @@ const bulkDeleteProcessing = ref(false);
 
 const columns: ResourceTableColumn[] = [
     { key: 'title', label: 'Title' },
-    { key: 'is_default', label: 'Default' },
-    { key: 'status', label: 'Status' },
+    { key: 'type_label', label: 'Type' },
+    { key: 'format', label: 'Format' },
+    { key: 'is_scheduled', label: 'Scheduled' },
 ];
 
 const filterFields = [
     {
         key: 'search',
         type: 'text' as const,
-        placeholder: 'Search pipelines…',
+        placeholder: 'Search reports…',
     },
     {
         key: 'trashed',
@@ -99,30 +100,30 @@ const filterFields = [
 ];
 
 function applyFilters(): void {
-    router.get(pipelinesIndex.url(), filters.value, {
+    router.get(reportsIndex.url(), filters.value, {
         preserveState: true,
         replace: true,
     });
 }
 
 function requestDestroy(id: number): void {
-    selectedPipelineId.value = id;
+    selectedReportId.value = id;
     deleteDialogOpen.value = true;
 }
 
 function destroy(): void {
-    if (selectedPipelineId.value === null) {
+    if (selectedReportId.value === null) {
         return;
     }
 
     deleteProcessing.value = true;
 
-    router.delete(pipelinesDestroy.url(selectedPipelineId.value), {
+    router.delete(reportsDestroy.url(selectedReportId.value), {
         preserveScroll: true,
         onFinish: () => {
             deleteProcessing.value = false;
             deleteDialogOpen.value = false;
-            selectedPipelineId.value = null;
+            selectedReportId.value = null;
         },
     });
 }
@@ -144,7 +145,7 @@ function bulkDelete(): void {
     bulkDeleteProcessing.value = true;
 
     router.post(
-        pipelinesBulk.delete.url(),
+        reportsBulk.delete.url(),
         { ids: pendingBulkIds.value },
         {
             preserveScroll: true,
@@ -165,11 +166,11 @@ function bulkDelete(): void {
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <IndexHeader
-                title="Pipelines"
-                :create-href="pipelinesCreate.url()"
-                create-label="Add Pipeline"
+                title="Reports"
+                :create-href="reportsCreate.url()"
+                create-label="Add Report"
                 :can-create="permissions_meta.can_create"
-                :export-href="pipelinesExport.url()"
+                :export-href="reportsExport.url()"
                 :can-export="permissions_meta.can_export"
             />
 
@@ -181,28 +182,14 @@ function bulkDelete(): void {
 
             <ResourceTable
                 v-model:selected="selectedIds"
-                :rows="pipelines.data"
+                :rows="reports.data"
                 :columns="columns"
                 row-key="id"
                 selectable
-                empty-message="No pipelines found."
+                empty-message="No reports found."
             >
-                <template #cell-is_default="{ row }">
-                    {{ row.is_default ? 'Yes' : 'No' }}
-                </template>
-                <template #cell-status="{ row }">
-                    <span
-                        v-if="row.status"
-                        :style="{
-                            backgroundColor:
-                                row.status.background_colour ?? '#e2e8f0',
-                            color: row.status.text_colour ?? '#1a202c',
-                        }"
-                        class="rounded px-2 py-0.5 text-xs font-medium"
-                    >
-                        {{ row.status.title }}
-                    </span>
-                    <span v-else>-</span>
+                <template #cell-is_scheduled="{ row }">
+                    {{ row.is_scheduled ? 'Yes' : 'No' }}
                 </template>
 
                 <template #bulk-actions="{ selected }">
@@ -216,8 +203,8 @@ function bulkDelete(): void {
                 </template>
 
                 <template #actions="{ row }">
-                    <Link :href="pipelinesShow.url(row.id)">View</Link>
-                    <Link :href="pipelinesEdit.url(row.id)">Edit</Link>
+                    <Link :href="reportsShow.url(row.id)">View</Link>
+                    <Link :href="reportsEdit.url(row.id)">Edit</Link>
                     <button
                         type="button"
                         class="text-red-600 hover:text-red-900"
@@ -229,16 +216,16 @@ function bulkDelete(): void {
             </ResourceTable>
 
             <Pagination
-                :meta="pipelines.meta"
-                :links="pipelines.links"
-                resource-label="pipelines"
+                :meta="reports.meta"
+                :links="reports.links"
+                resource-label="reports"
             />
         </div>
 
         <ConfirmDialog
             v-model:open="deleteDialogOpen"
-            title="Delete pipeline"
-            description="This pipeline will be moved to trash."
+            title="Delete report"
+            description="This report will be moved to trash."
             confirm-label="Delete"
             :processing="deleteProcessing"
             @confirm="destroy"
@@ -246,8 +233,8 @@ function bulkDelete(): void {
 
         <ConfirmDialog
             v-model:open="bulkDeleteDialogOpen"
-            title="Delete pipelines"
-            :description="`${pendingBulkIds.length} pipeline(s) will be moved to trash.`"
+            title="Delete reports"
+            :description="`${pendingBulkIds.length} report(s) will be moved to trash.`"
             confirm-label="Delete"
             :processing="bulkDeleteProcessing"
             @confirm="bulkDelete"

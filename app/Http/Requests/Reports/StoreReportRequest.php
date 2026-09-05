@@ -4,6 +4,7 @@ namespace App\Http\Requests\Reports;
 
 use App\Models\Report;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreReportRequest extends FormRequest
@@ -188,5 +189,22 @@ class StoreReportRequest extends FormRequest
         return [
             'email',
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * Adds a cross-field check that the actor holds the 'schedule
+     * reports' permission before allowing is_scheduled to be true -
+     * this cannot be expressed as a static rule string since it depends
+     * on the authenticated user, not just the payload.
+     */
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function ($validator) {
+            if ($this->boolean('is_scheduled') && ! $this->user()->can('schedule reports')) {
+                $validator->errors()->add('is_scheduled', 'You do not have permission to schedule reports.');
+            }
+        });
     }
 }
