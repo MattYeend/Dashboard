@@ -8,6 +8,7 @@ import {
     ClipboardList,
     Contact2,
     CreditCard,
+    FileBarChart,
     FolderGit2,
     History,
     MessageSquareWarning,
@@ -164,6 +165,11 @@ const navGroups: NavGroup[] = [
                     { title: 'Ticket Statuses', href: '/ticket-statuses' },
                     { title: 'Ticket Priorities', href: '/ticket-priorities' },
                 ],
+            },
+            {
+                title: 'Reports',
+                href: '/reports',
+                icon: FileBarChart,
             },
             {
                 title: 'Labels',
