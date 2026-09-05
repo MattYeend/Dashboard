@@ -11,6 +11,9 @@ import {
 } from '@/routes/companies';
 import type {
     Company,
+    Contact,
+    Order,
+    Deal,
     PermissionsMeta,
     ActivityPermissionsMeta,
     InteractionLogPermissionsMeta,
@@ -18,6 +21,7 @@ import type {
 import CompanyAuditDetails from './components/CompanyAuditDetails.vue';
 import CompanyBasicDetails from './components/CompanyBasicDetails.vue';
 import CompanyContactDetails from './components/CompanyContactDetails.vue';
+import CompanyRelatedRecords from './components/CompanyRelatedRecords.vue';
 import CompanyTagsDetails from './components/CompanyTagsDetails.vue';
 
 interface Props {
@@ -25,6 +29,9 @@ interface Props {
     permissions_meta: PermissionsMeta;
     activity_permissions_meta: ActivityPermissionsMeta;
     interaction_log_permissions_meta: InteractionLogPermissionsMeta;
+    related_contacts: Contact[];
+    related_orders: Order[];
+    related_deals: Deal[];
 }
 
 const props = defineProps<Props>();
@@ -96,6 +103,12 @@ function destroy(): void {
                 <CompanyContactDetails :company="company" />
                 <CompanyRegistrationDetails :company="company" />
                 <CompanyTagsDetails :company="company" />
+                <CompanyRelatedRecords
+                    :company-id="company.id"
+                    :contacts="related_contacts"
+                    :orders="related_orders"
+                    :deals="related_deals"
+                />
                 <CompanyAuditDetails :company="company" />
                 <ActivityTimeline
                     activityable-type="company"

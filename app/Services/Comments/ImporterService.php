@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\DB;
 class ImporterService
 {
     protected const REQUIRED_COLUMNS = [
-        'commentable_type', 
-        'commentable_id', 
-        'content'
+        'commentable_type',
+        'commentable_id',
+        'content',
     ];
 
     public function __construct(
