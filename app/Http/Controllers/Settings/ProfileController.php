@@ -53,6 +53,7 @@ class ProfileController extends Controller
         $this->authorize('editOwnProfile', $request->user());
 
         return Inertia::render('Profile/Edit', [
+            'user' => $request->user()->only(['id', 'name', 'email']),
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
         ]);

@@ -1,11 +1,19 @@
 <script setup lang="ts">
+import type { InertiaFormProps } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
-import Input from '@/components/ui/input/Input.vue';
-import Label from '@/components/ui/label/Label.vue';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
-defineProps<{
-    errors: Partial<Record<'name' | 'email', string>>;
-}>();
+interface ProfileDetailsFormData {
+    name: string;
+    email: string;
+}
+
+interface Props {
+    errors: Partial<InertiaFormProps<ProfileDetailsFormData>['errors']>;
+}
+
+defineProps<Props>();
 
 const name = defineModel<string>('name', { required: true });
 const email = defineModel<string>('email', { required: true });
@@ -13,26 +21,32 @@ const email = defineModel<string>('email', { required: true });
 
 <template>
     <div class="space-y-4">
-        <div class="space-y-2">
-            <Label for="name">Name</Label>
+        <div>
+            <Label for="name">
+                Name <span class="text-destructive">*</span>
+            </Label>
             <Input
                 id="name"
                 v-model="name"
                 type="text"
+                class="mt-1 block w-full"
                 autocomplete="name"
-                required
+                placeholder="Full name"
             />
             <InputError :message="errors.name" />
         </div>
 
-        <div class="space-y-2">
-            <Label for="email">Email</Label>
+        <div>
+            <Label for="email">
+                Email address <span class="text-destructive">*</span>
+            </Label>
             <Input
                 id="email"
                 v-model="email"
                 type="email"
+                class="mt-1 block w-full"
                 autocomplete="username"
-                required
+                placeholder="Email address"
             />
             <InputError :message="errors.email" />
         </div>
