@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use Database\Factories\CompanyFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +17,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int $organisation_id 
  * @property string $name
  * @property string|null $slug
  * @property string|null $email
@@ -36,6 +38,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $accountManager
  */
 #[Fillable([
+    'organisation_id',
     'name',
     'slug',
     'email',
@@ -62,7 +65,8 @@ class Company extends Model implements Auditable
     /**
      * @use HasFactory<CompanyFactory>
      */
-    use HasFactory,
+    use BelongsToOrganisation,
+        HasFactory,
         SoftDeletes;
 
     /**

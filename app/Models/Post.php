@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use App\Traits\Likeable;
 use Database\Factories\PostFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -16,6 +17,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property string $title
  * @property string $description
  * @property string|null $image
@@ -34,6 +36,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
+    'organisation_id',
     'title',
     'description',
     'image',
@@ -50,7 +53,8 @@ class Post extends Model implements Auditable
     /**
      * @use HasFactory<PostFactory>
      */
-    use HasFactory,
+    use BelongsToOrganisation,
+        HasFactory,
         Likeable,
         SoftDeletes;
 
