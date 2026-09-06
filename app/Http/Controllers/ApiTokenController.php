@@ -36,6 +36,8 @@ class ApiTokenController extends Controller
      */
     public function store(StoreApiTokenRequest $request): RedirectResponse
     {
+        $this->authorize('create', PersonalAccessToken::class);
+
         $newToken = $this->managementService->create(
             $request->user(),
             $request->validated('name'),
