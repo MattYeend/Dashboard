@@ -321,7 +321,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('api-tokens')->name('api-tokens.')->group(function () {
         Route::get('/', [ApiTokenController::class, 'index'])->name('index');
         Route::post('/', [ApiTokenController::class, 'store'])->name('store');
-        Route::put('/{apiToken}', [ApiTokenController::class, 'update'])->name('update');
+        Route::match(['put', 'patch'], '/{apiToken}', [ApiTokenController::class, 'update'])->name('update');
         Route::delete('/{apiToken}', [ApiTokenController::class, 'destroy'])->name('destroy');
     });
 
