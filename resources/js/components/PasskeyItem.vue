@@ -15,6 +15,7 @@ import type { Passkey } from '@/types/auth';
 
 const props = defineProps<{
     passkey: Passkey;
+    isLast?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -74,8 +75,15 @@ const handleDelete = () => {
             <DialogContent>
                 <DialogTitle>Remove passkey</DialogTitle>
                 <DialogDescription>
-                    Are you sure you want to remove the "{{ passkey.name }}"
-                    passkey? You will no longer be able to use it to sign in.
+                    <template v-if="isLast">
+                        This is your only passkey. Once removed, you'll need to
+                        sign in with your password instead.
+                    </template>
+                    <template v-else>
+                        Are you sure you want to remove the "{{ passkey.name }}"
+                        passkey? You will no longer be able to use it to sign
+                        in.
+                    </template>
                 </DialogDescription>
                 <DialogFooter class="gap-2">
                     <DialogClose as-child>

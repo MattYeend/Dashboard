@@ -179,6 +179,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewLogViewer', function ($user) {
             return $user && $user->can('view logs');
         });
+
+        $this->registerPasskeyAuditLogging();
     }
 
     /**
@@ -250,5 +252,32 @@ class AppServiceProvider extends ServiceProvider
 
         return $subject instanceof PersonalAccessToken
             || $subject === PersonalAccessToken::class;
+    }
+
+    /**
+     * Register audit logging for passkey creation and revocation.
+     *
+     * Registration and deletion both happen inside laravel/passkeys' own
+     * controller rather than ours, so Eloquent model events are the only
+     * hook point available. The passkey model class is resolved from the
+     * relation rather than referenced directly, since it belongs to a
+     * vendor package. Only the passkey's label is ever logged, never its
+     * credential or key material.
+     */
+    private function registerPasskeyAuditLogging(): void
+    {
+        $passkeyModel = (new User)->passkeys()->getRelated();
+
+        $passkeyModel::created(function ($passkey): void {
+            Log::log(Log::ACTION_CREATE_PASSKEY, [
+                'label' => $passkey->name,
+            ]);
+        });
+
+        $passkeyModel::deleted(function ($passkey): void {
+            Log::log(Log::ACTION_REVOKE_PASSKEY, [
+                'label' => $passkey->name,
+            ]);
+        });
     }
 }

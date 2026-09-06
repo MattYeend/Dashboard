@@ -61,5 +61,13 @@ const handleRegisterSuccess = () => {
         </div>
 
         <PasskeyRegister @success="handleRegisterSuccess" />
+
+        <PasskeyItem
+            v-for="passkey in passkeys"
+            :key="passkey.id"
+            :passkey="passkey"
+            :is-last="passkeys.length === 1"
+            @remove="handleDelete"
+        />
     </div>
 </template>

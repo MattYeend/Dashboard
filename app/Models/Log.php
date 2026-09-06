@@ -797,6 +797,11 @@ class Log extends Model implements Auditable
 
     public const ACTION_RUN_REPORT = 369;
 
+    // Passkey Management
+    public const ACTION_CREATE_PASSKEY = 370;
+
+    public const ACTION_REVOKE_PASSKEY = 371;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
