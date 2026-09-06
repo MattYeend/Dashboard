@@ -102,8 +102,10 @@ function saveEdit(): void {
             </div>
         </template>
         <template v-else>
-            <CommentBody :content="sanitisedContent" :mentions="comment.mentions" />
-            <p class="text-sm text-gray-300">{{ sanitisedContent }}</p>
+            <CommentBody
+                :content="sanitisedContent"
+                :mentions="comment.mentions"
+            />
             <div class="mt-1 flex items-center gap-2 text-xs text-gray-400">
                 <span>{{ comment.creator?.name ?? '-' }}</span>
                 <CommentLikeButton :comment="comment" />

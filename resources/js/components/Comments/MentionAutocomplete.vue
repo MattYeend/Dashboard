@@ -36,9 +36,12 @@ async function fetchUsers(search: string): Promise<void> {
     loading.value = true;
 
     try {
-        const response = await fetch(`/users/options?search=${encodeURIComponent(search)}`, {
-            headers: { Accept: 'application/json' },
-        });
+        const response = await fetch(
+            `/users/mentionable?search=${encodeURIComponent(search)}`,
+            {
+                headers: { Accept: 'application/json' },
+            },
+        );
 
         results.value = await response.json();
     } finally {
@@ -55,12 +58,12 @@ function choose(user: UserOption): void {
 <template>
     <ul
         v-if="results.length > 0"
-        class="absolute z-10 mt-1 max-h-48 w-56 overflow-y-auto rounded-md border border-gray-600 text-sm text-gray-300"
+        class="absolute z-10 mt-1 max-h-48 w-56 overflow-y-auto rounded-md border border-gray-600 bg-gray-800 text-sm text-gray-300"
     >
         <li
             v-for="user in results"
             :key="user.id"
-            class="cursor-pointer px-3 py-1 hover:underline"
+            class="cursor-pointer px-3 py-1 hover:bg-gray-700"
             @click="choose(user)"
         >
             {{ user.name }}

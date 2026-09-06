@@ -5,9 +5,13 @@ namespace App\Notifications;
 use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class UserMentionedNotification extends Notification
+/**
+ * Notifies a user that they have been @mentioned in a Comment.
+ */
+class UserMentionedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -35,7 +39,7 @@ class UserMentionedNotification extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toDatabase(object $notifiable): array
     {
         return [
             'type' => 'mention',

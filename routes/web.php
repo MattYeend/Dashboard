@@ -135,6 +135,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{user}/impersonate', [UserController::class, 'impersonate'])->name('impersonate');
         Route::post('/impersonate/stop', [UserController::class, 'stopImpersonating'])->name('impersonate.stop');
 
+        Route::get('/mentionable', [UserController::class, 'mentionable'])->name('mentionable');
+
         Route::get('/export', [UserController::class, 'export'])->name('export');
         Route::post('/import', [UserController::class, 'import'])->name('import');
 

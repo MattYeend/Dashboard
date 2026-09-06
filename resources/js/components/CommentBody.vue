@@ -40,7 +40,10 @@ const segments = computed<BodySegment[]>(() => {
 
     while ((match = pattern.exec(props.content)) !== null) {
         if (match.index > lastIndex) {
-            parts.push({ type: 'text', value: props.content.slice(lastIndex, match.index) });
+            parts.push({
+                type: 'text',
+                value: props.content.slice(lastIndex, match.index),
+            });
         }
 
         const token = match[1].toLowerCase();
@@ -70,7 +73,8 @@ const segments = computed<BodySegment[]>(() => {
                 v-if="segment.type === 'mention'"
                 :href="`/users/${segment.userId}`"
                 class="border-b border-gray-400 text-gray-300 no-underline"
-            >{{ segment.value }}</Link>
+                >{{ segment.value }}</Link
+            >
             <template v-else>{{ segment.value }}</template>
         </template>
     </p>

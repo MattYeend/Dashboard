@@ -91,7 +91,7 @@ class QueryService
         $comments = Comment::query()
             ->where('commentable_type', $commentableType)
             ->where('commentable_id', $commentableId)
-            ->with(['creator', 'likes'])
+            ->with(['creator', 'likes', 'mentions'])
             ->latest()
             ->get();
 
@@ -111,6 +111,7 @@ class QueryService
             'updater',
             'deleter',
             'restorer',
+            'mentions',
         ]);
 
         $query = $this->filterService->applyAll($query, $filters);
@@ -186,6 +187,7 @@ class QueryService
             'updater',
             'deleter',
             'restorer',
+            'mentions',
         ]);
 
         if ($withTrashed) {
