@@ -6,9 +6,11 @@ use App\Contracts\Auditable;
 use App\Traits\Likeable;
 use Database\Factories\CommentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
@@ -32,6 +34,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $updater
  * @property-read User|null $deleter
  * @property-read User|null $restorer
+ * @property-read Collection<int, User> $mentions
  */
 #[Fillable([
     'commentable_type',
@@ -102,6 +105,17 @@ class Comment extends Model implements Auditable
     public function restorer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'restored_by');
+    }
+
+    /**
+     * Get the users mentioned in this comment.
+     *
+     * @return BelongsToMany<User, $this>
+     */
+    public function mentions(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'comment_mentions', 'comment_id', 'mentioned_user_id')
+            ->withTimestamps();
     }
 
     /**
