@@ -2,6 +2,7 @@
 import { router } from '@inertiajs/vue3';
 import DOMPurify from 'dompurify';
 import { computed, ref } from 'vue';
+import CommentBody from '@/components/CommentBody.vue';
 import CommentLikeButton from '@/components/Comments/CommentLikeButton.vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import InputError from '@/components/InputError.vue';
@@ -101,6 +102,7 @@ function saveEdit(): void {
             </div>
         </template>
         <template v-else>
+            <CommentBody :content="sanitisedContent" :mentions="comment.mentions" />
             <p class="text-sm text-gray-300">{{ sanitisedContent }}</p>
             <div class="mt-1 flex items-center gap-2 text-xs text-gray-400">
                 <span>{{ comment.creator?.name ?? '-' }}</span>
