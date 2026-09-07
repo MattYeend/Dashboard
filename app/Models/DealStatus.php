@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use Database\Factories\DealStatusFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property string $title
  * @property bool $is_closing
  * @property string|null $description
@@ -34,6 +36,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
+    'organisation_id',
     'title',
     'is_closing',
     'description',
@@ -52,7 +55,8 @@ use Illuminate\Support\Carbon;
 class DealStatus extends Model implements Auditable
 {
     /** @use HasFactory<DealStatusFactory> */
-    use HasFactory,
+    use BelongsToOrganisation,
+        HasFactory,
         SoftDeletes;
 
     /**

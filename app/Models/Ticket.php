@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use App\Traits\Labelable;
 use Database\Factories\TicketFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -14,6 +15,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property string $title
  * @property string|null $description
  * @property int|null $ticket_status_id
@@ -39,6 +41,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
+    'organisation_id',
     'title',
     'description',
     'ticket_status_id',
@@ -58,7 +61,8 @@ class Ticket extends Model implements Auditable
     /**
      * @use HasFactory<TicketFactory>
      */
-    use HasFactory,
+    use BelongsToOrganisation,
+        HasFactory,
         Labelable,
         SoftDeletes;
 

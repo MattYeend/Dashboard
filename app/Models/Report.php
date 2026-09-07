@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use Database\Factories\ReportFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +14,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property string $title
  * @property string|null $description
  * @property string $type
@@ -39,6 +41,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
+    'organisation_id',
     'title',
     'description',
     'type',
@@ -62,7 +65,9 @@ class Report extends Model implements Auditable
     /**
      * @use HasFactory<ReportFactory>
      */
-    use HasFactory, SoftDeletes;
+    use BelongsToOrganisation,
+        HasFactory,
+        SoftDeletes;
 
     /**
      * Get the user who created this report.

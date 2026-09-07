@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use Database\Factories\TagFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property string $name
  * @property string $slug
  * @property array<string, mixed>|null $meta
@@ -31,6 +33,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
+    'organisation_id',
     'name',
     'slug',
     'meta',
@@ -46,7 +49,9 @@ class Tag extends Model implements Auditable
     /**
      * @use HasFactory<TagFactory>
      */
-    use HasFactory, SoftDeletes;
+    use BelongsToOrganisation,
+        HasFactory,
+        SoftDeletes;
 
     /**
      * Get the posts associated with this tag.

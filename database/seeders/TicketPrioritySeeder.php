@@ -3,10 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\TicketPriority;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class TicketPrioritySeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -17,6 +20,8 @@ class TicketPrioritySeeder extends Seeder
 
             return;
         }
+
+        $organisation = $this->defaultOrganisation();
 
         $priorities = [
             [
@@ -51,7 +56,10 @@ class TicketPrioritySeeder extends Seeder
 
         foreach ($priorities as $priority) {
             TicketPriority::firstOrCreate(
-                ['title' => $priority['title']],
+                [
+                    'title' => $priority['title'],
+                    'organisation_id' => $organisation->id,
+                ],
                 $priority
             );
         }

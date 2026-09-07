@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use Database\Factories\TicketPriorityFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property string $title
  * @property int $level
  * @property string $background_colour
@@ -33,6 +35,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
+    'organisation_id',
     'title',
     'level',
     'background_colour',
@@ -50,7 +53,8 @@ use Illuminate\Support\Carbon;
 class TicketPriority extends Model implements Auditable
 {
     /** @use HasFactory<TicketPriorityFactory> */
-    use HasFactory,
+    use BelongsToOrganisation,
+        HasFactory,
         SoftDeletes;
 
     /**

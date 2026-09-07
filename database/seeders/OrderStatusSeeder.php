@@ -15,7 +15,9 @@ class OrderStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        if (OrderStatus::exists()) {
+        $organisation = $this->defaultOrganisation();
+
+        if (OrderStatus::where('organisation_id', $organisation->id)->exists()) {
             $this->command->info('Order statuses already seeded, skipping...');
 
             return;
@@ -83,8 +85,11 @@ class OrderStatusSeeder extends Seeder
 
         foreach ($statuses as $status) {
             OrderStatus::firstOrCreate(
-                ['title' => $status['title']],
-                [...$status, 'organisation_id' => $organisation->id]
+                [
+                    'title' => $status['title'],
+                    'organisation_id' => $organisation->id,
+                ],
+                $status
             );
         }
     }

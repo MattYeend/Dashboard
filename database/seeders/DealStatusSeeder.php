@@ -15,13 +15,14 @@ class DealStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        if (DealStatus::exists()) {
+        $organisation = $this->defaultOrganisation();
+
+        if (DealStatus::where('organisation_id', $organisation->id)->exists()) {
             $this->command->info('Deal statuses already seeded, skipping...');
 
             return;
         }
 
-        $organisation = $this->defaultOrganisation();
         $statuses = [
             [
                 'title' => 'New',
@@ -83,8 +84,11 @@ class DealStatusSeeder extends Seeder
 
         foreach ($statuses as $status) {
             DealStatus::firstOrCreate(
-                ['title' => $status['title']],
-                [...$status, 'organisation_id' => $organisation->id]
+                [
+                    'title' => $status['title'],
+                    'organisation_id' => $organisation->id,
+                ],
+                $status
             );
         }
 

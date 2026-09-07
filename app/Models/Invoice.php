@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use Database\Factories\InvoiceFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +17,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property string $invoice_number
  * @property int|null $company_id
  * @property int|null $order_id
@@ -50,6 +52,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
+    'organisation_id',
     'invoice_number',
     'company_id',
     'order_id',
@@ -79,7 +82,8 @@ class Invoice extends Model implements Auditable
     /**
      * @use HasFactory<InvoiceFactory>
      */
-    use HasFactory,
+    use BelongsToOrganisation,
+        HasFactory,
         SoftDeletes;
 
     /**

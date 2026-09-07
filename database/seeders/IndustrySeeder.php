@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Industry;
-use Database\Seeders\Concerns\ResolvesDefaultOrganisation; 
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class IndustrySeeder extends Seeder

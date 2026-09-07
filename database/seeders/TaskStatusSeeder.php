@@ -15,7 +15,9 @@ class TaskStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        if (TaskStatus::exists()) {
+        $organisation = $this->defaultOrganisation();
+
+        if (TaskStatus::where('organisation_id', $organisation->id)->exists()) {
             $this->command->info('Task statuses already seeded, skipping...');
 
             return;
@@ -69,8 +71,11 @@ class TaskStatusSeeder extends Seeder
 
         foreach ($statuses as $status) {
             TaskStatus::firstOrCreate(
-                ['title' => $status['title']],
-                [...$status, 'organisation_id' => $organisation->id]
+                [
+                    'title' => $status['title'],
+                    'organisation_id' => $organisation->id,
+                ],
+                $status
             );
         }
     }

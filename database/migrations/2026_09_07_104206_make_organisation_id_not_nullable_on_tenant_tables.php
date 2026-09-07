@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Organisation;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -26,6 +26,7 @@ return new class extends Migration
         'posts',
         'comments',
         'categories',
+        'pipeline_stages',
         'attachments',
         'industries',
         'interaction_logs',
@@ -37,6 +38,7 @@ return new class extends Migration
         'tags',
         'tickets',
         'ticket_statuses',
+        'ticket_priorities',
     ];
 
     /**
@@ -44,15 +46,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $organisation = Organisation::firstOrCreate(
-            ['slug' => 'default'],
-            ['name' => 'Default', 'slug' => 'default']
-        );
-
         foreach ($this->tables as $table) {
-            DB::table($table)
-                ->whereNull('organisation_id')
-                ->update(['organisation_id' => $organisation->id]);
+            Schema::table($table, function (Blueprint $table) {
+                $table->foreignId('organisation_id')->nullable(false)->change();
+            });
         }
     }
 
@@ -62,7 +59,9 @@ return new class extends Migration
     public function down(): void
     {
         foreach ($this->tables as $table) {
-            DB::table($table)->update(['organisation_id' => null]);
+            Schema::table($table, function (Blueprint $table) {
+                $table->foreignId('organisation_id')->nullable()->change();
+            });
         }
     }
 };

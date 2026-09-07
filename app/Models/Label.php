@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use Database\Factories\LabelFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +14,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property string $name
  * @property string $slug
  * @property string $background_colour
@@ -33,6 +35,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
+    'organisation_id',
     'name',
     'slug',
     'background_colour',
@@ -49,7 +52,8 @@ class Label extends Model implements Auditable
     /**
      * @use HasFactory<LabelFactory>
      */
-    use HasFactory,
+    use BelongsToOrganisation,
+        HasFactory,
         SoftDeletes;
 
     /**

@@ -15,7 +15,9 @@ class PipelineStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        if (PipelineStatus::exists()) {
+        $organisation = $this->defaultOrganisation();
+
+        if (PipelineStatus::where('organisation_id', $organisation->id)->exists()) {
             $this->command->info('Pipeline statuses already seeded, skipping...');
 
             return;
@@ -83,8 +85,11 @@ class PipelineStatusSeeder extends Seeder
 
         foreach ($statuses as $status) {
             PipelineStatus::firstOrCreate(
-                ['title' => $status['title']],
-                [...$status, 'organisation_id' => $organisation->id]
+                [
+                    'title' => $status['title'],
+                    'organisation_id' => $organisation->id,
+                ],
+                $status
             );
         }
     }

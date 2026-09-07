@@ -5,6 +5,7 @@ namespace App\Services\Users;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\Multitenancy\Models\Tenant;
 
 class QueryService
 {
@@ -60,12 +61,14 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = User::query()->with([
-            'creator',
-            'updater',
-            'deleter',
-            'restorer']
-        );
+        $query = User::query()
+            ->whereHas('organisations', fn ($q) => $q->whereKey(Tenant::current()?->id))
+            ->with([
+                'creator',
+                'updater',
+                'deleter',
+                'restorer']
+            );
 
         $query = $this->filterService->applyAll($query, $filters);
 

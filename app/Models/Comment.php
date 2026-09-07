@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use App\Traits\Likeable;
 use Database\Factories\CommentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -15,6 +16,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property string $commentable_type
  * @property int $commentable_id
  * @property string $content
@@ -34,6 +36,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
+    'organisation_id',
     'commentable_type',
     'commentable_id',
     'content',
@@ -50,7 +53,8 @@ class Comment extends Model implements Auditable
     /**
      * @use HasFactory<CommentFactory>
      */
-    use HasFactory,
+    use BelongsToOrganisation,
+        HasFactory,
         Likeable,
         SoftDeletes;
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use Database\Factories\AddressFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property string $addressable_type
  * @property int $addressable_id
  * @property string $address_line_one
@@ -31,6 +33,7 @@ use Illuminate\Support\Carbon;
  * @property-read Model $addressable
  */
 #[Fillable([
+    'organisation_id',
     'addressable_type',
     'addressable_id',
     'address_line_one',
@@ -55,7 +58,8 @@ class Address extends Model implements Auditable
     /**
      * @use HasFactory<AddressFactory>
      */
-    use HasFactory,
+    use BelongsToOrganisation,
+        HasFactory,
         SoftDeletes;
 
     /**

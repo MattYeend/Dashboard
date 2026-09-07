@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use Database\Factories\ContactFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +16,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property string $contactable_type
  * @property int $contactable_id
  * @property string|null $phone
@@ -26,6 +28,7 @@ use Illuminate\Support\Carbon;
  * @property-read Model $contactable
  */
 #[Fillable([
+    'organisation_id',
     'contactable_type',
     'contactable_id',
     'phone',
@@ -44,7 +47,8 @@ class Contact extends Model implements Auditable
     /**
      * @use HasFactory<ContactFactory>
      */
-    use HasFactory,
+    use BelongsToOrganisation,
+        HasFactory,
         SoftDeletes;
 
     /**

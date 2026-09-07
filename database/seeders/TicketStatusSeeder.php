@@ -15,7 +15,9 @@ class TicketStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        if (TicketStatus::exists()) {
+        $organisation = $this->defaultOrganisation();
+
+        if (TicketStatus::where('organisation_id', $organisation->id)->exists()) {
             $this->command->info('Ticket statuses already seeded, skipping...');
 
             return;
@@ -76,8 +78,11 @@ class TicketStatusSeeder extends Seeder
 
         foreach ($statuses as $status) {
             TicketStatus::firstOrCreate(
-                ['title' => $status['title']],
-                [...$status, 'organisation_id' => $organisation->id]
+                [
+                    'title' => $status['title'],
+                    'organisation_id' => $organisation->id,
+                ],
+                $status
             );
         }
     }

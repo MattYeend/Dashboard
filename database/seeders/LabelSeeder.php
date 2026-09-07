@@ -3,10 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\Label;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class LabelSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -18,8 +21,12 @@ class LabelSeeder extends Seeder
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
+
         foreach ($this->getLabels() as $label) {
-            Label::create($label);
+            Label::create(
+                [...$label, 'organisation_id' => $organisation->id]
+            );
         }
     }
 

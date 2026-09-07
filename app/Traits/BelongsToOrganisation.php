@@ -14,6 +14,7 @@ use Spatie\Multitenancy\Models\Tenant;
  * automatically when a new record is created.
  *
  * @mixin Model
+ *
  * @method static void addGlobalScope(Scope|\Closure|string $scope, \Closure|null $implementation = null)
  * @method static void creating(\Closure|string $callback)
  */

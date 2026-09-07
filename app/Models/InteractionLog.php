@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Contracts\Auditable;
 use App\Enums\InteractionLogType;
+use App\Traits\BelongsToOrganisation;
 use Database\Factories\InteractionLogFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +16,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property int $interactable_id
  * @property string $interactable_type
  * @property InteractionLogType $type
@@ -39,6 +41,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
+    'organisation_id',
     'interactable_id',
     'interactable_type',
     'type',
@@ -58,9 +61,9 @@ class InteractionLog extends Model implements Auditable
     /**
      * @use HasFactory<InteractionLogFactory>
      */
-    use HasFactory;
-
-    use SoftDeletes;
+    use BelongsToOrganisation,
+        HasFactory,
+        SoftDeletes;
 
     /**
      * Get the parent interactable model (Company, Contact, or Deal).

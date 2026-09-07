@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use Database\Factories\PipelineStageFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property int $pipeline_id
  * @property int|null $deal_status_id
  * @property string $title
@@ -39,6 +41,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
+    'organisation_id',
     'pipeline_id',
     'deal_status_id',
     'title',
@@ -61,7 +64,8 @@ use Illuminate\Support\Carbon;
 class PipelineStage extends Model implements Auditable
 {
     /** @use HasFactory<PipelineStageFactory> */
-    use HasFactory,
+    use BelongsToOrganisation,
+        HasFactory,
         SoftDeletes;
 
     /**

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\InvoiceStatus;
-use App\Models\User;
 use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
@@ -16,21 +15,13 @@ class InvoiceStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        if (InvoiceStatus::exists()) {
-            $this->command->info('Invoice Statuses already seeded, skipping...');
-
-            return;
-        }
-
-        $users = User::all()->keyBy('email');
-
-        if ($users->isEmpty()) {
-            $this->command->warn('No users found, skipping address seeding...');
-
-            return;
-        }
-
         $organisation = $this->defaultOrganisation();
+
+        if (InvoiceStatus::where('organisation_id', $organisation->id)->exists()) {
+            $this->command->info('Invoice statuses already seeded, skipping...');
+
+            return;
+        }
 
         $statuses = [
             [
@@ -85,8 +76,11 @@ class InvoiceStatusSeeder extends Seeder
 
         foreach ($statuses as $status) {
             InvoiceStatus::updateOrCreate(
-                ['title' => $status['title']],
-                [...$status, 'organisation_id' => $organisation->id]
+                [
+                    'title' => $status['title'],
+                    'organisation_id' => $organisation->id,
+                ],
+                $status
             );
         }
     }
