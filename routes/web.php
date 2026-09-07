@@ -761,8 +761,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
         Route::get('/search', [SearchController::class, 'index'])
-        ->middleware('throttle:30,1')
-        ->name('search');
+            ->middleware('throttle:30,1')
+            ->name('search');
 
         Route::prefix('calendar')->name('calendar.')->group(function () {
             Route::get('/', [CalendarController::class, 'index'])->name('index');
@@ -773,7 +773,45 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/', [AttachmentController::class, 'store'])->name('store');
             Route::get('/{attachment}/download', [AttachmentController::class, 'download'])->name('download');
             Route::delete('/{attachment}', [AttachmentController::class, 'destroy'])->name('destroy');
-        }); 
+        });
+
+        Route::prefix('permissions')->name('permissions.')->group(function () {
+            Route::get('/matrix', [PermissionMatrixController::class, 'index'])->name('matrix.index');
+            Route::patch('/matrix', [PermissionMatrixController::class, 'update'])->name('matrix.update');
+
+            Route::post('/bulk/delete', [PermissionController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [PermissionController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [PermissionController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [PermissionController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/', [PermissionController::class, 'index'])->name('index');
+            Route::get('/create', [PermissionController::class, 'create'])->name('create');
+            Route::post('/', [PermissionController::class, 'store'])->name('store');
+            Route::get('/{id}', [PermissionController::class, 'show'])->name('show');
+            Route::get('/{id}/edit', [PermissionController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{permission}', [PermissionController::class, 'update'])->name('update');
+            Route::patch('/{permission}/assign-roles', [PermissionController::class, 'assignRoles'])->name('assign-roles');
+            Route::delete('/{permission}', [PermissionController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('activity-logs')->name('activity-logs.')->group(function () {
+            Route::post('/bulk/delete', [ActivityLogController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::get('/export', [ActivityLogController::class, 'export'])->name('export');
+            Route::get('/', [ActivityLogController::class, 'index'])->name('index');
+            Route::delete('/{log}', [ActivityLogController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('settings')->name('settings.')->group(function () {
+            Route::get('/', [SettingController::class, 'index'])->name('index');
+            Route::get('/general', [SettingController::class, 'general'])->name('general');
+            Route::put('/general', [SettingController::class, 'updateGeneral'])->name('general.update');
+
+            Route::get('/system', [SettingController::class, 'system'])->name('system');
+            Route::put('/system', [SettingController::class, 'updateSystem'])->name('system.update');
+
+            Route::get('/security-policy', [SettingController::class, 'securityPolicy'])->name('security-policy');
+            Route::put('/security', [SettingController::class, 'updateSecurity'])->name('security.update');
+        });
     });
 });
 

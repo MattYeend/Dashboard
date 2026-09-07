@@ -5,6 +5,7 @@ import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import PermissionAuditDetails from '@/pages/Permissions/components/PermissionAuditDetails.vue';
 import PermissionBasicDetails from '@/pages/Permissions/components/PermissionBasicDetails.vue';
 import PermissionRoleDetails from '@/pages/Permissions/components/PermissionRoleDetails.vue';
+import type { Permission, PermissionsMeta } from '@/types';
 import {
     edit as permissionsEdit,
     destroy as permissionsDestroy,
@@ -12,7 +13,6 @@ import {
     forceDelete as permissionsForceDelete,
     index as permissionsIndex,
 } from '@/routes/permissions';
-import type { Permission, PermissionsMeta } from '@/types';
 
 interface Props {
     permission: Permission;
