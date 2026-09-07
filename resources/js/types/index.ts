@@ -394,6 +394,7 @@ export interface Comment {
     commentable_type_label: string | null;
     commentable_name: string | null;
     content: string;
+    mentions?: CommentMention[];
     meta: Record<string, unknown> | null;
     likes_count?: number;
     liked_by_user?: boolean;
@@ -1147,4 +1148,9 @@ export interface ReportPermissionsMeta {
     can_view_any: boolean;
     can_export: boolean;
     can_schedule: boolean;
+}
+
+export interface CommentMention {
+    id: number;
+    name: string;
 }

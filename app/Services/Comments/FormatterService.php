@@ -28,6 +28,10 @@ class FormatterService
                     ?? '#'.$comment->commentable->id)
                 : null,
             'content' => $comment->content,
+            'mentions' => $comment->mentions->map(fn (User $mentionedUser): array => [
+                'id' => $mentionedUser->id,
+                'name' => $mentionedUser->name,
+            ])->all(),
             'meta' => $comment->meta,
             'likes_count' => $comment->likes_count ?? 0,
             'liked_by_user' => $comment->relationLoaded('likes')

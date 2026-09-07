@@ -54,6 +54,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read Collection<int, Address> $addresses
  * @property-read Collection<int, Pipeline> $pipelines
  * @property-read Collection<int, DashboardWidgetPreference> $dashboardWidgetPreferences
+ * @property-read Collection<int, Comment> $mentionedInComments
  */
 #[Fillable([
     'name',
@@ -148,6 +149,17 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
     public function organisations(): BelongsToMany
     {
         return $this->belongsToMany(Organisation::class, 'organisation_user')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the comments this user has been mentioned in.
+     *
+     * @return BelongsToMany<Comment, $this>
+     */
+    public function mentionedInComments(): BelongsToMany
+    {
+        return $this->belongsToMany(Comment::class, 'comment_mentions', 'mentioned_user_id', 'comment_id')
             ->withTimestamps();
     }
 

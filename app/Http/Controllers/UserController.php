@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\Impersonation\ManagementService as ImpersonationManagementService;
 use App\Services\Users\ManagementService;
 use App\Services\Users\QueryService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -342,5 +343,23 @@ class UserController extends Controller
         return $this->management->export(
             $request->only(['search', 'trashed'])
         );
+    }
+
+    /**
+     * Get a lightweight list of users matching a search term, for use in
+     *
+     * @mention autocomplete pickers.
+     */
+    public function mentionable(Request $request): JsonResponse
+    {
+        $search = (string) $request->query('search', '');
+
+        $users = User::query()
+            ->when($search !== '', fn (Builder $query) => $query->where('name', 'like', "%{$search}%"))
+            ->orderBy('name')
+            ->limit(10)
+            ->get(['id', 'name']);
+
+        return response()->json($users);
     }
 }
