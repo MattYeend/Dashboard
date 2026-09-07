@@ -7,6 +7,7 @@ use App\Models\Invoice;
 use App\Models\InvoiceStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Multitenancy\Models\Tenant;
 
 class InvoiceFactory extends Factory
 {
@@ -19,6 +20,7 @@ class InvoiceFactory extends Factory
         $issueDate = $this->faker->dateTimeBetween('-3 months', 'now');
 
         return [
+            'organisation_id' => Tenant::current()?->id,
             'invoice_number' => 'INV-'.$this->faker->unique()->numerify('######'),
             'company_id' => Company::factory(),
             'order_id' => null,

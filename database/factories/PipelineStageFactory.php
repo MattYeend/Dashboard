@@ -6,6 +6,7 @@ use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<PipelineStage>
@@ -22,6 +23,7 @@ class PipelineStageFactory extends Factory
     public function definition(): array
     {
         return [
+            'organisation_id' => Tenant::current()?->id,
             'pipeline_id' => Pipeline::factory(),
             'title' => ucfirst($this->faker->words(2, true)),
             'description' => $this->faker->sentence(8),

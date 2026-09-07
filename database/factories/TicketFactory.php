@@ -7,6 +7,7 @@ use App\Models\TicketPriority;
 use App\Models\TicketStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Ticket>
@@ -28,6 +29,7 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         return [
+            'organisation_id' => Tenant::current()?->id,
             'title' => $this->faker->sentence(6),
             'description' => $this->faker->paragraph(),
             'ticket_status_id' => TicketStatus::factory(),

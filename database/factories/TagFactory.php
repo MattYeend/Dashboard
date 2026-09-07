@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Spatie\Multitenancy\Models\Tenant;
 
 class TagFactory extends Factory
 {
@@ -17,6 +18,7 @@ class TagFactory extends Factory
         $name = fake()->unique()->word();
 
         return [
+            'organisation_id' => Tenant::current()?->id,
             'name' => ucfirst($name),
             'slug' => Str::slug($name),
         ];

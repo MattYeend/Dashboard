@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Task>
@@ -22,6 +23,7 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
+            'organisation_id' => Tenant::current()?->id,
             'title' => 'Task '.$this->faker->words(3, true),
             'description' => $this->faker->optional()->sentence(),
             'due_date' => $this->faker->optional()->dateTimeBetween('now', '+30 days'),

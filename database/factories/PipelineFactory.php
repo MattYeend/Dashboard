@@ -6,6 +6,7 @@ use App\Models\Pipeline;
 use App\Models\PipelineStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Pipeline>
@@ -27,6 +28,7 @@ class PipelineFactory extends Factory
     public function definition(): array
     {
         return [
+            'organisation_id' => Tenant::current()?->id,
             'title' => $this->faker->unique()->words(2, true).' Pipeline',
             'description' => $this->faker->boolean(70) ? $this->faker->sentence() : null,
             'is_default' => false,

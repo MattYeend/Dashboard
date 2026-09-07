@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Industry;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Industry>
@@ -128,6 +129,7 @@ class IndustryFactory extends Factory
         self::$pointer++;
 
         return [
+            'organisation_id' => Tenant::current()?->id,
             'title' => $industry['title'],
             'code' => $industry['code'],
             'description' => $industry['description'],

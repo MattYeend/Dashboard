@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Address>
@@ -26,6 +27,7 @@ class AddressFactory extends Factory
     public function definition(): array
     {
         return [
+            'organisation_id' => Tenant::current()?->id,
             'addressable_type' => null,
             'addressable_id' => null,
             'address_line_one' => $this->faker->streetAddress(),

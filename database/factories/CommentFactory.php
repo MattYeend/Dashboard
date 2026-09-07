@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Comment>
@@ -25,6 +26,7 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
+            'organisation_id' => Tenant::current()?->id,
             'commentable_type' => null,
             'commentable_id' => null,
             'content' => $this->faker->paragraph(),

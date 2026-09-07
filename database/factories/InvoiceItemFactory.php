@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Multitenancy\Models\Tenant;
 
 class InvoiceItemFactory extends Factory
 {
@@ -19,6 +20,7 @@ class InvoiceItemFactory extends Factory
         $total = (int) round($quantity * $unitPrice * (1 + $taxRate / 100));
 
         return [
+            'organisation_id' => Tenant::current()?->id,
             'invoice_id' => Invoice::factory(),
             'description' => $this->faker->sentence(4),
             'quantity' => $quantity,

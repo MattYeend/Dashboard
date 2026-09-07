@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Category>
@@ -29,6 +30,7 @@ class CategoryFactory extends Factory
         $name = fake()->unique()->words(2, true);
 
         return [
+            'organisation_id' => Tenant::current()?->id,
             'parent_id' => null,
             'name' => ucfirst($name),
             'slug' => Str::slug($name),

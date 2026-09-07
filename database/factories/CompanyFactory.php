@@ -7,6 +7,7 @@ use App\Models\Industry;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Company>
@@ -30,6 +31,7 @@ class CompanyFactory extends Factory
         $name = $this->faker->unique()->company();
 
         return [
+            'organisation_id' => Tenant::current()?->id,
             'name' => $name,
             'slug' => Str::slug($name),
             'email' => $this->faker->companyEmail(),

@@ -7,6 +7,7 @@ use App\Models\OrderStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Order>
@@ -33,6 +34,7 @@ class OrderFactory extends Factory
         $total = round($subtotal - $discount + $tax, 2);
 
         return [
+            'organisation_id' => Tenant::current()?->id,
             'orderable_type' => null,
             'orderable_id' => null,
             'order_number' => 'ORD-'.strtoupper($this->faker->unique()->bothify('####-????')),

@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Post>
@@ -26,6 +27,7 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
+            'organisation_id' => Tenant::current()?->id,
             'title' => $this->faker->sentence(6),
             'description' => '<p>'.implode('</p><p>', $this->faker->paragraphs(4)).'</p>',
             'image' => null,

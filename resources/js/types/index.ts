@@ -4,6 +4,7 @@ export * from './ui';
 
 export interface TicketStatus {
     id: number;
+    organisation_id: number;
     title: string;
     description: string | null;
     background_colour: string;
@@ -25,6 +26,7 @@ export interface TicketStatus {
 
 export interface TaskStatus {
     id: number;
+    organisation_id: number;
     title: string;
     description: string | null;
     background_colour: string;
@@ -46,6 +48,7 @@ export interface TaskStatus {
 
 export interface OrderStatus {
     id: number;
+    organisation_id: number;
     title: string;
     description: string | null;
     background_colour: string;
@@ -67,6 +70,7 @@ export interface OrderStatus {
 
 export interface Order {
     id: number;
+    organisation_id: number;
     orderable_id: number;
     orderable_type: string;
     orderable_type_key: string;
@@ -132,6 +136,7 @@ export interface User {
 
 export interface Contact {
     id: number;
+    organisation_id: number;
     contactable_id: number;
     contactable_type: string;
     contactable_type_key: string;
@@ -162,6 +167,7 @@ export interface UserOption {
 
 export interface Task {
     id: number;
+    organisation_id: number;
     title: string;
     description: string | null;
     due_date: string | null;
@@ -193,6 +199,7 @@ export interface Task {
 
 export interface Industry {
     id: number;
+    organisation_id: number;
     title: string;
     code: string | null;
     description: string | null;
@@ -213,6 +220,7 @@ export interface Industry {
 
 export interface Company {
     id: number;
+    organisation_id: number;
     name: string;
     slug: string | null;
     email: string | null;
@@ -266,6 +274,7 @@ export interface Plan {
 
 export interface Address {
     id: number;
+    organisation_id: number;
     addressable_id: number;
     addressable_type: string;
     addressable_type_key: string;
@@ -306,6 +315,7 @@ export interface ApiToken {
 
 export interface Category {
     id: number;
+    organisation_id: number;
     parent_id: number | null;
     name: string;
     slug: string;
@@ -328,6 +338,7 @@ export interface Category {
 
 export interface Post {
     id: number;
+    organisation_id: number;
     title: string;
     description: string;
     image: string | null;
@@ -354,6 +365,7 @@ export interface Post {
 
 export interface InvoiceStatus {
     id: number;
+    organisation_id: number;
     title: string;
     description: string | null;
     background_colour: string;
@@ -375,6 +387,7 @@ export interface InvoiceStatus {
 
 export interface Comment {
     id: number;
+    organisation_id: number;
     commentable_id: number;
     commentable_type: string;
     commentable_type_key: string | null;
@@ -402,6 +415,7 @@ export interface Comment {
 
 export interface Tag {
     id: number;
+    organisation_id: number;
     name: string;
     slug: string;
     meta: Record<string, unknown> | null;
@@ -421,6 +435,7 @@ export interface Tag {
 
 export interface Invoice {
     id: number;
+    organisation_id: number;
     invoice_number: string;
     company_id: number | null;
     order_id: number | null;
@@ -470,6 +485,7 @@ export interface Invoice {
 
 export interface InvoiceItem {
     id: number;
+    organisation_id: number;
     invoice_id: number;
     description: string;
     quantity: number;
@@ -515,6 +531,7 @@ export interface RegistrationInterest {
 
 export interface PipelineStatus {
     id: number;
+    organisation_id: number;
     title: string;
     description: string | null;
     background_colour: string;
@@ -536,6 +553,7 @@ export interface PipelineStatus {
 
 export interface Pipeline {
     id: number;
+    organisation_id: number;
     title: string;
     description: string | null;
     is_default: boolean;
@@ -567,6 +585,7 @@ export interface Pipeline {
 
 export interface PipelineStage {
     id: number;
+    organisation_id: number;
     pipeline_id: number;
     title: string;
     description: string | null;
@@ -593,6 +612,7 @@ export interface PipelineStage {
 
 export interface DealStatus {
     id: number;
+    organisation_id: number;
     title: string;
     description: string | null;
     background_colour: string;
@@ -614,6 +634,7 @@ export interface DealStatus {
 
 export interface Deal {
     id: number;
+    organisation_id: number;
     title: string;
     description: string | null;
     pipeline_id: number | null;
@@ -659,6 +680,7 @@ export interface Deal {
 
 export interface TicketPriority {
     id: number;
+    organisation_id: number;
     title: string;
     level: number;
     background_colour: string;
@@ -680,6 +702,7 @@ export interface TicketPriority {
 
 export interface Label {
     id: number;
+    organisation_id: number;
     name: string;
     slug: string;
     background_colour: string;
@@ -701,6 +724,7 @@ export interface Label {
 
 export interface Ticket {
     id: number;
+    organisation_id: number;
     title: string;
     description: string | null;
     due_date: string | null;
@@ -774,6 +798,7 @@ export interface Activity {
 
 export interface InteractionLog {
     id: number;
+    organisation_id: number;
     interactable_id: number;
     interactable_type: string;
     interactable_type_key: string;
@@ -983,6 +1008,7 @@ export interface CalendarEvent {
 
 export interface Attachment {
     id: number;
+    organisation_id: number;
     original_filename: string;
     mime_type: string;
     size_bytes: number;
@@ -1080,6 +1106,7 @@ export interface Organisation {
 
 export interface Report {
     id: number;
+    organisation_id: number;
     title: string;
     description: string | null;
     type: string;

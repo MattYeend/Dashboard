@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Contact;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Contact>
@@ -26,6 +27,7 @@ class ContactFactory extends Factory
     public function definition(): array
     {
         return [
+            'organisation_id' => Tenant::current()?->id,
             'contactable_type' => null,
             'contactable_id' => null,
             'phone' => $this->faker->phoneNumber(),

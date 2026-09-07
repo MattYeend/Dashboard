@@ -9,6 +9,7 @@ use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Deal>
@@ -32,6 +33,7 @@ class DealFactory extends Factory
         $expectedClose = $this->faker->dateTimeBetween('now', '+6 months');
 
         return [
+            'organisation_id' => Tenant::current()?->id,
             'title' => $this->faker->catchPhrase(),
             'description' => $this->faker->optional()->paragraph(),
             'pipeline_id' => Pipeline::factory(),

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Report;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Report>
@@ -20,6 +21,7 @@ class ReportFactory extends Factory
     public function definition(): array
     {
         return [
+            'organisation_id' => Tenant::current()?->id,
             'title' => fake()->sentence(3),
             'description' => fake()->optional()->sentence(),
             'type' => fake()->randomElement(['orders', 'companies', 'users']),

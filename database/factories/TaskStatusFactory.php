@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<TaskStatus>
@@ -26,6 +27,7 @@ class TaskStatusFactory extends Factory
     public function definition(): array
     {
         return [
+            'organisation_id' => Tenant::current()?->id,
             'title' => $this->faker->unique()->words(3, true),
             'description' => $this->faker->sentence(),
             'background_colour' => $this->faker->hexColor(),

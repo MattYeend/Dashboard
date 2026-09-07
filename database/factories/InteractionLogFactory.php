@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\InteractionLog;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<InteractionLog>
@@ -21,6 +22,7 @@ class InteractionLogFactory extends Factory
     public function definition(): array
     {
         return [
+            'organisation_id' => Tenant::current()?->id,
             'interactable_type' => null,
             'interactable_id' => null,
             'type' => $this->faker->randomElement(InteractionLogType::values()),

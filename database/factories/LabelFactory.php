@@ -6,6 +6,7 @@ use App\Models\Label;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Spatie\Multitenancy\Models\Tenant;
 
 /**
  * @extends Factory<Label>
@@ -29,6 +30,7 @@ class LabelFactory extends Factory
         $name = ucfirst($this->faker->unique()->word());
 
         return [
+            'organisation_id' => Tenant::current()?->id,
             'name' => $name,
             'slug' => Str::slug($name),
             'background_colour' => $this->faker->hexColor(),
