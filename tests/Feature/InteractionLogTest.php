@@ -14,12 +14,6 @@ uses(
     CreatesUsers::class,
 );
 
-beforeEach(function () {
-    Role::firstOrCreate(['name' => 'Admin']);
-    Role::firstOrCreate(['name' => 'Super Admin']);
-    Role::firstOrCreate(['name' => 'User']);
-});
-
 describe('store', function () {
     test('authenticated user with permission can log an interaction', function () {
         $superAdmin = $this->superAdminUser();

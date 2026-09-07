@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Organisation;
 use App\Models\Permission;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -14,9 +15,22 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
+        $organisation = Organisation::query()->firstOrCreate(
+            [
+                'slug' => 'test_organisation',
+            ],
+            [
+                'name' => 'Test Organisation',
+            ],
+        );
+
+        $organisation->makeCurrent();
+
+        setPermissionsTeamId($organisation->id);
+
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
-
+        
         // Create permissions
         $permissions = [
             // Dashboard
@@ -460,17 +474,26 @@ class RolePermissionSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'guard_name' => 'web',
+            ]);
         }
 
         // Create roles and assign permissions
 
         // Super Admin role - has all permissions
-        $superAdmin = Role::firstOrCreate(['name' => 'Super Admin']);
+        $superAdmin = Role::firstOrCreate([
+            'name' => 'Super Admin',
+            'guard_name' => 'web',
+        ]);
         $superAdmin->givePermissionTo(Permission::all());
 
         // Admin role - has most permissions except system-critical ones
-        $admin = Role::firstOrCreate(['name' => 'Admin']);
+        $admin = Role::firstOrCreate([
+            'name' => 'Admin',
+            'guard_name' => 'web',
+        ]);
         $adminPermissions = [
             'view dashboard',
             'view statistics',
@@ -806,7 +829,10 @@ class RolePermissionSeeder extends Seeder
         $admin->givePermissionTo($adminPermissions);
 
         // Manager role - can manage content and users but limited system access
-        $manager = Role::firstOrCreate(['name' => 'Manager']);
+        $manager = Role::firstOrCreate([
+            'name' => 'Manager',
+            'guard_name' => 'web',
+        ]);
         $managerPermissions = [
             'view dashboard',
             'view statistics',
@@ -1087,7 +1113,10 @@ class RolePermissionSeeder extends Seeder
         $manager->givePermissionTo($managerPermissions);
 
         // Editor role - focused on content management
-        $editor = Role::firstOrCreate(['name' => 'Editor']);
+        $editor = Role::firstOrCreate([
+            'name' => 'Editor',
+            'guard_name' => 'web',
+        ]);
         $editorPermissions = [
             'view dashboard',
             'view statistics',
@@ -1273,7 +1302,10 @@ class RolePermissionSeeder extends Seeder
         $editor->givePermissionTo($editorPermissions);
 
         // Viewer role - read-only access to most features
-        $viewer = Role::firstOrCreate(['name' => 'Viewer']);
+        $viewer = Role::firstOrCreate([
+            'name' => 'Viewer',
+            'guard_name' => 'web',
+        ]);
         $viewerPermissions = [
             'view dashboard',
             'view statistics',
@@ -1330,7 +1362,10 @@ class RolePermissionSeeder extends Seeder
         $viewer->givePermissionTo($viewerPermissions);
 
         // Moderator role - can manage content and moderate users
-        $moderator = Role::firstOrCreate(['name' => 'Moderator']);
+        $moderator = Role::firstOrCreate([
+            'name' => 'Moderator',
+            'guard_name' => 'web',
+        ]);
         $moderatorPermissions = [
             'view dashboard',
             'view statistics',
@@ -1445,7 +1480,10 @@ class RolePermissionSeeder extends Seeder
         $moderator->givePermissionTo($moderatorPermissions);
 
         // Support role - customer support focused
-        $support = Role::firstOrCreate(['name' => 'Support']);
+        $support = Role::firstOrCreate([
+            'name' => 'Support',
+            'guard_name' => 'web',
+        ]);
         $supportPermissions = [
             'view dashboard',
             'view statistics',
@@ -1692,7 +1730,10 @@ class RolePermissionSeeder extends Seeder
         $support->givePermissionTo($supportPermissions);
 
         // Analyst role - focused on data and reports
-        $analyst = Role::firstOrCreate(['name' => 'Analyst']);
+        $analyst = Role::firstOrCreate([
+            'name' => 'Analyst',
+            'guard_name' => 'web',
+        ]);
         $analystPermissions = [
             'view dashboard',
             'view statistics',
@@ -1792,7 +1833,10 @@ class RolePermissionSeeder extends Seeder
         $analyst->givePermissionTo($analystPermissions);
 
         // User role - basic permissions for regular users
-        $user = Role::firstOrCreate(['name' => 'User']);
+        $user = Role::firstOrCreate([
+            'name' => 'User',
+            'guard_name' => 'web',
+        ]);
         $userPermissions = [
             'view dashboard',
             'view own profile',
@@ -1839,11 +1883,18 @@ class RolePermissionSeeder extends Seeder
             'view labels',
             'view activities',
             'view calendar',
+            'view own profile',
+            'edit own profile',
+            'delete own profile',
+            'change own password',
         ];
         $user->givePermissionTo($userPermissions);
 
         // Guest role - minimal read-only access
-        $guest = Role::firstOrCreate(['name' => 'Guest']);
+        $guest = Role::firstOrCreate([
+            'name' => 'Guest',
+            'guard_name' => 'web',
+        ]);
         $guestPermissions = [
             'view dashboard',
             'view task statuses',

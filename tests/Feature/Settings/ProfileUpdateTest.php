@@ -10,11 +10,6 @@ uses(
     CreatesUsers::class,
 );
 
-beforeEach(function () {
-    Role::firstOrCreate(['name' => 'Admin']);
-    Role::firstOrCreate(['name' => 'Super Admin']);
-    Role::firstOrCreate(['name' => 'User']);
-});
 
 test('profile page is displayed', function () {
     $user = $this->normalUser();

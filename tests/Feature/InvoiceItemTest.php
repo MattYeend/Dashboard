@@ -13,12 +13,6 @@ uses(
     CreatesUsers::class,
 );
 
-beforeEach(function () {
-    Role::firstOrCreate(['name' => 'Admin']);
-    Role::firstOrCreate(['name' => 'Super Admin']);
-    Role::firstOrCreate(['name' => 'User']);
-});
-
 describe('index', function () {
     test('authenticated user with permission can list invoice items', function () {
         $superAdmin = $this->superAdminUser();

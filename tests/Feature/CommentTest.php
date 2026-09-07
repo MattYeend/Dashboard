@@ -12,12 +12,6 @@ uses(
     CreatesUsers::class,
 );
 
-beforeEach(function () {
-    Role::firstOrCreate(['name' => 'Admin']);
-    Role::firstOrCreate(['name' => 'Super Admin']);
-    Role::firstOrCreate(['name' => 'User']);
-});
-
 describe('store', function () {
     test('authenticated admin can comment on a post', function () {
         $admin = $this->adminUser();

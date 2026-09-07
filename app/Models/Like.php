@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToOrganisation;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property int $user_id
  * @property int $likeable_id
  * @property string $likeable_type
@@ -19,12 +21,15 @@ use Illuminate\Support\Carbon;
  * @property-read Model $likeable
  */
 #[Fillable([
+    'organisation_id',
     'user_id',
     'likeable_id',
     'likeable_type',
 ])]
 class Like extends Model
 {
+    use BelongsToOrganisation;
+
     /**
      * Get the user who created this like.
      *

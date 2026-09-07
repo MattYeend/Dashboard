@@ -12,12 +12,6 @@ uses(
     CreatesUsers::class,
 );
 
-beforeEach(function () {
-    Role::firstOrCreate(['name' => 'Admin']);
-    Role::firstOrCreate(['name' => 'Super Admin']);
-    Role::firstOrCreate(['name' => 'User']);
-});
-
 describe('index', function () {
     test('authenticated user with permission can list organisations', function () {
         $superAdmin = $this->superAdminUser();
@@ -362,6 +356,7 @@ describe('switching', function () {
 describe('no current organisation', function () {
     test('a user with no organisation memberships is redirected to select one', function () {
         $user = $this->normalUser();
+    expect($user->organisations()->count())->toBe(0);
 
         $this->actingAs($user)
             ->get('/dashboard')

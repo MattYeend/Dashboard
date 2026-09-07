@@ -65,9 +65,9 @@ Route::post('register', [RegistrationInterestController::class, 'store'])
 Route::get('register/thanks', fn () => Inertia::render('auth/RegisterThanks'))
     ->name('register.thanks');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'tenant'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])
-        ->middleware(['can:view dashboard', 'tenant'])
+        ->middleware(['can:view dashboard'])
         ->name('dashboard');
 
     Route::get('/organisations/select', [OrganisationSelectController::class, 'index'])->name('organisations.select');

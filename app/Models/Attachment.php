@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
 use Database\Factories\AttachmentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property string $attachable_type
  * @property int $attachable_id
  * @property string $original_filename
@@ -28,6 +30,7 @@ use Illuminate\Support\Carbon;
  * @property-read Model $attachable
  */
 #[Fillable([
+    'organisation_id',
     'attachable_type',
     'attachable_id',
     'original_filename',
@@ -49,7 +52,9 @@ class Attachment extends Model implements Auditable
     /**
      * @use HasFactory<AttachmentFactory>
      */
-    use HasFactory, SoftDeletes;
+    use BelongsToOrganisation,
+        HasFactory,
+        SoftDeletes;
 
     /**
      * The disk on which attachment files are stored.

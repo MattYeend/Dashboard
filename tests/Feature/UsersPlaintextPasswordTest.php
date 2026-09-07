@@ -1,6 +1,7 @@
 <?php
 
 use App\Mail\WelcomeEmail;
+use App\Models\Organisation;
 use App\Models\User;
 use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -19,7 +20,12 @@ test('does not leak a plaintext password when creating a user', function () {
     Notification::fake();
 
     $actor = User::factory()->create();
-    $actor->assignRoles('Super Admin');
+
+    $organisation = $this->setUpTestOrganisation();
+
+    $organisation->users()->attach($actor);
+
+    $actor->assignRole('Super Admin');
 
     $response = $this->actingAs($actor)->post(route('users.store'), [
         'name' => 'Jane Doe',

@@ -12,11 +12,11 @@ uses(
     CreatesUsers::class,
 );
 
-beforeEach(function () {
-    Role::firstOrCreate(['name' => 'Admin']);
-    Role::firstOrCreate(['name' => 'Super Admin']);
-    Role::firstOrCreate(['name' => 'User']);
-});
+// beforeEach(function () {
+//     Role::firstOrCreate(['name' => 'Admin']);
+//     Role::firstOrCreate(['name' => 'Super Admin']);
+//     Role::firstOrCreate(['name' => 'User']);
+// });
 
 describe('index', function () {
     test('authenticated user with permission can list a company\'s activities', function () {
