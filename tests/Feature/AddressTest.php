@@ -2,7 +2,6 @@
 
 use App\Models\Address;
 use App\Models\Log;
-use App\Models\Organisation;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Spatie\Permission\Models\Role;
@@ -14,11 +13,6 @@ uses(
 );
 
 beforeEach(function () {
-    setPermissionsTeamId(1);
-
-    $organisation = Organisation::factory()->create();
-    $organisation->makeCurrent();
-
     Role::firstOrCreate(['name' => 'Admin']);
     Role::firstOrCreate(['name' => 'Super Admin']);
     Role::firstOrCreate(['name' => 'User']);

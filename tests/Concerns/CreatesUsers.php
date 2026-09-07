@@ -2,15 +2,33 @@
 
 namespace Tests\Concerns;
 
+use App\Models\Organisation;
 use App\Models\User;
+use Spatie\Multitenancy\Models\Tenant;
 use Spatie\Permission\Models\Permission;
 
 trait CreatesUsers
 {
+    protected function setUpCreatesUsers(): void
+    {
+        $organisation = Organisation::factory()->create();
+
+        $organisation->makeCurrent();
+
+        setPermissionsTeamId($organisation->id);
+    }
+
     public function adminUser(): User
     {
+        /** @var Organisation $organisation */
+        $organisation = Tenant::current();
+
         $user = User::factory()->create();
-        setPermissionsTeamId(1);
+
+        $organisation->users()->attach($user);
+
+        setPermissionsTeamId($organisation->id);
+
         $user->assignRole('Admin');
 
         return $user;
@@ -18,8 +36,15 @@ trait CreatesUsers
 
     public function superAdminUser(): User
     {
+        /** @var Organisation $organisation */
+        $organisation = Tenant::current();
+
         $user = User::factory()->create();
-        setPermissionsTeamId(1);
+
+        $organisation->users()->attach($user);
+
+        setPermissionsTeamId($organisation->id);
+
         $user->assignRole('Super Admin');
 
         return $user;
@@ -27,8 +52,15 @@ trait CreatesUsers
 
     public function normalUser(): User
     {
+        /** @var Organisation $organisation */
+        $organisation = Tenant::current();
+
         $user = User::factory()->create();
-        setPermissionsTeamId(1);
+
+        $organisation->users()->attach($user);
+
+        setPermissionsTeamId($organisation->id);
+
         $user->assignRole('User');
 
         return $user;
@@ -36,8 +68,14 @@ trait CreatesUsers
 
     public function userWithNoPermissions(): User
     {
+        /** @var Organisation $organisation */
+        $organisation = Tenant::current();
+
         $user = User::factory()->create();
-        setPermissionsTeamId(1);
+
+        $organisation->users()->attach($user);
+
+        setPermissionsTeamId($organisation->id);
 
         return $user;
     }
@@ -49,8 +87,14 @@ trait CreatesUsers
      */
     public function userWithPermissions(array $permissions): User
     {
+        /** @var Organisation $organisation */
+        $organisation = Tenant::current();
+
         $user = User::factory()->create();
-        setPermissionsTeamId(1);
+
+        $organisation->users()->attach($user);
+
+        setPermissionsTeamId($organisation->id);
 
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
