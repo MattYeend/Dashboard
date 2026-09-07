@@ -4,10 +4,16 @@ namespace Database\Seeders;
 
 use App\Models\Post;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class PostSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
         if (Post::exists()) {
@@ -25,6 +31,8 @@ class PostSeeder extends Seeder
         }
 
         $author = User::query()->first();
+
+        $organisation = $this->defaultOrganisation();
 
         $posts = [
             [
@@ -73,6 +81,7 @@ class PostSeeder extends Seeder
             Post::query()->create([
                 ...$post,
                 'created_by' => $author?->id,
+                'organisation_id' => $organisation->id,
             ]);
         }
     }

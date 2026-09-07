@@ -46,6 +46,7 @@ class PipelineStageSeeder extends Seeder
                         'title' => $stage['title'],
                     ],
                     [
+                        'organisation_id' => $pipeline->organisation_id, 
                         'description' => $stage['description'],
                         'position' => $position,
                         'background_colour' => $stage['background_colour'],

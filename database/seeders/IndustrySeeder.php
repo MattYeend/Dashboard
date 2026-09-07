@@ -3,10 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\Industry;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation; 
 use Illuminate\Database\Seeder;
 
 class IndustrySeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -18,8 +21,10 @@ class IndustrySeeder extends Seeder
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
+
         foreach ($this->getIndustries() as $industry) {
-            Industry::factory()->create($industry);
+            Industry::factory()->create([...$industry, 'organisation_id' => $organisation->id]);
         }
     }
 

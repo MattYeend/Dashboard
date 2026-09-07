@@ -212,6 +212,7 @@ class InvoiceSeeder extends Seeder
             $invoice = Invoice::updateOrCreate(
                 ['invoice_number' => $data['invoice_number']],
                 [
+                    'organisation_id' => $company->organisation_id,
                     'company_id' => $company->id,
                     'order_id' => null,
                     'status_id' => $statuses->get($data['status_title'])?->id,
@@ -232,6 +233,7 @@ class InvoiceSeeder extends Seeder
             if ($invoice->contact === null) {
                 $invoice->contact()->create([
                     ...$data['contact'],
+                    'organisation_id' => $invoice->organisation_id,
                     'created_by' => $creator->id,
                 ]);
             }
@@ -239,6 +241,7 @@ class InvoiceSeeder extends Seeder
             if ($invoice->address === null) {
                 $invoice->address()->create([
                     ...$data['address'],
+                    'organisation_id' => $invoice->organisation_id,
                     'created_by' => $creator->id,
                 ]);
             }

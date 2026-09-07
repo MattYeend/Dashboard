@@ -4,12 +4,15 @@ namespace Database\Seeders;
 
 use App\Models\Report;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class ReportSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
-     * Seed the reports table.
+     * Seed the database seeds.
      */
     public function run(): void
     {
@@ -27,6 +30,7 @@ class ReportSeeder extends Seeder
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
         Report::create([
             'title' => 'Monthly Orders Summary',
             'description' => 'Total orders and revenue broken down by status for the past calendar month.',
@@ -37,6 +41,7 @@ class ReportSeeder extends Seeder
             'schedule_frequency' => 'monthly',
             'schedule_time' => '06:00',
             'recipients' => ['ops@example.com'],
+            'organisation_id' => $organisation->id,
             'created_by' => $creator->id,
         ]);
 
@@ -50,6 +55,7 @@ class ReportSeeder extends Seeder
             'schedule_frequency' => 'weekly',
             'schedule_time' => '08:00',
             'recipients' => ['sales@example.com'],
+            'organisation_id' => $organisation->id,
             'created_by' => $creator->id,
         ]);
 
@@ -60,6 +66,7 @@ class ReportSeeder extends Seeder
             'format' => 'xlsx',
             'filters' => [],
             'is_scheduled' => false,
+            'organisation_id' => $organisation->id,
             'created_by' => $creator->id,
         ]);
     }

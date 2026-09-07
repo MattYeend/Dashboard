@@ -4,11 +4,14 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -27,6 +30,8 @@ class CategorySeeder extends Seeder
 
             return;
         }
+
+        $organisation = $this->defaultOrganisation();
 
         $categories = [
             [
@@ -66,6 +71,7 @@ class CategorySeeder extends Seeder
                 [
                     'name' => $category['name'],
                     'description' => $category['description'],
+                    'organisation_id' => $organisation->id,
                 ]
             );
 
@@ -76,6 +82,7 @@ class CategorySeeder extends Seeder
                         'parent_id' => $parent->id,
                         'name' => $childName,
                         'description' => null,
+                        'organisation_id' => $organisation->id,
                     ]
                 );
             }

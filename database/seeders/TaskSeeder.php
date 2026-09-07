@@ -5,10 +5,13 @@ namespace Database\Seeders;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class TaskSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -19,6 +22,8 @@ class TaskSeeder extends Seeder
 
             return;
         }
+
+        $organisation = $this->defaultOrganisation();
 
         $adminUser = User::where('email', 'admin@example.com')->first();
         $regularUser = User::where('email', 'user@example.com')->first();
@@ -81,7 +86,7 @@ class TaskSeeder extends Seeder
         ];
 
         foreach ($tasks as $task) {
-            Task::create($task);
+            Task::create([...$task, 'organisation_id' => $organisation->id]);
         }
     }
 }

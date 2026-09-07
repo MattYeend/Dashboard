@@ -26,7 +26,7 @@ return new class extends Migration
         'posts',
         'comments',
         'categories',
-        'pipeline_states',
+        'pipeline_stages',
         'attachments',
         'industries',
         'interaction_logs',

@@ -3,10 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\TicketStatus;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class TicketStatusSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -18,6 +21,7 @@ class TicketStatusSeeder extends Seeder
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
         $statuses = [
             [
                 'title' => 'Open',
@@ -73,7 +77,7 @@ class TicketStatusSeeder extends Seeder
         foreach ($statuses as $status) {
             TicketStatus::firstOrCreate(
                 ['title' => $status['title']],
-                $status
+                [...$status, 'organisation_id' => $organisation->id]
             );
         }
     }

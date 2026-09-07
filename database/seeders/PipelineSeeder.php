@@ -5,11 +5,14 @@ namespace Database\Seeders;
 use App\Models\Pipeline;
 use App\Models\PipelineStatus;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 
 class PipelineSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -35,11 +38,13 @@ class PipelineSeeder extends Seeder
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
         $creator = $users->first();
 
         foreach ($this->getPipelines($statuses, $users) as $pipeline) {
             Pipeline::create([
                 ...$pipeline,
+                'organisation_id' => $organisation->id,
                 'created_by' => $creator->id,
             ]);
         }

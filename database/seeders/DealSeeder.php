@@ -191,6 +191,7 @@ class DealSeeder extends Seeder
                     'company_id' => $company->id,
                 ],
                 [
+                    'organisation_id' => $company->organisation_id,
                     'description' => $data['description'],
                     'pipeline_id' => $pipeline->id,
                     'stage_id' => $stage->id,

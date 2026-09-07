@@ -4,11 +4,14 @@ namespace Database\Seeders;
 
 use App\Models\Contact;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 
 class ContactSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -28,10 +31,11 @@ class ContactSeeder extends Seeder
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
         $morphType = (new User)->getMorphClass();
 
         foreach ($this->getContacts($morphType, $users) as $contact) {
-            Contact::create($contact);
+            Contact::create([...$contact, 'organisation_id' => $organisation->id]);
         }
     }
 

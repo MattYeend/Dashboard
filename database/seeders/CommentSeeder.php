@@ -5,10 +5,13 @@ namespace Database\Seeders;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class CommentSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -29,6 +32,8 @@ class CommentSeeder extends Seeder
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
+
         $comments = [
             'Great write-up, this really helped me understand the topic.',
             'Thanks for sharing, looking forward to the next one.',
@@ -45,6 +50,7 @@ class CommentSeeder extends Seeder
                 ->create([
                     'created_by' => $author->id,
                     'content' => $comments[$index % count($comments)],
+                    'organisation_id' => $organisation->id,
                 ]);
         }
     }

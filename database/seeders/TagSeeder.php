@@ -3,11 +3,14 @@
 namespace Database\Seeders;
 
 use App\Models\Tag;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class TagSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -19,6 +22,7 @@ class TagSeeder extends Seeder
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
         $tags = [
             'Laravel',
             'PHP',
@@ -34,6 +38,7 @@ class TagSeeder extends Seeder
             Tag::create([
                 'name' => $name,
                 'slug' => Str::slug($name),
+                'organisation_id' => $organisation->id,
             ]);
         }
     }

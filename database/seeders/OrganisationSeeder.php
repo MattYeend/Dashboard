@@ -11,17 +11,17 @@ class OrganisationSeeder extends Seeder
 {
     public function run(): void
     {
-        if (Organisation::exists()) {
-            $this->command->info('Organisations already seeded, skipping...');
-
-            return;
-        }
-
         $organisations = [
             'Yeend Web Development',
             'Bangor Digital Services',
             'Leicester Trade Supplies',
         ];
+
+        if (Organisation::whereIn('slug', array_map(Str::slug(...), $organisations))->exists()) {
+            $this->command->info('Organisations already seeded, skipping...');
+
+            return;
+        }
 
         $users = User::all();
 

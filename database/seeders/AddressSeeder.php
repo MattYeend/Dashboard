@@ -5,11 +5,14 @@ namespace Database\Seeders;
 use App\Models\Address;
 use App\Models\Contact;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 
 class AddressSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -29,6 +32,7 @@ class AddressSeeder extends Seeder
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
         $userMorphType = (new User)->getMorphClass();
 
         $contacts = Contact::where('contactable_type', $userMorphType)
@@ -44,7 +48,7 @@ class AddressSeeder extends Seeder
         $morphType = (new Contact)->getMorphClass();
 
         foreach ($this->getAddresses($morphType, $users, $contacts) as $address) {
-            Address::create($address);
+            Address::create([...$address, 'organisation_id' => $organisation->id]);
         }
     }
 

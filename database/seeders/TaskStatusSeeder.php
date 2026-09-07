@@ -3,10 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\TaskStatus;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class TaskStatusSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -18,6 +21,7 @@ class TaskStatusSeeder extends Seeder
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
         $statuses = [
             [
                 'title' => 'To Do',
@@ -66,7 +70,7 @@ class TaskStatusSeeder extends Seeder
         foreach ($statuses as $status) {
             TaskStatus::firstOrCreate(
                 ['title' => $status['title']],
-                $status
+                [...$status, 'organisation_id' => $organisation->id]
             );
         }
     }

@@ -3,10 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\PipelineStatus;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class PipelineStatusSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -18,6 +21,7 @@ class PipelineStatusSeeder extends Seeder
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
         $statuses = [
             [
                 'title' => 'Open',
@@ -80,7 +84,7 @@ class PipelineStatusSeeder extends Seeder
         foreach ($statuses as $status) {
             PipelineStatus::firstOrCreate(
                 ['title' => $status['title']],
-                $status
+                [...$status, 'organisation_id' => $organisation->id]
             );
         }
     }

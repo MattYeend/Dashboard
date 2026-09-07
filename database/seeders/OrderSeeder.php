@@ -5,11 +5,14 @@ namespace Database\Seeders;
 use App\Models\Order;
 use App\Models\OrderStatus;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 
 class OrderSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -35,10 +38,11 @@ class OrderSeeder extends Seeder
             $this->command->warn('No order statuses found, orders will be seeded without a status...');
         }
 
+        $organisation = $this->defaultOrganisation();
         $morphType = (new User)->getMorphClass();
 
         foreach ($this->getOrders($morphType, $users, $statuses) as $order) {
-            Order::create($order);
+            Order::create([...$order, 'organisation_id' => $organisation->id]);
         }
     }
 

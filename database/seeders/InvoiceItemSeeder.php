@@ -9,6 +9,9 @@ use Illuminate\Database\Seeder;
 
 class InvoiceItemSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
         if (InvoiceItem::exists()) {
@@ -78,6 +81,7 @@ class InvoiceItemSeeder extends Seeder
                         'description' => $line['description'],
                     ],
                     [
+                        'organisation_id' => $invoice->organisation_id,
                         'quantity' => $line['quantity'],
                         'unit_price' => $line['unit_price'],
                         'tax_rate' => $line['tax_rate'],

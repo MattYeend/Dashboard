@@ -3,10 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\DealStatus;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class DealStatusSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -18,6 +21,7 @@ class DealStatusSeeder extends Seeder
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
         $statuses = [
             [
                 'title' => 'New',
@@ -80,13 +84,13 @@ class DealStatusSeeder extends Seeder
         foreach ($statuses as $status) {
             DealStatus::firstOrCreate(
                 ['title' => $status['title']],
-                $status
+                [...$status, 'organisation_id' => $organisation->id]
             );
         }
 
         // Ensure closing flags are correct even if rows already existed.
-        DealStatus::updateOrCreate(['title' => 'Won'], ['is_closing' => true]);
-        DealStatus::updateOrCreate(['title' => 'Lost'], ['is_closing' => true]);
-        DealStatus::updateOrCreate(['title' => 'Open'], ['is_closing' => false]);
+        DealStatus::updateOrCreate(['title' => 'Won'], ['is_closing' => true, 'organisation_id' => $organisation->id]);
+        DealStatus::updateOrCreate(['title' => 'Lost'], ['is_closing' => true, 'organisation_id' => $organisation->id]);
+        DealStatus::updateOrCreate(['title' => 'Open'], ['is_closing' => false, 'organisation_id' => $organisation->id]);
     }
 }

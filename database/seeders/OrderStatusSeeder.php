@@ -3,10 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\OrderStatus;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class OrderStatusSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -18,6 +21,7 @@ class OrderStatusSeeder extends Seeder
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
         $statuses = [
             [
                 'title' => 'Pending',
@@ -80,7 +84,7 @@ class OrderStatusSeeder extends Seeder
         foreach ($statuses as $status) {
             OrderStatus::firstOrCreate(
                 ['title' => $status['title']],
-                $status
+                [...$status, 'organisation_id' => $organisation->id]
             );
         }
     }

@@ -5,11 +5,14 @@ namespace Database\Seeders;
 use App\Models\Company;
 use App\Models\Industry;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 
 class CompanySeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
@@ -33,12 +36,14 @@ class CompanySeeder extends Seeder
             $this->command->warn('No users found, companies will be seeded without an account manager...');
         }
 
+        $organisation = $this->defaultOrganisation();
+
         foreach ($this->getCompanies($industries) as $index => $company) {
             $company['account_manager_id'] = $accountManagers->isNotEmpty()
                 ? $accountManagers[$index % $accountManagers->count()]
                 : null;
 
-            Company::create($company);
+            Company::create([...$company, 'organisation_id' => $organisation->id]);
         }
     }
 

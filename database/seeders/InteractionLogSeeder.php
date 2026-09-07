@@ -86,6 +86,7 @@ class InteractionLogSeeder extends Seeder
                 $logs[] = [
                     'interactable_type' => $morphType,
                     'interactable_id' => $company->id,
+                    'organisation_id' => $company->organisation_id,
                     'type' => $entry['type'],
                     'subject' => $entry['subject'],
                     'outcome' => $entry['outcome'],

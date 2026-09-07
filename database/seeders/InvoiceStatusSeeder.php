@@ -4,10 +4,16 @@ namespace Database\Seeders;
 
 use App\Models\InvoiceStatus;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class InvoiceStatusSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
         if (InvoiceStatus::exists()) {
@@ -23,6 +29,8 @@ class InvoiceStatusSeeder extends Seeder
 
             return;
         }
+
+        $organisation = $this->defaultOrganisation();
 
         $statuses = [
             [
@@ -78,7 +86,7 @@ class InvoiceStatusSeeder extends Seeder
         foreach ($statuses as $status) {
             InvoiceStatus::updateOrCreate(
                 ['title' => $status['title']],
-                $status
+                [...$status, 'organisation_id' => $organisation->id]
             );
         }
     }
