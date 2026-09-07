@@ -5,7 +5,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Sanctum\PersonalAccessToken;
-use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
 uses(

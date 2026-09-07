@@ -6,7 +6,6 @@ use App\Models\Contact;
 use App\Models\InteractionLog;
 use App\Models\Log;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
-use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
 uses(

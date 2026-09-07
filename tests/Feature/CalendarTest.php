@@ -4,7 +4,6 @@ use App\Models\Task;
 use App\Models\TaskStatus;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
-use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
 uses(

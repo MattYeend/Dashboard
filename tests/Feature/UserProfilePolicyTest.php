@@ -2,14 +2,12 @@
 
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
-use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
 uses(
     LazilyRefreshDatabase::class,
     CreatesUsers::class,
 );
-
 
 describe('viewOwnProfile', function () {
     test('a normal user can view their own profile', function () {

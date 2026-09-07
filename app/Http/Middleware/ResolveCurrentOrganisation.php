@@ -25,7 +25,11 @@ class ResolveCurrentOrganisation
     {
         $organisation = $this->organisationFinder->findForRequest($request);
 
-        optional($organisation)->makeCurrent();
+        if (! $organisation) {
+            return redirect()->route('organisations.select');
+        }
+
+        $organisation->makeCurrent();
 
         return $next($request);
     }

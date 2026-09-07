@@ -59,14 +59,9 @@ describe('index', function () {
     });
 
     test('user with company permission receives company results', function () {
-        $role = Role::create([
-            'name' => 'company-viewer',
+        $user = $this->userWithPermissions([
+            'view companies',
         ]);
-
-        $role->givePermissionTo('view companies');
-
-        $user = User::factory()->create();
-        $user->assignRole($role);
 
         $company = Company::factory()->create([
             'name' => 'Acme Search Target',

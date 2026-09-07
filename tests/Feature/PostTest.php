@@ -8,14 +8,12 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
-use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
 uses(
     LazilyRefreshDatabase::class,
     CreatesUsers::class,
 );
-
 
 describe('index', function () {
     test('authenticated user with permission can list posts', function () {

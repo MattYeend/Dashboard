@@ -4,14 +4,12 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Testing\AssertableInertia as Assert;
-use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
 uses(
     LazilyRefreshDatabase::class,
     CreatesUsers::class,
 );
-
 
 describe('show', function () {
     test('authenticated user with permission can view their own profile', function () {
@@ -102,16 +100,16 @@ describe('edit', function () {
 
 describe('update', function () {
     test('a user with permission can update their own profile', function () {
-    $user = $this->normalUser();
+        $user = $this->normalUser();
 
-    $response = $this->actingAs($user)
-        ->patch(route('profile.update'), [
-            'name' => 'Updated Name',
-            'email' => $user->email,
-        ]);
+        $response = $this->actingAs($user)
+            ->patch(route('profile.update'), [
+                'name' => 'Updated Name',
+                'email' => $user->email,
+            ]);
 
-    $response->assertRedirect(route('profile.edit'));
-});
+        $response->assertRedirect(route('profile.edit'));
+    });
 
     test('a user without permission cannot update their own profile', function () {
         $user = $this->userWithNoPermissions();

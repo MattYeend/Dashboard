@@ -2,14 +2,12 @@
 
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
 uses(
     LazilyRefreshDatabase::class,
     CreatesUsers::class,
 );
-
 
 test('profile page is displayed', function () {
     $user = $this->normalUser();

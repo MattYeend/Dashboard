@@ -1,7 +1,6 @@
 <?php
 
 use App\Mail\WelcomeEmail;
-use App\Models\Organisation;
 use App\Models\User;
 use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Auth\Notifications\ResetPassword;

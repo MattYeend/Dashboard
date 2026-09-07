@@ -4,7 +4,6 @@ use App\Models\Log;
 use App\Models\Organisation;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
-use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
 uses(
@@ -356,7 +355,10 @@ describe('switching', function () {
 describe('no current organisation', function () {
     test('a user with no organisation memberships is redirected to select one', function () {
         $user = $this->normalUser();
-    expect($user->organisations()->count())->toBe(0);
+
+        $user->organisations()->detach();
+
+        expect($user->organisations()->count())->toBe(0);
 
         $this->actingAs($user)
             ->get('/dashboard')

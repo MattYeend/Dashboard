@@ -7,14 +7,12 @@ use App\Models\TicketPriority;
 use App\Models\TicketStatus;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
-use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
 uses(
     LazilyRefreshDatabase::class,
     CreatesUsers::class,
 );
-
 
 describe('index', function () {
     test('authenticated user with permission can list tickets', function () {

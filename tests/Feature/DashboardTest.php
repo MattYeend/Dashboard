@@ -1,10 +1,13 @@
 <?php
 
 use App\Models\CustomDashboardWidget;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Tests\Concerns\CreatesUsers;
 
-uses(RefreshDatabase::class);
+uses(
+    LazilyRefreshDatabase::class,
+    CreatesUsers::class,
+);
 
 test('guests cannot access dashboard widget endpoints', function () {
     $this->getJson(route('dashboard.custom-widgets.metrics'))
@@ -18,7 +21,7 @@ test('guests cannot access dashboard widget endpoints', function () {
 });
 
 test('an authenticated user can view available widget metrics', function () {
-    $user = User::factory()->create();
+    $user = $this->normalUser();
 
     $this->actingAs($user)
         ->getJson(route('dashboard.custom-widgets.metrics'))
@@ -35,7 +38,8 @@ test('an authenticated user can view available widget metrics', function () {
 });
 
 test('an authenticated user can create a custom dashboard widget', function () {
-    $user = User::factory()->create();
+    $user = $this->normalUser();
+
     CustomDashboardWidget::factory()
         ->for($user)
         ->create(['position' => 2]);
@@ -66,7 +70,7 @@ test('an authenticated user can create a custom dashboard widget', function () {
 });
 
 test('creating a custom dashboard widget validates its payload', function () {
-    $user = User::factory()->create();
+    $user = $this->normalUser();
 
     $this->actingAs($user)
         ->postJson(route('dashboard.custom-widgets.store'), [
@@ -85,7 +89,8 @@ test('creating a custom dashboard widget validates its payload', function () {
 });
 
 test('a user can update only their own custom dashboard widget', function () {
-    $owner = User::factory()->create();
+    $owner = $this->normalUser();
+
     $widget = CustomDashboardWidget::factory()
         ->for($owner)
         ->create([

@@ -4,7 +4,6 @@ use App\Models\Comment;
 use App\Models\Log;
 use App\Models\Post;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
-use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
 uses(

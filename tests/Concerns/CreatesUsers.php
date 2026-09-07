@@ -26,7 +26,10 @@ trait CreatesUsers
         return $organisation;
     }
 
-    public function adminUser(): User
+    /**
+     * Create a user who belongs to the test organisation.
+     */
+    protected function createTenantUser(): User
     {
         $organisation = $this->testOrganisation();
 
@@ -35,6 +38,13 @@ trait CreatesUsers
         $organisation->users()->attach($user);
 
         setPermissionsTeamId($organisation->id);
+
+        return $user;
+    }
+
+    public function adminUser(): User
+    {
+        $user = $this->createTenantUser();
 
         $user->assignRole('Admin');
 
@@ -43,13 +53,7 @@ trait CreatesUsers
 
     public function superAdminUser(): User
     {
-        $organisation = $this->testOrganisation();
-
-        $user = User::factory()->create();
-
-        $organisation->users()->attach($user);
-
-        setPermissionsTeamId($organisation->id);
+        $user = $this->createTenantUser();
 
         $user->assignRole('Super Admin');
 
@@ -58,13 +62,7 @@ trait CreatesUsers
 
     public function normalUser(): User
     {
-        $organisation = $this->testOrganisation();
-
-        $user = User::factory()->create();
-
-        $organisation->users()->attach($user);
-
-        setPermissionsTeamId($organisation->id);
+        $user = $this->createTenantUser();
 
         $user->assignRole('User');
 
@@ -73,15 +71,7 @@ trait CreatesUsers
 
     public function userWithNoPermissions(): User
     {
-        $organisation = $this->testOrganisation();
-
-        $user = User::factory()->create();
-
-        $organisation->users()->attach($user);
-
-        setPermissionsTeamId($organisation->id);
-
-        return $user;
+        return $this->createTenantUser();
     }
 
     public function userWithPermissions(array $permissions): User
@@ -100,8 +90,6 @@ trait CreatesUsers
                 'guard_name' => 'web',
             ]);
         }
-
-        setPermissionsTeamId($organisation->id);
 
         $user->givePermissionTo($permissions);
 

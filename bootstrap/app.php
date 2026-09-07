@@ -31,7 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
             ShareImpersonationStatus::class,
-            ResolveCurrentOrganisation::class,
+            // ResolveCurrentOrganisation::class,
         ]);
 
         $middleware->api(prepend: [
@@ -44,6 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->group('tenant', [
+            ResolveCurrentOrganisation::class,
             NeedsTenant::class,
             // EnsureValidTenantSession::class,
         ]);

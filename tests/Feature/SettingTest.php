@@ -1,16 +1,13 @@
 <?php
 
 use App\Models\Log;
-use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
-use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
 uses(
     LazilyRefreshDatabase::class,
     CreatesUsers::class,
 );
-
 
 describe('index', function () {
     test('authenticated user with view permission can view the settings page', function () {
@@ -32,7 +29,7 @@ describe('index', function () {
     });
 
     test('index loads for a user holding only one of the three view permissions', function () {
-        $user = User::factory()->create();
+        $user = $this->createTenantUser();
         $user->givePermissionTo('view settings');
 
         $this->actingAs($user)
@@ -46,7 +43,7 @@ describe('index', function () {
     });
 
     test('permissions prop reflects the user\'s specific edit grants only', function () {
-        $user = User::factory()->create();
+        $user = $this->createTenantUser();
         $user->givePermissionTo('view settings', 'edit settings', 'view system settings');
 
         $this->actingAs($user)
@@ -357,7 +354,7 @@ describe('update security', function () {
 
 describe('permission boundary', function () {
     test('user with edit settings but not edit system settings cannot update system settings', function () {
-        $user = User::factory()->create();
+        $user = $this->createTenantUser();
         $user->givePermissionTo('view settings', 'edit settings');
 
         $this->actingAs($user)
@@ -373,7 +370,7 @@ describe('permission boundary', function () {
     });
 
     test('user with edit settings but not edit security settings cannot update security settings', function () {
-        $user = User::factory()->create();
+        $user = $this->createTenantUser();
         $user->givePermissionTo('view settings', 'edit settings');
 
         $this->actingAs($user)
@@ -389,7 +386,7 @@ describe('permission boundary', function () {
     });
 
     test('user with edit system settings but not edit settings cannot update general settings', function () {
-        $user = User::factory()->create();
+        $user = $this->createTenantUser();
         $user->givePermissionTo('view system settings', 'edit system settings');
 
         $this->actingAs($user)
@@ -403,7 +400,7 @@ describe('permission boundary', function () {
     });
 
     test('user with edit security settings only cannot update general or system settings', function () {
-        $user = User::factory()->create();
+        $user = $this->createTenantUser();
         $user->givePermissionTo('view security settings', 'edit security settings');
 
         $this->actingAs($user)
@@ -426,7 +423,7 @@ describe('permission boundary', function () {
     });
 
     test('a user holding all three edit permissions can update all three groups', function () {
-        $user = User::factory()->create();
+        $user = $this->createTenantUser();
         $user->givePermissionTo(
             'view settings', 'edit settings',
             'view system settings', 'edit system settings',
