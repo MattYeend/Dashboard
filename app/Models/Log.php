@@ -805,6 +805,11 @@ class Log extends Model implements Auditable
     // Comment Mention Management
     public const ACTION_MENTION_NOTIFIED = 372;
 
+    // Subscription Payment Management
+    public const ACTION_SUBSCRIPTION_PAYMENT_FAILED = 373;
+
+    public const ACTION_SUBSCRIPTION_PAYMENT_RECOVERED = 374;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
