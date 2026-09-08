@@ -75,6 +75,8 @@ class OrganisationController extends Controller
 
         $data = $this->query->getById($request->user(), $id);
 
+        $data['can_switch'] = $request->user()->can('switch', $organisation);
+
         return Inertia::render('Organisations/Show', $data);
     }
 

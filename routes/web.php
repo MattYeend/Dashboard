@@ -67,7 +67,6 @@ Route::get('register/thanks', fn () => Inertia::render('auth/RegisterThanks'))
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/organisations/select', [OrganisationSelectController::class, 'index'])->name('organisations.select');
-    Route::post('/organisations/{organisation}/switch', [OrganisationSwitchController::class, 'update'])->name('organisations.switch');
 
     Route::prefix('organisations')->name('organisations.')->group(function () {
         Route::post('/bulk/delete', [OrganisationController::class, 'bulkDelete'])->name('bulk.delete');
@@ -85,6 +84,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::middleware('tenant')->group(function () {
+        Route::post('/organisations/{organisation}/switch', [OrganisationSwitchController::class, 'update'])->name('organisations.switch');
         Route::get('dashboard', [DashboardController::class, 'index'])
             ->middleware(['can:view dashboard'])
             ->name('dashboard');

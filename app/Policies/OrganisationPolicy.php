@@ -86,4 +86,12 @@ class OrganisationPolicy
     {
         return $this->authorisationService->isAdmin($user);
     }
+
+    /**
+     * Determine whether the user can switch into the organisation.
+     */
+    public function switch(User $user, Organisation $organisation): bool
+    {
+        return $this->authorisationService->canSwitch($user, $organisation);
+    }
 }

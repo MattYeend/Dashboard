@@ -2,8 +2,8 @@
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import OrganisationForm from '@/pages/Organisations/components/OrganisationForm.vue';
-import type { Organisation } from '@/types';
 import { update as organisationsUpdate } from '@/routes/organisations';
+import type { Organisation } from '@/types';
 
 interface Props {
     organisation: Organisation;

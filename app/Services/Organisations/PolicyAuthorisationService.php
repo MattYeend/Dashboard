@@ -87,6 +87,15 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can switch into the organisation.
+     */
+    public function canSwitch(User $actor, Organisation $target): bool
+    {
+        return $this->activeChecker->isActive($target)
+            && $this->isMemberOrSuperAdmin($actor, $target);
+    }
+
+    /**
      * Determine whether the actor is a member of the organisation, or a
      * super admin who can view organisations they don't belong to.
      */

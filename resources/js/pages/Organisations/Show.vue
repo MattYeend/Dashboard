@@ -4,16 +4,17 @@ import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import OrganisationAuditDetails from '@/pages/Organisations/components/OrganisationAuditDetails.vue';
 import OrganisationBasicDetails from '@/pages/Organisations/components/OrganisationBasicDetails.vue';
-import type { Organisation, PermissionsMeta } from '@/types';
 import {
     edit as organisationsEdit,
     destroy as organisationsDestroy,
     index as organisationsIndex,
 } from '@/routes/organisations';
+import type { Organisation, PermissionsMeta } from '@/types';
 
 interface Props {
     organisation: Organisation;
     permissions_meta: PermissionsMeta;
+    can_switch: boolean;
 }
 
 const props = defineProps<Props>();
@@ -61,6 +62,7 @@ function switchToOrganisation(): void {
                 </h1>
                 <div class="space-x-2">
                     <button
+                        v-if="props.can_switch"
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
                         :disabled="switchProcessing"

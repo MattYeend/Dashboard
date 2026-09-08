@@ -3,6 +3,7 @@
 namespace App\Multitenancy;
 
 use App\Models\Organisation;
+use App\Services\UserRoleCheckerService;
 use Illuminate\Http\Request;
 use Spatie\Multitenancy\Contracts\IsTenant;
 use Spatie\Multitenancy\TenantFinder\TenantFinder;
@@ -14,9 +15,17 @@ use Spatie\Multitenancy\TenantFinder\TenantFinder;
  * Falls back to the user's first (or only) organisation membership when
  * no organisation id is present on the session, and persists that choice
  * back to the session so subsequent requests resolve consistently.
+ *
+ * Super admins are not required to hold an `organisation_user` pivot row
+ * to switch into or resolve any organisation, mirroring the bypass in
+ * PolicyAuthorisationService::isMemberOrSuperAdmin().
  */
 class SessionOrganisationFinder extends TenantFinder
 {
+    public function __construct(
+        protected readonly UserRoleCheckerService $roleChecker
+    ) {}
+
     /**
      * Find the current tenant (organisation) for the given request.
      */
@@ -28,25 +37,25 @@ class SessionOrganisationFinder extends TenantFinder
             return null;
         }
 
+        $isSuperAdmin = $this->roleChecker->isSuperAdmin($user);
         $organisationId = $request->session()->get('current_organisation_id');
 
         if ($organisationId !== null) {
-            /** @var Organisation|null $organisation */
             $organisation = app(IsTenant::class)::query()
                 ->whereKey($organisationId)
-                ->whereHas('users', fn ($query) => $query->whereKey($user->id))
+                ->when(! $isSuperAdmin, fn ($q) => $q->whereHas('users', fn ($q2) => $q2->whereKey($user->id)))
                 ->first();
 
             if ($organisation !== null) {
                 return $organisation;
             }
 
-            // Session pointed at an organisation the user no longer belongs
-            // to (or that's been deleted); clear it and fall through.
             $request->session()->forget('current_organisation_id');
         }
 
-        $organisation = $user->organisations()->oldest('organisation_user.id')->first();
+        $organisation = $isSuperAdmin
+            ? app(IsTenant::class)::query()->oldest('id')->first()
+            : $user->organisations()->oldest('organisation_user.id')->first();
 
         if ($organisation !== null) {
             $request->session()->put('current_organisation_id', $organisation->id);
