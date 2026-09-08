@@ -84,6 +84,8 @@ export interface Order {
     discount_amount: number;
     tax_amount: number;
     total_amount: number;
+    currency: string;
+    formatted_total: string;
     ordered_at: string | null;
     due_at: string | null;
     completed_at: string | null;
@@ -449,6 +451,7 @@ export interface Invoice {
     tax_total: number;
     total: number;
     currency: string;
+    formatted_total: string;
     notes: string | null;
     items?: InvoiceItem[];
     items_count?: number;

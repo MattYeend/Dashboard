@@ -3,11 +3,13 @@
 namespace App\Services\Orders;
 
 use App\Models\Order;
+use App\Services\CurrencyFormatterService;
 
 class FormatterService
 {
     public function __construct(
         private readonly OrderableTypeRegistryService $registry,
+        private readonly CurrencyFormatterService $currencyFormatter
     ) {}
 
     /**
@@ -29,6 +31,11 @@ class FormatterService
             'discount_amount' => $order->discount_amount,
             'tax_amount' => $order->tax_amount,
             'total_amount' => $order->total_amount,
+            'currency' => $order->currency,
+            'formatted_total' => $this->currencyFormatter->format(
+                (float) $order->total_amount,
+                $order->currency,
+            ),
             'ordered_at' => $order->ordered_at?->format('Y-m-d\TH:i'),
             'due_at' => $order->due_at?->format('Y-m-d\TH:i'),
             'completed_at' => $order->completed_at?->format('Y-m-d\TH:i'),
