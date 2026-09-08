@@ -17,13 +17,12 @@ class TicketStatusSeeder extends Seeder
     {
         $organisation = $this->defaultOrganisation();
 
-        if (TicketStatus::where('organisation_id', $organisation->id)->exists()) {
+        if (TicketStatus::withoutGlobalScope('organisation')->where('organisation_id', $organisation->id)->exists()) {
             $this->command->info('Ticket statuses already seeded, skipping...');
 
             return;
         }
 
-        $organisation = $this->defaultOrganisation();
         $statuses = [
             [
                 'title' => 'Open',
@@ -77,7 +76,7 @@ class TicketStatusSeeder extends Seeder
         ];
 
         foreach ($statuses as $status) {
-            TicketStatus::firstOrCreate(
+            TicketStatus::withoutGlobalScope('organisation')->firstOrCreate(
                 [
                     'title' => $status['title'],
                     'organisation_id' => $organisation->id,

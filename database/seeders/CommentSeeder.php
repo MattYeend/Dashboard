@@ -17,13 +17,17 @@ class CommentSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Comment::exists()) {
+        if (Comment::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Comments already seeded, skipping...');
 
             return;
         }
 
-        $posts = Post::all();
+        $organisation = $this->defaultOrganisation();
+
+        $posts = Post::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->get();
         $users = User::all();
 
         if ($posts->isEmpty() || $users->isEmpty()) {
@@ -31,8 +35,6 @@ class CommentSeeder extends Seeder
 
             return;
         }
-
-        $organisation = $this->defaultOrganisation();
 
         $comments = [
             'Great write-up, this really helped me understand the topic.',

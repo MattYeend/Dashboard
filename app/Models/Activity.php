@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Contracts\Auditable;
 use App\Enums\ActivityType;
+use App\Traits\BelongsToOrganisation;
 use Database\Factories\ActivityFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +16,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $organisation_id
  * @property int $activityable_id
  * @property string $activityable_type
  * @property ActivityType $type
@@ -36,6 +38,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
+    'organisation_id',
     'activityable_id',
     'activityable_type',
     'type',
@@ -53,9 +56,9 @@ class Activity extends Model implements Auditable
     /**
      * @use HasFactory<ActivityFactory>
      */
-    use HasFactory;
-
-    use SoftDeletes;
+    use BelongsToOrganisation,
+        HasFactory,
+        SoftDeletes;
 
     /**
      * Get the parent activityable model (Company, Contact, Deal, or Order).

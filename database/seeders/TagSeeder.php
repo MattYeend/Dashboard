@@ -16,7 +16,7 @@ class TagSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Tag::exists()) {
+        if (Tag::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Tags already seeded, skipping...');
 
             return;

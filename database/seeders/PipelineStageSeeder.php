@@ -5,22 +5,28 @@ namespace Database\Seeders;
 use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class PipelineStageSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        if (PipelineStage::exists()) {
+        if (PipelineStage::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Pipeline stages already seeded, skipping...');
 
             return;
         }
 
-        $pipelines = Pipeline::all();
+        $organisation = $this->defaultOrganisation();
+        $pipelines = Pipeline::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->get();
 
         if ($pipelines->isEmpty()) {
             $this->command->warn('No pipelines found, skipping pipeline stage seeding...');
@@ -40,7 +46,7 @@ class PipelineStageSeeder extends Seeder
 
         foreach ($pipelines as $pipeline) {
             foreach ($stages as $position => $stage) {
-                PipelineStage::updateOrCreate(
+                PipelineStage::withoutGlobalScope('organisation')->updateOrCreate(
                     [
                         'pipeline_id' => $pipeline->id,
                         'title' => $stage['title'],

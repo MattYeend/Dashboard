@@ -15,7 +15,7 @@ class LabelSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Label::exists()) {
+        if (Label::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Labels already seeded, skipping...');
 
             return;

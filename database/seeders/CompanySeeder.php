@@ -18,13 +18,17 @@ class CompanySeeder extends Seeder
      */
     public function run(): void
     {
-        if (Company::exists()) {
+        if (Company::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Companies already seeded, skipping...');
 
             return;
         }
 
-        $industries = Industry::pluck('id', 'code');
+        $organisation = $this->defaultOrganisation();
+
+        $industries = Industry::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->pluck('id', 'code');
 
         if ($industries->isEmpty()) {
             $this->command->warn('No industries found, companies will be seeded without an industry...');
@@ -35,8 +39,6 @@ class CompanySeeder extends Seeder
         if ($accountManagers->isEmpty()) {
             $this->command->warn('No users found, companies will be seeded without an account manager...');
         }
-
-        $organisation = $this->defaultOrganisation();
 
         foreach ($this->getCompanies($industries) as $index => $company) {
             $company['account_manager_id'] = $accountManagers->isNotEmpty()

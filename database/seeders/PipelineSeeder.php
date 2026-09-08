@@ -18,13 +18,17 @@ class PipelineSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Pipeline::exists()) {
+        if (Pipeline::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Pipelines already seeded, skipping...');
 
             return;
         }
 
-        $statuses = PipelineStatus::all()->keyBy('title');
+        $organisation = $this->defaultOrganisation();
+
+        $statuses = PipelineStatus::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->get()->keyBy('title');
 
         if ($statuses->isEmpty()) {
             $this->command->warn('No pipeline statuses found, pipelines will be seeded without a status...');
@@ -38,7 +42,6 @@ class PipelineSeeder extends Seeder
             return;
         }
 
-        $organisation = $this->defaultOrganisation();
         $creator = $users->first();
 
         foreach ($this->getPipelines($statuses, $users) as $pipeline) {

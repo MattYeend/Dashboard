@@ -5,23 +5,29 @@ namespace Database\Seeders;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Models\InteractionLog;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 
 class InteractionLogSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        if (InteractionLog::exists()) {
+        if (InteractionLog::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Interaction logs already seeded, skipping...');
 
             return;
         }
 
-        $companies = Company::orderBy('id')->get();
+        $organisation = $this->defaultOrganisation();
+        $companies = Company::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->orderBy('id')->get();
 
         if ($companies->isEmpty()) {
             $this->command->warn('No companies found, skipping interaction log seeding...');
@@ -110,8 +116,10 @@ class InteractionLogSeeder extends Seeder
     {
         $companyMorphType = (new Company)->getMorphClass();
 
-        return Contact::whereIn('contactable_id', $companies->pluck('id'))
+        return Contact::withoutGlobalScope('organisation')
+            ->whereIn('contactable_id', $companies->pluck('id'))
             ->where('contactable_type', $companyMorphType)
+            ->where('organisation_id', $companies->first()?->organisation_id)
             ->get()
             ->unique('contactable_id')
             ->pluck('id', 'contactable_id')

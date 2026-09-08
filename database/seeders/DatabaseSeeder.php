@@ -13,39 +13,50 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            OrganisationSeeder::class,
             RolePermissionSeeder::class,
             UserSeeder::class,
-            ContactSeeder::class,
-            TaskStatusSeeder::class,
-            TaskSeeder::class,
-            OrderStatusSeeder::class,
-            OrderSeeder::class,
+            
             IndustrySeeder::class,
             CompanySeeder::class,
-            PlanSeeder::class,
+            ContactSeeder::class,
             AddressSeeder::class,
+
+            TaskStatusSeeder::class,
+            TaskSeeder::class,
+
+            OrderStatusSeeder::class,
+            OrderSeeder::class,
+
+            PlanSeeder::class,
+
             CategorySeeder::class,
             PostSeeder::class,
-            InvoiceStatusSeeder::class,
             CommentSeeder::class,
             TagSeeder::class,
             RegistrationInterestSeeder::class,
+
+            InvoiceStatusSeeder::class,
             InvoiceSeeder::class,
             InvoiceItemSeeder::class,
+
             PipelineStatusSeeder::class,
             PipelineSeeder::class,
             PipelineStageSeeder::class,
+
             DealStatusSeeder::class,
             DealSeeder::class,
+
             TicketPrioritySeeder::class,
             TicketStatusSeeder::class,
             LabelSeeder::class,
             TicketSeeder::class,
+
             ActivitySeeder::class,
             InteractionLogSeeder::class,
+
             NotificationBroadcastSeeder::class,
             SettingSeeder::class,
-            OrganisationSeeder::class,
             ReportSeeder::class,
         ]);
     }

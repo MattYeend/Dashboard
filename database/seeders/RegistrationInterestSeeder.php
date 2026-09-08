@@ -12,7 +12,7 @@ class RegistrationInterestSeeder extends Seeder
      */
     public function run(): void
     {
-        if (RegistrationInterest::exists()) {
+        if (RegistrationInterest::withTrashed()->exists()) {
             $this->command->info('Registration interests already seeded, skipping...');
 
             return;

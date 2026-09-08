@@ -17,7 +17,7 @@ class TaskSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Task::exists()) {
+        if (Task::withTrashed()->exists()) {
             $this->command->info('Tasks already seeded, skipping...');
 
             return;

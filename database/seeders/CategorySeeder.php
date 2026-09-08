@@ -17,7 +17,7 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        if (Category::exists()) {
+        if (Category::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Categories already seeded, skipping...');
 
             return;
@@ -66,7 +66,7 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            $parent = Category::updateOrCreate(
+            $parent = Category::withoutGlobalScope('organisation')->updateOrCreate(
                 ['slug' => Str::slug($category['name'])],
                 [
                     'name' => $category['name'],
@@ -76,7 +76,7 @@ class CategorySeeder extends Seeder
             );
 
             foreach ($category['children'] ?? [] as $childName) {
-                Category::updateOrCreate(
+                Category::withoutGlobalScope('organisation')->updateOrCreate(
                     ['slug' => Str::slug($childName)],
                     [
                         'parent_id' => $parent->id,

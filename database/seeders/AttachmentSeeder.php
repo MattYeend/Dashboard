@@ -20,7 +20,7 @@ class AttachmentSeeder extends Seeder
 
     public function run(): void
     {
-        if (Attachment::exists()) {
+        if (Attachment::withTrashed()->exists()) {
             $this->command->info('Attachments already seeded, skipping...');
 
             return;

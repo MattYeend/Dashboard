@@ -17,7 +17,7 @@ class ContactSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Contact::exists()) {
+        if (Contact::withTrashed()->exists()) {
             $this->command->info('Contacts already seeded, skipping...');
 
             return;

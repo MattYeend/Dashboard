@@ -16,7 +16,7 @@ class PostSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Post::exists()) {
+        if (Post::withTrashed()->exists()) {
             $this->command->info('Posts already seeded, skipping...');
 
             return;

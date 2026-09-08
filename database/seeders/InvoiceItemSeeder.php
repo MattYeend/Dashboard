@@ -5,29 +5,36 @@ namespace Database\Seeders;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class InvoiceItemSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        if (InvoiceItem::exists()) {
+        if (InvoiceItem::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Invoice Items already seeded, skipping...');
 
             return;
         }
 
-        $invoices = Invoice::whereIn('invoice_number', [
-            'INV-000001',
-            'INV-000002',
-            'INV-000003',
-            'INV-000004',
-            'INV-000005',
-            'INV-000006',
-        ])->get()->keyBy('invoice_number');
+        $organisation = $this->defaultOrganisation();
+
+        $invoices = Invoice::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->whereIn('invoice_number', [
+                'INV-000001',
+                'INV-000002',
+                'INV-000003',
+                'INV-000004',
+                'INV-000005',
+                'INV-000006',
+            ])->get()->keyBy('invoice_number');
 
         if ($invoices->isEmpty()) {
             $this->command->warn('No invoices found, skipping invoice item seeding...');
@@ -75,7 +82,7 @@ class InvoiceItemSeeder extends Seeder
             }
 
             foreach ($lines as $position => $line) {
-                InvoiceItem::updateOrCreate(
+                InvoiceItem::withoutGlobalScope('organisation')->updateOrCreate(
                     [
                         'invoice_id' => $invoice->id,
                         'description' => $line['description'],

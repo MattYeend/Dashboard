@@ -18,7 +18,7 @@ class AddressSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Address::exists()) {
+        if (Address::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Addresses already seeded, skipping...');
 
             return;
@@ -35,7 +35,9 @@ class AddressSeeder extends Seeder
         $organisation = $this->defaultOrganisation();
         $userMorphType = (new User)->getMorphClass();
 
-        $contacts = Contact::where('contactable_type', $userMorphType)
+        $contacts = Contact::withoutGlobalScope('organisation')
+            ->where('contactable_type', $userMorphType)
+            ->where('organisation_id', $organisation->id)
             ->get()
             ->keyBy('contactable_id');
 

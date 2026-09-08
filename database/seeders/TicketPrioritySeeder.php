@@ -15,7 +15,7 @@ class TicketPrioritySeeder extends Seeder
      */
     public function run(): void
     {
-        if (TicketPriority::exists()) {
+        if (TicketPriority::withTrashed()->exists()) {
             $this->command->info('Ticket priorities already seeded, skipping...');
 
             return;

@@ -19,14 +19,20 @@ class TicketSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Ticket::exists()) {
+        if (Ticket::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Tickets already seeded, skipping...');
 
             return;
         }
 
-        $statuses = TicketStatus::all()->keyBy('title');
-        $priorities = TicketPriority::all()->keyBy('title');
+        $organisation = $this->defaultOrganisation();
+
+        $statuses = TicketStatus::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->get()->keyBy('title');
+        $priorities = TicketPriority::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->get()->keyBy('title');
         $users = User::orderBy('id')->get();
 
         if ($statuses->isEmpty() || $priorities->isEmpty()) {
@@ -41,7 +47,6 @@ class TicketSeeder extends Seeder
             return;
         }
 
-        $organisation = $this->defaultOrganisation();
         $creator = $users->first();
 
         foreach ($this->getTickets($statuses, $priorities, $users) as $ticket) {

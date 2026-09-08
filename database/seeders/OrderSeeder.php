@@ -18,12 +18,13 @@ class OrderSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Order::exists()) {
+        if (Order::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Orders already seeded, skipping...');
 
             return;
         }
 
+        $organisation = $this->defaultOrganisation();
         $users = User::all()->keyBy('email');
 
         if ($users->isEmpty()) {
@@ -32,13 +33,16 @@ class OrderSeeder extends Seeder
             return;
         }
 
-        $statuses = OrderStatus::orderBy('id')->pluck('id')->all();
+        $statuses = OrderStatus::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->orderBy('id')
+            ->pluck('id')
+            ->all();
 
         if (empty($statuses)) {
             $this->command->warn('No order statuses found, orders will be seeded without a status...');
         }
 
-        $organisation = $this->defaultOrganisation();
         $morphType = (new User)->getMorphClass();
 
         foreach ($this->getOrders($morphType, $users, $statuses) as $order) {

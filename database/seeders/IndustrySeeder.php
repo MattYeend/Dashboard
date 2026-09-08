@@ -15,7 +15,7 @@ class IndustrySeeder extends Seeder
      */
     public function run(): void
     {
-        if (Industry::exists()) {
+        if (Industry::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Industries already seeded, skipping...');
 
             return;

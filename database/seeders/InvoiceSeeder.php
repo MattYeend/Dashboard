@@ -6,24 +6,34 @@ use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\InvoiceStatus;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class InvoiceSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        if (Invoice::exists()) {
+        if (Invoice::withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Invoices already seeded, skipping...');
 
             return;
         }
 
-        $companies = Company::whereIn('slug', [
-            'brightwave-software-ltd',
-            'thistle-oak-retail-group',
-            'kestrel-build-contractors-ltd',
-            'harrogate-data-centres-ltd',
-        ])->get()->keyBy('slug');
+        $organisation = $this->defaultOrganisation();
+
+        $companies = Company::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->whereIn('slug', [
+                'brightwave-software-ltd',
+                'thistle-oak-retail-group',
+                'kestrel-build-contractors-ltd',
+                'harrogate-data-centres-ltd',
+            ])->get()->keyBy('slug');
 
         if ($companies->isEmpty()) {
             $this->command->warn('No companies found, skipping invoice seeding...');
@@ -31,7 +41,9 @@ class InvoiceSeeder extends Seeder
             return;
         }
 
-        $statuses = InvoiceStatus::all()->keyBy('title');
+        $statuses = InvoiceStatus::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->get()->keyBy('title');
 
         if ($statuses->isEmpty()) {
             $this->command->warn('No invoice statuses found, skipping invoice seeding...');
@@ -209,7 +221,7 @@ class InvoiceSeeder extends Seeder
                 continue;
             }
 
-            $invoice = Invoice::updateOrCreate(
+            $invoice = Invoice::withoutGlobalScope('organisation')->updateOrCreate(
                 ['invoice_number' => $data['invoice_number']],
                 [
                     'organisation_id' => $company->organisation_id,

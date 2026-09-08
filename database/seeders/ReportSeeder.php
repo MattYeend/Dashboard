@@ -16,7 +16,7 @@ class ReportSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Report::exists()) {
+        if (Report::withTrashed()->exists()) {
             $this->command->info('Reports already seeded, skipping...');
 
             return;

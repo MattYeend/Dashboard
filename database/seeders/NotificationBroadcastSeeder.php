@@ -10,7 +10,7 @@ class NotificationBroadcastSeeder extends Seeder
 {
     public function run(): void
     {
-        if (NotificationBroadcast::exists()) {
+        if (NotificationBroadcast::withTrashed()->exists()) {
             $this->command->info('Notification broadcasts already seeded, skipping...');
 
             return;

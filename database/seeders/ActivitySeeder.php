@@ -4,23 +4,29 @@ namespace Database\Seeders;
 
 use App\Models\Activity;
 use App\Models\Company;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 
 class ActivitySeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        if (Activity::exists()) {
+        if (Activity::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Activities already seeded, skipping...');
 
             return;
         }
 
-        $companies = Company::orderBy('id')->get();
+        $organisation = $this->defaultOrganisation();
+        $companies = Company::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->orderBy('id')->get();
 
         if ($companies->isEmpty()) {
             $this->command->warn('No companies found, skipping activity seeding...');
@@ -79,6 +85,7 @@ class ActivitySeeder extends Seeder
                 $activities[] = [
                     'activityable_type' => $morphType,
                     'activityable_id' => $company->id,
+                    'organisation_id' => $company->organisation_id,
                     'type' => $entry['type'],
                     'description' => $entry['description'],
                     'occurred_at' => now()->subDays($entry['occurred_at_offset_days']),

@@ -14,7 +14,7 @@ class PlanSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Plan::exists()) {
+        if (Plan::withTrashed()->exists()) {
             $this->command->info('Plans already seeded, skipping...');
 
             return;

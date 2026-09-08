@@ -9,27 +9,34 @@ use App\Models\Invoice;
 use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\User;
+use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 class DealSeeder extends Seeder
 {
+    use ResolvesDefaultOrganisation;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        if (Deal::exists()) {
+        if (Deal::withTrashed()->withoutGlobalScope('organisation')->exists()) {
             $this->command->info('Deals already seeded, skipping...');
 
             return;
         }
 
-        $companies = Company::whereIn('slug', [
-            'brightwave-software-ltd',
-            'thistle-oak-retail-group',
-            'kestrel-build-contractors-ltd',
-            'harrogate-data-centres-ltd',
-        ])->get()->keyBy('slug');
+        $organisation = $this->defaultOrganisation();
+
+        $companies = Company::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->whereIn('slug', [
+                'brightwave-software-ltd',
+                'thistle-oak-retail-group',
+                'kestrel-build-contractors-ltd',
+                'harrogate-data-centres-ltd',
+            ])->get()->keyBy('slug');
 
         if ($companies->isEmpty()) {
             $this->command->warn('No companies found, skipping deal seeding...');
@@ -37,7 +44,9 @@ class DealSeeder extends Seeder
             return;
         }
 
-        $pipeline = Pipeline::first();
+        $pipeline = Pipeline::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->first();
 
         if (! $pipeline) {
             $this->command->warn('No pipelines found, skipping deal seeding...');
@@ -45,7 +54,9 @@ class DealSeeder extends Seeder
             return;
         }
 
-        $stages = PipelineStage::where('pipeline_id', $pipeline->id)->get()->keyBy('title');
+        $stages = PipelineStage::withoutGlobalScope('organisation')
+            ->where('pipeline_id', $pipeline->id)
+            ->get()->keyBy('title');
 
         if ($stages->isEmpty()) {
             $this->command->warn('No pipeline stages found, skipping deal seeding...');
@@ -53,7 +64,9 @@ class DealSeeder extends Seeder
             return;
         }
 
-        $statuses = DealStatus::all()->keyBy('title');
+        $statuses = DealStatus::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->get()->keyBy('title');
 
         if ($statuses->isEmpty()) {
             $this->command->warn('No deal statuses found, skipping deal seeding...');
@@ -71,10 +84,12 @@ class DealSeeder extends Seeder
 
         $creator = $users->first();
 
-        $invoices = Invoice::whereIn('invoice_number', [
-            'INV-000001',
-            'INV-000002',
-        ])->get()->keyBy('invoice_number');
+        $invoices = Invoice::withoutGlobalScope('organisation')
+            ->where('organisation_id', $organisation->id)
+            ->whereIn('invoice_number', [
+                'INV-000001',
+                'INV-000002',
+            ])->get()->keyBy('invoice_number');
 
         $deals = [
             [
@@ -185,7 +200,7 @@ class DealSeeder extends Seeder
 
             $invoice = $data['invoice_number'] ? $invoices->get($data['invoice_number']) : null;
 
-            Deal::updateOrCreate(
+            Deal::withoutGlobalScope('organisation')->updateOrCreate(
                 [
                     'title' => $data['title'],
                     'company_id' => $company->id,
