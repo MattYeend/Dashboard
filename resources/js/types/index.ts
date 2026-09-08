@@ -648,6 +648,7 @@ export interface Deal {
     invoice_id: number | null;
     value: number;
     currency: string;
+    formatted_value: string;
     probability: number;
     expected_close_date: string | null;
     closed_at: string | null;

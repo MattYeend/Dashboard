@@ -27,6 +27,11 @@ defineProps<Props>();
             </div>
 
             <div>
+                <dt class="text-xs text-gray-400">Total</dt>
+                <dd class="text-sm">{{ invoice.formatted_total }}</dd>
+            </div>
+
+            <div>
                 <dt class="text-xs text-gray-400">Status</dt>
                 <dd class="text-sm">
                     <span

@@ -29,8 +29,8 @@ class FormatterService
             'invoice_id' => $deal->invoice_id,
             'value' => $deal->value,
             'currency' => $deal->currency,
-            'formatted_total' => $this->currencyFormatter->format(
-                (float) $deal->total_amount,
+            'formatted_value' => $this->currencyFormatter->format(
+                $deal->value / 100,
                 $deal->currency,
             ),
             'probability' => $deal->probability,

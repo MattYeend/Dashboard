@@ -218,9 +218,10 @@ class StoreInvoiceRequest extends FormRequest
     protected function currencyRules(): array
     {
         return [
-            'nullable',
+            'required',
             'string',
             'size:3',
+            Rule::in(config('currencies.allowed')),
         ];
     }
 

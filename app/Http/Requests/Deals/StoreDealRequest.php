@@ -60,7 +60,7 @@ class StoreDealRequest extends FormRequest
             'invoice_id.exists' => 'The selected invoice does not exist.',
             'invoice_id.unique' => 'That invoice is already linked to another deal.',
             'value.min' => 'The value cannot be negative.',
-            'currency.size' => 'The currency must be a 3-letter code, e.g. GBP.',
+            'currency.in' => 'Please select a valid currency.',
             'probability.min' => 'The probability cannot be less than 0.',
             'probability.max' => 'The probability cannot be greater than 100.',
             'closed_at.date' => 'The closed date must be a valid date.',
@@ -189,9 +189,10 @@ class StoreDealRequest extends FormRequest
     protected function currencyRules(): array
     {
         return [
-            'nullable',
+            'required',
             'string',
             'size:3',
+            Rule::in(config('currencies.allowed')),
         ];
     }
 

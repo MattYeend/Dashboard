@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { InertiaFormProps } from '@inertiajs/vue3';
+import CurrencySelect from '@/components/CurrencySelect.vue';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -45,6 +46,7 @@ defineProps<Props>();
 const invoiceNumber = defineModel<string>('invoiceNumber', { required: true });
 const companyId = defineModel<number | null>('companyId', { default: null });
 const statusId = defineModel<number | null>('statusId', { default: null });
+const currency = defineModel<string>('currency', { required: true });
 </script>
 
 <template>
@@ -99,6 +101,12 @@ const statusId = defineModel<number | null>('statusId', { default: null });
                 </SelectContent>
             </Select>
             <InputError :message="errors.status_id" />
+        </div>
+
+        <div>
+            <Label for="currency">Currency</Label>
+            <CurrencySelect v-model="currency" class="mt-1" />
+            <InputError :message="errors.currency" />
         </div>
     </div>
 </template>

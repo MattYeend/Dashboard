@@ -45,7 +45,7 @@ class FormatterService
                 ?? ($invoice->relationLoaded('items') ? $invoice->items->count() : null),
             'currency' => $invoice->currency,
             'formatted_total' => $this->currencyFormatter->format(
-                (float) $invoice->total_amount,
+                (float) $invoice->total,
                 $invoice->currency,
             ),
             'notes' => $invoice->notes,

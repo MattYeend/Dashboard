@@ -205,18 +205,18 @@ class StoreOrderRequest extends FormRequest
         ];
     }
 
-    /** 
-     * Validation rules for the currency field.
-     * 
-     * @return array
+    /**
+     * Get validation rules for the currency field.
+     *
+     * @return array<mixed>
      */
     protected function currencyRules(): array
     {
         return [
-            'required', 
-            'string', 
-            'size:3', 
-            Rule::in(config('currencies.allowed'))
+            'required',
+            'string',
+            'size:3',
+            Rule::in(config('currencies.allowed')),
         ];
     }
 
