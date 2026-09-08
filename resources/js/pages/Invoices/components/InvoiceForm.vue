@@ -63,6 +63,7 @@ const contact = defineModel<InvoiceContact>('contact', { required: true });
             v-model:invoice-number="invoiceNumber"
             v-model:company-id="companyId"
             v-model:status-id="statusId"
+            v-model:currency="currency"
             :statuses="statuses"
             :companies="companies"
             :errors="errors"

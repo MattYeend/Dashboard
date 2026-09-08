@@ -8,7 +8,7 @@ class CurrencyFormatterService
 {
     /** Format a major-units float amount as a currency string for the given ISO 4217 code. */
     public function format(
-        float $amount, 
+        float $amount,
         string $currency
     ): string {
         $formatter = new NumberFormatter('en_GB', NumberFormatter::CURRENCY);

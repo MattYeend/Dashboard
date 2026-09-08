@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { CURRENCY_OPTIONS } from '@/lib/currencies';
 
 const model = defineModel<string>({ required: true });
@@ -11,7 +17,11 @@ const model = defineModel<string>({ required: true });
             <SelectValue placeholder="Select a currency" />
         </SelectTrigger>
         <SelectContent>
-            <SelectItem v-for="option in CURRENCY_OPTIONS" :key="option.value" :value="option.value">
+            <SelectItem
+                v-for="option in CURRENCY_OPTIONS"
+                :key="option.value"
+                :value="option.value"
+            >
                 {{ option.label }}
             </SelectItem>
         </SelectContent>

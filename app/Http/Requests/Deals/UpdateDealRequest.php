@@ -196,10 +196,10 @@ class UpdateDealRequest extends FormRequest
     protected function currencyRules(): array
     {
         return [
-            'sometimes', 
-            'string', 
-            'size:3', 
-            Rule::in(config('currencies.allowed'))
+            'sometimes',
+            'string',
+            'size:3',
+            Rule::in(config('currencies.allowed')),
         ];
     }
 

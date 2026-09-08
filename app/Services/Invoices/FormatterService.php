@@ -10,6 +10,7 @@ class FormatterService
     public function __construct(
         private readonly CurrencyFormatterService $currencyFormatter
     ) {}
+
     /**
      * Format a single invoice with all data.
      *
