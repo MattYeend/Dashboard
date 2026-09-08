@@ -24,6 +24,7 @@ const form = useForm({
     discount_amount: props.order.discount_amount,
     tax_amount: props.order.tax_amount,
     total_amount: props.order.total_amount,
+    currency: props.order.currency,
     ordered_at: props.order.ordered_at ?? '',
     due_at: props.order.due_at ?? '',
     completed_at: props.order.completed_at ?? '',
@@ -82,6 +83,7 @@ function submit(): void {
                 v-model:discount-amount="form.discount_amount"
                 v-model:tax-amount="form.tax_amount"
                 v-model:total-amount="form.total_amount"
+                v-model:currency="form.currency"
                 v-model:ordered-at="form.ordered_at"
                 v-model:due-at="form.due_at"
                 v-model:completed-at="form.completed_at"

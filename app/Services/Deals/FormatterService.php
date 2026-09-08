@@ -3,9 +3,14 @@
 namespace App\Services\Deals;
 
 use App\Models\Deal;
+use App\Services\CurrencyFormatterService;
 
 class FormatterService
 {
+    public function __construct(
+        private readonly CurrencyFormatterService $currencyFormatter
+    ) {}
+
     /**
      * Format a single deal with all data.
      *
@@ -24,6 +29,10 @@ class FormatterService
             'invoice_id' => $deal->invoice_id,
             'value' => $deal->value,
             'currency' => $deal->currency,
+            'formatted_value' => $this->currencyFormatter->format(
+                $deal->value / 100,
+                $deal->currency,
+            ),
             'probability' => $deal->probability,
             'expected_close_date' => $deal->expected_close_date,
             'closed_at' => $deal->closed_at,

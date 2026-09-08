@@ -23,6 +23,7 @@ const form = useForm({
     discount_amount: 0,
     tax_amount: 0,
     total_amount: 0,
+    currency: 'GBP',
     ordered_at: '',
     due_at: '',
     completed_at: '',
@@ -83,6 +84,7 @@ function submit(): void {
                 v-model:discount-amount="form.discount_amount"
                 v-model:tax-amount="form.tax_amount"
                 v-model:total-amount="form.total_amount"
+                v-model:currency="form.currency"
                 v-model:ordered-at="form.ordered_at"
                 v-model:due-at="form.due_at"
                 v-model:completed-at="form.completed_at"

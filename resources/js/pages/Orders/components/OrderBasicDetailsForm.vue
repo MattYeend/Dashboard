@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { InertiaFormProps } from '@inertiajs/vue3';
+import CurrencySelect from '@/components/CurrencySelect.vue';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,6 +22,7 @@ interface OrderBasicFormData {
     discount_amount: number;
     tax_amount: number;
     total_amount: number;
+    currency: string;
     ordered_at: string | null;
     due_at: string | null;
     completed_at: string | null;
@@ -45,6 +47,7 @@ const discountAmount = defineModel<number>('discountAmount', {
 });
 const taxAmount = defineModel<number>('taxAmount', { required: true });
 const totalAmount = defineModel<number>('totalAmount', { required: true });
+const currency = defineModel<string>('currency', { required: true });
 const orderedAt = defineModel<string | null>('orderedAt', { default: null });
 const dueAt = defineModel<string | null>('dueAt', { default: null });
 const completedAt = defineModel<string | null>('completedAt', {
@@ -143,6 +146,11 @@ const statusId = defineModel<number | null>('statusId', { default: null });
                     class="mt-1 block w-full"
                 />
                 <InputError :message="errors.total_amount" />
+            </div>
+            <div>
+                <Label for="currency">Currency</Label>
+                <CurrencySelect v-model="currency" class="mt-1" />
+                <InputError :message="errors.currency" />
             </div>
         </div>
 

@@ -229,9 +229,9 @@ class UpdateInvoiceRequest extends FormRequest
     {
         return [
             'sometimes',
-            'nullable',
             'string',
             'size:3',
+            Rule::in(config('currencies.allowed')),
         ];
     }
 

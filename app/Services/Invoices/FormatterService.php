@@ -3,9 +3,14 @@
 namespace App\Services\Invoices;
 
 use App\Models\Invoice;
+use App\Services\CurrencyFormatterService;
 
 class FormatterService
 {
+    public function __construct(
+        private readonly CurrencyFormatterService $currencyFormatter
+    ) {}
+
     /**
      * Format a single invoice with all data.
      *
@@ -40,6 +45,10 @@ class FormatterService
             'items_count' => $invoice->items_count
                 ?? ($invoice->relationLoaded('items') ? $invoice->items->count() : null),
             'currency' => $invoice->currency,
+            'formatted_total' => $this->currencyFormatter->format(
+                (float) $invoice->total,
+                $invoice->currency,
+            ),
             'notes' => $invoice->notes,
             'meta' => $invoice->meta,
             'created_at' => $invoice->created_at,

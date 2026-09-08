@@ -27,6 +27,7 @@ use Illuminate\Support\Carbon;
  * @property string $discount_amount
  * @property string $tax_amount
  * @property string $total_amount
+ * @property string $currency
  * @property Carbon|null $ordered_at
  * @property Carbon|null $due_at
  * @property Carbon|null $completed_at
@@ -59,6 +60,7 @@ use Illuminate\Support\Carbon;
     'discount_amount',
     'tax_amount',
     'total_amount',
+    'currency',
     'ordered_at',
     'due_at',
     'completed_at',
@@ -172,6 +174,7 @@ class Order extends Model implements Auditable
             'discount_amount',
             'tax_amount',
             'total_amount',
+            'currency',
             'ordered_at',
             'due_at',
             'completed_at',

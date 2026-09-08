@@ -16,6 +16,7 @@ interface OrderFormData {
     discount_amount: number;
     tax_amount: number;
     total_amount: number;
+    currency: string;
     ordered_at: string | null;
     due_at: string | null;
     completed_at: string | null;
@@ -48,6 +49,7 @@ const discountAmount = defineModel<number>('discountAmount', {
 });
 const taxAmount = defineModel<number>('taxAmount', { required: true });
 const totalAmount = defineModel<number>('totalAmount', { required: true });
+const currency = defineModel<string>('currency', { required: true });
 const orderedAt = defineModel<string | null>('orderedAt', { default: null });
 const dueAt = defineModel<string | null>('dueAt', { default: null });
 const completedAt = defineModel<string | null>('completedAt', {
@@ -73,6 +75,7 @@ const tagIds = defineModel<number[]>('tagIds', { default: () => [] });
             v-model:discount-amount="discountAmount"
             v-model:tax-amount="taxAmount"
             v-model:total-amount="totalAmount"
+            v-model:currency="currency"
             v-model:ordered-at="orderedAt"
             v-model:due-at="dueAt"
             v-model:completed-at="completedAt"

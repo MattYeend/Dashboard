@@ -247,6 +247,7 @@ describe('store', function () {
                 'invoice_number' => 'INV-000130',
                 'company_id' => $company->id,
                 'contact' => ['email' => null],
+                'currency' => 'GBP',
             ])
             ->assertStatus(201);
     });

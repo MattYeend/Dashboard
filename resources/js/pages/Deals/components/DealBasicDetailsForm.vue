@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 interface DealBasicFormData {
     title: string;
     description: string | null;
+    currency: string;
 }
 
 interface Props {

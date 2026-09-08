@@ -35,6 +35,7 @@ class UpdateOrderRequest extends FormRequest
             'discount_amount' => $this->discountAmountRules(),
             'tax_amount' => $this->taxAmountRules(),
             'total_amount' => $this->totalAmountRules(),
+            'currency' => $this->currencyRules(),
             'ordered_at' => $this->orderedAtRules(),
             'due_at' => $this->dueAtRules(),
             'completed_at' => $this->completedAtRules(),
@@ -66,6 +67,7 @@ class UpdateOrderRequest extends FormRequest
             'discount_amount.min' => 'The discount amount cannot be negative.',
             'tax_amount.min' => 'The tax amount cannot be negative.',
             'total_amount.min' => 'The total amount cannot be negative.',
+            'currency.in' => 'Please select a valid currency.',
             'status_id.exists' => 'The selected status does not exist.',
             'tag_ids.array' => 'Tags must be provided as a list.',
             'tag_ids.*.exists' => 'One or more selected tags are invalid.',
@@ -208,6 +210,21 @@ class UpdateOrderRequest extends FormRequest
             'numeric',
             'min:0',
             'max:99999999.99',
+        ];
+    }
+
+    /**
+     * Validation rules for the currency field.
+     *
+     * @return array<mixed>
+     */
+    protected function currencyRules(): array
+    {
+        return [
+            'sometimes',
+            'string',
+            'size:3',
+            Rule::in(config('currencies.allowed')),
         ];
     }
 

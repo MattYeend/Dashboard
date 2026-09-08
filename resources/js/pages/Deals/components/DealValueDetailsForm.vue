@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { InertiaFormProps } from '@inertiajs/vue3';
+import CurrencySelect from '@/components/CurrencySelect.vue';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -45,14 +46,7 @@ const closedAt = defineModel<string | null>('closedAt', { default: null });
 
             <div>
                 <Label for="currency">Currency</Label>
-                <Input
-                    id="currency"
-                    v-model="currency"
-                    type="text"
-                    maxlength="3"
-                    class="mt-1 block w-full uppercase"
-                    placeholder="GBP"
-                />
+                <CurrencySelect v-model="currency" class="mt-1" />
                 <InputError :message="errors.currency" />
             </div>
         </div>
