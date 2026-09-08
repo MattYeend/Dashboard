@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\Subscription;
+use App\Services\Plans\DunningService;
 use App\Services\Plans\StripeSyncService;
 use Laravel\Cashier\Http\Controllers\WebhookController as CashierWebhookController;
 use Symfony\Component\HttpFoundation\Response;
 
 class StripeWebhookController extends CashierWebhookController
 {
-    public function __construct(protected StripeSyncService $stripeSyncService)
-    {
+    public function __construct(
+        protected StripeSyncService $stripeSyncService,
+        protected DunningService $dunningService,
+    ) {
         parent::__construct();
     }
 
@@ -69,6 +72,55 @@ class StripeWebhookController extends CashierWebhookController
         $this->stripeSyncService->syncActiveStatus($payload['data']['object']);
 
         return $this->successMethod();
+    }
+
+    /**
+     * Handle a Stripe 'invoice.payment_failed' webhook event.
+     *
+     * Hands off to DunningService to flag the local subscription as
+     * past due, notify the user, and schedule a reminder.
+     */
+    protected function handleInvoicePaymentFailed(array $payload): Response
+    {
+        $subscription = $this->resolveSubscriptionFromInvoice($payload);
+
+        if ($subscription !== null) {
+            $this->dunningService->handlePaymentFailed($subscription);
+        }
+
+        return $this->successMethod();
+    }
+
+    /**
+     * Handle a Stripe 'invoice.payment_succeeded' webhook event.
+     *
+     * Hands off to DunningService to clear any past-due flag and notify
+     * the user their payment has recovered.
+     */
+    protected function handleInvoicePaymentSucceeded(array $payload): Response
+    {
+        $subscription = $this->resolveSubscriptionFromInvoice($payload);
+
+        if ($subscription !== null) {
+            $this->dunningService->handlePaymentSucceeded($subscription);
+        }
+
+        return $this->successMethod();
+    }
+
+    /**
+     * Resolve the local Subscription matching a Stripe invoice payload's
+     * subscription ID, if any.
+     */
+    private function resolveSubscriptionFromInvoice(array $payload): ?Subscription
+    {
+        $stripeSubscriptionId = $payload['data']['object']['subscription'] ?? null;
+
+        if (! $stripeSubscriptionId) {
+            return null;
+        }
+
+        return Subscription::where('stripe_id', $stripeSubscriptionId)->first();
     }
 
     /**
