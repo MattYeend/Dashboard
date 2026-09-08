@@ -74,7 +74,7 @@ class StripeWebhookController extends CashierWebhookController
         return $this->successMethod();
     }
 
-        /**
+    /**
      * Handle a Stripe 'invoice.payment_failed' webhook event.
      *
      * Hands off to DunningService to flag the local subscription as
