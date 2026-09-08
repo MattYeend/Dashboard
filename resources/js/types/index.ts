@@ -766,6 +766,7 @@ export interface Ticket {
 
 export interface Activity {
     id: number;
+    organisation_id: number;
     activityable_id: number;
     activityable_type: string;
     activityable_type_key: string;
