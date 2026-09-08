@@ -45,6 +45,7 @@ class OrderFactory extends Factory
             'discount_amount' => $discount,
             'tax_amount' => $tax,
             'total_amount' => $total,
+            'currency' => 'GBP',
             'ordered_at' => $this->faker->dateTimeBetween('-3 months', 'now'),
             'due_at' => $this->faker->dateTimeBetween('now', '+1 month'),
             'completed_at' => null,
