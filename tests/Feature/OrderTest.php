@@ -82,6 +82,7 @@ describe('store', function () {
             'discount_amount' => 10.00,
             'tax_amount' => 22.00,
             'total_amount' => 132.00,
+            'currency' => 'GBP',
             'ordered_at' => '2025-07-01 09:00:00',
             'due_at' => '2025-07-15 17:00:00',
             'status_id' => $orderStatus->id,
@@ -184,6 +185,7 @@ describe('store', function () {
                 'title' => 'Attempted order number spoof',
                 'subtotal' => 50.00,
                 'total_amount' => 50.00,
+                'currency' => 'GBP',
             ])
             ->assertStatus(201);
 
@@ -249,6 +251,7 @@ describe('store', function () {
                 'title' => 'Minimal order',
                 'subtotal' => 0,
                 'total_amount' => 0,
+                'currency' => 'GBP',
             ])
             ->assertStatus(201);
 
@@ -269,6 +272,7 @@ describe('store', function () {
                 'title' => 'Order with meta',
                 'subtotal' => 10.00,
                 'total_amount' => 10.00,
+                'currency' => 'GBP',
                 'meta' => ['channel' => 'web', 'tags' => ['priority']],
             ])
             ->assertStatus(201);

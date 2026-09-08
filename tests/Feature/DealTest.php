@@ -223,6 +223,7 @@ describe('store', function () {
         $this->actingAs($superAdmin)
             ->postJson('/deals', [
                 'title' => 'Minimal Deal',
+                'currency' => 'GBP',
             ])
             ->assertStatus(201);
 
@@ -239,6 +240,7 @@ describe('store', function () {
         $this->actingAs($superAdmin)
             ->postJson('/deals', [
                 'title' => 'Deal with meta',
+                'currency' => 'GBP',
                 'meta' => ['source' => 'referral', 'tags' => ['priority']],
             ])
             ->assertStatus(201);
