@@ -12,7 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('subscriptions', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('user_id');
+            $table->dropIndex('subscriptions_user_id_stripe_status_index');
+        });
+
+        Schema::table('subscriptions', function (Blueprint $table) {
+            if (Schema::hasColumn('subscriptions', 'user_id')) {
+                $table->dropColumn('user_id');
+            }
         });
     }
 
@@ -22,8 +28,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('subscriptions', function (Blueprint $table) {
-            $table->foreignId('user_id')->nullable()->after('id')
-                ->constrained('users')->nullOnDelete();
+            $table->unsignedBigInteger('user_id')->nullable()->after('id');
+        });
+
+        Schema::table('subscriptions', function (Blueprint $table) {
+            $table->index(['user_id', 'stripe_status']);
         });
     }
 };
