@@ -50,8 +50,28 @@ class Organisation extends Tenant implements Auditable
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'organisation_user')
+        return $this->belongsToMany(User::class)
+            ->using(OrganisationMembership::class)
+            ->withPivot([
+                'status', 
+                'invitation_token', 
+                'invited_at', 
+                'joined_at', 
+                'invited_by', 
+                'created_by', 
+                'updated_by'
+            ])
             ->withTimestamps();
+    }
+
+    /**
+     * Get only the users with an active membership.
+     *
+     * @return BelongsToMany<User, Organisation>
+     */
+    public function activeUsers(): BelongsToMany
+    {
+        return $this->users()->wherePivot('status', OrganisationMembership::STATUS_ACTIVE);
     }
 
     /**
