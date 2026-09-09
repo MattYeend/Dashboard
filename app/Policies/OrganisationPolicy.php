@@ -94,4 +94,12 @@ class OrganisationPolicy
     {
         return $this->authorisationService->canSwitch($user, $organisation);
     }
+
+    /**
+     * Determine whether the user can remove a member from the organisation.
+     */
+    public function removeMember(User $user, Organisation $organisation): bool
+    {
+        return $this->authorisationService->canRemoveMember($user, $organisation);
+    }
 }

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Organisations\InviteOrganisationMemberRequest;
 use App\Http\Requests\Organisations\StoreOrganisationRequest;
 use App\Http\Requests\Organisations\UpdateOrganisationRequest;
 use App\Models\Organisation;
+use App\Models\User;
+use App\Services\Organisations\InvitationService;
 use App\Services\Organisations\ManagementService;
 use App\Services\Organisations\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -24,6 +27,7 @@ class OrganisationController extends Controller
     public function __construct(
         private readonly QueryService $query,
         private readonly ManagementService $management,
+        private readonly InvitationService $invitations,
     ) {}
 
     /**
@@ -203,5 +207,50 @@ class OrganisationController extends Controller
         }
 
         return redirect()->route('organisations.index');
+    }
+
+    /**
+     * Invite a user, by email, to join the organisation.
+     */
+    public function invite(InviteOrganisationMemberRequest $request, Organisation $organisation): RedirectResponse|JsonResponse
+    {
+        $this->invitations->invite($organisation, $request->validated()['email'], $request->user());
+
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Invitation sent.']);
+        }
+
+        return redirect()->back()->with('success', 'Invitation sent.');
+    }
+
+    /**
+     * Accept an organisation invitation via a signed link.
+     *
+     * The 'signed' route middleware rejects the request before this
+     * method runs if the URL has been tampered with or has expired.
+     */
+    public function acceptInvitation(Request $request, string $token): RedirectResponse
+    {
+        $membership = $this->invitations->accept($token, $request->user());
+
+        return redirect()
+            ->route('organisations.show', $membership->organisation_id)
+            ->with('success', 'You have joined the organisation.');
+    }
+
+    /**
+     * Remove a member from the organisation.
+     */
+    public function removeMember(Organisation $organisation, User $user, Request $request): RedirectResponse|JsonResponse
+    {
+        $this->authorize('removeMember', $organisation);
+
+        $this->invitations->removeMember($organisation, $user, $request->user());
+
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Member removed.']);
+        }
+
+        return redirect()->back()->with('success', 'Member removed.');
     }
 }

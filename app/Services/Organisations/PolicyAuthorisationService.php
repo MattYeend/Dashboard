@@ -3,6 +3,7 @@
 namespace App\Services\Organisations;
 
 use App\Models\Organisation;
+use App\Models\OrganisationMembership;
 use App\Models\User;
 use App\Services\UserRoleCheckerService;
 
@@ -96,6 +97,17 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can remove a member from the organisation.
+     */
+    public function canRemoveMember(User $actor, Organisation $target): bool
+    {
+        return $actor->can('remove organisation members')
+            && $this->activeChecker->isActive($target)
+            && $this->isMemberOrSuperAdmin($actor, $target);
+    }
+
+
+    /**
      * Determine whether the actor is a member of the organisation, or a
      * super admin who can view organisations they don't belong to.
      */
@@ -105,6 +117,9 @@ class PolicyAuthorisationService
             return true;
         }
 
-        return $target->users()->whereKey($actor->id)->exists();
+        return $target->users()
+            ->wherePivot('status', OrganisationMembership::STATUS_ACTIVE)
+            ->whereKey($actor->id)
+            ->exists();
     }
 }

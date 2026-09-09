@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Organisation;
+use App\Models\OrganisationMembership;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,9 +13,11 @@ use Illuminate\Http\Request;
  *
  * The chosen organisation id is stored on the session and picked up by
  * App\Multitenancy\SessionOrganisationFinder on subsequent requests.
- * Switching also ensures the user has a membership row for the target
- * organisation, including for super admins who bypass the normal
- * membership check when authorizing the switch itself.
+ * Ordinary members must already hold an active membership row created
+ * via InvitationService::accept() before the 'switch' policy check will
+ * pass. Super admins bypass that check, so this ensures they still get
+ * a genuine active membership row for the organisation, rather than a
+ * stray 'invited' one, so downstream member listings stay accurate.
  */
 class OrganisationSwitchController extends Controller
 {
@@ -29,7 +32,15 @@ class OrganisationSwitchController extends Controller
 
         $user = $request->user();
 
-        $organisation->users()->syncWithoutDetaching([$user->id]);
+        if (! $organisation->activeUsers()->whereKey($user->id)->exists()) {
+            $organisation->users()->syncWithoutDetaching([
+                $user->id => [
+                    'status' => OrganisationMembership::STATUS_ACTIVE,
+                    'joined_at' => now(),
+                    'created_by' => $user->id,
+                ],
+            ]);
+        }
 
         $request->session()->put('current_organisation_id', $organisation->id);
 

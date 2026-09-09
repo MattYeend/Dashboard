@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class OrganisationMembership extends Pivot
+class OrganisationMembership extends Pivot implements Auditable
 {
     public const STATUS_INVITED = 'invited';
 
@@ -23,6 +24,24 @@ class OrganisationMembership extends Pivot
      * @var bool
      */
     public $incrementing = true;
+
+    /**
+     * Get a snapshot of the membership's attributes for audit purposes.
+     *
+     * @return array<string, mixed>
+     */
+    public function auditSnapshot(): array
+    {
+        return $this->only([
+            'id',
+            'organisation_id',
+            'user_id',
+            'status',
+            'invited_at',
+            'joined_at',
+            'invited_by',
+        ]);
+    }
 
     /**
      * The attributes that should be cast.

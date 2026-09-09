@@ -3,6 +3,7 @@
 namespace App\Multitenancy;
 
 use App\Models\Organisation;
+use App\Models\OrganisationMembership;
 use App\Services\UserRoleCheckerService;
 use Illuminate\Http\Request;
 use Spatie\Multitenancy\Contracts\IsTenant;
@@ -43,7 +44,11 @@ class SessionOrganisationFinder extends TenantFinder
         if ($organisationId !== null) {
             $organisation = app(IsTenant::class)::query()
                 ->whereKey($organisationId)
-                ->when(! $isSuperAdmin, fn ($q) => $q->whereHas('users', fn ($q2) => $q2->whereKey($user->id)))
+                ->when(! $isSuperAdmin, fn ($q) => $q->whereHas(
+                    'users',
+                    fn ($q2) => $q2->whereKey($user->id)
+                        ->wherePivot('status', OrganisationMembership::STATUS_ACTIVE)
+                ))
                 ->first();
 
             if ($organisation !== null) {
@@ -55,7 +60,7 @@ class SessionOrganisationFinder extends TenantFinder
 
         $organisation = $isSuperAdmin
             ? app(IsTenant::class)::query()->oldest('id')->first()
-            : $user->organisations()->oldest('organisation_user.id')->first();
+            : $user->activeOrganisations()->oldest('organisation_user.id')->first();
 
         if ($organisation !== null) {
             $request->session()->put('current_organisation_id', $organisation->id);
