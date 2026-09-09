@@ -226,6 +226,8 @@ class RolePermissionSeeder extends Seeder
             'delete plans',
             'restore plans',
             'force delete plans',
+            'view billing',
+            'manage billing',
 
             // Address Management
             'view any addresses',
@@ -634,6 +636,8 @@ class RolePermissionSeeder extends Seeder
             'delete plans',
             'restore plans',
             'force delete plans',
+            'view billing',
+            'manage billing',
             'view any addresses',
             'view addresses',
             'create addresses',
