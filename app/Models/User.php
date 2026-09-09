@@ -148,8 +148,28 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
      */
     public function organisations(): BelongsToMany
     {
-        return $this->belongsToMany(Organisation::class, 'organisation_user')
+        return $this->belongsToMany(Organisation::class)
+            ->using(OrganisationMembership::class)
+            ->withPivot([
+                'status',
+                'invitation_token',
+                'invited_at',
+                'joined_at',
+                'invited_by',
+                'created_by',
+                'updated_by',
+            ])
             ->withTimestamps();
+    }
+
+    /**
+     * Get the organisations this user actively belongs to.
+     *
+     * @return BelongsToMany<Organisation, $this>
+     */
+    public function activeOrganisations(): BelongsToMany
+    {
+        return $this->organisations()->wherePivot('status', OrganisationMembership::STATUS_ACTIVE);
     }
 
     /**

@@ -810,6 +810,15 @@ class Log extends Model implements Auditable
 
     public const ACTION_SUBSCRIPTION_PAYMENT_RECOVERED = 374;
 
+    // Organisation Membership Management
+    public const ACTION_INVITE_MEMBER = 375;
+
+    public const ACTION_ACCEPT_INVITATION = 376;
+
+    public const ACTION_REMOVE_MEMBER = 377;
+
+    public const ACTION_SWITCH_ORGANISATION = 378;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
