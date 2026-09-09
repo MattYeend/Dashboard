@@ -174,6 +174,7 @@ class AppServiceProvider extends ServiceProvider
 
         User::observe(UserObserver::class);
 
+        Cashier::useCustomerModel(Organisation::class);
         Cashier::useSubscriptionModel(Subscription::class);
 
         Gate::define('viewLogViewer', function ($user) {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Organisation;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Cashier\Subscription as CashierSubscription;
 
@@ -46,5 +47,15 @@ class Subscription extends CashierSubscription
     public function isUnpaid(): bool
     {
         return $this->payment_status === self::PAYMENT_STATUS_UNPAID;
+    }
+
+    /**
+     * Get the Organisation this subscription belongs to.
+     *
+     * @return BelongsTo<Organisation, $this>
+     */
+    public function organisation(): BelongsTo
+    {
+        return $this->belongsTo(Organisation::class);
     }
 }
