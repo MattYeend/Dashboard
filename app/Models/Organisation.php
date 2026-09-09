@@ -75,6 +75,23 @@ class Organisation extends Tenant implements Auditable
     }
 
     /**
+     * Add a user as an active member of the organisation immediately,
+     * bypassing the invitation flow. Used when membership is granted
+     * directly rather than via InvitationService::accept() — e.g. the
+     * organisation's creator, or test/seeder setup.
+     */
+    public function addActiveMember(int $userId, ?int $createdBy = null): void
+    {
+        $this->users()->syncWithoutDetaching([
+            $userId => [
+                'status' => OrganisationMembership::STATUS_ACTIVE,
+                'joined_at' => now(),
+                'created_by' => $createdBy ?? $userId,
+            ],
+        ]);
+    }
+
+    /**
      * Get the user who created this organisation.
      *
      * @return BelongsTo<User, $this>

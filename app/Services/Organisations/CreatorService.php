@@ -43,9 +43,10 @@ class CreatorService
                     'created_by' => $createdBy,
                 ])->save();
 
-                // The creator automatically becomes a member so they can
-                // immediately switch into the organisation they made.
-                $newOrganisation->users()->attach($createdBy);
+                // The creator automatically becomes an active member so
+                // they can immediately switch into the organisation they
+                // made, without going through the invitation flow.
+                $newOrganisation->addActiveMember($createdBy);
 
                 $this->assignCreatorAsAdmin($newOrganisation, $actor);
 

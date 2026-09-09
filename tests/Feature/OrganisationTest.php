@@ -162,7 +162,7 @@ describe('show', function () {
         $admin = $this->adminUser();
 
         $organisation = Organisation::factory()->create();
-        $organisation->users()->attach($admin->id);
+        $organisation->addActiveMember($admin->id);
 
         $this->actingAs($admin)
             ->get("/organisations/{$organisation->id}")
@@ -322,7 +322,7 @@ describe('switching', function () {
         $user = $this->normalUser();
 
         $organisation = Organisation::factory()->create();
-        $organisation->users()->attach($user->id);
+        $organisation->addActiveMember($user->id);
 
         $this->actingAs($user)
             ->post("/organisations/{$organisation->id}/switch")
@@ -360,7 +360,7 @@ describe('no current organisation', function () {
 
         expect($user->organisations()->count())->toBe(0);
 
-        $this->actingAs($user)
+        $this->actingAsWithoutOrganisation($user)
             ->get('/dashboard')
             ->assertRedirect('/organisations/select');
     });
