@@ -7,6 +7,7 @@ use App\Models\Subscription;
 use App\Notifications\PaymentFailedNotification;
 use App\Notifications\PaymentFailedReminderNotification;
 use App\Notifications\PaymentRecoveredNotification;
+use Illuminate\Support\Facades\Notification;
 
 class DunningService
 {
@@ -28,25 +29,28 @@ class DunningService
         $subscription->payment_status = Subscription::PAYMENT_STATUS_PAST_DUE;
         $subscription->save();
 
-        $user = $subscription->user;
+        $organisation = $subscription->organisation;
 
-        if ($user !== null && ! $wasAlreadyFailing) {
-            $user->notify(new PaymentFailedNotification($subscription));
+        if ($organisation !== null && ! $wasAlreadyFailing) {
+            $recipients = $organisation->activeUsers()->wherePivotIn('role', ['owner', 'admin'])->get();
+
+            Notification::send($recipients, new PaymentFailedNotification($subscription));
 
             $reminder = new PaymentFailedReminderNotification($subscription);
             $reminder->delay(now()->addDays(self::REMINDER_DELAY_DAYS));
-            $user->notify($reminder);
+            Notification::send($recipients, $reminder);
         }
 
         Log::log(
             Log::ACTION_SUBSCRIPTION_PAYMENT_FAILED,
             [
                 'subscription_id' => $subscription->id,
+                'organisation_id' => $subscription->organisation_id,
                 'before' => $before,
                 'after' => $subscription->payment_status,
             ],
             null,
-            $subscription->user_id,
+            null,
         );
     }
 
@@ -67,21 +71,24 @@ class DunningService
         $subscription->payment_status = Subscription::PAYMENT_STATUS_CURRENT;
         $subscription->save();
 
-        $user = $subscription->user;
+        $organisation = $subscription->organisation;
 
-        if ($user !== null) {
-            $user->notify(new PaymentRecoveredNotification($subscription));
+        if ($organisation !== null) {
+            $recipients = $organisation->activeUsers()->wherePivotIn('role', ['owner', 'admin'])->get();
+
+            Notification::send($recipients, new PaymentRecoveredNotification($subscription));
         }
 
         Log::log(
             Log::ACTION_SUBSCRIPTION_PAYMENT_RECOVERED,
             [
                 'subscription_id' => $subscription->id,
+                'organisation_id' => $subscription->organisation_id,
                 'before' => $before,
                 'after' => $subscription->payment_status,
             ],
             null,
-            $subscription->user_id,
+            null,
         );
     }
 }

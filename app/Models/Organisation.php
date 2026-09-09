@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Laravel\Cashier\Billable;
 use Spatie\Multitenancy\Models\Tenant;
 
 /**
@@ -21,6 +22,10 @@ use Spatie\Multitenancy\Models\Tenant;
  * @property Carbon|null $restored_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property string|null $stripe_id
+ * @property string|null $pm_type
+ * @property string|null $pm_last_four
+ * @property Carbon|null $trial_ends_at
  */
 #[Fillable([
     'name',
@@ -40,7 +45,8 @@ class Organisation extends Tenant implements Auditable
     /**
      * @use HasFactory<OrganisationFactory>
      */
-    use HasFactory,
+    use Billable,
+        HasFactory,
         SoftDeletes;
 
     /**
@@ -54,6 +60,7 @@ class Organisation extends Tenant implements Auditable
             ->using(OrganisationMembership::class)
             ->withPivot([
                 'status',
+                'role',
                 'invitation_token',
                 'invited_at',
                 'joined_at',
@@ -71,7 +78,22 @@ class Organisation extends Tenant implements Auditable
      */
     public function activeUsers(): BelongsToMany
     {
-        return $this->users()->wherePivot('status', OrganisationMembership::STATUS_ACTIVE);
+        return $this->users()->wherePivot(
+            'status', OrganisationMembership::STATUS_ACTIVE,
+            'role',
+        );
+    }
+
+    /**
+     * Determine whether the given user holds an owner or admin role
+     * within this organisation, and can therefore manage billing.
+     */
+    public function hasBillingRoleFor(User $user): bool
+    {
+        return $this->activeUsers()
+            ->wherePivot('user_id', $user->id)
+            ->wherePivotIn('role', ['owner', 'admin'])
+            ->exists();
     }
 
     /**

@@ -88,6 +88,21 @@ class PolicyAuthorisationService
     }
 
     /**
+ * Determine whether the actor can view billing for the given organisation.
+ */
+public function canViewBilling(User $actor, Organisation $organisation): bool
+{
+    return $this->isAdmin($actor) || $organisation->hasBillingRoleFor($actor);
+}
+
+/**
+ * Determine whether the actor can manage billing for the given organisation.
+ */
+public function canManageBilling(User $actor, Organisation $organisation): bool
+{
+    return $this->canViewBilling($actor, $organisation);
+}
+    /**
      * Determine whether the user can switch into the organisation.
      */
     public function canSwitch(User $actor, Organisation $target): bool

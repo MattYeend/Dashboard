@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Cashier\Billable;
 use Laravel\Fortify\Contracts\PasskeyUser;
 use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -72,8 +71,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements Auditable, MustVerifyEmail, PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
-    use Billable,
-        HasApiTokens,
+    use HasApiTokens,
         HasFactory,
         HasRoles,
         Notifiable,
@@ -152,6 +150,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
             ->using(OrganisationMembership::class)
             ->withPivot([
                 'status',
+                'role',
                 'invitation_token',
                 'invited_at',
                 'joined_at',
