@@ -53,13 +53,13 @@ class Organisation extends Tenant implements Auditable
         return $this->belongsToMany(User::class)
             ->using(OrganisationMembership::class)
             ->withPivot([
-                'status', 
-                'invitation_token', 
-                'invited_at', 
-                'joined_at', 
-                'invited_by', 
-                'created_by', 
-                'updated_by'
+                'status',
+                'invitation_token',
+                'invited_at',
+                'joined_at',
+                'invited_by',
+                'created_by',
+                'updated_by',
             ])
             ->withTimestamps();
     }

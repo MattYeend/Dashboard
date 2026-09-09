@@ -151,13 +151,13 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
         return $this->belongsToMany(Organisation::class)
             ->using(OrganisationMembership::class)
             ->withPivot([
-                'status', 
-                'invitation_token', 
-                'invited_at', 
-                'joined_at', 
-                'invited_by', 
-                'created_by', 
-                'updated_by'
+                'status',
+                'invitation_token',
+                'invited_at',
+                'joined_at',
+                'invited_by',
+                'created_by',
+                'updated_by',
             ])
             ->withTimestamps();
     }

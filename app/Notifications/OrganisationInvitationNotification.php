@@ -2,22 +2,23 @@
 
 namespace App\Notifications;
 
+use App\Models\Organisation;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\URL;
 
 class OrganisationInvitationNotification extends Notification
 {
     use Queueable;
 
     /**
-     * Create a new notification instance.
+     * Inject the invitation context into the notification.
      */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(
+        protected readonly Organisation $organisation,
+        protected readonly string $invitationToken,
+    ) {}
 
     /**
      * Get the notification's delivery channels.
@@ -30,25 +31,21 @@ class OrganisationInvitationNotification extends Notification
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Build the mail representation, using a signed URL so the link
+     * can't be tampered with or replayed after expiry.
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
-    }
+        $url = URL::temporarySignedRoute(
+            'organisations.invitations.accept',
+            now()->addDays(7),
+            ['token' => $this->invitationToken],
+        );
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            //
-        ];
+        return (new MailMessage)
+            ->subject("You've been invited to join {$this->organisation->name}")
+            ->line("You've been invited to join {$this->organisation->name}.")
+            ->action('Accept invitation', $url)
+            ->line('This invitation link expires in 7 days.');
     }
 }

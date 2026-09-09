@@ -12,7 +12,7 @@ class InviteOrganisationMemberRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('invite members');
     }
 
     /**
@@ -23,7 +23,17 @@ class InviteOrganisationMemberRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'email' => $this->emailRules(),
         ];
+    }
+
+    /**
+     * Rules for the invited email address.
+     *
+     * @return array<int, mixed>
+     */
+    protected function emailRules(): array
+    {
+        return ['required', 'email', 'max:255'];
     }
 }
