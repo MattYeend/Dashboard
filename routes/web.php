@@ -68,7 +68,13 @@ Route::get('register/thanks', fn () => Inertia::render('auth/RegisterThanks'))
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/organisations/select', [OrganisationSelectController::class, 'index'])->name('organisations.select');
 
+    Route::get('/organisations/invitations/{token}/accept', [OrganisationController::class, 'acceptInvitation'])
+        ->middleware('signed')
+        ->name('organisations.invitations.accept');
+
     Route::prefix('organisations')->name('organisations.')->group(function () {
+        Route::post('/{organisation}/invitations', [OrganisationController::class, 'invite'])->name('invitations.store');
+        Route::delete('/{organisation}/members/{user}', [OrganisationController::class, 'removeMember'])->name('members.destroy');
         Route::post('/bulk/delete', [OrganisationController::class, 'bulkDelete'])->name('bulk.delete');
         Route::post('/bulk/restore', [OrganisationController::class, 'bulkRestore'])->name('bulk.restore');
         Route::post('/{id}/restore', [OrganisationController::class, 'restore'])->name('restore');

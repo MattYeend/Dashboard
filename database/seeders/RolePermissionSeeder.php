@@ -471,6 +471,9 @@ class RolePermissionSeeder extends Seeder
             'edit organisations',
             'delete organisations',
             'restore organisations',
+            'invite members',
+            'remove organisation members',
+            'view organisation members',
         ];
 
         foreach ($permissions as $permission) {
@@ -825,6 +828,9 @@ class RolePermissionSeeder extends Seeder
             'edit organisations',
             'delete organisations',
             'restore organisations',
+            'invite members',
+            'remove organisation members',
+            'view organisation members',
         ];
         $admin->givePermissionTo($adminPermissions);
 
