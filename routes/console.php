@@ -13,4 +13,7 @@ Schedule::command('logs:prune')->daily();
 
 Schedule::command('invoices:check-overdue')->dailyAt('08:00');
 
-Schedule::command(RunScheduledReports::class)->everyMinute();
+Schedule::command(RunScheduledReports::class)
+    ->dailyAt('07:00')
+    ->withoutOverlapping()
+    ->onOneServer();
