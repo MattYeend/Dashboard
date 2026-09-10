@@ -9,6 +9,9 @@ const isImpersonating = computed(() => Boolean(page.props.isImpersonating));
 const impersonatorName = computed(
     () => page.props.impersonatorName as string | null,
 );
+const impersonatedOrganisationName = computed(
+    () => page.props.impersonatedOrganisationName as string | null,
+);
 
 function returnToOwnAccount(): void {
     router.post(stopImpersonating.url());
@@ -20,7 +23,9 @@ function returnToOwnAccount(): void {
         v-if="isImpersonating"
         class="flex items-center justify-between border-b border-amber-500 px-4 py-2 text-sm text-amber-400"
     >
-        <span>Viewing as this user on behalf of {{ impersonatorName }}.</span>
+        <span>
+            Viewing as this user on behalf of {{ impersonatorName }}, scoped to {{ impersonatedOrganisationName }}.
+        </span>
         <button
             type="button"
             class="rounded border border-amber-500 px-3 py-1 text-amber-400 hover:text-amber-300"

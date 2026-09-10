@@ -88,20 +88,20 @@ class OrganisationPolicy
     }
 
     /**
- * Determine whether the user can view billing for the organisation.
- */
-public function viewBilling(User $user, Organisation $organisation): bool
-{
-    return $this->authorisationService->canViewBilling($user, $organisation);
-}
+     * Determine whether the user can view billing for the organisation.
+     */
+    public function viewBilling(User $user, Organisation $organisation): bool
+    {
+        return $this->authorisationService->canViewBilling($user, $organisation);
+    }
 
-/**
- * Determine whether the user can manage billing for the organisation.
- */
-public function manageBilling(User $user, Organisation $organisation): bool
-{
-    return $this->authorisationService->canManageBilling($user, $organisation);
-}
+    /**
+     * Determine whether the user can manage billing for the organisation.
+     */
+    public function manageBilling(User $user, Organisation $organisation): bool
+    {
+        return $this->authorisationService->canManageBilling($user, $organisation);
+    }
 
     /**
      * Determine whether the user can switch into the organisation.

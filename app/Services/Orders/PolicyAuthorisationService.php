@@ -4,10 +4,13 @@ namespace App\Services\Orders;
 
 use App\Models\Order;
 use App\Models\User;
+use App\Services\Concerns\ChecksOrganisationBoundary;
 use App\Services\UserRoleCheckerService;
 
 class PolicyAuthorisationService
 {
+    use ChecksOrganisationBoundary;
+
     /**
      * Inject the required services into the policy authorisation service.
      */
@@ -70,7 +73,7 @@ class PolicyAuthorisationService
      */
     public function canView(User $actor, Order $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -83,7 +86,7 @@ class PolicyAuthorisationService
      */
     public function canUpdate(User $actor, Order $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -96,7 +99,7 @@ class PolicyAuthorisationService
      */
     public function canDelete(User $actor, Order $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -111,7 +114,7 @@ class PolicyAuthorisationService
         User $actor,
         Order $target
     ): bool {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -124,7 +127,7 @@ class PolicyAuthorisationService
      */
     public function canForceDelete(User $actor, Order $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -136,33 +139,11 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the target user outranks the acting user.
-     *
-     * A Super Admin cannot be managed by anyone other than another Super Admin.
-     */
-    private function targetOutranksActor(User $actor, Order $target): bool
-    {
-        if ($this->roleChecker->isSuperAdmin(
-            $actor
-        )) {
-            return false;
-        }
-
-        $owner = $target->orderable;
-
-        if (! $owner instanceof User) {
-            return false;
-        }
-
-        return $this->roleChecker->isSuperAdmin($owner);
-    }
-
-    /**
      * Determine whether the user can assign the order to another user.
      */
     public function canAssign(User $actor, Order $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -197,5 +178,27 @@ class PolicyAuthorisationService
     public function canExport(User $actor): bool
     {
         return $actor->can('export order');
+    }
+
+    /**
+     * Determine whether the target user outranks the acting user.
+     *
+     * A Super Admin cannot be managed by anyone other than another Super Admin.
+     */
+    private function targetOutranksActor(User $actor, Order $target): bool
+    {
+        if ($this->roleChecker->isSuperAdmin(
+            $actor
+        )) {
+            return false;
+        }
+
+        $owner = $target->orderable;
+
+        if (! $owner instanceof User) {
+            return false;
+        }
+
+        return $this->roleChecker->isSuperAdmin($owner);
     }
 }

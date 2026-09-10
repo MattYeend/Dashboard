@@ -48,7 +48,7 @@ class PolicyAuthorisationService
     {
         return $actor->can('view organisations')
             && $this->activeChecker->isActive($target)
-            && $this->isMemberOrSuperAdmin($actor, $target);
+            && $this->isActiveMember($actor, $target);
     }
 
     /**
@@ -58,7 +58,7 @@ class PolicyAuthorisationService
     {
         return $actor->can('edit organisations')
             && $this->activeChecker->isActive($target)
-            && $this->isMemberOrSuperAdmin($actor, $target);
+            && $this->isActiveMember($actor, $target);
     }
 
     /**
@@ -88,27 +88,32 @@ class PolicyAuthorisationService
     }
 
     /**
- * Determine whether the actor can view billing for the given organisation.
- */
-public function canViewBilling(User $actor, Organisation $organisation): bool
-{
-    return $this->isAdmin($actor) || $organisation->hasBillingRoleFor($actor);
-}
+     * Determine whether the actor can view billing for the given organisation.
+     *
+     * Requires active membership first — admin rank alone does not grant
+     * billing visibility into an organisation the actor doesn't belong to.
+     */
+    public function canViewBilling(User $actor, Organisation $organisation): bool
+    {
+        return $this->isActiveMember($actor, $organisation)
+            && ($this->isAdmin($actor) || $organisation->hasBillingRoleFor($actor));
+    }
 
-/**
- * Determine whether the actor can manage billing for the given organisation.
- */
-public function canManageBilling(User $actor, Organisation $organisation): bool
-{
-    return $this->canViewBilling($actor, $organisation);
-}
+    /**
+     * Determine whether the actor can manage billing for the given organisation.
+     */
+    public function canManageBilling(User $actor, Organisation $organisation): bool
+    {
+        return $this->canViewBilling($actor, $organisation);
+    }
+
     /**
      * Determine whether the user can switch into the organisation.
      */
     public function canSwitch(User $actor, Organisation $target): bool
     {
         return $this->activeChecker->isActive($target)
-            && $this->isMemberOrSuperAdmin($actor, $target);
+            && $this->isActiveMember($actor, $target);
     }
 
     /**
@@ -118,20 +123,18 @@ public function canManageBilling(User $actor, Organisation $organisation): bool
     {
         return $actor->can('remove organisation members')
             && $this->activeChecker->isActive($target)
-            && $this->isMemberOrSuperAdmin($actor, $target);
+            && $this->isActiveMember($actor, $target);
     }
 
-
     /**
-     * Determine whether the actor is a member of the organisation, or a
-     * super admin who can view organisations they don't belong to.
+     * Determine whether the actor holds an active membership in the
+     * given organisation.
+     *
+     * Super admin rank does not bypass this check - organisation
+     * membership is a hard boundary, independent of role rank.
      */
-    private function isMemberOrSuperAdmin(User $actor, Organisation $target): bool
+    private function isActiveMember(User $actor, Organisation $target): bool
     {
-        if ($this->roleChecker->isSuperAdmin($actor)) {
-            return true;
-        }
-
         return $target->users()
             ->wherePivot('status', OrganisationMembership::STATUS_ACTIVE)
             ->whereKey($actor->id)

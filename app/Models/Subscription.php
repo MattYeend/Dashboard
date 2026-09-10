@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Organisation;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Cashier\Subscription as CashierSubscription;
 

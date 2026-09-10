@@ -23,6 +23,7 @@ class ShareImpersonationStatus
         Inertia::share([
             'isImpersonating' => fn () => $this->impersonationService->isImpersonating(),
             'impersonatorName' => fn () => $this->impersonationService->originalActor()?->name,
+            'impersonatedOrganisationName' => fn () => $this->impersonationService->scopedOrganisation()?->name,
         ]);
 
         return $next($request);

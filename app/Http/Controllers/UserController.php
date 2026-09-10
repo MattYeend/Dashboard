@@ -16,6 +16,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class UserController extends Controller
@@ -284,6 +285,11 @@ class UserController extends Controller
      * Start impersonating the specified user.
      *
      * Authorises via the 'impersonate' policy before proceeding.
+     *
+     * ManagementService::start() enforces that the actor and target
+     * share an active organisation membership; a RuntimeException here
+     * means that boundary was violated, so it's surfaced as a 403
+     * rather than allowed to bubble up as an unhandled 500.
      */
     public function impersonate(
         User $user,
@@ -291,7 +297,11 @@ class UserController extends Controller
     ): RedirectResponse {
         $this->authorize('impersonate', $user);
 
-        $this->impersonation->start($request->user(), $user);
+        try {
+            $this->impersonation->start($request->user(), $user);
+        } catch (RuntimeException $e) {
+            abort(403, $e->getMessage());
+        }
 
         return redirect()->route('dashboard');
     }
