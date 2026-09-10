@@ -30,6 +30,8 @@ function submit(): void {
             <InputError :message="form.errors.email" />
         </div>
 
-        <Button type="submit" :disabled="form.processing">Send invitation</Button>
+        <Button type="submit" :disabled="form.processing"
+            >Send invitation</Button
+        >
     </form>
 </template>

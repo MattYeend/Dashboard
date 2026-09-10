@@ -24,7 +24,8 @@ function returnToOwnAccount(): void {
         class="flex items-center justify-between border-b border-amber-500 px-4 py-2 text-sm text-amber-400"
     >
         <span>
-            Viewing as this user on behalf of {{ impersonatorName }}, scoped to {{ impersonatedOrganisationName }}.
+            Viewing as this user on behalf of {{ impersonatorName }}, scoped to
+            {{ impersonatedOrganisationName }}.
         </span>
         <button
             type="button"

@@ -66,7 +66,9 @@ function remove(): void {
             </button>
         </div>
 
-        <p v-if="!members.length" class="text-sm text-gray-400">No members yet.</p>
+        <p v-if="!members.length" class="text-sm text-gray-400">
+            No members yet.
+        </p>
     </div>
 
     <ConfirmDialog
