@@ -4,10 +4,13 @@ namespace App\Services\Addresses;
 
 use App\Models\Address;
 use App\Models\User;
+use App\Services\Concerns\ChecksOrganisationBoundary;
 use App\Services\UserRoleCheckerService;
 
 class PolicyAuthorisationService
 {
+    use ChecksOrganisationBoundary;
+
     /**
      * Inject the required services into the policy authorisation service.
      */
@@ -69,7 +72,7 @@ class PolicyAuthorisationService
      */
     public function canView(User $actor, Address $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -81,7 +84,7 @@ class PolicyAuthorisationService
      */
     public function canUpdate(User $actor, Address $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -93,7 +96,7 @@ class PolicyAuthorisationService
      */
     public function canDelete(User $actor, Address $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -105,7 +108,7 @@ class PolicyAuthorisationService
      */
     public function canRestore(User $actor, Address $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -118,7 +121,7 @@ class PolicyAuthorisationService
      */
     public function canForceDelete(User $actor, Address $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 

@@ -156,7 +156,7 @@ class PolicyAuthorisationService
      */
     public function canChangeStatus(User $actor, Order $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 

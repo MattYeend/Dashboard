@@ -4,10 +4,13 @@ namespace App\Services\Reports;
 
 use App\Models\Report;
 use App\Models\User;
+use App\Services\Concerns\ChecksOrganisationBoundary;
 use App\Services\UserRoleCheckerService;
 
 class PolicyAuthorisationService
 {
+    use ChecksOrganisationBoundary;
+
     /**
      * Inject the required services into the policy authorisation service.
      */
@@ -43,13 +46,13 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can view the given report.
      */
-    public function canView(User $actor, Report $report): bool
+    public function canView(User $actor, Report $target): bool
     {
-        if ($this->targetOutranksActor($actor, $report)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
-        return $actor->can('view reports') && $this->activeChecker->isActive($report);
+        return $actor->can('view reports') && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -63,25 +66,25 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can update the given report.
      */
-    public function canUpdate(User $actor, Report $report): bool
+    public function canUpdate(User $actor, Report $target): bool
     {
-        if ($this->targetOutranksActor($actor, $report)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
-        return $actor->can('edit reports') && $this->activeChecker->canBeModified($report);
+        return $actor->can('edit reports') && $this->activeChecker->canBeModified($target);
     }
 
     /**
      * Determine whether the user can delete the given report.
      */
-    public function canDelete(User $actor, Report $report): bool
+    public function canDelete(User $actor, Report $target): bool
     {
-        if ($this->targetOutranksActor($actor, $report)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
-        return $actor->can('delete reports') && $this->activeChecker->canBeModified($report);
+        return $actor->can('delete reports') && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -91,13 +94,13 @@ class PolicyAuthorisationService
      * the 'delete reports' permission - a user who can delete a report
      * can also undo that deletion.
      */
-    public function canRestore(User $actor, Report $report): bool
+    public function canRestore(User $actor, Report $target): bool
     {
-        if ($this->targetOutranksActor($actor, $report)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
-        return $actor->can('delete reports') && $this->activeChecker->canBeRestoredOrForceDeleted($report);
+        return $actor->can('delete reports') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
@@ -106,13 +109,13 @@ class PolicyAuthorisationService
      * There is no separate 'force delete reports' permission, so this
      * relies on admin status plus the report being in a trashed state.
      */
-    public function canForceDelete(User $actor, Report $report): bool
+    public function canForceDelete(User $actor, Report $target): bool
     {
-        if ($this->targetOutranksActor($actor, $report)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
-        return $this->activeChecker->canUserPerformAction($actor, 'restoreOrForceDelete', $report);
+        return $this->activeChecker->canUserPerformAction($actor, 'restoreOrForceDelete', $target);
     }
 
     /**

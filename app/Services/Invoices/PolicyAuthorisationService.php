@@ -4,10 +4,13 @@ namespace App\Services\Invoices;
 
 use App\Models\Invoice;
 use App\Models\User;
+use App\Services\Concerns\ChecksOrganisationBoundary;
 use App\Services\UserRoleCheckerService;
 
 class PolicyAuthorisationService
 {
+    use ChecksOrganisationBoundary;
+
     /**
      * Inject the required services into the policy authorisation service.
      */
@@ -69,7 +72,7 @@ class PolicyAuthorisationService
      */
     public function canView(User $actor, Invoice $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -98,7 +101,7 @@ class PolicyAuthorisationService
      */
     public function canDelete(User $actor, Invoice $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -111,7 +114,7 @@ class PolicyAuthorisationService
      */
     public function canRestore(User $actor, Invoice $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -124,7 +127,7 @@ class PolicyAuthorisationService
      */
     public function canForceDelete(User $actor, Invoice $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -140,7 +143,7 @@ class PolicyAuthorisationService
      */
     public function canSend(User $actor, Invoice $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -153,7 +156,7 @@ class PolicyAuthorisationService
      */
     public function canMarkAsPaid(User $actor, Invoice $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -166,7 +169,7 @@ class PolicyAuthorisationService
      */
     public function canMarkAsUnpaid(User $actor, Invoice $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -179,7 +182,7 @@ class PolicyAuthorisationService
      */
     public function canChangeStatus(User $actor, Invoice $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -208,7 +211,7 @@ class PolicyAuthorisationService
      */
     public function canAssign(User $actor, Invoice $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 

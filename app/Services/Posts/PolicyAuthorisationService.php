@@ -4,10 +4,13 @@ namespace App\Services\Posts;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Services\Concerns\ChecksOrganisationBoundary;
 use App\Services\UserRoleCheckerService;
 
 class PolicyAuthorisationService
 {
+    use ChecksOrganisationBoundary;
+
     /**
      * Inject the required services into the policy authorisation service.
      */
@@ -69,7 +72,7 @@ class PolicyAuthorisationService
      */
     public function canView(User $actor, Post $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -82,7 +85,7 @@ class PolicyAuthorisationService
      */
     public function canUpdate(User $actor, Post $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -95,7 +98,7 @@ class PolicyAuthorisationService
      */
     public function canDelete(User $actor, Post $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -108,7 +111,7 @@ class PolicyAuthorisationService
      */
     public function canRestore(User $actor, Post $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -121,7 +124,7 @@ class PolicyAuthorisationService
      */
     public function canForceDelete(User $actor, Post $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 

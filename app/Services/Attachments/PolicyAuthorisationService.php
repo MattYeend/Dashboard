@@ -4,10 +4,13 @@ namespace App\Services\Attachments;
 
 use App\Models\Attachment;
 use App\Models\User;
+use App\Services\Concerns\ChecksOrganisationBoundary;
 use App\Services\UserRoleCheckerService;
 
 class PolicyAuthorisationService
 {
+    use ChecksOrganisationBoundary;
+
     /**
      * Inject the required services into the policy authorisation service.
      */
@@ -33,7 +36,9 @@ class PolicyAuthorisationService
      */
     public function canDownload(User $actor, Attachment $target): bool
     {
-        return $actor->can('download attachments') && $this->activeChecker->isActive($target);
+        return $this->belongsToCurrentOrganisation($target)
+            && $actor->can('download attachments')
+            && $this->activeChecker->isActive($target);
     }
 
     /**
@@ -41,7 +46,9 @@ class PolicyAuthorisationService
      */
     public function canDelete(User $actor, Attachment $target): bool
     {
-        return $actor->can('delete attachments') && $this->activeChecker->canBeModified($target);
+        return $this->belongsToCurrentOrganisation($target)
+            && $actor->can('delete attachments')
+            && $this->activeChecker->canBeModified($target);
     }
 
     /**
@@ -49,7 +56,9 @@ class PolicyAuthorisationService
      */
     public function canRestore(User $actor, Attachment $target): bool
     {
-        return $actor->can('restore attachments') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $this->belongsToCurrentOrganisation($target)
+            && $actor->can('restore attachments')
+            && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
     /**
@@ -58,10 +67,11 @@ class PolicyAuthorisationService
      */
     public function canForceDelete(User $actor, Attachment $target): bool
     {
-        return $this->activeChecker->canUserPerformAction(
-            $actor,
-            'restoreOrForceDelete',
-            $target
-        );
+        return $this->belongsToCurrentOrganisation($target)
+            && $this->activeChecker->canUserPerformAction(
+                $actor,
+                'restoreOrForceDelete',
+                $target
+            );
     }
 }

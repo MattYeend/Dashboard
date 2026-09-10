@@ -4,10 +4,13 @@ namespace App\Services\InteractionLogs;
 
 use App\Models\InteractionLog;
 use App\Models\User;
+use App\Services\Concerns\ChecksOrganisationBoundary;
 use App\Services\UserRoleCheckerService;
 
 class PolicyAuthorisationService
 {
+    use ChecksOrganisationBoundary;
+
     public function __construct(
         private readonly UserRoleCheckerService $userRoleCheckerService,
     ) {}
@@ -39,9 +42,9 @@ class PolicyAuthorisationService
     /**
      * Determine whether the actor can update the given interaction log.
      */
-    public function canUpdate(User $user, InteractionLog $interactionLog): bool
+    public function canUpdate(User $user, InteractionLog $target): bool
     {
-        if ($this->targetOutranksActor($user, $interactionLog)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($user, $target)) {
             return false;
         }
 
@@ -51,9 +54,9 @@ class PolicyAuthorisationService
     /**
      * Determine whether the actor can delete the given interaction log.
      */
-    public function canDelete(User $user, InteractionLog $interactionLog): bool
+    public function canDelete(User $user, InteractionLog $target): bool
     {
-        if ($this->targetOutranksActor($user, $interactionLog)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($user, $target)) {
             return false;
         }
 
@@ -63,9 +66,9 @@ class PolicyAuthorisationService
     /**
      * Determine whether the actor can permanently delete the given interaction log.
      */
-    public function canForceDelete(User $user, InteractionLog $interactionLog): bool
+    public function canForceDelete(User $user, InteractionLog $target): bool
     {
-        if ($this->targetOutranksActor($user, $interactionLog)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($user, $target)) {
             return false;
         }
 

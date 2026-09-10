@@ -4,10 +4,13 @@ namespace App\Services\InvoiceItems;
 
 use App\Models\InvoiceItem;
 use App\Models\User;
+use App\Services\Concerns\ChecksOrganisationBoundary;
 use App\Services\UserRoleCheckerService;
 
 class PolicyAuthorisationService
 {
+    use ChecksOrganisationBoundary;
+
     /**
      * Inject the required services into the policy authorisation service.
      */
@@ -69,7 +72,7 @@ class PolicyAuthorisationService
      */
     public function canView(User $actor, InvoiceItem $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -81,7 +84,7 @@ class PolicyAuthorisationService
      */
     public function canUpdate(User $actor, InvoiceItem $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -93,7 +96,7 @@ class PolicyAuthorisationService
      */
     public function canDelete(User $actor, InvoiceItem $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -105,7 +108,7 @@ class PolicyAuthorisationService
      */
     public function canRestore(User $actor, InvoiceItem $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
@@ -117,7 +120,7 @@ class PolicyAuthorisationService
      */
     public function canForceDelete(User $actor, InvoiceItem $target): bool
     {
-        if ($this->targetOutranksActor($actor, $target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 

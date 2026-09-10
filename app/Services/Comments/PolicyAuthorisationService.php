@@ -4,10 +4,13 @@ namespace App\Services\Comments;
 
 use App\Models\Comment;
 use App\Models\User;
+use App\Services\Concerns\ChecksOrganisationBoundary;
 use App\Services\UserRoleCheckerService;
 
 class PolicyAuthorisationService
 {
+    use ChecksOrganisationBoundary;
+
     /**
      * Inject the required services into the policy authorisation service.
      */
@@ -111,7 +114,8 @@ class PolicyAuthorisationService
      */
     public function canUpdate(User $actor, Comment $comment): bool
     {
-        return $actor->id === $comment->created_by
+        return $this->belongsToCurrentOrganisation($comment)
+            && $actor->id === $comment->created_by
             && $this->activeChecker->canBeModified($comment);
     }
 
@@ -120,6 +124,10 @@ class PolicyAuthorisationService
      */
     public function canDelete(User $actor, Comment $comment): bool
     {
+        if (! $this->belongsToCurrentOrganisation($comment)) {
+            return false;
+        }
+
         if ($actor->id === $comment->created_by) {
             return $this->activeChecker->canBeModified($comment);
         }
