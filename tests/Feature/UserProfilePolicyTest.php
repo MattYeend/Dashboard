@@ -9,7 +9,7 @@ uses(
     CreatesUsers::class,
 );
 
-describe('viewOwnProfile', function () {
+describe('view own profile', function () {
     test('a normal user can view their own profile', function () {
         $user = $this->normalUser();
         $policy = app(UserPolicy::class);
@@ -33,7 +33,7 @@ describe('viewOwnProfile', function () {
     });
 });
 
-describe('editOwnProfile', function () {
+describe('edit own profile', function () {
     test('a normal user can edit their own profile', function () {
         $user = $this->normalUser();
         $policy = app(UserPolicy::class);
@@ -57,7 +57,7 @@ describe('editOwnProfile', function () {
     });
 });
 
-describe('deleteOwnProfile', function () {
+describe('delete own profile', function () {
     test('a normal user can delete their own profile', function () {
         $user = $this->normalUser();
         $policy = app(UserPolicy::class);
@@ -81,7 +81,7 @@ describe('deleteOwnProfile', function () {
     });
 });
 
-describe('changeOwnPassword', function () {
+describe('change own password', function () {
     test('a normal user can change their own password', function () {
         $user = $this->normalUser();
         $policy = app(UserPolicy::class);
@@ -105,7 +105,7 @@ describe('changeOwnPassword', function () {
     });
 });
 
-describe('viewOtherProfile', function () {
+describe('view other profile', function () {
     test('an admin can view another user\'s profile', function () {
         $admin = $this->adminUser();
         $other = $this->normalUser();
