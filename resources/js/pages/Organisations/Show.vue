@@ -4,17 +4,24 @@ import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import OrganisationAuditDetails from '@/pages/Organisations/components/OrganisationAuditDetails.vue';
 import OrganisationBasicDetails from '@/pages/Organisations/components/OrganisationBasicDetails.vue';
+import OrganisationMembersList from '@/pages/Organisations/components/OrganisationMembersList.vue';
 import {
     edit as organisationsEdit,
     destroy as organisationsDestroy,
     index as organisationsIndex,
 } from '@/routes/organisations';
-import type { Organisation, PermissionsMeta } from '@/types';
+import type {
+    Organisation,
+    OrganisationMembership,
+    PermissionsMeta,
+} from '@/types';
 
 interface Props {
     organisation: Organisation;
     permissions_meta: PermissionsMeta;
     can_switch: boolean;
+    can_remove_member: boolean;
+    members: OrganisationMembership[];
 }
 
 const props = defineProps<Props>();
@@ -94,6 +101,11 @@ function switchToOrganisation(): void {
 
             <div class="space-y-6">
                 <OrganisationBasicDetails :organisation="organisation" />
+                <OrganisationMembersList
+                    :organisation-id="organisation.id"
+                    :members="members"
+                    :can-remove="can_remove_member"
+                />
                 <OrganisationAuditDetails :organisation="organisation" />
             </div>
         </div>

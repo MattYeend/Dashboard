@@ -74,15 +74,9 @@ class CreatorService
         $registrar = app(PermissionRegistrar::class);
         $previousTeamId = $registrar->getPermissionsTeamId();
 
-        $actor->unsetRelation('roles')->unsetRelation('permissions');
-        $rolesToAssign = $actor->getRoleNames()->all();
-
         $registrar->setPermissionsTeamId($organisation->id);
         $actor->unsetRelation('roles')->unsetRelation('permissions');
-
-        if ($rolesToAssign !== []) {
-            $actor->assignRole($rolesToAssign);
-        }
+        $actor->assignRole('Admin');
 
         $registrar->setPermissionsTeamId($previousTeamId);
         $actor->unsetRelation('roles')->unsetRelation('permissions');

@@ -7,11 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
-import type {
-    Pagination as PaginationMeta,
-    ReportPermissionsMeta,
-    Report,
-} from '@/types';
 import {
     index as reportsIndex,
     show as reportsShow,
@@ -21,6 +16,11 @@ import {
     exportMethod as reportsExport,
 } from '@/routes/reports';
 import reportsBulk from '@/routes/reports/bulk';
+import type {
+    Pagination as PaginationMeta,
+    ReportPermissionsMeta,
+    Report,
+} from '@/types';
 
 interface Props {
     reports: {

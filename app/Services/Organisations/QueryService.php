@@ -42,12 +42,20 @@ class QueryService
      *
      * @return array<string, mixed>
      */
-    public function getById(User $user, int $id, bool $withTrashed = false): array
+    /**
+     * Get a single organisation's formatted data, given an
+     * already-resolved model (via route-model binding in the
+     * controller, avoiding a second lookup query for the same row).
+     *
+     * @return array<string, mixed>
+     */
+    public function getById(User $user, Organisation $organisation): array
     {
-        $organisation = $this->findOrganisation($id, $withTrashed);
+        $organisation->loadMissing(['creator', 'updater', 'deleter', 'restorer']);
 
         return array_merge(
             ['organisation' => $this->formatterService->format($organisation)],
+            ['members' => $this->formatterService->formatMembers($organisation)],
             $this->getPermissions($user),
             $this->baseData(),
         );
@@ -125,20 +133,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find an organisation by ID with optional trashed records.
-     */
-    private function findOrganisation(int $id, bool $withTrashed = false): Organisation
-    {
-        $query = Organisation::query()->with(['creator', 'updater', 'deleter', 'restorer']);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

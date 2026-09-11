@@ -72,14 +72,14 @@ class OrganisationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, int $id): Response
+    public function show(Request $request, Organisation $organisation): Response
     {
-        $organisation = Organisation::findOrFail($id);
         $this->authorize('view', $organisation);
 
-        $data = $this->query->getById($request->user(), $id);
+        $data = $this->query->getById($request->user(), $organisation);
 
         $data['can_switch'] = $request->user()->can('switch', $organisation);
+        $data['can_remove_member'] = $request->user()->can('removeMember', $organisation);
 
         return Inertia::render('Organisations/Show', $data);
     }
@@ -87,12 +87,11 @@ class OrganisationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request, int $id): Response
+    public function edit(Request $request, Organisation $organisation): Response
     {
-        $organisation = Organisation::findOrFail($id);
         $this->authorize('update', $organisation);
 
-        $data = $this->query->getById($request->user(), $id);
+        $data = $this->query->getById($request->user(), $organisation);
 
         return Inertia::render('Organisations/Edit', $data);
     }
