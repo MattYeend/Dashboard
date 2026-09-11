@@ -118,4 +118,12 @@ class OrganisationPolicy
     {
         return $this->authorisationService->canRemoveMember($user, $organisation);
     }
+
+    /**
+     * Determine whether the user can invite members into the organisation.
+     */
+    public function invite(User $user, Organisation $organisation): bool
+    {
+        return $this->authorisationService->canInvite($user, $organisation);
+    }
 }

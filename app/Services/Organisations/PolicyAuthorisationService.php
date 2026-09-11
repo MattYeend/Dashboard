@@ -127,6 +127,16 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can invite members into the organisation.
+     */
+    public function canInvite(User $actor, Organisation $target): bool
+    {
+        return $actor->can('invite members')
+            && $this->activeChecker->isActive($target)
+            && $this->isActiveMember($actor, $target);
+    }
+
+    /**
      * Determine whether the actor holds an active membership in the
      * given organisation.
      *

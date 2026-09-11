@@ -214,6 +214,8 @@ class OrganisationController extends Controller
      */
     public function invite(InviteOrganisationMemberRequest $request, Organisation $organisation): RedirectResponse|JsonResponse
     {
+        $this->authorize('invite', $organisation);
+
         $this->invitations->invite($organisation, $request->validated()['email'], $request->user());
 
         if ($request->wantsJson()) {
