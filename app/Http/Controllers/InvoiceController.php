@@ -103,7 +103,7 @@ class InvoiceController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $invoice->id
+            $invoice
         );
 
         return Inertia::render('Invoices/Show', $data);
@@ -123,7 +123,7 @@ class InvoiceController extends Controller
         $data = array_merge(
             $this->query->getById(
                 $request->user(),
-                $invoice->id
+                $invoice
             ),
             $this->query->getFormData()
         );

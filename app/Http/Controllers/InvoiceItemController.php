@@ -112,7 +112,7 @@ class InvoiceItemController extends Controller
         $data = $this->query->getById(
             $request->user(),
             $invoice,
-            $invoiceItem->id
+            $invoiceItem
         );
 
         return Inertia::render('InvoiceItems/Show', $data);
@@ -134,7 +134,7 @@ class InvoiceItemController extends Controller
             $this->query->getById(
                 $request->user(),
                 $invoice,
-                $invoiceItem->id
+                $invoiceItem
             ),
             $this->query->getFormData($invoice)
         );

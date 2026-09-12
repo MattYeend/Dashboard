@@ -107,7 +107,7 @@ class ContactController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $contact->id
+            $contact
         );
 
         $data['activity_permissions_meta'] = [
@@ -135,7 +135,7 @@ class ContactController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $contact->id
+            $contact
         );
 
         return Inertia::render('Contacts/Edit', $data);

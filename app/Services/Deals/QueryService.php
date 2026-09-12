@@ -48,15 +48,20 @@ class QueryService
     /**
      * Get a single deal by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $deal = $this->findDeal(
-            $id,
-            $withTrashed
-        );
+    public function getById(User $user, Deal $deal): array
+    {
+        $deal->loadMissing([
+            'pipeline',
+            'stage',
+            'status',
+            'company',
+            'invoice',
+            'tags',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             ['deal' => $this->formatterService->format($deal)],
@@ -161,33 +166,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a deal by ID with optional trashed records.
-     */
-    private function findDeal(
-        int $id,
-        bool $withTrashed = false
-    ): Deal {
-        $query = Deal::query()->with([
-            'pipeline',
-            'stage',
-            'status',
-            'company',
-            'invoice',
-            'tags',
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

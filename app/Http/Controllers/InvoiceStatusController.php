@@ -100,7 +100,7 @@ class InvoiceStatusController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $invoiceStatus->id
+            $invoiceStatus
         );
 
         return Inertia::render('InvoiceStatuses/Show', $data);
@@ -115,7 +115,10 @@ class InvoiceStatusController extends Controller
     {
         $this->authorize('update', $invoiceStatus);
 
-        $data = $this->query->getById($request->user(), $invoiceStatus->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $invoiceStatus
+        );
 
         return Inertia::render('InvoiceStatuses/Edit', $data);
     }

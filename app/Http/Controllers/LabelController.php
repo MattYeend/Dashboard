@@ -99,7 +99,7 @@ class LabelController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $label->id
+            $label
         );
 
         return Inertia::render('Labels/Show', $data);
@@ -118,7 +118,7 @@ class LabelController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $label->id
+            $label
         );
 
         return Inertia::render('Labels/Edit', $data);

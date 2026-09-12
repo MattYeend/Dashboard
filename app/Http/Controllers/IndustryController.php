@@ -99,7 +99,7 @@ class IndustryController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $industry->id
+            $industry
         );
 
         return Inertia::render('Industries/Show', $data);
@@ -118,7 +118,7 @@ class IndustryController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $industry->id
+            $industry
         );
 
         return Inertia::render('Industries/Edit', $data);

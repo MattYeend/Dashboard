@@ -42,16 +42,8 @@ class QueryService
     /**
      * Get a single dealStatus by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $dealStatus = $this->findTaskStatus(
-            $id,
-            $withTrashed
-        );
-
+    public function getById(User $user, DealStatus $dealStatus): array
+    {
         return array_merge(
             ['dealStatus' => $this->formatterService->format($dealStatus)],
             $this->getPermissions($user),
@@ -128,22 +120,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a dealStatus by ID with optional trashed records.
-     */
-    private function findTaskStatus(
-        int $id,
-        bool $withTrashed = false
-    ): DealStatus {
-        $query = DealStatus::query();
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

@@ -34,7 +34,10 @@ class InteractionLogController extends Controller
             ], 201);
         }
 
-        return redirect()->back()->with('success', 'Interaction logged successfully.');
+        return redirect()->back()->with(
+            'success',
+            'Interaction logged successfully.'
+        );
     }
 
     /**
@@ -59,34 +62,54 @@ class InteractionLogController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, InteractionLog $interactionLog): JsonResponse|RedirectResponse
-    {
+    public function destroy(
+        Request $request,
+        InteractionLog $interactionLog
+    ): JsonResponse|RedirectResponse {
         $this->authorize('delete', $interactionLog);
 
-        $this->managementService->delete($interactionLog, $request->user());
+        $this->managementService->delete(
+            $interactionLog,
+            $request->user()
+        );
 
         if ($request->wantsJson()) {
-            return response()->json(['message' => 'Interaction log deleted successfully.']);
+            return response()->json([
+                'message' => 'Interaction log deleted successfully.',
+            ]);
         }
 
-        return redirect()->back()->with('success', 'Interaction log deleted successfully.');
+        return redirect()->back()->with(
+            'success',
+            'Interaction log deleted successfully.'
+        );
     }
 
     /**
      * Permanently remove the specified resource from storage.
      */
-    public function forceDelete(Request $request, int $id): JsonResponse|RedirectResponse
-    {
+    public function forceDelete(
+        Request $request,
+        int $id
+    ): JsonResponse|RedirectResponse {
         $interactionLog = InteractionLog::onlyTrashed()->findOrFail($id);
 
         $this->authorize('forceDelete', $interactionLog);
 
-        $this->managementService->forceDelete($interactionLog, $request->user());
+        $this->managementService->forceDelete(
+            $interactionLog,
+            $request->user()
+        );
 
         if ($request->wantsJson()) {
-            return response()->json(['message' => 'Interaction log permanently deleted.']);
+            return response()->json([
+                'message' => 'Interaction log permanently deleted.',
+            ]);
         }
 
-        return redirect()->back()->with('success', 'Interaction log permanently deleted.');
+        return redirect()->back()->with(
+            'success',
+            'Interaction log permanently deleted.'
+        );
     }
 }

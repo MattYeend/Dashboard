@@ -44,15 +44,15 @@ class QueryService
     /**
      * Get a single invoice by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $invoice = $this->findInvoice(
-            $id,
-            $withTrashed
-        );
+    public function getById(User $user, Invoice $invoice): array
+    {
+        $invoice->loadMissing([
+            'company',
+            'contact',
+            'order',
+            'status',
+            'items' => fn ($query) => $query->orderBy('position'),
+        ]);
 
         return array_merge(
             ['invoice' => $this->formatterService->format($invoice)],
@@ -154,28 +154,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find an invoice by ID with optional trashed records.
-     */
-    private function findInvoice(
-        int $id,
-        bool $withTrashed = false
-    ): Invoice {
-        $query = Invoice::query()->with([
-            'company',
-            'contact',
-            'order',
-            'status',
-            'items' => fn ($query) => $query->orderBy('position'),
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

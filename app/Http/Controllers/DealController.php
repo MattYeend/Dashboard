@@ -108,7 +108,7 @@ class DealController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $deal->id
+            $deal
         );
 
         $data['activity_permissions_meta'] = [
@@ -135,7 +135,10 @@ class DealController extends Controller
         $this->authorize('update', $deal);
 
         $data = array_merge(
-            $this->query->getById($request->user(), $deal->id),
+            $this->query->getById(
+                $request->user(),
+                $deal
+            ),
             $this->query->getFormData()
         );
 

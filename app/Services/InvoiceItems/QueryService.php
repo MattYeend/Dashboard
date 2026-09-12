@@ -48,18 +48,8 @@ class QueryService
     /**
      * Get a single invoice item by ID, scoped to its parent invoice.
      */
-    public function getById(
-        User $user,
-        Invoice $invoice,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $invoiceItem = $this->findInvoiceItem(
-            $invoice,
-            $id,
-            $withTrashed
-        );
-
+    public function getById(User $user, Invoice $invoice, InvoiceItem $invoiceItem): array
+    {
         return array_merge(
             ['item' => $this->formatterService->format($invoiceItem)],
             $this->getPermissions($user),
@@ -151,23 +141,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find an invoice item by ID, scoped to its parent invoice.
-     */
-    private function findInvoiceItem(
-        Invoice $invoice,
-        int $id,
-        bool $withTrashed = false
-    ): InvoiceItem {
-        $query = $invoice->items()->getQuery();
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

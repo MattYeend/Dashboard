@@ -100,7 +100,7 @@ class DealStatusController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $dealStatus->id
+            $dealStatus
         );
 
         return Inertia::render('DealStatuses/Show', $data);
@@ -115,7 +115,10 @@ class DealStatusController extends Controller
     {
         $this->authorize('update', $dealStatus);
 
-        $data = $this->query->getById($request->user(), $dealStatus->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $dealStatus
+        );
 
         return Inertia::render('DealStatuses/Edit', $data);
     }

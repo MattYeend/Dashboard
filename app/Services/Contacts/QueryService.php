@@ -44,12 +44,16 @@ class QueryService
     /**
      * Get a single contact by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $contact = $this->findContact($id, $withTrashed);
+    public function getById(User $user, Contact $contact): array
+    {
+        $contact->loadMissing([
+            'contactable',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'tags',
+        ]);
 
         return array_merge(
             ['contact' => $this->formatterService->format($contact)],
@@ -149,29 +153,6 @@ class QueryService
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
             'contactableTypes' => $this->registry->types(),
         ];
-    }
-
-    /**
-     * Find a contact by ID with optional trashed records.
-     */
-    private function findContact(
-        int $id,
-        bool $withTrashed = false
-    ): Contact {
-        $query = Contact::query()->with([
-            'contactable',
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-            'tags',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

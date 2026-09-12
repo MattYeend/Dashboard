@@ -42,16 +42,8 @@ class QueryService
     /**
      * Get a single invoiceStatus by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $invoiceStatus = $this->findTaskStatus(
-            $id,
-            $withTrashed
-        );
-
+    public function getById(User $user, InvoiceStatus $invoiceStatus): array
+    {
         return array_merge(
             ['invoiceStatus' => $this->formatterService->format($invoiceStatus)],
             $this->getPermissions($user),
@@ -128,22 +120,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a invoiceStatus by ID with optional trashed records.
-     */
-    private function findTaskStatus(
-        int $id,
-        bool $withTrashed = false
-    ): InvoiceStatus {
-        $query = InvoiceStatus::query();
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

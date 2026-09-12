@@ -42,15 +42,14 @@ class QueryService
     /**
      * Get a single industry by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $industry = $this->findIndustry(
-            $id,
-            $withTrashed
-        );
+    public function getById(User $user, Industry $industry): array
+    {
+        $industry->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             ['industry' => $this->formatterService->format($industry)],
@@ -145,27 +144,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find an industry by ID with optional trashed records.
-     */
-    private function findIndustry(
-        int $id,
-        bool $withTrashed = false
-    ): Industry {
-        $query = Industry::query()->with([
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

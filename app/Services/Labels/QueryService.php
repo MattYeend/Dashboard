@@ -42,15 +42,14 @@ class QueryService
     /**
      * Get a single label by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $label = $this->findLabel(
-            $id,
-            $withTrashed
-        );
+    public function getById(User $user, Label $label): array
+    {
+        $label->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             ['label' => $this->formatterService->format($label)],
@@ -143,27 +142,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find an label by ID with optional trashed records.
-     */
-    private function findLabel(
-        int $id,
-        bool $withTrashed = false
-    ): Label {
-        $query = Label::query()->with([
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**
