@@ -62,7 +62,9 @@ class PostController extends Controller
     {
         $this->authorize('create', Post::class);
 
-        return Inertia::render('Posts/Create', $this->query->getFormData());
+        $data = $this->query->getFormData();
+
+        return Inertia::render('Posts/Create', $data);
     }
 
     /**

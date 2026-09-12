@@ -68,7 +68,9 @@ class TicketController extends Controller
     {
         $this->authorize('create', Ticket::class);
 
-        return Inertia::render('Tickets/Create', $this->query->getFormData());
+        $data = $this->query->getFormData();
+
+        return Inertia::render('Tickets/Create', $data);
     }
 
     /**

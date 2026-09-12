@@ -76,8 +76,14 @@ class QueryService
                 'background_colour',
                 'text_colour',
             ]),
-            'tags' => Tag::orderBy('name')->get(['id', 'name']),
-            'users' => User::orderBy('name')->get(['id', 'name']),
+            'tags' => Tag::orderBy('name')->get([
+                'id',
+                'name',
+            ]),
+            'users' => User::orderBy('name')->get([
+                'id',
+                'name',
+            ]),
         ];
     }
 

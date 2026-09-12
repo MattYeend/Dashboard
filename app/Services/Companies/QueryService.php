@@ -76,9 +76,18 @@ class QueryService
     public function getFormData(): array
     {
         return [
-            'industries' => Industry::orderBy('title')->get(['id', 'title']),
-            'tags' => Tag::orderBy('name')->get(['id', 'name']),
-            'users' => User::orderBy('name')->get(['id', 'name']),
+            'industries' => Industry::orderBy('title')->get([
+                'id',
+                'title',
+            ]),
+            'tags' => Tag::orderBy('name')->get([
+                'id',
+                'name',
+            ]),
+            'users' => User::orderBy('name')->get([
+                'id',
+                'name',
+            ]),
         ];
     }
 

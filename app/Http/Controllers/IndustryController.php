@@ -62,7 +62,9 @@ class IndustryController extends Controller
     {
         $this->authorize('create', Industry::class);
 
-        return Inertia::render('Industries/Create', $this->query->getFormData());
+        $data = $this->query->getFormData();
+
+        return Inertia::render('Industries/Create', $data);
     }
 
     /**

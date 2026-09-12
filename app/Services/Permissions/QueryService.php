@@ -74,7 +74,10 @@ class QueryService
     public function getFormData(): array
     {
         return [
-            'roles' => Role::orderBy('name')->get(['id', 'name']),
+            'roles' => Role::orderBy('name')->get([
+                'id',
+                'name',
+            ]),
         ];
     }
 

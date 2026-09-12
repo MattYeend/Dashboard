@@ -64,7 +64,9 @@ class OrderController extends Controller
     {
         $this->authorize('create', Order::class);
 
-        return Inertia::render('Orders/Create', $this->query->getFormData());
+        $data = $this->query->getFormData();
+
+        return Inertia::render('Orders/Create', $data);
     }
 
     /**

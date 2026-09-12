@@ -78,10 +78,22 @@ class QueryService
     public function getFormData(): array
     {
         return [
-            'ticket_statuses' => TicketStatus::orderBy('title')->get(['id', 'title']),
-            'ticket_priorities' => TicketPriority::orderBy('title')->get(['id', 'title']),
-            'users' => User::orderBy('name')->get(['id', 'name']),
-            'labels' => Label::orderBy('name')->get(['id', 'name']),
+            'ticket_statuses' => TicketStatus::orderBy('title')->get([
+                'id',
+                'title',
+            ]),
+            'ticket_priorities' => TicketPriority::orderBy('title')->get([
+                'id',
+                'title',
+            ]),
+            'users' => User::orderBy('name')->get([
+                'id',
+                'name',
+            ]),
+            'labels' => Label::orderBy('name')->get([
+                'id',
+                'name',
+            ]),
         ];
     }
 

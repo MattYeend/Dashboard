@@ -67,10 +67,9 @@ class InvoiceItemController extends Controller
     {
         $this->authorize('create', InvoiceItem::class);
 
-        return Inertia::render(
-            'InvoiceItems/Create',
-            $this->query->getFormData($invoice)
-        );
+        $data = $this->query->getFormData($invoice);
+
+        return Inertia::render('InvoiceItems/Create', $data);
     }
 
     /**

@@ -62,7 +62,9 @@ class PlanController extends Controller
     {
         $this->authorize('create', Plan::class);
 
-        return Inertia::render('Plans/Create', $this->query->getFormData());
+        $data = $this->query->getFormData();
+
+        return Inertia::render('Plans/Create', $data);
     }
 
     /**

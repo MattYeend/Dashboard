@@ -62,7 +62,7 @@ class NotificationBroadcastController extends Controller
     {
         $this->authorize('create', NotificationBroadcast::class);
 
-        return Inertia::render('NotificationBroadcasts/Create', $this->query->getFormData());
+        return Inertia::render('NotificationBroadcasts/Create');
     }
 
     /**
@@ -117,12 +117,9 @@ class NotificationBroadcastController extends Controller
     ): Response {
         $this->authorize('update', $notificationBroadcast);
 
-        $data = array_merge(
-            $this->query->getById(
-                $request->user(),
-                $notificationBroadcast
-            ),
-            $this->query->getFormData(),
+        $data = $this->query->getById(
+            $request->user(),
+            $notificationBroadcast
         );
 
         return Inertia::render('NotificationBroadcasts/Edit', $data);

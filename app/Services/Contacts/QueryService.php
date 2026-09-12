@@ -70,7 +70,10 @@ class QueryService
     {
         return [
             'contactableTypes' => $this->registry->types(),
-            'tags' => Tag::orderBy('name')->get(['id', 'name']),
+            'tags' => Tag::orderBy('name')->get([
+                'id',
+                'name',
+            ]),
         ];
     }
 

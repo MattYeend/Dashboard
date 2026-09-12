@@ -64,7 +64,9 @@ class TaskController extends Controller
     {
         $this->authorize('create', Task::class);
 
-        return Inertia::render('Tasks/Create', $this->query->getFormData());
+        $data = $this->query->getFormData();
+
+        return Inertia::render('Tasks/Create', $data);
     }
 
     /**

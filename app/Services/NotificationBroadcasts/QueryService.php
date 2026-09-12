@@ -60,17 +60,6 @@ class QueryService
     }
 
     /**
-     * Get data needed to populate create and edit forms.
-     *
-     * No dropdown data is needed for notification broadcasts, but this is
-     * kept for parity with the other modules' Controller@create/@edit calls.
-     */
-    public function getFormData(): array
-    {
-        return [];
-    }
-
-    /**
      * Build the base query with filters.
      */
     protected function buildQuery(array $filters): Builder

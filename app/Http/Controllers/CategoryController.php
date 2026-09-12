@@ -62,7 +62,9 @@ class CategoryController extends Controller
     {
         $this->authorize('create', Category::class);
 
-        return Inertia::render('Categories/Create', $this->query->getFormData());
+        $data = $this->query->getFormData();
+
+        return Inertia::render('Categories/Create', $data);
     }
 
     /**

@@ -71,7 +71,9 @@ class DealController extends Controller
     {
         $this->authorize('create', Deal::class);
 
-        return Inertia::render('Deals/Create', $this->query->getFormData());
+        $data = $this->query->getFormData();
+
+        return Inertia::render('Deals/Create', $data);
     }
 
     /**
