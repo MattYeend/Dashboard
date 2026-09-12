@@ -74,17 +74,17 @@ class QueryService
     {
         $query = PipelineStage::query()
             ->where('pipeline_id', $pipeline->id)
-            ->with('pipeline', 'creator', 'updater', 'deleter', 'restorer');
+            ->with(
+                'pipeline',
+                'creator',
+                'updater',
+                'deleter',
+                'restorer'
+            );
 
-        $query = $this->filterService->applyAll(
-            $query,
-            $filters
-        );
+        $query = $this->filterService->applyAll($query, $filters);
 
-        return $this->applySorting(
-            $query,
-            $filters
-        );
+        return $this->applySorting($query, $filters);
     }
 
     /**

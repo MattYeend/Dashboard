@@ -41,7 +41,13 @@ class ExporterService
                 ->where('activityable_id', $activityableId)
             : $this->queryService->forExportAll($filters);
 
-        $columns = ['ID', 'Type', 'Description', 'Occurred at', 'Logged by'];
+        $columns = [
+            'ID',
+            'Type',
+            'Description',
+            'Occurred at',
+            'Logged by',
+        ];
 
         $this->auditLogService->record(
             Log::ACTION_EXPORT_ACTIVITY,

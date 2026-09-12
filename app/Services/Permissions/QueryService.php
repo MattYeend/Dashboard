@@ -51,11 +51,11 @@ class QueryService
     public function getById(User $user, Permission $permission): array
     {
         $permission->loadMissing([
+            'roles',
             'creator',
             'updater',
             'deleter',
             'restorer',
-            'roles',
         ]);
 
         return array_merge(
@@ -110,12 +110,13 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = Permission::query()->with([
+            'roles',
             'creator',
             'updater',
             'deleter',
             'restorer',
-            'roles',
         ]);
+
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);

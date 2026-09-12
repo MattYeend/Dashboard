@@ -100,7 +100,7 @@ class TicketPriorityController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $ticketPriority->id
+            $ticketPriority
         );
 
         return Inertia::render('TicketPriorities/Show', $data);
@@ -115,7 +115,10 @@ class TicketPriorityController extends Controller
     {
         $this->authorize('update', $ticketPriority);
 
-        $data = $this->query->getById($request->user(), $ticketPriority->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $ticketPriority
+        );
 
         return Inertia::render('TicketPriorities/Edit', $data);
     }

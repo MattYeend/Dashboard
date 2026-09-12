@@ -73,7 +73,12 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Report::query()->with(['creator', 'updater', 'deleter', 'restorer']);
+        $query = Report::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         $query = $this->filterService->applyAll($query, $filters);
 

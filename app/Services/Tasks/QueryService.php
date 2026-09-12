@@ -109,6 +109,7 @@ class QueryService
             'deleter',
             'restorer',
         ]);
+
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);

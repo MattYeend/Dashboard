@@ -48,11 +48,11 @@ class QueryService
     {
         $contact->loadMissing([
             'contactable',
+            'tags',
             'creator',
             'updater',
             'deleter',
             'restorer',
-            'tags',
         ]);
 
         return array_merge(
@@ -89,11 +89,11 @@ class QueryService
     {
         $query = Contact::query()->with([
             'contactable',
+            'tags',
             'creator',
             'updater',
             'deleter',
             'restorer',
-            'tags',
         ]);
 
         $query = $this->filterService->applyAll($query, $filters);

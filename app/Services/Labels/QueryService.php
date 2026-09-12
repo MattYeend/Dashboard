@@ -71,24 +71,18 @@ class QueryService
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(
-        array $filters
-    ): Builder {
+    protected function buildQuery(array $filters): Builder
+    {
         $query = Label::query()->with([
             'creator',
             'updater',
             'deleter',
             'restorer',
         ]);
-        $query = $this->filterService->applyAll(
-            $query,
-            $filters
-        );
 
-        return $this->applySorting(
-            $query,
-            $filters
-        );
+        $query = $this->filterService->applyAll($query, $filters);
+
+        return $this->applySorting($query, $filters);
     }
 
     /**

@@ -52,6 +52,10 @@ class QueryService
             'order',
             'status',
             'items' => fn ($query) => $query->orderBy('position'),
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
         ]);
 
         return array_merge(
@@ -83,24 +87,22 @@ class QueryService
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(
-        array $filters
-    ): Builder {
+    protected function buildQuery(array $filters): Builder
+    {
         $query = Invoice::query()->with([
             'company',
             'contact',
             'order',
             'status',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
         ]);
-        $query = $this->filterService->applyAll(
-            $query,
-            $filters
-        );
 
-        return $this->applySorting(
-            $query,
-            $filters
-        );
+        $query = $this->filterService->applyAll($query, $filters);
+
+        return $this->applySorting($query, $filters);
     }
 
     /**

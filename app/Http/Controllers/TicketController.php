@@ -106,7 +106,7 @@ class TicketController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $ticket->id
+            $ticket
         );
 
         return Inertia::render('Tickets/Show', $data);
@@ -122,7 +122,10 @@ class TicketController extends Controller
         $this->authorize('update', $ticket);
 
         $data = array_merge(
-            $this->query->getById($request->user(), $ticket->id),
+            $this->query->getById(
+                $request->user(),
+                $ticket
+            ),
             $this->query->getFormData()
         );
 

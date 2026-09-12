@@ -42,12 +42,20 @@ class QueryService
     /**
      * Get a single user by ID.
      */
-    public function getById(
-        User $actor,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $user = $this->findUser($id, $withTrashed);
+    public function getById(User $actor, User $user): array
+    {
+        $user->loadMissing([
+            'contacts',
+            'orders',
+            'addresses',
+            'pipelines',
+            'organisations',
+            'activeOrganisations',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             ['user' => $this->formatterService->format($user)],
@@ -64,11 +72,17 @@ class QueryService
         $query = User::query()
             ->whereHas('organisations', fn ($q) => $q->whereKey(Tenant::current()?->id))
             ->with([
+                'contacts',
+                'orders',
+                'addresses',
+                'pipelines',
+                'organisations',
+                'activeOrganisations',
                 'creator',
                 'updater',
                 'deleter',
-                'restorer']
-            );
+                'restorer',
+            ]);
 
         $query = $this->filterService->applyAll($query, $filters);
 
@@ -134,27 +148,6 @@ class QueryService
             'availableRoles' => User::FUNCTIONAL_ROLES,
             'availableLocales' => User::LOCALES,
         ];
-    }
-
-    /**
-     * Find a user by ID with optional trashed records.
-     */
-    private function findUser(
-        int $id,
-        bool $withTrashed = false
-    ): User {
-        $query = User::query()->with([
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

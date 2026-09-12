@@ -42,13 +42,8 @@ class QueryService
     /**
      * Get a single ticketPriority by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $ticketPriority = $this->findTicketPriority($id, $withTrashed);
-
+    public function getById(User $user, TicketPriority $ticketPriority): array
+    {
         return array_merge(
             ['ticketPriority' => $this->formatterService->format($ticketPriority)],
             $this->getPermissions($user),
@@ -116,22 +111,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a ticketPriority by ID with optional trashed records.
-     */
-    private function findTicketPriority(
-        int $id,
-        bool $withTrashed = false
-    ): TicketPriority {
-        $query = TicketPriority::query();
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

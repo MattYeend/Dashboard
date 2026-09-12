@@ -42,13 +42,8 @@ class QueryService
     /**
      * Get a single ticketStatus by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $ticketStatus = $this->findTicketStatus($id, $withTrashed);
-
+    public function getById(User $user, TicketStatus $ticketStatus): array
+    {
         return array_merge(
             ['ticketStatus' => $this->formatterService->format($ticketStatus)],
             $this->getPermissions($user),
@@ -120,22 +115,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a ticketStatus by ID with optional trashed records.
-     */
-    private function findTicketStatus(
-        int $id,
-        bool $withTrashed = false
-    ): TicketStatus {
-        $query = TicketStatus::query();
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

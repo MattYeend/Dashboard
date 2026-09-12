@@ -88,9 +88,8 @@ class QueryService
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(
-        array $filters
-    ): Builder {
+    protected function buildQuery(array $filters): Builder
+    {
         $query = Deal::query()->with([
             'pipeline',
             'stage',
@@ -104,15 +103,9 @@ class QueryService
             'restorer',
         ]);
 
-        $query = $this->filterService->applyAll(
-            $query,
-            $filters
-        );
+        $query = $this->filterService->applyAll($query, $filters);
 
-        return $this->applySorting(
-            $query,
-            $filters
-        );
+        return $this->applySorting($query, $filters);
     }
 
     /**

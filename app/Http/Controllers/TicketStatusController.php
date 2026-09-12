@@ -100,7 +100,7 @@ class TicketStatusController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $ticketStatus->id
+            $ticketStatus
         );
 
         return Inertia::render('TicketStatuses/Show', $data);
@@ -115,7 +115,10 @@ class TicketStatusController extends Controller
     {
         $this->authorize('update', $ticketStatus);
 
-        $data = $this->query->getById($request->user(), $ticketStatus->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $ticketStatus
+        );
 
         return Inertia::render('TicketStatuses/Edit', $data);
     }

@@ -50,12 +50,18 @@ class QueryService
      *
      * @return array<string, mixed>
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $ticket = $this->findTicket($id, $withTrashed);
+    public function getById(User $user, Ticket $ticket): array
+    {
+        $ticket->loadMissing([
+            'status',
+            'priority',
+            'assignee',
+            'labels',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             ['ticket' => $this->formatterService->format($ticket)],
@@ -89,14 +95,14 @@ class QueryService
     {
         $query = Ticket::query()
             ->with([
-                'creator',
-                'updater',
-                'deleter',
-                'restorer',
                 'status',
                 'priority',
                 'assignee',
                 'labels',
+                'creator',
+                'updater',
+                'deleter',
+                'restorer',
             ]);
 
         $query = $this->filterService->applyAll($query, $filters);
@@ -160,32 +166,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a ticket by ID with optional trashed records.
-     */
-    private function findTicket(
-        int $id,
-        bool $withTrashed = false
-    ): Ticket {
-        $query = Ticket::query()
-            ->with([
-                'creator',
-                'updater',
-                'deleter',
-                'restorer',
-                'status',
-                'priority',
-                'assignee',
-                'labels',
-            ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

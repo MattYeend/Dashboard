@@ -45,11 +45,11 @@ class QueryService
     public function getById(User $user, NotificationBroadcast $notificationBroadcast): array
     {
         $notificationBroadcast->loadMissing([
+            'sender',
             'creator',
             'updater',
             'deleter',
             'restorer',
-            'sender',
         ]);
 
         return array_merge(
@@ -76,12 +76,13 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = NotificationBroadcast::query()->with([
+            'sender',
             'creator',
             'updater',
             'deleter',
             'restorer',
-            'sender',
         ]);
+
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);

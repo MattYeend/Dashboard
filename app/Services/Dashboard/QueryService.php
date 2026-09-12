@@ -45,7 +45,12 @@ class QueryService
         return TaskStatus::query()
             ->withCount('tasks')
             ->orderBy('title')
-            ->get(['id', 'title', 'background_colour', 'text_colour']);
+            ->get([
+                'id',
+                'title',
+                'background_colour',
+                'text_colour',
+            ]);
     }
 
     /**

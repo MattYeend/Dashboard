@@ -48,11 +48,11 @@ class QueryService
     {
         $comment->loadMissing([
             'commentable',
+            'mentions',
             'creator',
             'updater',
             'deleter',
             'restorer',
-            'mentions',
         ]);
 
         return array_merge(
@@ -111,11 +111,11 @@ class QueryService
     {
         $query = Comment::query()->with([
             'commentable',
+            'mentions',
             'creator',
             'updater',
             'deleter',
             'restorer',
-            'mentions',
         ]);
 
         $query = $this->filterService->applyAll($query, $filters);

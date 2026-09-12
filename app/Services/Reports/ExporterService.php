@@ -33,7 +33,16 @@ class ExporterService
 
         $query = $this->filterService->applyAll($query, $filters);
 
-        $columns = ['id', 'title', 'type', 'format', 'is_scheduled', 'schedule_frequency', 'created_by', 'created_at'];
+        $columns = [
+            'id',
+            'title',
+            'type',
+            'format',
+            'is_scheduled',
+            'schedule_frequency',
+            'created_by',
+            'created_at',
+        ];
 
         $this->auditLogService->record(
             Log::ACTION_EXPORT_REPORT,

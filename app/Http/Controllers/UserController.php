@@ -107,7 +107,7 @@ class UserController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $user->id
+            $user
         );
 
         return Inertia::render('Users/Show', $data);
@@ -126,7 +126,7 @@ class UserController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $user->id
+            $user
         );
 
         return Inertia::render('Users/Edit', $data);

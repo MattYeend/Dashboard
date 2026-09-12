@@ -54,19 +54,12 @@ class QueryService
     /**
      * Build the base query with filters.
      */
-    protected function buildQuery(
-        array $filters
-    ): Builder {
+    protected function buildQuery(array $filters): Builder
+    {
         $query = InvoiceStatus::query();
-        $query = $this->filterService->applyAll(
-            $query,
-            $filters
-        );
+        $query = $this->filterService->applyAll($query, $filters);
 
-        return $this->applySorting(
-            $query,
-            $filters
-        );
+        return $this->applySorting($query, $filters);
     }
 
     /**

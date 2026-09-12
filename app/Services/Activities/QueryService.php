@@ -165,9 +165,7 @@ class QueryService
     {
         return [
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
-
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
-
             'activityableTypes' => $this->registry->types(),
         ];
     }
@@ -200,10 +198,7 @@ class QueryService
                 return $query;
             }
 
-            $query->where(
-                'activityable_type',
-                $activityableType
-            );
+            $query->where('activityable_type', $activityableType);
         }
 
         if (isset($filters['activityable_id'])) {
@@ -213,10 +208,7 @@ class QueryService
             );
         }
 
-        $query = $this->filterService->applyAll(
-            $query,
-            $filters
-        );
+        $query = $this->filterService->applyAll($query, $filters);
 
         $query = $this->trashFilterService->applyFilter(
             $query,

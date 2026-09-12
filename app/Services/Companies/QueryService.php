@@ -53,13 +53,13 @@ class QueryService
     public function getById(User $user, Company $company): array
     {
         $company->loadMissing([
+            'industry',
+            'accountManager',
+            'tags',
             'creator',
             'updater',
             'deleter',
             'restorer',
-            'industry',
-            'accountManager',
-            'tags',
         ]);
 
         return array_merge(
@@ -112,14 +112,15 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = Company::query()->with([
+            'industry',
+            'accountManager',
+            'tags',
             'creator',
             'updater',
             'deleter',
             'restorer',
-            'industry',
-            'accountManager',
-            'tags',
         ]);
+
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);

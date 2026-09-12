@@ -49,10 +49,6 @@ class QueryService
     {
         $post->loadCount(['likes', 'comments']);
         $post->loadMissing([
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
             'categories',
             'tags',
             'comments' => function ($query) use ($user) {
@@ -60,6 +56,10 @@ class QueryService
                 $query->with(['likes' => fn ($query) => $query->where('user_id', $user->id)]);
             },
             'likes' => fn ($query) => $query->where('user_id', $user->id),
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
         ]);
 
         return array_merge(
@@ -86,9 +86,17 @@ class QueryService
     protected function buildQuery(array $filters, User $actor): Builder
     {
         $query = Post::query()
-            ->with(['creator', 'updater', 'deleter', 'restorer', 'categories', 'tags'])
+            ->with([
+                'categories',
+                'tags',
+                'creator',
+                'updater',
+                'deleter',
+                'restorer',
+            ])
             ->withCount(['likes', 'comments'])
             ->with(['likes' => fn ($query) => $query->where('user_id', $actor->id)]);
+
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);

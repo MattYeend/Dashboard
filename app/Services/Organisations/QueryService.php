@@ -51,7 +51,12 @@ class QueryService
      */
     public function getById(User $user, Organisation $organisation): array
     {
-        $organisation->loadMissing(['creator', 'updater', 'deleter', 'restorer']);
+        $organisation->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             ['organisation' => $this->formatterService->format($organisation)],
@@ -71,7 +76,12 @@ class QueryService
     {
         $query = Organisation::query()
             ->withCount('users')
-            ->with(['creator', 'updater', 'deleter', 'restorer']);
+            ->with([
+                'creator',
+                'updater',
+                'deleter',
+                'restorer',
+            ]);
 
         $query = $this->filterService->applyAll($query, $filters);
 

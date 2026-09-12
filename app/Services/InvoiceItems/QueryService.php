@@ -28,10 +28,7 @@ class QueryService
         Invoice $invoice,
         array $filters = []
     ): array {
-        $query = $this->buildQuery(
-            $invoice,
-            $filters
-        );
+        $query = $this->buildQuery($invoice, $filters);
         $paginated = $this->paginate(
             $query,
             min((int) ($filters['per_page'] ?? 15), 100)
@@ -79,15 +76,9 @@ class QueryService
         array $filters
     ): Builder {
         $query = $invoice->items()->getQuery();
-        $query = $this->filterService->applyAll(
-            $query,
-            $filters
-        );
+        $query = $this->filterService->applyAll($query, $filters);
 
-        return $this->applySorting(
-            $query,
-            $filters
-        );
+        return $this->applySorting($query, $filters);
     }
 
     /**
