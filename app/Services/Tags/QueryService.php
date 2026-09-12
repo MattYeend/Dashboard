@@ -42,12 +42,14 @@ class QueryService
     /**
      * Get a single tag by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $tag = $this->findTag($id, $withTrashed);
+    public function getById(User $user, Tag $tag): array
+    {
+        $tag->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             ['tag' => $this->formatterService->format($tag)],
@@ -125,25 +127,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a tag by ID with optional trashed records.
-     */
-    private function findTag(int $id, bool $withTrashed = false): Tag
-    {
-        $query = Tag::query()->with([
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

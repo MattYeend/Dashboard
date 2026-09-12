@@ -99,7 +99,7 @@ class PostController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $post->id
+            $post
         );
 
         return Inertia::render('Posts/Show', $data);
@@ -117,7 +117,10 @@ class PostController extends Controller
         $this->authorize('update', $post);
 
         $data = array_merge(
-            $this->query->getById($request->user(), $post->id),
+            $this->query->getById(
+                $request->user(),
+                $post
+            ),
             $this->query->getFormData(),
         );
 

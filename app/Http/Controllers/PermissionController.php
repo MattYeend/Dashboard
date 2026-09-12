@@ -100,8 +100,7 @@ class PermissionController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $permission->id,
-            withTrashed: true,
+            $permission
         );
 
         return Inertia::render('Permissions/Show', $data);
@@ -122,7 +121,7 @@ class PermissionController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $permission->id
+            $permission
         );
 
         return Inertia::render('Permissions/Edit', $data);

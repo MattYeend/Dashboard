@@ -62,7 +62,7 @@ class RegistrationInterestController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $registrationInterest->id
+            $registrationInterest
         );
 
         return Inertia::render('RegistrationInterests/Show', $data);

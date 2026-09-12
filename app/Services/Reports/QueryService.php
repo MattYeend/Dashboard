@@ -38,9 +38,14 @@ class QueryService
     /**
      * Get a single report by ID.
      */
-    public function getById(User $user, int $id, bool $withTrashed = false): array
+    public function getById(User $user, Report $report): array
     {
-        $report = $this->findReport($id, $withTrashed);
+        $report->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             ['report' => $this->formatterService->format($report, $user)],
@@ -128,20 +133,6 @@ class QueryService
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
             'reportTypes' => $this->registry->types(),
         ];
-    }
-
-    /**
-     * Find a report by ID with optional trashed records.
-     */
-    private function findReport(int $id, bool $withTrashed = false): Report
-    {
-        $query = Report::query()->with(['creator', 'updater', 'deleter', 'restorer']);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

@@ -101,7 +101,7 @@ class PipelineController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $pipeline->id
+            $pipeline
         );
 
         return Inertia::render('Pipelines/Show', $data);
@@ -116,7 +116,10 @@ class PipelineController extends Controller
     {
         $this->authorize('update', $pipeline);
 
-        $data = $this->query->getById($request->user(), $pipeline->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $pipeline
+        );
 
         return Inertia::render('Pipelines/Edit', $data);
     }

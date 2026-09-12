@@ -42,13 +42,8 @@ class QueryService
     /**
      * Get a single taskStatus by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $taskStatus = $this->findTaskStatus($id, $withTrashed);
-
+    public function getById(User $user, TaskStatus $taskStatus): array
+    {
         return array_merge(
             ['taskStatus' => $this->formatterService->format($taskStatus)],
             $this->getPermissions($user),
@@ -116,22 +111,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a taskStatus by ID with optional trashed records.
-     */
-    private function findTaskStatus(
-        int $id,
-        bool $withTrashed = false
-    ): TaskStatus {
-        $query = TaskStatus::query();
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

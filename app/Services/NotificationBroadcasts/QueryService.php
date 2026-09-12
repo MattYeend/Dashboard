@@ -42,12 +42,15 @@ class QueryService
     /**
      * Get a single notification broadcast by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $notificationBroadcast = $this->findNotificationBroadcast($id, $withTrashed);
+    public function getById(User $user, NotificationBroadcast $notificationBroadcast): array
+    {
+        $notificationBroadcast->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'sender',
+        ]);
 
         return array_merge(
             ['notificationBroadcast' => $this->formatterService->format($notificationBroadcast)],
@@ -132,26 +135,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a notification broadcast by ID with optional trashed records.
-     */
-    private function findNotificationBroadcast(int $id, bool $withTrashed = false): NotificationBroadcast
-    {
-        $query = NotificationBroadcast::query()->with([
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-            'sender',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

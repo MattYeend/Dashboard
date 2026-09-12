@@ -100,7 +100,7 @@ class OrderStatusController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $orderStatus->id
+            $orderStatus
         );
 
         return Inertia::render('OrderStatuses/Show', $data);
@@ -115,7 +115,10 @@ class OrderStatusController extends Controller
     {
         $this->authorize('update', $orderStatus);
 
-        $data = $this->query->getById($request->user(), $orderStatus->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $orderStatus
+        );
 
         return Inertia::render('OrderStatuses/Edit', $data);
     }

@@ -100,7 +100,7 @@ class PlanController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $plan->id
+            $plan
         );
 
         return Inertia::render('Plans/Show', $data);
@@ -120,7 +120,7 @@ class PlanController extends Controller
         $data = array_merge(
             $this->query->getById(
                 $request->user(),
-                $plan->id
+                $plan
             ),
             $this->query->getFormData()
         );

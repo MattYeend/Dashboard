@@ -42,16 +42,8 @@ class QueryService
     /**
      * Get a single pipelineStatus by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $pipelineStatus = $this->findPipelineStatus(
-            $id,
-            $withTrashed
-        );
-
+    public function getById(User $user, PipelineStatus $pipelineStatus): array
+    {
         return array_merge(
             ['pipelineStatus' => $this->formatterService->format($pipelineStatus)],
             $this->getPermissions($user),
@@ -128,22 +120,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a pipelineStatus by ID with optional trashed records.
-     */
-    private function findPipelineStatus(
-        int $id,
-        bool $withTrashed = false
-    ): PipelineStatus {
-        $query = PipelineStatus::query();
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

@@ -48,12 +48,15 @@ class QueryService
      *
      * @return array<string, mixed>
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $permission = $this->findPermission($id, $withTrashed);
+    public function getById(User $user, Permission $permission): array
+    {
+        $permission->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'roles',
+        ]);
 
         return array_merge(
             ['permission' => $this->formatterService->format($permission)],
@@ -175,28 +178,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a permission by ID with optional trashed records.
-     */
-    private function findPermission(
-        int $id,
-        bool $withTrashed = false
-    ): Permission {
-        $query = Permission::query()->with([
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-            'roles',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

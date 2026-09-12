@@ -42,13 +42,8 @@ class QueryService
     /**
      * Get a single orderStatus by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $orderStatus = $this->findOrderStatus($id, $withTrashed);
-
+    public function getById(User $user, OrderStatus $orderStatus): array
+    {
         return array_merge(
             ['orderStatus' => $this->formatterService->format($orderStatus)],
             $this->getPermissions($user),
@@ -116,22 +111,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find an orderStatus by ID with optional trashed records.
-     */
-    private function findOrderStatus(
-        int $id,
-        bool $withTrashed = false
-    ): OrderStatus {
-        $query = OrderStatus::query();
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

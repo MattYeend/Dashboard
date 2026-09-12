@@ -43,15 +43,17 @@ class QueryService
     /**
      * Get a single pipeline by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $pipeline = $this->findPipeline(
-            $id,
-            $withTrashed
-        );
+    public function getById(User $user, Pipeline $pipeline): array
+    {
+        $pipeline->loadMissing([
+            'status',
+            'stages',
+            'assignee',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             ['pipeline' => $this->formatterService->format($pipeline)],
@@ -155,30 +157,6 @@ class QueryService
                 ->orderBy('title')
                 ->get(),
         ];
-    }
-
-    /**
-     * Find a pipeline by ID with optional trashed records.
-     */
-    private function findPipeline(
-        int $id,
-        bool $withTrashed = false
-    ): Pipeline {
-        $query = Pipeline::query()->with(
-            'status',
-            'stages',
-            'assignee',
-            'creator',
-            'updater',
-            'deleter',
-            'restorer'
-        );
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

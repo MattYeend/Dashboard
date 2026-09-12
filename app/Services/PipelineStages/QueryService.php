@@ -44,21 +44,19 @@ class QueryService
     /**
      * Get a single pipeline stage by ID, scoped to a pipeline.
      */
-    public function getById(
-        User $user,
-        Pipeline $pipeline,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $pipelineStage = $this->findPipelineStage(
-            $pipeline,
-            $id,
-            $withTrashed
-        );
+    public function getById(User $user, Pipeline $pipeline, PipelineStage $stage): array
+    {
+        $stage->loadMissing([
+            'pipeline',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             [
-                'pipeline_stage' => $this->formatterService->format($pipelineStage),
+                'pipeline_stage' => $this->formatterService->format($stage),
                 'pipeline' => [
                     'id' => $pipeline->id,
                     'title' => $pipeline->title,
@@ -140,25 +138,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a pipeline stage by ID within a pipeline, with optional trashed records.
-     */
-    private function findPipelineStage(
-        Pipeline $pipeline,
-        int $id,
-        bool $withTrashed = false
-    ): PipelineStage {
-        $query = PipelineStage::query()
-            ->where('pipeline_id', $pipeline->id)
-            ->with('pipeline', 'creator', 'updater', 'deleter', 'restorer');
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

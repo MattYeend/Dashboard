@@ -101,7 +101,7 @@ class OrderController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $order->id
+            $order
         );
 
         $data['activity_permissions_meta'] = [
@@ -125,7 +125,7 @@ class OrderController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $order->id
+            $order
         );
 
         return Inertia::render('Orders/Edit', $data);

@@ -102,7 +102,7 @@ class TaskController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $task->id
+            $task
         );
 
         return Inertia::render('Tasks/Show', $data);
@@ -122,7 +122,7 @@ class TaskController extends Controller
         $data = array_merge(
             $this->query->getById(
                 $request->user(),
-                $task->id
+                $task
             ),
             $this->query->getFormData()
         );

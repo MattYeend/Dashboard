@@ -45,12 +45,22 @@ class QueryService
     /**
      * Get a single post by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $post = $this->findPost($id, $withTrashed, $user);
+    public function getById(User $user, Post $post): array
+    {
+        $post->loadCount(['likes', 'comments']);
+        $post->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'categories',
+            'tags',
+            'comments' => function ($query) use ($user) {
+                $query->with('creator')->withCount('likes');
+                $query->with(['likes' => fn ($query) => $query->where('user_id', $user->id)]);
+            },
+            'likes' => fn ($query) => $query->where('user_id', $user->id),
+        ]);
 
         return array_merge(
             ['post' => $this->formatterService->format($post, $user)],
@@ -133,36 +143,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a post by ID with optional trashed records.
-     */
-    private function findPost(
-        int $id,
-        bool $withTrashed = false,
-        ?User $user = null
-    ): Post {
-        $query = Post::query()
-            ->with(['creator', 'updater', 'deleter', 'restorer', 'categories', 'tags'])
-            ->withCount(['likes', 'comments'])
-            ->with(['comments' => function ($query) use ($user) {
-                $query->with('creator')->withCount('likes');
-
-                if ($user) {
-                    $query->with(['likes' => fn ($query) => $query->where('user_id', $user->id)]);
-                }
-            }]);
-
-        if ($user) {
-            $query->with(['likes' => fn ($query) => $query->where('user_id', $user->id)]);
-        }
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

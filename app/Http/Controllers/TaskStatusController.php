@@ -100,7 +100,7 @@ class TaskStatusController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $taskStatus->id
+            $taskStatus
         );
 
         return Inertia::render('TaskStatuses/Show', $data);
@@ -115,7 +115,10 @@ class TaskStatusController extends Controller
     {
         $this->authorize('update', $taskStatus);
 
-        $data = $this->query->getById($request->user(), $taskStatus->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $taskStatus
+        );
 
         return Inertia::render('TaskStatuses/Edit', $data);
     }

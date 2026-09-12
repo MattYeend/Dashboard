@@ -98,7 +98,10 @@ class ReportController extends Controller
     {
         $this->authorize('view', $report);
 
-        $data = $this->query->getById($request->user(), $report->id);
+        $data = $this->query->getById(
+            $request->user(),
+            $report
+        );
 
         return Inertia::render('Reports/Show', $data);
     }
@@ -113,7 +116,10 @@ class ReportController extends Controller
         $this->authorize('update', $report);
 
         $data = array_merge(
-            $this->query->getById($request->user(), $report->id),
+            $this->query->getById(
+                $request->user(),
+                $report
+            ),
             $this->query->getFormData(),
             ['canSchedule' => $request->user()->can('schedule', Report::class)],
         );

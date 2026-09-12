@@ -100,7 +100,7 @@ class NotificationBroadcastController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $notificationBroadcast->id
+            $notificationBroadcast
         );
 
         return Inertia::render('NotificationBroadcasts/Show', $data);
@@ -118,7 +118,10 @@ class NotificationBroadcastController extends Controller
         $this->authorize('update', $notificationBroadcast);
 
         $data = array_merge(
-            $this->query->getById($request->user(), $notificationBroadcast->id),
+            $this->query->getById(
+                $request->user(),
+                $notificationBroadcast
+            ),
             $this->query->getFormData(),
         );
 

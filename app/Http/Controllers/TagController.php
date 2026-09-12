@@ -99,7 +99,7 @@ class TagController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $tag->id
+            $tag
         );
 
         return Inertia::render('Tags/Show', $data);
@@ -118,7 +118,7 @@ class TagController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $tag->id
+            $tag
         );
 
         return Inertia::render('Tags/Edit', $data);

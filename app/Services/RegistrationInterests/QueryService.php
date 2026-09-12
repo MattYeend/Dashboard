@@ -53,12 +53,10 @@ class QueryService
      *
      * @return array<string, mixed>
      */
-    public function getById(User $user, int $id): array
+    public function getById(User $user, RegistrationInterest $registrationInterest): array
     {
-        $interest = RegistrationInterest::withTrashed()->findOrFail($id);
-
         return [
-            'interest' => $this->formatter->format($interest),
+            'interest' => $this->formatter->format($registrationInterest),
             'permissions_meta' => [
                 'can_create' => false,
                 'can_view_any' => $user->can('viewAny', RegistrationInterest::class),

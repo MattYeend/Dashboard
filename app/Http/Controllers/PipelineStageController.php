@@ -115,7 +115,7 @@ class PipelineStageController extends Controller
         $data = $this->query->getById(
             $request->user(),
             $pipeline,
-            $stage->id
+            $stage
         );
 
         return Inertia::render('PipelineStages/Show', $data);
@@ -136,7 +136,7 @@ class PipelineStageController extends Controller
         $data = $this->query->getById(
             $request->user(),
             $pipeline,
-            $stage->id
+            $stage
         );
 
         return Inertia::render('PipelineStages/Edit', $data);

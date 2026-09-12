@@ -45,15 +45,17 @@ class QueryService
     /**
      * Get a single order by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $order = $this->findOrder(
-            $id,
-            $withTrashed
-        );
+    public function getById(User $user, Order $order): array
+    {
+        $order->loadMissing([
+            'orderable',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'status',
+            'tags',
+        ]);
 
         return array_merge(
             ['order' => $this->formatterService->format($order)],
@@ -166,30 +168,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a order by ID with optional trashed records.
-     */
-    private function findOrder(
-        int $id,
-        bool $withTrashed = false
-    ): Order {
-        $query = Order::query()->with([
-            'orderable',
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-            'status',
-            'tags',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

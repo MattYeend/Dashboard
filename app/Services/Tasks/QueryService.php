@@ -45,12 +45,17 @@ class QueryService
     /**
      * Get a single task by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $task = $this->findTask($id, $withTrashed);
+    public function getById(User $user, Task $task): array
+    {
+        $task->loadMissing([
+            'assignee',
+            'status',
+            'tags',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             ['task' => $this->formatterService->format($task)],
@@ -160,30 +165,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a task by ID with optional trashed records.
-     */
-    private function findTask(
-        int $id,
-        bool $withTrashed = false
-    ): Task {
-        $query = Task::query()->with([
-            'assignee',
-            'status',
-            'tags',
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

@@ -42,12 +42,14 @@ class QueryService
     /**
      * Get a single plan by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $plan = $this->findPlan($id, $withTrashed);
+    public function getById(User $user, Plan $plan): array
+    {
+        $plan->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             ['plan' => $this->formatterService->format($plan)],
@@ -136,27 +138,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find an plan by ID with optional trashed records.
-     */
-    private function findPlan(
-        int $id,
-        bool $withTrashed = false
-    ): Plan {
-        $query = Plan::query()->with([
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**
