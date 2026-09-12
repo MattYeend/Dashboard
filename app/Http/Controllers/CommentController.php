@@ -63,7 +63,7 @@ class CommentController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $comment->id
+            $comment
         );
 
         return Inertia::render('Comments/Show', $data);

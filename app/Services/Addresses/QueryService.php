@@ -43,12 +43,15 @@ class QueryService
     /**
      * Get a single address by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $address = $this->findAddress($id, $withTrashed);
+    public function getById(User $user, Address $address): array
+    {
+        $address->loadMissing([
+            'addressable',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             ['address' => $this->formatterService->format($address)],
@@ -146,28 +149,6 @@ class QueryService
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
             'addressableTypes' => $this->registry->types(),
         ];
-    }
-
-    /**
-     * Find a address by ID with optional trashed records.
-     */
-    private function findAddress(
-        int $id,
-        bool $withTrashed = false
-    ): Address {
-        $query = Address::query()->with([
-            'addressable',
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

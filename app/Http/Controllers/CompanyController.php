@@ -107,7 +107,7 @@ class CompanyController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $company->id
+            $company
         );
 
         $data['activity_permissions_meta'] = [
@@ -137,7 +137,7 @@ class CompanyController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $company->id
+            $company
         );
 
         return Inertia::render('Companies/Edit', $data);

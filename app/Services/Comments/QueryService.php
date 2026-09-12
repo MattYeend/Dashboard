@@ -44,12 +44,16 @@ class QueryService
     /**
      * Get a single comment by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $comment = $this->findComment($id, $withTrashed);
+    public function getById(User $user, Comment $comment): array
+    {
+        $comment->loadMissing([
+            'commentable',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'mentions',
+        ]);
 
         return array_merge(
             ['comment' => $this->formatterService->format($comment, $user)],
@@ -172,29 +176,6 @@ class QueryService
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
             'commentableTypes' => $this->registry->types(),
         ];
-    }
-
-    /**
-     * Find a comment by ID with optional trashed records.
-     */
-    private function findComment(
-        int $id,
-        bool $withTrashed = false
-    ): Comment {
-        $query = Comment::query()->with([
-            'commentable',
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-            'mentions',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

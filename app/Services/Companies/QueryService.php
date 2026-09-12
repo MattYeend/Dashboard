@@ -50,12 +50,17 @@ class QueryService
     /**
      * Get a single company by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $company = $this->findCompany($id, $withTrashed);
+    public function getById(User $user, Company $company): array
+    {
+        $company->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+            'industry',
+            'accountManager',
+            'tags',
+        ]);
 
         return array_merge(
             ['company' => $this->formatterService->format($company)],
@@ -171,30 +176,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find a company by ID with optional trashed records.
-     */
-    private function findCompany(
-        int $id,
-        bool $withTrashed = false
-    ): Company {
-        $query = Company::query()->with([
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-            'industry',
-            'accountManager',
-            'tags',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**

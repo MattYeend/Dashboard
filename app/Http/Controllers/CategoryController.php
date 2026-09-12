@@ -99,7 +99,7 @@ class CategoryController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $category->id
+            $category
         );
 
         return Inertia::render('Categories/Show', $data);
@@ -117,7 +117,7 @@ class CategoryController extends Controller
         $this->authorize('update', $category);
 
         $data = array_merge(
-            $this->query->getById($request->user(), $category->id),
+            $this->query->getById($request->user(), $category),
             $this->query->getFormData($category->id),
         );
 

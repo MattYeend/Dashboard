@@ -101,7 +101,7 @@ class AddressController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $address->id
+            $address
         );
 
         return Inertia::render('Addresses/Show', $data);
@@ -120,7 +120,7 @@ class AddressController extends Controller
 
         $data = $this->query->getById(
             $request->user(),
-            $address->id
+            $address
         );
 
         return Inertia::render('Addresses/Edit', $data);

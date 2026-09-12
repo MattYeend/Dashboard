@@ -42,12 +42,14 @@ class QueryService
     /**
      * Get a single category by ID.
      */
-    public function getById(
-        User $user,
-        int $id,
-        bool $withTrashed = false
-    ): array {
-        $category = $this->findCategory($id, $withTrashed);
+    public function getById(User $user, Category $category): array
+    {
+        $category->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
 
         return array_merge(
             ['category' => $this->formatterService->format($category)],
@@ -133,27 +135,6 @@ class QueryService
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
         ];
-    }
-
-    /**
-     * Find an category by ID with optional trashed records.
-     */
-    private function findCategory(
-        int $id,
-        bool $withTrashed = false
-    ): Category {
-        $query = Category::query()->with([
-            'creator',
-            'updater',
-            'deleter',
-            'restorer',
-        ]);
-
-        if ($withTrashed) {
-            $query->withTrashed();
-        }
-
-        return $query->findOrFail($id);
     }
 
     /**
