@@ -64,12 +64,18 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can manage the organisation's settings
      * (branding, preferences).
+     *
+     * Grants access to either an app-wide holder of the
+     * 'manage organisation settings' permission, or a member holding an
+     * owner/admin role within this specific organisation — mirroring
+     * how canViewBilling() treats org-level management authority as
+     * distinct from global Spatie admin rank.
      */
     public function canManageSettings(User $actor, Organisation $target): bool
     {
-        return $actor->can('manage organisation settings')
-            && $this->activeChecker->isActive($target)
-            && $this->isActiveMember($actor, $target);
+        return $this->activeChecker->isActive($target)
+            && $this->isActiveMember($actor, $target)
+            && ($actor->can('manage organisation settings') || $target->hasManagementRoleFor($actor));
     }
 
     /**

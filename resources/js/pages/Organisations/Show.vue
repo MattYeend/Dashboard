@@ -7,6 +7,7 @@ import OrganisationBasicDetails from '@/pages/Organisations/components/Organisat
 import OrganisationMembersList from '@/pages/Organisations/components/OrganisationMembersList.vue';
 import {
     edit as organisationsEdit,
+    settings as organisationsSettings,
     destroy as organisationsDestroy,
     index as organisationsIndex,
 } from '@/routes/organisations';
@@ -88,6 +89,12 @@ function switchToOrganisation(): void {
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
                     >
                         Edit
+                    </Link>
+                    <Link
+                        :href="organisationsSettings.url(props.organisation.id)"
+                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
+                    >
+                        Settings
                     </Link>
                     <button
                         type="button"

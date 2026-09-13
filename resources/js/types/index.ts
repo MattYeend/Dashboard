@@ -1090,11 +1090,23 @@ export interface ActivityLog {
     created_at: string;
 }
 
+export interface OrganisationSettings {
+    logo_attachment_id: number | null;
+    accent_colour: string | null;
+    default_timezone: string | null;
+    default_locale: string | null;
+    notification_preferences: {
+        email_notifications: boolean;
+        weekly_digest: boolean;
+    } | null;
+}
+
 export interface Organisation {
     id: number;
     name: string;
     slug: string;
     meta: Record<string, unknown> | null;
+    settings: OrganisationSettings | null;
     members_count?: number;
     created_by: number | null;
     updated_by: number | null;

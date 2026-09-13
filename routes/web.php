@@ -86,6 +86,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{organisation}', [OrganisationController::class, 'show'])->name('show');
         Route::get('/{organisation}/edit', [OrganisationController::class, 'edit'])->name('edit');
         Route::match(['put', 'patch'], '/{organisation}', [OrganisationController::class, 'update'])->name('update');
+        Route::get('/{organisation}/settings', [OrganisationController::class, 'settings'])->name('settings');
+        Route::match(['put', 'patch'], '/{organisation}/settings', [OrganisationController::class, 'updateSettings'])->name('update-settings');
         Route::delete('/{organisation}', [OrganisationController::class, 'destroy'])->name('destroy');
     });
 

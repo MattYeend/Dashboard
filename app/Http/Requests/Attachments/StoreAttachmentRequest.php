@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Attachments;
 
 use App\Models\Attachment;
+use App\Models\Organisation;
 use App\Services\Attachments\AttachableTypeRegistryService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -103,7 +104,23 @@ class StoreAttachmentRequest extends FormRequest
                     return;
                 }
 
-                if (! $modelClass::whereKey($id)->exists()) {
+                $attachable = $modelClass::find($id);
+
+                if (! $attachable) {
+                    $validator->errors()->add('attachable_id', 'The selected record does not exist.');
+
+                    return;
+                }
+
+                // Company/Contact/Deal/Order are already scoped to the
+                // current tenant by their own organisation-scoped global
+                // query behaviour, so the find() above already excludes
+                // records outside this organisation. Organisation itself
+                // *is* the tenant boundary, not scoped by one, so it needs
+                // an explicit membership check here rather than relying on
+                // an implicit one that doesn't exist for it.
+                if ($attachable instanceof Organisation
+                    && ! $attachable->activeUsers()->whereKey($this->user()->id)->exists()) {
                     $validator->errors()->add('attachable_id', 'The selected record does not exist.');
                 }
             },

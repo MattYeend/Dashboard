@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Contact;
 use App\Models\Deal;
 use App\Models\Order;
+use App\Models\Organisation;
 
 class AttachableTypeRegistryService
 {
@@ -39,6 +40,11 @@ class AttachableTypeRegistryService
                 'label' => 'Order',
                 'model' => Order::class,
                 'label_field' => 'reference',
+            ],
+            'organisation' => [
+                'label' => 'Organisation',
+                'model' => Organisation::class,
+                'label_field' => 'name',
             ],
         ];
     }

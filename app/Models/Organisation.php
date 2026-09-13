@@ -92,14 +92,24 @@ class Organisation extends Tenant implements Auditable
 
     /**
      * Determine whether the given user holds an owner or admin role
-     * within this organisation, and can therefore manage billing.
+     * within this organisation — the in-organisation management tier,
+     * distinct from the app-wide Spatie Admin/Super Admin roles.
      */
-    public function hasBillingRoleFor(User $user): bool
+    public function hasManagementRoleFor(User $user): bool
     {
         return $this->activeUsers()
             ->wherePivot('user_id', $user->id)
             ->wherePivotIn('role', ['owner', 'admin'])
             ->exists();
+    }
+
+    /**
+     * Determine whether the given user holds an owner or admin role
+     * within this organisation, and can therefore manage billing.
+     */
+    public function hasBillingRoleFor(User $user): bool
+    {
+        return $this->hasManagementRoleFor($user);
     }
 
     /**
