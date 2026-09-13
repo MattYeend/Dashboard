@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import type { OrganisationMembership } from '@/types';
 
@@ -15,9 +15,17 @@ const props = defineProps<Props>();
 const removeDialogOpen = ref(false);
 const removeProcessing = ref(false);
 const selectedUserId = ref<number | null>(null);
+const selectedMember = ref<OrganisationMembership | null>(null);
 
-function requestRemove(userId: number): void {
-    selectedUserId.value = userId;
+const removeDescription = computed(() =>
+    selectedMember.value?.status === 'active'
+        ? 'This member will lose access to the organisation immediately, and your billed seat count and subscription total will be updated to reflect the change.'
+        : 'This member will lose access to the organisation immediately.',
+);
+
+function requestRemove(member: OrganisationMembership): void {
+    selectedMember.value = member;
+    selectedUserId.value = member.user_id;
     removeDialogOpen.value = true;
 }
 
@@ -36,6 +44,7 @@ function remove(): void {
                 removeProcessing.value = false;
                 removeDialogOpen.value = false;
                 selectedUserId.value = null;
+                selectedMember.value = null;
             },
         },
     );
@@ -60,7 +69,7 @@ function remove(): void {
                 v-if="canRemove"
                 type="button"
                 class="text-sm text-red-600 hover:text-red-900"
-                @click="requestRemove(member.user_id)"
+                @click="requestRemove(member)"
             >
                 Remove
             </button>
@@ -74,7 +83,7 @@ function remove(): void {
     <ConfirmDialog
         v-model:open="removeDialogOpen"
         title="Remove member"
-        description="This member will lose access to the organisation immediately."
+        :description="removeDescription"
         confirm-label="Remove"
         :processing="removeProcessing"
         @confirm="remove"

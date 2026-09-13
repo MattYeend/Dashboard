@@ -10,16 +10,17 @@ use App\Services\Plans\SeatCalculatorService;
 
 class MembershipSeatSyncService
 {
-    /** 
-     * Inject the required services into the membership seat sync service. 
+    /**
+     * Inject the required services into the membership seat sync service.
      */
     public function __construct(
         protected readonly SeatCalculatorService $seatCalculatorService,
         protected readonly AuditLogService $auditLogService,
     ) {}
 
-    /** 
-     * Recalculate seats and update the organisation's active Stripe subscription quantity, if any. 
+    /**
+     * Recalculate seats and update the organisation's active Stripe
+     * subscription quantity, if any.
      */
     public function sync(Organisation $organisation, User $actor): void
     {
@@ -42,7 +43,10 @@ class MembershipSeatSyncService
             Log::ACTION_UPDATE_SUBSCRIPTION_SEATS,
             $actor,
             $organisation,
-            ['before' => ['seats' => $before], 'after' => ['seats' => $seats]],
+            [
+                'before' => ['seats' => $before],
+                'after' => ['seats' => $seats],
+            ],
         );
     }
 }

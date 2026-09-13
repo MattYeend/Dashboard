@@ -29,6 +29,7 @@ class OrganisationFactory extends Factory
             'name' => $name,
             'slug' => Str::slug($name),
             'meta' => null,
+            'settings' => null,
         ];
     }
 

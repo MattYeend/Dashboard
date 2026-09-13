@@ -11,6 +11,8 @@ use App\Models\User;
 use App\Services\Organisations\InvitationService;
 use App\Services\Organisations\ManagementService;
 use App\Services\Organisations\QueryService;
+use App\Services\Plans\FormatterService;
+use App\Services\Plans\SeatCalculatorService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -29,6 +31,8 @@ class OrganisationController extends Controller
         private readonly QueryService $query,
         private readonly ManagementService $management,
         private readonly InvitationService $invitations,
+        private readonly SeatCalculatorService $seatCalculatorService,
+        private readonly FormatterService $formatterService,
     ) {}
 
     /**
@@ -161,6 +165,26 @@ class OrganisationController extends Controller
             'organisations.settings',
             $updated->id
         )->with('success', 'Settings updated.');
+    }
+
+    /**
+     * Display the organisation's billing page — current plan, active seat
+     * count, and the resulting total based on price_per_user_per_month.
+     */
+    public function billing(Organisation $organisation): Response
+    {
+        $this->authorize('viewBilling', $organisation);
+
+        $subscription = $organisation->subscriptions()->active()->first();
+        $plan = $subscription?->plan;
+        $seats = $this->seatCalculatorService->currentSeatCount($organisation);
+
+        return Inertia::render('Organisations/Billing', [
+            'organisation' => $organisation,
+            'plan' => $plan ? $this->formatterService->format($plan) : null,
+            'seats' => $seats,
+            'total' => $plan ? $this->seatCalculatorService->calculateTotal($plan, $seats) : null,
+        ]);
     }
 
     /**

@@ -8,7 +8,6 @@ use App\Models\OrganisationMembership;
 use App\Models\User;
 use App\Notifications\OrganisationInvitationNotification;
 use App\Services\AuditLogService;
-use App\Services\Plans\SeatCalculatorService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
