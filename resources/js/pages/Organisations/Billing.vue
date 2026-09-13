@@ -1,26 +1,12 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
+import type { Organisation, Plan } from '@/types';
 import BillingPlanDetails from './components/BillingPlanDetails.vue';
 import BillingSeatSummary from './components/BillingSeatSummary.vue';
 
-interface BillingPlan {
-    id: number;
-    name: string;
-    slug: string;
-    description: string | null;
-    price_per_user_per_month: number;
-    is_active: boolean;
-}
-
-interface BillingOrganisation {
-    id: number;
-    name: string;
-    slug: string;
-}
-
 const props = defineProps<{
-    organisation: BillingOrganisation;
-    plan: BillingPlan | null;
+    organisation: Organisation;
+    plan: Plan | null;
     seats: number;
     total: number | null;
 }>();
