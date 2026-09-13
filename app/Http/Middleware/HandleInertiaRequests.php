@@ -47,6 +47,8 @@ class HandleInertiaRequests extends Middleware
                 || $request->cookie('sidebar_state') === 'true',
             'flash' => [
                 'plainTextToken' => fn () => $request->session()->get('plainTextToken'),
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
             ],
         ];
     }
