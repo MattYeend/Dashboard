@@ -4,6 +4,7 @@ namespace App\Services\Organisations;
 
 use App\Http\Requests\Organisations\StoreOrganisationRequest;
 use App\Http\Requests\Organisations\UpdateOrganisationRequest;
+use App\Http\Requests\Organisations\UpdateOrganisationSettingsRequest;
 use App\Models\Organisation;
 use App\Models\User;
 
@@ -17,22 +18,47 @@ class ManagementService
         protected readonly UpdaterService $updater,
         protected readonly DeleterService $destructor,
         protected readonly RestorerService $restorer,
+        protected readonly SettingsUpdaterService $settingsUpdater,
     ) {}
 
     /**
      * Create a new organisation.
      */
-    public function store(StoreOrganisationRequest $request): Organisation
-    {
-        return $this->creator->create($request->validated(), $request->user()->id);
+    public function store(
+        StoreOrganisationRequest $request
+    ): Organisation {
+        return $this->creator->create(
+            $request->validated(),
+            $request->user()->id
+        );
     }
 
     /**
      * Update an existing organisation.
      */
-    public function update(UpdateOrganisationRequest $request, Organisation $organisation): Organisation
-    {
-        return $this->updater->update($organisation, $request->validated(), $request->user()->id);
+    public function update(
+        UpdateOrganisationRequest $request,
+        Organisation $organisation
+    ): Organisation {
+        return $this->updater->update(
+            $organisation,
+            $request->validated(),
+            $request->user()->id
+        );
+    }
+
+    /**
+     * Update an organisation's settings (branding, preferences, etc).
+     */
+    public function updateSettings(
+        UpdateOrganisationSettingsRequest $request,
+        Organisation $organisation
+    ): Organisation {
+        return $this->settingsUpdater->update(
+            $organisation,
+            $request->validated(),
+            $request->user()->id
+        );
     }
 
     /**
@@ -68,8 +94,11 @@ class ManagementService
      * @param  array<int, int>  $ids
      * @return array{restored: array<int, int>, skipped: array<int, int>}
      */
-    public function bulkRestore(array $ids, User $actor, callable $authoriseCallback): array
-    {
+    public function bulkRestore(
+        array $ids,
+        User $actor,
+        callable $authoriseCallback
+    ): array {
         $requestedIds = collect($ids)->unique()->values();
 
         $organisations = Organisation::onlyTrashed()->whereIn('id', $requestedIds)->get();
@@ -95,8 +124,11 @@ class ManagementService
      * @param  array<int, int>  $ids
      * @return array{deleted: array<int, int>, skipped: array<int, int>}
      */
-    public function bulkDelete(array $ids, User $actor, callable $authoriseCallback): array
-    {
+    public function bulkDelete(
+        array $ids,
+        User $actor,
+        callable $authoriseCallback
+    ): array {
         $requestedIds = collect($ids)->unique()->values();
 
         $organisations = Organisation::whereIn('id', $requestedIds)->get();

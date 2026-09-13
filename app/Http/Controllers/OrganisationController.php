@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Organisations\InviteOrganisationMemberRequest;
 use App\Http\Requests\Organisations\StoreOrganisationRequest;
 use App\Http\Requests\Organisations\UpdateOrganisationRequest;
+use App\Http\Requests\Organisations\UpdateOrganisationSettingsRequest;
 use App\Models\Organisation;
 use App\Models\User;
 use App\Services\Organisations\InvitationService;
@@ -39,7 +40,13 @@ class OrganisationController extends Controller
 
         $data = $this->query->getPaginated(
             $request->user(),
-            $request->only(['search', 'trashed', 'sort_by', 'sort_direction', 'per_page'])
+            $request->only([
+                'search',
+                'trashed',
+                'sort_by',
+                'sort_direction',
+                'per_page',
+            ])
         );
 
         return Inertia::render('Organisations/Index', $data);
@@ -58,8 +65,9 @@ class OrganisationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreOrganisationRequest $request): JsonResponse|RedirectResponse
-    {
+    public function store(
+        StoreOrganisationRequest $request
+    ): JsonResponse|RedirectResponse {
         $organisation = $this->management->store($request);
 
         if ($request->wantsJson()) {
@@ -72,8 +80,10 @@ class OrganisationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, Organisation $organisation): Response
-    {
+    public function show(
+        Request $request,
+        Organisation $organisation
+    ): Response {
         $this->authorize('view', $organisation);
 
         $data = $this->query->getById($request->user(), $organisation);
@@ -87,8 +97,10 @@ class OrganisationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request, Organisation $organisation): Response
-    {
+    public function edit(
+        Request $request,
+        Organisation $organisation
+    ): Response {
         $this->authorize('update', $organisation);
 
         $data = $this->query->getById($request->user(), $organisation);
@@ -99,8 +111,10 @@ class OrganisationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrganisationRequest $request, Organisation $organisation): JsonResponse|RedirectResponse
-    {
+    public function update(
+        UpdateOrganisationRequest $request,
+        Organisation $organisation
+    ): JsonResponse|RedirectResponse {
         $this->authorize('update', $organisation);
 
         $updated = $this->management->update($request, $organisation);
@@ -113,10 +127,49 @@ class OrganisationController extends Controller
     }
 
     /**
+     * Display the organisation's settings page.
+     */
+    public function settings(Organisation $organisation): Response
+    {
+        $this->authorize('manageSettings', $organisation);
+
+        $logo = $organisation->logoAttachment();
+
+        return Inertia::render('Organisations/Settings', [
+            'organisation' => $organisation,
+            'logo_download_url' => $logo ? route('attachments.download', $logo) : null,
+        ]);
+    }
+
+    /**
+     * Update the organisation's settings.
+     *
+     * Authorisation is handled inside UpdateOrganisationSettingsRequest's
+     * authorize() method, consistent with Store/UpdateOrganisationRequest.
+     */
+    public function updateSettings(
+        UpdateOrganisationSettingsRequest $request,
+        Organisation $organisation
+    ): JsonResponse|RedirectResponse {
+        $updated = $this->management->updateSettings($request, $organisation);
+
+        if ($request->wantsJson()) {
+            return response()->json($updated);
+        }
+
+        return redirect()->route(
+            'organisations.settings',
+            $updated->id
+        )->with('success', 'Settings updated.');
+    }
+
+    /**
      * Soft delete the specified resource.
      */
-    public function destroy(Request $request, Organisation $organisation): JsonResponse|RedirectResponse
-    {
+    public function destroy(
+        Request $request,
+        Organisation $organisation
+    ): JsonResponse|RedirectResponse {
         $this->authorize('delete', $organisation);
 
         $this->management->destroy($organisation, $request->user());
@@ -148,8 +201,10 @@ class OrganisationController extends Controller
     /**
      * Permanently delete the specified resource.
      */
-    public function forceDelete(Request $request, int $id): JsonResponse|RedirectResponse
-    {
+    public function forceDelete(
+        Request $request,
+        int $id
+    ): JsonResponse|RedirectResponse {
         $organisation = Organisation::withTrashed()->findOrFail($id);
         $this->authorize('forceDelete', $organisation);
 
@@ -211,11 +266,17 @@ class OrganisationController extends Controller
     /**
      * Invite a user, by email, to join the organisation.
      */
-    public function invite(InviteOrganisationMemberRequest $request, Organisation $organisation): RedirectResponse|JsonResponse
-    {
+    public function invite(
+        InviteOrganisationMemberRequest $request,
+        Organisation $organisation
+    ): RedirectResponse|JsonResponse {
         $this->authorize('invite', $organisation);
 
-        $this->invitations->invite($organisation, $request->validated()['email'], $request->user());
+        $this->invitations->invite(
+            $organisation,
+            $request->validated()['email'],
+            $request->user()
+        );
 
         if ($request->wantsJson()) {
             return response()->json(['message' => 'Invitation sent.']);
@@ -242,8 +303,11 @@ class OrganisationController extends Controller
     /**
      * Remove a member from the organisation.
      */
-    public function removeMember(Organisation $organisation, User $user, Request $request): RedirectResponse|JsonResponse
-    {
+    public function removeMember(
+        Organisation $organisation,
+        User $user,
+        Request $request
+    ): RedirectResponse|JsonResponse {
         $this->authorize('removeMember', $organisation);
 
         $this->invitations->removeMember($organisation, $user, $request->user());

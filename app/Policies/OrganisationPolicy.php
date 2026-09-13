@@ -48,6 +48,14 @@ class OrganisationPolicy
     }
 
     /**
+     * Determine whether the user can manage the organisation's settings.
+     */
+    public function manageSettings(User $user, Organisation $organisation): bool
+    {
+        return $this->authorisationService->canManageSettings($user, $organisation);
+    }
+
+    /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Organisation $organisation): bool

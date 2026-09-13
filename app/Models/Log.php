@@ -819,6 +819,9 @@ class Log extends Model implements Auditable
 
     public const ACTION_SWITCH_ORGANISATION = 378;
 
+    // Organisation Settings Management
+    public const ACTION_UPDATE_ORGANISATION_SETTINGS = 379;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed

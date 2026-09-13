@@ -18,6 +18,7 @@ use Spatie\Multitenancy\Models\Tenant;
  * @property string $name
  * @property string $slug
  * @property array|null $meta
+ * @property array|null $settings
  * @property Carbon|null $deleted_at
  * @property Carbon|null $restored_at
  * @property Carbon $created_at
@@ -26,11 +27,16 @@ use Spatie\Multitenancy\Models\Tenant;
  * @property string|null $pm_type
  * @property string|null $pm_last_four
  * @property Carbon|null $trial_ends_at
+ * @property-read User|null $creator
+ * @property-read User|null $updater
+ * @property-read User|null $deleter
+ * @property-read User|null $restorer
  */
 #[Fillable([
     'name',
     'slug',
     'meta',
+    'settings',
     'created_by',
     'created_at',
     'updated_by',
@@ -114,6 +120,29 @@ class Organisation extends Tenant implements Auditable
     }
 
     /**
+     * Get the attachment currently set as this organisation's logo, if any.
+     *
+     * Scoped to this organisation's own attachments on both the
+     * organisation_id column and the polymorphic attachable columns, and
+     * excludes soft-deleted rows — a stale or removed logo reference in
+     * settings should never resolve to a file.
+     */
+    public function logoAttachment(): ?Attachment
+    {
+        $attachmentId = $this->settings['logo_attachment_id'] ?? null;
+
+        if (! $attachmentId) {
+            return null;
+        }
+
+        return Attachment::query()
+            ->where('organisation_id', $this->id)
+            ->where('attachable_type', self::class)
+            ->where('attachable_id', $this->id)
+            ->find($attachmentId);
+    }
+
+    /**
      * Get the user who created this organisation.
      *
      * @return BelongsTo<User, $this>
@@ -165,6 +194,7 @@ class Organisation extends Tenant implements Auditable
             'name',
             'slug',
             'meta',
+            'settings',
         ]);
     }
 
@@ -177,6 +207,7 @@ class Organisation extends Tenant implements Auditable
     {
         return [
             'meta' => 'array',
+            'settings' => 'array',
             'deleted_at' => 'immutable_datetime',
             'restored_at' => 'immutable_datetime',
         ];

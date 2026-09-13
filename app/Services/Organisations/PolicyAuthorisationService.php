@@ -62,6 +62,17 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the user can manage the organisation's settings
+     * (branding, preferences).
+     */
+    public function canManageSettings(User $actor, Organisation $target): bool
+    {
+        return $actor->can('manage organisation settings')
+            && $this->activeChecker->isActive($target)
+            && $this->isActiveMember($actor, $target);
+    }
+
+    /**
      * Determine whether the user can delete the organisation.
      */
     public function canDelete(User $actor, Organisation $target): bool
