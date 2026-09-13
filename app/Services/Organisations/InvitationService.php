@@ -8,6 +8,7 @@ use App\Models\OrganisationMembership;
 use App\Models\User;
 use App\Notifications\OrganisationInvitationNotification;
 use App\Services\AuditLogService;
+use App\Services\Plans\SeatCalculatorService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -20,6 +21,7 @@ class InvitationService
      */
     public function __construct(
         protected readonly AuditLogService $auditLogService,
+        protected readonly MembershipSeatSyncService $membershipSeatSync,
     ) {}
 
     /**
@@ -107,6 +109,9 @@ class InvitationService
 
         $this->assignDefaultRole($membership->organisation_id, $user);
 
+        $organisation = Organisation::findOrFail($membership->organisation_id);
+        $this->membershipSeatSync->sync($organisation, $user);
+
         $this->auditLogService->record(
             Log::ACTION_ACCEPT_INVITATION,
             $user,
@@ -133,6 +138,8 @@ class InvitationService
         $before = $this->auditLogService->snapshot($membership);
 
         $membership->delete();
+
+        $this->membershipSeatSync->sync($organisation, $actor);
 
         $this->auditLogService->record(
             Log::ACTION_REMOVE_MEMBER,

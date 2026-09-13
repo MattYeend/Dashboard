@@ -86,7 +86,6 @@ class Organisation extends Tenant implements Auditable
     {
         return $this->users()->wherePivot(
             'status', OrganisationMembership::STATUS_ACTIVE,
-            'role',
         );
     }
 
