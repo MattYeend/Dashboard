@@ -1,6 +1,5 @@
 <script setup lang="ts">
-// After:
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import AddStageColumn from '@/pages/Deals/components/AddStageColumn.vue';
 import DealStageColumn from '@/pages/Deals/components/DealStageColumn.vue';
@@ -40,8 +39,6 @@ function onStageAdded(stage: BoardStage): void {
 </script>
 
 <template>
-    <Head :title="`${pipelineName} board`" />
-
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="mb-4 flex items-center justify-between">

@@ -94,6 +94,7 @@ class OrganisationController extends Controller
 
         $data['can_switch'] = $request->user()->can('switch', $organisation);
         $data['can_remove_member'] = $request->user()->can('removeMember', $organisation);
+        $data['can_view_billing'] = $request->user()->can('viewBilling', $organisation);
 
         return Inertia::render('Organisations/Show', $data);
     }

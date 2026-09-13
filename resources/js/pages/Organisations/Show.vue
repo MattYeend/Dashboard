@@ -8,6 +8,7 @@ import OrganisationMembersList from '@/pages/Organisations/components/Organisati
 import {
     edit as organisationsEdit,
     settings as organisationsSettings,
+    billing as organisationsBilling,
     destroy as organisationsDestroy,
     index as organisationsIndex,
 } from '@/routes/organisations';
@@ -22,6 +23,7 @@ interface Props {
     permissions_meta: PermissionsMeta;
     can_switch: boolean;
     can_remove_member: boolean;
+    can_view_billing: boolean;
     members: OrganisationMembership[];
 }
 
@@ -64,11 +66,13 @@ function switchToOrganisation(): void {
 <template>
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <div class="mb-6 flex items-center justify-between">
+            <div
+                class="mb-6 flex flex-wrap items-center justify-between gap-4 border-b pb-4"
+            >
                 <h1 class="text-2xl font-semibold text-gray-300">
                     Organisation
                 </h1>
-                <div class="space-x-2">
+                <div class="ml-auto flex flex-wrap gap-2">
                     <button
                         v-if="props.can_switch"
                         type="button"
@@ -95,6 +99,13 @@ function switchToOrganisation(): void {
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
                     >
                         Settings
+                    </Link>
+                    <Link
+                        v-if="props.can_view_billing"
+                        :href="organisationsBilling.url(props.organisation.id)"
+                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
+                    >
+                        Billing
                     </Link>
                     <button
                         type="button"
