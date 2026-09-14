@@ -17,6 +17,11 @@ use Spatie\Permission\PermissionRegistrar;
 class InvitationService
 {
     /**
+     * Number of days an invitation token remains valid for.
+     */
+    private const INVITATION_EXPIRY_DAYS = 7;
+
+    /**
      * Inject the required services into the invitation service.
      */
     public function __construct(
@@ -38,9 +43,31 @@ class InvitationService
         User $invitedBy,
         string $invitedRole
     ): OrganisationMembership {
+        $user = User::query()->firstOrCreate(
+            ['email' => $email],
+            [
+                'name' => Str::before($email, '@'),
+                'password' => Hash::make(Str::random(40)),
+            ],
+        );
+
         $this->guardAgainstExistingActiveMember($organisation, $email);
 
-        $membership = $this->createInvitation($organisation, $email, $invitedBy, $invitedRole);
+        $token = Str::random(40);
+
+        $membership = OrganisationMembership::query()->updateOrCreate(
+            ['organisation_id' => $organisation->id, 'user_id' => $user->id],
+            [
+                'status' => OrganisationMembership::STATUS_INVITED,
+                'invitation_token' => $token,
+                'invited_at' => now(),
+                'invited_by' => $invitedBy->id,
+                'invited_role' => $invitedRole,
+                'created_by' => $invitedBy->id,
+            ],
+        );
+
+        $user->notify(new OrganisationInvitationNotification($organisation, $token));
 
         $this->auditLogService->record(
             Log::ACTION_INVITE_MEMBER,
@@ -48,7 +75,7 @@ class InvitationService
             $organisation,
             ['after' => [
                 'organisation_id' => $organisation->id,
-                'invited_user_id' => $membership->user_id,
+                'invited_user_id' => $user->id,
                 'invited_role' => $invitedRole,
             ]],
         );
@@ -163,11 +190,20 @@ class InvitationService
         $membership = OrganisationMembership::query()
             ->where('invitation_token', $token)
             ->where('user_id', $user->id)
+            ->where('status', OrganisationMembership::STATUS_INVITED)
             ->first();
 
         if ($membership === null) {
             throw ValidationException::withMessages([
                 'token' => 'This invitation is invalid or does not belong to your account.',
+            ]);
+        }
+
+        if ($membership->invited_at !== null
+            && $membership->invited_at->lt(now()->subDays(self::INVITATION_EXPIRY_DAYS))
+        ) {
+            throw ValidationException::withMessages([
+                'token' => 'This invitation has expired. Please ask for a new one to be sent.',
             ]);
         }
 
@@ -298,7 +334,7 @@ class InvitationService
      * organisation's Spatie permissions team. Falls back to 'User' for
      * any invitation created before roles-at-invite-time was added.
      */
-    private function assignInvitedRole(int $organisationId, User $user, ?string $invitedRole): void
+    protected function assignInvitedRole(int $organisationId, User $user, ?string $invitedRole): void
     {
         $registrar = app(PermissionRegistrar::class);
         $previousTeamId = $registrar->getPermissionsTeamId();

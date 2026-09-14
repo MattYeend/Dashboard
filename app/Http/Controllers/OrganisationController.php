@@ -11,6 +11,7 @@ use App\Models\Organisation;
 use App\Models\User;
 use App\Services\Organisations\InvitationService;
 use App\Services\Organisations\ManagementService;
+use App\Services\Organisations\PolicyAuthorisationService;
 use App\Services\Organisations\QueryService;
 use App\Services\Plans\FormatterService;
 use App\Services\Plans\SeatCalculatorService;
@@ -34,6 +35,7 @@ class OrganisationController extends Controller
         private readonly InvitationService $invitations,
         private readonly SeatCalculatorService $seatCalculatorService,
         private readonly FormatterService $formatterService,
+        private readonly PolicyAuthorisationService $authorisationService,
     ) {}
 
     /**
@@ -96,6 +98,8 @@ class OrganisationController extends Controller
         $data['can_switch'] = $request->user()->can('switch', $organisation);
         $data['can_remove_member'] = $request->user()->can('removeMember', $organisation);
         $data['can_view_billing'] = $request->user()->can('viewBilling', $organisation);
+        $data['can_invite'] = $request->user()->can('invite', $organisation);
+        $data['assignable_roles'] = $this->authorisationService->assignableRolesFor($request->user(), $organisation);
 
         return Inertia::render('Organisations/Show', $data);
     }
@@ -296,7 +300,7 @@ class OrganisationController extends Controller
         InviteOrganisationMemberRequest $request,
         Organisation $organisation
     ): RedirectResponse|JsonResponse {
-        $this->authorize('invite', $organisation);
+        $this->authorize('inviteWithRole', [$organisation, $request->validated()['invited_role']]);
 
         $this->invitations->invite(
             $organisation,

@@ -67,6 +67,7 @@ class Organisation extends Tenant implements Auditable
             ->withPivot([
                 'status',
                 'role',
+                'invited_role',
                 'invitation_token',
                 'invited_at',
                 'joined_at',

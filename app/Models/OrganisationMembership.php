@@ -37,6 +37,7 @@ class OrganisationMembership extends Pivot implements Auditable
             'organisation_id',
             'user_id',
             'status',
+            'invited_role',
             'invited_at',
             'joined_at',
             'invited_by',

@@ -6,6 +6,9 @@ use App\Models\Organisation;
 use App\Models\OrganisationMembership;
 use App\Models\User;
 use App\Services\UserRoleCheckerService;
+use Illuminate\Support\Collection;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class PolicyAuthorisationService
 {
@@ -166,5 +169,74 @@ class PolicyAuthorisationService
             ->wherePivot('status', OrganisationMembership::STATUS_ACTIVE)
             ->whereKey($actor->id)
             ->exists();
+    }
+
+    /**
+     * Determine whether the actor can invite a new member at the given role,
+     * i.e. the base invite permission passes and the chosen role does not
+     * outrank the actor's own highest role within the organisation.
+     */
+    public function canInviteWithRole(User $actor, Organisation $target, string $invitedRole): bool
+    {
+        if (! $this->canInvite($actor, $target)) {
+            return false;
+        }
+
+        $ranks = config('organisation-roles.ranks');
+        $invitedRank = $ranks[$invitedRole] ?? null;
+
+        if ($invitedRank === null) {
+            return false;
+        }
+
+        return $invitedRank >= $this->highestRoleRank($actor, $target);
+    }
+
+    /**
+     * Get the roles the actor is permitted to assign when inviting a new
+     * member into the organisation - every Spatie role scoped to that
+     * organisation's permissions team, excluding anything that outranks
+     * the actor's own highest role.
+     *
+     * @return Collection<int, array{id: int, name: string}>
+     */
+    public function assignableRolesFor(User $actor, Organisation $organisation): Collection
+    {
+        $ranks = config('organisation-roles.ranks');
+        $actorRank = $this->highestRoleRank($actor, $organisation);
+
+        $registrar = app(PermissionRegistrar::class);
+        $previousTeamId = $registrar->getPermissionsTeamId();
+
+        $registrar->setPermissionsTeamId($organisation->id);
+        $roles = Role::query()->where('guard_name', 'web')->get(['id', 'name']);
+        $registrar->setPermissionsTeamId($previousTeamId);
+
+        return $roles
+            ->filter(fn (Role $role) => ($ranks[$role->name] ?? PHP_INT_MAX) >= $actorRank)
+            ->map(fn (Role $role) => ['id' => $role->id, 'name' => $role->name])
+            ->values();
+    }
+
+    /**
+     * Get the actor's highest-ranking (lowest-numbered) role within the
+     * given organisation's permissions team.
+     */
+    private function highestRoleRank(User $actor, Organisation $organisation): int
+    {
+        $ranks = config('organisation-roles.ranks');
+
+        $registrar = app(PermissionRegistrar::class);
+        $previousTeamId = $registrar->getPermissionsTeamId();
+
+        $registrar->setPermissionsTeamId($organisation->id);
+        $actor->unsetRelation('roles');
+        $actorRanks = $actor->getRoleNames()
+            ->map(fn (string $roleName) => $ranks[$roleName] ?? PHP_INT_MAX)
+            ->all();
+        $actor->unsetRelation('roles');
+        $registrar->setPermissionsTeamId($previousTeamId);
+
+        return $actorRanks === [] ? PHP_INT_MAX : min($actorRanks);
     }
 }

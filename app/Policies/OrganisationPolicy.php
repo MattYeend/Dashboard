@@ -134,4 +134,15 @@ class OrganisationPolicy
     {
         return $this->authorisationService->canInvite($user, $organisation);
     }
+
+    /**
+     * Determine whether the user can invite a new member at the given role.
+     */
+    public function inviteWithRole(
+        User $user,
+        Organisation $organisation,
+        string $invitedRole
+    ): bool {
+        return $this->authorisationService->canInviteWithRole($user, $organisation, $invitedRole);
+    }
 }

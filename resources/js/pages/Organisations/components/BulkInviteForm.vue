@@ -146,7 +146,7 @@ function submit(): void {
         <div v-if="previewResult" class="space-y-2 text-sm">
             <p>{{ previewResult.invited.length }} will be invited:</p>
             <p class="text-gray-400">
-                {{ previewResult.invited.join(', ') || '—' }}
+                {{ previewResult.invited.join(', ') || '-' }}
             </p>
 
             <p>
@@ -154,12 +154,12 @@ function submit(): void {
                 skipped:
             </p>
             <p class="text-gray-400">
-                {{ previewResult.skipped.join(', ') || '—' }}
+                {{ previewResult.skipped.join(', ') || '-' }}
             </p>
 
             <p>{{ previewResult.invalid.length }} invalid, will be skipped:</p>
             <p class="text-gray-400">
-                {{ previewResult.invalid.join(', ') || '—' }}
+                {{ previewResult.invalid.join(', ') || '-' }}
             </p>
 
             <p v-if="previewResult.seat_impact">
