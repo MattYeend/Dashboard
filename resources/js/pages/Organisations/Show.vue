@@ -2,6 +2,8 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import BulkInviteForm from '@/pages/Organisations/components/BulkInviteForm.vue';
+import InviteMemberForm from '@/pages/Organisations/components/InviteMemberForm.vue';
 import OrganisationAuditDetails from '@/pages/Organisations/components/OrganisationAuditDetails.vue';
 import OrganisationBasicDetails from '@/pages/Organisations/components/OrganisationBasicDetails.vue';
 import OrganisationMembersList from '@/pages/Organisations/components/OrganisationMembersList.vue';
@@ -16,6 +18,7 @@ import type {
     Organisation,
     OrganisationMembership,
     PermissionsMeta,
+    RoleOption,
 } from '@/types';
 
 interface Props {
@@ -24,6 +27,8 @@ interface Props {
     can_switch: boolean;
     can_remove_member: boolean;
     can_view_billing: boolean;
+    can_invite: boolean;
+    assignable_roles: RoleOption[];
     members: OrganisationMembership[];
 }
 
@@ -123,6 +128,16 @@ function switchToOrganisation(): void {
                     :organisation-id="organisation.id"
                     :members="members"
                     :can-remove="can_remove_member"
+                />
+                <InviteMemberForm
+                    v-if="can_invite"
+                    :organisation-id="organisation.id"
+                    :assignable-roles="assignable_roles"
+                />
+                <BulkInviteForm
+                    v-if="can_invite"
+                    :organisation-id="organisation.id"
+                    :assignable-roles="assignable_roles"
                 />
                 <OrganisationAuditDetails :organisation="organisation" />
             </div>
