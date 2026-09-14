@@ -259,7 +259,7 @@ function bulkRestore(): void {
 }
 
 function formatRoles(roles?: Array<{ name: string }>): string {
-    return roles?.map((role) => role.name).join(', ') || '—';
+    return roles?.map((role) => role.name).join(', ') || '-';
 }
 </script>
 

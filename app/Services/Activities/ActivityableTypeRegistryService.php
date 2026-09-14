@@ -92,7 +92,7 @@ class ActivityableTypeRegistryService
      * Resolve the FQCN that should actually be persisted to
      * activities.activityable_type, given a short key submitted by the
      * form (e.g. "company" -> "App\Models\Company"). Returns null if the
-     * key isn't in the allow-list — never trust a raw class name from
+     * key isn't in the allow-list - never trust a raw class name from
      * the client.
      */
     public function modelClassForKey(string $key): ?string

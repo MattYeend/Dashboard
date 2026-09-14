@@ -5,7 +5,7 @@ defineProps<{ permission: Permission }>();
 
 function formatDate(value: string | null): string {
     if (!value) {
-        return '—';
+        return '-';
     }
 
     return new Date(value).toLocaleDateString('en-GB', {
@@ -36,7 +36,7 @@ function formatDate(value: string | null): string {
                 {{
                     permission.restorer
                         ? `${permission.restorer.name} on ${formatDate(permission.restored_at)}`
-                        : '—'
+                        : '-'
                 }}
             </dd>
         </div>

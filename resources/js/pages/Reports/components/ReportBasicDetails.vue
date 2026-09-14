@@ -13,7 +13,7 @@ defineProps<{ report: Report }>();
 
             <dt class="text-xs text-gray-400">Description</dt>
             <dd class="text-sm text-gray-200">
-                {{ report.description ?? '—' }}
+                {{ report.description ?? '-' }}
             </dd>
 
             <dt class="text-xs text-gray-400">Covers</dt>

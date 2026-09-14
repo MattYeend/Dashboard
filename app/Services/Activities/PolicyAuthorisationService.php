@@ -144,7 +144,7 @@ class PolicyAuthorisationService
     /**
      * Activities aren't owned by a User the way Addresses/Contacts are, so
      * this checks the ranking of whoever *logged* the entry rather than an
-     * "owner" relation — a lower-ranked user can't delete/restore an entry
+     * "owner" relation - a lower-ranked user can't delete/restore an entry
      * a super admin recorded.
      */
     private function targetOutranksActor(User $actor, Activity $target): bool

@@ -268,7 +268,7 @@ describe('destroy', function () {
         // actingAs() leaves the web guard authenticated for the rest of this
         // test method. Left alone, Sanctum's guard falls back to that session
         // user on the next request rather than evaluating the (now revoked)
-        // bearer token — forgetting the guards forces a genuine re-check.
+        // bearer token - forgetting the guards forces a genuine re-check.
         $this->app['auth']->forgetGuards();
 
         $this->withHeaders(['Authorization' => "Bearer {$plainTextToken}"])

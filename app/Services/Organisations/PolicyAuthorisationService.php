@@ -67,7 +67,7 @@ class PolicyAuthorisationService
      *
      * Grants access to either an app-wide holder of the
      * 'manage organisation settings' permission, or a member holding an
-     * owner/admin role within this specific organisation — mirroring
+     * owner/admin role within this specific organisation - mirroring
      * how canViewBilling() treats org-level management authority as
      * distinct from global Spatie admin rank.
      */
@@ -107,7 +107,7 @@ class PolicyAuthorisationService
     /**
      * Determine whether the actor can view billing for the given organisation.
      *
-     * Requires active membership first — admin rank alone does not grant
+     * Requires active membership first - admin rank alone does not grant
      * billing visibility into an organisation the actor doesn't belong to.
      */
     public function canViewBilling(User $actor, Organisation $organisation): bool

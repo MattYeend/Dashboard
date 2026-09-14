@@ -52,7 +52,7 @@ abstract class TestCase extends BaseTestCase
      * organisation, since SessionOrganisationFinder and
      * PolicyAuthorisationService both require an active
      * organisation_user pivot row (not merely a session value) to
-     * resolve or authorise against it — super admins are exempt from
+     * resolve or authorise against it - super admins are exempt from
      * this check at the application level, but attaching them here
      * too keeps every actingAs() user's organisation_user state
      * consistent and avoids relying on that bypass in tests that

@@ -61,7 +61,7 @@ function remove(): void {
             <div>
                 <p class="text-sm text-gray-300">{{ member.user?.name }}</p>
                 <p class="text-xs text-gray-400">
-                    {{ member.user?.email }} — {{ member.status }}
+                    {{ member.user?.email }} - {{ member.status }}
                 </p>
             </div>
 

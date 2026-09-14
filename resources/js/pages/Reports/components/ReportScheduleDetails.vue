@@ -26,12 +26,12 @@ defineProps<{ report: Report }>();
 
                 <dt class="text-xs text-gray-400">Recipients</dt>
                 <dd class="text-sm text-gray-200">
-                    {{ (report.recipients ?? []).join(', ') || '—' }}
+                    {{ (report.recipients ?? []).join(', ') || '-' }}
                 </dd>
 
                 <dt class="text-xs text-gray-400">Next run</dt>
                 <dd class="text-sm text-gray-200">
-                    {{ report.next_run_at ?? '—' }}
+                    {{ report.next_run_at ?? '-' }}
                 </dd>
             </template>
 

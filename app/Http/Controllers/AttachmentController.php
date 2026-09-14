@@ -40,7 +40,7 @@ class AttachmentController extends Controller
     /**
      * Download an attachment's file.
      *
-     * The file is streamed from the private disk — never a public URL —
+     * The file is streamed from the private disk - never a public URL -
      * and gated by the 'download' policy on every request.
      */
     public function download(Attachment $attachment): StreamedResponse

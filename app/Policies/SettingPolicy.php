@@ -18,7 +18,7 @@ class SettingPolicy
      * Determine whether the user can view the settings landing page.
      *
      * True if the user can view at least one of the three settings
-     * groups — the page itself uses the `permissions` prop to decide
+     * groups - the page itself uses the `permissions` prop to decide
      * which group links to show.
      */
     public function viewAny(User $user): bool

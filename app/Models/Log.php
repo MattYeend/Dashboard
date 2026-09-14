@@ -825,6 +825,9 @@ class Log extends Model implements Auditable
     // Subscription Seat Management
     public const ACTION_UPDATE_SUBSCRIPTION_SEATS = 380;
 
+    // Bulk Invitation Management
+    public const ACTION_BULK_INVITE_MEMBERS = 381;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed

@@ -8,6 +8,7 @@ use App\Models\OrganisationMembership;
 use App\Models\User;
 use App\Notifications\OrganisationInvitationNotification;
 use App\Services\AuditLogService;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -28,45 +29,18 @@ class InvitationService
      *
      * Creates the User record if the email doesn't already exist,
      * with a random unusable password until they accept.
+     *
+     * @throws ValidationException
      */
     public function invite(
         Organisation $organisation,
         string $email,
-        User $invitedBy
+        User $invitedBy,
+        string $invitedRole
     ): OrganisationMembership {
-        $user = User::query()->firstOrCreate(
-            ['email' => $email],
-            [
-                'name' => Str::before($email, '@'),
-                'password' => Hash::make(Str::random(40)),
-            ],
-        );
+        $this->guardAgainstExistingActiveMember($organisation, $email);
 
-        $existing = OrganisationMembership::query()
-            ->where('organisation_id', $organisation->id)
-            ->where('user_id', $user->id)
-            ->first();
-
-        if ($existing !== null && $existing->status === OrganisationMembership::STATUS_ACTIVE) {
-            throw ValidationException::withMessages([
-                'email' => 'This user is already a member of this organisation.',
-            ]);
-        }
-
-        $token = Str::random(40);
-
-        $membership = OrganisationMembership::query()->updateOrCreate(
-            ['organisation_id' => $organisation->id, 'user_id' => $user->id],
-            [
-                'status' => OrganisationMembership::STATUS_INVITED,
-                'invitation_token' => $token,
-                'invited_at' => now(),
-                'invited_by' => $invitedBy->id,
-                'created_by' => $invitedBy->id,
-            ],
-        );
-
-        $user->notify(new OrganisationInvitationNotification($organisation, $token));
+        $membership = $this->createInvitation($organisation, $email, $invitedBy, $invitedRole);
 
         $this->auditLogService->record(
             Log::ACTION_INVITE_MEMBER,
@@ -74,11 +48,109 @@ class InvitationService
             $organisation,
             ['after' => [
                 'organisation_id' => $organisation->id,
-                'invited_user_id' => $user->id,
+                'invited_user_id' => $membership->user_id,
+                'invited_role' => $invitedRole,
             ]],
         );
 
         return $membership;
+    }
+
+    /**
+     * Classify a batch of emails for the organisation without persisting
+     * anything - used to preview a bulk invite before it is committed.
+     *
+     * @param  Collection<int, string>  $emails
+     * @return array{invited: array<int, string>, skipped: array<int, string>, invalid: array<int, string>}
+     */
+    public function previewBulk(Organisation $organisation, Collection $emails): array
+    {
+        $invited = [];
+        $skipped = [];
+        $invalid = [];
+
+        foreach ($emails->unique() as $email) {
+            $email = trim($email);
+
+            if ($email === '' || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $invalid[] = $email;
+
+                continue;
+            }
+
+            if ($this->isAlreadyActiveMember($organisation, $email)) {
+                $skipped[] = $email;
+
+                continue;
+            }
+
+            $invited[] = $email;
+        }
+
+        return [
+            'invited' => $invited,
+            'skipped' => $skipped,
+            'invalid' => $invalid,
+        ];
+    }
+
+    /**
+     * Invite multiple users, by email, to join the given organisation in
+     * a single batch. Invalid emails and emails already actively
+     * belonging to the organisation are skipped rather than failing the
+     * whole batch, and the batch is recorded as a single audit log entry.
+     *
+     * @param  Collection<int, string>  $emails
+     * @return array{invited: array<int, string>, skipped: array<int, string>, invalid: array<int, string>}
+     */
+    public function inviteBulk(
+        Organisation $organisation,
+        Collection $emails,
+        string $invitedRole,
+        User $invitedBy
+    ): array {
+        $invited = [];
+        $skipped = [];
+        $invalid = [];
+
+        foreach ($emails->unique() as $email) {
+            $email = trim($email);
+
+            if ($email === '' || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $invalid[] = $email;
+
+                continue;
+            }
+
+            if ($this->isAlreadyActiveMember($organisation, $email)) {
+                $skipped[] = $email;
+
+                continue;
+            }
+
+            $this->createInvitation($organisation, $email, $invitedBy, $invitedRole);
+
+            $invited[] = $email;
+        }
+
+        $this->auditLogService->record(
+            Log::ACTION_BULK_INVITE_MEMBERS,
+            $invitedBy,
+            $organisation,
+            ['after' => [
+                'organisation_id' => $organisation->id,
+                'invited_role' => $invitedRole,
+                'invited_count' => count($invited),
+                'skipped_count' => count($skipped),
+                'invalid_count' => count($invalid),
+            ]],
+        );
+
+        return [
+            'invited' => $invited,
+            'skipped' => $skipped,
+            'invalid' => $invalid,
+        ];
     }
 
     /**
@@ -106,7 +178,7 @@ class InvitationService
             'updated_by' => $user->id,
         ])->save();
 
-        $this->assignDefaultRole($membership->organisation_id, $user);
+        $this->assignInvitedRole($membership->organisation_id, $user, $membership->invited_role);
 
         $organisation = Organisation::findOrFail($membership->organisation_id);
         $this->membershipSeatSync->sync($organisation, $user);
@@ -149,17 +221,91 @@ class InvitationService
     }
 
     /**
-     * Give a newly accepted member the default 'User' role, scoped to
-     * the organisation's Spatie permissions team.
+     * Create the invitation record and notify the invitee, without
+     * recording an audit log entry - callers are responsible for
+     * logging, since a bulk invite records one summarising entry rather
+     * than one per invitee.
      */
-    protected function assignDefaultRole(int $organisationId, User $user): void
+    private function createInvitation(
+        Organisation $organisation,
+        string $email,
+        User $invitedBy,
+        string $invitedRole
+    ): OrganisationMembership {
+        $user = User::query()->firstOrCreate(
+            ['email' => $email],
+            [
+                'name' => Str::before($email, '@'),
+                'password' => Hash::make(Str::random(40)),
+            ],
+        );
+
+        $token = Str::random(40);
+
+        $membership = OrganisationMembership::query()->updateOrCreate(
+            ['organisation_id' => $organisation->id, 'user_id' => $user->id],
+            [
+                'status' => OrganisationMembership::STATUS_INVITED,
+                'invitation_token' => $token,
+                'invited_at' => now(),
+                'invited_by' => $invitedBy->id,
+                'invited_role' => $invitedRole,
+                'created_by' => $invitedBy->id,
+            ],
+        );
+
+        $user->notify(new OrganisationInvitationNotification($organisation, $token));
+
+        return $membership;
+    }
+
+    /**
+     * Determine whether the given email already belongs to an active
+     * member of the organisation.
+     */
+    private function isAlreadyActiveMember(Organisation $organisation, string $email): bool
+    {
+        $user = User::query()->where('email', $email)->first();
+
+        if ($user === null) {
+            return false;
+        }
+
+        return OrganisationMembership::query()
+            ->where('organisation_id', $organisation->id)
+            ->where('user_id', $user->id)
+            ->where('status', OrganisationMembership::STATUS_ACTIVE)
+            ->exists();
+    }
+
+    /**
+     * Throw a validation exception if the given email already belongs to
+     * an active member of the organisation.
+     *
+     * @throws ValidationException
+     */
+    private function guardAgainstExistingActiveMember(Organisation $organisation, string $email): void
+    {
+        if ($this->isAlreadyActiveMember($organisation, $email)) {
+            throw ValidationException::withMessages([
+                'email' => 'This user is already a member of this organisation.',
+            ]);
+        }
+    }
+
+    /**
+     * Give the invitee the role chosen at invitation time, scoped to the
+     * organisation's Spatie permissions team. Falls back to 'User' for
+     * any invitation created before roles-at-invite-time was added.
+     */
+    private function assignInvitedRole(int $organisationId, User $user, ?string $invitedRole): void
     {
         $registrar = app(PermissionRegistrar::class);
         $previousTeamId = $registrar->getPermissionsTeamId();
 
         $registrar->setPermissionsTeamId($organisationId);
         $user->unsetRelation('roles')->unsetRelation('permissions');
-        $user->assignRole('User');
+        $user->assignRole($invitedRole ?? 'User');
 
         $registrar->setPermissionsTeamId($previousTeamId);
         $user->unsetRelation('roles')->unsetRelation('permissions');

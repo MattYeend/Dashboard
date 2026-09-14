@@ -91,7 +91,7 @@ class Organisation extends Tenant implements Auditable
 
     /**
      * Determine whether the given user holds an owner or admin role
-     * within this organisation — the in-organisation management tier,
+     * within this organisation - the in-organisation management tier,
      * distinct from the app-wide Spatie Admin/Super Admin roles.
      */
     public function hasManagementRoleFor(User $user): bool
@@ -114,7 +114,7 @@ class Organisation extends Tenant implements Auditable
     /**
      * Add a user as an active member of the organisation immediately,
      * bypassing the invitation flow. Used when membership is granted
-     * directly rather than via InvitationService::accept() — e.g. the
+     * directly rather than via InvitationService::accept() - e.g. the
      * organisation's creator, or test/seeder setup.
      */
     public function addActiveMember(int $userId, ?int $createdBy = null): void
@@ -133,7 +133,7 @@ class Organisation extends Tenant implements Auditable
      *
      * Scoped to this organisation's own attachments on both the
      * organisation_id column and the polymorphic attachable columns, and
-     * excludes soft-deleted rows — a stale or removed logo reference in
+     * excludes soft-deleted rows - a stale or removed logo reference in
      * settings should never resolve to a file.
      */
     public function logoAttachment(): ?Attachment

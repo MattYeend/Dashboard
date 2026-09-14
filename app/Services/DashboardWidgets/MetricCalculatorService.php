@@ -32,7 +32,7 @@ class MetricCalculatorService
     /**
      * Constrain the query to the given date range.
      *
-     * All time is a no-op — the query is returned unfiltered.
+     * All time is a no-op - the query is returned unfiltered.
      */
     protected function applyDateRange(Builder $query, DashboardDateRange $dateRange): void
     {

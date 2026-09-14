@@ -16,7 +16,7 @@ class AttachableTypeRegistryService
      * attachments.attachable_type column (no morph map aliasing is used).
      *
      * This is the single gate that decides which models can have files
-     * attached — never accept a raw class name from the client.
+     * attached - never accept a raw class name from the client.
      */
     public function all(): array
     {

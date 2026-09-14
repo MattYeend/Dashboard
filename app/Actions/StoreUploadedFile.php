@@ -11,7 +11,7 @@ class StoreUploadedFile
      * Store an uploaded file under a randomised name and return the
      * stored path plus the metadata needed to persist an Attachment row.
      *
-     * The stored filename is never derived from user input — this is
+     * The stored filename is never derived from user input - this is
      * what prevents path traversal and overwrite-by-filename attacks.
      * `original_filename` is kept purely for display.
      *

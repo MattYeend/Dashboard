@@ -74,6 +74,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('organisations')->name('organisations.')->group(function () {
         Route::post('/{organisation}/invitations', [OrganisationController::class, 'invite'])->name('invitations.store');
+        Route::post('/{organisation}/invitations/bulk/preview', [OrganisationController::class, 'previewBulkInvite'])->name('invitations.bulk-preview');
+        Route::post('/{organisation}/invitations/bulk', [OrganisationController::class, 'inviteBulk'])->name('invitations.bulk-store');
         Route::delete('/{organisation}/members/{user}', [OrganisationController::class, 'removeMember'])->name('members.destroy');
         Route::post('/bulk/delete', [OrganisationController::class, 'bulkDelete'])->name('bulk.delete');
         Route::post('/bulk/restore', [OrganisationController::class, 'bulkRestore'])->name('bulk.restore');

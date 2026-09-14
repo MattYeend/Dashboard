@@ -14,7 +14,7 @@ class DeleteBackup
      * Delete a single backup by filename from the given disk.
      *
      * The filename is re-sanitised here (basename only) even though the
-     * route parameter is already constrained by regex — defence in depth
+     * route parameter is already constrained by regex - defence in depth
      * against path traversal.
      */
     public function handle(string $disk, string $filename): void

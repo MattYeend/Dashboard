@@ -67,7 +67,7 @@ class PolicyAuthorisationService
     /**
      * Determine whether the user can update the notification broadcast.
      *
-     * A broadcast that has already been sent is a record, not a draft — it
+     * A broadcast that has already been sent is a record, not a draft - it
      * can no longer be edited, regardless of permission.
      */
     public function canUpdate(User $actor, NotificationBroadcast $target): bool

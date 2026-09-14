@@ -59,7 +59,7 @@ class Attachment extends Model implements Auditable
     /**
      * The disk on which attachment files are stored.
      *
-     * Deliberately private — never 'public'. Files are only ever
+     * Deliberately private - never 'public'. Files are only ever
      * reachable via the authenticated, policy-checked download route.
      */
     public const DISK = 'attachments';

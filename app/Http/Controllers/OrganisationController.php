@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Organisations\BulkInviteOrganisationMembersRequest;
 use App\Http\Requests\Organisations\InviteOrganisationMemberRequest;
 use App\Http\Requests\Organisations\StoreOrganisationRequest;
 use App\Http\Requests\Organisations\UpdateOrganisationRequest;
@@ -169,7 +170,7 @@ class OrganisationController extends Controller
     }
 
     /**
-     * Display the organisation's billing page — current plan, active seat
+     * Display the organisation's billing page - current plan, active seat
      * count, and the resulting total based on price_per_user_per_month.
      */
     public function billing(Organisation $organisation): Response
@@ -300,7 +301,8 @@ class OrganisationController extends Controller
         $this->invitations->invite(
             $organisation,
             $request->validated()['email'],
-            $request->user()
+            $request->user(),
+            $request->validated()['invited_role']
         );
 
         if ($request->wantsJson()) {
@@ -342,5 +344,71 @@ class OrganisationController extends Controller
         }
 
         return redirect()->back()->with('success', 'Member removed.');
+    }
+
+    /**
+     * Preview a bulk invitation batch - classify each email as invited,
+     * skipped, or invalid without persisting anything, and surface the
+     * seat-count impact if the organisation has an active subscription.
+     */
+    public function previewBulkInvite(
+        BulkInviteOrganisationMembersRequest $request,
+        Organisation $organisation
+    ): JsonResponse {
+        $this->authorize('inviteWithRole', [$organisation, $request->validated()['invited_role']]);
+
+        $result = $this->invitations->previewBulk(
+            $organisation,
+            collect($request->validated()['emails'])
+        );
+
+        return response()->json([
+            ...$result,
+            'seat_impact' => $this->seatImpactFor($organisation, count($result['invited'])),
+        ]);
+    }
+
+    /**
+     * Commit a bulk invitation batch.
+     */
+    public function inviteBulk(
+        BulkInviteOrganisationMembersRequest $request,
+        Organisation $organisation
+    ): JsonResponse {
+        $this->authorize('inviteWithRole', [$organisation, $request->validated()['invited_role']]);
+
+        $result = $this->invitations->inviteBulk(
+            $organisation,
+            collect($request->validated()['emails']),
+            $request->validated()['invited_role'],
+            $request->user()
+        );
+
+        return response()->json($result);
+    }
+
+    /**
+     * Work out the seat-count and cost impact of adding the given number
+     * of new members, if the organisation has an active subscription.
+     *
+     * @return array{current_seats: int, projected_seats: int, current_total: string, projected_total: string}|null
+     */
+    private function seatImpactFor(Organisation $organisation, int $additionalMembers): ?array
+    {
+        $subscription = $organisation->subscriptions()->active()->first();
+
+        if ($subscription?->plan === null) {
+            return null;
+        }
+
+        $currentSeats = $this->seatCalculatorService->currentSeatCount($organisation);
+        $projectedSeats = $currentSeats + $additionalMembers;
+
+        return [
+            'current_seats' => $currentSeats,
+            'projected_seats' => $projectedSeats,
+            'current_total' => $this->seatCalculatorService->calculateTotal($subscription->plan, $currentSeats),
+            'projected_total' => $this->seatCalculatorService->calculateTotal($subscription->plan, $projectedSeats),
+        ];
     }
 }

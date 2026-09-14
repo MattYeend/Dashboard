@@ -47,7 +47,7 @@ class SettingController extends Controller
      * Display the general settings page.
      *
      * Explicitly authorised per-page (rather than left to the
-     * frontend to hide) — a direct GET to a group's page a user
+     * frontend to hide) - a direct GET to a group's page a user
      * cannot view is rejected server-side, not just visually hidden.
      */
     public function general(Request $request): Response
@@ -71,14 +71,14 @@ class SettingController extends Controller
      * Display the security settings page.
      *
      * Rendered at 'settings/security-policy' rather than
-     * 'settings/security' — the bare settings/security URI already
+     * 'settings/security' - the bare settings/security URI already
      * belongs to the starter kit's personal account security page
      * (Settings\SecurityController@edit, password/2FA for the
      * logged-in user's own account). Reusing that segment for our
      * app-wide security settings would silently shadow one of the
      * two GET routes depending on registration order, so this group
      * gets its own URI and Inertia component name. The PUT endpoint
-     * this page submits to is unaffected — /settings/security was
+     * this page submits to is unaffected - /settings/security was
      * never claimed by the account controller, only the GET verb was.
      */
     public function securityPolicy(Request $request): Response
@@ -134,7 +134,7 @@ class SettingController extends Controller
      * Validation and authorisation are handled upstream by
      * UpdateSystemSettingRequest, which checks the 'updateSystem'
      * policy ability (backed by the 'edit system settings'
-     * permission) via its authorize() method — distinct from the
+     * permission) via its authorize() method - distinct from the
      * general 'edit settings' permission.
      */
     public function updateSystem(
@@ -155,7 +155,7 @@ class SettingController extends Controller
      * Validation and authorisation are handled upstream by
      * UpdateSecuritySettingRequest, which checks the 'updateSecurity'
      * policy ability (backed by the 'edit security settings'
-     * permission) via its authorize() method — distinct from both the
+     * permission) via its authorize() method - distinct from both the
      * general and system edit permissions.
      */
     public function updateSecurity(

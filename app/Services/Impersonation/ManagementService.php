@@ -39,7 +39,7 @@ class ManagementService
      * session can be restored on stop().
      *
      * Impersonation is scoped to a single organisation both the actor
-     * and target actively belong to — it never grants access to every
+     * and target actively belong to - it never grants access to every
      * organisation either user is a member of, and this holds even
      * when the actor is a super admin.
      *

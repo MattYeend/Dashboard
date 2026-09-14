@@ -52,8 +52,8 @@ class UpdateOrganisationSettingsRequest extends FormRequest
     /**
      * Get validation rules for the logo attachment reference.
      *
-     * Scoped to this organisation's own attachments — matched on both
-     * organisation_id and the polymorphic attachable columns — and
+     * Scoped to this organisation's own attachments - matched on both
+     * organisation_id and the polymorphic attachable columns - and
      * excludes soft-deleted attachments.
      *
      * @return array<mixed>

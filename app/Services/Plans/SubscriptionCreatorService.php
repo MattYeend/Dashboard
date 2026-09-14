@@ -19,7 +19,7 @@ class SubscriptionCreatorService
      * Create a new Cashier subscription for the organisation, quantity set
      * from the current seat count.
      *
-     * plan_id is set explicitly after creation — nothing currently observes
+     * plan_id is set explicitly after creation - nothing currently observes
      * Stripe webhooks or the subscription's stripe_price to populate it,
      * so without this line Subscription::plan() would return null.
      */

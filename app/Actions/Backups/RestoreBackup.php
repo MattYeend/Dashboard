@@ -26,7 +26,7 @@ class RestoreBackup
      * built from string concatenation of user input.
      *
      * This only restores the database. File restoration from the zip's
-     * source files is intentionally out of scope — restoring arbitrary
+     * source files is intentionally out of scope - restoring arbitrary
      * files from an uploaded/stored archive onto the live filesystem is
      * a much larger attack surface and should be a deliberate, separate
      * piece of work if it's needed.

@@ -244,7 +244,7 @@ class AppServiceProvider extends ServiceProvider
      * Whether the ability being checked concerns a PersonalAccessToken.
      *
      * API tokens are personal credentials, so ownership must always be
-     * verified by ApiTokenPolicy — even for Super Admins — rather than
+     * verified by ApiTokenPolicy - even for Super Admins - rather than
      * short-circuited by the blanket role bypass above.
      */
     private static function isApiTokenAbility(array $arguments): bool

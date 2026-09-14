@@ -78,7 +78,7 @@ class SendNotificationBroadcast
     private function resolveRecipients(NotificationBroadcast $notificationBroadcast): Collection
     {
         return match ($notificationBroadcast->audience_type) {
-            // Spatie's role() scope — never interpolate raw role names into SQL.
+            // Spatie's role() scope - never interpolate raw role names into SQL.
             'role' => User::role($notificationBroadcast->audience_ids ?? [])->get(),
             'users' => User::query()->whereIn('id', $notificationBroadcast->audience_ids ?? [])->get(),
             default => User::query()->get(),

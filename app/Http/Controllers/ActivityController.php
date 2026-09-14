@@ -28,7 +28,7 @@ class ActivityController extends Controller
      * Display a listing of the resource.
      *
      * Returns a single record's paginated timeline as JSON. There is no
-     * dedicated Activities/Index Inertia page — this is called from
+     * dedicated Activities/Index Inertia page - this is called from
      * ActivityTimeline.vue, embedded on the Company/Contact/Deal/Order
      * Show pages, via axios.
      *

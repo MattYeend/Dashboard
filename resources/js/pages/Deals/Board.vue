@@ -16,7 +16,7 @@ interface BoardStage {
 }
 
 interface Props {
-    pipelineId: number; // NEW — needed to POST a new stage to the right pipeline
+    pipelineId: number;
     pipelineName: string;
     stages: BoardStage[];
 }
