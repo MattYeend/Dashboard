@@ -224,6 +224,10 @@ class PolicyAuthorisationService
      */
     private function highestRoleRank(User $actor, Organisation $organisation): int
     {
+        if ($this->isAdmin($actor) || $organisation->hasManagementRoleFor($actor)) {
+            return 0;
+        }
+
         $ranks = config('organisation-roles.ranks');
 
         $registrar = app(PermissionRegistrar::class);
@@ -231,12 +235,18 @@ class PolicyAuthorisationService
 
         $registrar->setPermissionsTeamId($organisation->id);
         $actor->unsetRelation('roles');
-        $actorRanks = $actor->getRoleNames()
-            ->map(fn (string $roleName) => $ranks[$roleName] ?? PHP_INT_MAX)
-            ->all();
+        $actorRoleNames = $actor->getRoleNames();
         $actor->unsetRelation('roles');
         $registrar->setPermissionsTeamId($previousTeamId);
 
-        return $actorRanks === [] ? PHP_INT_MAX : min($actorRanks);
+        if ($actorRoleNames->isEmpty()) {
+            return $ranks['User'] ?? PHP_INT_MAX;
+        }
+
+        $actorRanks = $actorRoleNames
+            ->map(fn (string $roleName) => $ranks[$roleName] ?? PHP_INT_MAX)
+            ->all();
+
+        return min($actorRanks);
     }
 }

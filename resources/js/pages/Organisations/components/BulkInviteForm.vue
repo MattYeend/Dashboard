@@ -97,53 +97,60 @@ function submit(): void {
 </script>
 
 <template>
-    <div class="space-y-4">
-        <div>
-            <Label for="bulk_invited_role">Role</Label>
-            <Select v-model="form.invited_role">
-                <SelectTrigger id="bulk_invited_role">
-                    <SelectValue placeholder="Select a role" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem
-                        v-for="role in props.assignableRoles"
-                        :key="role.id"
-                        :value="role.name"
-                    >
-                        {{ role.name }}
-                    </SelectItem>
-                </SelectContent>
-            </Select>
-        </div>
+    <div class="rounded-lg border p-4">
+        <h2 class="mb-4 text-sm font-medium text-gray-400">
+            Invite multiple members
+        </h2>
 
-        <div>
-            <Label for="emails">Email addresses</Label>
-            <Textarea
-                id="emails"
-                v-model="emailList"
-                rows="6"
-                placeholder="One email per line, or comma separated"
-            />
-            <InputError :message="form.errors.emails" />
-        </div>
+        <form class="space-y-4" @submit.prevent="preview">
+            <div>
+                <Label for="bulk_invited_role">Role</Label>
+                <Select v-model="form.invited_role">
+                    <SelectTrigger id="bulk_invited_role" class="mt-1 w-full">
+                        <SelectValue placeholder="Select a role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem
+                            v-for="role in props.assignableRoles"
+                            :key="role.id"
+                            :value="role.name"
+                        >
+                            {{ role.name }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
+                <InputError :message="form.errors.invited_role" />
+            </div>
 
-        <Button
-            type="button"
-            :disabled="
-                previewProcessing ||
-                parsedEmails.length === 0 ||
-                !form.invited_role
-            "
-            @click="preview"
-        >
-            Preview
-        </Button>
+            <div>
+                <Label for="emails">Email addresses</Label>
+                <Textarea
+                    id="emails"
+                    v-model="emailList"
+                    rows="6"
+                    placeholder="One email per line, or comma separated"
+                    class="mt-1 block w-full"
+                />
+                <InputError :message="form.errors.emails" />
+            </div>
 
-        <p v-if="previewError" class="text-sm text-red-600">
-            {{ previewError }}
-        </p>
+            <Button
+                type="submit"
+                :disabled="
+                    previewProcessing ||
+                    parsedEmails.length === 0 ||
+                    !form.invited_role
+                "
+            >
+                Preview
+            </Button>
 
-        <div v-if="previewResult" class="space-y-2 text-sm">
+            <p v-if="previewError" class="text-sm text-red-600">
+                {{ previewError }}
+            </p>
+        </form>
+
+        <div v-if="previewResult" class="mt-4 space-y-2 text-sm">
             <p>{{ previewResult.invited.length }} will be invited:</p>
             <p class="text-gray-400">
                 {{ previewResult.invited.join(', ') || '-' }}
