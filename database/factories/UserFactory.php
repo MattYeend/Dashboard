@@ -29,6 +29,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'locale' => fake()->randomElement(array_keys(User::LOCALES)),
             'role' => 'user',
+            'is_platform_admin' => false,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
@@ -97,6 +98,16 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'role' => 'super_admin',
+        ]);
+    }
+
+    /**
+     * Indicate that the model is flagged as a platform admin.
+     */
+    public function platformAdmin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_platform_admin' => true,
         ]);
     }
 

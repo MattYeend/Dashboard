@@ -22,6 +22,7 @@ class UserSeeder extends Seeder
                 'name' => 'Super Admin',
                 'locale' => 'en_GB',
                 'role' => 'super_admin',
+                'is_platform_admin' => true,
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'meta' => json_encode([
@@ -374,6 +375,7 @@ class UserSeeder extends Seeder
         $this->command->info('Login Credentials (all use password: password):');
         $this->command->info('');
         $this->command->info('Super Admin: superadmin@example.com (Full access)');
+        $this->command->info('  → also flagged is_platform_admin: true (cross-organisation reporting access)');
         $this->command->info('Admin: admin@example.com, john.admin@example.com (Administrative access)');
         $this->command->info('Manager: manager@example.com (User & content management)');
         $this->command->info('Editor: editor@example.com, writer@example.com (Content management)');

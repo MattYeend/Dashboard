@@ -30,6 +30,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property CarbonImmutable|null $email_verified_at
  * @property string $password
  * @property string $role
+ * @property bool $is_platform_admin
  * @property string $locale
  * @property array<string, mixed>|null $meta
  * @property string|null $two_factor_secret
@@ -59,6 +60,8 @@ use Spatie\Permission\Traits\HasRoles;
     'name',
     'email',
     'password',
+    'role',
+    'is_platform_admin',
     'locale',
     'meta',
 ])]
@@ -342,6 +345,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
             'email',
             'email_verified_at',
             'role',
+            'is_platform_admin',
             'locale',
             'meta',
         ]);
@@ -358,6 +362,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
             'email_verified_at' => 'immutable_datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'immutable_datetime',
+            'is_platform_admin' => 'boolean',
             'meta' => 'array',
             'deleted_at' => 'immutable_datetime',
             'restored_at' => 'immutable_datetime',

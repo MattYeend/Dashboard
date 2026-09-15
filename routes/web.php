@@ -35,6 +35,7 @@ use App\Http\Controllers\PipelineController;
 use App\Http\Controllers\PipelineStageController;
 use App\Http\Controllers\PipelineStatusController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\PlatformReportingController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegistrationInterestController;
 use App\Http\Controllers\ReportController;
@@ -95,6 +96,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::middleware('tenant')->group(function () {
+        Route::prefix('platform')->name('platform.')->middleware(['auth', 'verified', 'platform_admin'])->group(function () {
+    Route::get('/reporting', [PlatformReportingController::class, 'index'])->name('reporting');
+});
         Route::post('/organisations/{organisation}/switch', [OrganisationSwitchController::class, 'update'])->name('organisations.switch');
         Route::get('dashboard', [DashboardController::class, 'index'])
             ->middleware(['can:view dashboard'])

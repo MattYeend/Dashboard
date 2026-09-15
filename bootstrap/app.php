@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\PlatformAdmin;
 use App\Http\Middleware\ResolveCurrentOrganisation;
 use App\Http\Middleware\ShareImpersonationStatus;
 use Illuminate\Foundation\Application;
@@ -41,6 +42,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->preventRequestForgery(except: [
             'stripe/webhook',
             'api/login',
+        ]);
+
+        $middleware->alias([
+            'platform_admin' => PlatformAdmin::class,
         ]);
 
         $middleware->group('tenant', [

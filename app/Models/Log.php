@@ -828,6 +828,9 @@ class Log extends Model implements Auditable
     // Bulk Invitation Management
     public const ACTION_BULK_INVITE_MEMBERS = 381;
 
+    // Platform Administration
+    const ACTION_VIEW_PLATFORM_REPORTING = 382;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
