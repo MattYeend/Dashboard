@@ -21,7 +21,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Super Admin',
                 'locale' => 'en_GB',
-                'role' => 'super_admin',
                 'is_platform_admin' => true,
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -32,6 +31,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $superAdmin->forceFill(['role' => 'super_admin'])->save();
         $superAdmin->assignRoles('Super Admin', ['Support']);
 
         // Create Admin Users
@@ -40,7 +40,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Admin User',
                 'locale' => 'en_GB',
-                'role' => 'admin',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $superAdmin->id,
@@ -51,6 +50,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $admin1->forceFill(['role' => 'admin'])->save();
         $admin1->assignRoles('Admin', ['Moderator']);
 
         $admin2 = User::updateOrCreate(
@@ -58,7 +58,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'John Admin',
                 'locale' => 'en_GB',
-                'role' => 'admin',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $superAdmin->id,
@@ -69,6 +68,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $admin2->forceFill(['role' => 'admin'])->save();
         $admin2->assignRole('Admin');
 
         // Create Manager
@@ -77,7 +77,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Sarah Manager',
                 'locale' => 'en_US',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -88,6 +87,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $manager->forceFill(['role' => 'user'])->save();
         $manager->assignRole('Manager');
 
         // Create Editor
@@ -96,7 +96,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Emily Editor',
                 'locale' => 'en_US',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -107,6 +106,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $editor->forceFill(['role' => 'user'])->save();
         $editor->assignRole('Editor');
 
         // Create Moderator
@@ -115,7 +115,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Mike Moderator',
                 'locale' => 'en_US',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -126,6 +125,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $moderator->forceFill(['role' => 'user'])->save();
         $moderator->assignRole('Moderator');
 
         // Create Support User
@@ -134,7 +134,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Lisa Support',
                 'locale' => 'en_GB',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -145,6 +144,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $support->forceFill(['role' => 'user'])->save();
         $support->assignRole('Support');
 
         // Create Analyst
@@ -153,7 +153,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'David Analyst',
                 'locale' => 'en_US',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -164,6 +163,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $analyst->forceFill(['role' => 'user'])->save();
         $analyst->assignRole('Analyst');
 
         // Create Viewer
@@ -172,7 +172,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Rachel Viewer',
                 'locale' => 'fr_FR',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -183,6 +182,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $viewer->forceFill(['role' => 'user'])->save();
         $viewer->assignRole('Viewer');
 
         // Create Regular Users
@@ -191,7 +191,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Regular User',
                 'locale' => 'fr_FR',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -202,6 +201,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $user1->forceFill(['role' => 'user'])->save();
         $user1->assignRole('User');
 
         $user2 = User::updateOrCreate(
@@ -209,7 +209,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Jane Smith',
                 'locale' => 'fr_FR',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -220,6 +219,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $user2->forceFill(['role' => 'user'])->save();
         $user2->assignRole('User');
 
         $user3 = User::updateOrCreate(
@@ -227,7 +227,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Bob Johnson',
                 'locale' => 'fr_FR',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -238,6 +237,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $user3->forceFill(['role' => 'user'])->save();
         $user3->assignRole('User');
 
         // Additional staff members
@@ -246,7 +246,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Anna Writer',
                 'locale' => 'de_DE',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -257,6 +256,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $contentWriter->forceFill(['role' => 'user'])->save();
         $contentWriter->assignRole('Editor');
 
         $customerSupport = User::updateOrCreate(
@@ -264,7 +264,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Tom Support',
                 'locale' => 'de_DE',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -275,6 +274,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $customerSupport->forceFill(['role' => 'user'])->save();
         $customerSupport->assignRole('Support');
 
         $dataAnalyst = User::updateOrCreate(
@@ -282,7 +282,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Kevin Data',
                 'locale' => 'de_DE',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -293,6 +292,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $dataAnalyst->forceFill(['role' => 'user'])->save();
         $dataAnalyst->assignRole('Analyst');
 
         $contentMod = User::updateOrCreate(
@@ -300,7 +300,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Chris Moderator',
                 'locale' => 'es_ES',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -311,6 +310,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $contentMod->forceFill(['role' => 'user'])->save();
         $contentMod->assignRole('Moderator');
 
         // Create Guest User
@@ -319,7 +319,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Guest User',
                 'locale' => 'es_ES',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -330,6 +329,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $guest->forceFill(['role' => 'user'])->save();
         $guest->assignRole('Guest');
 
         // Unverified User
@@ -338,7 +338,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Unverified User',
                 'locale' => 'fr_FR',
-                'role' => 'user',
                 'email_verified_at' => null,
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -349,6 +348,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $unverified->forceFill(['role' => 'user'])->save();
         $unverified->assignRole('User');
 
         // Test User
@@ -357,7 +357,6 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Test User',
                 'locale' => 'es_ES',
-                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'created_by' => $admin1->id,
@@ -368,6 +367,7 @@ class UserSeeder extends Seeder
                 ]),
             ]
         );
+        $testUser->forceFill(['role' => 'user'])->save();
         $testUser->assignRole('User');
 
         $this->command->info('Users created/verified and roles assigned successfully!');

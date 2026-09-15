@@ -28,7 +28,6 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'locale' => fake()->randomElement(array_keys(User::LOCALES)),
-            'role' => 'user',
             'is_platform_admin' => false,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
@@ -76,9 +75,9 @@ class UserFactory extends Factory
      */
     public function normalUser(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'role' => 'user',
-        ]);
+        return $this->afterCreating(function (User $user) {
+            $user->forceFill(['role' => 'user'])->save();
+        });
     }
 
     /**
@@ -86,9 +85,9 @@ class UserFactory extends Factory
      */
     public function adminUser(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'role' => 'admin',
-        ]);
+        return $this->afterCreating(function (User $user) {
+            $user->forceFill(['role' => 'admin'])->save();
+        });
     }
 
     /**
@@ -96,9 +95,9 @@ class UserFactory extends Factory
      */
     public function superAdminUser(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'role' => 'super_admin',
-        ]);
+        return $this->afterCreating(function (User $user) {
+            $user->forceFill(['role' => 'super_admin'])->save();
+        });
     }
 
     /**

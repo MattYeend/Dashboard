@@ -60,7 +60,6 @@ use Spatie\Permission\Traits\HasRoles;
     'name',
     'email',
     'password',
-    'role',
     'is_platform_admin',
     'locale',
     'meta',
