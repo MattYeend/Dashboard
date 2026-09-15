@@ -97,8 +97,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware('tenant')->group(function () {
         Route::prefix('platform')->name('platform.')->middleware(['auth', 'verified', 'platform_admin'])->group(function () {
-    Route::get('/reporting', [PlatformReportingController::class, 'index'])->name('reporting');
-});
+            Route::get('/reporting', [PlatformReportingController::class, 'index'])->name('reporting');
+        });
         Route::post('/organisations/{organisation}/switch', [OrganisationSwitchController::class, 'update'])->name('organisations.switch');
         Route::get('dashboard', [DashboardController::class, 'index'])
             ->middleware(['can:view dashboard'])
