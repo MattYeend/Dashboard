@@ -93,6 +93,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::match(['put', 'patch'], '/{organisation}/settings', [OrganisationController::class, 'updateSettings'])->name('update-settings');
         Route::get('/{organisation}/billing', [OrganisationController::class, 'billing'])->name('billing');
         Route::delete('/{organisation}', [OrganisationController::class, 'destroy'])->name('destroy');
+
+        Route::get('/{organisation}/data-privacy', [OrganisationController::class, 'dataPrivacy'])->name('data-privacy');
+        Route::post('/{organisation}/data-privacy/export', [OrganisationController::class, 'exportData'])->name('data-privacy.export');
+        Route::post('/{organisation}/data-privacy/request-deletion', [OrganisationController::class, 'requestDeletion'])->name('data-privacy.request-deletion');
+        Route::get('/{organisation}/data-privacy/exports/{export}', [OrganisationController::class, 'downloadExport'])->name('data-privacy.download');
     });
 
     Route::prefix('platform')->name('platform.')->middleware(['auth', 'verified', 'platform_admin'])->group(function () {

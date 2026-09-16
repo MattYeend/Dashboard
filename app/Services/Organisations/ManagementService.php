@@ -7,6 +7,12 @@ use App\Http\Requests\Organisations\UpdateOrganisationRequest;
 use App\Http\Requests\Organisations\UpdateOrganisationSettingsRequest;
 use App\Models\Organisation;
 use App\Models\User;
+use App\Jobs\ExportOrganisationDataJob;
+use App\Models\Log;
+use App\Models\OrganisationDataExport;
+use App\Services\AuditLogService;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ManagementService
 {
@@ -19,6 +25,8 @@ class ManagementService
         protected readonly DeleterService $destructor,
         protected readonly RestorerService $restorer,
         protected readonly SettingsUpdaterService $settingsUpdater,
+        protected readonly OffboardingService $offboarding,
+        protected readonly AuditLogService $auditLogService,
     ) {}
 
     /**
@@ -146,5 +154,39 @@ class ManagementService
             'deleted' => $deleted,
             'skipped' => $requestedIds->diff($organisations->pluck('id'))->values()->all(),
         ];
+    }
+
+    /**
+     * Request a full data export for the organisation, run as a queued job.
+     */
+    public function requestDataExport(Organisation $organisation, User $actor): void
+    {
+        ExportOrganisationDataJob::dispatch($organisation, $actor);
+
+        $this->auditLogService->record(
+            Log::ACTION_REQUEST_DATA_EXPORT,
+            $actor,
+            $organisation,
+        );
+    }
+
+    /**
+     * Request permanent deletion of the organisation - soft-deletes it,
+     * cascades to every scoped record, and cancels any active subscription.
+     */
+    public function requestDeletion(Organisation $organisation, User $actor): void
+    {
+        $this->offboarding->requestDeletion($organisation, $actor);
+    }
+
+    /**
+     * Download a previously generated data export archive for the given
+     * organisation.
+     */
+    public function downloadExport(
+        Organisation $organisation, 
+        OrganisationDataExport $export
+    ): StreamedResponse {
+        return Storage::disk('local')->download($export->disk_path, $organisation->name.'-export.zip');
     }
 }

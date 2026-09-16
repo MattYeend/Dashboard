@@ -7,7 +7,9 @@ use App\Http\Requests\Organisations\InviteOrganisationMemberRequest;
 use App\Http\Requests\Organisations\StoreOrganisationRequest;
 use App\Http\Requests\Organisations\UpdateOrganisationRequest;
 use App\Http\Requests\Organisations\UpdateOrganisationSettingsRequest;
+use App\Http\Requests\Organisations\RequestOrganisationDeletionRequest;
 use App\Models\Organisation;
+use App\Models\OrganisationDataExport;
 use App\Models\User;
 use App\Services\Organisations\InvitationService;
 use App\Services\Organisations\ManagementService;
@@ -15,6 +17,7 @@ use App\Services\Organisations\PolicyAuthorisationService;
 use App\Services\Organisations\QueryService;
 use App\Services\Plans\FormatterService;
 use App\Services\Plans\SeatCalculatorService;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -389,6 +392,65 @@ class OrganisationController extends Controller
         );
 
         return response()->json($result);
+    }
+
+    /**
+     * Show the organisation's data privacy page - GDPR-style export and
+     * deletion request actions.
+     */
+    public function dataPrivacy(Organisation $organisation): Response
+    {
+        $this->authorize('exportData', $organisation);
+
+        return Inertia::render('Organisations/DataPrivacy', [
+            'organisation' => [
+                'id' => $organisation->id,
+                'name' => $organisation->name,
+            ],
+            'permissions' => [
+                'can_export' => request()->user()->can('exportData', $organisation),
+                'can_delete' => request()->user()->can('requestDeletion', $organisation),
+            ],
+        ]);
+    }
+
+    /**
+     * Request a full data export for the organisation, run as a queued job.
+     */
+    public function exportData(Request $request, Organisation $organisation): RedirectResponse
+    {
+        $this->authorize('exportData', $organisation);
+
+        $this->management->requestDataExport($organisation, $request->user());
+
+        return back()->with('success', 'Your data export has been requested. You will be notified when it is ready to download.');
+    }
+
+    /**
+     * Request permanent deletion of the organisation, subject to the
+     * type-the-organisation-name confirmation.
+     */
+    public function requestDeletion(
+        RequestOrganisationDeletionRequest $request, 
+        Organisation $organisation
+    ): RedirectResponse {
+        $this->management->requestDeletion($organisation, $request->user());
+
+        return redirect()->route('organisations.index')
+            ->with('success', "{$organisation->name} has been scheduled for deletion.");
+    }
+
+    /**
+     * Download a previously generated data export archive.
+     */
+    public function downloadExport(
+        Organisation $organisation, 
+        OrganisationDataExport $export
+    ): StreamedResponse {
+        $this->authorize('exportData', $organisation);
+        abort_unless($export->organisation_id === $organisation->id, 404);
+
+        return $this->management->downloadExport($organisation, $export);
     }
 
     /**
