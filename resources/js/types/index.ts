@@ -1213,3 +1213,8 @@ export interface PlatformReportingMetrics {
     total_active_members: number;
     signups_over_time: Record<string, number>;
 }
+
+export interface OrganisationDataPrivacyPermissions {
+    can_export: boolean;
+    can_delete: boolean;
+}
