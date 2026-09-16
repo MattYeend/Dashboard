@@ -831,6 +831,13 @@ class Log extends Model implements Auditable
     // Platform Administration
     const ACTION_VIEW_PLATFORM_REPORTING = 382;
 
+    // Organisation Offboarding / GDPR
+    public const ACTION_REQUEST_DATA_EXPORT = 383;
+
+    public const ACTION_REQUEST_ORGANISATION_DELETION = 384;
+
+    public const ACTION_HARD_DELETE_ORGANISATION = 385;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
