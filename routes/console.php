@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\HardDeleteExpiredOrganisations;
 use App\Console\Commands\RunScheduledReports;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -17,3 +18,5 @@ Schedule::command(RunScheduledReports::class)
     ->dailyAt('07:00')
     ->withoutOverlapping()
     ->onOneServer();
+
+Schedule::command(HardDeleteExpiredOrganisations::class)->daily();
