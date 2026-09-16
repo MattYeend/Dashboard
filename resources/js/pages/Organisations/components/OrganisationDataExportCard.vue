@@ -15,14 +15,18 @@ function requestExport(): void {
 </script>
 
 <template>
-    <div class="border-gray-500 rounded border p-4">
-        <h2 class="text-sm font-semibold text-gray-300">Export my organisation's data</h2>
+    <div class="rounded border border-gray-500 p-4">
+        <h2 class="text-sm font-semibold text-gray-300">
+            Export my organisation's data
+        </h2>
         <p class="mt-1 text-xs text-gray-400">
-            Request a full export of every record belonging to {{ organisation.name }}. You will be notified in the app and by email once it is ready to download.
+            Request a full export of every record belonging to
+            {{ organisation.name }}. You will be notified in the app and by
+            email once it is ready to download.
         </p>
         <button
             type="button"
-            class="border-gray-500 mt-3 rounded border px-3 py-1.5 text-xs text-gray-300"
+            class="mt-3 rounded border border-gray-500 px-3 py-1.5 text-xs text-gray-300"
             :disabled="form.processing"
             @click="requestExport"
         >

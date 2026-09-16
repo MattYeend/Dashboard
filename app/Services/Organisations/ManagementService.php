@@ -5,11 +5,11 @@ namespace App\Services\Organisations;
 use App\Http\Requests\Organisations\StoreOrganisationRequest;
 use App\Http\Requests\Organisations\UpdateOrganisationRequest;
 use App\Http\Requests\Organisations\UpdateOrganisationSettingsRequest;
-use App\Models\Organisation;
-use App\Models\User;
 use App\Jobs\ExportOrganisationDataJob;
 use App\Models\Log;
+use App\Models\Organisation;
 use App\Models\OrganisationDataExport;
+use App\Models\User;
 use App\Services\AuditLogService;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -184,7 +184,7 @@ class ManagementService
      * organisation.
      */
     public function downloadExport(
-        Organisation $organisation, 
+        Organisation $organisation,
         OrganisationDataExport $export
     ): StreamedResponse {
         return Storage::disk('local')->download($export->disk_path, $organisation->name.'-export.zip');

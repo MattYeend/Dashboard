@@ -19,10 +19,10 @@ use Illuminate\Support\Carbon;
  * @property Carbon $updated_at
  */
 #[Fillable([
-    'organisation_id', 
-    'requested_by', 
-    'disk_path', 
-    'completed_at'
+    'organisation_id',
+    'requested_by',
+    'disk_path',
+    'completed_at',
 ])]
 class OrganisationDataExport extends Model
 {

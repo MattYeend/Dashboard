@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Organisations\BulkInviteOrganisationMembersRequest;
 use App\Http\Requests\Organisations\InviteOrganisationMemberRequest;
+use App\Http\Requests\Organisations\RequestOrganisationDeletionRequest;
 use App\Http\Requests\Organisations\StoreOrganisationRequest;
 use App\Http\Requests\Organisations\UpdateOrganisationRequest;
 use App\Http\Requests\Organisations\UpdateOrganisationSettingsRequest;
-use App\Http\Requests\Organisations\RequestOrganisationDeletionRequest;
 use App\Models\Organisation;
 use App\Models\OrganisationDataExport;
 use App\Models\User;
@@ -17,13 +17,13 @@ use App\Services\Organisations\PolicyAuthorisationService;
 use App\Services\Organisations\QueryService;
 use App\Services\Plans\FormatterService;
 use App\Services\Plans\SeatCalculatorService;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class OrganisationController extends Controller
 {
@@ -431,7 +431,7 @@ class OrganisationController extends Controller
      * type-the-organisation-name confirmation.
      */
     public function requestDeletion(
-        RequestOrganisationDeletionRequest $request, 
+        RequestOrganisationDeletionRequest $request,
         Organisation $organisation
     ): RedirectResponse {
         $this->management->requestDeletion($organisation, $request->user());
@@ -444,7 +444,7 @@ class OrganisationController extends Controller
      * Download a previously generated data export archive.
      */
     public function downloadExport(
-        Organisation $organisation, 
+        Organisation $organisation,
         OrganisationDataExport $export
     ): StreamedResponse {
         $this->authorize('exportData', $organisation);

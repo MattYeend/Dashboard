@@ -46,9 +46,9 @@ class RequestOrganisationDeletionRequest extends FormRequest
 
         return [
             'confirmation_name' => [
-                'required', 
-                'string', 
-                'in:'.$organisation->name
+                'required',
+                'string',
+                'in:'.$organisation->name,
             ],
         ];
     }

@@ -45,11 +45,6 @@ class DataExportService
     /**
      * Export a single scoped model's records for the organisation into a
      * CSV file inside the given directory.
-     *
-     * NOTE: writes CSV directly rather than via a shared ExportService,
-     * since #343's App\Services\ExportService doesn't exist in this
-     * codebase yet. If #343 lands later, replace the arrayToCsv() call
-     * below with that service's equivalent and remove arrayToCsv().
      */
     private function exportModel(
         string $modelClass,
@@ -65,7 +60,7 @@ class DataExportService
             return;
         }
 
-        $columns = (new $modelClass())->getFillable();
+        $columns = (new $modelClass)->getFillable();
         $csv = $this->arrayToCsv($records->toArray(), $columns);
         $filename = Str::snake(class_basename($modelClass)).'.csv';
 
@@ -120,7 +115,7 @@ class DataExportService
         string $directory,
         string $zipPath
     ): void {
-        $zip = new ZipArchive();
+        $zip = new ZipArchive;
         $zip->open(Storage::disk('local')->path($zipPath), ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
         foreach (Storage::disk('local')->files($directory) as $file) {

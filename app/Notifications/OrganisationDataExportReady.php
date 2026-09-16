@@ -53,24 +53,12 @@ class OrganisationDataExportReady extends Notification
     {
         $organisationName = $this->export->organisation->name;
 
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject('Your organisation data export is ready')
             ->line("Your data export for {$organisationName} is ready to download.")
             ->action('Download export', route('organisations.data-privacy.download', [
                 'organisation' => $this->export->organisation_id,
                 'export' => $this->export->id,
             ]));
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            //
-        ];
     }
 }

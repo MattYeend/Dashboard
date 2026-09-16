@@ -34,7 +34,7 @@ class HardDeleteExpiredOrganisations extends Command
 
             $this->info(
                 "Hard-deleted organisation #{$organisation->id} "
-                . "({$organisation->name})."
+                ."({$organisation->name})."
             );
         }
 

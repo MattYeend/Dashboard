@@ -24,7 +24,13 @@ defineOptions({
     <div class="space-y-6">
         <h1 class="text-lg font-semibold text-gray-200">Data privacy</h1>
 
-        <OrganisationDataExportCard v-if="permissions.can_export" :organisation="organisation" />
-        <OrganisationDeletionCard v-if="permissions.can_delete" :organisation="organisation" />
+        <OrganisationDataExportCard
+            v-if="permissions.can_export"
+            :organisation="organisation"
+        />
+        <OrganisationDeletionCard
+            v-if="permissions.can_delete"
+            :organisation="organisation"
+        />
     </div>
 </template>

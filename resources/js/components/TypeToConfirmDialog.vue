@@ -27,25 +27,29 @@ function onInput(event: Event): void {
 
 <template>
     <div class="fixed inset-0 z-50 flex items-center justify-center">
-        <div class="border-gray-500 w-full max-w-md rounded border p-4">
+        <div class="w-full max-w-md rounded border border-gray-500 p-4">
             <h3 class="text-sm font-semibold text-gray-200">{{ title }}</h3>
             <p class="mt-1 text-xs text-gray-400">{{ description }}</p>
 
             <input
                 :value="modelValue"
                 type="text"
-                class="border-gray-500 mt-3 w-full rounded border px-2 py-1 text-sm text-gray-200"
+                class="mt-3 w-full rounded border border-gray-500 px-2 py-1 text-sm text-gray-200"
                 @input="onInput"
             />
             <p v-if="error" class="mt-1 text-xs text-red-400">{{ error }}</p>
 
             <div class="mt-4 flex justify-end gap-2">
-                <button type="button" class="text-xs text-gray-400" @click="emit('cancel')">
+                <button
+                    type="button"
+                    class="text-xs text-gray-400"
+                    @click="emit('cancel')"
+                >
                     Cancel
                 </button>
                 <button
                     type="button"
-                    class="border-gray-500 rounded border px-3 py-1.5 text-xs text-red-400"
+                    class="rounded border border-gray-500 px-3 py-1.5 text-xs text-red-400"
                     :disabled="!matches || processing"
                     @click="emit('confirm')"
                 >

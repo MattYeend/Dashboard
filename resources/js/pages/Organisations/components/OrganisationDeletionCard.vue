@@ -16,23 +16,29 @@ const form = useForm({
 });
 
 function requestDeletion(): void {
-    form.post(`/organisations/${props.organisation.id}/data-privacy/request-deletion`, {
-        onSuccess: () => {
-            showConfirm.value = false;
+    form.post(
+        `/organisations/${props.organisation.id}/data-privacy/request-deletion`,
+        {
+            onSuccess: () => {
+                showConfirm.value = false;
+            },
         },
-    });
+    );
 }
 </script>
 
 <template>
-    <div class="border-gray-500 rounded border p-4">
-        <h2 class="text-sm font-semibold text-gray-300">Delete this organisation</h2>
+    <div class="rounded border border-gray-500 p-4">
+        <h2 class="text-sm font-semibold text-gray-300">
+            Delete this organisation
+        </h2>
         <p class="mt-1 text-xs text-gray-400">
-            Permanently deletes {{ organisation.name }} and everything belonging to it. This cannot be undone once the retention window has passed.
+            Permanently deletes {{ organisation.name }} and everything belonging
+            to it. This cannot be undone once the retention window has passed.
         </p>
         <button
             type="button"
-            class="border-gray-500 mt-3 rounded border px-3 py-1.5 text-xs text-gray-300"
+            class="mt-3 rounded border border-gray-500 px-3 py-1.5 text-xs text-gray-300"
             @click="showConfirm = true"
         >
             Delete organisation
