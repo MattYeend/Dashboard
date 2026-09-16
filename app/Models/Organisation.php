@@ -104,6 +104,19 @@ class Organisation extends Tenant implements Auditable
     }
 
     /**
+     * Determine whether the given user holds the owner role within this
+     * organisation, i.e. the single highest in-organisation tier, distinct
+     * from the owner-or-admin management tier above.
+     */
+    public function hasOwnerRoleFor(User $user): bool
+    {
+        return $this->activeUsers()
+            ->whereKey($user->id)
+            ->wherePivot('role', 'owner')
+            ->exists();
+    }
+
+    /**
      * Determine whether the given user holds an owner or admin role
      * within this organisation, and can therefore manage billing.
      */

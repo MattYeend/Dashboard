@@ -219,6 +219,31 @@ class PolicyAuthorisationService
     }
 
     /**
+     * Determine whether the actor can request a full data export for the
+     * organisation. Global 'export organisation data' permission-holders
+     * pass regardless of membership role; otherwise the actor must be an
+     * active member holding the organisation's owner role.
+     */
+    public function canExportData(User $actor, Organisation $target): bool
+    {
+        return $this->activeChecker->isActive($target)
+            && $this->isActiveMember($actor, $target)
+            && ($actor->can('export organisation data') || $target->hasOwnerRoleFor($actor));
+    }
+
+    /**
+     * Determine whether the actor can request permanent deletion of the
+     * organisation. Same gate as canExportData(), kept separate so the two
+     * abilities can diverge later without reshuffling call sites.
+     */
+    public function canRequestDeletion(User $actor, Organisation $target): bool
+    {
+        return $this->activeChecker->isActive($target)
+            && $this->isActiveMember($actor, $target)
+            && ($actor->can('request organisation deletion') || $target->hasOwnerRoleFor($actor));
+    }
+
+    /**
      * Get the actor's highest-ranking (lowest-numbered) role within the
      * given organisation's permissions team.
      */

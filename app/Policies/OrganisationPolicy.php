@@ -145,4 +145,22 @@ class OrganisationPolicy
     ): bool {
         return $this->authorisationService->canInviteWithRole($user, $organisation, $invitedRole);
     }
+
+    /**
+     * Determine whether the user can request a full data export for the
+     * organisation.
+     */
+    public function exportData(User $user, Organisation $organisation): bool
+    {
+        return $this->authorisationService->canExportData($user, $organisation);
+    }
+
+    /**
+     * Determine whether the user can request permanent deletion of the
+     * organisation.
+     */
+    public function requestDeletion(User $user, Organisation $organisation): bool
+    {
+        return $this->authorisationService->canRequestDeletion($user, $organisation);
+    }
 }
