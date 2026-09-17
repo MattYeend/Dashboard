@@ -20,3 +20,5 @@ Schedule::command(RunScheduledReports::class)
     ->onOneServer();
 
 Schedule::command(HardDeleteExpiredOrganisations::class)->daily();
+
+Schedule::command('imports:prune-stale-uploads')->twiceDaily();
