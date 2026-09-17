@@ -21,7 +21,16 @@ const props = defineProps<Props>();
 defineOptions({
     layout: {
         breadcrumbs: [
-            { title: 'Invoice items', href: itemsIndex(props.invoiceId).url },
+            {
+                title: 'Invoice items',
+                href: itemsIndex(
+                    Number(
+                        window.location.pathname.match(
+                            /\/invoices\/(\d+)\/items/,
+                        )?.[1],
+                    ),
+                ).url,
+            },
             { title: 'Import' },
         ],
     },

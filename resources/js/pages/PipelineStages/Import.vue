@@ -23,7 +23,13 @@ defineOptions({
         breadcrumbs: [
             {
                 title: 'Pipeline stages',
-                href: itemsIndex(props.pipelineId).url,
+                href: itemsIndex(
+                    Number(
+                        window.location.pathname.match(
+                            /\/pipelines\/(\d+)\/stages/,
+                        )?.[1],
+                    ),
+                ).url,
             },
             { title: 'Import' },
         ],
@@ -72,7 +78,7 @@ function onCancel(): void {
 <template>
     <div class="space-y-6 p-6">
         <h1 class="text-lg font-semibold text-gray-200">
-            Import invoice items
+            Import pipeline stages
         </h1>
 
         <div v-if="!preview" class="space-y-4">
