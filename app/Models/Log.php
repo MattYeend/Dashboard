@@ -838,6 +838,9 @@ class Log extends Model implements Auditable
 
     public const ACTION_HARD_DELETE_ORGANISATION = 385;
 
+    // User Management (import)
+    public const ACTION_IMPORT_USER = 386;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
