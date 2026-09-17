@@ -187,9 +187,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/mentionable', [UserController::class, 'mentionable'])->name('mentionable');
 
             Route::get('/export', [UserController::class, 'export'])->name('export');
-            Route::post('/import', [ContactController::class, 'import'])->name('import');
-            Route::post('/import/preview', [ContactController::class, 'importPreview'])->name('import.preview');
-            Route::post('/import/commit', [ContactController::class, 'importCommit'])->name('import.commit');
+            Route::post('/import', [UserController::class, 'import'])->name('import');
+            Route::post('/import/preview', [UserController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [UserController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [UserController::class, 'index'])->name('index');
             Route::get('/create', [UserController::class, 'create'])->name('create');
@@ -210,6 +210,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [ContactController::class, 'export'])->name('export');
             Route::post('/import', [ContactController::class, 'import'])->name('import');
+            Route::post('/import/preview', [ContactController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [ContactController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/duplicates', [ContactController::class, 'duplicates'])->name('duplicates');
             Route::post('/{contact}/merge/{duplicate}', [ContactController::class, 'merge'])->name('merge');
