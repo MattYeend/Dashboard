@@ -7,7 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useImportWorkflow } from '@/composables/useImportWorkflow';
 import { index as itemsIndex } from '@/routes/pipelines/stages';
-import { preview as importPreview, commit as importCommit } from '@/routes/pipelines/stages/import';
+import {
+    preview as importPreview,
+    commit as importCommit,
+} from '@/routes/pipelines/stages/import';
 
 interface Props {
     pipelineId: number;
@@ -16,16 +19,25 @@ interface Props {
 const props = defineProps<Props>();
 
 defineOptions({
-    layout: { breadcrumbs: [{ title: 'Pipeline stages', href: itemsIndex(props.pipelineId).url }, { title: 'Import' }] },
+    layout: {
+        breadcrumbs: [
+            {
+                title: 'Pipeline stages',
+                href: itemsIndex(props.pipelineId).url,
+            },
+            { title: 'Import' },
+        ],
+    },
 });
 
 const file = ref<File | null>(null);
 const confirmOpen = ref(false);
 
-const { preview, processing, error, runPreview, runCommit, reset } = useImportWorkflow(
-    importPreview(props.pipelineId).url,
-    importCommit(props.pipelineId).url,
-);
+const { preview, processing, error, runPreview, runCommit, reset } =
+    useImportWorkflow(
+        importPreview(props.pipelineId).url,
+        importCommit(props.pipelineId).url,
+    );
 
 function onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -36,7 +48,7 @@ async function onUpload(): Promise<void> {
     if (!file.value) {
         return;
     }
-    
+
     await runPreview(file.value);
 }
 
@@ -59,7 +71,9 @@ function onCancel(): void {
 
 <template>
     <div class="space-y-6 p-6">
-        <h1 class="text-lg font-semibold text-gray-200">Import invoice items</h1>
+        <h1 class="text-lg font-semibold text-gray-200">
+            Import invoice items
+        </h1>
 
         <div v-if="!preview" class="space-y-4">
             <Input type="file" accept=".csv,.txt" @change="onFileChange" />
@@ -71,16 +85,30 @@ function onCancel(): void {
 
         <div v-else class="space-y-4">
             <p class="text-sm text-gray-300">
-                {{ preview.valid_count }} row(s) valid, {{ preview.skipped_count }} row(s) will be skipped.
+                {{ preview.valid_count }} row(s) valid,
+                {{ preview.skipped_count }} row(s) will be skipped.
             </p>
 
-            <ImportPreviewTable :columns="preview.columns" :rows="preview.rows" />
+            <ImportPreviewTable
+                :columns="preview.columns"
+                :rows="preview.rows"
+            />
 
             <p v-if="error" class="text-sm text-red-400">{{ error }}</p>
 
             <div class="flex gap-3">
-                <Button variant="outline" type="button" :disabled="processing" @click="onCancel">Cancel</Button>
-                <Button type="button" :disabled="processing || preview.valid_count === 0" @click="confirmOpen = true">
+                <Button
+                    variant="outline"
+                    type="button"
+                    :disabled="processing"
+                    @click="onCancel"
+                    >Cancel</Button
+                >
+                <Button
+                    type="button"
+                    :disabled="processing || preview.valid_count === 0"
+                    @click="confirmOpen = true"
+                >
                     Continue
                 </Button>
             </div>

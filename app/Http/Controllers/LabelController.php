@@ -305,30 +305,30 @@ class LabelController extends Controller
     }
 
     /**
- * Parse and validate an uploaded CSV, returning a per-row preview
- * without persisting anything.
- *
- * Authorisation is handled by ImportLabelRequest::authorize().
- */
-public function importPreview(ImportLabelRequest $request): JsonResponse
-{
-    $importer = $this->management->importer();
-    $token = $importer->storeUpload($request->file('file'), $request->user()->id);
+     * Parse and validate an uploaded CSV, returning a per-row preview
+     * without persisting anything.
+     *
+     * Authorisation is handled by ImportLabelRequest::authorize().
+     */
+    public function importPreview(ImportLabelRequest $request): JsonResponse
+    {
+        $importer = $this->management->importer();
+        $token = $importer->storeUpload($request->file('file'), $request->user()->id);
 
-    return response()->json(['token' => $token, ...$importer->preview($token, $request->user()->id)]);
-}
+        return response()->json(['token' => $token, ...$importer->preview($token, $request->user()->id)]);
+    }
 
-/**
- * Commit a previously previewed import, persisting valid rows only.
- *
- * Authorises via the 'import' policy before proceeding.
- */
-public function importCommit(Request $request): JsonResponse
-{
-    $this->authorize('import', Label::class);
+    /**
+     * Commit a previously previewed import, persisting valid rows only.
+     *
+     * Authorises via the 'import' policy before proceeding.
+     */
+    public function importCommit(Request $request): JsonResponse
+    {
+        $this->authorize('import', Label::class);
 
-    $request->validate(['token' => ['required', 'uuid']]);
+        $request->validate(['token' => ['required', 'uuid']]);
 
-    return response()->json($this->management->importer()->commit($request->input('token'), $request->user()->id));
-}
+        return response()->json($this->management->importer()->commit($request->input('token'), $request->user()->id));
+    }
 }

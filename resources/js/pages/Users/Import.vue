@@ -7,19 +7,25 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useImportWorkflow } from '@/composables/useImportWorkflow';
 import { index as usersIndex } from '@/routes/users';
-import { preview as importPreview, commit as importCommit } from '@/routes/users/import';
+import {
+    preview as importPreview,
+    commit as importCommit,
+} from '@/routes/users/import';
 
 defineOptions({
-    layout: { breadcrumbs: [{ title: 'Users', href: usersIndex().url }, { title: 'Import' }] },
+    layout: {
+        breadcrumbs: [
+            { title: 'Users', href: usersIndex().url },
+            { title: 'Import' },
+        ],
+    },
 });
 
 const file = ref<File | null>(null);
 const confirmOpen = ref(false);
 
-const { preview, processing, error, runPreview, runCommit, reset } = useImportWorkflow(
-    importPreview().url,
-    importCommit().url,
-);
+const { preview, processing, error, runPreview, runCommit, reset } =
+    useImportWorkflow(importPreview().url, importCommit().url);
 
 function onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -30,7 +36,7 @@ async function onUpload(): Promise<void> {
     if (!file.value) {
         return;
     }
-    
+
     await runPreview(file.value);
 }
 
@@ -65,16 +71,30 @@ function onCancel(): void {
 
         <div v-else class="space-y-4">
             <p class="text-sm text-gray-300">
-                {{ preview.valid_count }} row(s) valid, {{ preview.skipped_count }} row(s) will be skipped.
+                {{ preview.valid_count }} row(s) valid,
+                {{ preview.skipped_count }} row(s) will be skipped.
             </p>
 
-            <ImportPreviewTable :columns="preview.columns" :rows="preview.rows" />
+            <ImportPreviewTable
+                :columns="preview.columns"
+                :rows="preview.rows"
+            />
 
             <p v-if="error" class="text-sm text-red-400">{{ error }}</p>
 
             <div class="flex gap-3">
-                <Button variant="outline" type="button" :disabled="processing" @click="onCancel">Cancel</Button>
-                <Button type="button" :disabled="processing || preview.valid_count === 0" @click="confirmOpen = true">
+                <Button
+                    variant="outline"
+                    type="button"
+                    :disabled="processing"
+                    @click="onCancel"
+                    >Cancel</Button
+                >
+                <Button
+                    type="button"
+                    :disabled="processing || preview.valid_count === 0"
+                    @click="confirmOpen = true"
+                >
                     Continue
                 </Button>
             </div>

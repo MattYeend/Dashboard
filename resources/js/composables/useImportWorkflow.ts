@@ -15,11 +15,15 @@ export function useImportWorkflow(previewUrl: string, commitUrl: string) {
         formData.append('file', file);
 
         try {
-            const response = await axios.post<ImportPreviewResponse>(previewUrl, formData);
+            const response = await axios.post<ImportPreviewResponse>(
+                previewUrl,
+                formData,
+            );
             preview.value = response.data;
         } catch (e) {
             error.value = axios.isAxiosError(e)
-                ? (e.response?.data?.message ?? 'The file could not be processed.')
+                ? (e.response?.data?.message ??
+                  'The file could not be processed.')
                 : 'The file could not be processed.';
         } finally {
             processing.value = false;
@@ -35,15 +39,18 @@ export function useImportWorkflow(previewUrl: string, commitUrl: string) {
         error.value = null;
 
         try {
-            const response = await axios.post<ImportCommitResponse>(commitUrl, { token: preview.value.token });
+            const response = await axios.post<ImportCommitResponse>(commitUrl, {
+                token: preview.value.token,
+            });
             preview.value = null;
 
             return response.data;
         } catch (e) {
             error.value = axios.isAxiosError(e)
-                ? (e.response?.data?.message ?? 'The import could not be committed.')
+                ? (e.response?.data?.message ??
+                  'The import could not be committed.')
                 : 'The import could not be committed.';
-                
+
             return null;
         } finally {
             processing.value = false;
