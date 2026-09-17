@@ -372,4 +372,34 @@ class UserController extends Controller
 
         return response()->json($users);
     }
+
+    /**
+ * Parse and validate an uploaded CSV, returning a per-row preview
+ * without persisting anything.
+ *
+ * Authorisation is handled by ImportUserRequest::authorize().
+ */
+public function importPreview(ImportUserRequest $request): JsonResponse
+{
+    $importer = $this->management->importer();
+    $token = $importer->storeUpload($request->file('file'), $request->user()->id);
+
+    return response()->json(['token' => $token, ...$importer->preview($token, $request->user()->id)]);
+}
+
+/**
+ * Commit a previously previewed import, persisting valid rows only.
+ *
+ * Authorises via the 'import' policy before proceeding.
+ */
+public function importCommit(Request $request): JsonResponse
+{
+    $this->authorize('import', User::class);
+
+    $request->validate(['token' => ['required', 'uuid']]);
+
+    $result = $this->management->importer()->commit($request->input('token'), $request->user()->id);
+
+    return response()->json($result);
+}
 }

@@ -142,4 +142,13 @@ class ManagementService
     {
         return $this->runner->run($report, $actor);
     }
+
+    /**
+ * Expose the importer service for controller-level import actions
+ * (preview/commit) that operate outside the request-driven import().
+ */
+public function importer(): ImporterService
+{
+    return $this->importer;
+}
 }

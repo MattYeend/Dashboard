@@ -168,4 +168,13 @@ class ManagementService
     {
         return $this->exporter->export($filters);
     }
+
+    /**
+ * Expose the importer service for controller-level import actions
+ * (preview/commit) that operate outside the request-driven import().
+ */
+public function importer(): ImporterService
+{
+    return $this->importer;
+}
 }

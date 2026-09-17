@@ -406,4 +406,32 @@ class InvoiceController extends Controller
             $request->only(['search', 'trashed'])
         );
     }
+
+    /**
+ * Parse and validate an uploaded CSV, returning a per-row preview
+ * without persisting anything.
+ *
+ * Authorisation is handled by ImportInvoiceRequest::authorize().
+ */
+public function importPreview(ImportInvoiceRequest $request): JsonResponse
+{
+    $importer = $this->management->importer();
+    $token = $importer->storeUpload($request->file('file'), $request->user()->id);
+
+    return response()->json(['token' => $token, ...$importer->preview($token, $request->user()->id)]);
+}
+
+/**
+ * Commit a previously previewed import, persisting valid rows only.
+ *
+ * Authorises via the 'import' policy before proceeding.
+ */
+public function importCommit(Request $request): JsonResponse
+{
+    $this->authorize('import', Invoice::class);
+
+    $request->validate(['token' => ['required', 'uuid']]);
+
+    return response()->json($this->management->importer()->commit($request->input('token'), $request->user()->id));
+}
 }

@@ -323,4 +323,32 @@ class TaskController extends Controller
             $request->only(['search', 'trashed', 'status_id', 'assigned_to'])
         );
     }
+
+    /**
+ * Parse and validate an uploaded CSV, returning a per-row preview
+ * without persisting anything.
+ *
+ * Authorisation is handled by ImportTaskRequest::authorize().
+ */
+public function importPreview(ImportTaskRequest $request): JsonResponse
+{
+    $importer = $this->management->importer();
+    $token = $importer->storeUpload($request->file('file'), $request->user()->id);
+
+    return response()->json(['token' => $token, ...$importer->preview($token, $request->user()->id)]);
+}
+
+/**
+ * Commit a previously previewed import, persisting valid rows only.
+ *
+ * Authorises via the 'import' policy before proceeding.
+ */
+public function importCommit(Request $request): JsonResponse
+{
+    $this->authorize('import', Task::class);
+
+    $request->validate(['token' => ['required', 'uuid']]);
+
+    return response()->json($this->management->importer()->commit($request->input('token'), $request->user()->id));
+}
 }
