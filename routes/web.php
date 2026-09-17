@@ -187,7 +187,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/mentionable', [UserController::class, 'mentionable'])->name('mentionable');
 
             Route::get('/export', [UserController::class, 'export'])->name('export');
-            Route::post('/import', [UserController::class, 'import'])->name('import');
+            Route::post('/import', [ContactController::class, 'import'])->name('import');
+            Route::post('/import/preview', [ContactController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [ContactController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [UserController::class, 'index'])->name('index');
             Route::get('/create', [UserController::class, 'create'])->name('create');
@@ -229,6 +231,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [TaskStatusController::class, 'export'])->name('export');
             Route::post('/import', [TaskStatusController::class, 'import'])->name('import');
+            Route::post('/import/preview', [TaskStatusController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [TaskStatusController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [TaskStatusController::class, 'index'])->name('index');
             Route::get('/create', [TaskStatusController::class, 'create'])->name('create');
@@ -247,6 +251,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [TaskController::class, 'export'])->name('export');
             Route::post('/import', [TaskController::class, 'import'])->name('import');
+            Route::post('/import/preview', [TaskController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [TaskController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [TaskController::class, 'index'])->name('index');
             Route::get('/create', [TaskController::class, 'create'])->name('create');
@@ -265,6 +271,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [OrderStatusController::class, 'export'])->name('export');
             Route::post('/import', [OrderStatusController::class, 'import'])->name('import');
+            Route::post('/import/preview', [OrderStatusController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [OrderStatusController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [OrderStatusController::class, 'index'])->name('index');
             Route::get('/create', [OrderStatusController::class, 'create'])->name('create');
@@ -285,6 +293,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [OrderController::class, 'export'])->name('export');
             Route::post('/import', [OrderController::class, 'import'])->name('import');
+            Route::post('/import/preview', [OrderController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [OrderController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [OrderController::class, 'index'])->name('index');
             Route::get('/create', [OrderController::class, 'create'])->name('create');
@@ -303,6 +313,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [IndustryController::class, 'export'])->name('export');
             Route::post('/import', [IndustryController::class, 'import'])->name('import');
+            Route::post('/import/preview', [IndustryController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [IndustryController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [IndustryController::class, 'index'])->name('index');
             Route::get('/create', [IndustryController::class, 'create'])->name('create');
@@ -321,6 +333,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [CompanyController::class, 'export'])->name('export');
             Route::post('/import', [CompanyController::class, 'import'])->name('import');
+            Route::post('/import/preview', [CompanyController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [CompanyController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/duplicates', [CompanyController::class, 'duplicates'])->name('duplicates');
             Route::post('/{company}/merge/{duplicate}', [CompanyController::class, 'merge'])->name('merge');
@@ -359,6 +373,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [AddressController::class, 'export'])->name('export');
             Route::post('/import', [AddressController::class, 'import'])->name('import');
+            Route::post('/import/preview', [AddressController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [AddressController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [AddressController::class, 'index'])->name('index');
             Route::get('/create', [AddressController::class, 'create'])->name('create');
@@ -384,6 +400,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [CategoryController::class, 'export'])->name('export');
             Route::post('/import', [CategoryController::class, 'import'])->name('import');
+            Route::post('/import/preview', [CategoryController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [CategoryController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [CategoryController::class, 'index'])->name('index');
             Route::get('/create', [CategoryController::class, 'create'])->name('create');
@@ -402,6 +420,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [PostController::class, 'export'])->name('export');
             Route::post('/import', [PostController::class, 'import'])->name('import');
+            Route::post('/import/preview', [PostController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [PostController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [PostController::class, 'index'])->name('index');
             Route::get('/create', [PostController::class, 'create'])->name('create');
@@ -423,6 +443,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [InvoiceStatusController::class, 'export'])->name('export');
             Route::post('/import', [InvoiceStatusController::class, 'import'])->name('import');
+            Route::post('/import/preview', [InvoiceStatusController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [InvoiceStatusController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [InvoiceStatusController::class, 'index'])->name('index');
             Route::get('/create', [InvoiceStatusController::class, 'create'])->name('create');
@@ -441,6 +463,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [TagController::class, 'export'])->name('export');
             Route::post('/import', [TagController::class, 'import'])->name('import');
+            Route::post('/import/preview', [TagController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [TagController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [TagController::class, 'index'])->name('index');
             Route::get('/create', [TagController::class, 'create'])->name('create');
@@ -472,6 +496,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [ReportController::class, 'export'])->name('export');
             Route::post('/import', [ReportController::class, 'import'])->name('import');
+            Route::post('/import/preview', [ReportController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [ReportController::class, 'importCommit'])->name('import.commit');
             Route::post('/{report}/run', [ReportController::class, 'run'])->name('run');
 
             Route::get('/', [ReportController::class, 'index'])->name('index');
@@ -491,6 +517,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [InvoiceController::class, 'export'])->name('export');
             Route::post('/import', [InvoiceController::class, 'import'])->name('import');
+            Route::post('/import/preview', [InvoiceController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [InvoiceController::class, 'importCommit'])->name('import.commit');
 
             Route::post('/{invoice}/send', [InvoiceController::class, 'send'])->name('send');
             Route::post('/{invoice}/mark-as-paid', [InvoiceController::class, 'markAsPaid'])->name('mark-as-paid');
@@ -513,6 +541,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
                 Route::get('/export', [InvoiceItemController::class, 'export'])->name('export');
                 Route::post('/import', [InvoiceItemController::class, 'import'])->name('import');
+                Route::post('/import/preview', [InvoiceItemController::class, 'importPreview'])->name('import.preview');
+                Route::post('/import/commit', [InvoiceItemController::class, 'importCommit'])->name('import.commit');
 
                 Route::get('/', [InvoiceItemController::class, 'index'])->name('index');
                 Route::get('/create', [InvoiceItemController::class, 'create'])->name('create');
@@ -532,6 +562,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [PipelineStatusController::class, 'export'])->name('export');
             Route::post('/import', [PipelineStatusController::class, 'import'])->name('import');
+            Route::post('/import/preview', [PipelineStatusController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [PipelineStatusController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [PipelineStatusController::class, 'index'])->name('index');
             Route::get('/create', [PipelineStatusController::class, 'create'])->name('create');
@@ -550,6 +582,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [PipelineController::class, 'export'])->name('export');
             Route::post('/import', [PipelineController::class, 'import'])->name('import');
+            Route::post('/import/preview', [PipelineController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [PipelineController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [PipelineController::class, 'index'])->name('index');
             Route::get('/create', [PipelineController::class, 'create'])->name('create');
@@ -567,6 +601,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
                 Route::get('/export', [PipelineStageController::class, 'export'])->name('export');
                 Route::post('/import', [PipelineStageController::class, 'import'])->name('import');
+                Route::post('/import/preview', [PipelineStageController::class, 'importPreview'])->name('import.preview');
+                Route::post('/import/commit', [PipelineStageController::class, 'importCommit'])->name('import.commit');
 
                 Route::get('/', [PipelineStageController::class, 'index'])->name('index');
                 Route::get('/create', [PipelineStageController::class, 'create'])->name('create');
@@ -586,6 +622,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [DealStatusController::class, 'export'])->name('export');
             Route::post('/import', [DealStatusController::class, 'import'])->name('import');
+            Route::post('/import/preview', [DealStatusController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [DealStatusController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [DealStatusController::class, 'index'])->name('index');
             Route::get('/create', [DealStatusController::class, 'create'])->name('create');
@@ -606,6 +644,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [DealController::class, 'export'])->name('export');
             Route::post('/import', [DealController::class, 'import'])->name('import');
+            Route::post('/import/preview', [DealController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [DealController::class, 'importCommit'])->name('import.commit');
 
             Route::patch('/{deal}/stage', [DealController::class, 'updateStage'])->name('update-stage');
 
@@ -626,6 +666,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [TicketStatusController::class, 'export'])->name('export');
             Route::post('/import', [TicketStatusController::class, 'import'])->name('import');
+            Route::post('/import/preview', [TicketStatusController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [TicketStatusController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [TicketStatusController::class, 'index'])->name('index');
             Route::get('/create', [TicketStatusController::class, 'create'])->name('create');
@@ -644,6 +686,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [TicketPriorityController::class, 'export'])->name('export');
             Route::post('/import', [TicketPriorityController::class, 'import'])->name('import');
+            Route::post('/import/preview', [TicketPriorityController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [TicketPriorityController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [TicketPriorityController::class, 'index'])->name('index');
             Route::get('/create', [TicketPriorityController::class, 'create'])->name('create');
@@ -664,6 +708,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [CommentController::class, 'export'])->name('export');
             Route::post('/import', [CommentController::class, 'import'])->name('import');
+            Route::post('/import/preview', [CommentController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [CommentController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [CommentController::class, 'index'])->name('index');
             Route::post('/', [CommentController::class, 'store'])->name('store');
@@ -683,6 +729,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [LabelController::class, 'export'])->name('export');
             Route::post('/import', [LabelController::class, 'import'])->name('import');
+            Route::post('/import/preview', [LabelController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [LabelController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [LabelController::class, 'index'])->name('index');
             Route::get('/create', [LabelController::class, 'create'])->name('create');
@@ -701,6 +749,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/export', [TicketController::class, 'export'])->name('export');
             Route::post('/import', [TicketController::class, 'import'])->name('import');
+            Route::post('/import/preview', [TicketController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [TicketController::class, 'importCommit'])->name('import.commit');
 
             Route::get('/', [TicketController::class, 'index'])->name('index');
             Route::get('/create', [TicketController::class, 'create'])->name('create');
