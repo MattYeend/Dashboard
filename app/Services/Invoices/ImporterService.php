@@ -9,11 +9,24 @@ use App\Models\Log;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\AuditLogService;
+use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handles CSV import of invoices, including the newer preview/commit
+ * workflow (via ImportsViaPreview) alongside the original one-shot
+ * import() method.
+ */
 class ImporterService
 {
+    use ImportsViaPreview;
+
+    /**
+     * Column headers that must be present in the uploaded CSV.
+     *
+     * @var array<int, string>
+     */
     protected const REQUIRED_COLUMNS = [
         'invoice_number',
         'subtotal',
@@ -28,6 +41,46 @@ class ImporterService
     public function __construct(
         protected readonly AuditLogService $auditLogService,
     ) {}
+
+    /**
+     * The private-disk directory this module's uploads are stored under.
+     */
+    protected function importStoragePath(): string
+    {
+        return 'imports/invoices';
+    }
+
+    /**
+     * The Log::ACTION_IMPORT_* constant for this module's batch log entry.
+     */
+    protected function importAuditAction(): int
+    {
+        return Log::ACTION_IMPORT_INVOICE;
+    }
+
+    /**
+     * Persist a single validated row as a new Invoice.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $context
+     */
+    protected function persistRow(array $data, int $actorId, array $context = []): void
+    {
+        Invoice::create([
+            'invoice_number' => $data['invoice_number'],
+            'company_id' => $this->nullableInt($data['company_id'] ?? null),
+            'order_id' => $this->nullableInt($data['order_id'] ?? null),
+            'status_id' => $this->nullableInt($data['status_id'] ?? null),
+            'issue_date' => $data['issue_date'] ?? null,
+            'due_date' => $data['due_date'] ?? null,
+            'subtotal' => (int) $data['subtotal'],
+            'tax_total' => (int) $data['tax_total'],
+            'total' => (int) $data['total'],
+            'currency' => strtoupper(trim($data['currency'])),
+            'notes' => $data['notes'] ?? null,
+            'created_by' => $actorId,
+        ]);
+    }
 
     /**
      * Import invoices from an uploaded CSV file.
@@ -122,8 +175,10 @@ class ImporterService
 
     /**
      * Validate a single row, returning an error string or null if valid.
+     *
+     * @param  array<string, mixed>  $data
      */
-    private function validateRow(array $data): ?string
+    protected function validateRow(array $data): ?string
     {
         foreach (self::REQUIRED_COLUMNS as $column) {
             if (empty($data[$column])) {

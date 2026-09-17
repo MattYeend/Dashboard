@@ -6,17 +6,33 @@ use App\Models\InvoiceStatus;
 use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
+use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handles CSV import of invoice statuses, including the newer
+ * preview/commit workflow (via ImportsViaPreview) alongside the
+ * original one-shot import() method.
+ */
 class ImporterService
 {
+    use ImportsViaPreview;
+
+    /**
+     * Column headers that must be present in the uploaded CSV.
+     *
+     * @var array<int, string>
+     */
     protected const REQUIRED_COLUMNS = [
         'title',
         'background_colour',
         'text_colour',
     ];
 
+    /**
+     * Accepted 6-digit hex colour format.
+     */
     protected const HEX_COLOUR_PATTERN = '/^#[0-9A-Fa-f]{6}$/';
 
     /**
@@ -25,6 +41,39 @@ class ImporterService
     public function __construct(
         protected readonly AuditLogService $auditLogService,
     ) {}
+
+    /**
+     * The private-disk directory this module's uploads are stored under.
+     */
+    protected function importStoragePath(): string
+    {
+        return 'imports/invoice-statuses';
+    }
+
+    /**
+     * The Log::ACTION_IMPORT_* constant for this module's batch log entry.
+     */
+    protected function importAuditAction(): int
+    {
+        return Log::ACTION_IMPORT_INVOICE_STATUS;
+    }
+
+    /**
+     * Persist a single validated row as a new InvoiceStatus.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $context
+     */
+    protected function persistRow(array $data, int $actorId, array $context = []): void
+    {
+        InvoiceStatus::create([
+            'title' => $data['title'],
+            'description' => $data['description'] ?? null,
+            'background_colour' => strtoupper(trim($data['background_colour'])),
+            'text_colour' => strtoupper(trim($data['text_colour'])),
+            'created_by' => $actorId,
+        ]);
+    }
 
     /**
      * Import invoice statuses from an uploaded CSV file.
@@ -112,8 +161,10 @@ class ImporterService
 
     /**
      * Validate a single row, returning an error string or null if valid.
+     *
+     * @param  array<string, mixed>  $data
      */
-    private function validateRow(array $data): ?string
+    protected function validateRow(array $data): ?string
     {
         foreach (self::REQUIRED_COLUMNS as $column) {
             if (empty($data[$column])) {

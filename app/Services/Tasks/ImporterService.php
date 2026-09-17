@@ -7,11 +7,24 @@ use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
 use App\Services\AuditLogService;
+use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handles CSV import of tasks, including the newer preview/commit
+ * workflow (via ImportsViaPreview) alongside the original one-shot
+ * import() method.
+ */
 class ImporterService
 {
+    use ImportsViaPreview;
+
+    /**
+     * Column headers that must be present in the uploaded CSV.
+     *
+     * @var array<int, string>
+     */
     protected const REQUIRED_COLUMNS = [
         'title',
     ];
@@ -22,6 +35,45 @@ class ImporterService
     public function __construct(
         protected readonly AuditLogService $auditLogService,
     ) {}
+
+    /**
+     * The private-disk directory this module's uploads are stored under.
+     */
+    protected function importStoragePath(): string
+    {
+        return 'imports/tasks';
+    }
+
+    /**
+     * The Log::ACTION_IMPORT_* constant for this module's batch log entry.
+     */
+    protected function importAuditAction(): int
+    {
+        return Log::ACTION_IMPORT_TASK;
+    }
+
+    /**
+     * Persist a single validated row as a new Task.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $context
+     */
+    protected function persistRow(array $data, int $actorId, array $context = []): void
+    {
+        Task::create([
+            'title' => $data['title'],
+            'description' => $data['description'] ?? null,
+            'due_date' => $data['due_date'] ?? null,
+            'assigned_date' => $data['assigned_date'] ?? null,
+            'assigned_to' => isset($data['assigned_to']) && $data['assigned_to'] !== ''
+                ? (int) $data['assigned_to']
+                : null,
+            'status_id' => isset($data['status_id']) && $data['status_id'] !== ''
+                ? (int) $data['status_id']
+                : null,
+            'created_by' => $actorId,
+        ]);
+    }
 
     /**
      * Import tasks from an uploaded CSV file.
@@ -115,8 +167,10 @@ class ImporterService
 
     /**
      * Validate a single row, returning an error string or null if valid.
+     *
+     * @param  array<string, mixed>  $data
      */
-    private function validateRow(array $data): ?string
+    protected function validateRow(array $data): ?string
     {
         foreach (self::REQUIRED_COLUMNS as $column) {
             if (empty($data[$column])) {

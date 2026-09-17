@@ -6,11 +6,24 @@ use App\Models\Log;
 use App\Models\Report;
 use App\Models\User;
 use App\Services\AuditLogService;
+use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handles CSV import of reports, including the newer preview/commit
+ * workflow (via ImportsViaPreview) alongside the original one-shot
+ * import() method.
+ */
 class ImporterService
 {
+    use ImportsViaPreview;
+
+    /**
+     * Column headers that must be present in the uploaded CSV.
+     *
+     * @var array<int, string>
+     */
     protected const REQUIRED_COLUMNS = ['title', 'type', 'format'];
 
     /**
@@ -20,6 +33,39 @@ class ImporterService
         protected readonly AuditLogService $auditLogService,
         protected readonly ReportTypeRegistryService $registry,
     ) {}
+
+    /**
+     * The private-disk directory this module's uploads are stored under.
+     */
+    protected function importStoragePath(): string
+    {
+        return 'imports/reports';
+    }
+
+    /**
+     * The Log::ACTION_IMPORT_* constant for this module's batch log entry.
+     */
+    protected function importAuditAction(): int
+    {
+        return Log::ACTION_IMPORT_REPORT;
+    }
+
+    /**
+     * Persist a single validated row as a new Report.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $context
+     */
+    protected function persistRow(array $data, int $actorId, array $context = []): void
+    {
+        Report::create([
+            'title' => $data['title'],
+            'type' => $data['type'],
+            'format' => $data['format'],
+            'is_scheduled' => false,
+            'created_by' => $actorId,
+        ]);
+    }
 
     /**
      * Import reports from an uploaded CSV file.
@@ -67,20 +113,10 @@ class ImporterService
 
                 $data = array_combine($header, $row);
 
-                if (empty($data['title'])) {
-                    $skipped[] = ['row' => $rowNumber, 'reason' => "Missing value for 'title'"];
+                $error = $this->validateRow($data);
 
-                    continue;
-                }
-
-                if ($this->registry->queryServiceForKey($data['type'] ?? '') === null) {
-                    $skipped[] = ['row' => $rowNumber, 'reason' => "Unrecognised 'type'"];
-
-                    continue;
-                }
-
-                if (! in_array($data['format'] ?? '', ['pdf', 'csv', 'xlsx'], true)) {
-                    $skipped[] = ['row' => $rowNumber, 'reason' => "Unrecognised 'format'"];
+                if ($error !== null) {
+                    $skipped[] = ['row' => $rowNumber, 'reason' => $error];
 
                     continue;
                 }
@@ -107,5 +143,30 @@ class ImporterService
         fclose($handle);
 
         return ['imported' => $imported, 'skipped' => $skipped];
+    }
+
+    /**
+     * Validate a single row, returning an error string or null if valid.
+     *
+     * Extracted from the original inline validation inside import()'s
+     * loop, so it can be reused by the preview/commit workflow too.
+     *
+     * @param  array<string, mixed>  $data
+     */
+    protected function validateRow(array $data): ?string
+    {
+        if (empty($data['title'])) {
+            return "Missing value for 'title'";
+        }
+
+        if ($this->registry->queryServiceForKey($data['type'] ?? '') === null) {
+            return "Unrecognised 'type'";
+        }
+
+        if (! in_array($data['format'] ?? '', ['pdf', 'csv', 'xlsx'], true)) {
+            return "Unrecognised 'format'";
+        }
+
+        return null;
     }
 }

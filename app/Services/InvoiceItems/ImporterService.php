@@ -7,11 +7,24 @@ use App\Models\InvoiceItem;
 use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
+use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handles CSV import of invoice items, scoped to a single parent
+ * invoice, including the newer preview/commit workflow (via
+ * ImportsViaPreview) alongside the original one-shot import() method.
+ */
 class ImporterService
 {
+    use ImportsViaPreview;
+
+    /**
+     * Column headers that must be present in the uploaded CSV.
+     *
+     * @var array<int, string>
+     */
     protected const REQUIRED_COLUMNS = [
         'description',
         'quantity',
@@ -25,6 +38,51 @@ class ImporterService
     public function __construct(
         protected readonly AuditLogService $auditLogService,
     ) {}
+
+    /**
+     * The private-disk directory this module's uploads are stored under.
+     */
+    protected function importStoragePath(): string
+    {
+        return 'imports/invoice-items';
+    }
+
+    /**
+     * The Log::ACTION_IMPORT_* constant for this module's batch log entry.
+     */
+    protected function importAuditAction(): int
+    {
+        return Log::ACTION_IMPORT_INVOICE_ITEM;
+    }
+
+    /**
+     * Persist a single validated row as a new InvoiceItem, scoped to the
+     * parent invoice passed via context.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array{invoice: Invoice}  $context
+     */
+    protected function persistRow(array $data, int $actorId, array $context = []): void
+    {
+        /** @var Invoice $invoice */
+        $invoice = $context['invoice'];
+
+        $quantity = (int) $data['quantity'];
+        $unitPrice = (int) $data['unit_price'];
+        $taxRate = (float) $data['tax_rate'];
+        $total = (int) round($quantity * $unitPrice * (1 + $taxRate / 100));
+
+        InvoiceItem::create([
+            'invoice_id' => $invoice->id,
+            'description' => $data['description'],
+            'quantity' => $quantity,
+            'unit_price' => $unitPrice,
+            'tax_rate' => $taxRate,
+            'total' => $total,
+            'position' => $invoice->items()->max('position') + 1,
+            'created_by' => $actorId,
+        ]);
+    }
 
     /**
      * Import invoice items from an uploaded CSV file, scoped to a
@@ -125,8 +183,10 @@ class ImporterService
 
     /**
      * Validate a single row, returning an error string or null if valid.
+     *
+     * @param  array<string, mixed>  $data
      */
-    private function validateRow(array $data): ?string
+    protected function validateRow(array $data): ?string
     {
         foreach (self::REQUIRED_COLUMNS as $column) {
             if (! isset($data[$column]) || $data[$column] === '') {

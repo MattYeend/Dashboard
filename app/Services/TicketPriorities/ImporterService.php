@@ -2,94 +2,188 @@
 
 namespace App\Services\TicketPriorities;
 
+use App\Models\Log;
 use App\Models\TicketPriority;
 use App\Models\User;
+use App\Services\AuditLogService;
+use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 
+/**
+ * Handles CSV import of ticket priorities, including the newer
+ * preview/commit workflow (via ImportsViaPreview) alongside the
+ * original one-shot import() method.
+ */
 class ImporterService
 {
+    use ImportsViaPreview;
+
+    /**
+     * Column headers that must be present in the uploaded CSV.
+     *
+     * @var array<int, string>
+     */
+    protected const REQUIRED_COLUMNS = [
+        'title',
+        'background_colour',
+        'text_colour',
+    ];
+
+    /**
+     * Accepted 6-digit hex colour format.
+     */
+    protected const HEX_COLOUR_PATTERN = '/^#[0-9A-Fa-f]{6}$/';
+
+    /**
+     * Inject the audit log service.
+     */
+    public function __construct(
+        protected readonly AuditLogService $auditLogService,
+    ) {}
+
+    /**
+     * The private-disk directory this module's uploads are stored under.
+     */
+    protected function importStoragePath(): string
+    {
+        return 'imports/ticket-priorities';
+    }
+
+    /**
+     * The Log::ACTION_IMPORT_* constant for this module's batch log entry.
+     */
+    protected function importAuditAction(): int
+    {
+        return Log::ACTION_IMPORT_TICKET_PRIORITY;
+    }
+
+    /**
+     * Persist a single validated row as a new TicketPriority.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $context
+     */
+    protected function persistRow(array $data, int $actorId, array $context = []): void
+    {
+        TicketPriority::create([
+            'title' => $data['title'],
+            'level' => isset($data['level']) && $data['level'] !== '' ? (int) $data['level'] : 0,
+            'background_colour' => strtoupper(trim($data['background_colour'])),
+            'text_colour' => strtoupper(trim($data['text_colour'])),
+            'created_by' => $actorId,
+        ]);
+    }
+
     /**
      * Import ticket priorities from an uploaded CSV file.
      *
-     * @return array{imported: int, updated: int, skipped: int, errors: array<int, string>}
+     * @return array{imported: int, skipped: array<int, array{row: int, reason: string}>}
      */
-    public function import(UploadedFile $file, User $user): array
-    {
+    public function import(
+        UploadedFile $file,
+        int $actorId
+    ): array {
         $handle = fopen($file->getRealPath(), 'r');
 
-        if ($handle === false) {
-            throw new RuntimeException('Unable to read the uploaded file.');
-        }
-
         $header = fgetcsv($handle);
+        $header = array_map(fn (string $column) => strtolower(trim($column)), $header ?: []);
 
-        if ($header === false) {
+        $missing = array_diff(self::REQUIRED_COLUMNS, $header);
+
+        if (! empty($missing)) {
             fclose($handle);
 
-            throw new RuntimeException('The uploaded file is empty.');
+            return [
+                'imported' => 0,
+                'skipped' => [[
+                    'row' => 0,
+                    'reason' => 'Missing required column(s): '.implode(', ', $missing),
+                ]],
+            ];
         }
 
-        $header = array_map(fn (string $column) => trim(strtolower($column)), $header);
-
         $imported = 0;
-        $updated = 0;
-        $skipped = 0;
-        $errors = [];
+        $skipped = [];
+        $rowNumber = 1;
+        $actor = User::findOrFail($actorId);
 
-        DB::transaction(function () use ($handle, $header, $user, &$imported, &$updated, &$skipped, &$errors) {
-            $row = 1;
+        DB::transaction(function () use ($handle, $header, $actor, $actorId, &$imported, &$skipped, &$rowNumber) {
+            while (($row = fgetcsv($handle)) !== false) {
+                $rowNumber++;
 
-            while (($data = fgetcsv($handle)) !== false) {
-                $row++;
-
-                if (count($data) !== count($header)) {
-                    $skipped++;
-                    $errors[] = "Row {$row}: column count does not match header.";
-
-                    continue;
-                }
-
-                $record = array_combine($header, $data);
-                $title = trim((string) ($record['title'] ?? ''));
-
-                if ($title === '') {
-                    $skipped++;
-                    $errors[] = "Row {$row}: missing required 'title' column.";
+                if (count($row) !== count($header)) {
+                    $skipped[] = [
+                        'row' => $rowNumber,
+                        'reason' => sprintf(
+                            'Expected %d columns but found %d',
+                            count($header),
+                            count($row),
+                        ),
+                    ];
 
                     continue;
                 }
 
-                $priority = TicketPriority::withTrashed()->firstOrNew(['title' => $title]);
-                $isNew = ! $priority->exists;
+                $data = array_combine($header, $row);
 
-                $priority->fill([
-                    'level' => isset($record['level']) && $record['level'] !== ''
-                        ? max(1, min(4, (int) $record['level']))
-                        : 1,
-                    'background_colour' => $record['background_colour'] ?: '#6b7280',
-                    'text_colour' => $record['text_colour'] ?: '#ffffff',
-                    'updated_by' => $user->id,
+                $error = $this->validateRow($data);
+
+                if ($error !== null) {
+                    $skipped[] = ['row' => $rowNumber, 'reason' => $error];
+
+                    continue;
+                }
+
+                $ticketPriority = TicketPriority::create([
+                    'title' => $data['title'],
+                    'level' => isset($data['level']) && $data['level'] !== '' ? (int) $data['level'] : 0,
+                    'background_colour' => strtoupper(trim($data['background_colour'])),
+                    'text_colour' => strtoupper(trim($data['text_colour'])),
+                    'created_by' => $actorId,
                 ]);
 
-                if ($isNew) {
-                    $priority->created_by = $user->id;
-                }
+                $this->auditLogService->record(
+                    Log::ACTION_IMPORT_TICKET_PRIORITY,
+                    $actor,
+                    $ticketPriority,
+                    ['after' => $this->auditLogService->snapshot($ticketPriority)],
+                );
 
-                $priority->save();
-
-                $isNew ? $imported++ : $updated++;
+                $imported++;
             }
         });
 
         fclose($handle);
 
-        return [
-            'imported' => $imported,
-            'updated' => $updated,
-            'skipped' => $skipped,
-            'errors' => $errors,
-        ];
+        return ['imported' => $imported, 'skipped' => $skipped];
+    }
+
+    /**
+     * Validate a single row, returning an error string or null if valid.
+     *
+     * @param  array<string, mixed>  $data
+     */
+    protected function validateRow(array $data): ?string
+    {
+        foreach (self::REQUIRED_COLUMNS as $column) {
+            if (empty($data[$column])) {
+                return "Missing value for '{$column}'";
+            }
+        }
+
+        if (isset($data['level']) && $data['level'] !== '' && ! ctype_digit((string) $data['level'])) {
+            return 'level must be a non-negative integer';
+        }
+
+        if (! preg_match(self::HEX_COLOUR_PATTERN, trim($data['background_colour']))) {
+            return 'background_colour must be a 6-digit hex colour (e.g. #FFFFFF)';
+        }
+
+        if (! preg_match(self::HEX_COLOUR_PATTERN, trim($data['text_colour']))) {
+            return 'text_colour must be a 6-digit hex colour (e.g. #000000)';
+        }
+
+        return null;
     }
 }

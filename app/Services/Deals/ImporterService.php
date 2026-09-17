@@ -11,11 +11,24 @@ use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\User;
 use App\Services\AuditLogService;
+use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handles CSV import of deals, including the newer preview/commit
+ * workflow (via ImportsViaPreview) alongside the original one-shot
+ * import() method.
+ */
 class ImporterService
 {
+    use ImportsViaPreview;
+
+    /**
+     * Column headers that must be present in the uploaded CSV.
+     *
+     * @var array<int, string>
+     */
     protected const REQUIRED_COLUMNS = [
         'title',
         'value',
@@ -28,6 +41,49 @@ class ImporterService
     public function __construct(
         protected readonly AuditLogService $auditLogService,
     ) {}
+
+    /**
+     * The private-disk directory this module's uploads are stored under.
+     */
+    protected function importStoragePath(): string
+    {
+        return 'imports/deals';
+    }
+
+    /**
+     * The Log::ACTION_IMPORT_* constant for this module's batch log entry.
+     */
+    protected function importAuditAction(): int
+    {
+        return Log::ACTION_IMPORT_DEAL;
+    }
+
+    /**
+     * Persist a single validated row as a new Deal.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $context
+     */
+    protected function persistRow(array $data, int $actorId, array $context = []): void
+    {
+        Deal::create([
+            'title' => $data['title'],
+            'description' => $data['description'] ?? null,
+            'pipeline_id' => $this->nullableInt($data['pipeline_id'] ?? null),
+            'stage_id' => $this->nullableInt($data['stage_id'] ?? null),
+            'status_id' => $this->nullableInt($data['status_id'] ?? null),
+            'company_id' => $this->nullableInt($data['company_id'] ?? null),
+            'invoice_id' => $this->nullableInt($data['invoice_id'] ?? null),
+            'value' => (int) $data['value'],
+            'currency' => strtoupper(trim($data['currency'])),
+            'probability' => isset($data['probability']) && $data['probability'] !== ''
+                ? (int) $data['probability']
+                : 0,
+            'expected_close_date' => $data['expected_close_date'] ?? null,
+            'closed_at' => $data['closed_at'] ?? null,
+            'created_by' => $actorId,
+        ]);
+    }
 
     /**
      * Import deals from an uploaded CSV file.
@@ -125,8 +181,10 @@ class ImporterService
 
     /**
      * Validate a single row, returning an error string or null if valid.
+     *
+     * @param  array<string, mixed>  $data
      */
-    private function validateRow(array $data): ?string
+    protected function validateRow(array $data): ?string
     {
         foreach (self::REQUIRED_COLUMNS as $column) {
             if (empty($data[$column])) {

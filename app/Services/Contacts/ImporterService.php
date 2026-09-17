@@ -6,11 +6,24 @@ use App\Models\Contact;
 use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
+use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handles CSV import of contacts, including the newer preview/commit
+ * workflow (via ImportsViaPreview) alongside the original one-shot
+ * import() method.
+ */
 class ImporterService
 {
+    use ImportsViaPreview;
+
+    /**
+     * Column headers that must be present in the uploaded CSV.
+     *
+     * @var array<int, string>
+     */
     protected const REQUIRED_COLUMNS = [
         'contactable_type',
         'contactable_id',
@@ -24,6 +37,41 @@ class ImporterService
         protected readonly ContactableTypeRegistryService $typeRegistry,
         protected readonly AuditLogService $auditLogService,
     ) {}
+
+    /**
+     * The private-disk directory this module's uploads are stored under.
+     */
+    protected function importStoragePath(): string
+    {
+        return 'imports/contacts';
+    }
+
+    /**
+     * The Log::ACTION_IMPORT_* constant for this module's batch log entry.
+     */
+    protected function importAuditAction(): int
+    {
+        return Log::ACTION_IMPORT_CONTACT;
+    }
+
+    /**
+     * Persist a single validated row as a new Contact.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $context
+     */
+    protected function persistRow(array $data, int $actorId, array $context = []): void
+    {
+        Contact::create([
+            'contactable_type' => $this->typeRegistry->modelClassForKey(
+                strtolower(trim($data['contactable_type']))
+            ),
+            'contactable_id' => (int) $data['contactable_id'],
+            'phone' => $data['phone'] ?? null,
+            'email' => $data['email'] ?? null,
+            'created_by' => $actorId,
+        ]);
+    }
 
     /**
      * Import contacts from an uploaded CSV file.
@@ -113,8 +161,10 @@ class ImporterService
 
     /**
      * Validate a single row, returning an error string or null if valid.
+     *
+     * @param  array<string, mixed>  $data
      */
-    private function validateRow(array $data): ?string
+    protected function validateRow(array $data): ?string
     {
         foreach (self::REQUIRED_COLUMNS as $column) {
             if (empty($data[$column])) {

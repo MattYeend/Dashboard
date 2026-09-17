@@ -9,12 +9,25 @@ use App\Models\TicketPriority;
 use App\Models\TicketStatus;
 use App\Models\User;
 use App\Services\AuditLogService;
+use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Mews\Purifier\Facades\Purifier;
 
+/**
+ * Handles CSV import of tickets, including the newer preview/commit
+ * workflow (via ImportsViaPreview) alongside the original one-shot
+ * import() method.
+ */
 class ImporterService
 {
+    use ImportsViaPreview;
+
+    /**
+     * Column headers that must be present in the uploaded CSV.
+     *
+     * @var array<int, string>
+     */
     protected const REQUIRED_COLUMNS = [
         'title',
         'description',
@@ -26,6 +39,46 @@ class ImporterService
     public function __construct(
         protected readonly AuditLogService $auditLogService,
     ) {}
+
+    /**
+     * The private-disk directory this module's uploads are stored under.
+     */
+    protected function importStoragePath(): string
+    {
+        return 'imports/tickets';
+    }
+
+    /**
+     * The Log::ACTION_IMPORT_* constant for this module's batch log entry.
+     */
+    protected function importAuditAction(): int
+    {
+        return Log::ACTION_IMPORT_TICKET;
+    }
+
+    /**
+     * Persist a single validated row as a new Ticket, syncing any
+     * comma-separated labels supplied on the row.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $context
+     */
+    protected function persistRow(array $data, int $actorId, array $context = []): void
+    {
+        $ticket = Ticket::create([
+            'title' => $data['title'],
+            'description' => Purifier::clean($data['description'], 'tickets'),
+            'ticket_status_id' => $this->resolveStatusId($data['ticket_status'] ?? null),
+            'ticket_priority_id' => $this->resolvePriorityId($data['ticket_priority'] ?? null),
+            'assigned_to' => $this->resolveAssigneeId($data['assigned_to'] ?? null),
+            'due_date' => $data['due_date'] ?? null,
+            'created_by' => $actorId,
+        ]);
+
+        if (! empty($data['labels'])) {
+            $ticket->labels()->sync($this->resolveLabelIds($data['labels']));
+        }
+    }
 
     /**
      * Import tickets from an uploaded CSV file.
@@ -122,7 +175,7 @@ class ImporterService
      *
      * @param  array<string, string>  $data
      */
-    private function validateRow(array $data): ?string
+    protected function validateRow(array $data): ?string
     {
         foreach (self::REQUIRED_COLUMNS as $column) {
             if (empty($data[$column])) {

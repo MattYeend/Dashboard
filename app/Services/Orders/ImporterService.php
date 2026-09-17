@@ -7,11 +7,24 @@ use App\Models\Order;
 use App\Models\OrderStatus;
 use App\Models\User;
 use App\Services\AuditLogService;
+use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handles CSV import of orders, including the newer preview/commit
+ * workflow (via ImportsViaPreview) alongside the original one-shot
+ * import() method.
+ */
 class ImporterService
 {
+    use ImportsViaPreview;
+
+    /**
+     * Column headers that must be present in the uploaded CSV.
+     *
+     * @var array<int, string>
+     */
     protected const REQUIRED_COLUMNS = [
         'orderable_type',
         'orderable_id',
@@ -29,6 +42,49 @@ class ImporterService
         protected readonly OrderableTypeRegistryService $typeRegistry,
         protected readonly AuditLogService $auditLogService,
     ) {}
+
+    /**
+     * The private-disk directory this module's uploads are stored under.
+     */
+    protected function importStoragePath(): string
+    {
+        return 'imports/orders';
+    }
+
+    /**
+     * The Log::ACTION_IMPORT_* constant for this module's batch log entry.
+     */
+    protected function importAuditAction(): int
+    {
+        return Log::ACTION_IMPORT_ORDER;
+    }
+
+    /**
+     * Persist a single validated row as a new Order.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $context
+     */
+    protected function persistRow(array $data, int $actorId, array $context = []): void
+    {
+        Order::create([
+            'orderable_type' => $this->typeRegistry->modelClassForKey(
+                strtolower(trim($data['orderable_type']))
+            ),
+            'orderable_id' => (int) $data['orderable_id'],
+            'title' => $data['title'],
+            'description' => $data['description'] ?? null,
+            'notes' => $data['notes'] ?? null,
+            'subtotal' => $data['subtotal'],
+            'discount_amount' => $data['discount_amount'] ?? '0.00',
+            'tax_amount' => $data['tax_amount'],
+            'total_amount' => $data['total_amount'],
+            'ordered_at' => $data['ordered_at'] ?? null,
+            'due_at' => $data['due_at'] ?? null,
+            'status_id' => $this->nullableInt($data['status_id'] ?? null),
+            'created_by' => $actorId,
+        ]);
+    }
 
     /**
      * Import orders from an uploaded CSV file.
@@ -126,8 +182,10 @@ class ImporterService
 
     /**
      * Validate a single row, returning an error string or null if valid.
+     *
+     * @param  array<string, mixed>  $data
      */
-    private function validateRow(array $data): ?string
+    protected function validateRow(array $data): ?string
     {
         foreach (self::REQUIRED_COLUMNS as $column) {
             if (empty($data[$column])) {

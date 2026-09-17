@@ -6,15 +6,31 @@ use App\Models\Log;
 use App\Models\TaskStatus;
 use App\Models\User;
 use App\Services\AuditLogService;
+use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handles CSV import of task statuses, including the newer preview/commit
+ * workflow (via ImportsViaPreview) alongside the original one-shot
+ * import() method.
+ */
 class ImporterService
 {
+    use ImportsViaPreview;
+
+    /**
+     * Column headers that must be present in the uploaded CSV.
+     *
+     * @var array<int, string>
+     */
     protected const REQUIRED_COLUMNS = [
         'title',
     ];
 
+    /**
+     * Accepted hex colour formats (3 or 6 hex digits).
+     */
     protected const HEX_COLOUR_PATTERN = '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/';
 
     /**
@@ -23,6 +39,39 @@ class ImporterService
     public function __construct(
         protected readonly AuditLogService $auditLogService,
     ) {}
+
+    /**
+     * The private-disk directory this module's uploads are stored under.
+     */
+    protected function importStoragePath(): string
+    {
+        return 'imports/task-statuses';
+    }
+
+    /**
+     * The Log::ACTION_IMPORT_* constant for this module's batch log entry.
+     */
+    protected function importAuditAction(): int
+    {
+        return Log::ACTION_IMPORT_TASK_STATUS;
+    }
+
+    /**
+     * Persist a single validated row as a new TaskStatus.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $context
+     */
+    protected function persistRow(array $data, int $actorId, array $context = []): void
+    {
+        TaskStatus::create([
+            'title' => $data['title'],
+            'description' => $data['description'] ?? null,
+            'background_colour' => $data['background_colour'] ?? '#ffffff',
+            'text_colour' => $data['text_colour'] ?? '#000000',
+            'created_by' => $actorId,
+        ]);
+    }
 
     /**
      * Import task statuses from an uploaded CSV file.
@@ -110,8 +159,10 @@ class ImporterService
 
     /**
      * Validate a single row, returning an error string or null if valid.
+     *
+     * @param  array<string, mixed>  $data
      */
-    private function validateRow(array $data): ?string
+    protected function validateRow(array $data): ?string
     {
         foreach (self::REQUIRED_COLUMNS as $column) {
             if (empty($data[$column])) {

@@ -7,17 +7,33 @@ use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\User;
 use App\Services\AuditLogService;
+use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Handles CSV import of pipeline stages, scoped to a single parent
+ * pipeline, including the newer preview/commit workflow (via
+ * ImportsViaPreview) alongside the original one-shot import() method.
+ */
 class ImporterService
 {
+    use ImportsViaPreview;
+
+    /**
+     * Column headers that must be present in the uploaded CSV.
+     *
+     * @var array<int, string>
+     */
     protected const REQUIRED_COLUMNS = [
         'title',
         'background_colour',
         'text_colour',
     ];
 
+    /**
+     * Accepted 6-digit hex colour format.
+     */
     protected const HEX_COLOUR_PATTERN = '/^#[0-9A-Fa-f]{6}$/';
 
     /**
@@ -26,6 +42,47 @@ class ImporterService
     public function __construct(
         protected readonly AuditLogService $auditLogService,
     ) {}
+
+    /**
+     * The private-disk directory this module's uploads are stored under.
+     */
+    protected function importStoragePath(): string
+    {
+        return 'imports/pipeline-stages';
+    }
+
+    /**
+     * The Log::ACTION_IMPORT_* constant for this module's batch log entry.
+     */
+    protected function importAuditAction(): int
+    {
+        return Log::ACTION_IMPORT_PIPELINE_STAGE;
+    }
+
+    /**
+     * Persist a single validated row as a new PipelineStage, scoped to
+     * the parent pipeline passed via context.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array{pipeline: Pipeline}  $context
+     */
+    protected function persistRow(array $data, int $actorId, array $context = []): void
+    {
+        /** @var Pipeline $pipeline */
+        $pipeline = $context['pipeline'];
+
+        PipelineStage::create([
+            'pipeline_id' => $pipeline->id,
+            'title' => $data['title'],
+            'description' => $data['description'] ?? null,
+            'position' => $pipeline->stages()->max('position') + 1,
+            'background_colour' => strtoupper(trim($data['background_colour'])),
+            'text_colour' => strtoupper(trim($data['text_colour'])),
+            'is_won' => filter_var($data['is_won'] ?? false, FILTER_VALIDATE_BOOLEAN),
+            'is_lost' => filter_var($data['is_lost'] ?? false, FILTER_VALIDATE_BOOLEAN),
+            'created_by' => $actorId,
+        ]);
+    }
 
     /**
      * Import pipeline stages from an uploaded CSV file, scoped to a
@@ -122,8 +179,10 @@ class ImporterService
 
     /**
      * Validate a single row, returning an error string or null if valid.
+     *
+     * @param  array<string, mixed>  $data
      */
-    private function validateRow(array $data): ?string
+    protected function validateRow(array $data): ?string
     {
         foreach (self::REQUIRED_COLUMNS as $column) {
             if (empty($data[$column])) {
