@@ -41,7 +41,9 @@ function destroy(): void {
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <div class="mb-6 flex items-center justify-between">
-                <h1 class="text-2xl font-semibold text-gray-300">Category</h1>
+                <h1 class="text-2xl font-semibold text-gray-300">
+                    {{ category.name }}
+                </h1>
                 <div class="space-x-2">
                     <Link
                         :href="categoriesIndex.url()"
