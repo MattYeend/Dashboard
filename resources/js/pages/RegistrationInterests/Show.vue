@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { index as registrationInterestsIndex } from '@/routes/registration-interests';
 import type { PermissionsMeta, RegistrationInterest } from '@/types';
 import RegistrationInterestAuditDetails from './components/RegistrationInterestAuditDetails.vue';
@@ -13,13 +13,11 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Registration interest" />
-
     <div class="py-6">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <div class="mb-6 flex items-center justify-between">
                 <h1 class="text-2xl font-semibold text-gray-300">
-                    Registration interest
+                    {{ interest.name }}
                 </h1>
                 <Link
                     :href="registrationInterestsIndex().url"
