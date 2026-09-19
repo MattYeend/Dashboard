@@ -8,7 +8,7 @@ defineProps<{ permission: Permission }>();
     <div class="rounded-lg border p-4">
         <h2 class="mb-4 text-sm font-medium text-gray-400">Role details</h2>
 
-        <dl>
+        <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <dt class="text-xs text-gray-400">Assigned roles</dt>
             <dd class="text-sm">
                 <span v-if="!permission.roles?.length" class="text-gray-400">
