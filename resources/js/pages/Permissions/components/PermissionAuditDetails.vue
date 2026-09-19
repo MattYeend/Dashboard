@@ -23,15 +23,21 @@ function formatDate(value: string | null): string {
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
                 <dt class="text-xs text-gray-400">Created by</dt>
-                <dd class="text-sm">{{ permission.creator?.name ?? 'System' }}</dd>
+                <dd class="text-sm">
+                    {{ permission.creator?.name ?? 'System' }}
+                </dd>
             </div>
             <div>
                 <dt class="text-xs text-gray-400">Updated by</dt>
-                <dd class="text-sm">{{ permission.updater?.name ?? 'System' }}</dd>
+                <dd class="text-sm">
+                    {{ permission.updater?.name ?? 'System' }}
+                </dd>
             </div>
             <div>
                 <dt class="text-xs text-gray-400">Deleted by</dt>
-                <dd class="text-sm">{{ permission.deleter?.name ?? 'System' }}</dd>
+                <dd class="text-sm">
+                    {{ permission.deleter?.name ?? 'System' }}
+                </dd>
             </div>
             <div>
                 <dt class="text-xs text-gray-400">Restored</dt>
