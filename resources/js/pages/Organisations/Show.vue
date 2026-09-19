@@ -70,7 +70,7 @@ function switchToOrganisation(): void {
 
 <template>
     <div class="py-6">
-        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto px-4 sm:px-6 lg:px-8">
             <div
                 class="mb-6 flex flex-wrap items-center justify-between gap-4 border-b pb-4"
             >
