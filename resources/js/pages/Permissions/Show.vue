@@ -12,10 +12,7 @@ import {
     forceDelete as permissionsForceDelete,
     index as permissionsIndex,
 } from '@/routes/permissions';
-import type { 
-    Permission, 
-    PermissionsMeta 
-} from '@/types';
+import type { Permission, PermissionsMeta } from '@/types';
 
 interface Props {
     permission: Permission;

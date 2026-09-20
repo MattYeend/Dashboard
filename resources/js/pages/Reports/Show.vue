@@ -7,9 +7,7 @@ import {
     destroy as reportsDestroy,
     index as reportsIndex,
 } from '@/routes/reports';
-import type { 
-    Report 
-} from '@/types';
+import type { Report } from '@/types';
 import ReportAuditDetails from './components/ReportAuditDetails.vue';
 import ReportBasicDetails from './components/ReportBasicDetails.vue';
 import ReportScheduleDetails from './components/ReportScheduleDetails.vue';
