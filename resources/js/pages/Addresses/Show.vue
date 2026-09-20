@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import AddressAuditDetails from '@/pages/Addresses/components/AddressAuditDetails.vue';
 import AddressBasicDetails from '@/pages/Addresses/components/AddressBasicDetails.vue';
@@ -21,6 +21,17 @@ const props = defineProps<Props>();
 const deleteDialogOpen = ref(false);
 const deleteProcessing = ref(false);
 
+const heading = computed<string>(() => {
+    const name = props.address.addressable_name;
+    const type = props.address.addressable_type_label;
+
+    if (name) {
+        return type ? `${type}: ${name}` : name;
+    }
+
+    return props.address.address_line_one ?? 'Address';
+});
+
 function requestDestroy(): void {
     deleteDialogOpen.value = true;
 }
@@ -39,12 +50,14 @@ function destroy(): void {
 
 <template>
     <div class="py-6">
-        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <div class="mb-6 flex items-center justify-between">
+        <div class="mx-auto px-4 sm:px-6 lg:px-8">
+            <div
+                class="mb-6 flex flex-wrap items-center justify-between gap-4 border-b pb-4"
+            >
                 <h1 class="text-2xl font-semibold text-gray-300">
-                    {{ address.addressable_name ?? address.address_line_one }}
+                    {{ heading }}
                 </h1>
-                <div class="space-x-2">
+                <div class="ml-auto flex flex-wrap gap-2">
                     <Link
                         :href="addressesIndex.url()"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
