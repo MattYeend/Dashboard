@@ -5,7 +5,6 @@ import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import PermissionAuditDetails from '@/pages/Permissions/components/PermissionAuditDetails.vue';
 import PermissionBasicDetails from '@/pages/Permissions/components/PermissionBasicDetails.vue';
 import PermissionRoleDetails from '@/pages/Permissions/components/PermissionRoleDetails.vue';
-import type { Permission, PermissionsMeta } from '@/types';
 import {
     edit as permissionsEdit,
     destroy as permissionsDestroy,
@@ -13,6 +12,10 @@ import {
     forceDelete as permissionsForceDelete,
     index as permissionsIndex,
 } from '@/routes/permissions';
+import type { 
+    Permission, 
+    PermissionsMeta 
+} from '@/types';
 
 interface Props {
     permission: Permission;
@@ -106,12 +109,14 @@ function forceDelete(): void {
 
 <template>
     <div class="py-6">
-        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <div class="mb-6 flex items-center justify-between">
+        <div class="mx-auto px-4 sm:px-6 lg:px-8">
+            <div
+                class="mb-6 flex flex-wrap items-center justify-between gap-4 border-b pb-4"
+            >
                 <h1 class="text-2xl font-semibold text-gray-300">
                     {{ permission.name }}
                 </h1>
-                <div class="space-x-2">
+                <div class="ml-auto flex flex-wrap gap-2">
                     <Link
                         :href="permissionsIndex.url()"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
