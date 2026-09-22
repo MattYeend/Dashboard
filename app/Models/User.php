@@ -164,7 +164,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
     /**
      * Get the organisations this user belongs to.
      *
-     * @return BelongsToMany<Organisation, $this>
+     * @return BelongsToMany<Organisation, $this, OrganisationMembership>
      */
     public function organisations(): BelongsToMany
     {
@@ -187,7 +187,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
     /**
      * Get the organisations this user actively belongs to.
      *
-     * @return BelongsToMany<Organisation, $this>
+     * @return BelongsToMany<Organisation, $this, OrganisationMembership>
      */
     public function activeOrganisations(): BelongsToMany
     {

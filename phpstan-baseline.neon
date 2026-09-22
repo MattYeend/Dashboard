@@ -799,18 +799,6 @@ parameters:
 			path: app/Models/OrderStatus.php
 
 		-
-			message: '#^Method App\\Models\\Organisation\:\:activeUsers\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\User, App\\Models\\Organisation, Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\User, \$this\(App\\Models\\Organisation\), Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Models/Organisation.php
-
-		-
-			message: '#^Method App\\Models\\Organisation\:\:users\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\User, \$this\(App\\Models\\Organisation\), Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\User, \$this\(App\\Models\\Organisation\), App\\Models\\OrganisationMembership, ''pivot''\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Models/Organisation.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
 			identifier: property.notFound
 			count: 1
@@ -943,12 +931,6 @@ parameters:
 			path: app/Models/TicketStatus.php
 
 		-
-			message: '#^Method App\\Models\\User\:\:organisations\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\Organisation, \$this\(App\\Models\\User\), Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\Organisation, \$this\(App\\Models\\User\), App\\Models\\OrganisationMembership, ''pivot''\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Models/User.php
-
-		-
 			message: '#^Method App\\Services\\Activities\\CreatorService\:\:create\(\) should return App\\Models\\Activity but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
@@ -1079,12 +1061,6 @@ parameters:
 			identifier: ternary.alwaysTrue
 			count: 1
 			path: app/Services/Addresses/FormatterService.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Address\:\:\$contactable\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Addresses/PolicyAuthorisationService.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
@@ -2291,12 +2267,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Organisations/DeleterService.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\User\:\:\$pivot\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Organisations/FormatterService.php
 
 		-
 			message: '#^Cannot call method lt\(\) on string\.$#'

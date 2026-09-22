@@ -58,7 +58,7 @@ class Organisation extends Tenant implements Auditable
     /**
      * Get the users who are members of this organisation.
      *
-     * @return BelongsToMany<User, $this>
+     * @return BelongsToMany<User, $this, OrganisationMembership>
      */
     public function users(): BelongsToMany
     {
@@ -82,7 +82,7 @@ class Organisation extends Tenant implements Auditable
     /**
      * Get only the users with an active membership.
      *
-     * @return BelongsToMany<User, Organisation>
+     * @return BelongsToMany<User, $this, OrganisationMembership>
      */
     public function activeUsers(): BelongsToMany
     {

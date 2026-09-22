@@ -43,7 +43,7 @@ class FormatterService
             ->get()
             ->map(function (User $user): array {
                 /** @var OrganisationMembership $pivot */
-                $pivot = $user->pivot;
+                $pivot = $user->getRelation('pivot');
 
                 return [
                     'id' => $pivot->id,
