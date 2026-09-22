@@ -101,12 +101,12 @@ class IndustryFactory extends Factory
     ];
 
     /**
-     * A shuffled working copy of the industries dataset, used to hand out
-     * unique real entries in sequence rather than generating fake data.
+     * Working copy of the industries dataset, used to hand out unique
+     * real entries in sequence rather than generating fake data.
      *
      * @var array<int, array{title: string, code: string, description: string}>|null
      */
-    protected static ?array $shuffledIndustries = null;
+    protected static ?array $industriesInUse = null;
 
     /**
      * Pointer tracking the next industry to hand out from the shuffled set.
@@ -120,12 +120,14 @@ class IndustryFactory extends Factory
      */
     public function definition(): array
     {
-        if (self::$shuffledIndustries === null) {
-            self::$shuffledIndustries = self::$industries;
-            shuffle(self::$shuffledIndustries);
+        if (self::$industriesInUse === null) {
+            self::$industriesInUse = self::$industries;
         }
 
-        $industry = self::$shuffledIndustries[self::$pointer % count(self::$shuffledIndustries)];
+        $industry = self::$industriesInUse[
+            self::$pointer % count(self::$industriesInUse)
+        ];
+
         self::$pointer++;
 
         return [

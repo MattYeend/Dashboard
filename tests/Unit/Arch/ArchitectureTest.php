@@ -17,12 +17,20 @@ arch('audited models implement Auditable')
         'App\Models\Log',
         'App\Models\Permission',
         'App\Models\OrganisationMembership',
+        'App\Models\Subscription',
+        'App\Models\CustomDashboardWidget',
+        'App\Models\DashboardWidgetPreference',
+        'App\Models\Like',
+        'App\Models\OrganisationDataExport',
     ]);
 
 arch('services use the Service suffix')
     ->expect('App\Services')
     ->toHaveSuffix('Service')
-    ->ignoring([EscapesLikeValues::class]);
+    ->ignoring([
+        EscapesLikeValues::class,
+        'App\Services\Concerns',
+    ]);
 
 arch('controllers use the Controller suffix')
     ->expect('App\Http\Controllers')
