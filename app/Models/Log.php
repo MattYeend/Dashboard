@@ -841,7 +841,7 @@ class Log extends Model implements Auditable
     // User Management (import)
     public const ACTION_IMPORT_USER = 386;
 
-    public const ACTION_EXPORT_USER = 387; 
+    public const ACTION_EXPORT_USER = 387;
 
     // New Logging Actions should go here to be reviewed
 

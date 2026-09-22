@@ -91,7 +91,7 @@ class QueryService
             'deleter',
             'restorer',
         ])
-        ->getQuery();
+            ->getQuery();
 
         $query = $this->filterService->applyAll($query, $filters);
 

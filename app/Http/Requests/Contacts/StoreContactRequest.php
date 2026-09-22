@@ -91,7 +91,7 @@ class StoreContactRequest extends FormRequest
             'min:1',
         ];
     }
-    
+
     /**
      * Get validation rules for the name field.
      *
