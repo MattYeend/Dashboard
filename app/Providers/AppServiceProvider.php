@@ -77,6 +77,7 @@ use App\Services\UserRoleCheckerService;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -112,6 +113,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        /**
+         * Fail loudly on lazy loading, silently discarded attributes, and
+         * missing attributes everywhere except production.
+         */
+        Model::shouldBeStrict(! app()->isProduction());
+
         Gate::before(function (User $user, string $ability, array $arguments = []) {
             if (self::isApiTokenAbility($arguments)) {
                 return null;
@@ -190,6 +197,12 @@ class AppServiceProvider extends ServiceProvider
     protected function configureDefaults(): void
     {
         Date::use(CarbonImmutable::class);
+
+        /**
+         * Fail loudly on lazy loading, silently discarded attributes, and
+         * missing attributes everywhere except production.
+         */
+        Model::shouldBeStrict(! app()->isProduction());
 
         Password::defaults(
             fn (): ?Password => app()->isProduction()
