@@ -160,6 +160,8 @@ class PolicyAuthorisationService
             return false;
         }
 
+        $target->loadMissing('invoice.creator');
+
         $creator = $target->invoice?->creator;
 
         if (! $creator instanceof User) {

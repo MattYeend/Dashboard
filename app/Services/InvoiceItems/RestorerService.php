@@ -36,6 +36,8 @@ class RestorerService
             $restoredBy
         );
 
+        $invoiceItem->loadMissing('invoice');
+
         return $this->restoreResource->handle(
             $invoiceItem,
             function (InvoiceItem $invoiceItem) use ($actor, $restoredBy): void {
@@ -51,7 +53,11 @@ class RestorerService
                     Log::ACTION_RESTORE_INVOICE_ITEM,
                     $actor,
                     $invoiceItem,
-                    ['before' => $this->auditLogService->snapshot($invoiceItem)],
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $invoiceItem
+                        ),
+                    ],
                 );
             }
         );

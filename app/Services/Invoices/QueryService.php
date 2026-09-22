@@ -48,7 +48,7 @@ class QueryService
     {
         $invoice->loadMissing([
             'company',
-            'contact',
+            'contact.addresses',
             'order',
             'status',
             'items' => fn ($query) => $query->orderBy('position'),
@@ -91,7 +91,7 @@ class QueryService
     {
         $query = Invoice::query()->with([
             'company',
-            'contact',
+            'contact.addresses',
             'order',
             'status',
             'creator',

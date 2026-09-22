@@ -18,21 +18,57 @@
     <h1>Invoice {{ $invoice->invoice_number ?? '#' . $invoice->id }}</h1>
 
     @if($invoice->issue_date)
-        <p>Issued: {{ \Illuminate\Support\Carbon::parse($invoice->issue_date)->format('d/m/Y') }}</p>
+        <p>
+            Issued:
+            {{ \Illuminate\Support\Carbon::parse($invoice->issue_date)->format('d/m/Y') }}
+        </p>
     @endif
 
     @if($invoice->due_date)
-        <p>Due: {{ \Illuminate\Support\Carbon::parse($invoice->due_date)->format('d/m/Y') }}</p>
+        <p>
+            Due:
+            {{ \Illuminate\Support\Carbon::parse($invoice->due_date)->format('d/m/Y') }}
+        </p>
     @endif
 
     @if($invoice->contact)
+        @php
+            $address = $invoice->contact->addresses
+                ->firstWhere('is_primary', true)
+                ?? $invoice->contact->addresses->first();
+        @endphp
+
         <h3>Bill to</h3>
         <p>
             {{ $invoice->contact->email }}<br>
-            @if($invoice->contact->address){{ $invoice->contact->address }}<br>@endif
-            @if($invoice->contact->city){{ $invoice->contact->city }}<br>@endif
-            @if($invoice->contact->postal_code){{ $invoice->contact->postal_code }}<br>@endif
-            @if($invoice->contact->country){{ $invoice->contact->country }}@endif
+
+            @if($address?->address_line_one)
+                {{ $address->address_line_one }}<br>
+            @endif
+
+            @if($address?->address_line_two)
+                {{ $address->address_line_two }}<br>
+            @endif
+
+            @if($address?->town)
+                {{ $address->town }}<br>
+            @endif
+
+            @if($address?->city)
+                {{ $address->city }}<br>
+            @endif
+
+            @if($address?->county)
+                {{ $address->county }}<br>
+            @endif
+
+            @if($address?->postcode)
+                {{ $address->postcode }}<br>
+            @endif
+
+            @if($address?->country)
+                {{ $address->country }}
+            @endif
         </p>
     @endif
 
@@ -51,9 +87,13 @@
                 <tr>
                     <td>{{ $item->description }}</td>
                     <td class="text-right">{{ $item->quantity }}</td>
-                    <td class="text-right">{{ number_format($item->unit_price / 100, 2) }}</td>
+                    <td class="text-right">
+                        {{ number_format($item->unit_price / 100, 2) }}
+                    </td>
                     <td class="text-right">{{ $item->tax_rate }}%</td>
-                    <td class="text-right">{{ number_format($item->total / 100, 2) }}</td>
+                    <td class="text-right">
+                        {{ number_format($item->total / 100, 2) }}
+                    </td>
                 </tr>
             @endforeach
         </tbody>
@@ -62,15 +102,23 @@
     <table class="totals">
         <tr>
             <td>Subtotal</td>
-            <td class="text-right">{{ number_format($totals['subtotal'] / 100, 2) }}</td>
+            <td class="text-right">
+                {{ number_format($totals['subtotal'] / 100, 2) }}
+            </td>
         </tr>
         <tr>
             <td>Tax</td>
-            <td class="text-right">{{ number_format($totals['tax_total'] / 100, 2) }}</td>
+            <td class="text-right">
+                {{ number_format($totals['tax_total'] / 100, 2) }}
+            </td>
         </tr>
         <tr>
             <td><strong>Total</strong></td>
-            <td class="text-right"><strong>{{ number_format($totals['total'] / 100, 2) }}</strong></td>
+            <td class="text-right">
+                <strong>
+                    {{ number_format($totals['total'] / 100, 2) }}
+                </strong>
+            </td>
         </tr>
     </table>
 </body>

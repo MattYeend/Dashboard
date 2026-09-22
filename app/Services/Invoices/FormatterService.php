@@ -18,6 +18,11 @@ class FormatterService
      */
     public function format(Invoice $invoice): array
     {
+        $contact = $invoice->contact;
+        $address = $contact?->addresses
+            ->firstWhere('is_primary', true)
+            ?? $contact?->addresses->first();
+
         return [
             'id' => $invoice->id,
             'invoice_number' => $invoice->invoice_number,
@@ -43,7 +48,9 @@ class FormatterService
                 ])->values()->all()
                 : null,
             'items_count' => $invoice->items_count
-                ?? ($invoice->relationLoaded('items') ? $invoice->items->count() : null),
+                ?? ($invoice->relationLoaded('items')
+                    ? $invoice->items->count()
+                    : null),
             'currency' => $invoice->currency,
             'formatted_total' => $this->currencyFormatter->format(
                 (float) $invoice->total,
@@ -63,14 +70,18 @@ class FormatterService
                 'id' => $invoice->company->id,
                 'name' => $invoice->company->name,
             ] : null,
-            'contact' => $invoice->contact ? [
-                'id' => $invoice->contact->id,
-                'phone' => $invoice->contact->phone,
-                'email' => $invoice->contact->email,
-                'address' => $invoice->contact->address,
-                'city' => $invoice->contact->city,
-                'postal_code' => $invoice->contact->postal_code,
-                'country' => $invoice->contact->country,
+            'contact' => $contact ? [
+                'id' => $contact->id,
+                'name' => $contact->name,
+                'phone' => $contact->phone,
+                'email' => $contact->email,
+                'address' => $address?->address_line_one,
+                'address_line_two' => $address?->address_line_two,
+                'town' => $address?->town,
+                'city' => $address?->city,
+                'county' => $address?->county,
+                'postcode' => $address?->postcode,
+                'country' => $address?->country,
             ] : null,
             'order' => $invoice->order ? [
                 'id' => $invoice->order->id,

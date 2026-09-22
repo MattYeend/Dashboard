@@ -45,8 +45,18 @@ class QueryService
     /**
      * Get a single invoice item by ID, scoped to its parent invoice.
      */
-    public function getById(User $user, Invoice $invoice, InvoiceItem $invoiceItem): array
-    {
+    public function getById(
+        User $user,
+        Invoice $invoice,
+        InvoiceItem $invoiceItem
+    ): array {
+        $invoiceItem->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
+
         return array_merge(
             ['item' => $this->formatterService->format($invoiceItem)],
             $this->getPermissions($user),
@@ -75,7 +85,14 @@ class QueryService
         Invoice $invoice,
         array $filters
     ): Builder {
-        $query = $invoice->items()->getQuery();
+        $query = $invoice->items()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ])
+        ->getQuery();
+
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
@@ -93,7 +110,9 @@ class QueryService
         return [
             'invoice_items' => [
                 'data' => array_map(
-                    fn (InvoiceItem $invoiceItem) => $this->formatterService->format($invoiceItem),
+                    fn (InvoiceItem $invoiceItem) => $this->formatterService->format(
+                        $invoiceItem
+                    ),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),

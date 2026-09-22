@@ -35,6 +35,8 @@ class DeleterService
             $deletedBy
         );
 
+        $invoiceItem->loadMissing('invoice');
+
         return $this->deleteResource->handle(
             $invoiceItem,
             function (InvoiceItem $invoiceItem) use ($actor, $deletedBy): void {

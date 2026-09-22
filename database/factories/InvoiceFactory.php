@@ -51,12 +51,9 @@ class InvoiceFactory extends Factory
         return $this->afterCreating(function (Invoice $invoice): void {
             if ($invoice->contact === null) {
                 $invoice->contact()->create([
+                    'name' => $this->faker->name(),
                     'phone' => $this->faker->phoneNumber(),
                     'email' => $this->faker->companyEmail(),
-                    'address' => $this->faker->streetAddress(),
-                    'city' => $this->faker->city(),
-                    'postal_code' => $this->faker->postcode(),
-                    'country' => 'United Kingdom',
                 ]);
             }
         });
