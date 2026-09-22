@@ -594,9 +594,9 @@ describe('bulk delete', function () {
             ->postJson('/labels/bulk/delete', ['ids' => $ids])
             ->assertStatus(200)
             ->assertJson([
-                'deleted' => $ids,
                 'skipped' => [],
-            ]);
+            ])
+            ->assertJsonPathCanonicalizing('deleted', $ids);
 
         foreach ($ids as $id) {
             $this->assertSoftDeleted('labels', ['id' => $id]);

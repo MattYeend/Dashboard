@@ -43,7 +43,7 @@ class CompanyFactory extends Factory
             'industry_id' => null,
             'account_manager_id' => null,
             'employee_count' => $this->faker->numberBetween(1, 5000),
-            'founded_year' => $this->faker->numberBetween(1900, (int) date('Y')),
+            'founded_year' => $this->faker->numberBetween(1901, (int) date('Y')),
             'meta' => null,
         ];
     }

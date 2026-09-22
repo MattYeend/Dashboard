@@ -13,7 +13,7 @@ test('deletes log records older than 30 days by default', function () {
     Log::insert([
         [
             'action_id' => 1,
-            'data' => 'User logged in',
+            'data' => json_encode(['message' => 'User logged in']),
             'logged_in_user_id' => $user->id,
             'related_to_user_id' => null,
             'created_at' => Carbon::now()->subDays(45),
@@ -21,7 +21,7 @@ test('deletes log records older than 30 days by default', function () {
         ],
         [
             'action_id' => 2,
-            'data' => 'User updated profile',
+            'data' => json_encode(['message' => 'User updated profile']),
             'logged_in_user_id' => $user->id,
             'related_to_user_id' => null,
             'created_at' => Carbon::now()->subDays(10),
@@ -30,7 +30,9 @@ test('deletes log records older than 30 days by default', function () {
     ]);
 
     $this->artisan('logs:prune')
-        ->expectsOutputToContain('Deleted 1 log record(s) older than 30 day(s).')
+        ->expectsOutputToContain(
+            'Deleted 1 log record(s) older than 30 day(s).'
+        )
         ->assertExitCode(0);
 
     expect(Log::count())->toBe(1);
@@ -42,7 +44,7 @@ test('accepts a custom retention period via the --days option', function () {
     Log::insert([
         [
             'action_id' => 3,
-            'data' => 'System backup completed',
+            'data' => json_encode(['message' => 'System backup completed']),
             'logged_in_user_id' => $user->id,
             'related_to_user_id' => null,
             'created_at' => Carbon::now()->subDays(8),
