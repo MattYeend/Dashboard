@@ -648,9 +648,9 @@ describe('bulk restore', function () {
             ->postJson('/labels/bulk/restore', ['ids' => $ids])
             ->assertStatus(200)
             ->assertJson([
-                'restored' => $ids,
                 'skipped' => [],
-            ]);
+            ])
+            ->assertJsonPathCanonicalizing('restored', $ids);
 
         foreach ($ids as $id) {
             $this->assertDatabaseHas('labels', [

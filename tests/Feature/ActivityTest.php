@@ -4,7 +4,6 @@ use App\Models\Activity;
 use App\Models\Company;
 use App\Models\Log;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
-use Spatie\Permission\Models\Role;
 use Tests\Concerns\CreatesUsers;
 
 uses(
