@@ -39,7 +39,7 @@
     "dependencies": {
         "@inertiajs/vite": "^3.0.0",
         "@inertiajs/vue3": "^3.0.0",
-        "@laravel/passkeys": "^0.2.0",
+        "@laravel/passkeys": "^0.4.0",
         "@lucide/vue": "^1.41.0",
         "@tiptap/core": "^3.31.3",
         "@tiptap/extension-blockquote": "^3.31.3",
