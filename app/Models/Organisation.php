@@ -86,9 +86,7 @@ class Organisation extends Tenant implements Auditable
      */
     public function activeUsers(): BelongsToMany
     {
-        return $this->users()->wherePivot(
-            'status', OrganisationMembership::STATUS_ACTIVE,
-        );
+        return $this->users()->where('organisation_user.status', OrganisationMembership::STATUS_ACTIVE);
     }
 
     /**
@@ -99,8 +97,8 @@ class Organisation extends Tenant implements Auditable
     public function hasManagementRoleFor(User $user): bool
     {
         return $this->activeUsers()
-            ->wherePivot('user_id', $user->id)
-            ->wherePivotIn('role', ['owner', 'admin'])
+            ->where('organisation_user.user_id', $user->id)
+            ->whereIn('organisation_user.role', ['owner', 'admin'])
             ->exists();
     }
 
@@ -113,7 +111,7 @@ class Organisation extends Tenant implements Auditable
     {
         return $this->activeUsers()
             ->whereKey($user->id)
-            ->wherePivot('role', 'owner')
+            ->where('organisation_user.role', 'owner')
             ->exists();
     }
 
