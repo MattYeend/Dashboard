@@ -1,15 +1,27 @@
 <?php
 
 use App\Contracts\Auditable;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Gate;
+
+uses(LazilyRefreshDatabase::class);
 
 dataset('auditable_models', function (): array {
     $models = [];
 
-    foreach (glob(__DIR__.'/../../app/Models/*.php') as $file) {
+    /**
+     * OrganisationMembership is a pivot-through model (organisation_user),
+     * authorised via the parent Organisation policy rather than its own -
+     * see Organisations\PolicyAuthorisationService::canInvite/canRemoveMember.
+     */
+    $ignored = [
+        App\Models\OrganisationMembership::class,
+    ];
+
+    foreach (glob(__DIR__.'/../../../app/Models/*.php') as $file) {
         $class = 'App\\Models\\'.basename($file, '.php');
 
-        if (class_exists($class) && is_subclass_of($class, Auditable::class)) {
+        if (class_exists($class) && is_subclass_of($class, Auditable::class) && ! in_array($class, $ignored, true)) {
             $models[$class] = [$class];
         }
     }

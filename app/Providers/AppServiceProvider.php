@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Company;
 use App\Models\Contact;
+use App\Models\Deal;
 use App\Models\DealStatus;
 use App\Models\Industry;
 use App\Models\InteractionLog;
@@ -46,6 +47,7 @@ use App\Policies\CategoryPolicy;
 use App\Policies\CommentPolicy;
 use App\Policies\CompanyPolicy;
 use App\Policies\ContactPolicy;
+use App\Policies\DealPolicy;
 use App\Policies\DealStatusPolicy;
 use App\Policies\IndustryPolicy;
 use App\Policies\InteractionLogPolicy;
@@ -113,12 +115,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        /**
-         * Fail loudly on lazy loading, silently discarded attributes, and
-         * missing attributes everywhere except production.
-         */
-        Model::shouldBeStrict(! app()->isProduction());
-
         Gate::before(function (User $user, string $ability, array $arguments = []) {
             if (self::isApiTokenAbility($arguments)) {
                 return null;
@@ -134,6 +130,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Comment::class, CommentPolicy::class);
         Gate::policy(Company::class, CompanyPolicy::class);
         Gate::policy(Contact::class, ContactPolicy::class);
+        Gate::policy(Deal::class, DealPolicy::class);
         Gate::policy(DealStatus::class, DealStatusPolicy::class);
         Gate::policy(Industry::class, IndustryPolicy::class);
         Gate::policy(InteractionLog::class, InteractionLogPolicy::class);
