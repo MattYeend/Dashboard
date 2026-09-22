@@ -193,6 +193,8 @@ class PolicyAuthorisationService
             return false;
         }
 
+        $target->loadMissing('orderable');
+
         $owner = $target->orderable;
 
         if (! $owner instanceof User) {

@@ -44,6 +44,13 @@ class QueryService
      */
     public function getById(User $user, TicketPriority $ticketPriority): array
     {
+        $ticketPriority->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
+
         return array_merge(
             ['ticketPriority' => $this->formatterService->format($ticketPriority)],
             $this->getPermissions($user),
@@ -56,7 +63,12 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = TicketPriority::query();
+        $query = TicketPriority::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);

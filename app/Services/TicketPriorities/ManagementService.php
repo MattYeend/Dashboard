@@ -72,8 +72,7 @@ class ManagementService
     }
 
     /**
-     * Force delete a ticket priority, permanently removing it from the
-     * database.
+     * Force delete a ticket priority, permanently removing it from the database.
      */
     public function forceDelete(
         int $id,
@@ -94,6 +93,7 @@ class ManagementService
         $requestedIds = collect($ids)->unique()->values();
 
         $ticketPriorities = TicketPriority::onlyTrashed()
+            ->with('creator')
             ->whereIn('id', $requestedIds)
             ->get();
 
@@ -125,7 +125,7 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $ticketPriorities = TicketPriority::whereIn('id', $requestedIds)->get();
+        $ticketPriorities = TicketPriority::with('creator')->whereIn('id', $requestedIds)->get();
 
         $deleted = [];
 

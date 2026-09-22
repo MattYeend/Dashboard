@@ -26,6 +26,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $postcode
  * @property string $country
  * @property bool $is_primary
+ * @property array<string, mixed>|null $meta
  * @property Carbon|null $deleted_at
  * @property Carbon|null $restored_at
  * @property Carbon $created_at
@@ -44,6 +45,7 @@ use Illuminate\Support\Carbon;
     'postcode',
     'country',
     'is_primary',
+    'meta',
     'created_by',
     'created_at',
     'updated_by',

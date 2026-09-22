@@ -1,6 +1,7 @@
 <?php
 
 use App\Contracts\Auditable;
+use App\Models\OrganisationMembership;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 
@@ -15,7 +16,7 @@ dataset('auditable_models', function (): array {
      * see Organisations\PolicyAuthorisationService::canInvite/canRemoveMember.
      */
     $ignored = [
-        App\Models\OrganisationMembership::class,
+        OrganisationMembership::class,
     ];
 
     foreach (glob(__DIR__.'/../../../app/Models/*.php') as $file) {

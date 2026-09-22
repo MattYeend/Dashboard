@@ -174,6 +174,8 @@ class PolicyAuthorisationService
             return false;
         }
 
+        $target->loadMissing('contactable');
+
         $owner = $target->contactable;
 
         if (! $owner instanceof User) {

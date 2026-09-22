@@ -93,6 +93,7 @@ class ManagementService
         $requestedIds = collect($ids)->unique()->values();
 
         $tasks = Task::onlyTrashed()
+            ->with('creator')
             ->whereIn('id', $requestedIds)
             ->get();
 
@@ -124,7 +125,7 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $tasks = Task::whereIn('id', $requestedIds)->get();
+        $tasks = Task::with('creator')->whereIn('id', $requestedIds)->get();
 
         $deleted = [];
 

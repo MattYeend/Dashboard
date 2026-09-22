@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int|null $organisation_id
  * @property string $title
+ * @property string $description
  * @property string $background_colour
  * @property string $text_colour
  * @property array<string, mixed>|null $meta
@@ -36,6 +37,7 @@ use Illuminate\Support\Carbon;
 #[Fillable([
     'organisation_id',
     'title',
+    'description',
     'background_colour',
     'text_colour',
     'meta',

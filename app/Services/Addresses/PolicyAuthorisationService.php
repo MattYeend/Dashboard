@@ -159,7 +159,9 @@ class PolicyAuthorisationService
             return false;
         }
 
-        $owner = $target->contactable;
+        $target->loadMissing('addressable');
+
+        $owner = $target->addressable;
 
         if (! $owner instanceof User) {
             return false;

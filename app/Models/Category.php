@@ -21,6 +21,7 @@ use Illuminate\Support\Carbon;
  * @property string $name
  * @property string $slug
  * @property string|null $description
+ * @property array<string, mixed>|null $meta
  * @property Carbon|null $deleted_at
  * @property Carbon|null $restored_at
  * @property Carbon $created_at
@@ -34,6 +35,7 @@ use Illuminate\Support\Carbon;
     'name',
     'slug',
     'description',
+    'meta',
     'created_by',
     'created_at',
     'updated_by',
@@ -149,6 +151,7 @@ class Category extends Model implements Auditable
     protected function casts(): array
     {
         return [
+            'meta' => 'array',
             'parent_id' => 'integer',
             'deleted_at' => 'immutable_datetime',
             'restored_at' => 'immutable_datetime',

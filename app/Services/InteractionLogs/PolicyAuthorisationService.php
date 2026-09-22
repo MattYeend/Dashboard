@@ -80,7 +80,7 @@ class PolicyAuthorisationService
      */
     private function targetOutranksActor(User $actor, InteractionLog $target): bool
     {
-        $creator = $target->creator;
+        $creator = $target->loadmissing('creator')->creator;
 
         return $creator instanceof User
             && $this->userRoleCheckerService->isSuperAdmin($creator)

@@ -20,7 +20,7 @@ class DuplicateDetectionService
     {
         $contacts = Contact::query()
             ->with('contactable')
-            ->select(['id', 'contactable_id', 'contactable_type', 'email', 'phone'])
+            ->select(['id', 'contactable_id', 'contactable_type', 'name', 'email', 'phone'])
             ->orderBy('id')
             ->get();
 

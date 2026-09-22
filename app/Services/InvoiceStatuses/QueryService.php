@@ -44,6 +44,13 @@ class QueryService
      */
     public function getById(User $user, InvoiceStatus $invoiceStatus): array
     {
+        $invoiceStatus->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
+
         return array_merge(
             ['invoiceStatus' => $this->formatterService->format($invoiceStatus)],
             $this->getPermissions($user),
@@ -56,7 +63,12 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = InvoiceStatus::query();
+        $query = InvoiceStatus::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);

@@ -30,6 +30,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $account_manager_id
  * @property int|null $employee_count
  * @property int|null $founded_year
+ * @property array<string, mixed>|null $meta
  * @property Carbon|null $deleted_at
  * @property Carbon|null $restored_at
  * @property Carbon $created_at
@@ -51,6 +52,7 @@ use Illuminate\Support\Carbon;
     'account_manager_id',
     'employee_count',
     'founded_year',
+    'meta',
     'created_by',
     'created_at',
     'updated_by',

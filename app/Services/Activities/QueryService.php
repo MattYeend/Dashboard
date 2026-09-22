@@ -53,6 +53,7 @@ class QueryService
     {
         $query = Activity::query()
             ->with([
+                'activityable',
                 'creator',
                 'updater',
                 'deleter',

@@ -13,7 +13,7 @@ class QueryService
      */
     public function current(): Setting
     {
-        return Setting::query()->firstOrCreate(['id' => 1], [
+        return Setting::query()->first() ?? tap(new Setting([
             'site_name' => 'Dashboard',
             'support_email' => 'mail@mattyeend.co.uk',
             'timezone' => 'Europe/London',
@@ -26,7 +26,10 @@ class QueryService
             'session_timeout_minutes' => 120,
             'max_login_attempts' => 5,
             'password_expiry_days' => null,
-        ]);
+        ]), function (Setting $setting) {
+            $setting->id = 1;
+            $setting->save();
+        });
     }
 
     /**

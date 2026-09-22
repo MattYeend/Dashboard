@@ -63,8 +63,12 @@ class UpdaterService
                     ],
                 );
 
-                if ($fresh->stage_id !== $previousStageId && $fresh->assigned_to) {
-                    $fresh->assignee?->notify(new DealStageChangedNotification($fresh));
+                if ($fresh->stage_id !== $previousStageId) {
+                    $pipeline = $fresh->loadMissing('pipeline')->pipeline;
+
+                    if ($pipeline && $pipeline->assigned_to) {
+                        User::find($pipeline->assigned_to)?->notify(new DealStageChangedNotification($fresh));
+                    }
                 }
             });
     }

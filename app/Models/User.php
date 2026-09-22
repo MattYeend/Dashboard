@@ -82,6 +82,26 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
         TwoFactorAuthenticatable;
 
     /**
+     * Ensure every new user has a `role` in memory at creation time.
+     *
+     * The `role` column is intentionally excluded from `$fillable` so it
+     * can never be set via mass assignment; role changes must go through
+     * {@see assignApplicationRole()} or {@see assignRoles()}. Without this
+     * default, a freshly created User has no `role` attribute at all until
+     * the model is refreshed from the database, which throws a
+     * MissingAttributeException anywhere `role` is accessed with
+     * Model::preventAccessingMissingAttributes() enabled.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (User $user) {
+            if (! array_key_exists('role', $user->getAttributes())) {
+                $user->role = 'user';
+            }
+        });
+    }
+
+    /**
      * Get all contacts associated with this user.
      *
      * @return MorphMany<Contact, $this>
@@ -151,6 +171,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, Passke
         return $this->belongsToMany(Organisation::class)
             ->using(OrganisationMembership::class)
             ->withPivot([
+                'id',
                 'status',
                 'role',
                 'invitation_token',

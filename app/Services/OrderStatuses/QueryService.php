@@ -44,6 +44,13 @@ class QueryService
      */
     public function getById(User $user, OrderStatus $orderStatus): array
     {
+        $orderStatus->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
+
         return array_merge(
             ['orderStatus' => $this->formatterService->format($orderStatus)],
             $this->getPermissions($user),
@@ -56,7 +63,12 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = OrderStatus::query();
+        $query = OrderStatus::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);

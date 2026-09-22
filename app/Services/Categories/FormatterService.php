@@ -13,6 +13,8 @@ class FormatterService
      */
     public function format(Category $category): array
     {
+        $category->loadMissing(['parent', 'creator', 'updater', 'deleter', 'restorer']);
+
         return [
             'id' => $category->id,
             'parent_id' => $category->parent_id,

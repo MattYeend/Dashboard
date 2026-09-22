@@ -174,7 +174,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        $creator = $target->creator;
+        $creator = $target->loadMissing('creator')->creator;
 
         if (! $creator instanceof User) {
             return false;

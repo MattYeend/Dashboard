@@ -44,6 +44,13 @@ class QueryService
      */
     public function getById(User $user, PipelineStatus $pipelineStatus): array
     {
+        $pipelineStatus->loadMissing([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
+
         return array_merge(
             ['pipelineStatus' => $this->formatterService->format($pipelineStatus)],
             $this->getPermissions($user),
@@ -56,7 +63,12 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = PipelineStatus::query();
+        $query = PipelineStatus::query()->with([
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
