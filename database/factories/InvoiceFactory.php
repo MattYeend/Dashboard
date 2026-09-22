@@ -9,10 +9,23 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Spatie\Multitenancy\Models\Tenant;
 
+/**
+ * @extends Factory<Invoice>
+ */
 class InvoiceFactory extends Factory
 {
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var class-string<Invoice>
+     */
     protected $model = Invoice::class;
 
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
         $subtotal = $this->faker->numberBetween(5000, 500000);

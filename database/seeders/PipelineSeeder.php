@@ -75,14 +75,14 @@ class PipelineSeeder extends Seeder
                 'description' => 'Tracks candidates from application through to offer.',
                 'is_default' => false,
                 'status_id' => $statuses->get('Open')?->id,
-                'assigned_to' => $users->get(1)?->id ?? $users->first()?->id,
+                'assigned_to' => $users->first()?->id,
             ],
             [
                 'title' => 'Support Pipeline',
                 'description' => 'Tracks support tickets from raised through to resolved.',
                 'is_default' => false,
                 'status_id' => $statuses->get('Open')?->id,
-                'assigned_to' => $users->get(2)?->id ?? $users->first()?->id,
+                'assigned_to' => $users->first()?->id,
             ],
         ];
     }

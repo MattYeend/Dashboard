@@ -34,7 +34,7 @@ class DealFactory extends Factory
 
         return [
             'organisation_id' => Tenant::current()?->id,
-            'title' => $this->faker->catchPhrase(),
+            'title' => $this->faker->catchPhrase(), // @phpstan-ignore method.notFound
             'description' => $this->faker->optional()->paragraph(),
             'pipeline_id' => Pipeline::factory(),
             'stage_id' => PipelineStage::factory(),

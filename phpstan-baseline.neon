@@ -1639,18 +1639,6 @@ parameters:
 			path: app/Services/Deals/RestorerService.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\Deal\:\:\$assigned_to\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Deals/UpdaterService.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Deal\:\:\$assignee\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Deals/UpdaterService.php
-
-		-
 			message: '#^Method App\\Services\\Deals\\UpdaterService\:\:update\(\) should return App\\Models\\Deal but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
@@ -1751,12 +1739,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/InteractionLogs/DeleterService.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Contact\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/InteractionLogs/FormatterService.php
 
 		-
 			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Support\\Carbon\. Use \-\> instead\.$#'
@@ -1949,30 +1931,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Invoices/DeleterService.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Contact\:\:\$address\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Invoices/FormatterService.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Contact\:\:\$city\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Invoices/FormatterService.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Contact\:\:\$country\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Invoices/FormatterService.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Contact\:\:\$postal_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Invoices/FormatterService.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
@@ -3347,12 +3305,6 @@ parameters:
 			identifier: assign.propertyReadOnly
 			count: 1
 			path: app/Services/Users/DeleterService.php
-
-		-
-			message: '#^Access to undefined constant App\\Models\\Log\:\:ACTION_EXPORT_USER\.$#'
-			identifier: classConstant.notFound
-			count: 1
-			path: app/Services/Users/ExporterService.php
 
 		-
 			message: '#^Negated boolean expression is always false\.$#'
