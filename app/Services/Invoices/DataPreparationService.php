@@ -81,6 +81,7 @@ class DataPreparationService
         $contact = $data['contact'];
 
         return [
+            'name' => $contact['name'] ?? null,
             'phone' => $contact['phone'] ?? null,
             'email' => $contact['email'] ?? null,
             'meta' => $contact['meta'] ?? null,
@@ -140,6 +141,7 @@ class DataPreparationService
         }
 
         $allowed = [
+            'name',
             'phone',
             'email',
             'meta',
@@ -154,5 +156,35 @@ class DataPreparationService
         }
 
         return $payload;
+    }
+
+    /**
+     * Prepare address data for the invoice contact's address on update.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>|null
+     */
+    public function prepareAddressForContactUpdate(array $data): ?array
+    {
+        if (! isset($data['contact']) || ! is_array($data['contact'])) {
+            return null;
+        }
+
+        $contact = $data['contact'];
+
+        if (! array_key_exists('address', $contact)
+            && ! array_key_exists('city', $contact)
+            && ! array_key_exists('postal_code', $contact)
+            && ! array_key_exists('country', $contact)) {
+            return null;
+        }
+
+        return [
+            'address_line_one' => $contact['address'] ?? 'Not provided',
+            'city' => $contact['city'] ?? 'Not provided',
+            'postcode' => $contact['postal_code'] ?? null,
+            'country' => $contact['country'] ?? 'Not provided',
+            'is_primary' => true,
+        ];
     }
 }

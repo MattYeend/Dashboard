@@ -30,6 +30,7 @@ class ContactFactory extends Factory
             'organisation_id' => Tenant::current()?->id,
             'contactable_type' => null,
             'contactable_id' => null,
+            'name' => $this->faker->name(),
             'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
         ];

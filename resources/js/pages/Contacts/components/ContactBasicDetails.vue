@@ -14,6 +14,10 @@ defineProps<Props>();
 
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
+                <dt class="text-xs text-gray-400">Name</dt>
+                <dd class="text-sm">{{ contact.name ?? '-' }}</dd>
+            </div>
+            <div>
                 <dt class="text-xs text-gray-400">Email address</dt>
                 <dd class="text-sm">{{ contact.email ?? '-' }}</dd>
             </div>

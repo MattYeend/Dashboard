@@ -16,6 +16,7 @@ const props = defineProps<Props>();
 const form = useForm({
     contactable_type: '',
     contactable_id: null as number | null,
+    name: '',
     phone: '',
     email: '',
     tag_ids: [] as number[],
@@ -50,6 +51,7 @@ watch(
 function submit(): void {
     form.transform((data) => ({
         ...data,
+        name: nullIfBlank(data.name),
         phone: nullIfBlank(data.phone),
         email: nullIfBlank(data.email),
     })).post(contactsStore.url());
@@ -66,6 +68,7 @@ function submit(): void {
                 v-model:contactable-id="form.contactable_id"
                 :contactable-types="props.contactableTypes"
                 :contactable-options="contactableOptions"
+                v-model:name="form.name"
                 v-model:email="form.email"
                 v-model:phone="form.phone"
                 v-model:tag-ids="form.tag_ids"

@@ -145,6 +145,7 @@ export interface Contact {
     contactable_type_key: string;
     contactable_type_label: string | null;
     contactable_name: string | null;
+    name: string | null;
     phone: string | null;
     email: string | null;
     meta: Record<string, unknown> | null;
@@ -468,12 +469,9 @@ export interface Invoice {
     company?: { id: number; name: string } | null;
     contact?: {
         id: number;
+        name: string | null;
         phone: string | null;
         email: string | null;
-        address: string | null;
-        city: string | null;
-        postal_code: string | null;
-        country: string | null;
     } | null;
     order?: { id: number } | null;
     status?: {

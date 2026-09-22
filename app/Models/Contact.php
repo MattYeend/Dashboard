@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property int|null $organisation_id
  * @property string $contactable_type
  * @property int $contactable_id
+ * @property string|null $name
  * @property string|null $phone
  * @property string|null $email
  * @property Carbon|null $deleted_at
@@ -34,6 +35,7 @@ use Illuminate\Database\Eloquent\Collection;
     'organisation_id',
     'contactable_type',
     'contactable_id',
+    'name',
     'phone',
     'email',
     'meta',
@@ -139,6 +141,7 @@ class Contact extends Model implements Auditable
             'id',
             'contactable_id',
             'contactable_type',
+            'name',
             'phone',
             'email',
             'meta',

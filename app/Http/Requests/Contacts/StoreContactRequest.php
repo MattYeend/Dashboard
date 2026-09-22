@@ -29,6 +29,7 @@ class StoreContactRequest extends FormRequest
         return [
             'contactable_type' => $this->contactableTypeRules(),
             'contactable_id' => $this->contactableIdRules(),
+            'name' => $this->nameRules(),
             'phone' => $this->phoneRules(),
             'email' => $this->emailRules(),
             'meta' => $this->metaRules(),
@@ -52,6 +53,7 @@ class StoreContactRequest extends FormRequest
             'contactable_id.integer' => 'The contactable ID must be an
                  integer.',
             'contactable_id.min' => 'The contactable ID must be at least 1.',
+            'name.max' => 'The name may not exceed 255 characters.',
             'email.email' => 'The email address must be a valid email.',
             'email.max' => 'The email address may not exceed 255 characters.',
             'phone.max' => 'The phone number may not exceed 255 characters.',
@@ -87,6 +89,20 @@ class StoreContactRequest extends FormRequest
             'required',
             'integer',
             'min:1',
+        ];
+    }
+    
+    /**
+     * Get validation rules for the name field.
+     *
+     * @return array<mixed>
+     */
+    protected function nameRules(): array
+    {
+        return [
+            'nullable',
+            'string',
+            'max:255',
         ];
     }
 

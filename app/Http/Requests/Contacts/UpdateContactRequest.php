@@ -28,6 +28,7 @@ class UpdateContactRequest extends FormRequest
         return [
             'contactable_type' => $this->contactableTypeRules(),
             'contactable_id' => $this->contactableIdRules(),
+            'name' => $this->nameRules(),
             'phone' => $this->phoneRules(),
             'email' => $this->emailRules(),
             'meta' => $this->metaRules(),
@@ -46,6 +47,7 @@ class UpdateContactRequest extends FormRequest
         return [
             'email.email' => 'The email address must be a valid email.',
             'email.max' => 'The email address may not exceed 255 characters.',
+            'name.max' => 'The name may not exceed 255 characters.',
             'phone.max' => 'The phone number may not exceed 255 characters.',
             'contactable_type.required' => 'The contactable type is required.',
             'contactable_type.string' => 'The contactable type must be a string.',
@@ -86,6 +88,21 @@ class UpdateContactRequest extends FormRequest
             'required',
             'integer',
             'min:1',
+        ];
+    }
+
+    /**
+     * Get validation rules for the name field.
+     *
+     * @return array<mixed>
+     */
+    protected function nameRules(): array
+    {
+        return [
+            'sometimes',
+            'nullable',
+            'string',
+            'max:255',
         ];
     }
 

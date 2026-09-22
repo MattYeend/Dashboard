@@ -8,12 +8,9 @@ import ContactTypeForm from '@/pages/Contacts/components/ContactTypeForm.vue';
 import { index as contactsIndex } from '@/routes/contacts';
 
 interface ContactFormData {
+    name: string;
     phone: string;
     email: string;
-    address: string;
-    city: string;
-    postal_code: string;
-    country: string;
     contactable_type: string;
     contactable_id: number | null;
     tag_ids: number[];
@@ -31,6 +28,7 @@ interface Props {
 defineProps<Props>();
 defineEmits<{ submit: [] }>();
 
+const name = defineModel<string>('name', { required: true });
 const email = defineModel<string>('email', { required: true });
 const phone = defineModel<string>('phone', { required: true });
 const contactableType = defineModel<string>('contactableType', {
@@ -45,6 +43,7 @@ const tagIds = defineModel<number[]>('tagIds', { default: () => [] });
 <template>
     <form class="space-y-6" @submit.prevent="$emit('submit')">
         <ContactBasicDetailsForm
+            v-model:name="name"
             v-model:email="email"
             v-model:phone="phone"
             :errors="errors"

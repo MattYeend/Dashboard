@@ -22,6 +22,7 @@ class DataPreparationService
         return [
             'contactable_type' => $this->resolveContactableType($contactableType),
             'contactable_id' => $contactableId,
+            'name' => $data['name'] ?? null,
             'phone' => $data['phone'] ?? null,
             'email' => $data['email'] ?? null,
             'meta' => $data['meta'] ?? null,
@@ -39,6 +40,7 @@ class DataPreparationService
         $allowed = [
             'contactable_type',
             'contactable_id',
+            'name',
             'phone',
             'email',
             'meta',

@@ -54,7 +54,13 @@ class UpdaterService
                 $contactData = $this->dataPreparation->prepareUpdate($data);
 
                 if ($contactData !== null) {
-                    $invoice->contact()->updateOrCreate([], $contactData);
+                    $contact = $invoice->contact()->updateOrCreate([], $contactData);
+
+                    $addressData = $this->dataPreparation->prepareAddressForContactUpdate($data);
+
+                    if ($addressData !== null) {
+                        $contact->addresses()->updateOrCreate([], $addressData);
+                    }
                 }
 
                 $fresh = $invoice->fresh();

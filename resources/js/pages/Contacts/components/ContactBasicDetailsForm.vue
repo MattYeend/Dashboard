@@ -3,11 +3,12 @@ import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+const name = defineModel<string>('name', { required: true });
 const email = defineModel<string>('email', { required: true });
 const phone = defineModel<string>('phone', { required: true });
 
 interface Props {
-    errors: Partial<Record<'email' | 'phone', string>>;
+    errors: Partial<Record<'name' | 'email' | 'phone', string>>;
 }
 
 defineProps<Props>();
@@ -15,6 +16,16 @@ defineProps<Props>();
 
 <template>
     <div class="space-y-4">
+        <div>
+            <Label for="name">Name</Label>
+            <Input
+                id="name"
+                v-model="name"
+                type="text"
+                class="mt-1 block w-full"
+            />
+            <InputError :message="errors.name" />
+        </div>
         <div>
             <Label for="email">Email Address</Label>
             <Input
