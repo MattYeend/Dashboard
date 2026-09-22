@@ -34,6 +34,8 @@ jobs:
           php-version: '8.4'
           coverage: none
       - run: composer install --no-interaction --prefer-dist
+      - run: cp .env.example .env
+      - run: php artisan key:generate
       - run: vendor/bin/phpstan analyse --memory-limit=512M
 
   secrets:
