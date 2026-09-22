@@ -11,8 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @property int $id
@@ -21,15 +23,12 @@ use Illuminate\Support\Carbon;
  * @property int $contactable_id
  * @property string|null $phone
  * @property string|null $email
- * @property string|null $address
- * @property string|null $city
- * @property string|null $postal_code
- * @property string|null $country
  * @property Carbon|null $deleted_at
  * @property Carbon|null $restored_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Model $contactable
+ * @property-read Collection<int, Address> $addresses
  */
 #[Fillable([
     'organisation_id',
@@ -37,10 +36,6 @@ use Illuminate\Support\Carbon;
     'contactable_id',
     'phone',
     'email',
-    'address',
-    'city',
-    'postal_code',
-    'country',
     'meta',
     'created_by',
     'created_at',
@@ -68,6 +63,16 @@ class Contact extends Model implements Auditable
     public function contactable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Get the addresses associated with this contact.
+     *
+     * @return MorphMany<Address, $this>
+     */
+    public function addresses(): MorphMany
+    {
+        return $this->morphMany(Address::class, 'addressable');
     }
 
     /**
@@ -136,10 +141,6 @@ class Contact extends Model implements Auditable
             'contactable_type',
             'phone',
             'email',
-            'address',
-            'city',
-            'postal_code',
-            'country',
             'meta',
         ]);
     }
