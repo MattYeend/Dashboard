@@ -8,6 +8,7 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 
 - [Requirements](#requirements)
 - [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
 - [Installation](#installation)
 - [Roles and Permissions](#roles-and-permissions)
 - [Configuration](#configuration)
@@ -18,6 +19,7 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 - [Generated Frontend Routes](#generated-frontend-routes)
 - [Local Quality Checks](#local-quality-checks)
 - [Further Reading](#further-reading)
+- [Security](#security)
 - [Contributing](#contributing)
 - [Licence](#licence)
 - [Funding](#funding)
@@ -29,8 +31,8 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 - PHP 8.3 or higher
 - Composer
 - Node.js 20 or higher
-- npm / pnpm
-- A supported database (MySQL, PostgreSQL, or SQLite)
+- npm
+- A supported database: MySQL 8 or PostgreSQL 16 (both run in CI). SQLite is for local development only
 
 ---
 
@@ -57,6 +59,34 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 
 ---
 
+## Architecture
+
+Each resource follows the same service-oriented layout:
+
+| Class | Responsibility |
+| --- | --- |
+| `ActiveCheckerService` | Whether a record can be modified, restored or force deleted |
+| `CreatorService` / `UpdaterService` | Create and update, stamping audit columns |
+| `DeleterService` / `RestorerService` | Soft delete and restore |
+| `DataPreparationService` | Normalise validated input before persistence |
+| `FilterService` / `SortingService` | Allow-listed filters and sort columns |
+| `QueryService` | Build and paginate the index query |
+| `FormatterService` | Shape data for Inertia props |
+| `PolicyAuthorisationService` | Permission checks used by policies |
+| `ManagementService` | Orchestrates the above for controllers |
+
+Shared `App\Actions\*Resource` classes wrap transactions. Every state change is written to the audit log through `AuditLogService`.
+
+Scaffold a new module with:
+
+```bash
+php artisan make:model {Model} -a
+php artisan make:request Import{Model}Request
+php artisan make:service {Model}/{ServiceName}
+```
+
+---
+
 ## Installation
 
 Clone the repository and install dependencies:
@@ -77,7 +107,7 @@ This will:
 1. Install Composer dependencies
 2. Copy `.env.example` to `.env` (if not already present)
 3. Generate an application key
-4. Run database migrations
+4. Run database migrations and seed roles, permissions and reference data
 5. Install npm dependencies
 6. Build frontend assets
 
@@ -87,7 +117,7 @@ Alternatively, run each step manually:
 composer install
 cp .env.example .env
 php artisan key:generate
-php artisan migrate
+php artisan migrate --seed
 npm install
 npm run build
 ```
@@ -223,7 +253,10 @@ npm run types:check
 | `npm run format:check` | Check formatting (no fixes applied) |
 | `npm run types:check` | Check TypeScript types |
 | `php artisan test` | Run the full Pest PHP test suite |
-| `php artisan make:service serviceName` | Scaffold a new service class |
+| `php artisan make:service {Model}/{ServiceName}` | Scaffold a service, for example `Companies/CreatorService` |
+| `composer run analyse` | Run Larastan static analysis |
+| `composer audit` | Check PHP dependencies for known vulnerabilities |
+| `npm audit` | Check JavaScript dependencies for known vulnerabilities |
 
 ---
 
@@ -259,6 +292,12 @@ npm run build
 ## Further Reading
 
 More artisan commands can be found <a href="https://artisan.page/" target="_blank">here</a>
+
+---
+
+## Security
+
+Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md). Do not open public issues for security problems.
 
 ---
 

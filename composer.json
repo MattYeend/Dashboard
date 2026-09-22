@@ -32,6 +32,7 @@
         "barryvdh/laravel-ide-helper": "^3.7",
         "fakerphp/faker": "^1.24",
         "laramint/laravel-brain": "^2.3",
+        "larastan/larastan": "^3.12",
         "laravel/pail": "^1.2.5",
         "laravel/pao": "^1.0.6",
         "laravel/pint": "^1.27",
@@ -58,7 +59,7 @@
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
-            "@php artisan migrate --force",
+            "@php artisan migrate --force --seed",
             "npm install",
             "npm run build"
         ],
