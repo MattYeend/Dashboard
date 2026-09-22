@@ -83,11 +83,47 @@ class DataPreparationService
         return [
             'phone' => $contact['phone'] ?? null,
             'email' => $contact['email'] ?? null,
-            'address' => $contact['address'] ?? null,
-            'city' => $contact['city'] ?? null,
-            'postal_code' => $contact['postal_code'] ?? null,
-            'country' => $contact['country'] ?? null,
             'meta' => $contact['meta'] ?? null,
+        ];
+    }
+
+    /**
+     * Prepare address data for the invoice contact's address.
+     *
+     * Maps the legacy flat contact fields (address/city/postal_code/
+     * country) onto the addresses table's actual column names. Returns
+     * null when none of those fields were supplied, since an empty
+     * address record should never be created.
+     *
+     * city and country are non-nullable columns on Address, so a
+     * 'Not provided' fallback is used when a value is missing -
+     * matching the fallback already used by the historical
+     * migrate_contact_addresses_to_addresses_table migration.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>|null
+     */
+    public function prepareAddressForContactCreation(array $data): ?array
+    {
+        if (! isset($data['contact']) || ! is_array($data['contact'])) {
+            return null;
+        }
+
+        $contact = $data['contact'];
+
+        if (! array_key_exists('address', $contact)
+            && ! array_key_exists('city', $contact)
+            && ! array_key_exists('postal_code', $contact)
+            && ! array_key_exists('country', $contact)) {
+            return null;
+        }
+
+        return [
+            'address_line_one' => $contact['address'] ?? 'Not provided',
+            'city' => $contact['city'] ?? 'Not provided',
+            'postcode' => $contact['postal_code'] ?? null,
+            'country' => $contact['country'] ?? 'Not provided',
+            'is_primary' => true,
         ];
     }
 
@@ -106,10 +142,6 @@ class DataPreparationService
         $allowed = [
             'phone',
             'email',
-            'address',
-            'city',
-            'postal_code',
-            'country',
             'meta',
         ];
         $contact = $data['contact'];

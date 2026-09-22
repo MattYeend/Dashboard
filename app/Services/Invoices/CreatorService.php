@@ -45,7 +45,13 @@ class CreatorService
                 $contactData = $this->dataPreparation->prepareForContactCreation($data);
 
                 if ($contactData !== null) {
-                    $newInvoice->contact()->create($contactData);
+                    $contact = $newInvoice->contact()->create($contactData);
+
+                    $addressData = $this->dataPreparation->prepareAddressForContactCreation($data);
+
+                    if ($addressData !== null) {
+                        $contact->addresses()->create($addressData);
+                    }
                 }
 
                 $this->auditLogService->record(
