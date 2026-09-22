@@ -47,7 +47,7 @@ class SessionOrganisationFinder extends TenantFinder
                 ->when(! $isSuperAdmin, fn ($q) => $q->whereHas(
                     'users',
                     fn ($q2) => $q2->whereKey($user->id)
-                        ->wherePivot('status', OrganisationMembership::STATUS_ACTIVE)
+                        ->where('organisation_user.status', OrganisationMembership::STATUS_ACTIVE)
                 ))
                 ->first();
 
