@@ -1,0 +1,3397 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#1 \$bytes of method App\\Actions\\Backups\\ListBackups\:\:formatBytes\(\) expects int, float given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Actions/Backups/ListBackups.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\CreateNewUser\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Actions/Fortify/CreateNewUser.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\CreateNewUser\:\:passwordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Actions/Fortify/CreateNewUser.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\ResetUserPassword\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Actions/Fortify/ResetUserPassword.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\ResetUserPassword\:\:passwordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Actions/Fortify/ResetUserPassword.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\InvoiceItem\:\:\$subtotal\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Actions/Invoice/CalculateInvoiceTotals.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:restore\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/RestoreResource.php
+
+		-
+			message: '#^Property App\\Models\\NotificationBroadcast\:\:\$sent_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Actions/SendNotificationBroadcast.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Subscription\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Console/Commands/MigrateUserSubscriptionsToOrganisations.php
+
+		-
+			message: '#^Parameter \#2 \$company of method App\\Services\\Companies\\QueryService\:\:getById\(\) expects App\\Models\\Company, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/CompanyController.php
+
+		-
+			message: '#^Parameter \#2 \$contact of method App\\Services\\Contacts\\QueryService\:\:getById\(\) expects App\\Models\\Contact, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/ContactController.php
+
+		-
+			message: '#^Parameter \#2 \$order of method App\\Services\\Orders\\QueryService\:\:getById\(\) expects App\\Models\\Order, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/OrderController.php
+
+		-
+			message: '#^Parameter \#2 \$task of method App\\Services\\Tasks\\QueryService\:\:getById\(\) expects App\\Models\\Task, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/TaskController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Http/Controllers/ContactController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\PipelineStage\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/DealController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Pipeline\|Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), App\\Models\\Pipeline\>\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/DealController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\PipelineStage\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/DealController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\:\:active\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Http/Controllers/OrganisationController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\OrganisationController\:\:seatImpactFor\(\) never returns array\{current_seats\: int, projected_seats\: int, current_total\: string, projected_total\: string\} so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Http/Controllers/OrganisationController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\OrganisationController\:\:seatImpactFor\(\) should return array\{current_seats\: int, projected_seats\: int, current_total\: string, projected_total\: string\}\|null but returns array\{current_seats\: int, projected_seats\: int, current_total\: int, projected_total\: int\}\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/OrganisationController.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\Settings\\PasswordUpdateRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Requests/Settings/PasswordUpdateRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\Settings\\PasswordUpdateRequest\:\:passwordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Requests/Settings/PasswordUpdateRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\Settings\\ProfileDeleteRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Requests/Settings/ProfileDeleteRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\Settings\\ProfileDeleteRequest\:\:passwordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Requests/Settings/ProfileDeleteRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\Users\\StoreUserRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Requests/Users/StoreUserRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\Users\\StoreUserRequest\:\:passwordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Requests/Users/StoreUserRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\Users\\UpdateUserRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Requests/Users/UpdateUserRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\Users\\UpdateUserRequest\:\:passwordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Requests/Users/UpdateUserRequest.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\CompanyResource\:\:\$creator\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/CompanyResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\CompanyResource\:\:\$deleter\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/CompanyResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\CompanyResource\:\:\$restorer\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/CompanyResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\CompanyResource\:\:\$updater\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/CompanyResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$address\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$city\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$contactable_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$contactable_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$country\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$creator\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$deleted_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$deleter\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$meta\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$phone\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$postal_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$restored_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$restorer\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$updater\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ContactResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$completed_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$creator\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$deleted_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$deleter\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$discount_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$due_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$meta\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$notes\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$order_number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$orderable_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$orderable_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$ordered_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$restored_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$restorer\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$status_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$subtotal\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$tax_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$total_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\OrderResource\:\:\$updater\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/OrderResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$assigned_date\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$assigned_to\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$assignee\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$creator\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$deleted_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$deleter\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$due_date\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$meta\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$restored_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$restorer\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$status_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\TaskResource\:\:\$updater\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/TaskResource.php
+
+		-
+			message: '#^Method App\\Mail\\WelcomeEmail\:\:attachments\(\) has invalid return type App\\Mail\\Attachment\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Mail/WelcomeEmail.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Activity.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Activity\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Activity.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Address.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Address\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Address.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Attachment\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Category.php
+
+		-
+			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\Category\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasMany\: TRelatedModel, TDeclaringModel$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/Models/Category.php
+
+		-
+			message: '#^Method App\\Models\\Category\:\:children\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\Category\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\Category, \$this\(App\\Models\\Category\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Category.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Category\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Category.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Comment.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Comment\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Comment.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Company.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Company\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Company.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Contact.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Contact\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Contact.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Deal.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Deal\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Deal.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/DealStatus.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\DealStatus\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/DealStatus.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Industry.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Industry\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Industry.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/InteractionLog.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\InteractionLog\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/InteractionLog.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Invoice\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/InvoiceItem.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\InvoiceItem\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/InvoiceItem.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/InvoiceStatus.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\InvoiceStatus\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/InvoiceStatus.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Label.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Label\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Label.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Like.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Like\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Like.php
+
+		-
+			message: '#^Method App\\Models\\Log\:\:loggedInUser\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\User, App\\Models\\Log\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\User, \$this\(App\\Models\\Log\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Log.php
+
+		-
+			message: '#^Method App\\Models\\Log\:\:relatedToUser\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\User, App\\Models\\Log\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\User, \$this\(App\\Models\\Log\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Log.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\Log\:\:\$fillable is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/Log.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Order.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Order\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Order.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/OrderStatus.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\OrderStatus\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/OrderStatus.php
+
+		-
+			message: '#^Method App\\Models\\Organisation\:\:activeUsers\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\User, App\\Models\\Organisation, Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\User, \$this\(App\\Models\\Organisation\), Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Organisation.php
+
+		-
+			message: '#^Method App\\Models\\Organisation\:\:users\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\User, \$this\(App\\Models\\Organisation\), Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\User, \$this\(App\\Models\\Organisation\), App\\Models\\OrganisationMembership, ''pivot''\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Organisation.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Pipeline.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Pipeline\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Pipeline.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/PipelineStage.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\PipelineStage\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/PipelineStage.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/PipelineStatus.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\PipelineStatus\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/PipelineStatus.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Post.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Post\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Post.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Report.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Report\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Report.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Tag.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Tag\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Tag.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Task.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Task\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Task.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/TaskStatus.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\TaskStatus\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/TaskStatus.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Ticket.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\Ticket\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/Ticket.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/TicketPriority.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\TicketPriority\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/TicketPriority.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/TicketStatus.php
+
+		-
+			message: '#^PHPDoc tag @var with type Illuminate\\Database\\Eloquent\\Model is not subtype of native type \$this\(App\\Models\\TicketStatus\)\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Models/TicketStatus.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:organisations\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\Organisation, \$this\(App\\Models\\User\), Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\Organisation, \$this\(App\\Models\\User\), App\\Models\\OrganisationMembership, ''pivot''\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Services\\Activities\\CreatorService\:\:create\(\) should return App\\Models\\Activity but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Activities/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Activity\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Activities/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Activity\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Activities/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Activity\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Activities/DeleterService.php
+
+		-
+			message: '#^Parameter \#1 \$activity of method App\\Services\\Activities\\FormatterService\:\:forExport\(\) expects App\\Models\\Activity, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Activities/ExporterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Activities/FormatterService.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: app/Services/Activities/FormatterService.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Support\\Carbon\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/Activities/FormatterService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/Activities/FormatterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Activities/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Activity\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Activities/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Activities\\RestorerService\:\:restore\(\) should return App\\Models\\Activity but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Activities/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Activity\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Activities/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Activity\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Activities/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Activities\\UpdaterService\:\:update\(\) should return App\\Models\\Activity but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Activities/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Activity\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Activities/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Addresses\\CreatorService\:\:create\(\) should return App\\Models\\Address but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Addresses/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Address\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Addresses/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Address\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Addresses/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Address\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Addresses/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Addresses/FormatterService.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: app/Services/Addresses/FormatterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Address\:\:\$contactable\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Addresses/PolicyAuthorisationService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Addresses/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Address\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Addresses/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Addresses\\RestorerService\:\:restore\(\) should return App\\Models\\Address but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Addresses/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Address\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Addresses/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Address\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Addresses/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Addresses\\UpdaterService\:\:update\(\) should return App\\Models\\Address but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Addresses/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Address\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Addresses/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Attachments\\CreatorService\:\:create\(\) should return App\\Models\\Attachment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Attachments/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Attachment\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Attachments/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Attachment\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Attachments/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Attachment\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Attachments/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attachments/PolicyAuthorisationService.php
+
+		-
+			message: '#^Method App\\Services\\Attachments\\RestorerService\:\:restore\(\) should return App\\Models\\Attachment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Attachments/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Attachment\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Attachments/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Attachment\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Attachments/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Categories\\CreatorService\:\:create\(\) should return App\\Models\\Category but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Categories/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Category\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Categories/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Category\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Categories/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Category\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Categories/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Categories/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Category\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Categories/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Categories\\RestorerService\:\:restore\(\) should return App\\Models\\Category but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Categories/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Category\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Categories/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Category\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Categories/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Categories\\UpdaterService\:\:update\(\) should return App\\Models\\Category but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Categories/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Category\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Categories/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Comments\\CreatorService\:\:create\(\) should return App\\Models\\Comment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Comments/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Comment\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Comments/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Comment\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Comments/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Comment\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Comments/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Comments/FormatterService.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: app/Services/Comments/FormatterService.php
+
+		-
+			message: '#^Method App\\Services\\Comments\\MentionParserService\:\:matchTokens\(\) should return Illuminate\\Support\\Collection\<int, string\> but returns Illuminate\\Support\\Collection\<int, lowercase\-string&non\-empty\-string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Comments/MentionParserService.php
+
+		-
+			message: '#^Offset 1 on array\{list\<string\>, list\<non\-empty\-string\>\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Services/Comments/MentionParserService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Comments/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Comment\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Comments/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Comments\\RestorerService\:\:restore\(\) should return App\\Models\\Comment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Comments/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Comment\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Comments/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Comment\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Comments/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Comments\\UpdaterService\:\:update\(\) should return App\\Models\\Comment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Comments/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Comment\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Comments/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Companies\\CreatorService\:\:create\(\) should return App\\Models\\Company but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Companies/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Company\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Companies/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Company\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Companies/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Company\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Companies/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Companies/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Company\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Companies/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Companies\\RestorerService\:\:restore\(\) should return App\\Models\\Company but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Companies/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Company\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Companies/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Company\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Companies/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Companies\\UpdaterService\:\:update\(\) should return App\\Models\\Company but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Companies/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Company\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Companies/UpdaterService.php
+
+		-
+			message: '#^Variable \$header on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.variable
+			count: 1
+			path: app/Services/Concerns/ImportsViaPreview.php
+
+		-
+			message: '#^Method App\\Services\\Contacts\\CreatorService\:\:create\(\) should return App\\Models\\Contact but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Contacts/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Contact\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Contacts/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Contact\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Contacts/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Contact\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Contacts/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Contacts/FormatterService.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: app/Services/Contacts/FormatterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Contacts/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Contact\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Contacts/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Contacts\\RestorerService\:\:restore\(\) should return App\\Models\\Contact but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Contacts/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Contact\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Contacts/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Contact\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Contacts/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Contacts\\UpdaterService\:\:update\(\) should return App\\Models\\Contact but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Contacts/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Contact\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Contacts/UpdaterService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/Dashboard/FormatterService.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Log model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Services/Dashboard/QueryService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>is_visible" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/DashboardWidgets/QueryService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>position" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/DashboardWidgets/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\DealStatuses\\CreatorService\:\:create\(\) should return App\\Models\\DealStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/DealStatuses/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\DealStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/DealStatuses/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\DealStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/DealStatuses/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\DealStatus\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/DealStatuses/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/DealStatuses/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\DealStatus\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/DealStatuses/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\DealStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\DealStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/DealStatuses/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\DealStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/DealStatuses/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\DealStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/DealStatuses/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\DealStatuses\\UpdaterService\:\:update\(\) should return App\\Models\\DealStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/DealStatuses/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\DealStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/DealStatuses/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Deals\\CreatorService\:\:create\(\) should return App\\Models\\Deal but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Deals/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Deal\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Deals/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Deal\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Deals/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Deal\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Deals/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_closing\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Deals/PipelineStageUpdaterService.php
+
+		-
+			message: '#^Property App\\Models\\Deal\:\:\$closed_at \(Illuminate\\Support\\Carbon\|null\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Deals/PipelineStageUpdaterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Deals/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Deal\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Deals/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Deals\\RestorerService\:\:restore\(\) should return App\\Models\\Deal but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Deals/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Deal\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Deals/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Deal\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Deals/RestorerService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Deal\:\:\$assigned_to\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Deals/UpdaterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Deal\:\:\$assignee\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Deals/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Deals\\UpdaterService\:\:update\(\) should return App\\Models\\Deal but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Deals/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Deal\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Deals/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Industries\\CreatorService\:\:create\(\) should return App\\Models\\Industry but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Industries/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Industry\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Industries/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Industry\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Industries/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Industry\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Industries/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Industries/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Industry\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Industries/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Industries\\RestorerService\:\:restore\(\) should return App\\Models\\Industry but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Industries/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Industry\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Industries/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Industry\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Industries/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Industries\\UpdaterService\:\:update\(\) should return App\\Models\\Industry but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Industries/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Industry\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Industries/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\InteractionLogs\\CreatorService\:\:create\(\) should return App\\Models\\InteractionLog but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/InteractionLogs/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\InteractionLog\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/InteractionLogs/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\InteractionLog\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/InteractionLogs/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\InteractionLog\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/InteractionLogs/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Contact\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/InteractionLogs/FormatterService.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Support\\Carbon\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 3
+			path: app/Services/InteractionLogs/FormatterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/InteractionLogs/PolicyAuthorisationService.php
+
+		-
+			message: '#^Method App\\Services\\InteractionLogs\\UpdaterService\:\:update\(\) should return App\\Models\\InteractionLog but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/InteractionLogs/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\InteractionLog\)\: App\\Models\\InteractionLog given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/InteractionLogs/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\InvoiceItems\\CreatorService\:\:create\(\) should return App\\Models\\InvoiceItem but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/InvoiceItems/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\InvoiceItem\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/InvoiceItems/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\InvoiceItem\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/InvoiceItems/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\InvoiceItem\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/InvoiceItems/DeleterService.php
+
+		-
+			message: '#^Default value of the parameter \#3 \$context \(array\{\}\) of method App\\Services\\InvoiceItems\\ImporterService\:\:persistRow\(\) is incompatible with type array\{invoice\: App\\Models\\Invoice\}\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: app/Services/InvoiceItems/ImporterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/InvoiceItems/PolicyAuthorisationService.php
+
+		-
+			message: '#^Using nullsafe property access on non\-nullable type App\\Models\\Invoice\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/InvoiceItems/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\InvoiceItem\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/InvoiceItems/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\InvoiceItems\\RestorerService\:\:restore\(\) should return App\\Models\\InvoiceItem but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/InvoiceItems/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\InvoiceItem\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/InvoiceItems/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\InvoiceItem\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/InvoiceItems/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\InvoiceItems\\UpdaterService\:\:update\(\) should return App\\Models\\InvoiceItem but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/InvoiceItems/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\InvoiceItem\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/InvoiceItems/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\InvoiceStatuses\\CreatorService\:\:create\(\) should return App\\Models\\InvoiceStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/InvoiceStatuses/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\InvoiceStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/InvoiceStatuses/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\InvoiceStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/InvoiceStatuses/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\InvoiceStatus\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/InvoiceStatuses/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/InvoiceStatuses/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\InvoiceStatus\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/InvoiceStatuses/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\InvoiceStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\InvoiceStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/InvoiceStatuses/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\InvoiceStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/InvoiceStatuses/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\InvoiceStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/InvoiceStatuses/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\InvoiceStatuses\\UpdaterService\:\:update\(\) should return App\\Models\\InvoiceStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/InvoiceStatuses/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\InvoiceStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/InvoiceStatuses/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Invoices\\CreatorService\:\:create\(\) should return App\\Models\\Invoice but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Invoices/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Invoice\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Invoices/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Invoice\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Invoices/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Invoice\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Invoices/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Contact\:\:\$address\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Invoices/FormatterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Contact\:\:\$city\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Invoices/FormatterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Contact\:\:\$country\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Invoices/FormatterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Contact\:\:\$postal_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Invoices/FormatterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Invoices/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Invoice\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Invoices/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Invoices\\RestorerService\:\:restore\(\) should return App\\Models\\Invoice but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Invoices/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Invoice\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Invoices/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Invoice\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Invoices/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Invoices\\UpdaterService\:\:update\(\) should return App\\Models\\Invoice but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Invoices/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Invoice\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Invoices/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Labels\\CreatorService\:\:create\(\) should return App\\Models\\Label but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Labels/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Label\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Labels/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Label\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Labels/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Label\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Labels/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Labels/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Label\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Labels/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Labels\\RestorerService\:\:restore\(\) should return App\\Models\\Label but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Labels/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Label\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Labels/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Label\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Labels/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Labels\\UpdaterService\:\:update\(\) should return App\\Models\\Label but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Labels/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Label\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Labels/UpdaterService.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:likes\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/Likes/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Log\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Logs/DeleterService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Services/Logs/ExporterService.php
+
+		-
+			message: '#^Method App\\Services\\NotificationBroadcasts\\CreatorService\:\:create\(\) should return App\\Models\\NotificationBroadcast but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/NotificationBroadcasts/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\NotificationBroadcast\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/NotificationBroadcasts/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\NotificationBroadcast\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/NotificationBroadcasts/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\NotificationBroadcast\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/NotificationBroadcasts/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/NotificationBroadcasts/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\NotificationBroadcast\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/NotificationBroadcasts/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\NotificationBroadcasts\\RestorerService\:\:restore\(\) should return App\\Models\\NotificationBroadcast but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/NotificationBroadcasts/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\NotificationBroadcast\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/NotificationBroadcasts/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\NotificationBroadcast\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/NotificationBroadcasts/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\NotificationBroadcasts\\UpdaterService\:\:update\(\) should return App\\Models\\NotificationBroadcast but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/NotificationBroadcasts/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\NotificationBroadcast\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/NotificationBroadcasts/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\OrderStatuses\\CreatorService\:\:create\(\) should return App\\Models\\OrderStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/OrderStatuses/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\OrderStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/OrderStatuses/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\OrderStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/OrderStatuses/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\OrderStatus\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/OrderStatuses/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/OrderStatuses/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\OrderStatus\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/OrderStatuses/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\OrderStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\OrderStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/OrderStatuses/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\OrderStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/OrderStatuses/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\OrderStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/OrderStatuses/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\OrderStatuses\\UpdaterService\:\:update\(\) should return App\\Models\\OrderStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/OrderStatuses/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\OrderStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/OrderStatuses/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Orders\\CreatorService\:\:create\(\) should return App\\Models\\Order but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Orders/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Order\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Orders/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Order\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Orders/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Order\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Orders/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Orders/FormatterService.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: app/Services/Orders/FormatterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Orders/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Order\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Orders/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Orders\\RestorerService\:\:restore\(\) should return App\\Models\\Order but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Orders/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Order\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Orders/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Order\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Orders/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Orders\\UpdaterService\:\:update\(\) should return App\\Models\\Order but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Orders/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Order\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Orders/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Organisations\\CreatorService\:\:create\(\) should return App\\Models\\Organisation but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Organisations/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Organisation\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Organisations/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Organisation\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Organisations/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Organisation\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Organisations/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$pivot\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Organisations/FormatterService.php
+
+		-
+			message: '#^Cannot call method lt\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/Organisations/InvitationService.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\:\:active\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/Organisations/MembershipSeatSyncService.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\:\:active\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/Organisations/OffboardingService.php
+
+		-
+			message: '#^Method App\\Services\\Organisations\\PolicyAuthorisationService\:\:assignableRolesFor\(\) should return Illuminate\\Support\\Collection\<int, array\{id\: int, name\: string\}\> but returns Illuminate\\Support\\Collection\<int, array\{id\: int\|string, name\: string\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Organisations/PolicyAuthorisationService.php
+
+		-
+			message: '#^Method App\\Services\\Organisations\\RestorerService\:\:restore\(\) should return App\\Models\\Organisation but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Organisations/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Organisation\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Organisations/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Organisation\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Organisations/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Organisations\\UpdaterService\:\:update\(\) should return App\\Models\\Organisation but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Organisations/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Organisation\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Organisations/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Permissions\\CreatorService\:\:create\(\) should return App\\Models\\Permission but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Permissions/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Permission\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Permissions/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Permission\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Permissions/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Permission\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Permissions/DeleterService.php
+
+		-
+			message: '#^Method App\\Services\\Permissions\\RestorerService\:\:restore\(\) should return App\\Models\\Permission but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Permissions/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Permission\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Permissions/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Permission\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Permissions/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Permissions\\UpdaterService\:\:update\(\) should return App\\Models\\Permission but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Permissions/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Permission\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Permissions/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\PipelineStages\\CreatorService\:\:create\(\) should return App\\Models\\PipelineStage but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/PipelineStages/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PipelineStage\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PipelineStages/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PipelineStage\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PipelineStages/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\PipelineStage\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/PipelineStages/DeleterService.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: app/Services/PipelineStages/FormatterService.php
+
+		-
+			message: '#^Default value of the parameter \#3 \$context \(array\{\}\) of method App\\Services\\PipelineStages\\ImporterService\:\:persistRow\(\) is incompatible with type array\{pipeline\: App\\Models\\Pipeline\}\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: app/Services/PipelineStages/ImporterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/PipelineStages/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\PipelineStage\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PipelineStages/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\PipelineStages\\RestorerService\:\:restore\(\) should return App\\Models\\PipelineStage but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/PipelineStages/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PipelineStage\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PipelineStages/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\PipelineStage\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/PipelineStages/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\PipelineStages\\UpdaterService\:\:update\(\) should return App\\Models\\PipelineStage but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/PipelineStages/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PipelineStage\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PipelineStages/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\PipelineStatuses\\CreatorService\:\:create\(\) should return App\\Models\\PipelineStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/PipelineStatuses/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PipelineStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PipelineStatuses/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PipelineStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PipelineStatuses/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\PipelineStatus\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/PipelineStatuses/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/PipelineStatuses/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\PipelineStatus\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PipelineStatuses/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\PipelineStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\PipelineStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/PipelineStatuses/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PipelineStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PipelineStatuses/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\PipelineStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/PipelineStatuses/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\PipelineStatuses\\UpdaterService\:\:update\(\) should return App\\Models\\PipelineStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/PipelineStatuses/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PipelineStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PipelineStatuses/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Pipelines\\CreatorService\:\:create\(\) should return App\\Models\\Pipeline but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Pipelines/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Pipeline\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Pipelines/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Pipeline\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Pipelines/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Pipeline\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Pipelines/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Pipelines/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Pipeline\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Pipelines/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Pipelines\\RestorerService\:\:restore\(\) should return App\\Models\\Pipeline but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Pipelines/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Pipeline\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Pipelines/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Pipeline\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Pipelines/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Pipelines\\UpdaterService\:\:update\(\) should return App\\Models\\Pipeline but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Pipelines/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Pipeline\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Pipelines/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Plans\\CreatorService\:\:create\(\) should return App\\Models\\Plan but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Plans/CreatorService.php
+
+		-
+			message: '#^Method App\\Services\\Plans\\DataPreparationService\:\:prepareForCreation\(\) invoked with 2 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: app/Services/Plans/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Plan\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Plans/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Plan\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Plans/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Plan\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Plans/DeleterService.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: app/Services/Plans/QueryService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Plan\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Plans/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Plans\\RestorerService\:\:restore\(\) should return App\\Models\\Plan but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Plans/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Plan\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Plans/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Plan\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Plans/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Plans\\UpdaterService\:\:update\(\) should return App\\Models\\Plan but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Plans/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Plan\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Plans/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Posts\\CreatorService\:\:create\(\) should return App\\Models\\Post but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Posts/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Post\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Posts/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Post\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Posts/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Post\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Posts/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Posts/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Post\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Posts/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Posts\\RestorerService\:\:restore\(\) should return App\\Models\\Post but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Posts/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Post\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Posts/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Post\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Posts/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Posts\\UpdaterService\:\:update\(\) should return App\\Models\\Post but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Posts/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Post\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Posts/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\RegistrationInterests\\CreatorService\:\:create\(\) should return App\\Models\\RegistrationInterest but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/RegistrationInterests/CreatorService.php
+
+		-
+			message: '#^Parameter \#1 \$interest of method App\\Actions\\RegistrationInterests\\NotifyAdminOfNewRegistrationInterest\:\:execute\(\) expects App\\Models\\RegistrationInterest, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/RegistrationInterests/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\RegistrationInterest\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/RegistrationInterests/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\RegistrationInterest\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/RegistrationInterests/DeleterService.php
+
+		-
+			message: '#^Method App\\Services\\RegistrationInterests\\RestorerService\:\:restore\(\) should return App\\Models\\RegistrationInterest but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/RegistrationInterests/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\RegistrationInterest\)\: void given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Services/RegistrationInterests/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Reports\\CreatorService\:\:create\(\) should return App\\Models\\Report but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Reports/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Report\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Reports/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Report\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Reports/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Report\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Reports/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Reports/PolicyAuthorisationService.php
+
+		-
+			message: '#^Method App\\Services\\Reports\\RestorerService\:\:restore\(\) should return App\\Models\\Report but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Reports/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Report\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Reports/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Report\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Reports/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Reports\\UpdaterService\:\:update\(\) should return App\\Models\\Report but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Reports/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Report\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Reports/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Settings\\UpdaterService\:\:apply\(\) should return App\\Models\\Setting but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Settings/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Setting\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Settings/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Tags\\CreatorService\:\:create\(\) should return App\\Models\\Tag but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tags/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Tag\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tags/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Tag\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tags/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Tag\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Tags/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Tags/PolicyAuthorisationService.php
+
+		-
+			message: '#^Method App\\Services\\Tags\\RestorerService\:\:restore\(\) should return App\\Models\\Tag but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tags/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Tag\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tags/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Tag\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Tags/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Tags\\UpdaterService\:\:update\(\) should return App\\Models\\Tag but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tags/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Tag\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tags/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\TaskStatuses\\CreatorService\:\:create\(\) should return App\\Models\\TaskStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/TaskStatuses/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TaskStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TaskStatuses/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TaskStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TaskStatuses/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\TaskStatus\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/TaskStatuses/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/TaskStatuses/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\TaskStatus\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TaskStatuses/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\TaskStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\TaskStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/TaskStatuses/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TaskStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TaskStatuses/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\TaskStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/TaskStatuses/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\TaskStatuses\\UpdaterService\:\:update\(\) should return App\\Models\\TaskStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/TaskStatuses/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TaskStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TaskStatuses/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Tasks\\CreatorService\:\:create\(\) should return App\\Models\\Task but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tasks/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Task\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tasks/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Task\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tasks/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Task\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Tasks/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Tasks/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Task\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tasks/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Tasks\\RestorerService\:\:restore\(\) should return App\\Models\\Task but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tasks/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Task\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tasks/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Task\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Tasks/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Tasks\\UpdaterService\:\:update\(\) should return App\\Models\\Task but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tasks/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Task\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tasks/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\TicketPriorities\\CreatorService\:\:create\(\) should return App\\Models\\TicketPriority but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/TicketPriorities/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TicketPriority\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TicketPriorities/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TicketPriority\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TicketPriorities/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\TicketPriority\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/TicketPriorities/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/TicketPriorities/PolicyAuthorisationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\TicketPriority\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TicketPriorities/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\TicketPriorities\\RestorerService\:\:restore\(\) should return App\\Models\\TicketPriority but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/TicketPriorities/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TicketPriority\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TicketPriorities/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\TicketPriority\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/TicketPriorities/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\TicketPriorities\\UpdaterService\:\:update\(\) should return App\\Models\\TicketPriority but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/TicketPriorities/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TicketPriority\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TicketPriorities/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\TicketStatuses\\CreatorService\:\:create\(\) should return App\\Models\\TicketStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/TicketStatuses/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TicketStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TicketStatuses/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TicketStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TicketStatuses/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\TicketStatus\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/TicketStatuses/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/TicketStatuses/PolicyAuthorisationService.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: app/Services/TicketStatuses/QueryService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\TicketStatus\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TicketStatuses/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\TicketStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\TicketStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/TicketStatuses/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TicketStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TicketStatuses/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\TicketStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/TicketStatuses/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\TicketStatuses\\UpdaterService\:\:update\(\) should return App\\Models\\TicketStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/TicketStatuses/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TicketStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TicketStatuses/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Tickets\\CreatorService\:\:create\(\) should return App\\Models\\Ticket but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tickets/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Ticket\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tickets/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Ticket\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tickets/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Ticket\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Tickets/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Tickets/PolicyAuthorisationService.php
+
+		-
+			message: '#^Method App\\Services\\Tickets\\RestorerService\:\:restore\(\) should return App\\Models\\Ticket but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tickets/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Ticket\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Tickets/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Ticket\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Tickets/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Tickets\\UpdaterService\:\:resolve\(\) should return App\\Models\\Ticket but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tickets/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Tickets\\UpdaterService\:\:unresolve\(\) should return App\\Models\\Ticket but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tickets/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Tickets\\UpdaterService\:\:update\(\) should return App\\Models\\Ticket but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Tickets/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Ticket\)\: void given\.$#'
+			identifier: argument.type
+			count: 3
+			path: app/Services/Tickets/UpdaterService.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:onlyTrashed\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/TrashFilterService.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:withTrashed\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/TrashFilterService.php
+
+		-
+			message: '#^Method App\\Services\\Users\\CreatorService\:\:create\(\) should return App\\Models\\User but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Users/CreatorService.php
+
+		-
+			message: '#^Variable \$user in PHPDoc tag @var does not exist\.$#'
+			identifier: varTag.variableNotFound
+			count: 1
+			path: app/Services/Users/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\User\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Users/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\User\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Users/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\User\:\:\$deleted_at is not writable\.$#'
+			identifier: assign.propertyReadOnly
+			count: 1
+			path: app/Services/Users/DeleterService.php
+
+		-
+			message: '#^Access to undefined constant App\\Models\\Log\:\:ACTION_EXPORT_USER\.$#'
+			identifier: classConstant.notFound
+			count: 1
+			path: app/Services/Users/ExporterService.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: app/Services/Users/QueryService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\User\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Users/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Users\\RestorerService\:\:restore\(\) should return App\\Models\\User but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Users/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\User\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Users/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Users\\UpdaterService\:\:update\(\) should return App\\Models\\User but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Users/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\User\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Users/UpdaterService.php
+
+		-
+			message: '#^Trait App\\Traits\\Commentable is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: app/Traits/Commentable.php
