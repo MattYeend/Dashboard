@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Profile;
 
+use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateProfileRequest extends FormRequest
 {
@@ -12,7 +14,7 @@ class UpdateProfileRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return (bool) $this->user()?->can('editOwnProfile', $this->user());
     }
 
     /**
@@ -23,7 +25,51 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => $this->nameRules(),
+            'email' => $this->emailRules(),
+        ];
+    }
+
+    /**
+     * Get the custom validation messages.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'email.unique' => 'That email address is already in use.',
+        ];
+    }
+
+    /**
+     * Rules for the name field.
+     *
+     * @return array<int, string>
+     */
+    protected function nameRules(): array
+    {
+        return [
+            'required', 
+            'string', 
+            'max:255'
+        ];
+    }
+
+    /**
+     * Rules for the email field.
+     *
+     * @return array<int, mixed>
+     */
+    protected function emailRules(): array
+    {
+        return [
+            'required',
+            'string',
+            'lowercase',
+            'email:rfc',
+            'max:255',
+            Rule::unique(User::class, 'email')->ignore($this->user()->id),
         ];
     }
 }

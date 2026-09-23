@@ -12,7 +12,7 @@ class DestroyProfileSessionsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return (bool) $this->user()?->can('editOwnProfile', $this->user());
     }
 
     /**
@@ -23,7 +23,33 @@ class DestroyProfileSessionsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'password' => $this->passwordRules(),
+        ];
+    }
+
+    /**
+     * Get the custom validation messages.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'password.current_password' => 'The password is incorrect.',
+        ];
+    }
+
+    /**
+     * Rules for the password confirmation field.
+     *
+     * @return array<int, string>
+     */
+    protected function passwordRules(): array
+    {
+        return [
+            'required', 
+            'string', 
+            'current_password'
         ];
     }
 }
