@@ -843,6 +843,9 @@ class Log extends Model implements Auditable
 
     public const ACTION_EXPORT_USER = 387;
 
+    // Own Profile Session Management
+    public const ACTION_REVOKE_OTHER_SESSIONS = 388;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
