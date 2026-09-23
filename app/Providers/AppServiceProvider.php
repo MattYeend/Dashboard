@@ -218,6 +218,12 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($userId ?? $request->ip());
         });
 
+        RateLimiter::for('profile-sensitive', function (Request $request) {
+            $userId = $request->user()?->id;
+
+            return Limit::perMinute(5)->by($userId ?? $request->ip());
+        });
+
         $this->preventDestructiveCommandsInProtectedEnvironments();
     }
 
