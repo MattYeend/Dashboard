@@ -24,6 +24,7 @@ import {
     SquareCheckBig,
     Tag,
     Ticket,
+    UserCog,
     User2,
     UserPlus,
     Workflow,
@@ -47,6 +48,7 @@ import { index as backupsIndex } from '@/routes/backups';
 import { index as calendarIndex } from '@/routes/calendar';
 import { board as dealsBoard } from '@/routes/deals';
 import { index as notificationBroadcastsIndex } from '@/routes/notification-broadcasts';
+import { show as profileShow } from '@/routes/profile';
 import { index as systemIndex } from '@/routes/system';
 import type { NavGroup, NavItem } from '@/types';
 
@@ -55,6 +57,11 @@ const pinnedNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'My Profile',
+        href: profileShow(),
+        icon: UserCog,
     },
 ];
 
