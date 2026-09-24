@@ -23,7 +23,7 @@ class SessionManagementService
      * List the user's sessions. Session identifiers are never returned,
      * because a leaked identifier can be used to hijack a session.
      *
-     * @return Collection<int, array<string, mixed>>
+     * @return Collection<int, array{ip_address: mixed, user_agent: string, last_active_at: string, is_current: bool}>
      */
     public function listFor(User $user, string $currentSessionId): Collection
     {
