@@ -2,29 +2,26 @@
 import type { User } from '@/types';
 
 defineProps<{
-    user: Pick<User, 'id' | 'name' | 'email' | 'role' | 'created_at'>;
+    user: User;
 }>();
 </script>
 
 <template>
-    <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-            <dt class="text-xs text-gray-400">Name</dt>
-            <dd class="text-sm">{{ user.name }}</dd>
-        </div>
-        <div>
-            <dt class="text-xs text-gray-400">Email</dt>
-            <dd class="text-sm">{{ user.email }}</dd>
-        </div>
-        <div>
-            <dt class="text-xs text-gray-400">Role</dt>
-            <dd class="text-sm">{{ user.role }}</dd>
-        </div>
-        <div>
-            <dt class="text-xs text-gray-400">Member since</dt>
-            <dd class="text-sm">
-                {{ new Date(user.created_at).toLocaleDateString('en-GB') }}
-            </dd>
-        </div>
-    </dl>
+    <section class="rounded-lg border border-gray-500 p-4">
+        <h2 class="mb-3 text-sm font-medium text-gray-300">Basic details</h2>
+        <dl class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div>
+                <dt class="text-xs text-gray-400">Name</dt>
+                <dd class="text-sm">{{ user.name }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs text-gray-400">Email</dt>
+                <dd class="text-sm">{{ user.email }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs text-gray-400">Role</dt>
+                <dd class="text-sm">{{ user.role }}</dd>
+            </div>
+        </dl>
+    </section>
 </template>

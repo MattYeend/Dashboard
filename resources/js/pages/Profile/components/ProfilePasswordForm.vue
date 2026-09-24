@@ -1,69 +1,69 @@
 <script setup lang="ts">
-import type { InertiaFormProps } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { update } from '@/routes/profile/password';
 
-interface ProfilePasswordFormData {
+interface PasswordFormData {
     current_password: string;
     password: string;
     password_confirmation: string;
 }
 
-interface Props {
-    errors: Partial<InertiaFormProps<ProfilePasswordFormData>['errors']>;
+const form = useForm<PasswordFormData>({
+    current_password: '',
+    password: '',
+    password_confirmation: '',
+});
+
+function submit(): void {
+    form.put(update().url, {
+        preserveScroll: true,
+        onSuccess: () => form.reset(),
+        onError: () => form.reset('password', 'password_confirmation', 'current_password'),
+    });
 }
-
-defineProps<Props>();
-
-const currentPassword = defineModel<string>('currentPassword', {
-    required: true,
-});
-const password = defineModel<string>('password', { required: true });
-const passwordConfirmation = defineModel<string>('passwordConfirmation', {
-    required: true,
-});
 </script>
 
 <template>
-    <div class="space-y-4">
-        <div>
-            <Label for="current_password">Current password</Label>
+    <form class="flex flex-col gap-4 rounded-lg border border-gray-500 p-4" @submit.prevent="submit">
+        <h2 class="text-sm font-medium text-gray-300">Change password</h2>
+
+        <div class="grid gap-2">
+            <Label for="current-password">Current password</Label>
             <Input
-                id="current_password"
-                v-model="currentPassword"
+                id="current-password"
+                v-model="form.current_password"
                 type="password"
-                class="mt-1 block w-full"
                 autocomplete="current-password"
-                placeholder="Current password"
             />
-            <InputError :message="errors.current_password" />
+            <InputError :message="form.errors.current_password" />
         </div>
 
-        <div>
-            <Label for="password">New password</Label>
-            <Input
-                id="password"
-                v-model="password"
-                type="password"
-                class="mt-1 block w-full"
-                autocomplete="new-password"
-                placeholder="New password"
-            />
-            <InputError :message="errors.password" />
+        <div class="grid gap-2">
+            <Label for="new-password">New password</Label>
+            <Input id="new-password" v-model="form.password" type="password" autocomplete="new-password" />
+            <InputError :message="form.errors.password" />
         </div>
 
-        <div>
-            <Label for="password_confirmation">Confirm password</Label>
+        <div class="grid gap-2">
+            <Label for="confirm-password">Confirm new password</Label>
             <Input
-                id="password_confirmation"
-                v-model="passwordConfirmation"
+                id="confirm-password"
+                v-model="form.password_confirmation"
                 type="password"
-                class="mt-1 block w-full"
                 autocomplete="new-password"
-                placeholder="Confirm password"
             />
-            <InputError :message="errors.password_confirmation" />
         </div>
-    </div>
+
+        <p class="text-xs text-gray-400">
+            Changing your password signs you out of all other devices.
+        </p>
+
+        <div>
+            <Button type="submit" :disabled="form.processing">Update password</Button>
+        </div>
+    </form>
 </template>
