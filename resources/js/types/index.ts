@@ -307,6 +307,13 @@ export interface Address {
     restorer?: { name: string };
 }
 
+export interface UserSession {
+    ip_address: string | null;
+    user_agent: string | null;
+    last_active_at: string;
+    is_current: boolean;
+}
+
 export interface ApiToken {
     id: number;
     name: string;
