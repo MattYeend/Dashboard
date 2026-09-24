@@ -36,12 +36,16 @@ use App\Http\Controllers\PipelineStageController;
 use App\Http\Controllers\PipelineStatusController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PlatformReportingController;
+use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Controllers\Profile\ProfilePasswordController;
+use App\Http\Controllers\Profile\ProfileSessionController;
+use App\Http\Controllers\Profile\ProfileTokenController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegistrationInterestController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\ProfileController as SettingsProfileController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TagController;
@@ -99,6 +103,32 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{organisation}/data-privacy/request-deletion', [OrganisationController::class, 'requestDeletion'])->name('data-privacy.request-deletion');
         Route::get('/{organisation}/data-privacy/exports/{export}', [OrganisationController::class, 'downloadExport'])->name('data-privacy.download');
     });
+
+    Route::prefix('profile')->name('profile.')->group(function () {
+    Route::get('/', [ProfileController::class, 'show'])->name('show');
+    Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
+    Route::match(['put', 'patch'], '/', [ProfileController::class, 'update'])
+        ->middleware('throttle:profile-sensitive')
+        ->name('update');
+    Route::delete('/', [ProfileController::class, 'destroy'])
+        ->middleware('throttle:profile-sensitive')
+        ->name('destroy');
+
+    Route::put('/password', [ProfilePasswordController::class, 'update'])
+        ->middleware('throttle:profile-sensitive')
+        ->name('password.update');
+
+    Route::delete('/sessions', [ProfileSessionController::class, 'destroy'])
+        ->middleware('throttle:profile-sensitive')
+        ->name('sessions.destroy');
+
+    Route::post('/tokens', [ProfileTokenController::class, 'store'])
+        ->middleware('throttle:profile-sensitive')
+        ->name('tokens.store');
+    Route::delete('/tokens/{tokenId}', [ProfileTokenController::class, 'destroy'])
+        ->whereNumber('tokenId')
+        ->name('tokens.destroy');
+});
 
     Route::prefix('platform')->name('platform.')->middleware(['auth', 'verified', 'platform_admin'])->group(function () {
         Route::get('/reporting', [PlatformReportingController::class, 'index'])->name('reporting');
@@ -170,7 +200,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             });
         });
 
-        Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+        Route::get('/profile', [SettingsProfileController::class, 'show'])->name('profile.show');
         Route::match(['put', 'patch'], '/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
 
         Route::get('/users/{user}/profile', [ProfileController::class, 'showOther'])->name('profile.show-other');
