@@ -23,7 +23,7 @@ class ProfileSessionController extends Controller
     public function destroy(DestroyProfileSessionsRequest $request): RedirectResponse
     {
         $this->sessionManagementService->revokeOthers(
-            $request->user(), 
+            $request->user(),
             $request->session()->getId()
         );
 

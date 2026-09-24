@@ -54,8 +54,8 @@ class StoreProfileTokenRequest extends FormRequest
     {
         return [
             'required',
-            'string', 
-            'max:100'
+            'string',
+            'max:100',
         ];
     }
 
@@ -67,9 +67,9 @@ class StoreProfileTokenRequest extends FormRequest
     protected function abilitiesRules(): array
     {
         return [
-            'required', 
-            'array', 
-            'min:1'
+            'required',
+            'array',
+            'min:1',
         ];
     }
 
@@ -81,8 +81,8 @@ class StoreProfileTokenRequest extends FormRequest
     protected function abilityRules(): array
     {
         return [
-            'string', 
-            Rule::in(config('profile.token_abilities', []))
+            'string',
+            Rule::in(config('profile.token_abilities', [])),
         ];
     }
 
@@ -94,9 +94,9 @@ class StoreProfileTokenRequest extends FormRequest
     protected function expiryRules(): array
     {
         return [
-            'required', 
-            'integer', 
-            Rule::in(config('profile.token_lifetimes_days', []))
+            'required',
+            'integer',
+            Rule::in(config('profile.token_lifetimes_days', [])),
         ];
     }
 }

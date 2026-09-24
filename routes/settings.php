@@ -87,6 +87,10 @@ Route::middleware(['auth', 'verified', 'tenant'])->group(function () {
         ->middleware('throttle:6,1')
         ->name('user-password.update');
 
+    Route::delete('settings/sessions', [SecurityController::class, 'destroySessions'])
+        ->middleware('throttle:6,1')
+        ->name('security.sessions.destroy');
+
     /*
     |--------------------------------------------------------------------------
     | Appearance

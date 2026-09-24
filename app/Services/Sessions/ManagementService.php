@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Profile;
+namespace App\Services\Sessions;
 
 use App\Models\Log;
 use App\Models\User;
@@ -10,19 +10,13 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class SessionManagementService
+class ManagementService
 {
-    /**
-     * Create a new service instance.
-     */
     public function __construct(
         private readonly AuditLogService $auditLogService
     ) {}
 
     /**
-     * List the user's sessions. Session identifiers are never returned,
-     * because a leaked identifier can be used to hijack a session.
-     *
      * @return Collection<int, array<string, mixed>>
      */
     public function listFor(User $user, string $currentSessionId): Collection
@@ -43,9 +37,6 @@ class SessionManagementService
             ]);
     }
 
-    /**
-     * Revoke every session for the user except the current one.
-     */
     public function revokeOthers(User $user, string $currentSessionId): int
     {
         if (! $this->usesDatabaseDriver()) {
@@ -61,36 +52,17 @@ class SessionManagementService
             Log::ACTION_REVOKE_OTHER_SESSIONS,
             $user,
             $user,
-            [
-                'after' => ['revoked_sessions' => $revoked],
-            ]);
+            ['after' => ['revoked_sessions' => $revoked]],
+        );
 
         return $revoked;
     }
 
-    /**
-     * Revoke every session for the user, including the current one.
-     */
-    public function revokeAll(User $user): int
-    {
-        if (! $this->usesDatabaseDriver()) {
-            return 0;
-        }
-
-        return DB::table($this->table())->where('user_id', $user->id)->delete();
-    }
-
-    /**
-     * Determine whether sessions are stored in the database.
-     */
     private function usesDatabaseDriver(): bool
     {
         return config('session.driver') === 'database';
     }
 
-    /**
-     * Get the sessions table name.
-     */
     private function table(): string
     {
         return (string) config('session.table', 'sessions');

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Settings\DestroySessionsRequest;
 use App\Http\Requests\Settings\PasswordUpdateRequest;
 use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
+use App\Services\Sessions\ManagementService as SessionManagementService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
@@ -13,6 +15,10 @@ use Laravel\Fortify\Features;
 
 class SecurityController extends Controller
 {
+    public function __construct(
+        private readonly SessionManagementService $sessionManagementService,
+    ) {}
+
     /**
      * Show the user's security settings page.
      */
@@ -23,6 +29,9 @@ class SecurityController extends Controller
             'canManagePasskeys' => Features::canManagePasskeys(),
             'passkeys' => $this->getFormattedPasskeys($request),
             'passwordRules' => $this->getPasswordRules(),
+            'sessions' => $this->sessionManagementService
+                ->listFor($request->user(), $request->session()->getId())
+                ->values(),
         ];
 
         if (Features::canManageTwoFactorAuthentication()) {
@@ -137,5 +146,20 @@ class SecurityController extends Controller
                 'symbols' => false,
                 'uncompromised' => false,
             ];
+    }
+
+    /**
+     * Revoke every session for the authenticated user except this one.
+     */
+    public function destroySessions(DestroySessionsRequest $request): RedirectResponse
+    {
+        $this->sessionManagementService->revokeOthers($request->user(), $request->session()->getId());
+
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => __('Other sessions signed out.'),
+        ]);
+
+        return back();
     }
 }

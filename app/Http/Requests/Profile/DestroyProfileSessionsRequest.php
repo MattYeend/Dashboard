@@ -47,9 +47,9 @@ class DestroyProfileSessionsRequest extends FormRequest
     protected function passwordRules(): array
     {
         return [
-            'required', 
-            'string', 
-            'current_password'
+            'required',
+            'string',
+            'current_password',
         ];
     }
 }

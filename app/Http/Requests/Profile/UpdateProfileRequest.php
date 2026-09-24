@@ -50,9 +50,9 @@ class UpdateProfileRequest extends FormRequest
     protected function nameRules(): array
     {
         return [
-            'required', 
-            'string', 
-            'max:255'
+            'required',
+            'string',
+            'max:255',
         ];
     }
 

@@ -10,10 +10,13 @@ import ManageTwoFactor from '@/components/ManageTwoFactor.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import ManageSessions from '@/pages/settings/components/ManageSessions.vue';
 import { edit } from '@/routes/security';
+import type { UserSession } from '@/types';
 
 type Props = {
     passwordRules: string;
+    sessions: UserSession[];
 } & ManagePasskeysProps &
     ManageTwoFactorProps;
 
@@ -111,6 +114,8 @@ defineOptions({
         :requiresConfirmation="requiresConfirmation"
         :twoFactorEnabled="twoFactorEnabled"
     />
+
+    <ManageSessions :sessions="props.sessions" />
 
     <ManagePasskeys
         :canManagePasskeys="canManagePasskeys"
