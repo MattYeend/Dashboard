@@ -6,20 +6,22 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
 
-test('confirm password screen can be rendered', function () {
-    $user = User::factory()->create();
+describe('confirm password', function () {
+    test('confirm password screen can be rendered', function () {
+        $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(route('password.confirm'));
+        $response = $this->actingAs($user)->get(route('password.confirm'));
 
-    $response->assertOk();
+        $response->assertOk();
 
-    $response->assertInertia(fn (Assert $page) => $page
-        ->component('auth/ConfirmPassword'),
-    );
-});
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('auth/ConfirmPassword'),
+        );
+    });
 
-test('password confirmation requires authentication', function () {
-    $response = $this->get(route('password.confirm'));
+    test('password confirmation requires authentication', function () {
+        $response = $this->get(route('password.confirm'));
 
-    $response->assertRedirect(route('login'));
+        $response->assertRedirect(route('login'));
+    });
 });

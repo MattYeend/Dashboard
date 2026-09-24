@@ -14,35 +14,37 @@ beforeEach(function () {
     $this->seed(RolePermissionSeeder::class);
 });
 
-test('does not leak a plaintext password when creating a user', function () {
-    Mail::fake();
-    Notification::fake();
+describe('create', function () {
+    test('a user with permission can create a user without leaking a plaintext password', function () {
+        Mail::fake();
+        Notification::fake();
 
-    $actor = User::factory()->create();
+        $actor = User::factory()->create();
 
-    $organisation = $this->setUpTestOrganisation();
+        $organisation = $this->setUpTestOrganisation();
 
-    $organisation->users()->attach($actor);
+        $organisation->users()->attach($actor);
 
-    $actor->assignRole('Super Admin');
+        $actor->assignRole('Super Admin');
 
-    $response = $this->actingAs($actor)->post(route('users.store'), [
-        'name' => 'Jane Doe',
-        'email' => 'jane@example.com',
-        'password' => 'Whatever-Temp-Value-1',
-        'password_confirmation' => 'Whatever-Temp-Value-1',
-        'role' => 'user',
-    ]);
+        $response = $this->actingAs($actor)->post(route('users.store'), [
+            'name' => 'Jane Doe',
+            'email' => 'jane@example.com',
+            'password' => 'Whatever-Temp-Value-1',
+            'password_confirmation' => 'Whatever-Temp-Value-1',
+            'role' => 'user',
+        ]);
 
-    $response->assertSessionHasNoErrors();
+        $response->assertSessionHasNoErrors();
 
-    $newUser = User::where('email', 'jane@example.com')->firstOrFail();
+        $newUser = User::where('email', 'jane@example.com')->firstOrFail();
 
-    Mail::assertQueued(WelcomeEmail::class, function (WelcomeEmail $mail) {
-        return ! property_exists($mail, 'password');
+        Mail::assertQueued(WelcomeEmail::class, function (WelcomeEmail $mail) {
+            return ! property_exists($mail, 'password');
+        });
+
+        Notification::assertSentTo($newUser, ResetPassword::class);
+
+        expect(property_exists($newUser, 'plainPassword'))->toBeFalse();
     });
-
-    Notification::assertSentTo($newUser, ResetPassword::class);
-
-    expect(property_exists($newUser, 'plainPassword'))->toBeFalse();
 });

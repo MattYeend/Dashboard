@@ -9,87 +9,93 @@ uses(
     CreatesUsers::class,
 );
 
-test('profile page is displayed', function () {
-    $user = $this->normalUser();
+describe('profile page', function () {
+    test('profile page is displayed', function () {
+        $user = $this->normalUser();
 
-    $response = $this
-        ->actingAs($user)
-        ->get(route('profile.edit'));
+        $response = $this
+            ->actingAs($user)
+            ->get(route('profile.edit'));
 
-    $response->assertOk();
+        $response->assertOk();
+    });
 });
 
-test('profile information can be updated', function () {
-    $user = $this->normalUser();
+describe('update', function () {
+    test('profile information can be updated', function () {
+        $user = $this->normalUser();
 
-    $response = $this
-        ->actingAs($user)
-        ->patch(route('profile.update'), [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $response = $this
+            ->actingAs($user)
+            ->patch(route('profile.update'), [
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+            ]);
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect(route('profile.edit'));
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('profile.edit'));
 
-    $user->refresh();
+        $user->refresh();
 
-    expect($user->name)->toBe('Test User');
-    expect($user->email)->toBe('test@example.com');
-    expect($user->email_verified_at)->toBeNull();
+        expect($user->name)->toBe('Test User');
+        expect($user->email)->toBe('test@example.com');
+        expect($user->email_verified_at)->toBeNull();
+    });
+
+    test('email verification status is unchanged when the email address is unchanged', function () {
+        $user = $this->normalUser();
+
+        $response = $this
+            ->actingAs($user)
+            ->patch(route('profile.update'), [
+                'name' => 'Test User',
+                'email' => $user->email,
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('profile.edit'));
+
+        expect($user->refresh()->email_verified_at)->not->toBeNull();
+    });
 });
 
-test('email verification status is unchanged when the email address is unchanged', function () {
-    $user = $this->normalUser();
+describe('destroy', function () {
+    test('a user with permission can delete their own profile', function () {
+        $user = $this->normalUser();
+        $user->forceFill(['password' => Hash::make('password')])->save();
 
-    $response = $this
-        ->actingAs($user)
-        ->patch(route('profile.update'), [
-            'name' => 'Test User',
-            'email' => $user->email,
-        ]);
+        $response = $this
+            ->actingAs($user)
+            ->delete(route('profile.destroy'), [
+                'password' => 'password',
+            ]);
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect(route('profile.edit'));
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('home'));
 
-    expect($user->refresh()->email_verified_at)->not->toBeNull();
-});
+        $this->assertGuest();
+        expect($user->fresh())->not->toBeNull();
+        expect($user->fresh()->deleted_at)->not->toBeNull();
+    });
 
-test('user can delete their account', function () {
-    $user = $this->normalUser();
-    $user->forceFill(['password' => Hash::make('password')])->save();
+    test('correct password must be provided to delete account', function () {
+        $user = $this->normalUser();
+        $user->forceFill(['password' => Hash::make('password')])->save();
 
-    $response = $this
-        ->actingAs($user)
-        ->delete(route('profile.destroy'), [
-            'password' => 'password',
-        ]);
+        $response = $this
+            ->actingAs($user)
+            ->from(route('profile.edit'))
+            ->delete(route('profile.destroy'), [
+                'password' => 'wrong-password',
+            ]);
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect(route('home'));
+        $response
+            ->assertSessionHasErrors('password')
+            ->assertRedirect(route('profile.edit'));
 
-    $this->assertGuest();
-    expect($user->fresh())->not->toBeNull();
-    expect($user->fresh()->deleted_at)->not->toBeNull();
-});
-
-test('correct password must be provided to delete account', function () {
-    $user = $this->normalUser();
-    $user->forceFill(['password' => Hash::make('password')])->save();
-
-    $response = $this
-        ->actingAs($user)
-        ->from(route('profile.edit'))
-        ->delete(route('profile.destroy'), [
-            'password' => 'wrong-password',
-        ]);
-
-    $response
-        ->assertSessionHasErrors('password')
-        ->assertRedirect(route('profile.edit'));
-
-    expect($user->fresh())->not->toBeNull();
+        expect($user->fresh())->not->toBeNull();
+    });
 });

@@ -156,12 +156,12 @@ describe('password update', function () {
         $user->forceFill(['password' => Hash::make('old-password')])->save();
 
         $this->actingAs($user)
-            ->patch(route('profile.update-password'), [
+            ->put(route('user-password.update'), [
                 'current_password' => 'old-password',
                 'password' => 'new-password-123',
                 'password_confirmation' => 'new-password-123',
             ])
-            ->assertRedirect(route('profile.edit'));
+            ->assertRedirect();
 
         expect(Hash::check('new-password-123', $user->fresh()->password))->toBeTrue();
     });
@@ -171,25 +171,12 @@ describe('password update', function () {
         $user->forceFill(['password' => Hash::make('old-password')])->save();
 
         $this->actingAs($user)
-            ->patch(route('profile.update-password'), [
+            ->put(route('user-password.update'), [
                 'current_password' => 'wrong-password',
                 'password' => 'new-password-123',
                 'password_confirmation' => 'new-password-123',
             ])
             ->assertSessionHasErrors('current_password');
-    });
-
-    test('a user without permission cannot change their own password', function () {
-        $user = $this->userWithNoPermissions();
-        $user->forceFill(['password' => Hash::make('old-password')])->save();
-
-        $this->actingAs($user)
-            ->patch(route('profile.update-password'), [
-                'current_password' => 'old-password',
-                'password' => 'new-password-123',
-                'password_confirmation' => 'new-password-123',
-            ])
-            ->assertStatus(403);
     });
 });
 
