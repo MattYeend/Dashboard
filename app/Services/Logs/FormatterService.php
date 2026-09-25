@@ -7,7 +7,7 @@ use App\Models\Log;
 class FormatterService
 {
     /**
-     * Format a single activity log with all data.
+     * Format a single audit log entry with all data.
      *
      * @return array<string, mixed>
      */
@@ -22,6 +22,10 @@ class FormatterService
             'related_to_user_id' => $log->related_to_user_id,
             'logged_in_user' => $log->loggedInUser ? ['id' => $log->loggedInUser->id, 'name' => $log->loggedInUser->name] : null,
             'related_to_user' => $log->relatedToUser ? ['id' => $log->relatedToUser->id, 'name' => $log->relatedToUser->name] : null,
+            'is_sealed' => $log->sequence !== null,
+            'sequence' => $log->sequence,
+            'hash' => $log->hash,
+            'previous_hash' => $log->previous_hash,
             'created_at' => $log->created_at,
         ];
     }

@@ -18,7 +18,7 @@ class QueryService
     ) {}
 
     /**
-     * Get paginated activity logs with filters.
+     * Get paginated audit trail entries with filters.
      */
     public function getPaginated(User $actor, array $filters = []): array
     {
@@ -88,7 +88,6 @@ class QueryService
             'permissions_meta' => [
                 'can_view_any' => $user->can('viewAny', Log::class),
                 'can_export' => $user->can('export', Log::class),
-                'can_delete' => $user->can('delete activity logs'),
             ],
         ];
     }
