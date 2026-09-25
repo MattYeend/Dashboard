@@ -98,14 +98,23 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $posts = Post::onlyTrashed()
+        $postsById = Post::onlyTrashed()
             ->whereIn('id', $requestedIds)
-            ->get();
+            ->get()
+            ->keyBy('id');
 
         $restored = [];
+        $skipped = [];
 
-        foreach ($posts as $post) {
-            /** @var Post $post */
+        foreach ($requestedIds as $id) {
+            $post = $postsById->get($id);
+
+            if ($post === null) {
+                $skipped[] = $id;
+
+                continue;
+            }
+
             $authoriseCallback($post);
 
             $this->restorer->restore($post, $actor->id);
@@ -115,10 +124,7 @@ class ManagementService
 
         return [
             'restored' => $restored,
-            'skipped' => $requestedIds
-                ->diff($posts->pluck('id'))
-                ->values()
-                ->all(),
+            'skipped' => $skipped,
         ];
     }
 
@@ -132,12 +138,20 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $posts = Post::whereIn('id', $requestedIds)->get();
+        $postsById = Post::whereIn('id', $requestedIds)->get()->keyBy('id');
 
         $deleted = [];
+        $skipped = [];
 
-        foreach ($posts as $post) {
-            /** @var Post $post */
+        foreach ($requestedIds as $id) {
+            $post = $postsById->get($id);
+
+            if ($post === null) {
+                $skipped[] = $id;
+
+                continue;
+            }
+
             $authoriseCallback($post);
 
             $this->destructor->delete($post, $actor->id);
@@ -147,10 +161,7 @@ class ManagementService
 
         return [
             'deleted' => $deleted,
-            'skipped' => $requestedIds
-                ->diff($posts->pluck('id'))
-                ->values()
-                ->all(),
+            'skipped' => $skipped,
         ];
     }
 
