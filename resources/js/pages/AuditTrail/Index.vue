@@ -45,24 +45,37 @@ const filters = ref({
 });
 
 const filterFields = [
-    { key: 'search', type: 'text' as const, placeholder: 'Search audit trail…' },
+    {
+        key: 'search',
+        type: 'text' as const,
+        placeholder: 'Search audit trail…',
+    },
     {
         key: 'action',
         type: 'select' as const,
         get options() {
             return [
                 { value: '', label: 'All actions' },
-                ...Object.entries(props.action_options).map(([value, label]) => ({ value, label })),
+                ...Object.entries(props.action_options).map(
+                    ([value, label]) => ({ value, label }),
+                ),
             ];
         },
     },
-    { key: 'date_from', type: 'text' as const, placeholder: 'From (YYYY-MM-DD)' },
+    {
+        key: 'date_from',
+        type: 'text' as const,
+        placeholder: 'From (YYYY-MM-DD)',
+    },
     { key: 'date_to', type: 'text' as const, placeholder: 'To (YYYY-MM-DD)' },
     {
         key: 'sort_by',
         type: 'select' as const,
         get options() {
-            return Object.entries(props.sort_fields).map(([value, label]) => ({ value, label: `Sort by ${label}` }));
+            return Object.entries(props.sort_fields).map(([value, label]) => ({
+                value,
+                label: `Sort by ${label}`,
+            }));
         },
     },
     {
@@ -76,7 +89,11 @@ const filterFields = [
 ];
 
 function applyFilters(): void {
-    router.get(index().url, filters.value, { preserveState: true, preserveScroll: true, replace: true });
+    router.get(index().url, filters.value, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true,
+    });
 }
 
 function canExport(): boolean {
@@ -92,15 +109,27 @@ function canExport(): boolean {
             <IndexHeader
                 title="Audit trail"
                 :can-create="false"
-                :export-href="canExport() ? auditTrail.export({ query: filters }).url : undefined"
+                :export-href="
+                    canExport()
+                        ? auditTrail.export({ query: filters }).url
+                        : undefined
+                "
                 :can-export="permissions_meta.can_export && canExport()"
             />
 
-            <FilterBar v-model="filters" :fields="filterFields" @change="applyFilters" />
+            <FilterBar
+                v-model="filters"
+                :fields="filterFields"
+                @change="applyFilters"
+            />
 
             <AuditTrailTable :logs="logs.data" />
 
-            <Pagination :meta="logs.meta" :links="logs.links" resource-label="audit entries" />
+            <Pagination
+                :meta="logs.meta"
+                :links="logs.links"
+                resource-label="audit entries"
+            />
         </div>
     </div>
 </template>

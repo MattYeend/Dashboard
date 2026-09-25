@@ -27,17 +27,31 @@ function formatDateTime(value: string): string {
             </thead>
             <tbody>
                 <tr v-for="log in logs" :key="log.id" class="border-b">
-                    <td class="px-3 py-2">{{ formatDateTime(log.created_at) }}</td>
-                    <td class="px-3 py-2">{{ log.action_label }}</td>
-                    <td class="px-3 py-2">{{ log.logged_in_user?.name ?? 'System' }}</td>
-                    <td class="px-3 py-2">{{ log.related_to_user?.name ?? '' }}</td>
-                    <td class="px-3 py-2">{{ log.is_sealed ? 'Yes' : 'Pending' }}</td>
                     <td class="px-3 py-2">
-                        <Link :href="show({ log: log.id }).url" class="underline">View</Link>
+                        {{ formatDateTime(log.created_at) }}
+                    </td>
+                    <td class="px-3 py-2">{{ log.action_label }}</td>
+                    <td class="px-3 py-2">
+                        {{ log.logged_in_user?.name ?? 'System' }}
+                    </td>
+                    <td class="px-3 py-2">
+                        {{ log.related_to_user?.name ?? '' }}
+                    </td>
+                    <td class="px-3 py-2">
+                        {{ log.is_sealed ? 'Yes' : 'Pending' }}
+                    </td>
+                    <td class="px-3 py-2">
+                        <Link
+                            :href="show({ log: log.id }).url"
+                            class="underline"
+                            >View</Link
+                        >
                     </td>
                 </tr>
                 <tr v-if="logs.length === 0">
-                    <td colspan="6" class="px-3 py-6 text-center">No entries match these filters.</td>
+                    <td colspan="6" class="px-3 py-6 text-center">
+                        No entries match these filters.
+                    </td>
                 </tr>
             </tbody>
         </table>

@@ -11,7 +11,8 @@ defineProps<{
         <h2 class="mb-3 text-sm font-medium">Integrity</h2>
 
         <p v-if="!log.is_sealed" class="text-sm">
-            This entry has not been sealed into the hash chain yet. This normally takes under a minute.
+            This entry has not been sealed into the hash chain yet. This
+            normally takes under a minute.
         </p>
 
         <dl v-else class="grid grid-cols-1 gap-3">
@@ -21,11 +22,13 @@ defineProps<{
             </div>
             <div>
                 <dt class="text-xs">Hash</dt>
-                <dd class="break-all text-xs">{{ log.hash }}</dd>
+                <dd class="text-xs break-all">{{ log.hash }}</dd>
             </div>
             <div>
                 <dt class="text-xs">Previous hash</dt>
-                <dd class="break-all text-xs">{{ log.previous_hash ?? 'Start of chain' }}</dd>
+                <dd class="text-xs break-all">
+                    {{ log.previous_hash ?? 'Start of chain' }}
+                </dd>
             </div>
         </dl>
     </section>

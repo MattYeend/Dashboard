@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use LogicException;
 use App\Contracts\Auditable;
 use App\Services\SensitiveDataMaskerService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
+use LogicException;
 
 class Log extends Model implements Auditable
 {

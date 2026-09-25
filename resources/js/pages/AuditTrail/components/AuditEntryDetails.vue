@@ -24,11 +24,15 @@ function formatDateTime(value: string): string {
             </div>
             <div>
                 <dt class="text-xs">Performed by</dt>
-                <dd class="text-sm">{{ log.logged_in_user?.name ?? 'System' }}</dd>
+                <dd class="text-sm">
+                    {{ log.logged_in_user?.name ?? 'System' }}
+                </dd>
             </div>
             <div>
                 <dt class="text-xs">Related to</dt>
-                <dd class="text-sm">{{ log.related_to_user?.name ?? 'None' }}</dd>
+                <dd class="text-sm">
+                    {{ log.related_to_user?.name ?? 'None' }}
+                </dd>
             </div>
         </dl>
     </section>

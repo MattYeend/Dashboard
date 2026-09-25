@@ -55,14 +55,14 @@ class ExporterService
         $callback = function () use ($query) {
             $handle = fopen('php://output', 'w');
             fputcsv($handle, [
-                'ID', 
-                'Action', 
-                'Performed by', 
-                'Related to', 
-                'Details', 
+                'ID',
+                'Action',
+                'Performed by',
+                'Related to',
+                'Details',
                 'Sequence',
-                'Hash', 
-                'Date'
+                'Hash',
+                'Date',
             ]);
 
             $query->orderBy('id')->chunk(500, function ($logs) use ($handle) {

@@ -144,8 +144,8 @@ class IndexLogRequest extends FormRequest
         return [
             'nullable',
             Rule::in([
-                'created_at', 
-                'action_id'
+                'created_at',
+                'action_id',
             ]),
         ];
     }
@@ -160,8 +160,8 @@ class IndexLogRequest extends FormRequest
         return [
             'nullable',
             Rule::in([
-                'asc', 
-                'desc'
+                'asc',
+                'desc',
             ]),
         ];
     }
