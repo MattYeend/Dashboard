@@ -1224,3 +1224,15 @@ export interface OrganisationDataPrivacyPermissions {
     can_export: boolean;
     can_delete: boolean;
 }
+
+export interface AuditLogEntry extends ActivityLog {
+    is_sealed: boolean;
+    sequence: number | null;
+    hash: string | null;
+    previous_hash: string | null;
+}
+
+export interface AuditTrailPermissionsMeta {
+    can_view_any: boolean;
+    can_export: boolean;
+}
