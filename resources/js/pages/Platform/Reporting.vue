@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { PlatformReportingMetrics } from '@/types';
 import PlatformGrowthChart from '@/pages/Platform/components/PlatformGrowthChart.vue';
 import PlatformMetricsSummary from '@/pages/Platform/components/PlatformMetricsSummary.vue';
 import PlatformSubscriptionBreakdown from '@/pages/Platform/components/PlatformSubscriptionBreakdown.vue';
+import type { PlatformReportingMetrics } from '@/types';
 
 defineProps<{ metrics: PlatformReportingMetrics }>();
 

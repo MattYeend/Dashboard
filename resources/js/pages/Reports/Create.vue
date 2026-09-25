@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
+import { store as reportsStore } from '@/routes/reports';
 import type { ReportType } from '@/types';
 import ReportForm from './components/ReportForm.vue';
-import { store as reportsStore } from '@/routes/reports';
 
 defineProps<{
     reportTypes: ReportType[];

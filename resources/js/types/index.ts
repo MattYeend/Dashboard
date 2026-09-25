@@ -479,6 +479,10 @@ export interface Invoice {
         name: string | null;
         phone: string | null;
         email: string | null;
+        address: string | null;
+        city: string | null;
+        postal_code: string | null;
+        country: string | null;
     } | null;
     order?: { id: number } | null;
     status?: {

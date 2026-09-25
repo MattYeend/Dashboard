@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/vue3';
-import type { Organisation } from '@/types';
 import OrganisationBrandingForm from '@/pages/Organisations/components/OrganisationBrandingForm.vue';
 import OrganisationPreferencesForm from '@/pages/Organisations/components/OrganisationPreferencesForm.vue';
+import type { Organisation } from '@/types';
 
 interface Props {
     organisation: Organisation;

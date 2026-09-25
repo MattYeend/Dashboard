@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 import TaskAssignmentDetailsForm from '@/pages/Tasks/components/TaskAssignmentDetailsForm.vue';
 import TaskBasicDetailsForm from '@/pages/Tasks/components/TaskBasicDetailsForm.vue';
 import TaskDateDetailsForm from '@/pages/Tasks/components/TaskDateDetailsForm.vue';
+import TaskTagsForm from '@/pages/Tasks/components/TaskTagsForm.vue';
 import { index as tasksIndex } from '@/routes/tasks';
 import type { TaskStatus, UserOption } from '@/types';
-import TaskTagsForm from '@/pages/Tasks/components/TaskTagsForm.vue';
 
 interface TaskFormData {
     title: string;
