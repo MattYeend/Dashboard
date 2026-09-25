@@ -22,3 +22,11 @@ Schedule::command(RunScheduledReports::class)
 Schedule::command(HardDeleteExpiredOrganisations::class)->daily();
 
 Schedule::command('imports:prune-stale-uploads')->twiceDaily();
+
+Schedule::command('logs:seal')
+    ->hourly()
+    ->withoutOverlapping()
+    ->onOneServer();
+Schedule::command('logs:verify')
+    ->dailyAt('02:30')
+    ->onOneServer();
