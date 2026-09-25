@@ -22,6 +22,8 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceItemController;
 use App\Http\Controllers\InvoiceStatusController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\Logs\LogController;
+use App\Http\Controllers\Logs\LogExportController;
 use App\Http\Controllers\NotificationBroadcastController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
@@ -870,6 +872,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/export', [ActivityLogController::class, 'export'])->name('export');
             Route::get('/', [ActivityLogController::class, 'index'])->name('index');
             Route::delete('/{log}', [ActivityLogController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('audit-trail')->name('audit-trail.')->group(function () {
+            Route::get('/export', [LogExportController::class, 'export'])
+                ->middleware('throttle:audit-export')
+                ->name('export');
+            Route::get('/', [LogController::class, 'index'])->name('index');
+            Route::get('/{log}', [LogController::class, 'show'])->whereNumber('log')->name('show');
         });
 
         Route::prefix('settings')->name('settings.')->group(function () {

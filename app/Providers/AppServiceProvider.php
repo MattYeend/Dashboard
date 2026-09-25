@@ -224,6 +224,10 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($userId ?? $request->ip());
         });
 
+        RateLimiter::for('audit-export', function (Request $request): Limit {
+            return Limit::perMinute(3)->by((string) $request->user()?->getAuthIdentifier());
+        });
+
         $this->preventDestructiveCommandsInProtectedEnvironments();
     }
 
