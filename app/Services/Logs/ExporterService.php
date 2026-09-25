@@ -17,7 +17,7 @@ class ExporterService
     ) {}
 
     /**
-     * Stream all matching activity logs as a CSV download.
+     * Stream all matching audit trail entries as a CSV download.
      *
      * @param  array<string, mixed>  $filters
      */
@@ -46,7 +46,7 @@ class ExporterService
         }
 
         $this->auditLogService->record(
-            Log::ACTION_EXPORT_ACTIVITY_LOG,
+            Log::ACTION_EXPORT_AUDIT_TRAIL,
             Auth::user(),
             null,
             ['filters' => $filters, 'count' => (clone $query)->count()],
@@ -54,7 +54,16 @@ class ExporterService
 
         $callback = function () use ($query) {
             $handle = fopen('php://output', 'w');
-            fputcsv($handle, ['ID', 'Action', 'Performed by', 'Related to', 'Details', 'Date']);
+            fputcsv($handle, [
+                'ID', 
+                'Action', 
+                'Performed by', 
+                'Related to', 
+                'Details', 
+                'Sequence',
+                'Hash', 
+                'Date'
+            ]);
 
             $query->orderBy('id')->chunk(500, function ($logs) use ($handle) {
                 foreach ($logs as $log) {
@@ -64,6 +73,8 @@ class ExporterService
                         $log->loggedInUser?->name ?? 'System',
                         $log->relatedToUser?->name ?? '',
                         json_encode($log->data),
+                        $log->sequence,
+                        $log->hash,
                         $log->created_at,
                     ]);
                 }
@@ -74,7 +85,7 @@ class ExporterService
 
         return response()->streamDownload(
             $callback,
-            'activity-logs-'.now()->format('Y-m-d-His').'.csv',
+            'audit-trail-'.now()->format('Y-m-d-His').'.csv',
             ['Content-Type' => 'text/csv']
         );
     }
