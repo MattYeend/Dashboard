@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use LogicException;
 use App\Contracts\Auditable;
+use App\Services\SensitiveDataMaskerService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -846,6 +848,8 @@ class Log extends Model implements Auditable
     // Own Profile Session Management
     public const ACTION_REVOKE_OTHER_SESSIONS = 388;
 
+    public const ACTION_EXPORT_AUDIT_TRAIL = 389;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
@@ -884,6 +888,21 @@ class Log extends Model implements Auditable
     ];
 
     /**
+     * Boot the model. Audit entries can be created but never changed or
+     * deleted through Eloquent.
+     */
+    protected static function booted(): void
+    {
+        static::updating(function (): never {
+            throw new LogicException('Audit log entries are immutable.');
+        });
+
+        static::deleting(function (): never {
+            throw new LogicException('Audit log entries cannot be deleted.');
+        });
+    }
+
+    /**
      * Get the user who performed the action.
      *
      * @return BelongsTo<User,Log>
@@ -914,7 +933,7 @@ class Log extends Model implements Auditable
     ): self {
         return self::create([
             'action_id' => $action,
-            'data' => $data,
+            'data' => app(SensitiveDataMaskerService::class)->mask($data),
             'logged_in_user_id' => $loggedInUserId ?? Auth::id(),
             'related_to_user_id' => $relatedToUserId,
         ]);
