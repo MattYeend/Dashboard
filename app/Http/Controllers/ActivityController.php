@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Activities\StoreActivityRequest;
+use App\Http\Requests\Activities\UpdateActivityRequest;
 use App\Models\Activity;
 use App\Services\Activities\ManagementService;
 use App\Services\Activities\QueryService;
@@ -74,6 +75,24 @@ class ActivityController extends Controller
         }
 
         return back();
+    }
+
+    /**
+     * Update an existing activity.
+     */
+    public function update(
+        UpdateActivityRequest $request,
+        Activity $activity
+    ): JsonResponse|RedirectResponse {
+        $this->authorize('update', $activity);
+
+        $activity = $this->management->update($request, $activity);
+
+        if ($request->wantsJson()) {
+            return response()->json($activity);
+        }
+
+        return redirect()->route('activities.index');
     }
 
     /**

@@ -16,7 +16,6 @@ beforeEach(function () {
 
 describe('create', function () {
     test('a user with permission can create a user without leaking a plaintext password', function () {
-        Mail::fake();
         Notification::fake();
 
         $actor = User::factory()->create();
