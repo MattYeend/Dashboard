@@ -93,6 +93,9 @@ return [
         'subscriptions', // Cashier - confirmed: keyed on user_id, not organisation_id
         'subscription_items', // Cashier - keyed on subscription_id, not organisation_id
         'settings', // confirmed from app/Models/Setting.php: a single row of platform-wide admin config (site_name, maintenance_mode, two_factor_required, session_timeout_minutes, ...), no organisation_id column at all - not per-organisation data
+        'registration_interests', // confirmed from RegistrationInterestController::store()'s own docblock: a public, unauthenticated pre-signup lead capture, created before any organisation or user account exists
+        'dashboard_widget_preferences', // confirmed from DashboardWidgetPreferenceController: keyed by user (forUser()/updateForUser()), never touches an organisation
+        'custom_dashboard_widgets', // confirmed from CustomDashboardWidgetController::destroy()'s explicit user_id ownership check, not organisation_id
     ],
 
     /*
