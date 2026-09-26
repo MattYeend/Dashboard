@@ -123,11 +123,6 @@ return [
 
     'global_scope_bypass_allow_list' => [
         'app/Actions/Organisations/CascadeSoftDeleteOrganisationScopedRecords.php',
-        // app/Services/Platform/ReportingService.php is NOT listed here.
-        // Its withoutGlobalScope(s) calls are removed entirely in Commit 10
-        // rather than allow-listed, because Organisation, User and
-        // Subscription are all central_tables that never carry the
-        // "organisation" scope in the first place - the calls were dead
-        // code, not a genuine bypass.
+        'app/Services/Organisations/DataExportService.php',
     ],
 ];

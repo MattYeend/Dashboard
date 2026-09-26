@@ -31,7 +31,7 @@ class ReportingService
      */
     protected function organisationCount(): int
     {
-        return Organisation::withoutGlobalScopes()->count();
+        return Organisation::count();
     }
 
     /**
