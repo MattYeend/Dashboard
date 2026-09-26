@@ -872,6 +872,7 @@ class Log extends Model implements Auditable
      * @var array<int,string>
      */
     protected $fillable = [
+        'organisation_id',
         'action_id',
         'data',
         'logged_in_user_id',
@@ -932,11 +933,23 @@ class Log extends Model implements Auditable
         ?int $relatedToUserId = null
     ): self {
         return self::create([
+            'organisation_id' => Organisation::current()?->id,
             'action_id' => $action,
             'data' => app(SensitiveDataMaskerService::class)->mask($data),
             'logged_in_user_id' => $loggedInUserId ?? Auth::id(),
             'related_to_user_id' => $relatedToUserId,
         ]);
+    }
+
+    /**
+     * Scope a query to the current organisation's log entries.
+     *
+     * @param  Builder<Log>  $query
+     * @return Builder<Log>
+     */
+    public function scopeForCurrentOrganisation(Builder $query): Builder
+    {
+        return $query->where('organisation_id', Organisation::current()?->id);
     }
 
     /**

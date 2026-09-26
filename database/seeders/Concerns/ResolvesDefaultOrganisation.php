@@ -6,18 +6,22 @@ use App\Models\Organisation;
 
 /**
  * Resolves (or creates) the Default organisation used to backfill
- * seeder-created records that predate multi-organisation support.
+ * seeder-created records that predate multi-organisation support,
+ * and makes it the current tenant so BelongsToOrganisation-guarded
+ * models can be created without every seeder call site needing to
+ * remember to do so itself.
  */
 trait ResolvesDefaultOrganisation
 {
-    /**
-     * Get the Default organisation, creating it if it doesn't exist yet.
-     */
     protected function defaultOrganisation(): Organisation
     {
-        return Organisation::firstOrCreate(
+        $organisation = Organisation::firstOrCreate(
             ['slug' => 'default'],
             ['name' => 'Default', 'slug' => 'default']
         );
+
+        $organisation->makeCurrent();
+
+        return $organisation;
     }
 }

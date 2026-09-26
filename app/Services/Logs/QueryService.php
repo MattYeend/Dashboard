@@ -3,6 +3,7 @@
 namespace App\Services\Logs;
 
 use App\Models\Log;
+use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -41,7 +42,10 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Log::query()->with(['loggedInUser', 'relatedToUser']);
+        $query = Log::query()
+            ->forCurrentOrganisation()
+            ->with(['loggedInUser', 'relatedToUser']);
+
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->sortingService->applySorting(
