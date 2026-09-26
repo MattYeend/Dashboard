@@ -5,11 +5,11 @@ use App\Models\InvoiceItem;
 use App\Models\Organisation;
 use App\Models\Pipeline;
 use App\Models\PipelineStage;
-use Tests\Concerns\ActsAsOrganisationMember;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Tests\Concerns\ActsAsOrganisationMember;
 
 uses(
-    LazilyRefreshDatabase::class, 
+    LazilyRefreshDatabase::class,
     ActsAsOrganisationMember::class
 );
 

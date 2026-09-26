@@ -2,12 +2,12 @@
 
 use App\Models\Organisation;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\Concerns\ActsAsOrganisationMember;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
 uses(
-    LazilyRefreshDatabase::class, 
+    LazilyRefreshDatabase::class,
     ActsAsOrganisationMember::class
 );
 
@@ -22,7 +22,6 @@ afterEach(function (): void {
 describe('query isolation', function () {
     test('never returns another organisation\'s rows', function (): void {
         /** @var TestCase $this */
-
         $leaks = [];
 
         foreach (config('organisations.scoped_models') as $model) {
@@ -74,7 +73,7 @@ describe('query isolation', function () {
                     ->exists()
             ) {
                 $leaks[] =
-                    "{$model}: factory did not persist a record " .
+                    "{$model}: factory did not persist a record ".
                     '(make the factory self-sufficient)';
             }
         }
@@ -84,7 +83,6 @@ describe('query isolation', function () {
 
     test('cannot update or delete another organisation\'s rows', function (): void {
         /** @var TestCase $this */
-
         $failures = [];
 
         foreach (config('organisations.scoped_models') as $model) {
@@ -110,7 +108,7 @@ describe('query isolation', function () {
 
             if ($affected !== 0) {
                 $failures[] =
-                    "{$model}: mass update or delete reached another " .
+                    "{$model}: mass update or delete reached another ".
                     "organisation ({$affected} rows)";
             }
         }
@@ -122,7 +120,6 @@ describe('query isolation', function () {
 describe('fail closed behaviour', function () {
     test('fails closed when there is no current organisation', function (): void {
         /** @var TestCase $this */
-
         $visible = [];
 
         foreach (config('organisations.scoped_models') as $model) {
@@ -144,7 +141,6 @@ describe('fail closed behaviour', function () {
 
     test('refuses to create a record for a different organisation', function (): void {
         /** @var TestCase $this */
-
         $failures = [];
 
         foreach (config('organisations.scoped_models') as $model) {

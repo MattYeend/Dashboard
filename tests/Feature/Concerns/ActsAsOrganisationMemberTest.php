@@ -2,13 +2,13 @@
 
 namespace Tests\Concerns;
 
-use App\Models\Contact;
-use App\Models\Order;
+use App\Models\Activity;
 use App\Models\Address;
 use App\Models\Comment;
-use App\Models\Activity;
-use App\Models\InteractionLog;
 use App\Models\Company;
+use App\Models\Contact;
+use App\Models\InteractionLog;
+use App\Models\Order;
 use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -57,7 +57,7 @@ trait ActsAsOrganisationMember
      * @param  array<string, mixed>  $attributes
      */
     protected function createTenantTestRecord(
-        string $model, 
+        string $model,
         array $attributes = []
     ): Model {
         $polymorphic = [

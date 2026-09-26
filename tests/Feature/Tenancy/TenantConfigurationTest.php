@@ -1,8 +1,9 @@
 <?php
 
 use App\Models\Organisation;
-use Spatie\Multitenancy\Tasks\PrefixCacheTask;
+use App\Models\Setting;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Spatie\Multitenancy\Tasks\PrefixCacheTask;
 
 uses(LazilyRefreshDatabase::class);
 
@@ -35,7 +36,7 @@ describe('organisation config lists', function () {
     });
 
     test('does not scope the Setting model', function () {
-        expect(config('organisations.scoped_models'))->not->toContain(\App\Models\Setting::class);
+        expect(config('organisations.scoped_models'))->not->toContain(Setting::class);
         expect(config('organisations.central_tables'))->toContain('settings');
     });
 });

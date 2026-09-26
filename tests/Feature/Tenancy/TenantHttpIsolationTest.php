@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Activity;
+use App\Models\Address;
+use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Company;
 use App\Models\Contact;
@@ -26,11 +28,11 @@ use App\Models\TaskStatus;
 use App\Models\Ticket;
 use App\Models\TicketPriority;
 use App\Models\TicketStatus;
-use Tests\Concerns\ActsAsOrganisationMember;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Tests\Concerns\ActsAsOrganisationMember;
 
 uses(
-    LazilyRefreshDatabase::class, 
+    LazilyRefreshDatabase::class,
     ActsAsOrganisationMember::class
 );
 
@@ -49,8 +51,8 @@ function tenantResourceMap(): array
         'tasks' => Task::class,
         'order-statuses' => OrderStatus::class,
         'orders' => Order::class,
-        'addresses' => \App\Models\Address::class,
-        'categories' => \App\Models\Category::class,
+        'addresses' => Address::class,
+        'categories' => Category::class,
         'posts' => Post::class,
         'invoice-statuses' => InvoiceStatus::class,
         'deal-statuses' => DealStatus::class,

@@ -1,8 +1,8 @@
 <?php
 
 use App\Traits\BelongsToOrganisation;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 
 uses(LazilyRefreshDatabase::class);
 
@@ -25,7 +25,7 @@ describe('table scoping', function () {
         $missing = collect(config('organisations.scoped_models'))
             ->reject(
                 fn (string $model): bool => Schema::hasColumn(
-                    (new $model())->getTable(),
+                    (new $model)->getTable(),
                     'organisation_id'
                 )
             )
@@ -55,7 +55,7 @@ describe('model scoping', function () {
     test('does not allow organisation_id to be mass assigned', function () {
         $fillable = collect(config('organisations.scoped_models'))
             ->filter(
-                fn (string $model): bool => (new $model())->isFillable('organisation_id')
+                fn (string $model): bool => (new $model)->isFillable('organisation_id')
             )
             ->values()
             ->all();

@@ -214,7 +214,9 @@ const auditFeed = [
                         :key="module.route"
                         class="flex items-center gap-6 py-4"
                     >
-                        <span class="font-mono text-xs text-[#706f6c] dark:text-[#A1A09A]">
+                        <span
+                            class="font-mono text-xs text-[#706f6c] dark:text-[#A1A09A]"
+                        >
                             {{ module.code }}
                         </span>
                         <div class="flex-1">
@@ -229,7 +231,9 @@ const auditFeed = [
                                 {{ module.detail }}
                             </p>
                         </div>
-                        <span class="font-mono text-xs text-[#706f6c] dark:text-[#A1A09A]">
+                        <span
+                            class="font-mono text-xs text-[#706f6c] dark:text-[#A1A09A]"
+                        >
                             {{ module.route }}
                         </span>
                     </li>

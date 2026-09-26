@@ -3,7 +3,6 @@
 namespace App\Services\Logs;
 
 use App\Models\Log;
-use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 

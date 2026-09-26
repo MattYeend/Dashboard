@@ -247,7 +247,7 @@ const rightNavItems: NavItem[] = [
                                                     rel="noopener noreferrer"
                                                 >
                                                     <span class="sr-only">
-                                                        {{ item.title}}
+                                                        {{ item.title }}
                                                     </span>
                                                     <component
                                                         :is="item.icon"
