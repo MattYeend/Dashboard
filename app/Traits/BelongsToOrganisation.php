@@ -51,16 +51,18 @@ trait BelongsToOrganisation
                 );
             }
 
+            $organisationId = $model->getAttribute('organisation_id');
+
             if (
-                $model->organisation_id !== null
-                && (int) $model->organisation_id !== (int) $tenant->id
+                $organisationId !== null
+                && (int) $organisationId !== (int) $tenant->id
             ) {
                 throw new RuntimeException(
                     'Cannot create '.$model::class.' for a different organisation.'
                 );
             }
 
-            $model->organisation_id = $tenant->id;
+            $model->setAttribute('organisation_id', $tenant->id);
         });
     }
 
