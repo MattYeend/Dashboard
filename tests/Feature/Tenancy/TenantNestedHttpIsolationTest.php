@@ -6,8 +6,12 @@ use App\Models\Organisation;
 use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use Tests\Concerns\ActsAsOrganisationMember;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
-uses(ActsAsOrganisationMember::class);
+uses(
+    LazilyRefreshDatabase::class, 
+    ActsAsOrganisationMember::class
+);
 
 beforeEach(function () {
     $this->setUpOrganisationIsolation();

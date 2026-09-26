@@ -18,7 +18,6 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int|null $organisation_id
  * @property string $commentable_type
  * @property int $commentable_id
  * @property string $content
@@ -39,7 +38,6 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, User> $mentions
  */
 #[Fillable([
-    'organisation_id',
     'commentable_type',
     'commentable_id',
     'content',

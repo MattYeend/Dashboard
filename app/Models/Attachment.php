@@ -15,7 +15,6 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int|null $organisation_id
  * @property string $attachable_type
  * @property int $attachable_id
  * @property string $original_filename
@@ -30,7 +29,6 @@ use Illuminate\Support\Carbon;
  * @property-read Model $attachable
  */
 #[Fillable([
-    'organisation_id',
     'attachable_type',
     'attachable_id',
     'original_filename',

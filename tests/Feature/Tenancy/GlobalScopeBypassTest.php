@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+
+uses(LazilyRefreshDatabase::class);
 
 describe('global scope bypass allow-list', function () {
     test('does not bypass global scopes outside the reviewed allow-list', function () {

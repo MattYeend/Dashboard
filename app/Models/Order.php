@@ -16,7 +16,6 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int|null $organisation_id
  * @property string $orderable_type
  * @property int $orderable_id
  * @property string $order_number
@@ -49,7 +48,6 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
-    'organisation_id',
     'orderable_type',
     'orderable_id',
     'order_number',

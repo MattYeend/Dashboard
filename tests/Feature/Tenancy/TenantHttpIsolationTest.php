@@ -27,8 +27,12 @@ use App\Models\Ticket;
 use App\Models\TicketPriority;
 use App\Models\TicketStatus;
 use Tests\Concerns\ActsAsOrganisationMember;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
-uses(ActsAsOrganisationMember::class);
+uses(
+    LazilyRefreshDatabase::class, 
+    ActsAsOrganisationMember::class
+);
 
 /**
  * Route prefix to model, for resources with full show/edit/update/destroy

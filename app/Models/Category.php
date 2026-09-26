@@ -16,7 +16,6 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int|null $organisation_id
  * @property int|null $parent_id
  * @property string $name
  * @property string $slug
@@ -30,7 +29,6 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $accountManager
  */
 #[Fillable([
-    'organisation_id',
     'parent_id',
     'name',
     'slug',

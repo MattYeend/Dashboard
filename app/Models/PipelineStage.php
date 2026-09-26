@@ -15,7 +15,6 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int|null $organisation_id
  * @property int $pipeline_id
  * @property int|null $deal_status_id
  * @property string $title
@@ -41,7 +40,6 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
-    'organisation_id',
     'pipeline_id',
     'deal_status_id',
     'title',

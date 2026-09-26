@@ -11,7 +11,6 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int|null $organisation_id
  * @property int $user_id
  * @property int $likeable_id
  * @property string $likeable_type
@@ -21,7 +20,6 @@ use Illuminate\Support\Carbon;
  * @property-read Model $likeable
  */
 #[Fillable([
-    'organisation_id',
     'user_id',
     'likeable_id',
     'likeable_type',

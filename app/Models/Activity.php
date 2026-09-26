@@ -16,7 +16,6 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int|null $organisation_id
  * @property int $activityable_id
  * @property string $activityable_type
  * @property ActivityType $type
@@ -38,7 +37,6 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $restorer
  */
 #[Fillable([
-    'organisation_id',
     'activityable_id',
     'activityable_type',
     'type',

@@ -18,7 +18,6 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int|null $organisation_id
  * @property string $contactable_type
  * @property int $contactable_id
  * @property string|null $name
@@ -32,7 +31,6 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, Address> $addresses
  */
 #[Fillable([
-    'organisation_id',
     'contactable_type',
     'contactable_id',
     'name',

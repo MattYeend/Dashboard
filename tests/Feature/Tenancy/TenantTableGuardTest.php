@@ -2,6 +2,9 @@
 
 use App\Traits\BelongsToOrganisation;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+
+uses(LazilyRefreshDatabase::class);
 
 describe('table scoping', function () {
     test('has an organisation_id on every table that is not explicitly central', function () {

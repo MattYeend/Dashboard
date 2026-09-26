@@ -2,6 +2,9 @@
 
 use App\Models\Organisation;
 use Spatie\Multitenancy\Tasks\PrefixCacheTask;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+
+uses(LazilyRefreshDatabase::class);
 
 describe('multitenancy configuration', function () {
     test('uses the organisation model as the tenant', function () {

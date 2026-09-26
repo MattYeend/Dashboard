@@ -4,8 +4,12 @@ use App\Models\Organisation;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tests\Concerns\ActsAsOrganisationMember;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
-uses(ActsAsOrganisationMember::class);
+uses(
+    LazilyRefreshDatabase::class, 
+    ActsAsOrganisationMember::class
+);
 
 beforeEach(function (): void {
     $this->setUpOrganisationIsolation();
