@@ -24,7 +24,7 @@ describe('table scoping', function () {
     test('has an organisation_id column for every scoped model', function () {
         $missing = collect(config('organisations.scoped_models'))
             ->reject(
-                fn (string $model): bool => ! Schema::hasColumn(
+                fn (string $model): bool => Schema::hasColumn(
                     (new $model())->getTable(),
                     'organisation_id'
                 )

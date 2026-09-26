@@ -2,8 +2,16 @@
 
 namespace Tests\Concerns;
 
+use App\Models\Contact;
+use App\Models\Order;
+use App\Models\Address;
+use App\Models\Comment;
+use App\Models\Activity;
+use App\Models\InteractionLog;
+use App\Models\Company;
 use App\Models\Organisation;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static $this withSession(array $data)
@@ -37,5 +45,36 @@ trait ActsAsOrganisationMember
         ]);
 
         return $this->actingAsWithoutOrganisation($user);
+    }
+
+    /**
+     * Create a record of the given scoped model for use in tenancy tests.
+     * Polymorphic models need a parent to attach to via forModel(), created
+     * fresh in whichever organisation is currently active when this runs;
+     * every other model is created directly. Always call this from inside
+     * the target organisation's execute() context.
+     *
+     * @param  array<string, mixed>  $attributes
+     */
+    protected function createTenantTestRecord(
+        string $model, 
+        array $attributes = []
+    ): Model {
+        $polymorphic = [
+            Contact::class,
+            Order::class,
+            Address::class,
+            Comment::class,
+            Activity::class,
+            InteractionLog::class,
+        ];
+
+        if (in_array($model, $polymorphic, true)) {
+            $parent = Company::factory()->create();
+
+            return $model::factory()->forModel($parent)->create($attributes);
+        }
+
+        return $model::factory()->create($attributes);
     }
 }

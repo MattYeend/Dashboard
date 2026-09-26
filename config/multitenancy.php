@@ -15,6 +15,7 @@ use Spatie\Multitenancy\Actions\MigrateTenantAction;
 use Spatie\Multitenancy\Jobs\NotTenantAware;
 use Spatie\Multitenancy\Jobs\TenantAware;
 use Spatie\Multitenancy\Models\Tenant;
+use Spatie\Multitenancy\Tasks\PrefixCacheTask;
 
 return [
     /*
@@ -39,7 +40,7 @@ return [
      * A valid task is any class that implements Spatie\Multitenancy\Tasks\SwitchTenantTask
      */
     'switch_tenant_tasks' => [
-        // \Spatie\Multitenancy\Tasks\PrefixCacheTask::class,
+        PrefixCacheTask::class,
         // \Spatie\Multitenancy\Tasks\SwitchTenantDatabaseTask::class,
         // \Spatie\Multitenancy\Tasks\SwitchRouteCacheTask::class,
         SwitchPermissionsTeamTask::class,

@@ -159,7 +159,7 @@ describe('full resources', function () {
             string $model,
         ) {
             $record = $this->organisationA->execute(
-                fn () => $model::factory()->create(),
+                fn () => $this->createTenantTestRecord($model)
             );
 
             $userB = $this->memberOf($this->organisationB);
@@ -253,7 +253,7 @@ describe('partial resources', function () {
             array $actions,
         ) {
             $record = $this->organisationA->execute(
-                fn () => $model::factory()->create(),
+                fn () => $this->createTenantTestRecord($model)
             );
 
             $userB = $this->memberOf($this->organisationB);
@@ -332,7 +332,7 @@ describe('bulk delete', function () {
             string $model,
         ) {
             $record = $this->organisationA->execute(
-                fn () => $model::factory()->create(),
+                fn () => $this->createTenantTestRecord($model)
             );
 
             $userB = $this->memberOf($this->organisationB);

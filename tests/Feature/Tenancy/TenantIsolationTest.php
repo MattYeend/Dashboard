@@ -27,7 +27,7 @@ describe('query isolation', function () {
 
         foreach (config('organisations.scoped_models') as $model) {
             $record = $this->organisationA->execute(
-                fn () => $model::factory()->create()
+                fn () => $this->createTenantTestRecord($model)
             );
 
             $this->organisationB->execute(
@@ -89,7 +89,7 @@ describe('query isolation', function () {
 
         foreach (config('organisations.scoped_models') as $model) {
             $record = $this->organisationA->execute(
-                fn () => $model::factory()->create()
+                fn () => $this->createTenantTestRecord($model)
             );
 
             $affected = $this->organisationB->execute(
@@ -127,7 +127,7 @@ describe('fail closed behaviour', function () {
 
         foreach (config('organisations.scoped_models') as $model) {
             $this->organisationA->execute(
-                fn () => $model::factory()->create()
+                fn () => $this->createTenantTestRecord($model)
             );
         }
 
@@ -150,7 +150,7 @@ describe('fail closed behaviour', function () {
         foreach (config('organisations.scoped_models') as $model) {
             try {
                 $this->organisationB->execute(
-                    fn () => $model::factory()->create([
+                    fn () => $this->createTenantTestRecord($model, [
                         'organisation_id' => $this->organisationA->getKey(),
                     ])
                 );
