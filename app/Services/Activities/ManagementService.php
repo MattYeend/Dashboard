@@ -90,23 +90,34 @@ class ManagementService
         callable $authoriseCallback
     ): array {
         $requestedIds = collect($ids)->unique()->values();
-        $activities = Activity::onlyTrashed()->whereIn('id', $requestedIds)->get();
+
+        $activitiesById = Activity::onlyTrashed()
+            ->whereIn('id', $requestedIds)
+            ->get()
+            ->keyBy('id');
 
         $restored = [];
+        $skipped = [];
 
-        foreach ($activities as $activity) {
-            /** @var Activity $activity */
+        foreach ($requestedIds as $id) {
+            $activity = $activitiesById->get($id);
+
+            if ($activity === null) {
+                $skipped[] = $id;
+
+                continue;
+            }
+
             $authoriseCallback($activity);
+
             $this->restorer->restore($activity, $actor->id);
+
             $restored[] = $activity->id;
         }
 
         return [
             'restored' => $restored,
-            'skipped' => $requestedIds
-                ->diff($activities->pluck('id'))
-                ->values()
-                ->all(),
+            'skipped' => $skipped,
         ];
     }
 
@@ -119,23 +130,31 @@ class ManagementService
         callable $authoriseCallback
     ): array {
         $requestedIds = collect($ids)->unique()->values();
-        $activities = Activity::whereIn('id', $requestedIds)->get();
+
+        $activitiesById = Activity::whereIn('id', $requestedIds)->get()->keyBy('id');
 
         $deleted = [];
+        $skipped = [];
 
-        foreach ($activities as $activity) {
-            /** @var Activity $activity */
+        foreach ($requestedIds as $id) {
+            $activity = $activitiesById->get($id);
+
+            if ($activity === null) {
+                $skipped[] = $id;
+
+                continue;
+            }
+
             $authoriseCallback($activity);
+
             $this->destructor->delete($activity, $actor->id);
+
             $deleted[] = $activity->id;
         }
 
         return [
             'deleted' => $deleted,
-            'skipped' => $requestedIds
-                ->diff($activities->pluck('id'))
-                ->values()
-                ->all(),
+            'skipped' => $skipped,
         ];
     }
 

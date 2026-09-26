@@ -92,26 +92,34 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $taskStatuses = TaskStatus::onlyTrashed()
+        $taskStatusesById = TaskStatus::onlyTrashed()
             ->with('creator')
             ->whereIn('id', $requestedIds)
-            ->get();
+            ->get()
+            ->keyBy('id');
 
         $restored = [];
+        $skipped = [];
 
-        foreach ($taskStatuses as $taskStatus) {
-            /** @var TaskStatus $taskStatus */
+        foreach ($requestedIds as $id) {
+            $taskStatus = $taskStatusesById->get($id);
+
+            if ($taskStatus === null) {
+                $skipped[] = $id;
+
+                continue;
+            }
+
             $authoriseCallback($taskStatus);
+
             $this->restorer->restore($taskStatus, $actor->id);
+
             $restored[] = $taskStatus->id;
         }
 
         return [
             'restored' => $restored,
-            'skipped' => $requestedIds
-                ->diff($taskStatuses->pluck('id'))
-                ->values()
-                ->all(),
+            'skipped' => $skipped,
         ];
     }
 
@@ -125,23 +133,33 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $taskStatuses = TaskStatus::with('creator')->whereIn('id', $requestedIds)->get();
+        $taskStatusesById = TaskStatus::with('creator')
+            ->whereIn('id', $requestedIds)
+            ->get()
+            ->keyBy('id');
 
         $deleted = [];
+        $skipped = [];
 
-        foreach ($taskStatuses as $taskStatus) {
-            /** @var TaskStatus $taskStatus */
+        foreach ($requestedIds as $id) {
+            $taskStatus = $taskStatusesById->get($id);
+
+            if ($taskStatus === null) {
+                $skipped[] = $id;
+
+                continue;
+            }
+
             $authoriseCallback($taskStatus);
+
             $this->destructor->delete($taskStatus, $actor->id);
+
             $deleted[] = $taskStatus->id;
         }
 
         return [
             'deleted' => $deleted,
-            'skipped' => $requestedIds
-                ->diff($taskStatuses->pluck('id'))
-                ->values()
-                ->all(),
+            'skipped' => $skipped,
         ];
     }
 

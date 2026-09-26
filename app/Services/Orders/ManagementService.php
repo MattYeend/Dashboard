@@ -85,25 +85,33 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $orders = Order::onlyTrashed()
+        $ordersById = Order::onlyTrashed()
             ->whereIn('id', $requestedIds)
-            ->get();
+            ->get()
+            ->keyBy('id');
 
         $restored = [];
+        $skipped = [];
 
-        foreach ($orders as $order) {
-            /** @var Order $order */
+        foreach ($requestedIds as $id) {
+            $order = $ordersById->get($id);
+
+            if ($order === null) {
+                $skipped[] = $id;
+
+                continue;
+            }
+
             $authoriseCallback($order);
+
             $this->restorer->restore($order, $actor->id);
+
             $restored[] = $order->id;
         }
 
         return [
             'restored' => $restored,
-            'skipped' => $requestedIds
-                ->diff($orders->pluck('id'))
-                ->values()
-                ->all(),
+            'skipped' => $skipped,
         ];
     }
 
@@ -117,23 +125,30 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $orders = Order::whereIn('id', $requestedIds)->get();
+        $ordersById = Order::whereIn('id', $requestedIds)->get()->keyBy('id');
 
         $deleted = [];
+        $skipped = [];
 
-        foreach ($orders as $order) {
-            /** @var Order $order */
+        foreach ($requestedIds as $id) {
+            $order = $ordersById->get($id);
+
+            if ($order === null) {
+                $skipped[] = $id;
+
+                continue;
+            }
+
             $authoriseCallback($order);
+
             $this->destructor->delete($order, $actor->id);
+
             $deleted[] = $order->id;
         }
 
         return [
             'deleted' => $deleted,
-            'skipped' => $requestedIds
-                ->diff($orders->pluck('id'))
-                ->values()
-                ->all(),
+            'skipped' => $skipped,
         ];
     }
 

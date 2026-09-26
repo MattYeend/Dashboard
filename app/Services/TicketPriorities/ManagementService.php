@@ -92,26 +92,34 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $ticketPriorities = TicketPriority::onlyTrashed()
+        $ticketPrioritiesById = TicketPriority::onlyTrashed()
             ->with('creator')
             ->whereIn('id', $requestedIds)
-            ->get();
+            ->get()
+            ->keyBy('id');
 
         $restored = [];
+        $skipped = [];
 
-        foreach ($ticketPriorities as $ticketPriority) {
-            /** @var TicketPriority $ticketPriority */
+        foreach ($requestedIds as $id) {
+            $ticketPriority = $ticketPrioritiesById->get($id);
+
+            if ($ticketPriority === null) {
+                $skipped[] = $id;
+
+                continue;
+            }
+
             $authoriseCallback($ticketPriority);
+
             $this->restorer->restore($ticketPriority, $actor->id);
+
             $restored[] = $ticketPriority->id;
         }
 
         return [
             'restored' => $restored,
-            'skipped' => $requestedIds
-                ->diff($ticketPriorities->pluck('id'))
-                ->values()
-                ->all(),
+            'skipped' => $skipped,
         ];
     }
 
@@ -125,23 +133,33 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $ticketPriorities = TicketPriority::with('creator')->whereIn('id', $requestedIds)->get();
+        $ticketPrioritiesById = TicketPriority::with('creator')
+            ->whereIn('id', $requestedIds)
+            ->get()
+            ->keyBy('id');
 
         $deleted = [];
+        $skipped = [];
 
-        foreach ($ticketPriorities as $ticketPriority) {
-            /** @var TicketPriority $ticketPriority */
+        foreach ($requestedIds as $id) {
+            $ticketPriority = $ticketPrioritiesById->get($id);
+
+            if ($ticketPriority === null) {
+                $skipped[] = $id;
+
+                continue;
+            }
+
             $authoriseCallback($ticketPriority);
+
             $this->destructor->delete($ticketPriority, $actor->id);
+
             $deleted[] = $ticketPriority->id;
         }
 
         return [
             'deleted' => $deleted,
-            'skipped' => $requestedIds
-                ->diff($ticketPriorities->pluck('id'))
-                ->values()
-                ->all(),
+            'skipped' => $skipped,
         ];
     }
 

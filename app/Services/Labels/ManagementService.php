@@ -92,25 +92,33 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $labels = Label::onlyTrashed()
+        $labelsById = Label::onlyTrashed()
             ->whereIn('id', $requestedIds)
-            ->get();
+            ->get()
+            ->keyBy('id');
 
         $restored = [];
+        $skipped = [];
 
-        foreach ($labels as $label) {
-            /** @var Label $label */
+        foreach ($requestedIds as $id) {
+            $label = $labelsById->get($id);
+
+            if ($label === null) {
+                $skipped[] = $id;
+
+                continue;
+            }
+
             $authoriseCallback($label);
+
             $this->restorer->restore($label, $actor->id);
+
             $restored[] = $label->id;
         }
 
         return [
             'restored' => $restored,
-            'skipped' => $requestedIds
-                ->diff($labels->pluck('id'))
-                ->values()
-                ->all(),
+            'skipped' => $skipped,
         ];
     }
 
@@ -124,23 +132,30 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $labels = Label::whereIn('id', $requestedIds)->get();
+        $labelsById = Label::whereIn('id', $requestedIds)->get()->keyBy('id');
 
         $deleted = [];
+        $skipped = [];
 
-        foreach ($labels as $label) {
-            /** @var Label $label */
+        foreach ($requestedIds as $id) {
+            $label = $labelsById->get($id);
+
+            if ($label === null) {
+                $skipped[] = $id;
+
+                continue;
+            }
+
             $authoriseCallback($label);
+
             $this->deleter->delete($label, $actor->id);
+
             $deleted[] = $label->id;
         }
 
         return [
             'deleted' => $deleted,
-            'skipped' => $requestedIds
-                ->diff($labels->pluck('id'))
-                ->values()
-                ->all(),
+            'skipped' => $skipped,
         ];
     }
 
