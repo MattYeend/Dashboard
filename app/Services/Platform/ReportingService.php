@@ -25,12 +25,12 @@ class ReportingService
     }
 
     /**
-     * Count every organisation, ignoring current-tenant scoping.
+     * Count every organisation. Organisation is a central table (see
+     * config('organisations.central_tables')) and is never scoped by
+     * BelongsToOrganisation, so no bypass is needed here.
      */
     protected function organisationCount(): int
     {
-        // ASSUMPTION: adjust the scope class below to whatever #352 actually
-        // introduced (e.g. App\Models\Scopes\BelongsToOrganisationScope).
         return Organisation::withoutGlobalScopes()->count();
     }
 
@@ -49,13 +49,13 @@ class ReportingService
     }
 
     /**
-     * Get the total members across every organisation, deduplicated by user.
+     * Get the total members across every organisation, deduplicated by
+     * user. User is a central table and is never scoped by
+     * BelongsToOrganisation, so no bypass is needed here.
      */
     protected function totalActiveMembers(): int
     {
-        return User::withoutGlobalScopes()
-            ->whereHas('organisations')
-            ->count();
+        return User::whereHas('organisations')->count();
     }
 
     /**
@@ -67,8 +67,7 @@ class ReportingService
     {
         $since = Carbon::now()->subMonths($months)->startOfMonth();
 
-        return User::withoutGlobalScopes()
-            ->where('created_at', '>=', $since)
+        return User::where('created_at', '>=', $since)
             ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as period, COUNT(*) as total")
             ->groupBy('period')
             ->orderBy('period')
