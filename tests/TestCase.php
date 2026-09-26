@@ -18,6 +18,10 @@ abstract class TestCase extends BaseTestCase
 
     protected Organisation $testOrganisation;
 
+    protected Organisation $organisationA;
+
+    protected Organisation $organisationB;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -43,6 +47,15 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * Set up two separate organisations for organisation-isolation tests.
+     */
+    public function setUpOrganisationIsolation(): void
+    {
+        $this->organisationA = Organisation::factory()->create();
+        $this->organisationB = Organisation::factory()->create();
+    }
+
+    /**
      * Authenticate as the given user for the request, and ensure the
      * tenant resolved by SessionOrganisationFinder during the request
      * matches the organisation active when test data was created,
@@ -51,12 +64,7 @@ abstract class TestCase extends BaseTestCase
      * Also ensures the user holds an active membership row for that
      * organisation, since SessionOrganisationFinder and
      * PolicyAuthorisationService both require an active
-     * organisation_user pivot row (not merely a session value) to
-     * resolve or authorise against it - super admins are exempt from
-     * this check at the application level, but attaching them here
-     * too keeps every actingAs() user's organisation_user state
-     * consistent and avoids relying on that bypass in tests that
-     * aren't specifically exercising it.
+     * organisation_user pivot row.
      */
     public function actingAs(Authenticatable $user, $guard = null)
     {
@@ -75,14 +83,11 @@ abstract class TestCase extends BaseTestCase
      * Authenticate as the given user without attaching them to the
      * test organisation or setting a current_organisation_id session
      * value.
-     *
-     * Use this instead of actingAs() specifically for tests exercising
-     * "user has no organisation membership" / no-current-tenant
-     * behaviour, where actingAs()'s automatic active-membership setup
-     * would defeat the scenario under test.
      */
-    public function actingAsWithoutOrganisation(Authenticatable $user, $guard = null)
-    {
+    public function actingAsWithoutOrganisation(
+        Authenticatable $user,
+        $guard = null,
+    ) {
         return parent::actingAs($user, $guard);
     }
 
