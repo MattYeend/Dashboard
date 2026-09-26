@@ -125,23 +125,32 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $ticketStatuses = TicketStatus::whereIn('id', $requestedIds)->get();
+        $ticketStatusesById = TicketStatus::whereIn('id', $requestedIds)
+            ->get()
+            ->keyBy('id');
 
         $deleted = [];
+        $skipped = [];
 
-        foreach ($ticketStatuses as $ticketStatus) {
-            /** @var TicketStatus $ticketStatus */
+        foreach ($requestedIds as $id) {
+            $ticketStatus = $ticketStatusesById->get($id);
+
+            if ($ticketStatus === null) {
+                $skipped[] = $id;
+
+                continue;
+            }
+
             $authoriseCallback($ticketStatus);
+
             $this->destructor->delete($ticketStatus, $actor->id);
+
             $deleted[] = $ticketStatus->id;
         }
 
         return [
             'deleted' => $deleted,
-            'skipped' => $requestedIds
-                ->diff($ticketStatuses->pluck('id'))
-                ->values()
-                ->all(),
+            'skipped' => $skipped,
         ];
     }
 
