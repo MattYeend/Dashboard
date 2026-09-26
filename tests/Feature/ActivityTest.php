@@ -344,9 +344,9 @@ describe('bulk delete', function () {
             ->postJson('/activities/bulk/delete', ['ids' => $ids])
             ->assertStatus(200)
             ->assertJson([
+                'deleted' => $ids,
                 'skipped' => [],
-            ])
-            ->assertJsonPathCanonicalizing('deleted', $ids);
+            ]);
 
         foreach ($ids as $id) {
             $this->assertSoftDeleted('activities', ['id' => $id]);
@@ -401,9 +401,9 @@ describe('bulk restore', function () {
             ->postJson('/activities/bulk/restore', ['ids' => $ids])
             ->assertStatus(200)
             ->assertJson([
+                'restored' => $ids,
                 'skipped' => [],
-            ])
-            ->assertJsonPathCanonicalizing('restored', $ids);
+            ]);
 
         foreach ($ids as $id) {
             $this->assertDatabaseHas('activities', [
