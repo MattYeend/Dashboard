@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToOrganisation;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,22 +20,13 @@ use Illuminate\Support\Carbon;
  * @property Carbon $updated_at
  */
 #[Fillable([
-    'organisation_id',
     'requested_by',
     'disk_path',
     'completed_at',
 ])]
 class OrganisationDataExport extends Model
 {
-    /**
-     * Get the organisation this export belongs to.
-     *
-     * @return BelongsTo<Organisation, $this>
-     */
-    public function organisation(): BelongsTo
-    {
-        return $this->belongsTo(Organisation::class);
-    }
+    use BelongsToOrganisation;
 
     /**
      * Get the user who requested this export.
