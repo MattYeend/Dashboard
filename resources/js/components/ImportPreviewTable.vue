@@ -40,7 +40,7 @@ defineProps<Props>();
                         :key="column"
                         class="px-3 py-2"
                     >
-                        {{ row.data[column] ?? '—' }}
+                        {{ row.data[column] ?? '-' }}
                     </td>
                     <td class="px-3 py-2">
                         <Badge v-if="row.valid" variant="outline">Valid</Badge>

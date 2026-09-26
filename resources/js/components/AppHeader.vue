@@ -246,9 +246,9 @@ const rightNavItems: NavItem[] = [
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                 >
-                                                    <span class="sr-only">{{
-                                                        item.title
-                                                    }}</span>
+                                                    <span class="sr-only">
+                                                        {{ item.title}}
+                                                    </span>
                                                     <component
                                                         :is="item.icon"
                                                         class="size-5 opacity-80 group-hover:opacity-100"

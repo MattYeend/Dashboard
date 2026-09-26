@@ -72,9 +72,9 @@ const segments = computed<BodySegment[]>(() => {
             <Link
                 v-if="segment.type === 'mention'"
                 :href="`/users/${segment.userId}`"
-                class="border-b border-gray-400 text-gray-300 no-underline"
-                >{{ segment.value }}</Link
-            >
+                class="border-b border-gray-400 text-gray-300 no-underline">
+                {{ segment.value }}
+            </Link>
             <template v-else>{{ segment.value }}</template>
         </template>
     </p>
