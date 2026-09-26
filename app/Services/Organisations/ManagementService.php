@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Services\AuditLogService;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Filesystem\FilesystemAdapter;
 
 class ManagementService
 {
@@ -187,6 +188,12 @@ class ManagementService
         Organisation $organisation,
         OrganisationDataExport $export
     ): StreamedResponse {
-        return Storage::disk('local')->download($export->disk_path, $organisation->name.'-export.zip');
+        /** @var FilesystemAdapter $disk */
+        $disk = Storage::disk('local');
+
+        return $disk->download(
+            $export->disk_path,
+            $organisation->name.'-export.zip'
+        );
     }
 }
