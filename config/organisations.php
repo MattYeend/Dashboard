@@ -71,31 +71,42 @@ return [
     */
 
     'central_tables' => [
-        'migrations', // framework
-        'cache', // framework
-        'cache_locks', // framework
-        'jobs', // framework (tenant carried in the payload)
-        'job_batches', // framework
-        'failed_jobs', // framework
-        'sessions', // framework (user scoped)
-        'password_reset_tokens', // framework
-        'personal_access_tokens', // Sanctum, user scoped
-        'notifications', // morphs to User (notifiable), no organisation_id column - confirmed from the notifications migration
-        'users', // users can belong to many organisations
-        'organisations', // the tenant table itself
-        'organisation_user', // OrganisationMembership pivot table (confirmed via $table = 'organisation_user'); links a user to an organisation, is not itself organisation data
-        'permissions', // Spatie, team scoped by its own team_id column
-        'roles', // Spatie, team scoped by its own team_id column
-        'model_has_permissions', // Spatie
-        'model_has_roles', // Spatie
-        'role_has_permissions', // Spatie
-        'plans', // global Cashier product catalogue - confirmed: Plan has no organisation_id property/column
-        'subscriptions', // Cashier - confirmed: keyed on user_id, not organisation_id
-        'subscription_items', // Cashier - keyed on subscription_id, not organisation_id
-        'settings', // confirmed from app/Models/Setting.php: a single row of platform-wide admin config (site_name, maintenance_mode, two_factor_required, session_timeout_minutes, ...), no organisation_id column at all - not per-organisation data
-        'registration_interests', // confirmed from RegistrationInterestController::store()'s own docblock: a public, unauthenticated pre-signup lead capture, created before any organisation or user account exists
+        'migrations',                   // framework
+        'cache',                        // framework
+        'cache_locks',                  // framework
+        'jobs',                         // framework (tenant carried in the payload)
+        'job_batches',                  // framework
+        'failed_jobs',                  // framework
+        'sessions',                     // framework (user scoped)
+        'password_reset_tokens',        // framework
+        'personal_access_tokens',       // Sanctum, user scoped
+        'notifications',                // morphs to User (notifiable), no organisation_id column - confirmed from the notifications migration
+        'users',                        // users can belong to many organisations
+        'organisations',                // the tenant table itself
+        'organisation_user',            // OrganisationMembership pivot table (confirmed via $table = 'organisation_user'); links a user to an organisation, is not itself organisation data
+        'permissions',                  // Spatie, team scoped by its own team_id column
+        'roles',                        // Spatie, team scoped by its own team_id column
+        'model_has_permissions',        // Spatie
+        'model_has_roles',              // Spatie
+        'role_has_permissions',         // Spatie
+        'plans',                        // global Cashier product catalogue - confirmed: Plan has no organisation_id property/column
+        'subscriptions',                // Cashier - confirmed: keyed on user_id, not organisation_id
+        'subscription_items',           // Cashier - keyed on subscription_id, not organisation_id
+        'settings',                     // confirmed from app/Models/Setting.php: a single row of platform-wide admin config (site_name, maintenance_mode, two_factor_required, session_timeout_minutes, ...), no organisation_id column at all - not per-organisation data
+        'registration_interests',       // confirmed from RegistrationInterestController::store()'s own docblock: a public, unauthenticated pre-signup lead capture, created before any organisation or user account exists
         'dashboard_widget_preferences', // confirmed from DashboardWidgetPreferenceController: keyed by user (forUser()/updateForUser()), never touches an organisation
-        'custom_dashboard_widgets', // confirmed from CustomDashboardWidgetController::destroy()'s explicit user_id ownership check, not organisation_id
+        'custom_dashboard_widgets',     // confirmed from CustomDashboardWidgetController::destroy()'s explicit user_id ownership check, not organisation_id
+        'notification_broadcasts',      // platform-wide broadcast, no organisation_id - confirmed on the model
+        'passkeys',                     // Fortify passkey auth, user-scoped not organisation-scoped
+        'category_post',                // pivot; reachable only via Category or Post, both organisation-scoped
+        'comment_mentions',             // pivot; reachable only via Comment, organisation-scoped
+        'company_tag',                  // pivot; reachable only via Company or Tag
+        'contact_tag',                  // pivot; reachable only via Contact or Tag
+        'deal_tag',                     // pivot; reachable only via Deal or Tag
+        'order_tag',                    // pivot; reachable only via Order or Tag
+        'post_tag',                     // pivot; reachable only via Post or Tag
+        'task_tag',                     // pivot; reachable only via Task or Tag
+        'labelables',                   // polymorphic pivot; reachable only via Label, organisation-scoped
     ],
 
     /*

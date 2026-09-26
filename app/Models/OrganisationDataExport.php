@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Traits\BelongsToOrganisation;
+use Database\Factories\OrganisationDataExportFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,7 +28,11 @@ use Illuminate\Support\Carbon;
 ])]
 class OrganisationDataExport extends Model
 {
-    use BelongsToOrganisation;
+    /**
+     * @use HasFactory<OrganisationDataExportFactory>
+     */
+    use BelongsToOrganisation,
+        HasFactory;
 
     /**
      * Get the user who requested this export.
