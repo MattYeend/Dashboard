@@ -131,7 +131,7 @@ class ManagementService
         User $actor,
         callable $authoriseCallback
     ): array {
-        $requestedIds = collect($ids)->unique()->values();
+        $requestedIds = array_values(array_unique($ids));
 
         $taskStatusesById = TaskStatus::with('creator')
             ->whereIn('id', $requestedIds)
