@@ -131,12 +131,10 @@ class ManagementService
         User $actor,
         callable $authoriseCallback
     ): array {
-        $requestedIds = array_values(array_unique($ids));
+        $requestedIds = collect($ids)->unique()->values();
 
-        $taskStatusesById = TaskStatus::with('creator')
-            ->whereIn('id', $requestedIds)
-            ->get()
-            ->keyBy('id');
+
+        $taskStatusesById = TaskStatus::whereIn('id', $requestedIds)->get()->keyBy('id');
 
         $deleted = [];
         $skipped = [];
