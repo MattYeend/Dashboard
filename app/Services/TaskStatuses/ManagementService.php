@@ -133,8 +133,9 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-
-        $taskStatusesById = TaskStatus::whereIn('id', $requestedIds)->get()->keyBy('id');
+        $taskStatusesById = TaskStatus::whereIn('id', $requestedIds)
+            ->get()
+            ->keyBy('id');
 
         $deleted = [];
         $skipped = [];

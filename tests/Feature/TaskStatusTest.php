@@ -516,13 +516,16 @@ describe('bulk delete', function () {
         $taskStatuses = TaskStatus::factory()->count(3)->create();
         $ids = $taskStatuses->pluck('id')->all();
 
-        $this->actingAs($superAdmin)
+        $response = $this->actingAs($superAdmin)
             ->postJson('/task-statuses/bulk/delete', ['ids' => $ids])
-            ->assertStatus(200)
-            ->assertJson([
-                'deleted' => $ids,
-                'skipped' => [],
-            ]);
+            ->assertStatus(200);
+
+        expect($response->json('skipped'))->toBe([])
+            ->and($response->json('deleted'))
+            ->toHaveCount(count($ids));
+
+        expect($response->json('deleted'))
+            ->toEqualCanonicalizing($ids);
 
         foreach ($ids as $id) {
             $this->assertSoftDeleted('task_statuses', ['id' => $id]);
