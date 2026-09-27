@@ -279,6 +279,21 @@ const footerNavItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
+            <div class="px-2 pb-2">
+            <a
+                href="https://github.com/sponsors/MattYeend"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Sponsor MattYeend"
+            >
+                <img
+                    src="https://img.shields.io/badge/Sponsor-MattYeend-ea4aaa?logo=github-sponsors"
+                    alt="Sponsor MattYeend"
+                    height="32"
+                    loading="lazy"
+                />
+            </a>
+        </div>
             <NavFooter :items="footerNavItems" />
             <NavUser />
         </SidebarFooter>
