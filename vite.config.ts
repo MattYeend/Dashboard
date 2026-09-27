@@ -33,7 +33,7 @@ export default defineConfig({
         }),
         visualizer({
             filename: './public/build/stats.json',
-            json: true,
+            template: 'raw-data',
             gzipSize: true,
             brotliSize: true,
         }),
