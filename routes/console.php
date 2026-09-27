@@ -24,7 +24,7 @@ Schedule::command(HardDeleteExpiredOrganisations::class)->daily();
 Schedule::command('imports:prune-stale-uploads')->twiceDaily();
 
 Schedule::command('logs:seal')
-    ->hourly()
+    ->everySixHours()
     ->withoutOverlapping()
     ->onOneServer();
 Schedule::command('logs:verify')
