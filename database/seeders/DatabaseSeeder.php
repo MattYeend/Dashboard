@@ -8,11 +8,28 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     /**
+     * Seeders that are safe to run in production.
+     *
+     * Reference data only. Never add seeders that create sample users,
+     * customers, orders or other test records.
+     */
+    private const PRODUCTION_SEEDERS = [
+        RolePermissionSeeder::class,
+        TaskStatusSeeder::class,
+        OrderStatusSeeder::class,
+        InvoiceStatusSeeder::class,
+        PipelineStatusSeeder::class,
+        DealStatusSeeder::class,
+        TicketPrioritySeeder::class,
+        TicketStatusSeeder::class,
+    ];
+
+    /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        $this->call([
+        $seeders = [
             OrganisationSeeder::class,
             RolePermissionSeeder::class,
             UserSeeder::class,
@@ -58,6 +75,14 @@ class DatabaseSeeder extends Seeder
             NotificationBroadcastSeeder::class,
             SettingSeeder::class,
             ReportSeeder::class,
-        ]);
+        ];
+
+        if (app()->environment('production', 'staging')) {
+            $seeders = array_values(
+                array_intersect($seeders, self::PRODUCTION_SEEDERS)
+            );
+        }
+
+        $this->call($seeders);
     }
 }

@@ -1,17 +1,19 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/vue-starter-kit",
+    "name": "mattyeend/dashboard",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Admin dashboard built with Laravel 13, Vue 3, TypeScript and Inertia.js.",
     "keywords": [
         "laravel",
-        "framework"
+        "vue",
+        "inertia",
+        "dashboard",
+        "admin"
     ],
     "license": "MIT",
     "require": {
         "php": "^8.3",
         "barryvdh/laravel-dompdf": "^3.1",
-        "doctrine/dbal": "^4.4",
         "guzzlehttp/guzzle": "^7.15.1",
         "inertiajs/inertia-laravel": "^3.0",
         "laravel/cashier": "^16.6",
@@ -59,7 +61,7 @@
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
-            "@php artisan migrate --force --seed",
+            "@php artisan migrate --seed",
             "npm install",
             "npm run build"
         ],
@@ -76,6 +78,8 @@
         ],
         "ci:check": [
             "Composer\\Config::disableProcessTimeout",
+            "composer audit",
+            "npm audit --audit-level=high",
             "npm run lint:check",
             "npm run format:check",
             "npm run types:check",
@@ -84,6 +88,7 @@
         "test": [
             "@php artisan config:clear --ansi",
             "@lint:check",
+            "@analyse",
             "@php artisan test"
         ],
         "post-autoload-dump": [
@@ -97,9 +102,7 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "@php artisan key:generate --ansi",
-            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --graceful --ansi"
+            "@php artisan key:generate --ansi"
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
