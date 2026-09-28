@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a48f4bdd9dc0cec8eccf9a2be5fe567a",
+    "content-hash": "587d582847490fc3b5db0c46f5041f4b",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3918,86 +3918,6 @@
             "time": "2025-09-24T15:06:41+00:00"
         },
         {
-            "name": "petebishwhip/laradocs",
-            "version": "v0.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PeteBishwhip/laradocs.git",
-                "reference": "84dc7e1f04047fb4e1c51d0e4e623002bc477e8d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PeteBishwhip/laradocs/zipball/84dc7e1f04047fb4e1c51d0e4e623002bc477e8d",
-                "reference": "84dc7e1f04047fb4e1c51d0e4e623002bc477e8d",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "^11.14 || ^12.0 || ^13.0",
-                "illuminate/support": "^11.14 || ^12.0 || ^13.0",
-                "league/commonmark": "^2.4",
-                "php": "^8.2",
-                "ralphjsmit/laravel-seo": "^1.8",
-                "spatie/yaml-front-matter": "^2.0"
-            },
-            "require-dev": {
-                "larastan/larastan": "^2.9 || ^3.0",
-                "laravel/pint": "^1.18",
-                "laravel/scout": "^10.0",
-                "meilisearch/meilisearch-php": "^1.0",
-                "nyholm/psr7": "^1.5",
-                "orchestra/testbench": "^9.0 || ^10.0 || ^11.0",
-                "orchestra/workbench": "^9.0 || ^10.0 || ^11.0",
-                "pestphp/pest": "^3.0 || ^4.0",
-                "pestphp/pest-plugin-laravel": "^3.0 || ^4.0",
-                "phpstan/phpstan": "^1.11 || ^2.0",
-                "rector/rector": "^1.2 || ^2.0"
-            },
-            "suggest": {
-                "laravel/scout": "Power full-text docs search with Meilisearch, Typesense or Algolia (falls back to a built-in JSON index).",
-                "nyholm/psr7": "When using Meilisearch via Scout, install a PSR-17 factory (nyholm/psr7, guzzlehttp/psr7 ^2, or symfony/http-client) so the Meilisearch SDK can build HTTP requests."
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "Laradocs": "Laradocs\\Facades\\Laradocs"
-                    },
-                    "providers": [
-                        "Laradocs\\LaradocsServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Laradocs\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Pete Bishop",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Maintain beautiful, version-controlled documentation alongside your Laravel codebase. Markdown in, a polished docs site out.",
-            "homepage": "https://github.com/petebishwhip/laradocs",
-            "keywords": [
-                "commonmark",
-                "docs",
-                "documentation",
-                "laravel",
-                "markdown"
-            ],
-            "support": {
-                "issues": "https://github.com/PeteBishwhip/laradocs/issues",
-                "source": "https://github.com/PeteBishwhip/laradocs/tree/v0.3.0"
-            },
-            "time": "2026-06-11T15:47:37+00:00"
-        },
-        {
             "name": "phpdocumentor/reflection-common",
             "version": "2.2.0",
             "source": {
@@ -4895,158 +4815,6 @@
             "time": "2019-03-08T08:55:37+00:00"
         },
         {
-            "name": "ralphjsmit/laravel-helpers",
-            "version": "1.11.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ralphjsmit/laravel-helpers.git",
-                "reference": "cabfeb5e3f3a360bcd958fbf872271c56a74ebf0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ralphjsmit/laravel-helpers/zipball/cabfeb5e3f3a360bcd958fbf872271c56a74ebf0",
-                "reference": "cabfeb5e3f3a360bcd958fbf872271c56a74ebf0",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^7.4",
-                "illuminate/contracts": "^11.0|^12.0|^13.0",
-                "php": "^8.0",
-                "spatie/laravel-package-tools": "^1.9.2"
-            },
-            "require-dev": {
-                "livewire/livewire": "^2.9|^3.4|^4.2",
-                "nesbot/carbon": "^2.66|^3.0",
-                "nunomaduro/collision": "^7.0|^8.0",
-                "orchestra/testbench": "^8.0|^9.0|^10.0|^11.0",
-                "pestphp/pest": "^2.34|^3.7|^4.4",
-                "pestphp/pest-plugin-laravel": "^2.3|^3.1|^4.1",
-                "phpunit/phpunit": "^10.5|^11.5|^12.5.12",
-                "spatie/invade": "^1.0|^2.0",
-                "spatie/laravel-ray": "^1.39"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "Helpers": "RalphJSmit\\Helpers\\Facades\\Helpers"
-                    },
-                    "providers": [
-                        "RalphJSmit\\Helpers\\HelpersServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/Laravel/Support/helpers.php",
-                    "src/helpers.php"
-                ],
-                "psr-4": {
-                    "RalphJSmit\\Helpers\\": "src",
-                    "RalphJSmit\\Helpers\\Database\\Factories\\": "database/factories"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ralph J. Smit",
-                    "email": "rjs@ralphjsmit.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A package containing handy helpers for your Laravel-application.",
-            "homepage": "https://github.com/ralphjsmit/laravel-helpers",
-            "keywords": [
-                "laravel",
-                "laravel-helpers",
-                "ralphjsmit"
-            ],
-            "support": {
-                "issues": "https://github.com/ralphjsmit/laravel-helpers/issues",
-                "source": "https://github.com/ralphjsmit/laravel-helpers/tree/1.11.0"
-            },
-            "time": "2026-03-07T22:24:40+00:00"
-        },
-        {
-            "name": "ralphjsmit/laravel-seo",
-            "version": "1.8.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ralphjsmit/laravel-seo.git",
-                "reference": "18b6aa67fa7882e2df907b9c47820164f7aaf4f3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ralphjsmit/laravel-seo/zipball/18b6aa67fa7882e2df907b9c47820164f7aaf4f3",
-                "reference": "18b6aa67fa7882e2df907b9c47820164f7aaf4f3",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "^11.11|^12.0|^13.0",
-                "php": "^8.2",
-                "ralphjsmit/laravel-helpers": "^1.10",
-                "spatie/laravel-package-tools": "^1.9.2"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.16",
-                "nesbot/carbon": "^3.0",
-                "nunomaduro/collision": "^8.0|^9.0",
-                "orchestra/testbench": "^9.16|^10.0|^11.0",
-                "orchestra/testbench-core": "^9.1.4|^10.0|^11.0",
-                "pestphp/pest": "^2.0|^3.0|^4.4",
-                "pestphp/pest-plugin-laravel": "^2.0|^3.0|^4.1",
-                "phpunit/phpunit": "^10.5|^11.5|^12.5.12",
-                "spatie/laravel-ray": "^1.39",
-                "spatie/pest-plugin-test-time": "^2.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "SEOManager": "RalphJSmit\\Laravel\\SEO\\Facades\\SEOManager"
-                    },
-                    "providers": [
-                        "RalphJSmit\\Laravel\\SEO\\LaravelSEOServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/helpers.php"
-                ],
-                "psr-4": {
-                    "RalphJSmit\\Laravel\\SEO\\": "src",
-                    "RalphJSmit\\Laravel\\SEO\\Database\\Factories\\": "database/factories"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ralph J. Smit",
-                    "email": "rjs@ralphjsmit.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A package to handle the SEO in any Laravel application, big or small.",
-            "homepage": "https://github.com/ralphjsmit/laravel-seo",
-            "keywords": [
-                "laravel",
-                "laravel-seo",
-                "ralphjsmit"
-            ],
-            "support": {
-                "issues": "https://github.com/ralphjsmit/laravel-seo/issues",
-                "source": "https://github.com/ralphjsmit/laravel-seo/tree/1.8.2"
-            },
-            "time": "2026-08-08T11:15:47+00:00"
-        },
-        {
             "name": "ramsey/collection",
             "version": "2.1.1",
             "source": {
@@ -5804,68 +5572,6 @@
                 }
             ],
             "time": "2026-06-22T07:55:44+00:00"
-        },
-        {
-            "name": "spatie/yaml-front-matter",
-            "version": "2.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/yaml-front-matter.git",
-                "reference": "3066996d0e4ed74bcc22c261084a9df727bf7e36"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/yaml-front-matter/zipball/3066996d0e4ed74bcc22c261084a9df727bf7e36",
-                "reference": "3066996d0e4ed74bcc22c261084a9df727bf7e36",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.0",
-                "symfony/yaml": "^6.0|^7.0|^8.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^9.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\YamlFrontMatter\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sebastian De Deyne",
-                    "email": "sebastian@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A to the point yaml front matter parser",
-            "homepage": "https://github.com/sebastiandedeyne/yaml-front-matter",
-            "keywords": [
-                "front matter",
-                "jekyll",
-                "spatie",
-                "yaml"
-            ],
-            "support": {
-                "source": "https://github.com/spatie/yaml-front-matter/tree/2.1.1"
-            },
-            "funding": [
-                {
-                    "url": "https://spatie.be/open-source/support-us",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/spatie",
-                    "type": "github"
-                }
-            ],
-            "time": "2025-11-24T16:17:28+00:00"
         },
         {
             "name": "spomky-labs/cbor-php",
@@ -9108,82 +8814,6 @@
             "time": "2026-09-03T16:02:27+00:00"
         },
         {
-            "name": "symfony/yaml",
-            "version": "v8.1.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/yaml.git",
-                "reference": "0b4aa53a67f9fece88c665f1a1dadcfd25d93fe5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/0b4aa53a67f9fece88c665f1a1dadcfd25d93fe5",
-                "reference": "0b4aa53a67f9fece88c665f1a1dadcfd25d93fe5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.4.1",
-                "symfony/polyfill-ctype": "^1.8"
-            },
-            "conflict": {
-                "symfony/console": "<7.4"
-            },
-            "require-dev": {
-                "symfony/console": "^7.4|^8.0",
-                "yaml/yaml-test-suite": "*"
-            },
-            "bin": [
-                "Resources/bin/yaml-lint"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Yaml\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Loads and dumps YAML files",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/yaml/tree/v8.1.6"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-08-30T01:03:44+00:00"
-        },
-        {
             "name": "tijsverkoyen/css-to-inline-styles",
             "version": "v2.4.0",
             "source": {
@@ -10077,6 +9707,81 @@
             "time": "2024-05-06T16:37:16+00:00"
         },
         {
+            "name": "devizzent/cebe-php-openapi",
+            "version": "1.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DEVizzent/cebe-php-openapi.git",
+                "reference": "6e5fcc8810bfe8ad55d1b40764bff6417f485984"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DEVizzent/cebe-php-openapi/zipball/6e5fcc8810bfe8ad55d1b40764bff6417f485984",
+                "reference": "6e5fcc8810bfe8ad55d1b40764bff6417f485984",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "justinrainbow/json-schema": "^5.2 || ^6.0",
+                "php": ">=7.1.0",
+                "symfony/yaml": "^3.4 || ^4 || ^5 || ^6 || ^7 || ^8"
+            },
+            "conflict": {
+                "symfony/yaml": "3.4.0 - 3.4.4 || 4.0.0 - 4.4.17 || 5.0.0 - 5.1.9 || 5.2.0"
+            },
+            "replace": {
+                "cebe/php-openapi": "1.7.0"
+            },
+            "require-dev": {
+                "apis-guru/openapi-directory": "1.0.0",
+                "cebe/indent": "*",
+                "mermade/openapi3-examples": "1.0.0",
+                "oai/openapi-specification-3.0": "3.0.3",
+                "phpstan/phpstan": "^0.12.0",
+                "phpunit/phpunit": "^6.5 || ^7.5 || ^8.5 || ^9.4 || ^11.4"
+            },
+            "bin": [
+                "bin/php-openapi"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "cebe\\openapi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Carsten Brandt",
+                    "email": "mail@cebe.cc",
+                    "homepage": "https://cebe.cc/",
+                    "role": "Creator"
+                },
+                {
+                    "name": "Vicent Valls",
+                    "email": "vizzent@gmail.com"
+                }
+            ],
+            "description": "Read and write OpenAPI yaml/json files and make the content accessable in PHP objects.",
+            "homepage": "https://github.com/DEVizzent/cebe-php-openapi#readme",
+            "keywords": [
+                "openapi"
+            ],
+            "support": {
+                "issues": "https://github.com/DEVizzent/cebe-php-openapi/issues",
+                "source": "https://github.com/DEVizzent/cebe-php-openapi"
+            },
+            "time": "2026-01-23T22:38:14+00:00"
+        },
+        {
             "name": "fakerphp/faker",
             "version": "v1.24.1",
             "source": {
@@ -10426,6 +10131,71 @@
                 "source": "https://github.com/Jean85/pretty-package-versions/tree/2.1.1"
             },
             "time": "2025-03-19T14:43:43+00:00"
+        },
+        {
+            "name": "justinrainbow/json-schema",
+            "version": "6.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jsonrainbow/json-schema.git",
+                "reference": "30de5e9b3fa04253af272a7d932a38cd026c311b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/30de5e9b3fa04253af272a7d932a38cd026c311b",
+                "reference": "30de5e9b3fa04253af272a7d932a38cd026c311b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-filter": "*",
+                "ext-json": "*",
+                "marc-mabe/php-enum": "^4.4",
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "3.3.0",
+                "json-schema/json-schema-test-suite": "dev-main",
+                "marc-mabe/php-enum-phpstan": "^2.0",
+                "phpspec/prophecy": "^1.19",
+                "phpstan/phpstan": "^1.12",
+                "phpunit/phpunit": "^8.5"
+            },
+            "bin": [
+                "bin/validate-json"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JsonSchema\\": "src/JsonSchema/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Danny van der Sluijs",
+                    "email": "danny.vandersluijs@icloud.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A library to validate a json schema.",
+            "homepage": "https://github.com/jsonrainbow/json-schema",
+            "keywords": [
+                "json",
+                "schema"
+            ],
+            "support": {
+                "issues": "https://github.com/jsonrainbow/json-schema/issues",
+                "source": "https://github.com/jsonrainbow/json-schema/tree/6.13.0"
+            },
+            "time": "2026-09-23T19:46:42+00:00"
         },
         {
             "name": "laramint/laravel-brain",
@@ -10999,6 +10769,79 @@
                 "source": "https://github.com/laravel/sail"
             },
             "time": "2026-09-18T14:34:46+00:00"
+        },
+        {
+            "name": "marc-mabe/php-enum",
+            "version": "v4.7.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marc-mabe/php-enum.git",
+                "reference": "bb426fcdd65c60fb3638ef741e8782508fda7eef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marc-mabe/php-enum/zipball/bb426fcdd65c60fb3638ef741e8782508fda7eef",
+                "reference": "bb426fcdd65c60fb3638ef741e8782508fda7eef",
+                "shasum": ""
+            },
+            "require": {
+                "ext-reflection": "*",
+                "php": "^7.1 | ^8.0"
+            },
+            "require-dev": {
+                "phpbench/phpbench": "^0.16.10 || ^1.0.4",
+                "phpstan/phpstan": "^1.3.1",
+                "phpunit/phpunit": "^7.5.20 | ^8.5.22 | ^9.5.11",
+                "vimeo/psalm": "^4.17.0 | ^5.26.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.2-dev",
+                    "dev-master": "4.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MabeEnum\\": "src/"
+                },
+                "classmap": [
+                    "stubs/Stringable.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Marc Bennewitz",
+                    "email": "dev@mabe.berlin",
+                    "homepage": "https://mabe.berlin/",
+                    "role": "Lead"
+                }
+            ],
+            "description": "Simple and fast implementation of enumerations with native PHP",
+            "homepage": "https://github.com/marc-mabe/php-enum",
+            "keywords": [
+                "enum",
+                "enum-map",
+                "enum-set",
+                "enumeration",
+                "enumerator",
+                "enummap",
+                "enumset",
+                "map",
+                "set",
+                "type",
+                "type-hint",
+                "typehint"
+            ],
+            "support": {
+                "issues": "https://github.com/marc-mabe/php-enum/issues",
+                "source": "https://github.com/marc-mabe/php-enum/tree/v4.7.2"
+            },
+            "time": "2025-09-14T11:18:39+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -11703,6 +11546,102 @@
             "time": "2025-12-08T00:13:17+00:00"
         },
         {
+            "name": "petebishwhip/laradocs",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PeteBishwhip/laradocs.git",
+                "reference": "ca78c478dfd3d6dada74b09d5a900ca2e738de25"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PeteBishwhip/laradocs/zipball/ca78c478dfd3d6dada74b09d5a900ca2e738de25",
+                "reference": "ca78c478dfd3d6dada74b09d5a900ca2e738de25",
+                "shasum": ""
+            },
+            "require": {
+                "devizzent/cebe-php-openapi": "^1.1",
+                "illuminate/contracts": "^11.14 || ^12.0 || ^13.0",
+                "illuminate/support": "^11.14 || ^12.0 || ^13.0",
+                "league/commonmark": "^2.4",
+                "php": "^8.3",
+                "ralphjsmit/laravel-seo": "^1.8",
+                "spatie/yaml-front-matter": "^2.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^2.9 || ^3.0",
+                "laravel/mcp": "^0.9",
+                "laravel/pint": "^1.18",
+                "laravel/scout": "^11.2",
+                "meilisearch/meilisearch-php": "^1.0",
+                "nyholm/psr7": "^1.5",
+                "orchestra/testbench": "^9.0 || ^10.0 || ^11.0",
+                "orchestra/workbench": "^9.0 || ^10.0 || ^11.0",
+                "pestphp/pest": "^3.0 || ^4.0",
+                "pestphp/pest-plugin-laravel": "^3.0 || ^4.0",
+                "phpstan/phpstan": "^1.11 || ^2.0",
+                "rector/rector": "^1.2 || ^2.0",
+                "simonhamp/the-og": "^0.8",
+                "vimeo/psalm": "^6.16"
+            },
+            "suggest": {
+                "dedoc/scramble": "Generate your OpenAPI spec with Scramble instead of the built-in native generator. Requires ^0.13 for Laravel 13 support. Select with laradocs.openapi.generator.driver=scramble (or leave it on auto) after installing.",
+                "laravel/mcp": "Expose your docs as an MCP server so AI assistants can search and browse them. Enable with LARADOCS_MCP=true after installing.",
+                "laravel/scout": "Power full-text docs search with Meilisearch, Typesense or Algolia (falls back to a built-in JSON index).",
+                "nyholm/psr7": "When using Meilisearch via Scout, install a PSR-17 factory (nyholm/psr7, guzzlehttp/psr7 ^2, or symfony/http-client) so the Meilisearch SDK can build HTTP requests.",
+                "simonhamp/the-og": "Generate Open Graph / social card images for pages that don't declare their own (the default OgImageGenerator)."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Laradocs": "Laradocs\\Facades\\Laradocs"
+                    },
+                    "providers": [
+                        "Laradocs\\LaradocsServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-main": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laradocs\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pete Bishop",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Maintain beautiful, version-controlled documentation alongside your Laravel codebase. Markdown in, a polished docs site out.",
+            "homepage": "https://github.com/petebishwhip/laradocs",
+            "keywords": [
+                "commonmark",
+                "docs",
+                "documentation",
+                "laravel",
+                "markdown"
+            ],
+            "support": {
+                "issues": "https://github.com/PeteBishwhip/laradocs/issues",
+                "source": "https://github.com/PeteBishwhip/laradocs/tree/v1.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/PeteBishwhip",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-09-01T11:25:08+00:00"
+        },
+        {
             "name": "phar-io/manifest",
             "version": "2.0.4",
             "source": {
@@ -12318,6 +12257,158 @@
                 }
             ],
             "time": "2026-07-28T13:58:09+00:00"
+        },
+        {
+            "name": "ralphjsmit/laravel-helpers",
+            "version": "1.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ralphjsmit/laravel-helpers.git",
+                "reference": "cabfeb5e3f3a360bcd958fbf872271c56a74ebf0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ralphjsmit/laravel-helpers/zipball/cabfeb5e3f3a360bcd958fbf872271c56a74ebf0",
+                "reference": "cabfeb5e3f3a360bcd958fbf872271c56a74ebf0",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.4",
+                "illuminate/contracts": "^11.0|^12.0|^13.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.9.2"
+            },
+            "require-dev": {
+                "livewire/livewire": "^2.9|^3.4|^4.2",
+                "nesbot/carbon": "^2.66|^3.0",
+                "nunomaduro/collision": "^7.0|^8.0",
+                "orchestra/testbench": "^8.0|^9.0|^10.0|^11.0",
+                "pestphp/pest": "^2.34|^3.7|^4.4",
+                "pestphp/pest-plugin-laravel": "^2.3|^3.1|^4.1",
+                "phpunit/phpunit": "^10.5|^11.5|^12.5.12",
+                "spatie/invade": "^1.0|^2.0",
+                "spatie/laravel-ray": "^1.39"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Helpers": "RalphJSmit\\Helpers\\Facades\\Helpers"
+                    },
+                    "providers": [
+                        "RalphJSmit\\Helpers\\HelpersServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Laravel/Support/helpers.php",
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "RalphJSmit\\Helpers\\": "src",
+                    "RalphJSmit\\Helpers\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ralph J. Smit",
+                    "email": "rjs@ralphjsmit.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A package containing handy helpers for your Laravel-application.",
+            "homepage": "https://github.com/ralphjsmit/laravel-helpers",
+            "keywords": [
+                "laravel",
+                "laravel-helpers",
+                "ralphjsmit"
+            ],
+            "support": {
+                "issues": "https://github.com/ralphjsmit/laravel-helpers/issues",
+                "source": "https://github.com/ralphjsmit/laravel-helpers/tree/1.11.0"
+            },
+            "time": "2026-03-07T22:24:40+00:00"
+        },
+        {
+            "name": "ralphjsmit/laravel-seo",
+            "version": "1.8.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ralphjsmit/laravel-seo.git",
+                "reference": "18b6aa67fa7882e2df907b9c47820164f7aaf4f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ralphjsmit/laravel-seo/zipball/18b6aa67fa7882e2df907b9c47820164f7aaf4f3",
+                "reference": "18b6aa67fa7882e2df907b9c47820164f7aaf4f3",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^11.11|^12.0|^13.0",
+                "php": "^8.2",
+                "ralphjsmit/laravel-helpers": "^1.10",
+                "spatie/laravel-package-tools": "^1.9.2"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.16",
+                "nesbot/carbon": "^3.0",
+                "nunomaduro/collision": "^8.0|^9.0",
+                "orchestra/testbench": "^9.16|^10.0|^11.0",
+                "orchestra/testbench-core": "^9.1.4|^10.0|^11.0",
+                "pestphp/pest": "^2.0|^3.0|^4.4",
+                "pestphp/pest-plugin-laravel": "^2.0|^3.0|^4.1",
+                "phpunit/phpunit": "^10.5|^11.5|^12.5.12",
+                "spatie/laravel-ray": "^1.39",
+                "spatie/pest-plugin-test-time": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "SEOManager": "RalphJSmit\\Laravel\\SEO\\Facades\\SEOManager"
+                    },
+                    "providers": [
+                        "RalphJSmit\\Laravel\\SEO\\LaravelSEOServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "RalphJSmit\\Laravel\\SEO\\": "src",
+                    "RalphJSmit\\Laravel\\SEO\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ralph J. Smit",
+                    "email": "rjs@ralphjsmit.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A package to handle the SEO in any Laravel application, big or small.",
+            "homepage": "https://github.com/ralphjsmit/laravel-seo",
+            "keywords": [
+                "laravel",
+                "laravel-seo",
+                "ralphjsmit"
+            ],
+            "support": {
+                "issues": "https://github.com/ralphjsmit/laravel-seo/issues",
+                "source": "https://github.com/ralphjsmit/laravel-seo/tree/1.8.2"
+            },
+            "time": "2026-08-08T11:15:47+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -13241,6 +13332,68 @@
             "time": "2025-02-07T05:00:38+00:00"
         },
         {
+            "name": "spatie/yaml-front-matter",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/yaml-front-matter.git",
+                "reference": "3066996d0e4ed74bcc22c261084a9df727bf7e36"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/yaml-front-matter/zipball/3066996d0e4ed74bcc22c261084a9df727bf7e36",
+                "reference": "3066996d0e4ed74bcc22c261084a9df727bf7e36",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0",
+                "symfony/yaml": "^6.0|^7.0|^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\YamlFrontMatter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A to the point yaml front matter parser",
+            "homepage": "https://github.com/sebastiandedeyne/yaml-front-matter",
+            "keywords": [
+                "front matter",
+                "jekyll",
+                "spatie",
+                "yaml"
+            ],
+            "support": {
+                "source": "https://github.com/spatie/yaml-front-matter/tree/2.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-11-24T16:17:28+00:00"
+        },
+        {
             "name": "staabm/side-effects-detector",
             "version": "1.0.5",
             "source": {
@@ -13291,6 +13444,82 @@
                 }
             ],
             "time": "2024-10-20T05:08:20+00:00"
+        },
+        {
+            "name": "symfony/yaml",
+            "version": "v8.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "0b4aa53a67f9fece88c665f1a1dadcfd25d93fe5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/0b4aa53a67f9fece88c665f1a1dadcfd25d93fe5",
+                "reference": "0b4aa53a67f9fece88c665f1a1dadcfd25d93fe5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.4.1",
+                "symfony/polyfill-ctype": "^1.8"
+            },
+            "conflict": {
+                "symfony/console": "<7.4"
+            },
+            "require-dev": {
+                "symfony/console": "^7.4|^8.0",
+                "yaml/yaml-test-suite": "*"
+            },
+            "bin": [
+                "Resources/bin/yaml-lint"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Yaml\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Loads and dumps YAML files",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/yaml/tree/v8.1.6"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-08-30T01:03:44+00:00"
         },
         {
             "name": "ta-tikoma/phpunit-architecture-test",

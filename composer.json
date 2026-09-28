@@ -25,7 +25,6 @@
         "laravel/wayfinder": "^0.1.14",
         "mews/purifier": "^3.4",
         "opcodesio/log-viewer": "^3.24",
-        "petebishwhip/laradocs": "^0.3.0",
         "spatie/laravel-backup": "^10.3",
         "spatie/laravel-multitenancy": "^4.2",
         "spatie/laravel-permission": "^7.4"
@@ -42,7 +41,8 @@
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.9.3",
         "pestphp/pest": "^4.7",
-        "pestphp/pest-plugin-laravel": "^4.1"
+        "pestphp/pest-plugin-laravel": "^4.1",
+        "petebishwhip/laradocs": "^1.1"
     },
     "autoload": {
         "psr-4": {
