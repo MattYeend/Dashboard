@@ -49,5 +49,5 @@ jobs:
       - run: composer install --no-interaction --prefer-dist --no-progress
       - run: npm ci      
       - run: cp .env.example .env && php artisan key:generate
-      - run: php artisan wayfinder:generate
+      - run: php artisan wayfinder:generate --with-form
       - run: composer run ci:check
