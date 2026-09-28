@@ -30,7 +30,7 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 
 - PHP 8.3 or higher
 - Composer
-- Node.js 20 or higher
+- Node.js 22 or higher
 - npm
 - A supported database: MySQL 8 or PostgreSQL 16 (both run in CI). SQLite is for local development only
 
