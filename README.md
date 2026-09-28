@@ -16,6 +16,7 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 - [Testing](#testing)
 - [Code Quality](#code-quality)
 - [Scripts Reference](#scripts-reference)
+- [Dependency Notes](#dependency-notes)
 - [Generated Frontend Routes](#generated-frontend-routes)
 - [Local Quality Checks](#local-quality-checks)
 - [Further Reading](#further-reading)
@@ -257,6 +258,24 @@ npm run types:check
 | `composer run analyse` | Run Larastan static analysis |
 | `composer audit` | Check PHP dependencies for known vulnerabilities |
 | `npm audit` | Check JavaScript dependencies for known vulnerabilities |
+
+---
+
+## Dependency Notes
+
+Some packages are pre-1.0. Under Composer and npm caret rules, a constraint such as `^0.1.14` only allows `0.1.*`, so moving to `0.2.x` needs a manual constraint bump. Dependabot should raise these as pull requests. Check the changelog before merging.
+
+| Ecosystem | Package | Constraint |
+| --- | --- | --- |
+| Composer | `laravel/wayfinder` | `^0.1.14` |
+| Composer | `laravel/chisel` | `^0.1.0` |
+| npm | `@laravel/vite-plugin-wayfinder` | `^0.1.3` |
+| npm | `@laravel/passkeys` | `^0.4.0` |
+| npm | `fontaine` | `^0.8.2` |
+| npm | `prettier-plugin-tailwindcss` | `^0.6.11` |
+| npm | `vue-input-otp` | `^0.3.2` |
+
+Upgrade `laravel/wayfinder` and `@laravel/vite-plugin-wayfinder` together, then run `php artisan wayfinder:generate --with-form`.
 
 ---
 
