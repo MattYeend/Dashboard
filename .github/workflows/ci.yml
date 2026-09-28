@@ -48,11 +48,5 @@ jobs:
           cache: npm
       - run: composer install --no-interaction --prefer-dist --no-progress
       - run: npm ci
-      - name: Check tooling versions
-        run: |
-          php --version
-          node --version
-          npm --version
-          npx eslint --version
       - run: cp .env.example .env && php artisan key:generate
       - run: composer run ci:check

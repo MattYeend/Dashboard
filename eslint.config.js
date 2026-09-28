@@ -37,6 +37,9 @@ export default defineConfigWithVueTs(
                 node: true,
             },
         },
+        settings: {
+            'import/internal-regex': '^@/',
+        },
         rules: {
             'vue/multi-word-component-names': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
