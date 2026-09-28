@@ -1,8 +1,11 @@
 name: CI
 
 on:
+
   pull_request:
+
   push:
+
     branches: [main]
 
 permissions:
@@ -41,9 +44,15 @@ jobs:
           coverage: none
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: '22.13.0'
           cache: npm
       - run: composer install --no-interaction --prefer-dist --no-progress
       - run: npm ci
+      - name: Check tooling versions
+        run: |
+          php --version
+          node --version
+          npm --version
+          npx eslint --version
       - run: cp .env.example .env && php artisan key:generate
       - run: composer run ci:check
