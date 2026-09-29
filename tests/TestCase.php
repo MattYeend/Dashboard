@@ -101,4 +101,12 @@ abstract class TestCase extends BaseTestCase
             );
         }
     }
+
+    /**
+     * Mark the session as having recently confirmed the user's password.
+     */
+    protected function withConfirmedPassword(): static
+    {
+        return $this->withSession(['auth.password_confirmed_at' => time()]);
+    }
 }

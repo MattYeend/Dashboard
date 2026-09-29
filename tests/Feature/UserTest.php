@@ -452,6 +452,7 @@ describe('force delete', function () {
         $user = User::factory()->deleted()->create();
 
         $this->actingAs($superAdmin)
+            ->withConfirmedPassword()
             ->deleteJson("/users/{$user->id}/force")
             ->assertStatus(204);
 
@@ -463,6 +464,7 @@ describe('force delete', function () {
         $target = User::factory()->deleted()->create();
 
         $this->actingAs($normalUser)
+            ->withConfirmedPassword()
             ->deleteJson("/users/{$target->id}/force")
             ->assertStatus(403);
     });
@@ -473,6 +475,7 @@ describe('force delete', function () {
         $user = User::factory()->create();
 
         $this->actingAs($superAdmin)
+            ->withConfirmedPassword()
             ->deleteJson("/users/{$user->id}/force")
             ->assertStatus(404);
     });
@@ -486,6 +489,7 @@ describe('bulk delete', function () {
         $ids = $users->pluck('id')->all();
 
         $this->actingAs($superAdmin)
+            ->withConfirmedPassword()        
             ->postJson('/users/bulk/delete', ['ids' => $ids])
             ->assertStatus(200)
             ->assertJson([
@@ -502,6 +506,7 @@ describe('bulk delete', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
+            ->withConfirmedPassword()
             ->postJson('/users/bulk/delete', ['ids' => []])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ids']);
@@ -511,6 +516,7 @@ describe('bulk delete', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
+            ->withConfirmedPassword()        
             ->postJson('/users/bulk/delete', ['ids' => [99999]])
             ->assertStatus(200)
             ->assertJson([
@@ -524,6 +530,7 @@ describe('bulk delete', function () {
         $users = User::factory()->count(2)->create();
 
         $this->actingAs($normalUser)
+            ->withConfirmedPassword()
             ->postJson('/users/bulk/delete', [
                 'ids' => $users->pluck('id')->all(),
             ])
@@ -651,6 +658,7 @@ describe('role hierarchy', function () {
         $superAdmin->delete();
 
         $this->actingAs($admin)
+            ->withConfirmedPassword()
             ->deleteJson("/users/{$superAdmin->id}/force")
             ->assertStatus(403);
     });
@@ -671,6 +679,7 @@ describe('role hierarchy', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($admin)
+            ->withConfirmedPassword()
             ->postJson('/users/bulk/delete', ['ids' => [$superAdmin->id]])
             ->assertStatus(403);
     });
