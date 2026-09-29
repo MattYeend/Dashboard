@@ -16,29 +16,24 @@ class AssertSecureConfigurationAction
      */
     public function execute(): void
     {
-        $this->assertAuditKeyIsConfigured();
+        $this->assertCorsOriginsAreSecure();
     }
 
     /**
-     * The audit HMAC key must be a 64 character hexadecimal string outside
-     * local and testing, otherwise signatures are effectively unauthenticated.
+     * Production CORS origins must be explicit and HTTPS only.
      */
-    private function assertAuditKeyIsConfigured(): void
+    private function assertCorsOriginsAreSecure(): void
     {
-        if (app()->environment('local', 'testing')) {
+        if (! app()->isProduction()) {
             return;
         }
 
-        $key = config('audit.hmac_key');
-
-        if (
-            ! is_string($key)
-            || strlen($key) !== self::AUDIT_KEY_LENGTH
-            || ! ctype_xdigit($key)
-        ) {
-            throw new RuntimeException(
-                'AUDIT_LOG_HMAC_KEY must be set to a 64 character hexadecimal value.'
-            );
+        foreach ((array) config('cors.allowed_origins', []) as $origin) {
+            if (! is_string($origin) || ! str_starts_with($origin, 'https://')) {
+                throw new RuntimeException(
+                    'CORS_ALLOWED_ORIGINS must contain explicit HTTPS origins only in production.'
+                );
+            }
         }
     }
 }
