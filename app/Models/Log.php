@@ -4,12 +4,43 @@ namespace App\Models;
 
 use App\Contracts\Auditable;
 use App\Services\SensitiveDataMaskerService;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use LogicException;
 
+/**
+ * @property int $id
+ * @property int|null $organisation_id
+ * @property int $action_id
+ * @property array<string, mixed>|null $data
+ * @property int|null $logged_in_user_id
+ * @property int|null $related_to_user_id
+ * @property int|null $sequence
+ * @property string|null $previous_hash
+ * @property string|null $hash
+ * @property string|null $signature_key_id
+ * @property Carbon|null $sealed_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property-read User|null $loggedInUser
+ * @property-read User|null $relatedToUser
+ */
+#[Fillable([
+    'organisation_id',
+    'action_id',
+    'data',
+    'logged_in_user_id',
+    'related_to_user_id',
+    'sequence',
+    'previous_hash',
+    'hash',
+    'signature_key_id',
+    'sealed_at',
+])]
 class Log extends Model implements Auditable
 {
     // Login/Logout
@@ -867,25 +898,13 @@ class Log extends Model implements Auditable
     protected $table = 'logs';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int,string>
-     */
-    protected $fillable = [
-        'organisation_id',
-        'action_id',
-        'data',
-        'logged_in_user_id',
-        'related_to_user_id',
-    ];
-
-    /**
      * The attributes that should be cast.
      *
      * @var array<string,string>
      */
     protected $casts = [
         'data' => 'array',
+        'sealed_at' => 'datetime',
     ];
 
     /**
