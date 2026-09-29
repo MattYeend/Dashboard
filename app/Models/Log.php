@@ -862,7 +862,7 @@ class Log extends Model implements Auditable
     public const ACTION_BULK_INVITE_MEMBERS = 381;
 
     // Platform Administration
-    const ACTION_VIEW_PLATFORM_REPORTING = 382;
+    public const ACTION_VIEW_PLATFORM_REPORTING = 382;
 
     // Organisation Offboarding / GDPR
     public const ACTION_REQUEST_DATA_EXPORT = 383;

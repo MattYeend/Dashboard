@@ -489,7 +489,7 @@ describe('bulk delete', function () {
         $ids = $users->pluck('id')->all();
 
         $this->actingAs($superAdmin)
-            ->withConfirmedPassword()        
+            ->withConfirmedPassword()
             ->postJson('/users/bulk/delete', ['ids' => $ids])
             ->assertStatus(200)
             ->assertJson([
@@ -516,7 +516,7 @@ describe('bulk delete', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->withConfirmedPassword()        
+            ->withConfirmedPassword()
             ->postJson('/users/bulk/delete', ['ids' => [99999]])
             ->assertStatus(200)
             ->assertJson([

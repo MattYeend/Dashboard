@@ -22,10 +22,7 @@ const labelEntities: Record<string, string> = {
 };
 
 const formatLabel = (label: string): string => {
-    return label.replace(
-        /&laquo;|&raquo;/g,
-        (entity) => labelEntities[entity],
-    );
+    return label.replace(/&laquo;|&raquo;/g, (entity) => labelEntities[entity]);
 };
 </script>
 
