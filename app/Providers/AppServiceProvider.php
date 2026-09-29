@@ -228,7 +228,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('audit-export', function (Request $request): Limit {
-            return Limit::perMinute(3)->by((string) $request->user()?->getAuthIdentifier());
+            return Limit::perMinute(3)->by(
+                (string) ($request->user()?->getAuthIdentifier() ?? $request->ip())
+            );
         });
 
         $this->preventDestructiveCommandsInProtectedEnvironments();
