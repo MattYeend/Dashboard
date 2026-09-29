@@ -16,7 +16,32 @@ class AssertSecureConfigurationAction
      */
     public function execute(): void
     {
+        $this->assertAuditKeyIsConfigured();
         $this->assertCorsOriginsAreSecure();
+        $this->assertStripeWebhookSecretIsConfigured();
+    }
+
+    /**
+     * The audit HMAC key must be a 64 character hexadecimal string outside
+     * local and testing, otherwise signatures are effectively unauthenticated.
+     */
+    private function assertAuditKeyIsConfigured(): void
+    {
+        if (app()->environment('local', 'testing')) {
+            return;
+        }
+
+        $key = config('audit.hmac_key');
+
+        if (
+            ! is_string($key)
+            || strlen($key) !== self::AUDIT_KEY_LENGTH
+            || ! ctype_xdigit($key)
+        ) {
+            throw new RuntimeException(
+                'AUDIT_LOG_HMAC_KEY must be set to a 64 character hexadecimal value.'
+            );
+        }
     }
 
     /**
@@ -34,6 +59,22 @@ class AssertSecureConfigurationAction
                     'CORS_ALLOWED_ORIGINS must contain explicit HTTPS origins only in production.'
                 );
             }
+        }
+    }
+
+    /**
+     * Cashier skips signature verification when the secret is blank.
+     */
+    private function assertStripeWebhookSecretIsConfigured(): void
+    {
+        if (app()->environment('local', 'testing')) {
+            return;
+        }
+
+        if (blank(config('cashier.webhook.secret'))) {
+            throw new RuntimeException(
+                'STRIPE_WEBHOOK_SECRET must be set outside local and testing.'
+            );
         }
     }
 }
