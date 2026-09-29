@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Actions\Security\AssertSecureConfigurationAction;
 use App\Models\Activity;
 use App\Models\Address;
 use App\Models\Attachment;
@@ -115,6 +116,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        app(AssertSecureConfigurationAction::class)->execute();
+
         Gate::before(function (User $user, string $ability, array $arguments = []) {
             if (self::isApiTokenAbility($arguments)) {
                 return null;
