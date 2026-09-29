@@ -55,6 +55,7 @@ jobs:
           --health-retries=5
 
     env:
+      APP_ENV: testing
       DB_CONNECTION: ${{ matrix.database }}
       DB_HOST: 127.0.0.1
       DB_PORT: ${{ matrix.database == 'mysql' && 3306 || 5432 }}
