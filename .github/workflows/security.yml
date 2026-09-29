@@ -27,16 +27,21 @@ jobs:
 
   static-analysis:
     runs-on: ubuntu-latest
+    env:
+      APP_ENV: testing
+      DB_CONNECTION: sqlite
+      DB_DATABASE: ':memory:'
     steps:
       - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
           coverage: none
-      - run: composer install --no-interaction --prefer-dist
+          tools: composer:v2
       - run: cp .env.example .env
+      - run: composer install --no-interaction --prefer-dist
       - run: php artisan key:generate
-      - run: vendor/bin/phpstan analyse --memory-limit=512M
+      - run: vendor/bin/phpstan analyse --memory-limit=1G
 
   secrets:
     runs-on: ubuntu-latest
