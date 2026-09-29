@@ -14,11 +14,11 @@ return new class extends Migration
     {
         Schema::table('logs', function (Blueprint $table) {
             $table->string('signature_key_id', 32)->nullable();
-
-            DB::table('logs')
-                ->whereNotNull('sequence')
-                ->update(['signature_key_id' => 'v1']);
         });
+
+        DB::table('logs')
+            ->whereNotNull('sequence')
+            ->update(['signature_key_id' => 'v1']);
     }
 
     /**
