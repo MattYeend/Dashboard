@@ -30,3 +30,20 @@ Schedule::command('logs:seal')
 Schedule::command('logs:verify')
     ->dailyAt('02:30')
     ->onOneServer();
+
+Schedule::command('backup:clean')
+    ->dailyAt('01:00')
+    ->environments(['production', 'staging'])
+    ->onOneServer()
+    ->withoutOverlapping();
+
+Schedule::command('backup:run')
+    ->dailyAt('01:30')
+    ->environments(['production', 'staging'])
+    ->onOneServer()
+    ->withoutOverlapping();
+
+Schedule::command('backup:monitor')
+    ->dailyAt('03:00')
+    ->environments(['production', 'staging'])
+    ->onOneServer();
