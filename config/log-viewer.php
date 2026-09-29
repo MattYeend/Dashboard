@@ -104,6 +104,8 @@ return [
 
     'middleware' => [
         'web',
+        'auth',
+        'verified',
         AuthorizeLogViewer::class,
     ],
 
@@ -118,6 +120,7 @@ return [
 
     'api_middleware' => [
         EnsureFrontendRequestsAreStateful::class,
+        'auth',
         AuthorizeLogViewer::class,
     ],
 
@@ -165,28 +168,22 @@ return [
     |--------------------------------------------------------------------------
     | Include file patterns
     |--------------------------------------------------------------------------
+    | Only application logs are included by default. System logs (web server,
+    | PHP-FPM and so on) contain client IP addresses and full request URLs,
+    | so they are only added locally.
     |
     */
 
-    'include_files' => [
-        '*.log',
-        '**/*.log',
-
-        // You can include paths to other log types as well, such as apache, nginx, and more.
-        // This key => value pair can be used to rename and group multiple paths into one folder in the UI.
-        '/var/log/httpd/*' => 'Apache',
-        '/var/log/nginx/*' => 'Nginx',
-
-        // MacOS Apple Silicon logs
-        '/opt/homebrew/var/log/nginx/*',
-        '/opt/homebrew/var/log/httpd/*',
-        '/opt/homebrew/var/log/php-fpm.log',
-        '/opt/homebrew/var/log/postgres*log',
-        '/opt/homebrew/var/log/redis*log',
-        '/opt/homebrew/var/log/supervisor*log',
-
-        // '/absolute/paths/supported',
-    ],
+    'include_files' => array_merge(
+        [
+            '*.log',
+            '**/*.log',
+        ],
+        env('APP_ENV') === 'local' ? [
+            // MacOS Apple Silicon logs
+            '/opt/homebrew/var/log/php-fpm.log',
+        ] : [],
+    ),
 
     /*
     |--------------------------------------------------------------------------
