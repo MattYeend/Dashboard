@@ -27,10 +27,12 @@ const sanitisedDescription = computed(() =>
             </div>
             <div>
                 <dt class="text-xs text-gray-400">Description</dt>
+                <!-- eslint-disable vue/no-v-html -- sanitised with DOMPurify in sanitisedDescription -->
                 <dd
                     class="prose prose-sm max-w-none text-sm"
                     v-html="sanitisedDescription"
                 />
+                <!-- eslint-enable vue/no-v-html -->
             </div>
             <div>
                 <dt class="text-xs text-gray-400">Image</dt>

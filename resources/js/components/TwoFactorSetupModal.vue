@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Form } from '@inertiajs/vue3';
 import { useClipboard } from '@vueuse/core';
+import DOMPurify from 'dompurify';
 import { Check, Copy, ScanLine } from 'lucide-vue-next';
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue';
 import AlertError from '@/components/AlertError.vue';
@@ -42,6 +43,12 @@ const showVerificationStep = ref(false);
 const code = ref<string>('');
 
 const pinInputContainerRef = useTemplateRef('pinInputContainerRef');
+
+const safeQrCodeSvg = computed(() =>
+    DOMPurify.sanitize(qrCodeSvg.value ?? '', {
+        USE_PROFILES: { svg: true },
+    }),
+);
 
 const modalConfig = computed<TwoFactorConfigContent>(() => {
     if (props.twoFactorEnabled) {
@@ -170,8 +177,9 @@ watch(
                                     v-else
                                     class="relative z-10 overflow-hidden border p-5"
                                 >
+                                    <!-- eslint-disable vue/no-v-html -- SVG generated server side by Fortify from the user's own secret -->
                                     <div
-                                        v-html="qrCodeSvg"
+                                        v-html="safeQrCodeSvg"
                                         class="flex aspect-square size-full items-center justify-center"
                                         :style="{
                                             filter:
@@ -180,6 +188,7 @@ watch(
                                                     : undefined,
                                         }"
                                     />
+                                    <!-- eslint-enable vue/no-v-html -->
                                 </div>
                             </div>
                         </div>

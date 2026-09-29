@@ -15,6 +15,18 @@ interface Props {
 }
 
 defineProps<Props>();
+
+const labelEntities: Record<string, string> = {
+    '&laquo;': '«',
+    '&raquo;': '»',
+};
+
+const formatLabel = (label: string): string => {
+    return label.replace(
+        /&laquo;|&raquo;/g,
+        (entity) => labelEntities[entity],
+    );
+};
 </script>
 
 <template>
@@ -40,7 +52,7 @@ defineProps<Props>();
                 ]"
                 preserve-scroll
             >
-                <span v-html="link.label" />
+                <span>{{ formatLabel(link.label) }}</span>
             </Link>
         </div>
     </div>
