@@ -19,6 +19,7 @@ class AssertSecureConfigurationAction
         $this->assertAuditKeyIsConfigured();
         $this->assertCorsOriginsAreSecure();
         $this->assertStripeWebhookSecretIsConfigured();
+        $this->assertSessionCookieIsSecure();
     }
 
     /**
@@ -74,6 +75,22 @@ class AssertSecureConfigurationAction
         if (blank(config('cashier.webhook.secret'))) {
             throw new RuntimeException(
                 'STRIPE_WEBHOOK_SECRET must be set outside local and testing.'
+            );
+        }
+    }
+
+    /**
+     * Production session cookies must only be sent over HTTPS.
+     */
+    private function assertSessionCookieIsSecure(): void
+    {
+        if (! app()->isProduction()) {
+            return;
+        }
+
+        if (config('session.secure') !== true) {
+            throw new RuntimeException(
+                'SESSION_SECURE_COOKIE must be true in production.'
             );
         }
     }
