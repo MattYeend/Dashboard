@@ -30,6 +30,7 @@ jobs:
           --health-cmd="mysqladmin ping" --health-interval=10s
           --health-timeout=5s --health-retries=5
     env:
+      APP_ENV: testing
       DB_CONNECTION: mysql
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
@@ -46,8 +47,8 @@ jobs:
         with:
           node-version: '22.13.0'
           cache: npm
+      - run: cp .env.example .env && php artisan key:generate
       - run: composer install --no-interaction --prefer-dist --no-progress
       - run: npm ci      
-      - run: cp .env.example .env && php artisan key:generate
       - run: php artisan wayfinder:generate --with-form
       - run: composer run ci:check
