@@ -30,6 +30,7 @@ jobs:
           --health-cmd="mysqladmin ping" --health-interval=10s
           --health-timeout=5s --health-retries=5
     env:
+      APP_ENV: testing
       DB_CONNECTION: mysql
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
@@ -42,12 +43,15 @@ jobs:
         with:
           php-version: '8.5'
           coverage: none
+      - name: Generate audit key
+        run: echo "AUDIT_LOG_HMAC_KEY=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v4
         with:
           node-version: '22.13.0'
           cache: npm
+      - run: cp .env.example .env
       - run: composer install --no-interaction --prefer-dist --no-progress
-      - run: npm ci      
-      - run: cp .env.example .env && php artisan key:generate
+      - run: php artisan key:generate
+      - run: npm ci
       - run: php artisan wayfinder:generate --with-form
       - run: composer run ci:check

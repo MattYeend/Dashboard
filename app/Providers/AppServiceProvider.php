@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Actions\Security\AssertSecureConfigurationAction;
 use App\Models\Activity;
 use App\Models\Address;
 use App\Models\Attachment;
@@ -115,6 +116,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        app(AssertSecureConfigurationAction::class)->execute();
+
         Gate::before(function (User $user, string $ability, array $arguments = []) {
             if (self::isApiTokenAbility($arguments)) {
                 return null;
@@ -181,8 +184,8 @@ class AppServiceProvider extends ServiceProvider
         Cashier::useCustomerModel(Organisation::class);
         Cashier::useSubscriptionModel(Subscription::class);
 
-        Gate::define('viewLogViewer', function ($user) {
-            return $user && $user->can('view logs');
+        Gate::define('viewLogViewer', function (?User $user): bool {
+            return $user !== null && $user->can('view logs');
         });
 
         $this->registerPasskeyAuditLogging();
@@ -225,7 +228,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('audit-export', function (Request $request): Limit {
-            return Limit::perMinute(3)->by((string) $request->user()?->getAuthIdentifier());
+            return Limit::perMinute(3)->by(
+                (string) ($request->user()?->getAuthIdentifier() ?? $request->ip())
+            );
         });
 
         $this->preventDestructiveCommandsInProtectedEnvironments();

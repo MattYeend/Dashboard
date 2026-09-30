@@ -176,10 +176,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/users/{user}/profile', [SettingsProfileController::class, 'showOther'])->name('profile.show-other');
 
         Route::prefix('users')->name('users.')->group(function () {
-            Route::post('/bulk/delete', [UserController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/delete', [UserController::class, 'bulkDelete'])
+                ->middleware('password.confirm')
+                ->name('bulk.delete');
             Route::post('/bulk/restore', [UserController::class, 'bulkRestore'])->name('bulk.restore');
             Route::post('/{id}/restore', [UserController::class, 'restore'])->name('restore');
-            Route::delete('/{id}/force', [UserController::class, 'forceDelete'])->name('force-delete');
+            Route::delete('/{id}/force', [UserController::class, 'forceDelete'])
+                ->middleware('password.confirm')
+                ->name('force-delete');
 
             Route::post('/{user}/impersonate', [UserController::class, 'impersonate'])->name('impersonate');
             Route::post('/impersonate/stop', [UserController::class, 'stopImpersonating'])->name('impersonate.stop');

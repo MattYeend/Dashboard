@@ -577,12 +577,6 @@ parameters:
 			path: app/Models/Log.php
 
 		-
-			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\Log\:\:\$fillable is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
-			identifier: property.phpDocType
-			count: 1
-			path: app/Models/Log.php
-
-		-
 			message: '#^Method App\\Services\\Activities\\CreatorService\:\:create\(\) should return App\\Models\\Activity but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1

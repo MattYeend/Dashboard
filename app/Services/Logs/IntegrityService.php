@@ -154,12 +154,17 @@ class IntegrityService
     /**
      * Read the integrity key, refusing to run without a strong one.
      */
-    private function key(): string
+    private function key(?string $keyId = null): string
     {
-        $key = (string) config('audit.hmac_key');
+        $currentId = (string) config('audit.hmac_key_id');
+        $keyId ??= $currentId;
+
+        $key = $keyId === $currentId
+            ? (string) config('audit.hmac_key')
+            : (string) config("audit.retired_keys.{$keyId}");
 
         if (strlen($key) < 32) {
-            throw new RuntimeException('AUDIT_LOG_HMAC_KEY must be set to at least 32 characters.');
+            throw new RuntimeException("The audit log key [{$keyId}] must be set to at least 32 characters.");
         }
 
         return $key;

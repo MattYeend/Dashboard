@@ -14,6 +14,13 @@ return [
 
     'hmac_key' => env('AUDIT_LOG_HMAC_KEY'),
 
+    'hmac_key_id' => env('AUDIT_LOG_HMAC_KEY_ID', 'v1'),
+
+    'retired_keys' => json_decode(
+        (string) env('AUDIT_LOG_HMAC_RETIRED_KEYS', '{}'),
+        true
+    ) ?: [],
+
     'seal_chunk_size' => 500,
 
     'verify_chunk_size' => 1000,
