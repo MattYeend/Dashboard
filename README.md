@@ -1,6 +1,6 @@
 # Dashboard
 
-A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, and **Inertia.js**. It provides a clean, responsive interface with role-based access control, authentication via Laravel Fortify and Passkeys, and a fully typed frontend powered by Vite and Tailwind CSS v4.
+A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, and **Inertia.js**. It provides a clean, responsive interface with role-based access control, authentication via Laravel Fortify, two-factor authentication and passkeys (provided by [Laravel Passkeys](https://github.com/laravel/passkeys)), and a fully typed frontend powered by Vite and Tailwind CSS v4.
 
 ---
 
@@ -30,7 +30,7 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 
 - PHP 8.3 or higher
 - Composer
-- Node.js 22 or higher
+- Node.js 22.12 or higher
 - npm
 - A supported database: MySQL 8 or PostgreSQL 16 (both run in CI). SQLite is for local development only
 
@@ -255,6 +255,8 @@ npm run types:check
 | `php artisan test` | Run the full Pest PHP test suite |
 | `php artisan make:service {Model}/{ServiceName}` | Scaffold a service, for example `Companies/CreatorService` |
 | `composer run analyse` | Run Larastan static analysis |
+| `composer run ci:check` | Run the PHP checks CI runs (lint, analysis, tests) |
+| `composer run lint:check` | Check PHP style with Pint (no fixes applied) |
 | `composer audit` | Check PHP dependencies for known vulnerabilities |
 | `npm audit` | Check JavaScript dependencies for known vulnerabilities |
 
