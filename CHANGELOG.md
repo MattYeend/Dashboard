@@ -1,24 +1,22 @@
-# Changelog
-
-All notable changes to this project are documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
 ## [Unreleased]
 
-## [0.1.0] - 2026-09-30
+## [1.7.30] - 2026-10-01
 
 ### Added
 
-- Role-based access control with Spatie Laravel Permission and seeded roles.
-- Authentication with Laravel Fortify, two-factor authentication and passkeys.
-- Organisation-based multitenancy with tenant isolation tests.
-- Stripe subscription billing with Laravel Cashier and a Plans module.
-- Audit logging of state changes, signed with an HMAC.
-- Service-oriented module architecture with shared create, update, delete and restore actions.
-- Vue 3, TypeScript and Inertia.js frontend with Wayfinder route helpers.
-- Database and file backups with Spatie Laravel Backup.
-- SECURITY.md, CONTRIBUTING.md, pull request template and issue templates.
+- SECURITY.md, CONTRIBUTING.md, a pull request template and issue templates.
+- This changelog. Changes before this release are listed in the [GitHub releases](https://github.com/MattYeend/Dashboard/releases).
+- README sections for frontend structure, multitenancy, billing, backups, audit log and seeded roles.
+- README screenshot.
 
-[Unreleased]: https://github.com/MattYeend/Dashboard/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/MattYeend/Dashboard/releases/tag/v0.1.0
+### Changed
+
+- README setup steps, requirements and tech stack corrected to match the project.
+- Minimum Node.js version stated as 22.12 to match Vite.
+
+### Removed
+
+- Duplicate sponsor link from the README.
+
+[Unreleased]: https://github.com/MattYeend/Dashboard/compare/v1.7.30...HEAD
+[1.7.30]: https://github.com/MattYeend/Dashboard/compare/v1.7.29...v1.7.30
