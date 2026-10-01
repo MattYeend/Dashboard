@@ -28,7 +28,7 @@ class QueryService
         $query = $this->filter->apply($query, $filters['search'] ?? null);
         $query = $this->sorting->apply($query, $filters['sort_by'] ?? null, $filters['sort_direction'] ?? null);
 
-        $perPage = (int) ($filters['per_page'] ?? 15);
+        $perPage = max(1, min((int) ($filters['per_page'] ?? 15), 100));
         $interests = $query->paginate($perPage)->withQueryString();
 
         return [

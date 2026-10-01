@@ -23,7 +23,7 @@ class QueryService
     public function getPaginated(User $actor, array $filters = []): array
     {
         $query = $this->buildQuery($filters);
-        $paginated = $this->paginate($query, min((int) ($filters['per_page'] ?? 15), 100));
+        $paginated = $this->paginate($query, max(1, min((int) ($filters['per_page'] ?? 15), 100)));
 
         return array_merge(
             $paginated,

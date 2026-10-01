@@ -36,7 +36,7 @@ class QueryService
 
         $paginated = $this->paginate(
             $query,
-            min((int) ($filters['per_page'] ?? 25), 100)
+            max(1, min((int) ($filters['per_page'] ?? 25), 100))
         );
 
         return array_merge(
