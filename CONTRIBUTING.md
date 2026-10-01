@@ -29,7 +29,7 @@ npm run build
 - Seeders use real reference data, never `fake()`.
 - Vue: split forms and show pages into small components under `{Model}/components/`, and do not add background colour classes.
 - Web routes follow the standard grouped/prefixed pattern already used across the app (see `routes/web.php`).
-- `ManagementService::bulkDelete()`/`bulkRestore()` must preserve the caller's requested id order in the `deleted`/`restored`/`skipped` arrays (see `App\Services\Posts\ManagementService` as the canonical example) — look models up by id with `->get()->keyBy('id')` and iterate the requested ids, rather than `->diff()` against query results, so tests can assert exact array equality instead of a canonicalised comparison.
+- `ManagementService::bulkDelete()`/`bulkRestore()` must preserve the caller's requested id order in the `deleted`/`restored`/`skipped` arrays (see `App\Services\Posts\ManagementService` as the canonical example). Look models up by id with `->get()->keyBy('id')` and iterate the requested ids, rather than `->diff()` against query results, so tests can assert exact array equality instead of a canonicalised comparison.
 
 ## Tenant scoping (organisation_id)
 
@@ -44,7 +44,7 @@ Add this checklist to every new tenant-scoped module:
 - Any cache key includes the organisation id (the tenant cache prefix task handles framework calls).
 - Any queued job class is tenant aware (the default in this project).
 - If the table is deliberately not organisation-scoped, it is added to `config('organisations.central_tables')` with a one-line reason.
-- Any `withoutGlobalScope(s)` call is added to `config('organisations.global_scope_bypass_allow_list')` with a one-line reason, or it is not added at all and the code is changed instead. Before adding a bypass at all, confirm the target model is actually scoped by `BelongsToOrganisation` — a `withoutGlobalScope` call against a central table (see `ReportingService`, #440) is dead code, not a bypass, and should simply be deleted.
+- Any `withoutGlobalScope(s)` call is added to `config('organisations.global_scope_bypass_allow_list')` with a one-line reason, or it is not added at all and the code is changed instead. Before adding a bypass at all, confirm the target model is actually scoped by `BelongsToOrganisation`. A `withoutGlobalScope` call against a central table (see `ReportingService`, #440) is dead code, not a bypass, and should simply be deleted.
 
 ## Security
 
