@@ -2,6 +2,8 @@
 
 A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, and **Inertia.js**. It provides a clean, responsive interface with role-based access control, authentication via Laravel Fortify, two-factor authentication and passkeys (provided by [Laravel Passkeys](https://github.com/laravel/passkeys)), and a fully typed frontend powered by Vite and Tailwind CSS v4.
 
+![Dashboard overview](docs/images/dashboard.gif)
+
 ---
 
 ## Table of Contents
@@ -453,12 +455,12 @@ Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md). Do 
 
 ## Contributing
 
-Contributions are welcome. Please open an issue or submit a pull request. Ensure all tests pass and code style checks succeed before submitting.
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first, then open an issue or submit a pull request. Ensure all tests pass and code style checks succeed before submitting.
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/my-feature`)
-3. Commit your changes (`git commit -m 'Add my feature'`)
-4. Push to the branch (`git push origin feature/my-feature`)
+2. Create a feature branch (`git checkout -b feature/{issue-number}-{short-name}`)
+3. Commit your changes (`git commit -m "#{issue} {Message}"`)
+4. Push to the branch (`git push origin feature/{issue-number}-{short-name}`)
 5. Open a Pull Request
 
 ---
@@ -474,5 +476,4 @@ This project is licenced under the [MIT Licence](LICENSE).
 If you find this project useful and would like to support its development, you can do so through the following:
 
 - [Sponsor MattYeend on GitHub](https://github.com/sponsors/MattYeend)
-- [Sponsor MatthewYeend on GitHub](https://github.com/sponsors/MatthewYeend)
 - [Buy Me a Coffee](https://www.buymeacoffee.com/mattyeend)
