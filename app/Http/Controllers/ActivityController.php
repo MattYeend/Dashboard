@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Activities\StoreActivityRequest;
 use App\Http\Requests\Activities\UpdateActivityRequest;
+use App\Http\Requests\BulkIdsRequest;
 use App\Models\Activity;
 use App\Services\Activities\ManagementService;
 use App\Services\Activities\QueryService;
@@ -174,25 +175,17 @@ class ActivityController extends Controller
      * Authorises the bulk action itself, then each activity individually
      * via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
         $this->authorize('bulkDelete', Activity::class);
 
-        $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
-
-        $actor = $request->user();
-        $ids = $request->input('ids');
-
         $result = $this->management->bulkDelete(
-            $ids,
-            $actor,
+            $request->validated('ids'),
+            $request->user(),
             fn (Activity $activity) => $this->authorize('delete', $activity)
         );
 
-        if (request()->wantsJson()) {
+        if ($request->wantsJson()) {
             return response()->json($result);
         }
 
@@ -205,17 +198,12 @@ class ActivityController extends Controller
      * Authorises the bulk action itself, then each activity individually
      * via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
         $this->authorize('bulkRestore', Activity::class);
 
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
-
         $result = $this->management->bulkRestore(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (Activity $activity) => $this->authorize('restore', $activity)
         );

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkIdsRequest;
 use App\Http\Requests\Industries\ImportIndustryRequest;
 use App\Http\Requests\Industries\StoreIndustryRequest;
 use App\Http\Requests\Industries\UpdateIndustryRequest;
@@ -226,23 +227,17 @@ class IndustryController extends Controller
      *
      * Authorises each industry individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
-
-        $actor = $request->user();
-        $ids = $request->input('ids');
+        $this->authorize('bulkDelete', Industry::class);
 
         $result = $this->management->bulkDelete(
-            $ids,
-            $actor,
+            $request->validated('ids'),
+            $request->user(),
             fn (Industry $industry) => $this->authorize('delete', $industry)
         );
 
-        if (request()->wantsJson()) {
+        if ($request->wantsJson()) {
             return response()->json($result);
         }
 
@@ -254,15 +249,12 @@ class IndustryController extends Controller
      *
      * Authorises each industry individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkRestore', Industry::class);
 
         $result = $this->management->bulkRestore(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (Industry $industry) => $this->authorize('restore', $industry)
         );

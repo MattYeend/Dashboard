@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkIdsRequest;
 use App\Http\Requests\Users\ImportUserRequest;
 use App\Http\Requests\Users\StoreUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
@@ -233,23 +234,17 @@ class UserController extends Controller
      *
      * Authorises each user individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
-
-        $actor = $request->user();
-        $ids = $request->input('ids');
+        $this->authorize('bulkDelete', User::class);
 
         $result = $this->management->bulkDelete(
-            $ids,
-            $actor,
+            $request->validated('ids'),
+            $request->user(),
             fn (User $user) => $this->authorize('delete', $user)
         );
 
-        if (request()->wantsJson()) {
+        if ($request->wantsJson()) {
             return response()->json($result);
         }
 
@@ -261,15 +256,12 @@ class UserController extends Controller
      *
      * Authorises each user individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkRestore', User::class);
 
         $result = $this->management->bulkRestore(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (User $user) => $this->authorize('restore', $user)
         );

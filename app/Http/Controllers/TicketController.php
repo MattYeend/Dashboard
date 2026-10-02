@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkIdsRequest;
 use App\Http\Requests\Tickets\ImportTicketRequest;
 use App\Http\Requests\Tickets\StoreTicketRequest;
 use App\Http\Requests\Tickets\UpdateTicketRequest;
@@ -286,15 +287,12 @@ class TicketController extends Controller
      *
      * Authorises each ticket individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkDelete', Ticket::class);
 
         $result = $this->management->bulkDelete(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (Ticket $ticket) => $this->authorize('delete', $ticket)
         );
@@ -311,15 +309,12 @@ class TicketController extends Controller
      *
      * Authorises each ticket individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkRestore', Ticket::class);
 
         $result = $this->management->bulkRestore(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (Ticket $ticket) => $this->authorize('restore', $ticket)
         );

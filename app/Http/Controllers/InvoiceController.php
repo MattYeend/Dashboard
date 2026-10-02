@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Invoice\GenerateInvoicePdf;
+use App\Http\Requests\BulkIdsRequest;
 use App\Http\Requests\Invoices\ImportInvoiceRequest;
 use App\Http\Requests\Invoices\StoreInvoiceRequest;
 use App\Http\Requests\Invoices\UpdateInvoiceRequest;
@@ -245,23 +246,17 @@ class InvoiceController extends Controller
      *
      * Authorises each invoice individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
-
-        $actor = $request->user();
-        $ids = $request->input('ids');
+        $this->authorize('bulkDelete', Invoice::class);
 
         $result = $this->management->bulkDelete(
-            $ids,
-            $actor,
+            $request->validated('ids'),
+            $request->user(),
             fn (Invoice $invoice) => $this->authorize('delete', $invoice)
         );
 
-        if (request()->wantsJson()) {
+        if ($request->wantsJson()) {
             return response()->json($result);
         }
 
@@ -273,15 +268,12 @@ class InvoiceController extends Controller
      *
      * Authorises each invoice individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkRestore', Invoice::class);
 
         $result = $this->management->bulkRestore(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (Invoice $invoice) => $this->authorize('restore', $invoice)
         );

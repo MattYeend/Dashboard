@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkIdsRequest;
 use App\Models\Log;
 use App\Services\Logs\ManagementService;
 use App\Services\Logs\QueryService;
@@ -80,12 +81,9 @@ class ActivityLogController extends Controller
      *
      * Authorises each activity log individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkDelete', Log::class);
 
         $result = $this->management->bulkDelete(
             $request->input('ids'),

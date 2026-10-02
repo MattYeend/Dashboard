@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkIdsRequest;
 use App\Http\Requests\Pipelines\ImportPipelineRequest;
 use App\Http\Requests\Pipelines\StorePipelineRequest;
 use App\Http\Requests\Pipelines\UpdatePipelineRequest;
@@ -236,19 +237,13 @@ class PipelineController extends Controller
      *
      * Authorises each pipeline individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
-
-        $actor = $request->user();
-        $ids = $request->input('ids');
+        $this->authorize('bulkDelete', Pipeline::class);
 
         $result = $this->management->bulkDelete(
-            $ids,
-            $actor,
+            $request->validated('ids'),
+            $request->user(),
             fn (Pipeline $pipeline) => $this->authorize('delete', $pipeline)
         );
 
@@ -264,15 +259,12 @@ class PipelineController extends Controller
      *
      * Authorises each pipeline individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkRestore', Pipeline::class);
 
         $result = $this->management->bulkRestore(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (Pipeline $pipeline) => $this->authorize('restore', $pipeline)
         );

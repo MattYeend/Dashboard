@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PipelineStages\BulkPipelineStageIdsRequest;
 use App\Http\Requests\PipelineStages\ImportPipelineStageRequest;
 use App\Http\Requests\PipelineStages\StorePipelineStageRequest;
 use App\Http\Requests\PipelineStages\UpdatePipelineStageRequest;
@@ -250,26 +251,15 @@ class PipelineStageController extends Controller
      *
      * Authorises each pipeline stage individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request, Pipeline $pipeline): JsonResponse|RedirectResponse
-    {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => [
-                'required',
-                'integer',
-                function (string $attribute, mixed $value, \Closure $fail) use ($pipeline) {
-                    $stage = PipelineStage::withTrashed()->find($value);
-
-                    if ($stage && $stage->pipeline_id !== $pipeline->id) {
-                        $fail('The selected '.$attribute.' is invalid.');
-                    }
-                },
-            ],
-        ]);
+    public function bulkDelete(
+        BulkPipelineStageIdsRequest $request, 
+        Pipeline $pipeline
+    ): JsonResponse|RedirectResponse {
+        $this->authorize('bulkDelete', PipelineStage::class);
 
         $result = $this->management->bulkDelete(
             $pipeline,
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (PipelineStage $stage) => $this->authorize('delete', $stage)
         );
@@ -286,26 +276,13 @@ class PipelineStageController extends Controller
      *
      * Authorises each pipeline stage individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request, Pipeline $pipeline): JsonResponse|RedirectResponse
-    {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => [
-                'required',
-                'integer',
-                function (string $attribute, mixed $value, \Closure $fail) use ($pipeline) {
-                    $stage = PipelineStage::withTrashed()->find($value);
-
-                    if ($stage && $stage->pipeline_id !== $pipeline->id) {
-                        $fail('The selected '.$attribute.' is invalid.');
-                    }
-                },
-            ],
-        ]);
-
+    public function bulkRestore(
+        BulkPipelineStageIdsRequest $request, 
+        Pipeline $pipeline
+    ): JsonResponse|RedirectResponse {
         $result = $this->management->bulkRestore(
             $pipeline,
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (PipelineStage $stage) => $this->authorize('restore', $stage)
         );

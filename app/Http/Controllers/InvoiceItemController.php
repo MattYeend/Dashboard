@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkIdsRequest;
 use App\Http\Requests\InvoiceItems\ImportInvoiceItemRequest;
 use App\Http\Requests\InvoiceItems\StoreInvoiceItemRequest;
 use App\Http\Requests\InvoiceItems\UpdateInvoiceItemRequest;
@@ -243,17 +244,14 @@ class InvoiceItemController extends Controller
      * Authorises each invoice item individually via the 'delete' policy.
      */
     public function bulkDelete(
-        Invoice $invoice,
-        Request $request
+    Invoice $invoice,
+    BulkIdsRequest $request
     ): JsonResponse|RedirectResponse {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkDelete', InvoiceItem::class);
 
         $result = $this->management->bulkDelete(
             $invoice,
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (InvoiceItem $invoiceItem) => $this->authorize('delete', $invoiceItem)
         );
@@ -272,17 +270,14 @@ class InvoiceItemController extends Controller
      * Authorises each invoice item individually via the 'restore' policy.
      */
     public function bulkRestore(
-        Invoice $invoice,
-        Request $request
+    Invoice $invoice,
+    BulkIdsRequest $request
     ): JsonResponse|RedirectResponse {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkRestore', InvoiceItem::class);
 
         $result = $this->management->bulkRestore(
             $invoice,
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (InvoiceItem $invoiceItem) => $this->authorize('restore', $invoiceItem)
         );

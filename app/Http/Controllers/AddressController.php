@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Addresses\ImportAddressRequest;
 use App\Http\Requests\Addresses\StoreAddressRequest;
 use App\Http\Requests\Addresses\UpdateAddressRequest;
+use App\Http\Requests\BulkIdsRequest;
 use App\Models\Address;
 use App\Services\Addresses\ManagementService;
 use App\Services\Addresses\QueryService;
@@ -226,23 +227,17 @@ class AddressController extends Controller
      *
      * Authorises each address individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
-
-        $actor = $request->user();
-        $ids = $request->input('ids');
+        $this->authorize('bulkDelete', Address::class);
 
         $result = $this->management->bulkDelete(
-            $ids,
-            $actor,
+            $request->validated('ids'),
+            $request->user(),
             fn (Address $address) => $this->authorize('delete', $address)
         );
 
-        if (request()->wantsJson()) {
+        if ($request->wantsJson()) {
             return response()->json($result);
         }
 
@@ -254,15 +249,12 @@ class AddressController extends Controller
      *
      * Authorises each address individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkRestore', Address::class);
 
         $result = $this->management->bulkRestore(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (Address $address) => $this->authorize('restore', $address)
         );

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkIdsRequest;
 use App\Http\Requests\Organisations\BulkInviteOrganisationMembersRequest;
 use App\Http\Requests\Organisations\InviteOrganisationMemberRequest;
 use App\Http\Requests\Organisations\RequestOrganisationDeletionRequest;
@@ -253,12 +254,9 @@ class OrganisationController extends Controller
     /**
      * Bulk soft delete multiple organisations.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkDelete', Organisation::class);
 
         $result = $this->management->bulkDelete(
             $request->input('ids'),
@@ -276,12 +274,9 @@ class OrganisationController extends Controller
     /**
      * Bulk restore multiple organisations.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkRestore', Organisation::class);
 
         $result = $this->management->bulkRestore(
             $request->input('ids'),

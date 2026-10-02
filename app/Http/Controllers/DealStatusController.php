@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkIdsRequest;
 use App\Http\Requests\DealStatuses\ImportDealStatusRequest;
 use App\Http\Requests\DealStatuses\StoreDealStatusRequest;
 use App\Http\Requests\DealStatuses\UpdateDealStatusRequest;
@@ -235,19 +236,13 @@ class DealStatusController extends Controller
      *
      * Authorises each deal status individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
-
-        $actor = $request->user();
-        $ids = $request->input('ids');
+        $this->authorize('bulkDelete', DealStatus::class);
 
         $result = $this->management->bulkDelete(
-            $ids,
-            $actor,
+            $request->validated('ids'),
+            $request->user(),
             fn (DealStatus $dealStatus) => $this->authorize('delete', $dealStatus)
         );
 
@@ -263,15 +258,12 @@ class DealStatusController extends Controller
      *
      * Authorises each deal status individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkRestore', DealStatus::class);
 
         $result = $this->management->bulkRestore(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (DealStatus $dealStatus) => $this->authorize('restore', $dealStatus)
         );

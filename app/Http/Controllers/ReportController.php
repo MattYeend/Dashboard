@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkIdsRequest;
 use App\Http\Requests\Reports\ImportReportRequest;
 use App\Http\Requests\Reports\StoreReportRequest;
 use App\Http\Requests\Reports\UpdateReportRequest;
@@ -221,15 +222,12 @@ class ReportController extends Controller
      *
      * Authorises each report individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkDelete', Report::class);
 
         $result = $this->management->bulkDelete(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (Report $report) => $this->authorize('delete', $report)
         );
@@ -246,15 +244,12 @@ class ReportController extends Controller
      *
      * Authorises each report individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkRestore', Report::class);
 
         $result = $this->management->bulkRestore(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (Report $report) => $this->authorize('restore', $report)
         );

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkIdsRequest;
 use App\Http\Requests\TaskStatuses\ImportTaskStatusRequest;
 use App\Http\Requests\TaskStatuses\StoreTaskStatusRequest;
 use App\Http\Requests\TaskStatuses\UpdateTaskStatusRequest;
@@ -235,19 +236,13 @@ class TaskStatusController extends Controller
      *
      * Authorises each task status individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
-
-        $actor = $request->user();
-        $ids = $request->input('ids');
+        $this->authorize('bulkDelete', TaskStatus::class);
 
         $result = $this->management->bulkDelete(
-            $ids,
-            $actor,
+            $request->validated('ids'),
+            $request->user(),
             fn (TaskStatus $taskStatus) => $this->authorize('delete', $taskStatus)
         );
 
@@ -263,15 +258,12 @@ class TaskStatusController extends Controller
      *
      * Authorises each task status individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
-
+        $this->authorize('bulkRestore', TaskStatus::class);
+        
         $result = $this->management->bulkRestore(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (TaskStatus $taskStatus) => $this->authorize('restore', $taskStatus)
         );

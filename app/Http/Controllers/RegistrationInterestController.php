@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkIdsRequest;
 use App\Http\Requests\RegistrationInterests\StoreRegistrationInterestRequest;
 use App\Models\RegistrationInterest;
 use App\Services\RegistrationInterests\ManagementService;
@@ -155,12 +156,9 @@ class RegistrationInterestController extends Controller
      *
      * Authorises each interest individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkDelete', RegistrationInterest::class);
 
         $result = $this->management->bulkDelete(
             $request->input('ids'),
@@ -180,15 +178,12 @@ class RegistrationInterestController extends Controller
      *
      * Authorises each interest individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer'],
-        ]);
+        $this->authorize('bulkRestore', RegistrationInterest::class);
 
         $result = $this->management->bulkRestore(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (RegistrationInterest $interest) => $this->authorize('restore', $interest)
         );

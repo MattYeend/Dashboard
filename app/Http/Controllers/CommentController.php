@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkIdsRequest;
 use App\Http\Requests\Comments\ImportCommentRequest;
 use App\Http\Requests\Comments\StoreCommentRequest;
 use App\Http\Requests\Comments\UpdateCommentRequest;
@@ -167,12 +168,9 @@ class CommentController extends Controller
      *
      * Authorises each comment individually via the 'delete' policy.
      */
-    public function bulkDelete(Request $request): JsonResponse|RedirectResponse
+    public function bulkDelete(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:comments,id'],
-        ]);
+        $this->authorize('bulkDelete', Comment::class);
 
         $result = $this->management->bulkDelete(
             $request->input('ids'),
@@ -192,15 +190,12 @@ class CommentController extends Controller
      *
      * Authorises each comment individually via the 'restore' policy.
      */
-    public function bulkRestore(Request $request): JsonResponse|RedirectResponse
+    public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer', 'exists:comments,id'],
-        ]);
+        $this->authorize('bulkRestore', Comment::class);
 
         $result = $this->management->bulkRestore(
-            $validated['ids'],
+            $request->validated('ids'),
             $request->user(),
             fn (Comment $comment) => $this->authorize('restore', $comment)
         );
