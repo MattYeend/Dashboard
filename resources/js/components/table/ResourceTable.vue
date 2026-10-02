@@ -90,9 +90,7 @@ watch(
             <slot name="bulk-actions" :selected="selected" />
         </div>
 
-        <div
-            class="overflow-x-auto shadow ring-1 ring-black sm:rounded-lg"
-        >
+        <div class="overflow-x-auto shadow ring-1 ring-black sm:rounded-lg">
             <table class="min-w-full divide-y divide-gray-500">
                 <thead>
                     <tr>
