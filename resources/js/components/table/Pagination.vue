@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import type { Pagination } from '@/types';
-
-interface PaginationLink {
-    url: string | null;
-    label: string;
-    active: boolean;
-}
+import type { Pagination, PaginationLink } from '@/types';
 
 interface Props {
     meta: Pagination;
@@ -37,14 +31,14 @@ const formatLabel = (label: string): string => {
         </p>
         <div class="flex gap-x-1">
             <Link
-                v-for="link in links"
-                :key="link.label"
+                v-for="(link, index) in links"
+                :key="`${index}-${link.label}`"
                 :href="link.url ?? ''"
                 :class="[
                     'rounded px-3 py-1 text-sm',
                     link.url === null
                         ? 'pointer-events-none opacity-40'
-                        : 'hover:bg-accent',
+                        : 'hover:underline',
                     link.active ? 'font-semibold' : '',
                 ]"
                 preserve-scroll

@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends { id: number | string }">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import EmptyRow from '@/components/table/EmptyRow.vue';
 
 export interface ResourceTableColumn {
@@ -66,6 +66,18 @@ function toggleRow(row: T): void {
         ? selected.value.filter((id) => id !== key)
         : [...selected.value, key];
 }
+
+watch(
+    () => props.rows,
+    (rows) => {
+        const visible = new Set(rows.map((row) => getRowKey(row)));
+        const remaining = selected.value.filter((id) => visible.has(id));
+
+        if (remaining.length !== selected.value.length) {
+            selected.value = remaining;
+        }
+    },
+);
 </script>
 
 <template>
@@ -79,7 +91,7 @@ function toggleRow(row: T): void {
         </div>
 
         <div
-            class="ring-opacity-5 overflow-x-auto shadow ring-1 ring-black sm:rounded-lg"
+            class="overflow-x-auto shadow ring-1 ring-black sm:rounded-lg"
         >
             <table class="min-w-full divide-y divide-gray-500">
                 <thead>
@@ -94,6 +106,7 @@ function toggleRow(row: T): void {
                         <th
                             v-for="column in columns"
                             :key="column.key"
+                            scope="col"
                             :class="[
                                 'px-6 py-3 text-left text-xs font-medium tracking-wide text-gray-400 uppercase',
                                 column.class,
