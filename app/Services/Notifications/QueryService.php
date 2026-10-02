@@ -11,16 +11,20 @@ class QueryService
     /**
      * Get a paginated list of all notifications for the given user.
      */
-    public function paginated(User $notifiable, int $perPage = 15): LengthAwarePaginator
-    {
+    public function paginated(
+        User $notifiable, 
+        int $perPage = 15
+    ): LengthAwarePaginator {
         return $notifiable->notifications()->paginate($perPage);
     }
 
     /**
      * Get all unread notifications for the given user.
      */
-    public function unread(User $notifiable): Collection
-    {
-        return $notifiable->unreadNotifications;
+    public function unread(
+        User $notifiable, 
+        int $limit = 100
+    ): Collection {
+        return $notifiable->unreadNotifications()->limit($limit)->get();
     }
 }
