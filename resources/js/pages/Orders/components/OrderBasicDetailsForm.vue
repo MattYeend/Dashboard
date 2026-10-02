@@ -1,18 +1,10 @@
 <script setup lang="ts">
 import type { InertiaFormProps } from '@inertiajs/vue3';
-import CurrencySelect from '@/components/CurrencySelect.vue';
-import InputError from '@/components/InputError.vue';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import type { OrderStatus } from '@/types';
+import OrderAmountFields from './OrderAmountFields.vue';
+import OrderDateFields from './OrderDateFields.vue';
+import OrderStatusField from './OrderStatusField.vue';
+import OrderTitleFields from './OrderTitleFields.vue';
 
 interface OrderBasicFormData {
     title: string;
@@ -58,157 +50,33 @@ const statusId = defineModel<number | null>('statusId', { default: null });
 
 <template>
     <div class="space-y-4">
-        <div>
-            <Label for="title"
-                >Title <span class="text-destructive">*</span></Label
-            >
-            <Input
-                id="title"
-                v-model="title"
-                type="text"
-                class="mt-1 block w-full"
-                placeholder="Enter order title"
-            />
-            <InputError :message="errors.title" />
-        </div>
+        <OrderTitleFields
+            v-model:title="title"
+            v-model:description="description"
+            v-model:notes="notes"
+            :errors="errors"
+        />
 
-        <div>
-            <Label for="description">Description</Label>
-            <Textarea
-                id="description"
-                :model-value="description ?? ''"
-                class="mt-1 block w-full"
-                rows="3"
-                placeholder="Enter order description"
-                @update:model-value="description = ($event as string) || null"
-            />
-            <InputError :message="errors.description" />
-        </div>
+        <OrderAmountFields
+            v-model:subtotal="subtotal"
+            v-model:discount-amount="discountAmount"
+            v-model:tax-amount="taxAmount"
+            v-model:total-amount="totalAmount"
+            v-model:currency="currency"
+            :errors="errors"
+        />
 
-        <div>
-            <Label for="notes">Notes</Label>
-            <Textarea
-                id="notes"
-                :model-value="notes ?? ''"
-                class="mt-1 block w-full"
-                rows="3"
-                placeholder="Enter internal notes"
-                @update:model-value="notes = ($event as string) || null"
-            />
-            <InputError :message="errors.notes" />
-        </div>
+        <OrderDateFields
+            v-model:ordered-at="orderedAt"
+            v-model:due-at="dueAt"
+            v-model:completed-at="completedAt"
+            :errors="errors"
+        />
 
-        <div class="grid grid-cols-2 gap-4">
-            <div>
-                <Label for="subtotal">Subtotal</Label>
-                <Input
-                    id="subtotal"
-                    v-model.number="subtotal"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    class="mt-1 block w-full"
-                />
-                <InputError :message="errors.subtotal" />
-            </div>
-            <div>
-                <Label for="discount_amount">Discount</Label>
-                <Input
-                    id="discount_amount"
-                    v-model.number="discountAmount"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    class="mt-1 block w-full"
-                />
-                <InputError :message="errors.discount_amount" />
-            </div>
-            <div>
-                <Label for="tax_amount">Tax</Label>
-                <Input
-                    id="tax_amount"
-                    v-model.number="taxAmount"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    class="mt-1 block w-full"
-                />
-                <InputError :message="errors.tax_amount" />
-            </div>
-            <div>
-                <Label for="total_amount">Total</Label>
-                <Input
-                    id="total_amount"
-                    v-model.number="totalAmount"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    class="mt-1 block w-full"
-                />
-                <InputError :message="errors.total_amount" />
-            </div>
-            <div>
-                <Label for="currency">Currency</Label>
-                <CurrencySelect v-model="currency" class="mt-1" />
-                <InputError :message="errors.currency" />
-            </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-4">
-            <div>
-                <Label for="ordered_at">Ordered At</Label>
-                <Input
-                    id="ordered_at"
-                    :model-value="orderedAt ?? ''"
-                    type="datetime-local"
-                    class="mt-1 block w-full"
-                    @update:model-value="orderedAt = ($event as string) || null"
-                />
-                <InputError :message="errors.ordered_at" />
-            </div>
-            <div>
-                <Label for="due_at">Due At</Label>
-                <Input
-                    id="due_at"
-                    :model-value="dueAt ?? ''"
-                    type="datetime-local"
-                    class="mt-1 block w-full"
-                    @update:model-value="dueAt = ($event as string) || null"
-                />
-                <InputError :message="errors.due_at" />
-            </div>
-            <div>
-                <Label for="completed_at">Completed At</Label>
-                <Input
-                    id="completed_at"
-                    :model-value="completedAt ?? ''"
-                    type="datetime-local"
-                    class="mt-1 block w-full"
-                    @update:model-value="
-                        completedAt = ($event as string) || null
-                    "
-                />
-                <InputError :message="errors.completed_at" />
-            </div>
-        </div>
-
-        <div>
-            <Label for="status_id">Status</Label>
-            <Select v-model="statusId">
-                <SelectTrigger id="status_id" class="mt-1 w-full">
-                    <SelectValue placeholder="Select a status" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem
-                        v-for="status in statuses"
-                        :key="status.id"
-                        :value="status.id"
-                    >
-                        {{ status.title }}
-                    </SelectItem>
-                </SelectContent>
-            </Select>
-            <InputError :message="errors.status_id" />
-        </div>
+        <OrderStatusField
+            v-model:status-id="statusId"
+            :statuses="statuses"
+            :errors="errors"
+        />
     </div>
 </template>
