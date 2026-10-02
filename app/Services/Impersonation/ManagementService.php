@@ -118,7 +118,14 @@ class ManagementService
             throw new RuntimeException('No impersonation session is currently active.');
         }
 
-        $actor = User::findOrFail($actorId);
+        $actor = User::find($actorId);
+
+        if ($actor === null) {
+            Auth::logout();
+            $this->request->session()->invalidate();
+
+            throw new RuntimeException('The original user no longer exists.');
+        }
         $startedAt = $this->request->session()->get(self::SESSION_STARTED_AT_KEY);
         $durationSeconds = $startedAt
             ? (int) abs(now()->diffInSeconds(Carbon::parse($startedAt)))
@@ -213,5 +220,17 @@ class ManagementService
             ->value('organisation_id');
 
         return $sharedOrganisationId !== null ? (int) $sharedOrganisationId : null;
+    }
+
+    /**
+     * Determine whether the current impersonation session has exceeded
+     * its maximum duration.
+     */
+    public function hasExpired(int $maxMinutes = 60): bool
+    {
+        $startedAt = $this->request->session()->get(self::SESSION_STARTED_AT_KEY);
+
+        return $startedAt !== null
+            && Carbon::parse($startedAt)->addMinutes($maxMinutes)->isPast();
     }
 }

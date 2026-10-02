@@ -34,6 +34,7 @@ function onInput(key: string, value: string): void {
             <input
                 v-if="field.type === 'text'"
                 :value="modelValue[field.key]"
+                :aria-label="field.placeholder ?? field.key"
                 type="text"
                 class="rounded-md border px-3 py-1.5 text-sm"
                 :placeholder="field.placeholder ?? ''"
@@ -47,6 +48,7 @@ function onInput(key: string, value: string): void {
             <select
                 v-else-if="field.type === 'select'"
                 :value="modelValue[field.key]"
+                :aria-label="field.key"
                 class="rounded-md border px-3 py-1.5 text-sm"
                 @change="
                     onInput(

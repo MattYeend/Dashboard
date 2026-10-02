@@ -2,6 +2,7 @@
 
 namespace App\Services\Users;
 
+use App\Models\OrganisationMembership;
 use App\Models\User;
 use App\Services\UserRoleCheckerService;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -74,7 +75,8 @@ class PolicyAuthorisationService
         }
 
         return $actor->can('view users')
-            && $this->activeChecker->isActive($target);
+            && $this->activeChecker->isActive($target)
+            && ($actor->is($target) || $this->sharesActiveOrganisation($actor, $target));
     }
 
     /**
@@ -101,7 +103,8 @@ class PolicyAuthorisationService
         }
 
         return $actor->can('delete users')
-            && $this->activeChecker->canBeModified($target);
+            && $this->activeChecker->canBeModified($target)
+            && ($actor->is($target) || $this->sharesActiveOrganisation($actor, $target));
     }
 
     /**
@@ -113,8 +116,9 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('restore users') &&
-            $this->activeChecker->canBeRestoredOrForceDeleted($target);
+        return $actor->can('restore users')
+            && $this->activeChecker->canBeRestoredOrForceDeleted($target)
+            && $this->sharesActiveOrganisation($actor, $target);
     }
 
     /**
@@ -126,11 +130,12 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->activeChecker->canUserPerformAction(
-            $actor,
-            'restoreOrForceDelete',
-            $target
-        );
+        return $actor->can('force delete users')
+            && $this->activeChecker->canUserPerformAction(
+                $actor, 
+                'restoreOrForceDelete',
+                $target
+            );
     }
 
     /**
@@ -298,5 +303,23 @@ class PolicyAuthorisationService
         }
 
         return $this->roleChecker->isSuperAdmin($target);
+    }
+
+    /**
+     * Determine whether the actor and target share at least one active
+     * organisation membership.
+     */
+    private function sharesActiveOrganisation(User $actor, User $target): bool
+    {
+        $actorOrganisationIds = OrganisationMembership::query()
+            ->where('user_id', $actor->id)
+            ->where('status', OrganisationMembership::STATUS_ACTIVE)
+            ->select('organisation_id');
+
+        return OrganisationMembership::query()
+            ->where('user_id', $target->id)
+            ->where('status', OrganisationMembership::STATUS_ACTIVE)
+            ->whereIn('organisation_id', $actorOrganisationIds)
+            ->exists();
     }
 }

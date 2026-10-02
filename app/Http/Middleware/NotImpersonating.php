@@ -2,12 +2,17 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\Impersonation\ManagementService;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class NotImpersonating
 {
+    public function __construct(
+        private readonly ManagementService $impersonationService,
+    ) {}
+
     /**
      * Handle an incoming request.
      *
@@ -15,8 +20,7 @@ class NotImpersonating
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Replace with the same check ShareImpersonationStatus uses
-        if ($request->session()->has('impersonator_id')) {
+        if ($this->impersonationService->isImpersonating()) {
             abort(403, 'This action is not available while impersonating a user.');
         }
 
