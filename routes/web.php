@@ -64,6 +64,7 @@ Route::post('stripe/webhook', [StripeWebhookController::class, 'handleWebhook'])
 Route::get('register', fn () => Inertia::render('auth/RegisterInterest'))
     ->name('register');
 Route::post('register', [RegistrationInterestController::class, 'store'])
+    ->middleware('throttle:5,1')
     ->name('register.store');
 Route::get('register/thanks', fn () => Inertia::render('auth/RegisterThanks'))
     ->name('register.thanks');
@@ -185,7 +186,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->middleware('password.confirm')
                 ->name('force-delete');
 
-            Route::post('/{user}/impersonate', [UserController::class, 'impersonate'])->name('impersonate');
+            Route::post('/{user}/impersonate', [UserController::class, 'impersonate'])
+                ->middleware(['password.confirm', 'throttle:10,1'])
+                ->name('impersonate');
             Route::post('/impersonate/stop', [UserController::class, 'stopImpersonating'])->name('impersonate.stop');
 
             Route::get('/mentionable', [UserController::class, 'mentionable'])->name('mentionable');
@@ -391,7 +394,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/{address}', [AddressController::class, 'destroy'])->name('destroy');
         });
 
-        Route::prefix('api-tokens')->name('api-tokens.')->group(function () {
+        Route::prefix('api-tokens')->name('api-tokens.')->middleware('not.impersonating')->group(function () {
             Route::get('/', [ApiTokenController::class, 'index'])->name('index');
             Route::post('/', [ApiTokenController::class, 'store'])->name('store');
             Route::match(['put', 'patch'], '/{apiToken}', [ApiTokenController::class, 'update'])->name('update');
@@ -790,7 +793,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/{interaction_log}', [InteractionLogController::class, 'destroy'])->name('destroy');
         });
 
-        Route::prefix('system')->name('system.')->group(function () {
+        Route::prefix('system')->name('system.')->middleware('not.impersonating')->group(function () {
             Route::get('/', [SystemController::class, 'index'])
                 ->middleware('can:view system info')
                 ->name('index');
@@ -808,7 +811,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->name('maintenance.disable');
         });
 
-        Route::prefix('backups')->name('backups.')->group(function () {
+        Route::prefix('backups')->name('backups.')->middleware('not.impersonating')->group(function () {
             Route::get('/', [BackupController::class, 'index'])
                 ->middleware('can:view backups')
                 ->name('index');
@@ -818,7 +821,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->name('store');
 
             Route::post('/upload', [BackupController::class, 'upload'])
-                ->middleware('can:import backups')
+                ->middleware(['can:import backups', 'password.confirm', 'throttle:5,1'])
                 ->name('upload');
 
             Route::get('/{filename}/download', [BackupController::class, 'download'])
@@ -828,12 +831,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::post('/{filename}/restore', [BackupController::class, 'restore'])
                 ->where('filename', '[A-Za-z0-9_\-\.]+\.zip')
-                ->middleware('can:restore backups')
+                ->middleware(['can:restore backups', 'password.confirm', 'throttle:3,1'])
                 ->name('restore');
 
             Route::delete('/{filename}', [BackupController::class, 'destroy'])
                 ->where('filename', '[A-Za-z0-9_\-\.]+\.zip')
-                ->middleware('can:delete backups')
+                ->middleware(['can:delete backups', 'password.confirm', 'throttle:5,1'])
                 ->name('destroy');
         });
 
@@ -852,7 +855,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/{attachment}', [AttachmentController::class, 'destroy'])->name('destroy');
         });
 
-        Route::prefix('permissions')->name('permissions.')->group(function () {
+        Route::prefix('permissions')->name('permissions.')->middleware('not.impersonating')->group(function () {
             Route::get('/matrix', [PermissionMatrixController::class, 'index'])->name('matrix.index');
             Route::patch('/matrix', [PermissionMatrixController::class, 'update'])->name('matrix.update');
 
