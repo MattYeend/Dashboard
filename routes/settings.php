@@ -51,7 +51,7 @@ Route::middleware(['auth', 'tenant'])->group(function () {
     Route::patch(
         'settings/profile',
         [ProfileController::class, 'update']
-    )->name('profile.update');
+    )->middleware('not.impersonating')->name('profile.update');
 });
 
 Route::middleware(['auth', 'verified', 'tenant'])->group(function () {
@@ -64,7 +64,7 @@ Route::middleware(['auth', 'verified', 'tenant'])->group(function () {
     Route::delete(
         'settings/profile',
         [ProfileController::class, 'destroy']
-    )->name('profile.destroy');
+    )->middleware('not.impersonating')->name('profile.destroy');
 
     /*
     |--------------------------------------------------------------------------
@@ -80,15 +80,15 @@ Route::middleware(['auth', 'verified', 'tenant'])->group(function () {
     */
 
     Route::get('settings/security', [SecurityController::class, 'edit'])
-        ->middleware(RequirePassword::class)
+        ->middleware([RequirePassword::class, 'not.impersonating'])
         ->name('security.edit');
 
     Route::put('settings/password', [SecurityController::class, 'update'])
-        ->middleware('throttle:6,1')
+        ->middleware(['throttle:6,1', 'not.impersonating'])
         ->name('user-password.update');
 
     Route::delete('settings/sessions', [SecurityController::class, 'destroySessions'])
-        ->middleware('throttle:6,1')
+        ->middleware(['throttle:6,1', 'not.impersonating'])
         ->name('security.sessions.destroy');
 
     /*
