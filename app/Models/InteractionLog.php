@@ -50,9 +50,6 @@ use Illuminate\Support\Carbon;
     'contact_id',
     'created_by',
     'updated_by',
-    'deleted_by',
-    'restored_by',
-    'restored_at',
 ])]
 class InteractionLog extends Model implements Auditable
 {

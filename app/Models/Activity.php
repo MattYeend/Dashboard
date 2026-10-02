@@ -45,9 +45,6 @@ use Illuminate\Support\Carbon;
     'occurred_at',
     'created_by',
     'updated_by',
-    'deleted_by',
-    'restored_by',
-    'restored_at',
 ])]
 class Activity extends Model implements Auditable
 {

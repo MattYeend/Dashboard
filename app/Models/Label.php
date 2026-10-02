@@ -41,9 +41,6 @@ use Illuminate\Support\Carbon;
     'meta',
     'created_by',
     'updated_by',
-    'deleted_by',
-    'restored_by',
-    'restored_at',
 ])]
 class Label extends Model implements Auditable
 {

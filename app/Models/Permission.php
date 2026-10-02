@@ -33,9 +33,6 @@ use Spatie\Permission\Models\Permission as SpatiePermission;
     'meta',
     'created_by',
     'updated_by',
-    'deleted_by',
-    'restored_by',
-    'restored_at',
 ])]
 class Permission extends SpatiePermission implements Auditable
 {

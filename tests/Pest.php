@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\ArchTestCase;
 use Tests\TestCase;
 
 /*
@@ -18,6 +19,8 @@ pest()->extend(TestCase::class)
  // ->use(RefreshDatabase::class)
     ->in('Feature');
 
+pest()->extend(ArchTestCase::class)
+    ->in('Unit/Arch');
 /*
 |--------------------------------------------------------------------------
 | Expectations

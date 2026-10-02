@@ -41,10 +41,6 @@ use Illuminate\Support\Carbon;
     'created_at',
     'updated_by',
     'updated_at',
-    'deleted_by',
-    'deleted_at',
-    'restored_by',
-    'restored_at',
 ])]
 class Contact extends Model implements Auditable
 {

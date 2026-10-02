@@ -41,10 +41,6 @@ use Illuminate\Support\Carbon;
     'meta',
     'created_by',
     'updated_by',
-    'deleted_by',
-    'restored_by',
-    'restored_at',
-    'deleted_at',
 ])]
 class Post extends Model implements Auditable
 {

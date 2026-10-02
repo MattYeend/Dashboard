@@ -4,7 +4,17 @@ namespace App\Models;
 
 use App\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Fillable([
+    'organisation_id',
+    'user_id',
+    'status',
+    'invited_role',
+    'invited_at',
+    'joined_at',
+    'invited_by',
+])]
 class OrganisationMembership extends Pivot implements Auditable
 {
     public const STATUS_INVITED = 'invited';

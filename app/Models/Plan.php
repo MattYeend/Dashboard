@@ -42,10 +42,6 @@ use Illuminate\Support\Carbon;
     'is_active',
     'created_by',
     'updated_by',
-    'deleted_by',
-    'restored_by',
-    'restored_at',
-    'deleted_at',
 ])]
 class Plan extends Model implements Auditable
 {

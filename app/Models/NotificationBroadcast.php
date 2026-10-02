@@ -46,10 +46,6 @@ use Illuminate\Support\Carbon;
     'created_at',
     'updated_by',
     'updated_at',
-    'deleted_by',
-    'restored_by',
-    'restored_at',
-    'deleted_at',
 ])]
 class NotificationBroadcast extends Model implements Auditable
 {
