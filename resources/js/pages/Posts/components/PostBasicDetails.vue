@@ -10,7 +10,11 @@ interface Props {
 const props = defineProps<Props>();
 
 const sanitisedDescription = computed(() =>
-    DOMPurify.sanitize(props.post.description),
+    DOMPurify.sanitize(props.post.description ?? '', {
+        USE_PROFILES: { html: true },
+        FORBID_TAGS: ['style', 'form', 'input', 'iframe'],
+        FORBID_ATTR: ['style'],
+    }),
 );
 </script>
 
