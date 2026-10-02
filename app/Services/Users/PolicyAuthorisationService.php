@@ -87,7 +87,8 @@ class PolicyAuthorisationService
         }
 
         return $actor->can('edit users')
-            && $this->activeChecker->isActive($target);
+            && $this->activeChecker->isActive($target)
+            && ($actor->is($target) || $this->sharesActiveOrganisation($actor, $target));
     }
 
     /**
@@ -145,7 +146,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        if ($this->targetOutranksActor($actor, $target)) {
+        if ($this->roleChecker->isSuperAdmin($target)) {
             return false;
         }
 
@@ -268,11 +269,13 @@ class PolicyAuthorisationService
         string $tierRole,
         array $functionalRoles
     ): void {
-        if ($tierRole === 'Super Admin' && ! $this->roleChecker->isSuperAdmin($actor)) {
+        $tier = strtolower(str_replace(' ', '_', $tierRole));
+
+        if ($tier === 'super_admin' && ! $this->roleChecker->isSuperAdmin($actor)) {
             throw new AuthorizationException('Only a Super Admin can grant the Super Admin role.');
         }
 
-        if ($tierRole === 'Admin' && ! $this->roleChecker->isAdmin($actor)) {
+        if ($tier === 'admin' && ! $this->roleChecker->isAdmin($actor)) {
             throw new AuthorizationException('Only an Admin or Super Admin can grant the Admin role.');
         }
 
