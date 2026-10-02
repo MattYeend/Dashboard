@@ -7,6 +7,7 @@ use App\Models\Organisation;
 use App\Models\OrganisationMembership;
 use App\Models\User;
 use App\Services\AuditLogService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RuntimeException;
@@ -119,7 +120,9 @@ class ManagementService
 
         $actor = User::findOrFail($actorId);
         $startedAt = $this->request->session()->get(self::SESSION_STARTED_AT_KEY);
-        $durationSeconds = $startedAt ? now()->diffInSeconds($startedAt) : null;
+        $durationSeconds = $startedAt
+            ? (int) abs(now()->diffInSeconds(Carbon::parse($startedAt)))
+            : null;
         $organisationId = $this->request->session()->get(self::SESSION_ORGANISATION_KEY);
         $previousOrganisationId = $this->request->session()->get(self::SESSION_PREVIOUS_ORGANISATION_KEY);
 
