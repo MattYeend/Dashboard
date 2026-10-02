@@ -5,14 +5,33 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use RuntimeException;
 
 class UserSeeder extends Seeder
 {
+    private string $plainPassword = '';
+
+    private bool $passwordGenerated = false;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        if (app()->isProduction()) {
+            throw new RuntimeException('UserSeeder must not run in production.');
+        }
+
+        $configured = config('seeding.user_password');
+
+        $this->passwordGenerated = ! is_string($configured) || $configured === '';
+        $this->plainPassword = $this->passwordGenerated
+            ? Str::password(20)
+            : $configured;
+
+        $password = Hash::make($this->plainPassword);
+
         setPermissionsTeamId(1);
 
         // Create Super Admin User
@@ -23,7 +42,7 @@ class UserSeeder extends Seeder
                 'locale' => 'en_GB',
                 'is_platform_admin' => true,
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'meta' => json_encode([
                     'department' => 'Management',
                     'position' => 'Super Administrator',
@@ -41,7 +60,7 @@ class UserSeeder extends Seeder
                 'name' => 'Admin User',
                 'locale' => 'en_GB',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $superAdmin->id,
                 'meta' => json_encode([
                     'department' => 'Management',
@@ -59,7 +78,7 @@ class UserSeeder extends Seeder
                 'name' => 'John Admin',
                 'locale' => 'en_GB',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $superAdmin->id,
                 'meta' => json_encode([
                     'department' => 'Management',
@@ -78,7 +97,7 @@ class UserSeeder extends Seeder
                 'name' => 'Sarah Manager',
                 'locale' => 'en_US',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'Operations',
@@ -97,7 +116,7 @@ class UserSeeder extends Seeder
                 'name' => 'Emily Editor',
                 'locale' => 'en_US',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'Content',
@@ -116,7 +135,7 @@ class UserSeeder extends Seeder
                 'name' => 'Mike Moderator',
                 'locale' => 'en_US',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'Content',
@@ -135,7 +154,7 @@ class UserSeeder extends Seeder
                 'name' => 'Lisa Support',
                 'locale' => 'en_GB',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'Support',
@@ -154,7 +173,7 @@ class UserSeeder extends Seeder
                 'name' => 'David Analyst',
                 'locale' => 'en_US',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'Analytics',
@@ -173,7 +192,7 @@ class UserSeeder extends Seeder
                 'name' => 'Rachel Viewer',
                 'locale' => 'fr_FR',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'Operations',
@@ -192,7 +211,7 @@ class UserSeeder extends Seeder
                 'name' => 'Regular User',
                 'locale' => 'fr_FR',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'General',
@@ -210,7 +229,7 @@ class UserSeeder extends Seeder
                 'name' => 'Jane Smith',
                 'locale' => 'fr_FR',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'General',
@@ -228,7 +247,7 @@ class UserSeeder extends Seeder
                 'name' => 'Bob Johnson',
                 'locale' => 'fr_FR',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'General',
@@ -247,7 +266,7 @@ class UserSeeder extends Seeder
                 'name' => 'Anna Writer',
                 'locale' => 'de_DE',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'Content',
@@ -265,7 +284,7 @@ class UserSeeder extends Seeder
                 'name' => 'Tom Support',
                 'locale' => 'de_DE',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'Support',
@@ -283,7 +302,7 @@ class UserSeeder extends Seeder
                 'name' => 'Kevin Data',
                 'locale' => 'de_DE',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'Analytics',
@@ -301,7 +320,7 @@ class UserSeeder extends Seeder
                 'name' => 'Chris Moderator',
                 'locale' => 'es_ES',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'Content',
@@ -320,7 +339,7 @@ class UserSeeder extends Seeder
                 'name' => 'Guest User',
                 'locale' => 'es_ES',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'General',
@@ -339,7 +358,7 @@ class UserSeeder extends Seeder
                 'name' => 'Unverified User',
                 'locale' => 'fr_FR',
                 'email_verified_at' => null,
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'General',
@@ -358,7 +377,7 @@ class UserSeeder extends Seeder
                 'name' => 'Test User',
                 'locale' => 'es_ES',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'created_by' => $admin1->id,
                 'meta' => json_encode([
                     'department' => 'General',
@@ -372,7 +391,11 @@ class UserSeeder extends Seeder
 
         $this->command->info('Users created/verified and roles assigned successfully!');
         $this->command->info('');
-        $this->command->info('Login Credentials (all use password: password):');
+        $this->command->info(
+            $this->passwordGenerated
+                ? "Seeded users share a generated password: {$this->plainPassword}"
+                : 'Seeded users share the password set in SEED_USER_PASSWORD.'
+        );
         $this->command->info('');
         $this->command->info('Super Admin: superadmin@example.com (Full access)');
         $this->command->info('  → also flagged is_platform_admin: true (cross-organisation reporting access)');
