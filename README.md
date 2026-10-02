@@ -226,7 +226,7 @@ This will:
 1. Install Composer dependencies
 2. Copy `.env.example` to `.env` (if not already present)
 3. Generate an application key
-4. Run database migrations and seed roles, permissions and reference data
+4. Run database migrations and seed roles, permissions and reference data (the seeded users' shared password is printed once if you have not set `SEED_USER_PASSWORD`)
 5. Install npm dependencies
 6. Build frontend assets
 
@@ -241,7 +241,7 @@ npm install
 npm run build
 ```
 
-> **Default credentials:** the seeders create accounts with known credentials for local development. Change their passwords or delete them before deploying, and never run `php artisan db:seed` against production with the default data.
+> **Seeded users:** `UserSeeder` creates local development accounts that share one password. Set `SEED_USER_PASSWORD` in `.env` to choose it, or leave it empty and a random password is generated and printed once when the seeder runs. `UserSeeder` refuses to run in production, so never seed production with development data.
 
 ---
 
@@ -289,6 +289,7 @@ Key variables to configure:
 | `DB_DATABASE` | Database name |
 | `DB_USERNAME` | Database username |
 | `DB_PASSWORD` | Database password |
+| `SEED_USER_PASSWORD` | Optional. Shared password for seeded development users. Leave empty to generate a random one |
 
 ---
 
@@ -437,6 +438,12 @@ composer test
 npm run lint:check
 npm run types:check
 npm run build
+```
+
+To install for production, skip development packages (Laravel Brain, Laradocs and test tooling):
+
+```bash
+composer install --no-dev --optimize-autoloader
 ```
 
 ---
