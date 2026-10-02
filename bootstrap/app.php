@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\NotImpersonating;
 use App\Http\Middleware\PlatformAdmin;
 use App\Http\Middleware\ResolveCurrentOrganisation;
 use App\Http\Middleware\SecurityHeaders;
@@ -48,6 +49,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'platform_admin' => PlatformAdmin::class,
+            'not.impersonating' => NotImpersonating::class,
+
         ]);
 
         $middleware->group('tenant', [
