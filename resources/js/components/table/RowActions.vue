@@ -3,11 +3,11 @@ import { Link } from '@inertiajs/vue3';
 
 withDefaults(
     defineProps<{
-        showHref: string;
+        showHref?: string;
         editHref?: string;
         trashed?: boolean;
     }>(),
-    { editHref: undefined, trashed: false },
+    { showHref: undefined, editHref: undefined, trashed: false },
 );
 
 const emit = defineEmits<{
@@ -18,7 +18,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <Link :href="showHref">View</Link>
+    <Link v-if="showHref" :href="showHref">View</Link>
 
     <template v-if="!trashed">
         <Link v-if="editHref" :href="editHref">Edit</Link>

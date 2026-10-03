@@ -12,14 +12,6 @@ export function formatDateTime(value: string | null): string {
     });
 }
 
-export function truncate(value: string | null, length = 20): string {
-    if (!value) {
-        return '-';
-    }
-
-    return value.length > length ? `${value.slice(0, length)}…` : value;
-}
-
 export function formatDate(value: string | null): string {
     if (!value) {
         return '-';
@@ -37,4 +29,15 @@ export function formatMoney(pence: number, currency = 'GBP'): string {
         style: 'currency',
         currency,
     }).format(pence / 100);
+}
+
+export function truncate(
+    value: string | null | undefined,
+    length = 20,
+): string {
+    if (!value) {
+        return '-';
+    }
+
+    return value.length > length ? `${value.slice(0, length)}…` : value;
 }
