@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
     'invited_at',
     'joined_at',
     'invited_by',
+    'created_by',
+    'updated_by',
 ])]
 class OrganisationMembership extends Pivot implements Auditable
 {

@@ -362,6 +362,7 @@ describe('update', function () {
         $actor = $this->adminUser();
 
         $target = User::factory()->create(['name' => 'Old Name']);
+        $this->testOrganisation->addActiveMember($target->id);
 
         $this->actingAs($actor)
             ->putJson("/users/{$target->id}", ['name' => 'New Name'])

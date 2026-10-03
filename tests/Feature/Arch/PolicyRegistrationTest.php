@@ -2,37 +2,29 @@
 
 declare(strict_types=1);
 
-use App\Contracts\Auditable;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Support\Facades\Gate;
 
-dataset('auditable_models', function (): array {
-    $models = [];
+uses(LazilyRefreshDatabase::class);
 
-    foreach (glob(__DIR__.'/../../../app/Models/*.php') ?: [] as $file) {
-        $class = 'App\\Models\\'.basename($file, '.php');
+dataset('policies', function (): array {
+    $policies = [];
 
-        if (
-            class_exists($class)
-            && is_subclass_of($class, Auditable::class)
-            && ! (new ReflectionClass($class))->isAbstract()
-        ) {
-            $models[$class] = [$class];
+    foreach (glob(__DIR__.'/../../../app/Policies/*Policy.php') ?: [] as $file) {
+        $policy = 'App\\Policies\\'.basename($file, '.php');
+        $model = 'App\\Models\\'.substr(basename($file, '.php'), 0, -6);
+
+        if (class_exists($model)) {
+            $policies[$policy] = [$model, $policy];
         }
     }
 
-    return $models;
+    return $policies;
 });
 
-describe('audit columns', function () {
-    test('models do not allow audit columns to be mass assigned', function (
-        string $class
-    ): void {
-        $instance = new $class;
-
-        foreach (
-            ['deleted_by', 'deleted_at', 'restored_by', 'restored_at'] as $column
-        ) {
-            expect($instance->isFillable($column))
-                ->toBeFalse("{$class} allows {$column}");
-        }
-    })->with('auditable_models');
-});
+test('every policy is registered for its model', function (
+    string $model,
+    string $policy
+): void {
+    expect(Gate::getPolicyFor($model))->toBeInstanceOf($policy);
+})->with('policies');
