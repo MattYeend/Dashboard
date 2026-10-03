@@ -1,32 +1,31 @@
 <script setup lang="ts">
-import { router, Link } from '@inertiajs/vue3';
-import DOMPurify from 'dompurify';
+import { Head, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import FilterBar from '@/components/table/FilterBar.vue';
 import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
-import ResourceTable from '@/components/table/ResourceTable.vue';
-import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
+import { useBulkAction, useRowAction } from '@/composables/useConfirmedAction';
+import { useIndexFilters } from '@/composables/useIndexFilters';
 import {
-    index as postsIndex,
-    show as postsShow,
     create as postsCreate,
-    edit as postsEdit,
     destroy as postsDestroy,
     exportMethod as postsExport,
+    index as postsIndex,
 } from '@/routes/posts';
 import postsBulk from '@/routes/posts/bulk';
 import type {
     Pagination as PaginationMeta,
+    PaginationLink,
     PermissionsMeta,
     Post,
 } from '@/types';
+import PostTable from './components/PostTable.vue';
 
 interface Props {
     posts: {
         data: Post[];
-        links: Array<{ url: string | null; label: string; active: boolean }>;
+        links: PaginationLink[];
         meta: PaginationMeta;
     };
     permissions_meta: PermissionsMeta;
@@ -36,165 +35,32 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const urlParams = new URLSearchParams(window.location.search);
-
-const filters = ref({
-    search: urlParams.get('search') ?? '',
-    trashed: urlParams.get('trashed') ?? '',
-    sort_by: urlParams.get('sort_by') ?? 'created_at',
-    sort_direction: urlParams.get('sort_direction') ?? 'desc',
+const { filters, filterFields, applyFilters } = useIndexFilters({
+    url: () => postsIndex.url(),
+    searchPlaceholder: 'Search posts…',
+    sortFields: () => props.sort_fields,
+    trashFilters: () => props.trash_filters,
+    defaultSortBy: 'created_at',
+    defaultSortDirection: 'desc',
 });
 
 const selectedIds = ref<Array<number | string>>([]);
 
-const deleteDialogOpen = ref(false);
-const selectedPostId = ref<number | null>(null);
-const deleteProcessing = ref(false);
+const deleteAction = useRowAction((id, options) =>
+    router.delete(postsDestroy.url(id), options),
+);
 
-const bulkDeleteDialogOpen = ref(false);
-const pendingBulkIds = ref<Array<number | string>>([]);
-const bulkDeleteProcessing = ref(false);
-
-const columns: ResourceTableColumn[] = [
-    { key: 'title', label: 'Title' },
-    { key: 'description', label: 'Description' },
-    { key: 'tags', label: 'Tags' },
-    { key: 'created_at', label: 'Created' },
-];
-
-const filterFields = [
-    {
-        key: 'search',
-        type: 'text' as const,
-        placeholder: 'Search posts…',
+const bulkDeleteAction = useBulkAction(
+    (ids, options) => router.post(postsBulk.delete.url(), { ids }, options),
+    () => {
+        selectedIds.value = [];
     },
-    {
-        key: 'trashed',
-        type: 'select' as const,
-        get options() {
-            return Object.entries(props.trash_filters).map(
-                ([value, label]) => ({
-                    value,
-                    label,
-                }),
-            );
-        },
-    },
-    {
-        key: 'sort_by',
-        type: 'select' as const,
-        get options() {
-            return Object.entries(props.sort_fields).map(([value, label]) => ({
-                value,
-                label: `Sort by ${label}`,
-            }));
-        },
-    },
-    {
-        key: 'sort_direction',
-        type: 'select' as const,
-        options: [
-            { value: 'asc', label: 'Ascending' },
-            { value: 'desc', label: 'Descending' },
-        ],
-    },
-];
-
-function applyFilters(): void {
-    router.get(postsIndex.url(), filters.value, {
-        preserveState: true,
-        replace: true,
-    });
-}
-
-function requestDestroy(id: number): void {
-    selectedPostId.value = id;
-    deleteDialogOpen.value = true;
-}
-
-function destroy(): void {
-    if (selectedPostId.value === null) {
-        return;
-    }
-
-    deleteProcessing.value = true;
-
-    router.delete(postsDestroy.url(selectedPostId.value), {
-        preserveScroll: true,
-        onFinish: () => {
-            deleteProcessing.value = false;
-            deleteDialogOpen.value = false;
-            selectedPostId.value = null;
-        },
-    });
-}
-
-function requestBulkDelete(ids: Array<number | string>): void {
-    if (!ids.length) {
-        return;
-    }
-
-    pendingBulkIds.value = ids;
-    bulkDeleteDialogOpen.value = true;
-}
-
-function bulkDelete(): void {
-    if (!pendingBulkIds.value.length) {
-        return;
-    }
-
-    bulkDeleteProcessing.value = true;
-
-    router.post(
-        postsBulk.delete.url(),
-        { ids: pendingBulkIds.value },
-        {
-            preserveScroll: true,
-            onSuccess: () => {
-                selectedIds.value = [];
-            },
-            onFinish: () => {
-                bulkDeleteProcessing.value = false;
-                bulkDeleteDialogOpen.value = false;
-                pendingBulkIds.value = [];
-            },
-        },
-    );
-}
-
-function sanitiseDescription(value: string | null | undefined): string {
-    if (!value) {
-        return '';
-    }
-
-    // ALLOWED_TAGS: [] strips all HTML, leaving plain text content only
-    return DOMPurify.sanitize(value, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
-}
-
-function truncate(value: string | null | undefined, length = 30): string {
-    const plain = sanitiseDescription(value);
-
-    if (!plain) {
-        return '-';
-    }
-
-    return plain.length > length ? `${plain.slice(0, length)}…` : plain;
-}
-
-function formatDate(value: string | null): string {
-    if (!value) {
-        return '-';
-    }
-
-    return new Date(value).toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-    });
-}
+);
 </script>
 
 <template>
+    <Head title="Posts" />
+
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <IndexHeader
@@ -212,51 +78,12 @@ function formatDate(value: string | null): string {
                 @change="applyFilters"
             />
 
-            <ResourceTable
+            <PostTable
                 v-model:selected="selectedIds"
-                :rows="posts.data"
-                :columns="columns"
-                row-key="id"
-                selectable
-                empty-message="No posts found."
-            >
-                <template #bulk-actions="{ selected }">
-                    <button
-                        type="button"
-                        class="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-500"
-                        @click="requestBulkDelete(selected)"
-                    >
-                        Delete selected
-                    </button>
-                </template>
-
-                <template #cell-description="{ row }">
-                    {{ truncate(row.description, 30) }}
-                </template>
-
-                <template #cell-tags="{ row }">
-                    <span v-if="!row.tags?.length">-</span>
-                    <span v-else>{{
-                        row.tags.map((tag) => tag.name).join(', ')
-                    }}</span>
-                </template>
-
-                <template #cell-created_at="{ row }">
-                    {{ formatDate(row.created_at) }}
-                </template>
-
-                <template #actions="{ row }">
-                    <Link :href="postsShow.url(row.id)">View</Link>
-                    <Link :href="postsEdit.url(row.id)">Edit</Link>
-                    <button
-                        type="button"
-                        class="text-red-600 hover:text-red-900"
-                        @click="requestDestroy(row.id)"
-                    >
-                        Delete
-                    </button>
-                </template>
-            </ResourceTable>
+                :posts="posts.data"
+                @delete="deleteAction.request"
+                @bulk-delete="bulkDeleteAction.request"
+            />
 
             <Pagination
                 :meta="posts.meta"
@@ -266,21 +93,21 @@ function formatDate(value: string | null): string {
         </div>
 
         <ConfirmDialog
-            v-model:open="deleteDialogOpen"
+            v-model:open="deleteAction.open"
             title="Delete post"
             description="This post will be moved to trash."
             confirm-label="Delete"
-            :processing="deleteProcessing"
-            @confirm="destroy"
+            :processing="deleteAction.processing"
+            @confirm="deleteAction.confirm"
         />
 
         <ConfirmDialog
-            v-model:open="bulkDeleteDialogOpen"
+            v-model:open="bulkDeleteAction.open"
             title="Delete posts"
-            :description="`${pendingBulkIds.length} post(s) will be moved to trash.`"
+            :description="`${bulkDeleteAction.ids.length} post(s) will be moved to trash.`"
             confirm-label="Delete"
-            :processing="bulkDeleteProcessing"
-            @confirm="bulkDelete"
+            :processing="bulkDeleteAction.processing"
+            @confirm="bulkDeleteAction.confirm"
         />
     </div>
 </template>

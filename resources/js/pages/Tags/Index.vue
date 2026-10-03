@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { Link, router } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import FilterBar from '@/components/table/FilterBar.vue';
 import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
-import ResourceTable from '@/components/table/ResourceTable.vue';
-import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
+import { useBulkAction, useRowAction } from '@/composables/useConfirmedAction';
+import { useIndexFilters } from '@/composables/useIndexFilters';
 import {
-    index as tagsIndex,
     create as tagsCreate,
-    show as tagsShow,
-    edit as tagsEdit,
     destroy as tagsDestroy,
     exportMethod as tagsExport,
+    index as tagsIndex,
 } from '@/routes/tags';
 import tagsBulk from '@/routes/tags/bulk';
 import type {
-    Tag,
     Pagination as PaginationMeta,
+    PaginationLink,
     PermissionsMeta,
+    Tag,
 } from '@/types';
+import TagTable from './components/TagTable.vue';
 
 interface Props {
     tags: {
         data: Tag[];
-        links: Array<{ url: string | null; label: string; active: boolean }>;
+        links: PaginationLink[];
         meta: PaginationMeta;
     };
     permissions_meta: PermissionsMeta;
@@ -35,143 +35,31 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const filters = ref({
-    search: '',
-    trashed: '',
-    sort_by: 'name',
-    sort_direction: 'asc',
+const { filters, filterFields, applyFilters } = useIndexFilters({
+    url: () => tagsIndex.url(),
+    searchPlaceholder: 'Search tags…',
+    sortFields: () => props.sort_fields,
+    trashFilters: () => props.trash_filters,
+    defaultSortBy: 'name',
 });
 
 const selectedIds = ref<Array<number | string>>([]);
 
-const deleteDialogOpen = ref(false);
-const selectedTagId = ref<number | null>(null);
-const deleteProcessing = ref(false);
+const deleteAction = useRowAction((id, options) =>
+    router.delete(tagsDestroy.url(id), options),
+);
 
-const bulkDeleteDialogOpen = ref(false);
-const pendingBulkIds = ref<Array<number | string>>([]);
-const bulkDeleteProcessing = ref(false);
-
-const columns: ResourceTableColumn[] = [
-    { key: 'name', label: 'Name' },
-    { key: 'slug', label: 'Slug' },
-    { key: 'created_at', label: 'Created' },
-];
-
-const filterFields = [
-    {
-        key: 'search',
-        type: 'text' as const,
-        placeholder: 'Search tags…',
+const bulkDeleteAction = useBulkAction(
+    (ids, options) => router.post(tagsBulk.delete.url(), { ids }, options),
+    () => {
+        selectedIds.value = [];
     },
-    {
-        key: 'trashed',
-        type: 'select' as const,
-        get options() {
-            return Object.entries(props.trash_filters).map(
-                ([value, label]) => ({
-                    value,
-                    label,
-                }),
-            );
-        },
-    },
-    {
-        key: 'sort_by',
-        type: 'select' as const,
-        get options() {
-            return Object.entries(props.sort_fields).map(([value, label]) => ({
-                value,
-                label: `Sort by ${label}`,
-            }));
-        },
-    },
-    {
-        key: 'sort_direction',
-        type: 'select' as const,
-        options: [
-            { value: 'asc', label: 'Ascending' },
-            { value: 'desc', label: 'Descending' },
-        ],
-    },
-];
-
-function applyFilters(): void {
-    router.get(tagsIndex.url(), filters.value, {
-        preserveState: true,
-        replace: true,
-    });
-}
-
-function requestDestroy(id: number): void {
-    selectedTagId.value = id;
-    deleteDialogOpen.value = true;
-}
-
-function destroy(): void {
-    if (selectedTagId.value === null) {
-        return;
-    }
-
-    deleteProcessing.value = true;
-
-    router.delete(tagsDestroy.url(selectedTagId.value), {
-        preserveScroll: true,
-        onFinish: () => {
-            deleteProcessing.value = false;
-            deleteDialogOpen.value = false;
-            selectedTagId.value = null;
-        },
-    });
-}
-
-function requestBulkDelete(ids: Array<number | string>): void {
-    if (!ids.length) {
-        return;
-    }
-
-    pendingBulkIds.value = ids;
-    bulkDeleteDialogOpen.value = true;
-}
-
-function bulkDelete(): void {
-    if (!pendingBulkIds.value.length) {
-        return;
-    }
-
-    bulkDeleteProcessing.value = true;
-
-    router.post(
-        tagsBulk.delete.url(),
-        { ids: pendingBulkIds.value },
-        {
-            preserveScroll: true,
-            onSuccess: () => {
-                selectedIds.value = [];
-            },
-            onFinish: () => {
-                bulkDeleteProcessing.value = false;
-                bulkDeleteDialogOpen.value = false;
-                pendingBulkIds.value = [];
-            },
-        },
-    );
-}
-
-function formatDate(value: string | null): string {
-    if (!value) {
-        return '-';
-    }
-
-    return new Date(value).toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-    });
-}
+);
 </script>
 
 <template>
+    <Head title="Tags" />
+
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <IndexHeader
@@ -189,50 +77,12 @@ function formatDate(value: string | null): string {
                 @change="applyFilters"
             />
 
-            <ResourceTable
+            <TagTable
                 v-model:selected="selectedIds"
-                :rows="tags.data"
-                :columns="columns"
-                row-key="id"
-                selectable
-                empty-message="No tags found."
-            >
-                <template #bulk-actions="{ selected }">
-                    <button
-                        type="button"
-                        class="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-500"
-                        @click="requestBulkDelete(selected)"
-                    >
-                        Delete selected
-                    </button>
-                </template>
-
-                <template #cell-name="{ row }">
-                    <span class="font-medium text-gray-300">
-                        {{ row.name }}
-                    </span>
-                </template>
-
-                <template #cell-slug="{ row }">
-                    {{ row.slug }}
-                </template>
-
-                <template #cell-created_at="{ row }">
-                    {{ formatDate(row.created_at) }}
-                </template>
-
-                <template #actions="{ row }">
-                    <Link :href="tagsShow.url(row.id)">View</Link>
-                    <Link :href="tagsEdit.url(row.id)">Edit</Link>
-                    <button
-                        type="button"
-                        class="text-red-600 hover:text-red-900"
-                        @click="requestDestroy(row.id)"
-                    >
-                        Delete
-                    </button>
-                </template>
-            </ResourceTable>
+                :tags="tags.data"
+                @delete="deleteAction.request"
+                @bulk-delete="bulkDeleteAction.request"
+            />
 
             <Pagination
                 :meta="tags.meta"
@@ -242,21 +92,21 @@ function formatDate(value: string | null): string {
         </div>
 
         <ConfirmDialog
-            v-model:open="deleteDialogOpen"
+            v-model:open="deleteAction.open"
             title="Delete tag"
             description="This tag will be moved to trash."
             confirm-label="Delete"
-            :processing="deleteProcessing"
-            @confirm="destroy"
+            :processing="deleteAction.processing"
+            @confirm="deleteAction.confirm"
         />
 
         <ConfirmDialog
-            v-model:open="bulkDeleteDialogOpen"
+            v-model:open="bulkDeleteAction.open"
             title="Delete tags"
-            :description="`${pendingBulkIds.length} tag(s) will be moved to trash.`"
+            :description="`${bulkDeleteAction.ids.length} tag(s) will be moved to trash.`"
             confirm-label="Delete"
-            :processing="bulkDeleteProcessing"
-            @confirm="bulkDelete"
+            :processing="bulkDeleteAction.processing"
+            @confirm="bulkDeleteAction.confirm"
         />
     </div>
 </template>
