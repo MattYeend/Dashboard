@@ -13,6 +13,7 @@ class EnforceImpersonationLimit
     public function __construct(
         private readonly ManagementService $impersonationService,
     ) {}
+
     /**
      * Handle an incoming request.
      *

@@ -12,7 +12,7 @@ class QueryService
      * Get a paginated list of all notifications for the given user.
      */
     public function paginated(
-        User $notifiable, 
+        User $notifiable,
         int $perPage = 15
     ): LengthAwarePaginator {
         return $notifiable->notifications()->paginate($perPage);
@@ -22,7 +22,7 @@ class QueryService
      * Get all unread notifications for the given user.
      */
     public function unread(
-        User $notifiable, 
+        User $notifiable,
         int $limit = 100
     ): Collection {
         return $notifiable->unreadNotifications()->limit($limit)->get();

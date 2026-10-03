@@ -261,7 +261,7 @@ class TaskStatusController extends Controller
     public function bulkRestore(BulkIdsRequest $request): JsonResponse|RedirectResponse
     {
         $this->authorize('bulkRestore', TaskStatus::class);
-        
+
         $result = $this->management->bulkRestore(
             $request->validated('ids'),
             $request->user(),

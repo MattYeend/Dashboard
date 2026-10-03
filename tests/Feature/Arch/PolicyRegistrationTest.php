@@ -29,8 +29,7 @@ describe('audit columns', function () {
         $instance = new $class;
 
         foreach (
-            ['deleted_by', 'deleted_at', 'restored_by', 'restored_at']
-            as $column
+            ['deleted_by', 'deleted_at', 'restored_by', 'restored_at'] as $column
         ) {
             expect($instance->isFillable($column))
                 ->toBeFalse("{$class} allows {$column}");

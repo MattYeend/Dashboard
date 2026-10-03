@@ -132,7 +132,7 @@ class PolicyAuthorisationService
 
         return $actor->can('force delete users')
             && $this->activeChecker->canUserPerformAction(
-                $actor, 
+                $actor,
                 'restoreOrForceDelete',
                 $target
             );

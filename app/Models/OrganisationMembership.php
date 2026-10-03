@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Contracts\Auditable;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 #[Fillable([
     'organisation_id',

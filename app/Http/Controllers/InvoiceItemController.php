@@ -244,8 +244,8 @@ class InvoiceItemController extends Controller
      * Authorises each invoice item individually via the 'delete' policy.
      */
     public function bulkDelete(
-    Invoice $invoice,
-    BulkIdsRequest $request
+        Invoice $invoice,
+        BulkIdsRequest $request
     ): JsonResponse|RedirectResponse {
         $this->authorize('bulkDelete', InvoiceItem::class);
 
@@ -270,8 +270,8 @@ class InvoiceItemController extends Controller
      * Authorises each invoice item individually via the 'restore' policy.
      */
     public function bulkRestore(
-    Invoice $invoice,
-    BulkIdsRequest $request
+        Invoice $invoice,
+        BulkIdsRequest $request
     ): JsonResponse|RedirectResponse {
         $this->authorize('bulkRestore', InvoiceItem::class);
 

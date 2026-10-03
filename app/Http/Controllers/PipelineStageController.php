@@ -252,7 +252,7 @@ class PipelineStageController extends Controller
      * Authorises each pipeline stage individually via the 'delete' policy.
      */
     public function bulkDelete(
-        BulkPipelineStageIdsRequest $request, 
+        BulkPipelineStageIdsRequest $request,
         Pipeline $pipeline
     ): JsonResponse|RedirectResponse {
         $this->authorize('bulkDelete', PipelineStage::class);
@@ -277,7 +277,7 @@ class PipelineStageController extends Controller
      * Authorises each pipeline stage individually via the 'restore' policy.
      */
     public function bulkRestore(
-        BulkPipelineStageIdsRequest $request, 
+        BulkPipelineStageIdsRequest $request,
         Pipeline $pipeline
     ): JsonResponse|RedirectResponse {
         $result = $this->management->bulkRestore(
