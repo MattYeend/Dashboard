@@ -38,14 +38,14 @@ jobs:
       DB_USERNAME: root
       DB_PASSWORD: root
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.5'
           coverage: none
       - name: Generate audit key
         run: echo "AUDIT_LOG_HMAC_KEY=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22.13.0'
           cache: npm
