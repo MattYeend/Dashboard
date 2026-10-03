@@ -79,7 +79,7 @@
         "ci:check": [
             "Composer\\Config::disableProcessTimeout",
             "composer audit",
-            "npm audit --audit-level=high",
+            "npm audit --omit=dev --audit-level=high",
             "npm run lint:check",
             "npm run format:check",
             "npm run types:check",

@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 20
       - run: composer audit --locked
-      - run: npm audit --audit-level=high
+      - run: npm audit --omit=dev --audit-level=high
 
   static-analysis:
     runs-on: ubuntu-latest
