@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import BulkActionButton from '@/components/table/BulkActionButton.vue';
 import ColourBadge from '@/components/ColourBadge.vue';
+import BulkActionButton from '@/components/table/BulkActionButton.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import RowActions from '@/components/table/RowActions.vue';
