@@ -55,24 +55,44 @@ function clearSelection(): void {
 }
 
 const deleteAction = useRowAction((id, options) =>
-    router.delete(pipelineStagesDestroy.url({ pipeline: props.pipeline.id, stage: id }), options),
+    router.delete(
+        pipelineStagesDestroy.url({ pipeline: props.pipeline.id, stage: id }),
+        options,
+    ),
 );
 
 const restoreAction = useRowAction((id, options) =>
-    router.post(pipelineStagesRestore.url({ pipeline: props.pipeline.id, id }), {}, options),
+    router.post(
+        pipelineStagesRestore.url({ pipeline: props.pipeline.id, id }),
+        {},
+        options,
+    ),
 );
 
 const forceDeleteAction = useRowAction((id, options) =>
-    router.delete(pipelineStagesForceDelete.url({ pipeline: props.pipeline.id, id }), options),
+    router.delete(
+        pipelineStagesForceDelete.url({ pipeline: props.pipeline.id, id }),
+        options,
+    ),
 );
 
 const bulkDeleteAction = useBulkAction(
-    (ids, options) => router.post(pipelineStagesBulk.delete.url({ pipeline: props.pipeline.id }), { ids }, options),
+    (ids, options) =>
+        router.post(
+            pipelineStagesBulk.delete.url({ pipeline: props.pipeline.id }),
+            { ids },
+            options,
+        ),
     clearSelection,
 );
 
 const bulkRestoreAction = useBulkAction(
-    (ids, options) => router.post(pipelineStagesBulk.restore.url({ pipeline: props.pipeline.id }), { ids }, options),
+    (ids, options) =>
+        router.post(
+            pipelineStagesBulk.restore.url({ pipeline: props.pipeline.id }),
+            { ids },
+            options,
+        ),
     clearSelection,
 );
 </script>
@@ -93,10 +113,14 @@ const bulkRestoreAction = useBulkAction(
 
             <IndexHeader
                 :title="`Stages - ${pipeline.title}`"
-                :create-href="pipelineStagesCreate.url({ pipeline: pipeline.id })"
+                :create-href="
+                    pipelineStagesCreate.url({ pipeline: pipeline.id })
+                "
                 create-label="Add Stage"
                 :can-create="permissions_meta.can_create"
-                :export-href="pipelineStagesExport.url({ pipeline: pipeline.id })"
+                :export-href="
+                    pipelineStagesExport.url({ pipeline: pipeline.id })
+                "
                 :can-export="permissions_meta.can_export"
             />
 

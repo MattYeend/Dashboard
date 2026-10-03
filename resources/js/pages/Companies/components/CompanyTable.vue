@@ -4,7 +4,10 @@ import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import RowActions from '@/components/table/RowActions.vue';
 import { truncate } from '@/lib/formatters';
-import { edit as companiesEdit, show as companiesShow } from '@/routes/companies';
+import {
+    edit as companiesEdit,
+    show as companiesShow,
+} from '@/routes/companies';
 import type { Company } from '@/types';
 
 defineProps<{

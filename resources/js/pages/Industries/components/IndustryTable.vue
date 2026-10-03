@@ -4,7 +4,10 @@ import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import RowActions from '@/components/table/RowActions.vue';
 import { formatDate, truncate } from '@/lib/formatters';
-import { edit as industriesEdit, show as industriesShow } from '@/routes/industries';
+import {
+    edit as industriesEdit,
+    show as industriesShow,
+} from '@/routes/industries';
 import type { Industry } from '@/types';
 
 defineProps<{
@@ -44,7 +47,9 @@ const columns: ResourceTableColumn[] = [
         </template>
 
         <template #cell-title="{ row }">
-            <span class="font-medium text-gray-300">{{ truncate(row.title, 30) }}</span>
+            <span class="font-medium text-gray-300">{{
+                truncate(row.title, 30)
+            }}</span>
         </template>
 
         <template #cell-code="{ row }">

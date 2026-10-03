@@ -4,7 +4,10 @@ import BulkActionButton from '@/components/table/BulkActionButton.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import RowActions from '@/components/table/RowActions.vue';
-import { edit as invoiceStatusesEdit, show as invoiceStatusesShow } from '@/routes/invoice-statuses';
+import {
+    edit as invoiceStatusesEdit,
+    show as invoiceStatusesShow,
+} from '@/routes/invoice-statuses';
 import type { InvoiceStatus } from '@/types';
 
 defineProps<{

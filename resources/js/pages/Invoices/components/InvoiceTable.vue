@@ -46,7 +46,9 @@ const columns: ResourceTableColumn[] = [
         </template>
 
         <template #cell-invoice_number="{ row }">
-            <span class="font-medium text-gray-300">{{ row.invoice_number }}</span>
+            <span class="font-medium text-gray-300">{{
+                row.invoice_number
+            }}</span>
         </template>
 
         <template #cell-company="{ row }">

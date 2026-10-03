@@ -68,7 +68,11 @@ const columns: ResourceTableColumn[] = [
 
         <template #actions="{ row }">
             <RowActions
-                :edit-href="row.sent_at ? undefined : notificationBroadcastsEdit.url(row.id)"
+                :edit-href="
+                    row.sent_at
+                        ? undefined
+                        : notificationBroadcastsEdit.url(row.id)
+                "
                 @delete="emit('delete', row.id)"
             >
                 <button

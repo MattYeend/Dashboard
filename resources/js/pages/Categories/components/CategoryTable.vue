@@ -3,7 +3,10 @@ import BulkActionButton from '@/components/table/BulkActionButton.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import RowActions from '@/components/table/RowActions.vue';
-import { edit as categoriesEdit, show as categoriesShow } from '@/routes/categories';
+import {
+    edit as categoriesEdit,
+    show as categoriesShow,
+} from '@/routes/categories';
 import type { Category } from '@/types';
 
 defineProps<{

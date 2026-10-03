@@ -4,7 +4,10 @@ import BulkActionButton from '@/components/table/BulkActionButton.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import RowActions from '@/components/table/RowActions.vue';
-import { edit as pipelineStagesEdit, show as pipelineStagesShow } from '@/routes/pipelines/stages';
+import {
+    edit as pipelineStagesEdit,
+    show as pipelineStagesShow,
+} from '@/routes/pipelines/stages';
 import type { PipelineStage } from '@/types';
 
 defineProps<{
@@ -76,8 +79,18 @@ const columns: ResourceTableColumn[] = [
 
         <template #actions="{ row }">
             <RowActions
-                :show-href="pipelineStagesShow.url({ pipeline: pipelineId, stage: row.id })"
-                :edit-href="pipelineStagesEdit.url({ pipeline: pipelineId, stage: row.id })"
+                :show-href="
+                    pipelineStagesShow.url({
+                        pipeline: pipelineId,
+                        stage: row.id,
+                    })
+                "
+                :edit-href="
+                    pipelineStagesEdit.url({
+                        pipeline: pipelineId,
+                        stage: row.id,
+                    })
+                "
                 :trashed="Boolean(row.deleted_at)"
                 @delete="emit('delete', row.id)"
                 @restore="emit('restore', row.id)"

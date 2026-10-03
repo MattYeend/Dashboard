@@ -4,7 +4,10 @@ import BulkActionButton from '@/components/table/BulkActionButton.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import RowActions from '@/components/table/RowActions.vue';
-import { edit as pipelineStatusesEdit, show as pipelineStatusesShow } from '@/routes/pipeline-statuses';
+import {
+    edit as pipelineStatusesEdit,
+    show as pipelineStatusesShow,
+} from '@/routes/pipeline-statuses';
 import type { PipelineStatus } from '@/types';
 
 defineProps<{

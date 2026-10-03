@@ -51,7 +51,8 @@ const deleteAction = useRowAction((id, options) =>
 );
 
 const bulkDeleteAction = useBulkAction(
-    (ids, options) => router.post(orderStatusesBulk.delete.url(), { ids }, options),
+    (ids, options) =>
+        router.post(orderStatusesBulk.delete.url(), { ids }, options),
     () => {
         selectedIds.value = [];
     },

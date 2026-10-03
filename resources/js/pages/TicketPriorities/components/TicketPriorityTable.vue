@@ -5,7 +5,10 @@ import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import RowActions from '@/components/table/RowActions.vue';
 import { formatDate } from '@/lib/formatters';
-import { edit as ticketPrioritiesEdit, show as ticketPrioritiesShow } from '@/routes/ticket-priorities';
+import {
+    edit as ticketPrioritiesEdit,
+    show as ticketPrioritiesShow,
+} from '@/routes/ticket-priorities';
 import type { TicketPriority } from '@/types';
 
 defineProps<{

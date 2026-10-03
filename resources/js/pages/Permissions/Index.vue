@@ -64,12 +64,14 @@ const forceDeleteAction = useRowAction((id, options) =>
 );
 
 const bulkDeleteAction = useBulkAction(
-    (ids, options) => router.post(permissionsBulk.delete.url(), { ids }, options),
+    (ids, options) =>
+        router.post(permissionsBulk.delete.url(), { ids }, options),
     clearSelection,
 );
 
 const bulkRestoreAction = useBulkAction(
-    (ids, options) => router.post(permissionsBulk.restore.url(), { ids }, options),
+    (ids, options) =>
+        router.post(permissionsBulk.restore.url(), { ids }, options),
     clearSelection,
 );
 </script>
