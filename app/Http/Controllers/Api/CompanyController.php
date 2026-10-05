@@ -99,7 +99,7 @@ class CompanyController extends Controller
         return response()->json(
             $this->queryService->getById(
                 $request->user(),
-                $company->id
+                $company
             )
         );
     }
