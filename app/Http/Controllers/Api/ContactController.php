@@ -96,7 +96,7 @@ class ContactController extends Controller
 
         return response()->json(
             $this->queryService->getById(
-                $request->user(), 
+                $request->user(),
                 $contact
             )
         );
