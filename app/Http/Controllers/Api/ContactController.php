@@ -95,7 +95,10 @@ class ContactController extends Controller
         $this->authoriseTokenAbility($request, TokenAbility::ContactsRead->value);
 
         return response()->json(
-            $this->queryService->getById($request->user(), $contact->id)
+            $this->queryService->getById(
+                $request->user(), 
+                $contact
+            )
         );
     }
 
