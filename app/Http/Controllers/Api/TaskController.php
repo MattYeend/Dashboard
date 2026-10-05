@@ -95,7 +95,10 @@ class TaskController extends Controller
         $this->authoriseTokenAbility($request, TokenAbility::TasksRead->value);
 
         return response()->json(
-            $this->queryService->getById($request->user(), $task->id)
+            $this->queryService->getById(
+                $request->user(), 
+                $task
+            )
         );
     }
 
