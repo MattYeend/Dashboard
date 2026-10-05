@@ -55,30 +55,6 @@ parameters:
 			path: app/Console/Commands/MigrateUserSubscriptionsToOrganisations.php
 
 		-
-			message: '#^Parameter \#2 \$company of method App\\Services\\Companies\\QueryService\:\:getById\(\) expects App\\Models\\Company, int given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/Api/CompanyController.php
-
-		-
-			message: '#^Parameter \#2 \$contact of method App\\Services\\Contacts\\QueryService\:\:getById\(\) expects App\\Models\\Contact, int given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/Api/ContactController.php
-
-		-
-			message: '#^Parameter \#2 \$order of method App\\Services\\Orders\\QueryService\:\:getById\(\) expects App\\Models\\Order, int given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/Api/OrderController.php
-
-		-
-			message: '#^Parameter \#2 \$task of method App\\Services\\Tasks\\QueryService\:\:getById\(\) expects App\\Models\\Task, int given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/Api/TaskController.php
-
-		-
 			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 2
