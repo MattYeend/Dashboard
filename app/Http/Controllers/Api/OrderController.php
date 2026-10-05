@@ -97,7 +97,7 @@ class OrderController extends Controller
         return response()->json(
             $this->queryService->getById(
                 $request->user(),
-                $order->id
+                $order
             )
         );
     }
