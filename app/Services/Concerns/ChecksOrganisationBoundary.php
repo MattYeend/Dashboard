@@ -3,6 +3,7 @@
 namespace App\Services\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Multitenancy\Models\Tenant;
 
 trait ChecksOrganisationBoundary
 {
@@ -20,7 +21,7 @@ trait ChecksOrganisationBoundary
      */
     protected function belongsToCurrentOrganisation(Model $target): bool
     {
-        $currentOrganisationId = session('current_organisation_id');
+        $currentOrganisationId = Tenant::current()?->id;
 
         if ($currentOrganisationId === null) {
             return false;
