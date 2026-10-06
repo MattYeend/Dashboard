@@ -4,6 +4,7 @@ namespace App\Services\Orders;
 
 use App\Models\Company;
 use App\Models\User;
+use Spatie\Multitenancy\Models\Tenant;
 
 class OrderableTypeRegistryService
 {
@@ -70,9 +71,13 @@ class OrderableTypeRegistryService
         $model = $config['model'];
         $field = $config['label_field'];
 
-        return $model::query()
-            ->orderBy($field)
-            ->get(['id', $field])
+        $query = $model === User::class
+            ? Tenant::current()?->activeUsers() ?? User::query()->whereRaw('1 = 0')
+            : $model::query();
+
+        return $query
+            ->orderBy($model === User::class ? 'users.'.$field : $field)
+            ->get($model === User::class ? ['users.id', 'users.'.$field] : ['id', $field])
             ->map(fn ($item) => [
                 'value' => $item->id,
                 'label' => $item->{$field},

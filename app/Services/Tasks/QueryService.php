@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Spatie\Multitenancy\Models\Tenant;
 
 class QueryService
 {
@@ -80,10 +81,10 @@ class QueryService
                 'id',
                 'name',
             ]),
-            'users' => User::orderBy('name')->get([
-                'id',
-                'name',
-            ]),
+            'users' => Tenant::current()
+                ->activeUsers()
+                ->orderBy('users.name')
+                ->get(['users.id', 'users.name']),
         ];
     }
 

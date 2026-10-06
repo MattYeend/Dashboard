@@ -11,6 +11,7 @@ use App\Services\Deals\FormatterService as DealFormatterService;
 use App\Services\Orders\FormatterService as OrderFormatterService;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\Multitenancy\Models\Tenant;
 
 class QueryService
 {
@@ -84,10 +85,10 @@ class QueryService
                 'id',
                 'name',
             ]),
-            'users' => User::orderBy('name')->get([
-                'id',
-                'name',
-            ]),
+            'users' => Tenant::current()
+                ->activeUsers()
+                ->orderBy('users.name')
+                ->get(['users.id', 'users.name']),
         ];
     }
 
