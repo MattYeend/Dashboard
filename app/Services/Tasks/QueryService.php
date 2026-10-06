@@ -2,6 +2,7 @@
 
 namespace App\Services\Tasks;
 
+use App\Models\Organisation;
 use App\Models\Tag;
 use App\Models\Task;
 use App\Models\TaskStatus;
@@ -9,7 +10,6 @@ use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use Spatie\Multitenancy\Models\Tenant;
 
 class QueryService
 {
@@ -81,8 +81,8 @@ class QueryService
                 'id',
                 'name',
             ]),
-            'users' => Tenant::current()
-                ->activeUsers()
+            'users' => (Organisation::current()?->activeUsers()
+                ?? User::query()->whereRaw('1 = 0'))
                 ->orderBy('users.name')
                 ->get(['users.id', 'users.name']),
         ];

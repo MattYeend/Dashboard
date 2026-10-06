@@ -4,6 +4,7 @@ namespace App\Services\Companies;
 
 use App\Models\Company;
 use App\Models\Industry;
+use App\Models\Organisation;
 use App\Models\Tag;
 use App\Models\User;
 use App\Services\Contacts\FormatterService as ContactFormatterService;
@@ -11,7 +12,6 @@ use App\Services\Deals\FormatterService as DealFormatterService;
 use App\Services\Orders\FormatterService as OrderFormatterService;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
-use Spatie\Multitenancy\Models\Tenant;
 
 class QueryService
 {
@@ -85,8 +85,8 @@ class QueryService
                 'id',
                 'name',
             ]),
-            'users' => Tenant::current()
-                ->activeUsers()
+            'users' => (Organisation::current()?->activeUsers()
+                ?? User::query()->whereRaw('1 = 0'))
                 ->orderBy('users.name')
                 ->get(['users.id', 'users.name']),
         ];

@@ -56,7 +56,7 @@ class SessionOrganisationFinder extends TenantFinder
                 return $organisation;
             }
 
-            $session?->forget('current_organisation_id');
+            $session->forget('current_organisation_id');
         }
 
         $organisation = $isSuperAdmin

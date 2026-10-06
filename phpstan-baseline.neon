@@ -169,18 +169,6 @@ parameters:
 			path: app/Http/Resources/CompanyResource.php
 
 		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$address\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ContactResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$city\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ContactResource.php
-
-		-
 			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$contactable_id\.$#'
 			identifier: property.notFound
 			count: 1
@@ -188,12 +176,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$contactable_type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/ContactResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$country\.$#'
 			identifier: property.notFound
 			count: 1
 			path: app/Http/Resources/ContactResource.php
@@ -241,13 +223,13 @@ parameters:
 			path: app/Http/Resources/ContactResource.php
 
 		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$phone\.$#'
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$name\.$#'
 			identifier: property.notFound
 			count: 1
 			path: app/Http/Resources/ContactResource.php
 
 		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$postal_code\.$#'
+			message: '#^Access to an undefined property App\\Http\\Resources\\ContactResource\:\:\$phone\.$#'
 			identifier: property.notFound
 			count: 1
 			path: app/Http/Resources/ContactResource.php

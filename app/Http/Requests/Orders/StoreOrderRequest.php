@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Orders;
 
 use App\Models\Order;
+use App\Models\Organisation;
 use App\Models\User;
 use App\Rules\TenantRules;
 use App\Services\Orders\OrderableTypeRegistryService;
@@ -10,7 +11,6 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
-use Spatie\Multitenancy\Models\Tenant;
 
 class StoreOrderRequest extends FormRequest
 {
@@ -338,9 +338,9 @@ class StoreOrderRequest extends FormRequest
                 }
 
                 if ($modelClass === User::class) {
-                    $tenant = Tenant::current();
+                    $organisation = Organisation::current();
 
-                    if (! $tenant || ! $tenant->activeUsers()->whereKey($id)->exists()) {
+                    if (! $organisation || ! $organisation->activeUsers()->whereKey($id)->exists()) {
                         $validator->errors()->add(
                             'orderable_id',
                             'The selected order owner does not exist.'

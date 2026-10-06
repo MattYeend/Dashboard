@@ -4,9 +4,9 @@ namespace App\Services\Contacts;
 
 use App\Models\Company;
 use App\Models\Invoice;
+use App\Models\Organisation;
 use App\Models\Task;
 use App\Models\User;
-use Spatie\Multitenancy\Models\Tenant;
 
 class ContactableTypeRegistryService
 {
@@ -80,7 +80,7 @@ class ContactableTypeRegistryService
         $field = $config['label_field'];
 
         $query = $model === User::class
-            ? Tenant::current()?->activeUsers() ?? User::query()->whereRaw('1 = 0')
+            ? Organisation::current()?->activeUsers() ?? User::query()->whereRaw('1 = 0')
             : $model::query();
 
         return $query

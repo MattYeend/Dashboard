@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests\Contacts;
 
+use App\Models\Organisation;
 use App\Models\User;
 use App\Services\Contacts\ContactableTypeRegistryService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
-use Spatie\Multitenancy\Models\Tenant;
 
 class UpdateContactRequest extends FormRequest
 {
@@ -202,9 +202,9 @@ class UpdateContactRequest extends FormRequest
                 }
 
                 if ($modelClass === User::class) {
-                    $tenant = Tenant::current();
+                    $organisation = Organisation::current();
 
-                    if (! $tenant || ! $tenant->activeUsers()->whereKey($id)->exists()) {
+                    if (! $organisation || ! $organisation->activeUsers()->whereKey($id)->exists()) {
                         $validator->errors()->add(
                             'contactable_id',
                             'The selected contact owner does not exist.'

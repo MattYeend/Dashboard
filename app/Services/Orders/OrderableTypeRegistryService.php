@@ -3,8 +3,8 @@
 namespace App\Services\Orders;
 
 use App\Models\Company;
+use App\Models\Organisation;
 use App\Models\User;
-use Spatie\Multitenancy\Models\Tenant;
 
 class OrderableTypeRegistryService
 {
@@ -72,7 +72,7 @@ class OrderableTypeRegistryService
         $field = $config['label_field'];
 
         $query = $model === User::class
-            ? Tenant::current()?->activeUsers() ?? User::query()->whereRaw('1 = 0')
+            ? Organisation::current()?->activeUsers() ?? User::query()->whereRaw('1 = 0')
             : $model::query();
 
         return $query
