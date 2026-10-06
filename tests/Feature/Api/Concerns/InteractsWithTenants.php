@@ -103,7 +103,7 @@ trait InteractsWithTenants
             );
         }
 
-        $this->actingAsWithoutOrganisation($user);
+        $this->actingAsWithoutOrganisation($user)->withHeaders(['Origin' => 'http://localhost']);
 
         return $organisation === null
             ? $this

@@ -11,7 +11,7 @@ Route::post('/login', [AuthController::class, 'login'])
     ->middleware(['web', 'throttle:6,1'])
     ->name('api.login');
 
-Route::middleware(['web', 'auth:sanctum', 'throttle:api'])->group(function () {
+Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
     Route::get('/user', [AuthController::class, 'user'])->name('api.user');
 

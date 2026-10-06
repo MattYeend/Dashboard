@@ -170,7 +170,7 @@ class ManagementService
      */
     public function isImpersonating(): bool
     {
-        return $this->request->session()->has(self::SESSION_ACTOR_KEY);
+        return $this->sessionValue(self::SESSION_ACTOR_KEY) !== null;
     }
 
     /**
@@ -179,7 +179,7 @@ class ManagementService
      */
     public function originalActor(): ?User
     {
-        $actorId = $this->request->session()->get(self::SESSION_ACTOR_KEY);
+        $actorId = $this->sessionValue(self::SESSION_ACTOR_KEY);
 
         return $actorId ? User::find($actorId) : null;
     }
@@ -190,7 +190,7 @@ class ManagementService
      */
     public function scopedOrganisation(): ?Organisation
     {
-        $organisationId = $this->request->session()->get(self::SESSION_ORGANISATION_KEY);
+        $organisationId = $this->sessionValue(self::SESSION_ORGANISATION_KEY);
 
         return $organisationId ? Organisation::find($organisationId) : null;
     }
@@ -228,9 +228,20 @@ class ManagementService
      */
     public function hasExpired(int $maxMinutes = 60): bool
     {
-        $startedAt = $this->request->session()->get(self::SESSION_STARTED_AT_KEY);
+        $startedAt = $this->sessionValue(self::SESSION_STARTED_AT_KEY);
 
         return $startedAt !== null
             && Carbon::parse($startedAt)->addMinutes($maxMinutes)->isPast();
+    }
+
+    /**
+     * Read a value from the session, or null when the request has none
+     * (for example a bearer-token API request).
+     */
+    private function sessionValue(string $key): mixed
+    {
+        return $this->request->hasSession()
+            ? $this->request->session()->get($key)
+            : null;
     }
 }
