@@ -48,6 +48,8 @@ class CreatorService
 
                 $newContact->tags()->sync($data['tag_ids'] ?? []);
 
+                $newContact->refresh();
+
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_CONTACT,
                     $actor,
