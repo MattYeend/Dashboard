@@ -9,8 +9,8 @@ use Tests\TestCase;
 
 class OrderCurrencyTest extends TestCase
 {
-    use RefreshDatabase;
     use InteractsWithTenants;
+    use RefreshDatabase;
 
     public function test_order_currency_is_persisted(): void
     {

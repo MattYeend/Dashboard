@@ -10,8 +10,8 @@ use Tests\TestCase;
 
 class UnscopedRoutesTest extends TestCase
 {
-    use RefreshDatabase;
     use InteractsWithTenants;
+    use RefreshDatabase;
 
     /**
      * @return array<string, array{0: string}>

@@ -9,8 +9,8 @@ use Tests\TestCase;
 
 class ActiveOrganisationTest extends TestCase
 {
-    use RefreshDatabase;
     use InteractsWithTenants;
+    use RefreshDatabase;
 
     public function test_spa_request_uses_the_organisation_stored_on_the_session(): void
     {

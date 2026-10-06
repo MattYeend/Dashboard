@@ -177,7 +177,7 @@ class UpdateCompanyRequest extends FormRequest
             'sometimes',
             'nullable',
             'integer',
-            TenantRules::exists('industries')
+            TenantRules::exists('industries'),
         ];
     }
 
@@ -192,7 +192,7 @@ class UpdateCompanyRequest extends FormRequest
             'sometimes',
             'nullable',
             'integer',
-            TenantRules::activeMember()
+            TenantRules::activeMember(),
         ];
     }
 
@@ -293,7 +293,7 @@ class UpdateCompanyRequest extends FormRequest
         return [
             'sometimes',
             'integer',
-            TenantRules::exists('tags')
+            TenantRules::exists('tags'),
         ];
     }
 }

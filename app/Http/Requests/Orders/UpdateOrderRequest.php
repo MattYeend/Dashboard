@@ -285,7 +285,7 @@ class UpdateOrderRequest extends FormRequest
             'sometimes',
             'nullable',
             'integer',
-            TenantRules::exists('order_statuses')
+            TenantRules::exists('order_statuses'),
         ];
     }
 
@@ -326,7 +326,7 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
             'integer',
-            TenantRules::exists('tags')
+            TenantRules::exists('tags'),
         ];
     }
 

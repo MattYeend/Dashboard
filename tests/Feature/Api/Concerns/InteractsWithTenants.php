@@ -7,9 +7,10 @@ use App\Models\Organisation;
 use App\Models\User;
 use Database\Seeders\RolePermissionSeeder;
 use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 /**
- * @mixin \Tests\TestCase
+ * @mixin TestCase
  */
 trait InteractsWithTenants
 {

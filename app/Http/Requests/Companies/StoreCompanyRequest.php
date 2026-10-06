@@ -170,7 +170,7 @@ class StoreCompanyRequest extends FormRequest
         return [
             'nullable',
             'integer',
-            TenantRules::exists('industries')
+            TenantRules::exists('industries'),
         ];
     }
 
@@ -184,7 +184,7 @@ class StoreCompanyRequest extends FormRequest
         return [
             'nullable',
             'integer',
-            TenantRules::activeMember()
+            TenantRules::activeMember(),
         ];
     }
 
@@ -278,7 +278,7 @@ class StoreCompanyRequest extends FormRequest
     {
         return [
             'integer',
-            TenantRules::exists('tags')
+            TenantRules::exists('tags'),
         ];
     }
 }

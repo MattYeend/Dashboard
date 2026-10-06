@@ -273,7 +273,7 @@ class StoreOrderRequest extends FormRequest
         return [
             'nullable',
             'integer',
-            TenantRules::exists('order_statuses')
+            TenantRules::exists('order_statuses'),
         ];
     }
 
@@ -312,7 +312,7 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'integer',
-            TenantRules::exists('tags')
+            TenantRules::exists('tags'),
         ];
     }
 

@@ -120,7 +120,7 @@ class StoreTaskRequest extends FormRequest
         return [
             'nullable',
             'integer',
-            TenantRules::activeMember()
+            TenantRules::activeMember(),
         ];
     }
 
@@ -132,10 +132,10 @@ class StoreTaskRequest extends FormRequest
     protected function statusIdRules(): array
     {
         return [
-            'nullable', 
-            'integer', 
-            TenantRules::exists('task_statuses')
-            ];
+            'nullable',
+            'integer',
+            TenantRules::exists('task_statuses'),
+        ];
     }
 
     /**
@@ -172,8 +172,8 @@ class StoreTaskRequest extends FormRequest
     protected function tagIdRules(): array
     {
         return [
-            'integer', 
-            TenantRules::exists('tags')
-            ];
+            'integer',
+            TenantRules::exists('tags'),
+        ];
     }
 }

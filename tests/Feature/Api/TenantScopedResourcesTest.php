@@ -15,8 +15,8 @@ use Tests\TestCase;
 
 class TenantScopedResourcesTest extends TestCase
 {
-    use RefreshDatabase;
     use InteractsWithTenants;
+    use RefreshDatabase;
 
     private const MARKER = 'Created through the API';
 

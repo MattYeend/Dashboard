@@ -10,8 +10,8 @@ use Tests\TestCase;
 
 class MissingOrganisationTest extends TestCase
 {
-    use RefreshDatabase;
     use InteractsWithTenants;
+    use RefreshDatabase;
 
     /**
      * @return iterable<string, array{0: string, 1: string, 2: bool}>
