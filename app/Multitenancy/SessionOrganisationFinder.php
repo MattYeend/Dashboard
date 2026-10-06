@@ -39,7 +39,8 @@ class SessionOrganisationFinder extends TenantFinder
         }
 
         $isSuperAdmin = $this->roleChecker->isSuperAdmin($user);
-        $organisationId = $request->session()->get('current_organisation_id');
+        $session = $request->hasSession() ? $request->session() : null;
+        $organisationId = $session?->get('current_organisation_id');
 
         if ($organisationId !== null) {
             $organisation = app(IsTenant::class)::query()
@@ -55,7 +56,7 @@ class SessionOrganisationFinder extends TenantFinder
                 return $organisation;
             }
 
-            $request->session()->forget('current_organisation_id');
+            $session?->forget('current_organisation_id');
         }
 
         $organisation = $isSuperAdmin
@@ -63,7 +64,7 @@ class SessionOrganisationFinder extends TenantFinder
             : $user->activeOrganisations()->oldest('organisation_user.id')->first();
 
         if ($organisation !== null) {
-            $request->session()->put('current_organisation_id', $organisation->id);
+            $session?->put('current_organisation_id', $organisation->id);
         }
 
         return $organisation;
