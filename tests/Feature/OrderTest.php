@@ -3,6 +3,7 @@
 use App\Models\Log;
 use App\Models\Order;
 use App\Models\OrderStatus;
+use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Concerns\CreatesUsers;
@@ -279,6 +280,25 @@ describe('store', function () {
 
         $this->assertDatabaseHas('orders', ['title' => 'Order with meta']);
     });
+
+    test('store fails validation when orderable_id is a user outside the organisation', function () {
+        $superAdmin = $this->superAdminUser();
+        $outsider = User::factory()->create();
+
+        $this->actingAs($superAdmin)
+            ->postJson('/orders', [
+                'orderable_type' => 'user',
+                'orderable_id' => $outsider->id,
+                'title' => 'Cross organisation order',
+                'subtotal' => 10.00,
+                'total_amount' => 10.00,
+                'currency' => 'GBP',
+            ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['orderable_id']);
+
+        $this->assertDatabaseMissing('orders', ['title' => 'Cross organisation order']);
+    });
 });
 
 describe('show', function () {
@@ -521,6 +541,7 @@ describe('update', function () {
     test('orderable type and id can be updated', function () {
         $superAdmin = $this->superAdminUser();
         $otherUser = $this->normalUser();
+        $this->testOrganisation->addActiveMember($otherUser->id);
 
         $order = Order::factory()->forModel($superAdmin)->create();
 
@@ -582,6 +603,26 @@ describe('update', function () {
 
         expect($log)->not->toBeNull()
             ->and($log->data)->toHaveKeys(['before', 'after']);
+    });
+
+    test('update fails validation when orderable_id is a user outside the organisation', function () {
+        $superAdmin = $this->superAdminUser();
+        $outsider = User::factory()->create();
+
+        $order = Order::factory()->forModel($superAdmin)->create();
+
+        $this->actingAs($superAdmin)
+            ->putJson("/orders/{$order->id}", [
+                'orderable_type' => 'user',
+                'orderable_id' => $outsider->id,
+            ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['orderable_id']);
+
+        $this->assertDatabaseHas('orders', [
+            'id' => $order->id,
+            'orderable_id' => $superAdmin->id,
+        ]);
     });
 });
 

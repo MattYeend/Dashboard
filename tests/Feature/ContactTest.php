@@ -2,6 +2,7 @@
 
 use App\Models\Contact;
 use App\Models\Log;
+use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Concerns\CreatesUsers;
@@ -153,6 +154,24 @@ describe('store', function () {
             'contactable_id' => $superAdmin->id,
             'phone' => null,
             'email' => null,
+        ]);
+    });
+
+    test('store fails validation when contactable_id is a user outside the organisation', function () {
+        $superAdmin = $this->superAdminUser();
+        $outsider = User::factory()->create();
+
+        $this->actingAs($superAdmin)
+            ->postJson('/contacts', [
+                'contactable_type' => 'user',
+                'contactable_id' => $outsider->id,
+            ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['contactable_id']);
+
+        $this->assertDatabaseMissing('contacts', [
+            'contactable_type' => 'App\\Models\\User',
+            'contactable_id' => $outsider->id,
         ]);
     });
 });
@@ -348,6 +367,7 @@ describe('update', function () {
     test('contactable type and id can be updated', function () {
         $superAdmin = $this->superAdminUser();
         $otherUser = $this->normalUser();
+        $this->testOrganisation->addActiveMember($otherUser->id);
 
         $contact = Contact::factory()->forModel($superAdmin)->create();
 
@@ -381,6 +401,26 @@ describe('update', function () {
 
         expect($log)->not->toBeNull()
             ->and($log->data)->toHaveKeys(['before', 'after']);
+    });
+
+    test('update fails validation when contactable_id is a user outside the organisation', function () {
+        $superAdmin = $this->superAdminUser();
+        $outsider = User::factory()->create();
+
+        $contact = Contact::factory()->forModel($superAdmin)->create();
+
+        $this->actingAs($superAdmin)
+            ->putJson("/contacts/{$contact->id}", [
+                'contactable_type' => 'user',
+                'contactable_id' => $outsider->id,
+            ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['contactable_id']);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'contactable_id' => $superAdmin->id,
+        ]);
     });
 });
 

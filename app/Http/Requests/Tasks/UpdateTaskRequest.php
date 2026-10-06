@@ -123,8 +123,9 @@ class UpdateTaskRequest extends FormRequest
     {
         return [
             'sometimes',
+            'nullable',
             'integer', 
-            TenantRules::activeMember()
+            TenantRules::activeMember(),
         ];
     }
 

@@ -3,6 +3,7 @@
 use App\Models\Log;
 use App\Models\Task;
 use App\Models\TaskStatus;
+use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Concerns\CreatesUsers;
@@ -154,6 +155,7 @@ describe('store', function () {
     test('store succeeds with an assigned user and status', function () {
         $superAdmin = $this->superAdminUser();
         $assignee = $this->normalUser();
+        $this->testOrganisation->addActiveMember($assignee->id);
         $taskStatus = TaskStatus::factory()->create();
 
         $this->actingAs($superAdmin)
@@ -182,6 +184,19 @@ describe('store', function () {
             ->assertStatus(201);
 
         $this->assertDatabaseHas('tasks', ['title' => 'Task with meta']);
+    });
+
+    test('store fails validation when assigned_to is not a member of the organisation', function () {
+        $superAdmin = $this->superAdminUser();
+        $outsider = User::factory()->create();
+
+        $this->actingAs($superAdmin)
+            ->postJson('/tasks', [
+                'title' => 'Cross organisation assignment',
+                'assigned_to' => $outsider->id,
+            ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['assigned_to']);
     });
 });
 
@@ -316,7 +331,7 @@ describe('update', function () {
             'description' => 'Some description.',
             'due_date' => '2025-08-01',
             'assigned_date' => '2025-07-01',
-            'assigned_to' => $this->normalUser()->id,
+            'assigned_to' => tap($this->normalUser(), fn ($user) => $this->testOrganisation->addActiveMember($user->id))->id,
             'status_id' => TaskStatus::factory()->create()->id,
         ]);
 

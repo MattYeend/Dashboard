@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property int $id
@@ -220,7 +221,7 @@ class Order extends Model implements Auditable
     {
         do {
             $number = 'ORD-'.strtoupper(str()->random(8));
-        } while (static::withoutGlobalScopes()->where('order_number', $number)->exists());
+        } while (DB::table('orders')->where('order_number', $number)->exists());
 
         return $number;
     }
