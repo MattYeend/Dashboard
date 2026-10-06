@@ -26,6 +26,12 @@ class ResolveCurrentOrganisation
         $organisation = $this->organisationFinder->findForRequest($request);
 
         if (! $organisation) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json([
+                    'message' => 'No organisation is currently selected.',
+                ], Response::HTTP_CONFLICT);
+            }
+
             return redirect()->route('organisations.select');
         }
 
