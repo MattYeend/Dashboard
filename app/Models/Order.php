@@ -220,7 +220,7 @@ class Order extends Model implements Auditable
     {
         do {
             $number = 'ORD-'.strtoupper(str()->random(8));
-        } while (static::withTrashed()->where('order_number', $number)->exists());
+        } while (static::withoutGlobalScopes()->where('order_number', $number)->exists());
 
         return $number;
     }
