@@ -156,7 +156,7 @@ class PolicyAuthorisationService
      */
     public function canMerge(User $user, Contact $contact): bool
     {
-        if ($this->targetOutranksActor($user, $contact)) {
+        if (! $this->belongsToCurrentOrganisation($contact) || $this->targetOutranksActor($user, $contact)) {
             return false;
         }
 
