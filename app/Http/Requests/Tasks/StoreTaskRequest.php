@@ -3,9 +3,9 @@
 namespace App\Http\Requests\Tasks;
 
 use App\Models\Task;
+use App\Rules\TenantRules;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreTaskRequest extends FormRequest
 {
@@ -120,7 +120,7 @@ class StoreTaskRequest extends FormRequest
         return [
             'nullable',
             'integer',
-            'exists:users,id',
+            TenantRules::activeMember()
         ];
     }
 
@@ -132,10 +132,10 @@ class StoreTaskRequest extends FormRequest
     protected function statusIdRules(): array
     {
         return [
-            'nullable',
-            'integer',
-            'exists:task_statuses,id',
-        ];
+            'nullable', 
+            'integer', 
+            TenantRules::exists('task_statuses')
+            ];
     }
 
     /**
@@ -172,8 +172,8 @@ class StoreTaskRequest extends FormRequest
     protected function tagIdRules(): array
     {
         return [
-            'integer',
-            Rule::exists('tags', 'id'),
-        ];
+            'integer', 
+            TenantRules::exists('tags')
+            ];
     }
 }

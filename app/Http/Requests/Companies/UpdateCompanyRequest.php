@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Companies;
 
+use App\Rules\TenantRules;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -176,7 +177,7 @@ class UpdateCompanyRequest extends FormRequest
             'sometimes',
             'nullable',
             'integer',
-            'exists:industries,id',
+            TenantRules::exists('industries')
         ];
     }
 
@@ -191,7 +192,7 @@ class UpdateCompanyRequest extends FormRequest
             'sometimes',
             'nullable',
             'integer',
-            'exists:users,id',
+            TenantRules::activeMember()
         ];
     }
 
@@ -292,7 +293,7 @@ class UpdateCompanyRequest extends FormRequest
         return [
             'sometimes',
             'integer',
-            Rule::exists('tags', 'id'),
+            TenantRules::exists('tags')
         ];
     }
 }

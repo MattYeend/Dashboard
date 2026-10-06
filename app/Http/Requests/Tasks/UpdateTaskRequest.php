@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\Tasks;
 
+use App\Models\Task;
+use App\Rules\TenantRules;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -122,9 +123,8 @@ class UpdateTaskRequest extends FormRequest
     {
         return [
             'sometimes',
-            'nullable',
-            'integer',
-            Rule::exists('users', 'id'),
+            'integer', 
+            TenantRules::activeMember()
         ];
     }
 
@@ -139,7 +139,7 @@ class UpdateTaskRequest extends FormRequest
             'sometimes',
             'nullable',
             'integer',
-            Rule::exists('task_statuses', 'id'),
+            TenantRules::exists('task_statuses'),
         ];
     }
 
@@ -180,7 +180,7 @@ class UpdateTaskRequest extends FormRequest
     {
         return [
             'integer',
-            Rule::exists('tags', 'id'),
+            TenantRules::exists('tags'),
         ];
     }
 }

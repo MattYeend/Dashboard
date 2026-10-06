@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Companies;
 
 use App\Models\Company;
+use App\Rules\TenantRules;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -169,7 +170,7 @@ class StoreCompanyRequest extends FormRequest
         return [
             'nullable',
             'integer',
-            'exists:industries,id',
+            TenantRules::exists('industries')
         ];
     }
 
@@ -183,7 +184,7 @@ class StoreCompanyRequest extends FormRequest
         return [
             'nullable',
             'integer',
-            'exists:users,id',
+            TenantRules::activeMember()
         ];
     }
 
@@ -277,7 +278,7 @@ class StoreCompanyRequest extends FormRequest
     {
         return [
             'integer',
-            'exists:tags,id',
+            TenantRules::exists('tags')
         ];
     }
 }

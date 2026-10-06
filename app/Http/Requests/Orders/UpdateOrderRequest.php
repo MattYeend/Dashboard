@@ -2,11 +2,14 @@
 
 namespace App\Http\Requests\Orders;
 
+use App\Models\User;
+use App\Rules\TenantRules;
 use App\Services\Orders\OrderableTypeRegistryService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
+use Spatie\Multitenancy\Models\Tenant;
 
 class UpdateOrderRequest extends FormRequest
 {
@@ -282,7 +285,7 @@ class UpdateOrderRequest extends FormRequest
             'sometimes',
             'nullable',
             'integer',
-            Rule::exists('order_statuses', 'id')->whereNull('deleted_at'),
+            TenantRules::exists('order_statuses')
         ];
     }
 
@@ -323,7 +326,7 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
             'integer',
-            Rule::exists('tags', 'id'),
+            TenantRules::exists('tags')
         ];
     }
 
@@ -345,6 +348,19 @@ class UpdateOrderRequest extends FormRequest
                     ->modelClassForKey($type);
 
                 if (! $modelClass) {
+                    return;
+                }
+
+                if ($modelClass === User::class) {
+                    $tenant = Tenant::current();
+
+                    if (! $tenant || ! $tenant->activeUsers()->whereKey($id)->exists()) {
+                        $validator->errors()->add(
+                            'orderable_id',
+                            'The selected order owner does not exist.'
+                        );
+                    }
+
                     return;
                 }
 
