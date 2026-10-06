@@ -12,6 +12,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Inertia\Inertia;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Spatie\Multitenancy\Exceptions\NoCurrentTenant;
@@ -53,6 +54,16 @@ return Application::configure(basePath: dirname(__DIR__))
 
         ]);
 
+        $middleware->prependToPriorityList(
+            before: SubstituteBindings::class,
+            prepend: ResolveCurrentOrganisation::class,
+        );
+
+        $middleware->prependToPriorityList(
+            before: SubstituteBindings::class,
+            prepend: NeedsTenant::class,
+        );
+
         $middleware->group('tenant', [
             ResolveCurrentOrganisation::class,
             NeedsTenant::class,
@@ -84,7 +95,7 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (NoCurrentTenant $e, Request $request) {
-            if ($request->expectsJson()) {
+            if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json([
                     'message' => 'No organisation is currently selected.',
                 ], 409);
