@@ -23,6 +23,20 @@ class DataExportService
         Organisation $organisation,
         User $requestedBy
     ): OrganisationDataExport {
+        return $organisation->execute(
+            fn (): OrganisationDataExport => $this->buildExport($organisation, $requestedBy)
+        );
+    }
+
+    /**
+     * Build the archive and record it. Always runs with the given
+     * organisation as the current tenant, so the export record is created
+     * for it regardless of what the caller had selected.
+     */
+    private function buildExport(
+        Organisation $organisation,
+        User $requestedBy
+    ): OrganisationDataExport {
         $directory = 'organisation-exports/'.$organisation->id.'/'.now()->format('Ymd-His');
         Storage::disk('local')->makeDirectory($directory);
 

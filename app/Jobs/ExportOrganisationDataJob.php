@@ -32,8 +32,13 @@ class ExportOrganisationDataJob implements ShouldQueue
      */
     public function handle(DataExportService $dataExportService): void
     {
-        $export = $dataExportService->export($this->organisation, $this->requestedBy);
+        $this->organisation->execute(function () use ($dataExportService): void {
+            $export = $dataExportService->export(
+                $this->organisation,
+                $this->requestedBy
+            );
 
-        $this->requestedBy->notify(new OrganisationDataExportReady($export));
+            $this->requestedBy->notify(new OrganisationDataExportReady($export));
+        });
     }
 }
