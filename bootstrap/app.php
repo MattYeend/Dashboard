@@ -19,6 +19,7 @@ use Spatie\Multitenancy\Exceptions\NoCurrentTenant;
 // use Spatie\Multitenancy\Http\Middleware\EnsureValidTenantSession;
 use Spatie\Multitenancy\Http\Middleware\NeedsTenant;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Middleware\SetTenantFromRouteOrganisation;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -51,12 +52,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'platform_admin' => PlatformAdmin::class,
             'not.impersonating' => NotImpersonating::class,
+            'organisation.route' => SetTenantFromRouteOrganisation::class,
 
         ]);
 
         $middleware->prependToPriorityList(
             before: SubstituteBindings::class,
-            prepend: ResolveCurrentOrganisation::class,
+            prepend: SetTenantFromRouteOrganisation::class,
         );
 
         $middleware->prependToPriorityList(
