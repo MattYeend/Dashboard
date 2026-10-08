@@ -11,6 +11,7 @@ use App\Models\DealStatus;
 use App\Models\Industry;
 use App\Models\InteractionLog;
 use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use App\Models\InvoiceStatus;
 use App\Models\Label;
 use App\Models\Order;
@@ -19,6 +20,7 @@ use App\Models\Organisation;
 use App\Models\OrganisationDataExport;
 use App\Models\Pipeline;
 use App\Models\PipelineStatus;
+use App\Models\PipelineStage;
 use App\Models\Post;
 use App\Models\Report;
 use App\Models\Task;
@@ -136,7 +138,9 @@ afterEach(function () {
 describe('resource coverage', function () {
     test('maps every scoped model to a tested resource or explicitly opts out', function () {
         $optOut = [
-            OrganisationDataExport::class => 'only route is a nested file download (organisations.data-privacy.download) — needs its own download-scoped test once BelongsToOrganisation is confirmed working on it',
+            InvoiceItem::class => 'nested under its parent invoice (scoped route bindings, e.g. invoices/{invoice}/items/{invoiceItem}) — covered by TenantNestedHttpIsolationTest.php instead',
+
+            PipelineStage::class => 'nested under its parent pipeline (scoped route bindings, e.g. pipelines/{pipeline}/stages/{stage}) — covered by TenantNestedHttpIsolationTest.php instead',
         ];
 
         $partialModels = collect(tenantPartialResourceMap())
