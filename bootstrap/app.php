@@ -58,12 +58,17 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->prependToPriorityList(
             before: SubstituteBindings::class,
-            prepend: SetTenantFromRouteOrganisation::class,
+            prepend: ResolveCurrentOrganisation::class,
         );
 
         $middleware->prependToPriorityList(
             before: SubstituteBindings::class,
             prepend: NeedsTenant::class,
+        );
+
+        $middleware->prependToPriorityList(
+            before: SubstituteBindings::class,
+            prepend: SetTenantFromRouteOrganisation::class,
         );
 
         $middleware->group('tenant', [
