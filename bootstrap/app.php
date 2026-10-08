@@ -7,6 +7,7 @@ use App\Http\Middleware\PlatformAdmin;
 use App\Http\Middleware\ResolveCurrentOrganisation;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\ShareImpersonationStatus;
+use App\Http\Middleware\SetTenantFromRouteOrganisation;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -19,7 +20,6 @@ use Spatie\Multitenancy\Exceptions\NoCurrentTenant;
 // use Spatie\Multitenancy\Http\Middleware\EnsureValidTenantSession;
 use Spatie\Multitenancy\Http\Middleware\NeedsTenant;
 use Symfony\Component\HttpFoundation\Response;
-use App\Http\Middleware\SetTenantFromRouteOrganisation;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
