@@ -34,6 +34,24 @@ trait ActsAsOrganisationMember
         return $user;
     }
 
+    protected function memberOfMany(
+        array $organisations,
+        string $role = 'Super Admin'
+    ): User {
+        $user = User::factory()->create();
+
+        foreach ($organisations as $organisation) {
+            $organisation->addActiveMember($user->id);
+
+            setPermissionsTeamId($organisation->id);
+
+            $user->assignRole($role);
+            $user->unsetRelation('roles')->unsetRelation('permissions');
+        }
+
+        return $user;
+    }
+
     protected function actingAsMemberOf(
         Organisation $organisation,
         ?User $user = null
