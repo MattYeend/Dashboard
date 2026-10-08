@@ -114,6 +114,19 @@ function tenantBulkResourceMap(): array
     ];
 }
 
+/**
+ * Route name to model, for resources reached only through a download route
+ * nested under their organisation.
+ *
+ * @return array<string, class-string>
+ */
+function tenantDownloadResourceMap(): array
+{
+    return [
+        'organisations.data-privacy.download' => OrganisationDataExport::class,
+    ];
+}
+
 beforeEach(function () {
     $this->setUpOrganisationIsolation();
 });
@@ -125,16 +138,14 @@ afterEach(function () {
 describe('resource coverage', function () {
     test('maps every scoped model to a tested resource or explicitly opts out', function () {
         $optOut = [
-            InvoiceItem::class => 'nested under its parent invoice (scoped route bindings, e.g. invoices/{invoice}/items/{invoiceItem}) — covered by TenantNestedHttpIsolationTest.php instead',
-
-            PipelineStage::class => 'nested under its parent pipeline (scoped route bindings, e.g. pipelines/{pipeline}/stages/{stage}) — covered by TenantNestedHttpIsolationTest.php instead',
-
             OrganisationDataExport::class => 'only route is a nested file download (organisations.data-privacy.download) — needs its own download-scoped test once BelongsToOrganisation is confirmed working on it',
         ];
 
         $partialModels = collect(tenantPartialResourceMap())
             ->pluck('model')
             ->all();
+
+        $downloadModels = array_values(tenantDownloadResourceMap());
 
         $untested = collect(config('organisations.scoped_models'))
             ->reject(
@@ -144,6 +155,7 @@ describe('resource coverage', function () {
                     true,
                 )
                 || in_array($model, $partialModels, true)
+                || in_array($model, $downloadModels, true)
                 || array_key_exists($model, $optOut),
             )
             ->values()
@@ -365,6 +377,53 @@ describe('bulk delete', function () {
                     string $model,
                     string $prefix,
                 ): array => [$prefix, $model],
+            )
+            ->all(),
+    );
+});
+
+describe('download resources', function () {
+    test(
+        'returns 404 when another organisation\'s export is requested',
+        function (
+            string $routeName,
+            string $model,
+        ) {
+            $record = $this->organisationA->execute(
+                fn () => $this->createTenantTestRecord($model)
+            );
+
+            $userB = $this->memberOf($this->organisationB);
+
+            $this
+                ->actingAsMemberOf(
+                    $this->organisationB,
+                    $userB,
+                )
+                ->get(
+                    route(
+                        $routeName,
+                        [
+                            $this->organisationB,
+                            $record->getKey(),
+                        ],
+                    ),
+                )
+                ->assertNotFound();
+
+            expect(
+                $model::withoutGlobalScopes()
+                    ->whereKey($record->getKey())
+                    ->exists(),
+            )->toBeTrue();
+        },
+    )->with(
+        fn () => collect(tenantDownloadResourceMap())
+            ->map(
+                fn (
+                    string $model,
+                    string $routeName,
+                ): array => [$routeName, $model],
             )
             ->all(),
     );
