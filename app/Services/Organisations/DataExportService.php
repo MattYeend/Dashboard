@@ -49,7 +49,6 @@ class DataExportService
         Storage::disk('local')->deleteDirectory($directory);
 
         return OrganisationDataExport::query()->create([
-            'organisation_id' => $organisation->id,
             'requested_by' => $requestedBy->id,
             'disk_path' => $zipPath,
             'completed_at' => now(),

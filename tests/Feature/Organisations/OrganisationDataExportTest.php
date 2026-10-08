@@ -28,7 +28,6 @@ function createCompletedExport(
 
     return $organisation->execute(
         fn () => OrganisationDataExport::query()->create([
-            'organisation_id' => $organisation->id,
             'requested_by' => $requestedBy,
             'disk_path' => $path,
             'completed_at' => now(),
