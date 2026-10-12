@@ -8,6 +8,7 @@ use App\Http\Requests\Activities\StoreActivityRequest;
 use App\Http\Requests\Activities\UpdateActivityRequest;
 use App\Models\Activity;
 use App\Models\User;
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ManagementService
@@ -160,11 +161,29 @@ class ManagementService
         ];
     }
 
+        /**
+     * Export activities as a CSV download, optionally scoped to a single
+     * activityable record.
+     *
+     * @param  array<string, mixed>  $filters
+     */
     public function export(array $filters): StreamedResponse
     {
+        $rawId = $filters['activityable_id'] ?? null;
+
+        $activityableId = null;
+
+        if ($rawId !== null && $rawId !== '') {
+            $activityableId = filter_var($rawId, FILTER_VALIDATE_INT);
+
+            if ($activityableId === false) {
+                throw new InvalidArgumentException('The activityable id must be an integer.');
+            }
+        }
+
         return $this->exporter->export(
             $filters['activityable_type'] ?? null,
-            $filters['activityable_id'] ?? null,
+            $activityableId,
             $filters,
         );
     }
