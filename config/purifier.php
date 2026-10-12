@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Ok, glad you are here
  * first we get a config instance, and set the settings

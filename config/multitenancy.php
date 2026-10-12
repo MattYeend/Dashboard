@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Organisation;
 use App\Multitenancy\SessionOrganisationFinder;
 use App\Multitenancy\Tasks\SwitchPermissionsTeamTask;

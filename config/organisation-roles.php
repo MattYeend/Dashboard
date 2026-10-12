@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     /*
      * Lower number = higher rank. Used to stop an inviter assigning a
