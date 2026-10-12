@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Log;
 use App\Models\TicketStatus;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;

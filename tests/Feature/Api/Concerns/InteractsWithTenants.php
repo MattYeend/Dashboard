@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Api\Concerns;
 
 use App\Enums\TokenAbility;

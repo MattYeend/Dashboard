@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\DealStatus;
 use App\Models\Log;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;

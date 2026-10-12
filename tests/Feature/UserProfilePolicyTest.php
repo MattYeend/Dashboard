@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\Concerns\CreatesUsers;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Jobs\ExportOrganisationDataJob;
 use App\Models\Organisation;
 use App\Models\OrganisationDataExport;

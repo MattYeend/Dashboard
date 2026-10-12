@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Log;
 use App\Models\Pipeline;
 use App\Models\PipelineStatus;

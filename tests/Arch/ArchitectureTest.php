@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Contracts\Auditable;
 use App\Services\EscapesLikeValues;
 use Illuminate\Foundation\Http\FormRequest;

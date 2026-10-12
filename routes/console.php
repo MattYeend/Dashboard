@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Console\Commands\HardDeleteExpiredOrganisations;
 use App\Console\Commands\RunScheduledReports;
 use Illuminate\Foundation\Inspiring;

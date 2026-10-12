@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Traits\BelongsToOrganisation;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Schema;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Log;
 use App\Services\SensitiveDataMaskerService;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
