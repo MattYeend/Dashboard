@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\InvoiceStatuses;
 
 use App\Actions\UpdateResource;

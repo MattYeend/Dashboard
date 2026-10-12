@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\InvoiceItems;
 
 use App\Actions\DeleteResource;
