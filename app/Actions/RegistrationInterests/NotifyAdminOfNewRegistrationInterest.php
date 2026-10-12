@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\RegistrationInterests;
 
 use App\Models\RegistrationInterest;
@@ -16,6 +18,9 @@ class NotifyAdminOfNewRegistrationInterest
     {
         $admins = User::whereIn('role', ['admin', 'super_admin'])->get();
 
-        Notification::send($admins, new NewRegistrationInterestNotification($interest));
+        Notification::send(
+            $admins, 
+            new NewRegistrationInterestNotification($interest)
+        );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Backups;
 
 use Illuminate\Support\Facades\Log;
@@ -29,11 +31,13 @@ class ListBackups
 
                 foreach ($destination->backups() as $backup) {
                     /** @var Backup $backup */
+                    $sizeInBytes = (int) $backup->sizeInBytes();
+
                     $backups[] = [
                         'filename' => basename($backup->path()),
                         'disk' => $destination->diskName(),
-                        'size' => $backup->sizeInBytes(),
-                        'size_human' => $this->formatBytes($backup->sizeInBytes()),
+                        'size' => $sizeInBytes,
+                        'size_human' => $this->formatBytes($sizeInBytes),
                         'date' => $backup->date()->toIso8601String(),
                     ];
                 }
