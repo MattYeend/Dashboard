@@ -19,7 +19,7 @@ class NotifyAdminOfNewRegistrationInterest
         $admins = User::whereIn('role', ['admin', 'super_admin'])->get();
 
         Notification::send(
-            $admins, 
+            $admins,
             new NewRegistrationInterestNotification($interest)
         );
     }
