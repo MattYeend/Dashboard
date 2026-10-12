@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Order;
 use App\Models\OrderStatus;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
@@ -57,7 +58,7 @@ class OrderSeeder extends Seeder
      *
      * @param  Collection<string, User>  $users
      * @param  array<int, int>  $statuses
-     * @return array<int, array<string, string|int|float|null>>
+     * @return array<int, array<string, CarbonImmutable|string|int|float|null>>
      */
     private function getOrders(string $morphType, Collection $users, array $statuses): array
     {

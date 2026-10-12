@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Models\InteractionLog;
+use Carbon\CarbonImmutable;
 use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
@@ -49,7 +50,7 @@ class InteractionLogSeeder extends Seeder
      * set of realistic entries across whichever companies exist.
      *
      * @param  Collection<int, Company>  $companies
-     * @return array<int, array<string, string|int|null>>
+     * @return array<int, array<string, CarbonImmutable|string|int|null>>
      */
     private function getInteractionLogs(string $morphType, Collection $companies): array
     {

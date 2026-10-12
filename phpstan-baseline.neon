@@ -1,10 +1,5 @@
 parameters:
 	ignoreErrors:
-		-
-			message: '#^Parameter \#1 \$bytes of method App\\Actions\\Backups\\ListBackups\:\:formatBytes\(\) expects int, float given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Actions/Backups/ListBackups.php
 
 		-
 			message: '#^Method App\\Actions\\Fortify\\CreateNewUser\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'

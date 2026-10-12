@@ -8,6 +8,7 @@ use App\Models\Ticket;
 use App\Models\TicketPriority;
 use App\Models\TicketStatus;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
@@ -66,9 +67,9 @@ class TicketSeeder extends Seeder
      * @param  Collection<string, TicketStatus>  $statuses
      * @param  Collection<string, TicketPriority>  $priorities
      * @param  Collection<int, User>  $users
-     * @return array<int, array<string, string|int|null>>
+     * @return array<int, array<string, CarbonImmutable|string|int|null>>
      */
-    private function getTickets($statuses, $priorities, $users): array
+    private function getTickets(Collection $statuses, Collection $priorities, Collection $users): array
     {
         return [
             [

@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Activity;
 use App\Models\Company;
+use Carbon\CarbonImmutable;
 use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
@@ -48,7 +49,7 @@ class ActivitySeeder extends Seeder
      * realistic timeline entries across whichever companies exist.
      *
      * @param  Collection<int, Company>  $companies
-     * @return array<int, array<string, string|int|null>>
+     * @return array<int, array<string, CarbonImmutable|string|int|null>>
      */
     private function getActivities(string $morphType, Collection $companies): array
     {
