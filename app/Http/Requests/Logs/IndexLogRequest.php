@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Logs;
 
 use Illuminate\Contracts\Validation\ValidationRule;
