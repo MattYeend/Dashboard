@@ -161,7 +161,7 @@ class ManagementService
         ];
     }
 
-        /**
+    /**
      * Export activities as a CSV download, optionally scoped to a single
      * activityable record.
      *

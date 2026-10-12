@@ -26,16 +26,16 @@ class ExportActivityRequest extends FormRequest
     {
         return [
             'activityable_type' => [
-                'nullable', 
-                'string', 
-                'max:50', 
-                'required_with:activityable_id'
+                'nullable',
+                'string',
+                'max:50',
+                'required_with:activityable_id',
             ],
             'activityable_id' => [
-                'nullable', 
-                'integer', 
-                'min:1', 
-                'required_with:activityable_type'
+                'nullable',
+                'integer',
+                'min:1',
+                'required_with:activityable_type',
             ],
         ];
     }
