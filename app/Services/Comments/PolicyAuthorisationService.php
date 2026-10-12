@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+nameare(strict_types=1);
+
 namespace App\Services\Comments;
 
 use App\Models\Comment;
