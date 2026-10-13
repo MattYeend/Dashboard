@@ -3,7 +3,7 @@ title = "Dashboard gitleaks config"
 [extend]
 useDefault = true
 
-[[allowlists]]
+[allowlist]
 description = "Test fixtures generate fake tokens at runtime"
 paths = [
   '''tests/.*''',
