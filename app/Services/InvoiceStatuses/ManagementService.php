@@ -97,6 +97,7 @@ class ManagementService
 
         $invoiceStatuses = InvoiceStatus::onlyTrashed()
             ->whereIn('id', $requestedIds)
+            ->orderBy('id')
             ->get();
 
         $restored = [];
@@ -127,7 +128,9 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $invoiceStatuses = InvoiceStatus::whereIn('id', $requestedIds)->get();
+        $invoiceStatuses = InvoiceStatus::whereIn('id', $requestedIds)
+            ->orderBy('id')
+            ->get();
 
         $deleted = [];
 

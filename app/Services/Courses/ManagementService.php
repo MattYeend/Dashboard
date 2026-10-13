@@ -88,6 +88,7 @@ class ManagementService
 
         $courses = Course::onlyTrashed()
             ->whereIn('id', $requestedIds)
+            ->orderBy('id')
             ->get();
 
         $restored = [];
@@ -118,7 +119,9 @@ class ManagementService
     {
         $requestedIds = collect($ids)->unique()->values();
 
-        $courses = Course::whereIn('id', $requestedIds)->get();
+        $courses = Course::whereIn('id', $requestedIds)
+            ->orderBy('id')
+            ->get();
 
         $deleted = [];
 
