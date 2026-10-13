@@ -322,6 +322,15 @@ class CourseController extends Controller
 
         $request->validate(['token' => ['required', 'uuid']]);
 
-        return response()->json($this->management->importer()->commit($request->input('token'), $request->user()->id));
+        try {
+            $result = $this->management->importer()->commit(
+                $request->input('token'),
+                $request->user()->id
+            );
+        } catch (\RuntimeException $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
+        }
+
+        return response()->json($result);
     }
 }

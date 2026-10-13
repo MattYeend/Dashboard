@@ -883,8 +883,17 @@ describe('import', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/courses/import/commit', [
-                'token' => Str::uuid()->toString(),
+                'token' => 'not-a-uuid',
             ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['token']);
+    });
+
+    test('commit fails validation when token is missing', function () {
+        $superAdmin = $this->superAdminUser();
+
+        $this->actingAs($superAdmin)
+            ->postJson('/courses/import/commit', [])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['token']);
     });
