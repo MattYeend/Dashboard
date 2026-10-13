@@ -483,15 +483,15 @@ class RolePermissionSeeder extends Seeder
             'request organisation deletion',
 
             // Courses
-            'view any courses',
-            'view courses',
-            'create courses',
-            'edit courses',
-            'delete courses',
-            'restore courses',
-            'force delete courses',
-            'import courses',
-            'export courses',
+            'view any course',
+            'view course',
+            'create course',
+            'edit course',
+            'delete course',
+            'restore course',
+            'force delete course',
+            'import course',
+            'export course',
         ];
 
         foreach ($permissions as $permission) {
@@ -854,15 +854,15 @@ class RolePermissionSeeder extends Seeder
             'manage organisation settings',
             'export organisation data',
             'request organisation deletion',
-            'view any courses',
-            'view courses',
-            'create courses',
-            'edit courses',
-            'delete courses',
-            'restore courses',
-            'force delete courses',
-            'import courses',
-            'export courses',
+            'view any course',
+            'view course',
+            'create course',
+            'edit course',
+            'delete course',
+            'restore course',
+            'force delete course',
+            'import course',
+            'export course',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -1147,11 +1147,11 @@ class RolePermissionSeeder extends Seeder
             'delete attachments',
             'restore attachments',
             'download attachments',
-            'view any courses',
-            'view courses',
-            'create courses',
-            'edit courses',
-            'export courses',
+            'view any course',
+            'view course',
+            'create course',
+            'edit course',
+            'export course',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1341,10 +1341,10 @@ class RolePermissionSeeder extends Seeder
             'create attachments',
             'delete attachments',
             'download attachments',
-            'view any courses',
-            'view courses',
-            'create courses',
-            'edit courses',
+            'view any course',
+            'view course',
+            'create course',
+            'edit course',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -1405,8 +1405,8 @@ class RolePermissionSeeder extends Seeder
             'view any attachments',
             'view attachments',
             'download attachments',
-            'view any courses',
-            'view courses',
+            'view any course',
+            'view course',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -1525,8 +1525,8 @@ class RolePermissionSeeder extends Seeder
             'create attachments',
             'delete attachments',
             'download attachments',
-            'view any courses',
-            'view courses',
+            'view any course',
+            'view course',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
 
@@ -1777,8 +1777,8 @@ class RolePermissionSeeder extends Seeder
             'create attachments',
             'delete attachments',
             'download attachments',
-            'view any courses',
-            'view courses',
+            'view any course',
+            'view course',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -1882,9 +1882,9 @@ class RolePermissionSeeder extends Seeder
             'export labels',
             'view activities',
             'export activities',
-            'view any courses',
-            'view courses',
-            'export courses',
+            'view any course',
+            'view course',
+            'export course',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
@@ -1943,8 +1943,8 @@ class RolePermissionSeeder extends Seeder
             'edit own profile',
             'delete own profile',
             'change own password',
-            'view any courses',
-            'view courses',
+            'view any course',
+            'view course',
         ];
         $user->givePermissionTo($userPermissions);
 

@@ -97,4 +97,27 @@ trait CreatesUsers
 
         return $user;
     }
+
+    /**
+     * Add an existing user to another organisation with the given role.
+     *
+     * Restores the previous permissions team afterwards so the caller's
+     * current-organisation context is unchanged.
+     */
+    protected function addUserToOrganisation(
+        User $user,
+        Organisation $organisation,
+        string $role = 'Admin',
+    ): void {
+        $previousTeamId = getPermissionsTeamId();
+
+        $organisation->addActiveMember($user->id);
+
+        setPermissionsTeamId($organisation->id);
+        $user->assignRole($role);
+
+        setPermissionsTeamId($previousTeamId);
+
+        $user->unsetRelation('roles')->unsetRelation('permissions');
+    }
 }

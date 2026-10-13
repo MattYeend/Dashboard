@@ -41,7 +41,6 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $instructor
  */
 #[Fillable([
-    'organisation_id',
     'title',
     'slug',
     'summary',
@@ -53,9 +52,6 @@ use Illuminate\Support\Carbon;
     'meta',
     'created_by',
     'updated_by',
-    'deleted_by',
-    'restored_by',
-    'restored_at',
 ])]
 class Course extends Model implements Auditable
 {

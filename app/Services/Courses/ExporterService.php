@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Courses;
 
+use BackedEnum;
+use DateTimeInterface;
 use App\Models\Course;
 use App\Models\Log;
 use App\Services\AuditLogService;
@@ -79,10 +81,18 @@ class ExporterService
     }
 
     /**
-     * Neutralise spreadsheet formula injection in a CSV cell.
+     * Normalise a value for CSV output and neutralise spreadsheet formula injection.
      */
     private function sanitiseCell(mixed $value): mixed
     {
+        if ($value instanceof BackedEnum) {
+            $value = $value->value;
+        }
+
+        if ($value instanceof DateTimeInterface) {
+            $value = $value->format('Y-m-d H:i:s');
+        }
+
         if (! is_string($value) || $value === '') {
             return $value;
         }

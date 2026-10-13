@@ -7,6 +7,7 @@ namespace App\Services\Courses;
 use App\Actions\CreateResource;
 use App\Models\Course;
 use App\Models\Log;
+use App\Models\Organisation;
 use App\Models\User;
 use App\Services\AuditLogService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -39,7 +40,7 @@ class CreatorService
                 $course = Course::create($this->dataPreparation->prepareForCreation($data));
 
                 $course->forceFill([
-                    'organisation_id' => $actor->organisation_id,
+                    'organisation_id' => Organisation::current()?->id,
                     'created_by' => $createdBy,
                 ])->save();
 
