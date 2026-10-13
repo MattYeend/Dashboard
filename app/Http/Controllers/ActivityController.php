@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Activities\ExportActivityRequest;
 use App\Http\Requests\Activities\StoreActivityRequest;
 use App\Http\Requests\Activities\UpdateActivityRequest;
 use App\Http\Requests\BulkIdsRequest;
@@ -223,7 +222,7 @@ class ActivityController extends Controller
      *
      * Authorises via the 'export' policy before proceeding.
      */
-    public function export(ExportActivityRequest $request): JsonResponse|RedirectResponse|StreamedResponse
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
     {
         $this->authorize('export', Activity::class);
 

@@ -175,7 +175,7 @@ class PipelineController extends Controller
             return response()->json(null, 204);
         }
 
-        return redirect()->route('pipeline.index');
+        return redirect()->route('pipelines.index');
     }
 
     /**
@@ -203,7 +203,7 @@ class PipelineController extends Controller
             return response()->json(null, 204);
         }
 
-        return redirect()->route('pipeline.index');
+        return redirect()->route('pipelines.index');
     }
 
     /**
