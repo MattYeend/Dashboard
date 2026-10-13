@@ -481,6 +481,17 @@ class RolePermissionSeeder extends Seeder
             'manage organisation settings',
             'export organisation data',
             'request organisation deletion',
+
+            // Courses
+            'view any courses',
+            'view courses',
+            'create courses',
+            'edit courses',
+            'delete courses',
+            'restore courses',
+            'force delete courses',
+            'import courses',
+            'export courses',
         ];
 
         foreach ($permissions as $permission) {
@@ -843,6 +854,15 @@ class RolePermissionSeeder extends Seeder
             'manage organisation settings',
             'export organisation data',
             'request organisation deletion',
+            'view any courses',
+            'view courses',
+            'create courses',
+            'edit courses',
+            'delete courses',
+            'restore courses',
+            'force delete courses',
+            'import courses',
+            'export courses',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -1127,6 +1147,11 @@ class RolePermissionSeeder extends Seeder
             'delete attachments',
             'restore attachments',
             'download attachments',
+            'view any courses',
+            'view courses',
+            'create courses',
+            'edit courses',
+            'export courses',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1316,6 +1341,10 @@ class RolePermissionSeeder extends Seeder
             'create attachments',
             'delete attachments',
             'download attachments',
+            'view any courses',
+            'view courses',
+            'create courses',
+            'edit courses',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -1376,6 +1405,8 @@ class RolePermissionSeeder extends Seeder
             'view any attachments',
             'view attachments',
             'download attachments',
+            'view any courses',
+            'view courses',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -1494,6 +1525,8 @@ class RolePermissionSeeder extends Seeder
             'create attachments',
             'delete attachments',
             'download attachments',
+            'view any courses',
+            'view courses',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
 
@@ -1744,6 +1777,8 @@ class RolePermissionSeeder extends Seeder
             'create attachments',
             'delete attachments',
             'download attachments',
+            'view any courses',
+            'view courses',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -1847,6 +1882,9 @@ class RolePermissionSeeder extends Seeder
             'export labels',
             'view activities',
             'export activities',
+            'view any courses',
+            'view courses',
+            'export courses',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
@@ -1905,6 +1943,8 @@ class RolePermissionSeeder extends Seeder
             'edit own profile',
             'delete own profile',
             'change own password',
+            'view any courses',
+            'view courses',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -2004,5 +2044,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Calendars');
         $this->command->info('- Attachments');
         $this->command->info('- Organisations');
+        $this->command->info('- Courses');
     }
 }

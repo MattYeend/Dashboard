@@ -13,6 +13,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CustomDashboardWidgetController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardWidgetPreferenceController;
@@ -903,6 +904,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/security-policy', [SettingController::class, 'securityPolicy'])->name('security-policy');
             Route::put('/security', [SettingController::class, 'updateSecurity'])->name('security.update');
+        });
+
+        Route::prefix('courses')->name('courses.')->group(function () {
+            Route::post('/bulk/delete', [CourseController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [CourseController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [CourseController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [CourseController::class, 'forceDelete'])->name('force-delete');
+        
+            Route::get('/', [CourseController::class, 'index'])->name('index');
+            Route::get('/create', [CourseController::class, 'create'])->name('create');
+            Route::post('/', [CourseController::class, 'store'])->name('store');
+            Route::get('/{course}', [CourseController::class, 'show'])->name('show');
+            Route::get('/{course}/edit', [CourseController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{course}', [CourseController::class, 'update'])->name('update');
+            Route::delete('/{course}', [CourseController::class, 'destroy'])->name('destroy');
         });
     });
 });
