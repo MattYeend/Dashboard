@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Log;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Concerns\CreatesUsers;
 
@@ -881,7 +882,9 @@ describe('import', function () {
         $superAdmin = $this->superAdminUser();
 
         $this->actingAs($superAdmin)
-            ->postJson('/courses/import/commit', ['token' => 'not-a-uuid'])
+            ->postJson('/courses/import/commit', [
+                'token' => Str::uuid()->toString(),
+            ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['token']);
     });
@@ -891,7 +894,7 @@ describe('import', function () {
 
         $this->actingAs($user)
             ->postJson('/courses/import/commit', [
-                'token' => '9f1c2a3e-5b7d-4c8e-a1f0-3d2b4c5e6f70',
+                'token' => Str::uuid()->toString(),
             ])
             ->assertStatus(403);
     });
