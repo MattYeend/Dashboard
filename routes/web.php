@@ -915,7 +915,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/bulk/restore', [CourseController::class, 'bulkRestore'])->name('bulk.restore');
             Route::post('/{id}/restore', [CourseController::class, 'restore'])->name('restore');
             Route::delete('/{id}/force', [CourseController::class, 'forceDelete'])->name('force-delete');
-        
+
             Route::get('/', [CourseController::class, 'index'])->name('index');
             Route::get('/create', [CourseController::class, 'create'])->name('create');
             Route::post('/', [CourseController::class, 'store'])->name('store');

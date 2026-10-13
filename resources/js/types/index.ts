@@ -1242,7 +1242,7 @@ export interface AuditTrailPermissionsMeta {
 }
 
 export type CourseDifficulty = 'beginner' | 'intermediate' | 'advanced';
- 
+
 export interface Course {
     id: number;
     organisation_id: number;
@@ -1272,7 +1272,7 @@ export interface Course {
     deleter?: { name: string };
     restorer?: { name: string };
 }
- 
+
 export interface DifficultyOption {
     value: CourseDifficulty;
     label: string;

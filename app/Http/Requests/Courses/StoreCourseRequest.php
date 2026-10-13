@@ -50,7 +50,7 @@ class StoreCourseRequest extends FormRequest
             'instructor_id.exists' => 'The selected instructor is not a member of this organisation.',
         ];
     }
- 
+
     /**
      * Rules for the title field.
      *
@@ -59,12 +59,12 @@ class StoreCourseRequest extends FormRequest
     protected function titleRules(): array
     {
         return [
-            'required', 
-            'string', 
-            'max:255'
+            'required',
+            'string',
+            'max:255',
         ];
     }
- 
+
     /**
      * Rules for the summary field.
      *
@@ -75,10 +75,10 @@ class StoreCourseRequest extends FormRequest
         return [
             'nullable',
             'string',
-            'max:500'
+            'max:500',
         ];
     }
- 
+
     /**
      * Rules for the description field.
      *
@@ -89,10 +89,10 @@ class StoreCourseRequest extends FormRequest
         return [
             'nullable',
             'string',
-            'max:65000'
+            'max:65000',
         ];
     }
- 
+
     /**
      * Rules for the difficulty field.
      *
@@ -101,11 +101,11 @@ class StoreCourseRequest extends FormRequest
     protected function difficultyRules(): array
     {
         return [
-            'required', 
-            Rule::enum(CourseDifficulty::class)
+            'required',
+            Rule::enum(CourseDifficulty::class),
         ];
     }
- 
+
     /**
      * Rules for the estimated duration field.
      *
@@ -117,10 +117,10 @@ class StoreCourseRequest extends FormRequest
             'nullable',
             'integer',
             'min:1',
-            'max:10080'
+            'max:10080',
         ];
     }
- 
+
     /**
      * Rules for the instructor field, limited to members of the current organisation.
      *
@@ -135,7 +135,7 @@ class StoreCourseRequest extends FormRequest
                 ->where('organisation_id', Organisation::current()?->id),
         ];
     }
- 
+
     /**
      * Rules for the published at field.
      *
@@ -145,8 +145,7 @@ class StoreCourseRequest extends FormRequest
     {
         return [
             'nullable',
-            'date'
+            'date',
         ];
     }
-
 }

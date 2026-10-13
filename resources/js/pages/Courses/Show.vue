@@ -6,11 +6,11 @@ import CourseBasicDetails from '@/pages/Courses/components/CourseBasicDetails.vu
 import CourseSettingsDetails from '@/pages/Courses/components/CourseSettingsDetails.vue';
 import { edit, index as coursesIndex } from '@/routes/courses';
 import type { Course } from '@/types';
- 
+
 const props = defineProps<{
     course: Course;
 }>();
- 
+
 defineOptions({
     layout: {
         breadcrumbs: [
@@ -20,10 +20,10 @@ defineOptions({
     },
 });
 </script>
- 
+
 <template>
     <Head :title="course.title" />
- 
+
     <div class="mx-auto grid max-w-3xl gap-6 p-4">
         <div class="flex items-center justify-between">
             <h1 class="text-xl text-gray-300">{{ course.title }}</h1>
@@ -36,7 +36,7 @@ defineOptions({
                 </Button>
             </div>
         </div>
- 
+
         <CourseBasicDetails :course="course" />
         <CourseSettingsDetails :course="course" />
         <CourseAuditDetails :course="course" />

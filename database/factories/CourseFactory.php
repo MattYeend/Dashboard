@@ -25,7 +25,7 @@ class CourseFactory extends Factory
         return [
             'organisation_id' => Organisation::current()?->id ?? Organisation::query()->oldest('id')->value('id'),
             'title' => 'Introduction to Laravel',
-            'slug' => 'introduction-to-laravel-' . Str::lower(Str::random(6)),
+            'slug' => 'introduction-to-laravel-'.Str::lower(Str::random(6)),
             'summary' => 'Learn the fundamentals of the Laravel framework.',
             'description' => '<p>Routing, controllers, Eloquent and Blade.</p>',
             'difficulty' => CourseDifficulty::Beginner,
@@ -41,7 +41,7 @@ class CourseFactory extends Factory
     {
         return $this->state(['deleted_at' => now()]);
     }
-    
+
     /**
      * Indicate that the course is an unpublished draft.
      */

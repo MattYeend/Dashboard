@@ -26,7 +26,8 @@ const form = useForm({
     summary: props.course.summary ?? '',
     description: props.course.description ?? '',
     difficulty: props.course.difficulty as string,
-    estimated_duration_minutes: props.course.estimated_duration_minutes as number | null,
+    estimated_duration_minutes: props.course.estimated_duration_minutes as
+        number | null,
     instructor_id: props.course.instructor_id as number | null,
     published_at: props.course.published_at?.slice(0, 16) ?? '',
 });
@@ -35,16 +36,16 @@ const form = useForm({
  * Submit the form, converting blank optional fields to null.
  */
 function submit(): void {
-    form
-        .transform((data) => ({
-            ...data,
-            summary: nullIfBlank(data.summary),
-            description: nullIfBlank(data.description),
-            estimated_duration_minutes: numberOrNull(data.estimated_duration_minutes),
-            instructor_id: numberOrNull(data.instructor_id),
-            published_at: nullIfBlank(data.published_at),
-        }))
-        .put(update(props.course.id).url);
+    form.transform((data) => ({
+        ...data,
+        summary: nullIfBlank(data.summary),
+        description: nullIfBlank(data.description),
+        estimated_duration_minutes: numberOrNull(
+            data.estimated_duration_minutes,
+        ),
+        instructor_id: numberOrNull(data.instructor_id),
+        published_at: nullIfBlank(data.published_at),
+    })).put(update(props.course.id).url);
 }
 </script>
 
@@ -66,7 +67,9 @@ function submit(): void {
         />
 
         <div class="flex gap-2">
-            <Button type="submit" :disabled="form.processing">Save changes</Button>
+            <Button type="submit" :disabled="form.processing"
+                >Save changes</Button
+            >
             <Button as-child variant="outline">
                 <Link :href="show(course.id).url">Cancel</Link>
             </Button>

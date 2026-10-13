@@ -30,7 +30,7 @@ return new class extends Migration
             $table->timestamp('restored_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
-        
+
             $table->unique(['organisation_id', 'slug']);
             $table->index('published_at');
             $table->index('deleted_at');

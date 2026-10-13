@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\Courses;
 
-use BackedEnum;
-use DateTimeInterface;
 use App\Models\Course;
 use App\Models\Log;
 use App\Services\AuditLogService;
+use BackedEnum;
+use DateTimeInterface;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 

@@ -1,9 +1,9 @@
 <?php
 
 declare(strict_types=1);
- 
+
 namespace Database\Seeders;
- 
+
 use App\Enums\CourseDifficulty;
 use App\Models\Course;
 use App\Models\Organisation;
@@ -19,9 +19,9 @@ class CourseSeeder extends Seeder
     {
         $organisation = Organisation::query()->oldest('id')->firstOrFail();
         $organisation->makeCurrent();
- 
+
         $instructorId = User::query()->oldest('id')->value('id');
- 
+
         $courses = [
             [
                 'title' => 'Introduction to Laravel',
@@ -52,7 +52,7 @@ class CourseSeeder extends Seeder
                 'estimated_duration_minutes' => 150,
             ],
         ];
- 
+
         foreach ($courses as $course) {
             Course::updateOrCreate(
                 ['organisation_id' => $organisation->id, 'slug' => $course['slug']],

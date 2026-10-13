@@ -238,7 +238,7 @@ class CourseController extends Controller
 
         return redirect()
             ->route('courses.index')
-            ->with('success', count($result['deleted']) . ' courses deleted.');
+            ->with('success', count($result['deleted']).' courses deleted.');
     }
 
     /**
@@ -262,10 +262,10 @@ class CourseController extends Controller
 
         return redirect()
             ->route('courses.index')
-            ->with('success', count($result['restored']) . ' courses restored.');
+            ->with('success', count($result['restored']).' courses restored.');
     }
 
-        /**
+    /**
      * Import courses from an uploaded CSV file.
      *
      * Authorisation is handled by ImportCourseRequest::authorize().

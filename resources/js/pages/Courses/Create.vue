@@ -5,12 +5,12 @@ import { nullIfBlank, numberOrNull } from '@/lib/forms';
 import CourseForm from '@/pages/Courses/components/CourseForm.vue';
 import { index as coursesIndex, store } from '@/routes/courses';
 import type { DifficultyOption, UserOption } from '@/types';
- 
+
 defineProps<{
     difficulties: DifficultyOption[];
     instructors: UserOption[];
 }>();
- 
+
 defineOptions({
     layout: {
         breadcrumbs: [
@@ -19,7 +19,7 @@ defineOptions({
         ],
     },
 });
- 
+
 const form = useForm({
     title: '',
     summary: '',
@@ -29,27 +29,27 @@ const form = useForm({
     instructor_id: null as number | null,
     published_at: '',
 });
- 
+
 /**
  * Submit the form, converting blank optional fields to null.
  */
 function submit(): void {
-    form
-        .transform((data) => ({
-            ...data,
-            summary: nullIfBlank(data.summary),
-            description: nullIfBlank(data.description),
-            estimated_duration_minutes: numberOrNull(data.estimated_duration_minutes),
-            instructor_id: numberOrNull(data.instructor_id),
-            published_at: nullIfBlank(data.published_at),
-        }))
-        .post(store().url);
+    form.transform((data) => ({
+        ...data,
+        summary: nullIfBlank(data.summary),
+        description: nullIfBlank(data.description),
+        estimated_duration_minutes: numberOrNull(
+            data.estimated_duration_minutes,
+        ),
+        instructor_id: numberOrNull(data.instructor_id),
+        published_at: nullIfBlank(data.published_at),
+    })).post(store().url);
 }
 </script>
- 
+
 <template>
     <Head title="Create course" />
- 
+
     <form class="mx-auto grid max-w-3xl gap-6 p-4" @submit.prevent="submit">
         <CourseForm
             v-model:title="form.title"
@@ -63,9 +63,11 @@ function submit(): void {
             :difficulties="difficulties"
             :instructors="instructors"
         />
- 
+
         <div class="flex gap-2">
-            <Button type="submit" :disabled="form.processing">Create course</Button>
+            <Button type="submit" :disabled="form.processing"
+                >Create course</Button
+            >
             <Button as-child variant="outline">
                 <Link :href="coursesIndex().url">Cancel</Link>
             </Button>

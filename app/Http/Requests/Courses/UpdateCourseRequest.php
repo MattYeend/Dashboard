@@ -60,11 +60,11 @@ class UpdateCourseRequest extends FormRequest
     protected function titleRules(): array
     {
         return [
-            'sometimes', 
-            'required', 
-            'string', 
-            'max:255'
-            ];
+            'sometimes',
+            'required',
+            'string',
+            'max:255',
+        ];
     }
 
     /**
@@ -78,7 +78,7 @@ class UpdateCourseRequest extends FormRequest
             'sometimes',
             'nullable',
             'string',
-            'max:500'
+            'max:500',
         ];
     }
 
@@ -90,10 +90,10 @@ class UpdateCourseRequest extends FormRequest
     protected function descriptionRules(): array
     {
         return [
-            'sometimes', 
-            'nullable', 
-            'string', 
-            'max:65000'
+            'sometimes',
+            'nullable',
+            'string',
+            'max:65000',
         ];
     }
 
@@ -105,9 +105,9 @@ class UpdateCourseRequest extends FormRequest
     protected function difficultyRules(): array
     {
         return [
-            'sometimes', 
-            'required', 
-            Rule::enum(CourseDifficulty::class)
+            'sometimes',
+            'required',
+            Rule::enum(CourseDifficulty::class),
         ];
     }
 
@@ -119,11 +119,11 @@ class UpdateCourseRequest extends FormRequest
     protected function durationRules(): array
     {
         return [
-            'sometimes', 
-            'nullable', 
-            'integer', 
-            'min:1', 
-            'max:10080'
+            'sometimes',
+            'nullable',
+            'integer',
+            'min:1',
+            'max:10080',
         ];
     }
 
@@ -151,9 +151,9 @@ class UpdateCourseRequest extends FormRequest
     protected function publishedAtRules(): array
     {
         return [
-            'sometimes', 
-            'nullable', 
-            'date'
+            'sometimes',
+            'nullable',
+            'date',
         ];
     }
 }

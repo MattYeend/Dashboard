@@ -1,9 +1,9 @@
 <?php
- 
+
 declare(strict_types=1);
- 
+
 namespace App\Models;
- 
+
 use App\Contracts\Auditable;
 use App\Enums\CourseDifficulty;
 use App\Traits\BelongsToOrganisation;
@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
- 
+
 /**
  * A learning course that groups lessons and quizzes.
  *
@@ -57,9 +57,10 @@ class Course extends Model implements Auditable
 {
     /** @use HasFactory<CourseFactory> */
     use BelongsToOrganisation;
+
     use HasFactory;
     use SoftDeletes;
- 
+
     /**
      * Get the attributes that should be cast.
      *
@@ -74,7 +75,7 @@ class Course extends Model implements Auditable
             'meta' => 'array',
         ];
     }
- 
+
     /**
      * Get the instructor who leads this course.
      *
@@ -84,7 +85,7 @@ class Course extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'instructor_id');
     }
- 
+
     // /**
     //  * Get the lessons in this course.
     //  *
@@ -94,7 +95,7 @@ class Course extends Model implements Auditable
     // {
     //     return $this->hasMany(Lesson::class)->orderBy('position');
     // }
- 
+
     // /**
     //  * Get the quizzes in this course.
     //  *
@@ -104,7 +105,7 @@ class Course extends Model implements Auditable
     // {
     //     return $this->hasMany(Quiz::class);
     // }
- 
+
     /**
      * Get the user who created this course.
      *
@@ -114,7 +115,7 @@ class Course extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'created_by');
     }
- 
+
     /**
      * Get the user who last updated this course.
      *
@@ -124,7 +125,7 @@ class Course extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
- 
+
     /**
      * Get the user who deleted this course.
      *
@@ -134,7 +135,7 @@ class Course extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'deleted_by');
     }
- 
+
     /**
      * Get the user who restored this course.
      *
@@ -144,7 +145,7 @@ class Course extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'restored_by');
     }
- 
+
     /**
      * Determine whether the course is visible to learners.
      */
@@ -152,7 +153,7 @@ class Course extends Model implements Auditable
     {
         return $this->published_at !== null && $this->published_at->isPast();
     }
- 
+
     /**
      * Get the data captured in audit log snapshots.
      *
