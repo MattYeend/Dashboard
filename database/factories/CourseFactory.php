@@ -23,7 +23,7 @@ class CourseFactory extends Factory
     public function definition(): array
     {
         return [
-            'organisation_id' => Organisation::current()?->id ?? Organisation::query()->oldest('id')->value('id'),
+            'organisation_id' => Organisation::current()->id ?? Organisation::query()->oldest('id')->value('id'),
             'title' => 'Introduction to Laravel',
             'slug' => 'introduction-to-laravel-'.Str::lower(Str::random(6)),
             'summary' => 'Learn the fundamentals of the Laravel framework.',

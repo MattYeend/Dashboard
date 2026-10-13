@@ -1,6 +1,5 @@
 parameters:
 	ignoreErrors:
-
 		-
 			message: '#^Method App\\Actions\\Fortify\\CreateNewUser\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
 			identifier: return.type
@@ -584,12 +583,6 @@ parameters:
 			path: app/Services/Activities/FormatterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Activities/PolicyAuthorisationService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Activity\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -662,12 +655,6 @@ parameters:
 			path: app/Services/Addresses/FormatterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Addresses/PolicyAuthorisationService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Address\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -728,12 +715,6 @@ parameters:
 			path: app/Services/Attachments/DeleterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Attachments/PolicyAuthorisationService.php
-
-		-
 			message: '#^Method App\\Services\\Attachments\\RestorerService\:\:restore\(\) should return App\\Models\\Attachment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
@@ -774,12 +755,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Categories/DeleterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Categories/PolicyAuthorisationService.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Category\)\: array\<string, mixed\> given\.$#'
@@ -866,12 +841,6 @@ parameters:
 			path: app/Services/Comments/MentionParserService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Comments/PolicyAuthorisationService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Comment\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -930,12 +899,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Companies/DeleterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Companies/PolicyAuthorisationService.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Company\)\: array\<string, mixed\> given\.$#'
@@ -1016,12 +979,6 @@ parameters:
 			path: app/Services/Contacts/FormatterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Contacts/PolicyAuthorisationService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Contact\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1056,6 +1013,72 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Contacts/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Courses\\CreatorService\:\:create\(\) should return App\\Models\\Course but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Courses/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Course\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Courses/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Course\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Courses/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Course\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Courses/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Services/Courses/ImporterService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Course\)\: array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Courses/QueryService.php
+
+		-
+			message: '#^Method App\\Services\\Courses\\RestorerService\:\:restore\(\) should return App\\Models\\Course but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Courses/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Course\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Courses/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Course\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Courses/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Courses\\UpdaterService\:\:update\(\) should return App\\Models\\Course but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Courses/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Course\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Courses/UpdaterService.php
 
 		-
 			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
@@ -1104,12 +1127,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/DealStatuses/DeleterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/DealStatuses/PolicyAuthorisationService.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\DealStatus\)\: array\<string, mixed\> given\.$#'
@@ -1184,12 +1201,6 @@ parameters:
 			path: app/Services/Deals/PipelineStageUpdaterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Deals/PolicyAuthorisationService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Deal\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1248,12 +1259,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Industries/DeleterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Industries/PolicyAuthorisationService.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Industry\)\: array\<string, mixed\> given\.$#'
@@ -1322,12 +1327,6 @@ parameters:
 			path: app/Services/InteractionLogs/FormatterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/InteractionLogs/PolicyAuthorisationService.php
-
-		-
 			message: '#^Method App\\Services\\InteractionLogs\\UpdaterService\:\:update\(\) should return App\\Models\\InteractionLog but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
@@ -1368,12 +1367,6 @@ parameters:
 			identifier: parameter.defaultValue
 			count: 1
 			path: app/Services/InvoiceItems/ImporterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/InvoiceItems/PolicyAuthorisationService.php
 
 		-
 			message: '#^Using nullsafe property access on non\-nullable type App\\Models\\Invoice\. Use \-\> instead\.$#'
@@ -1442,12 +1435,6 @@ parameters:
 			path: app/Services/InvoiceStatuses/DeleterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/InvoiceStatuses/PolicyAuthorisationService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\InvoiceStatus\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1508,12 +1495,6 @@ parameters:
 			path: app/Services/Invoices/DeleterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Invoices/PolicyAuthorisationService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Invoice\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1572,12 +1553,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Labels/DeleterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Labels/PolicyAuthorisationService.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Label\)\: array\<string, mixed\> given\.$#'
@@ -1658,12 +1633,6 @@ parameters:
 			path: app/Services/NotificationBroadcasts/DeleterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/NotificationBroadcasts/PolicyAuthorisationService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\NotificationBroadcast\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1722,12 +1691,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/OrderStatuses/DeleterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/OrderStatuses/PolicyAuthorisationService.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\OrderStatus\)\: array\<string, mixed\> given\.$#'
@@ -1800,12 +1763,6 @@ parameters:
 			identifier: ternary.alwaysTrue
 			count: 1
 			path: app/Services/Orders/FormatterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Orders/PolicyAuthorisationService.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Order\)\: array\<string, mixed\> given\.$#'
@@ -2012,12 +1969,6 @@ parameters:
 			path: app/Services/PipelineStages/ImporterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/PipelineStages/PolicyAuthorisationService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\PipelineStage\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -2078,12 +2029,6 @@ parameters:
 			path: app/Services/PipelineStatuses/DeleterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/PipelineStatuses/PolicyAuthorisationService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\PipelineStatus\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -2142,12 +2087,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Pipelines/DeleterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Pipelines/PolicyAuthorisationService.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Pipeline\)\: array\<string, mixed\> given\.$#'
@@ -2282,12 +2221,6 @@ parameters:
 			path: app/Services/Posts/DeleterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Posts/PolicyAuthorisationService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Post\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -2384,12 +2317,6 @@ parameters:
 			path: app/Services/Reports/DeleterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Reports/PolicyAuthorisationService.php
-
-		-
 			message: '#^Method App\\Services\\Reports\\RestorerService\:\:restore\(\) should return App\\Models\\Report but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
@@ -2456,12 +2383,6 @@ parameters:
 			path: app/Services/Tags/DeleterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Tags/PolicyAuthorisationService.php
-
-		-
 			message: '#^Method App\\Services\\Tags\\RestorerService\:\:restore\(\) should return App\\Models\\Tag but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
@@ -2514,12 +2435,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/TaskStatuses/DeleterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/TaskStatuses/PolicyAuthorisationService.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\TaskStatus\)\: array\<string, mixed\> given\.$#'
@@ -2582,12 +2497,6 @@ parameters:
 			path: app/Services/Tasks/DeleterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Tasks/PolicyAuthorisationService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Task\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -2648,12 +2557,6 @@ parameters:
 			path: app/Services/TicketPriorities/DeleterService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/TicketPriorities/PolicyAuthorisationService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\TicketPriority\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -2712,12 +2615,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/TicketStatuses/DeleterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/TicketStatuses/PolicyAuthorisationService.php
 
 		-
 			message: '#^Negated boolean expression is always false\.$#'
@@ -2784,12 +2681,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Tickets/DeleterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Tickets/PolicyAuthorisationService.php
 
 		-
 			message: '#^Method App\\Services\\Tickets\\RestorerService\:\:restore\(\) should return App\\Models\\Ticket but returns Illuminate\\Database\\Eloquent\\Model\.$#'

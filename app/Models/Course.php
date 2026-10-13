@@ -55,9 +55,9 @@ use Illuminate\Support\Carbon;
 ])]
 class Course extends Model implements Auditable
 {
-    /** @use HasFactory<CourseFactory> */
     use BelongsToOrganisation;
 
+    /** @use HasFactory<CourseFactory> */
     use HasFactory;
     use SoftDeletes;
 

@@ -29,6 +29,6 @@ trait ChecksOrganisationBoundary
             return false;
         }
 
-        return (int) $target->organisation_id === (int) $currentOrganisationId;
+        return (int) $target->getAttribute('organisation_id') === (int) $currentOrganisationId;
     }
 }

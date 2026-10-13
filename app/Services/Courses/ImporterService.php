@@ -117,7 +117,7 @@ class ImporterService
 
                 $data = array_combine($header, $row);
 
-                $error = $this->validateRow($data);
+                $error = $this->validateRow($data, $actor->organisation_id);
 
                 if ($error !== null) {
                     $skipped[] = ['row' => $rowNumber, 'reason' => $error];
@@ -146,9 +146,13 @@ class ImporterService
     /**
      * Validate a single row, returning an error string or null if valid.
      *
+     * The organisation ID should be the importing actor's organisation.
+     * If omitted, it falls back to the authenticated user's organisation
+     * (web requests only; queued jobs must pass it explicitly).
+     *
      * @param  array<string, mixed>  $data
      */
-    protected function validateRow(array $data): ?string
+    protected function validateRow(array $data, ?int $organisationId = null): ?string
     {
         foreach (self::REQUIRED_COLUMNS as $column) {
             if (trim((string) ($data[$column] ?? '')) === '') {
@@ -189,8 +193,10 @@ class ImporterService
                 return 'instructor_id must be a positive integer';
             }
 
+            $organisationId ??= Auth::user()?->organisation_id;
+
             $exists = User::whereKey((int) $instructorId)
-                ->where('organisation_id', Auth::user()?->organisation_id)
+                ->where('organisation_id', $organisationId)
                 ->exists();
 
             if (! $exists) {
