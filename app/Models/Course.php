@@ -55,11 +55,12 @@ use Illuminate\Support\Carbon;
 ])]
 class Course extends Model implements Auditable
 {
-    use BelongsToOrganisation;
-
-    /** @use HasFactory<CourseFactory> */
-    use HasFactory;
-    use SoftDeletes;
+    /**
+     * @use HasFactory<CourseFactory>
+     */
+    use BelongsToOrganisation,
+        HasFactory,
+        SoftDeletes;
 
     /**
      * Get the attributes that should be cast.
