@@ -10,6 +10,7 @@ import {
     CreditCard,
     FileBarChart,
     FolderGit2,
+    GraduationCap,
     History,
     MessageSquareWarning,
     HandCoins,
@@ -46,6 +47,7 @@ import { dashboard } from '@/routes';
 import { index as activityLogsIndex } from '@/routes/activity-logs';
 import { index as backupsIndex } from '@/routes/backups';
 import { index as calendarIndex } from '@/routes/calendar';
+import { index as coursesIndex } from '@/routes/courses';
 import { board as dealsBoard } from '@/routes/deals';
 import { index as notificationBroadcastsIndex } from '@/routes/notification-broadcasts';
 import { show as profileShow } from '@/routes/profile';
@@ -135,6 +137,12 @@ const navGroups: NavGroup[] = [
                     { title: 'Order Statuses', href: '/order-statuses' },
                 ],
             },
+        ],
+    },
+    {
+        title: 'Learning',
+        items: [
+            { title: 'Courses', href: coursesIndex().url, icon: GraduationCap },
         ],
     },
     {
