@@ -907,6 +907,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
         Route::prefix('courses')->name('courses.')->group(function () {
+            Route::get('/export', [CourseController::class, 'export'])->name('export');
+            Route::post('/import', [CourseController::class, 'import'])->name('import');
+            Route::post('/import/preview', [CourseController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [CourseController::class, 'importCommit'])->name('import.commit');
             Route::post('/bulk/delete', [CourseController::class, 'bulkDelete'])->name('bulk.delete');
             Route::post('/bulk/restore', [CourseController::class, 'bulkRestore'])->name('bulk.restore');
             Route::post('/{id}/restore', [CourseController::class, 'restore'])->name('restore');

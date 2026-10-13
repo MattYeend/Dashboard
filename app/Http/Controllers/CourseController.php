@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BulkIdsRequest;
+use App\Http\Requests\Courses\ImportCourseRequest;
 use App\Http\Requests\Courses\StoreCourseRequest;
 use App\Http\Requests\Courses\UpdateCourseRequest;
 use App\Models\Course;
@@ -16,6 +17,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CourseController extends Controller
 {
@@ -261,5 +263,65 @@ class CourseController extends Controller
         return redirect()
             ->route('courses.index')
             ->with('success', count($result['restored']) . ' courses restored.');
+    }
+
+        /**
+     * Import courses from an uploaded CSV file.
+     *
+     * Authorisation is handled by ImportCourseRequest::authorize().
+     */
+    public function import(ImportCourseRequest $request): JsonResponse|RedirectResponse
+    {
+        $result = $this->management->import($request);
+
+        if ($request->wantsJson()) {
+            return response()->json($result);
+        }
+
+        return redirect()
+            ->route('courses.index')
+            ->with('import_result', $result);
+    }
+
+    /**
+     * Export courses matching the current filters as a CSV download.
+     *
+     * Authorises via the 'export' policy before proceeding.
+     */
+    public function export(Request $request): JsonResponse|RedirectResponse|StreamedResponse
+    {
+        $this->authorize('export', Course::class);
+
+        return $this->management->export(
+            $request->only(['search', 'difficulty', 'trashed'])
+        );
+    }
+
+    /**
+     * Parse and validate an uploaded CSV, returning a per-row preview
+     * without persisting anything.
+     *
+     * Authorisation is handled by ImportCourseRequest::authorize().
+     */
+    public function importPreview(ImportCourseRequest $request): JsonResponse
+    {
+        $importer = $this->management->importer();
+        $token = $importer->storeUpload($request->file('file'), $request->user()->id);
+
+        return response()->json(['token' => $token, ...$importer->preview($token, $request->user()->id)]);
+    }
+
+    /**
+     * Commit a previously previewed import, persisting valid rows only.
+     *
+     * Authorises via the 'import' policy before proceeding.
+     */
+    public function importCommit(Request $request): JsonResponse
+    {
+        $this->authorize('import', Course::class);
+
+        $request->validate(['token' => ['required', 'uuid']]);
+
+        return response()->json($this->management->importer()->commit($request->input('token'), $request->user()->id));
     }
 }
