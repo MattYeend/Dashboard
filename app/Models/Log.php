@@ -883,6 +883,27 @@ class Log extends Model implements Auditable
 
     public const ACTION_EXPORT_AUDIT_TRAIL = 389;
 
+    // Course Management
+    public const ACTION_CREATE_COURSE = 390;
+
+    public const ACTION_UPDATE_COURSE = 391;
+
+    public const ACTION_VIEW_COURSE = 392;
+
+    public const ACTION_DELETE_COURSE = 393;
+
+    public const ACTION_FORCE_DELETE_COURSE = 394;
+
+    public const ACTION_RESTORE_COURSE = 395;
+
+    public const ACTION_IMPORT_COURSE = 396;
+
+    public const ACTION_EXPORT_COURSE = 397;
+
+    public const ACTION_COURSE_UPDATED_BY_CRON = 398;
+
+    public const ACTION_ASSIGN_COURSE = 399;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
