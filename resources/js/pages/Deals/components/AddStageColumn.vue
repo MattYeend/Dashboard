@@ -6,7 +6,7 @@ import type { Deal } from '@/types';
 
 interface BoardStage {
     id: number;
-    name: string;
+    title: string;
     deals: Deal[];
 }
 
@@ -52,7 +52,7 @@ async function submit(): Promise<void> {
 
         emit('stage-added', {
             id: response.data.id,
-            name: response.data.title,
+            title: response.data.title,
             deals: [],
         });
 

@@ -5,7 +5,7 @@ import type { Deal } from '@/types';
 
 interface BoardStage {
     id: number;
-    name: string;
+    title: string;
     deals: Deal[];
 }
 
@@ -28,7 +28,7 @@ function onChange(event: { added?: { element: Deal } }): void {
     <div class="flex w-72 shrink-0 flex-col rounded border border-gray-500">
         <div class="border-b border-gray-500 px-3 py-2">
             <h3 class="text-sm font-semibold text-gray-300">
-                {{ stage.name }}
+                {{ stage.title }}
             </h3>
             <p class="text-xs text-gray-400">
                 {{ stage.deals.length }} deal{{

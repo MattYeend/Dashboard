@@ -11,7 +11,7 @@ import type { Deal } from '@/types';
 
 interface BoardStage {
     id: number;
-    name: string;
+    title: string;
     deals: Deal[];
 }
 
