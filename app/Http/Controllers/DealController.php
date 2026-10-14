@@ -333,7 +333,7 @@ class DealController extends Controller
 
         $stages = $pipeline->stages->map(fn (PipelineStage $stage) => [
             'id' => $stage->id,
-            'name' => $stage->name,
+            'title' => $stage->title,
             'deals' => $stage->deals()
                 ->whereNull('deleted_at')
                 ->with('company')
@@ -343,7 +343,7 @@ class DealController extends Controller
 
         return Inertia::render('Deals/Board', [
             'pipelineId' => $pipeline->id,
-            'pipelineName' => $pipeline->name,
+            'pipelineName' => $pipeline->title,
             'stages' => $stages,
         ]);
     }
