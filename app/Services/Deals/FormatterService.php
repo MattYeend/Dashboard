@@ -9,6 +9,24 @@ use App\Services\CurrencyFormatterService;
 
 class FormatterService
 {
+    /**
+     * Relations read by format(). Eager load these to avoid N+1 queries.
+     *
+     * @var array<int, string>
+     */
+    public const RELATIONS = [
+        'tags:id,name',
+        'pipeline:id,title',
+        'stage:id,title,background_colour,text_colour',
+        'status:id,title,background_colour,text_colour',
+        'company:id,name',
+        'invoice:id,invoice_number',
+        'creator:id,name',
+        'updater:id,name',
+        'deleter:id,name',
+        'restorer:id,name',
+    ];
+
     public function __construct(
         private readonly CurrencyFormatterService $currencyFormatter
     ) {}

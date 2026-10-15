@@ -328,17 +328,21 @@ class DealController extends Controller
     {
         $this->authorize('viewAny', Deal::class);
 
-        $pipeline = Pipeline::with(['stages' => fn ($query) => $query->orderBy('position')])
-            ->findOrFail($request->integer('pipeline_id') ?: Pipeline::query()->value('id'));
-
+        $pipelineId = $request->integer('pipeline_id') ?: Pipeline::query()->value('id');
+ 
+        $pipeline = Pipeline::query()
+            ->with(array_map(
+                static fn (string $relation): string => 'stages.deals.' . $relation,
+                FormatterService::RELATIONS,
+            ))
+            ->findOrFail($pipelineId);
+        
         $stages = $pipeline->stages->map(fn (PipelineStage $stage) => [
             'id' => $stage->id,
             'title' => $stage->title,
-            'deals' => $stage->deals()
-                ->whereNull('deleted_at')
-                ->with('company')
-                ->get()
-                ->map(fn (Deal $deal) => $this->formatterService->format($deal)),
+            'deals' => $stage->deals->map(
+                fn (Deal $deal) => $this->formatterService->format($deal)
+            ),
         ]);
 
         return Inertia::render('Deals/Board', [
@@ -362,7 +366,11 @@ class DealController extends Controller
         );
 
         if ($request->wantsJson()) {
-            return response()->json($this->formatterService->format($deal));
+            return response()->json(
+                $this->formatterService->format(
+                    $deal->loadMissing(FormatterService::RELATIONS)
+                )
+            );
         }
 
         return redirect()->route('deals.board')->with('success', 'Deal stage updated.');
