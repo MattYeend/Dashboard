@@ -329,14 +329,14 @@ class DealController extends Controller
         $this->authorize('viewAny', Deal::class);
 
         $pipelineId = $request->integer('pipeline_id') ?: Pipeline::query()->value('id');
- 
+
         $pipeline = Pipeline::query()
             ->with(array_map(
-                static fn (string $relation): string => 'stages.deals.' . $relation,
+                static fn (string $relation): string => 'stages.deals.'.$relation,
                 FormatterService::RELATIONS,
             ))
             ->findOrFail($pipelineId);
-        
+
         $stages = $pipeline->stages->map(fn (PipelineStage $stage) => [
             'id' => $stage->id,
             'title' => $stage->title,
