@@ -209,6 +209,18 @@ class AppServiceProvider extends ServiceProvider
          */
         Model::shouldBeStrict(! app()->isProduction());
 
+        if (app()->isProduction()) {
+            Model::preventLazyLoading();
+            Model::handleLazyLoadingViolationUsing(
+                static function (Model $model, string $relation): void {
+                    logger()->warning('Lazy loading violation', [
+                        'model' => $model::class,
+                        'relation' => $relation,
+                    ]);
+                },
+            );
+        }
+
         Password::defaults(
             fn (): ?Password => app()->isProduction()
             ? Password::min(12)
