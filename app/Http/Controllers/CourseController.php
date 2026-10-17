@@ -60,11 +60,14 @@ class CourseController extends Controller
      *
      * Authorises via the 'create' policy before rendering.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
         $this->authorize('create', Course::class);
 
-        return Inertia::render('Courses/Create', $this->query->getFormData());
+        return Inertia::render(
+            'Courses/Create',
+            $this->query->getFormData($request->user())
+        );
     }
 
     /**
@@ -120,7 +123,7 @@ class CourseController extends Controller
                 $request->user(),
                 $course
             ),
-            $this->query->getFormData(),
+            $this->query->getFormData($request->user()),
         );
 
         return Inertia::render('Courses/Edit', $data);
