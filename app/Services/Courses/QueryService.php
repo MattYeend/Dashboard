@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Services\Courses;
 
+use App\Enums\CourseDifficulty;
 use App\Models\Course;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Support\Str;
 
 class QueryService
 {
@@ -61,14 +64,49 @@ class QueryService
     /**
      * Get data needed to populate create and edit forms.
      *
+     * Instructors are limited to the authenticated user's organisation.
+     *
      * @return array<string, mixed>
      */
-    public function getFormData(): array
+    public function getFormData(User $user): array
     {
         return [
-            'instructors' => User::orderBy('name')->get(['id', 'name']),
-            'difficulties' => FilterService::DIFFICULTIES,
+            'instructors' => $this->getInstructors($user),
+            'difficulties' => $this->getDifficultyOptions(),
         ];
+    }
+
+    /**
+     * Get the users who can be assigned as an instructor.
+     *
+     * @return EloquentCollection<int, User>
+     */
+    protected function getInstructors(User $user): EloquentCollection
+    {
+        if ($user->organisation_id === null) {
+            return new EloquentCollection();
+        }
+
+        return User::query()
+            ->where('organisation_id', $user->organisation_id)
+            ->orderBy('name')
+            ->get(['id', 'name']);
+    }
+
+    /**
+     * Get the difficulty options for the course form select.
+     *
+     * @return array<int, array{value: string, label: string}>
+     */
+    protected function getDifficultyOptions(): array
+    {
+        return array_map(
+            static fn (CourseDifficulty $difficulty): array => [
+                'value' => $difficulty->value,
+                'label' => Str::headline($difficulty->name),
+            ],
+            CourseDifficulty::cases(),
+        );
     }
 
     /**
