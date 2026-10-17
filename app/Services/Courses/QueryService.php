@@ -6,10 +6,12 @@ namespace App\Services\Courses;
 
 use App\Enums\CourseDifficulty;
 use App\Models\Course;
+use App\Models\Organisation;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Str;
 
 class QueryService
@@ -64,14 +66,14 @@ class QueryService
     /**
      * Get data needed to populate create and edit forms.
      *
-     * Instructors are limited to the authenticated user's organisation.
+     * Instructors are limited to members of the current organisation.
      *
      * @return array<string, mixed>
      */
-    public function getFormData(User $user): array
+    public function getFormData(): array
     {
         return [
-            'instructors' => $this->getInstructors($user),
+            'instructors' => $this->getInstructors(),
             'difficulties' => $this->getDifficultyOptions(),
         ];
     }
@@ -79,16 +81,24 @@ class QueryService
     /**
      * Get the users who can be assigned as an instructor.
      *
+     * Mirrors the organisation_user check in the Store and Update requests.
+     *
      * @return EloquentCollection<int, User>
      */
-    protected function getInstructors(User $user): EloquentCollection
+    protected function getInstructors(): EloquentCollection
     {
-        if ($user->organisation_id === null) {
+        $organisationId = Organisation::current()?->id;
+
+        if ($organisationId === null) {
             return new EloquentCollection();
         }
 
         return User::query()
-            ->where('organisation_id', $user->organisation_id)
+            ->whereIn('id', static function (QueryBuilder $query) use ($organisationId): void {
+                $query->select('user_id')
+                    ->from('organisation_user')
+                    ->where('organisation_id', $organisationId);
+            })
             ->orderBy('name')
             ->get(['id', 'name']);
     }
