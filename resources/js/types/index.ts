@@ -1251,7 +1251,7 @@ export interface Course {
     summary: string | null;
     description: string | null;
     difficulty: CourseDifficulty;
-    difficulty_label: string;
+    difficulty_label: string | null;
     estimated_duration_minutes: number | null;
     instructor_id: number | null;
     published_at: string | null;

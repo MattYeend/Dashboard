@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Courses;
 
 use App\Models\Course;
+use Illuminate\Support\Str;
 
 class FormatterService
 {
@@ -23,6 +24,7 @@ class FormatterService
             'summary' => $course->summary,
             'description' => $course->description,
             'difficulty' => $course->difficulty,
+            'difficulty_label' => Str::headline($course->difficulty->name),
             'estimated_duration_minutes' => $course->estimated_duration_minutes,
             'instructor_id' => $course->instructor_id,
             'published_at' => $course->published_at?->format('Y-m-d H:i:s'),
