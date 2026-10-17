@@ -6,7 +6,6 @@ namespace App\Services\Courses;
 
 use App\Enums\CourseDifficulty;
 use App\Models\Course;
-use App\Models\Organisation;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -70,34 +69,30 @@ class QueryService
      *
      * @return array<string, mixed>
      */
-    public function getFormData(): array
+    public function getFormData(User $user): array
     {
         return [
-            'instructors' => $this->getInstructors(),
+            'instructors' => $this->getInstructors($user),
             'difficulties' => $this->getDifficultyOptions(),
         ];
     }
 
     /**
-     * Get the users who can be assigned as an instructor.
-     *
-     * Mirrors the organisation_user check in the Store and Update requests.
+     * Get the users who share an organisation with the logged in user.
      *
      * @return EloquentCollection<int, User>
      */
-    protected function getInstructors(): EloquentCollection
+    protected function getInstructors(User $user): EloquentCollection
     {
-        $organisationId = Organisation::current()?->id;
-
-        if ($organisationId === null) {
-            return new EloquentCollection();
-        }
-
         return User::query()
-            ->whereIn('id', static function (QueryBuilder $query) use ($organisationId): void {
+            ->whereIn('id', static function (QueryBuilder $query) use ($user): void {
                 $query->select('user_id')
                     ->from('organisation_user')
-                    ->where('organisation_id', $organisationId);
+                    ->whereIn('organisation_id', static function (QueryBuilder $organisations) use ($user): void {
+                        $organisations->select('organisation_id')
+                            ->from('organisation_user')
+                            ->where('user_id', $user->id);
+                    });
             })
             ->orderBy('name')
             ->get(['id', 'name']);

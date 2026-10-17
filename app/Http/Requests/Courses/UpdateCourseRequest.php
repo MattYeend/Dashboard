@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Requests\Courses;
 
 use App\Enums\CourseDifficulty;
-use App\Models\Organisation;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -48,7 +48,7 @@ class UpdateCourseRequest extends FormRequest
         return [
             'title.required' => 'Please enter a course title.',
             'difficulty.required' => 'Please choose a difficulty.',
-            'instructor_id.exists' => 'The selected instructor is not a member of this organisation.',
+            'instructor_id.exists' => 'The selected instructor is not a member of your organisation.',
         ];
     }
 
@@ -128,7 +128,8 @@ class UpdateCourseRequest extends FormRequest
     }
 
     /**
-     * Rules for the instructor field, limited to members of the current organisation.
+     * Rules for the instructor field, limited to users who share an
+     * organisation with the logged in user.
      *
      * @return array<int, mixed>
      */
@@ -139,7 +140,13 @@ class UpdateCourseRequest extends FormRequest
             'nullable',
             'integer',
             Rule::exists('organisation_user', 'user_id')
-                ->where('organisation_id', Organisation::current()?->id),
+                ->where(function (Builder $query): void {
+                    $query->whereIn('organisation_id', function (Builder $organisations): void {
+                        $organisations->select('organisation_id')
+                            ->from('organisation_user')
+                            ->where('user_id', $this->user()?->id);
+                    });
+                }),
         ];
     }
 
