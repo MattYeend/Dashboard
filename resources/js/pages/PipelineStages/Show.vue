@@ -65,25 +65,27 @@ function destroy(): void {
                     {{ pipeline_stage.title }}
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
-                    <Link
-                        :href="
-                            pipelineStagesIndex.url({ pipeline: pipeline.id })
-                        "
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Back
-                    </Link>
-                    <Link
-                        :href="
-                            pipelineStagesEdit.url({
-                                pipeline: pipeline.id,
-                                stage: pipeline_stage.id,
-                            })
-                        "
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Edit
-                    </Link>
+                    <Button as-child variant="outline">
+                        <Link
+                            :href="
+                                pipelineStagesIndex.url({
+                                    pipeline: pipeline.id,
+                                })
+                            "
+                            >Back</Link
+                        >
+                    </Button>
+                    <Button as-child>
+                        <Link
+                            :href="
+                                pipelineStagesEdit.url({
+                                    pipeline: pipeline.id,
+                                    stage: pipeline_stage.id,
+                                })
+                            "
+                            >Edit</Link
+                        >
+                    </Button>
                     <button
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"

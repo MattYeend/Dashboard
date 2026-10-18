@@ -49,30 +49,28 @@ function destroy(): void {
                     {{ pipeline.title }}
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
-                    <Link
-                        :href="pipelinesIndex.url()"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Back
-                    </Link>
-                    <Link
-                        :href="
-                            pipelineStagesIndex.url({ pipeline: pipeline.id })
-                        "
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Stages ({{
-                            pipeline.stages_count ??
-                            pipeline.stages?.length ??
-                            0
-                        }})
-                    </Link>
-                    <Link
-                        :href="pipelinesEdit.url(props.pipeline.id)"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Edit
-                    </Link>
+                    <Button as-child variant="outline">
+                        <Link :href="pipelinesIndex.url()">Back</Link>
+                    </Button>
+                    <Button as-child variant="outline">
+                        <Link
+                            :href="
+                                pipelineStagesIndex.url({
+                                    pipeline: pipeline.id,
+                                })
+                            "
+                            >Stages ({{
+                                pipeline.stages_count ??
+                                pipeline.stages?.length ??
+                                0
+                            }})</Link
+                        >
+                    </Button>
+                    <Button as-child>
+                        <Link :href="pipelinesEdit.url(props.pipeline.id)"
+                            >Edit</Link
+                        >
+                    </Button>
                     <button
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
