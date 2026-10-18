@@ -60,33 +60,30 @@ function destroy(): void {
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
                     <Button as-child variant="outline">
-                        <Link
-                            :href="usersIndex.url()"
-                        >
-                            Back
-                        </Link>
+                        <Link :href="usersIndex.url()">Back</Link>
                     </Button>
                     <Button as-child>
-                        <Link
-                            :href="usersEdit.url(user.id)"
-                        >
-                            Edit
-                        </Link>
+                        <Link :href="usersEdit.url(user.id)">Edit</Link>
                     </Button>
-                    <Button as-child>
+                    <Button
+                        v-if="user.can_impersonate"
+                        as-child
+                        variant="outline"
+                    >
                         <Link
-                            v-if="user.can_impersonate"
                             :href="usersImpersonate.url(user.id)"
                             method="post"
                             as="button"
-                            class="text-sm text-gray-300 hover:text-white"
+                            >Impersonate</Link
                         >
-                            Impersonate
-                        </Link>
                     </Button>
-                    <Button as-child variant="destructive" @click="requestDestroy">
+                    <button
+                        type="button"
+                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
+                        @click="requestDestroy"
+                    >
                         Delete
-                    </Button>
+                    </button>
                 </div>
             </div>
 

@@ -56,18 +56,12 @@ function destroy(): void {
                     {{ tag.name }}
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
-                    <Link
-                        :href="tagsIndex.url()"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Back
-                    </Link>
-                    <Link
-                        :href="tagsEdit.url(tag.id)"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Edit
-                    </Link>
+                    <Button as-child variant="outline">
+                        <Link :href="tagsIndex.url()">Back</Link>
+                    </Button>
+                    <Button as-child>
+                        <Link :href="tagsEdit.url(tag.id)">Edit</Link>
+                    </Button>
                     <button
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"

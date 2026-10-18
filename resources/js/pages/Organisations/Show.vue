@@ -79,40 +79,44 @@ function switchToOrganisation(): void {
                     {{ organisation.name }}
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
-                    <button
+                    <Button
                         v-if="props.can_switch"
+                        variant="outline"
                         type="button"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
                         :disabled="switchProcessing"
                         @click="switchToOrganisation"
                     >
                         Switch to this organisation
-                    </button>
-                    <Link
-                        :href="organisationsIndex.url()"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Back
-                    </Link>
-                    <Link
-                        :href="organisationsEdit.url(props.organisation.id)"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Edit
-                    </Link>
-                    <Link
-                        :href="organisationsSettings.url(props.organisation.id)"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Settings
-                    </Link>
-                    <Link
+                    </Button>
+                    <Button as-child variant="outline">
+                        <Link :href="organisationsIndex.url()">Back</Link>
+                    </Button>
+                    <Button as-child>
+                        <Link
+                            :href="organisationsEdit.url(props.organisation.id)"
+                            >Edit</Link
+                        >
+                    </Button>
+                    <Button as-child variant="outline">
+                        <Link
+                            :href="
+                                organisationsSettings.url(props.organisation.id)
+                            "
+                            >Settings</Link
+                        >
+                    </Button>
+                    <Button
                         v-if="props.can_view_billing"
-                        :href="organisationsBilling.url(props.organisation.id)"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
+                        as-child
+                        variant="outline"
                     >
-                        Billing
-                    </Link>
+                        <Link
+                            :href="
+                                organisationsBilling.url(props.organisation.id)
+                            "
+                            >Billing</Link
+                        >
+                    </Button>
                     <button
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"

@@ -116,32 +116,38 @@ function forceDelete(): void {
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
                     <Button as-child variant="outline">
-                        <Link
-                            :href="permissionsIndex.url()"
-                        >
-                            Back
-                        </Link>
+                        <Link :href="permissionsIndex.url()">Back</Link>
                     </Button>
 
                     <template v-if="!permission.deleted_at">
                         <Button as-child>
-                            <Link
-                                :href="permissionsEdit.url(permission.id)"
+                            <Link :href="permissionsEdit.url(permission.id)"
+                                >Edit</Link
                             >
-                                Edit
-                            </Link>
                         </Button>
-                        <Button as-child variant="destructive" @click="requestDestroy">
+                        <button
+                            type="button"
+                            class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
+                            @click="requestDestroy"
+                        >
                             Delete
-                        </Button>
+                        </button>
                     </template>
                     <template v-else>
-                        <Button as-child @click="requestRestore">
+                        <Button
+                            variant="outline"
+                            type="button"
+                            @click="requestRestore"
+                        >
                             Restore
                         </Button>
-                        <Button as-child variant="destructive" @click="requestForceDelete">
+                        <button
+                            type="button"
+                            class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
+                            @click="requestForceDelete"
+                        >
                             Delete permanently
-                        </Button>
+                        </button>
                     </template>
                 </div>
             </div>

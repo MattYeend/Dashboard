@@ -23,11 +23,7 @@ defineProps<{
                     {{ interest.name }}
                 </h1>
                 <Button as-child variant="outline">
-                    <Link
-                        :href="registrationInterestsIndex().url"
-                    >
-                        Back
-                    </Link>
+                    <Link :href="registrationInterestsIndex().url">Back</Link>
                 </Button>
             </div>
 
