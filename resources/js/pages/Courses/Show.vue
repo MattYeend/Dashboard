@@ -1,20 +1,43 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { Button } from '@/components/ui/button';
 import CourseAuditDetails from '@/pages/Courses/components/CourseAuditDetails.vue';
 import CourseBasicDetails from '@/pages/Courses/components/CourseBasicDetails.vue';
 import CourseSettingsDetails from '@/pages/Courses/components/CourseSettingsDetails.vue';
-import { edit, index as coursesIndex } from '@/routes/courses';
+import {
+    destroy as coursesDestroy,
+    edit,
+    index as coursesIndex,
+} from '@/routes/courses';
 import type { Course } from '@/types';
 
 const props = defineProps<{
     course: Course;
 }>();
 
+const deleteDialogOpen = ref(false);
+const deleteProcessing = ref(false);
+
+/**
+ * Move the course to trash, then close the confirmation dialog.
+ */
+function destroy(): void {
+    deleteProcessing.value = true;
+
+    router.delete(coursesDestroy.url(props.course.id), {
+        onFinish: () => {
+            deleteProcessing.value = false;
+            deleteDialogOpen.value = false;
+        },
+    });
+}
+
 defineOptions({
     layout: {
         breadcrumbs: [
-            { title: 'Courses', href: '/courses' },
+            { title: 'Courses', href: coursesIndex().url },
             { title: 'Details', href: '#' },
         ],
     },
@@ -34,6 +57,14 @@ defineOptions({
                 <Button as-child>
                     <Link :href="edit(props.course.id).url">Edit</Link>
                 </Button>
+                <Button
+                    type="button"
+                    variant="outline"
+                    class="text-red-600"
+                    @click="deleteDialogOpen = true"
+                >
+                    Delete
+                </Button>
             </div>
         </div>
 
@@ -41,4 +72,13 @@ defineOptions({
         <CourseSettingsDetails :course="course" />
         <CourseAuditDetails :course="course" />
     </div>
+
+    <ConfirmDialog
+        v-model:open="deleteDialogOpen"
+        title="Delete course"
+        description="This course will be moved to trash."
+        confirm-label="Delete"
+        :processing="deleteProcessing"
+        @confirm="destroy"
+    />
 </template>
