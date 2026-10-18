@@ -22,6 +22,7 @@ import type {
 import CompanyAuditDetails from './components/CompanyAuditDetails.vue';
 import CompanyBasicDetails from './components/CompanyBasicDetails.vue';
 import CompanyContactDetails from './components/CompanyContactDetails.vue';
+import CompanyRegistrationDetails from './components/CompanyRegistrationDetails.vue';
 import CompanyRelatedRecords from './components/CompanyRelatedRecords.vue';
 import CompanyTagsDetails from './components/CompanyTagsDetails.vue';
 

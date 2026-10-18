@@ -7,7 +7,7 @@ import {
     edit as dealStatusesEdit,
     destroy as dealStatusesDestroy,
     index as dealStatusesIndex,
-} from '@/routes/order-statuses';
+} from '@/routes/deal-statuses';
 import type { DealStatus, PermissionsMeta } from '@/types';
 import DealStatusAuditDetails from './components/DealStatusAuditDetails.vue';
 import DealStatusBasicDetails from './components/DealStatusBasicDetails.vue';

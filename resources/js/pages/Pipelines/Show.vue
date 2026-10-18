@@ -5,6 +5,7 @@ import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { Button } from '@/components/ui/button';
 import PipelineAuditDetails from '@/pages/Pipelines/components/PipelineAuditDetails.vue';
 import PipelineBasicDetails from '@/pages/Pipelines/components/PipelineBasicDetails.vue';
+import PipelineStages from '@/pages/Pipelines/components/PipelineStages.vue';
 import {
     edit as pipelinesEdit,
     destroy as pipelinesDestroy,
