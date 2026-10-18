@@ -111,50 +111,46 @@ function markAsUnpaid(): void {
                     {{ invoice.invoice_number }}
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
-                    <Link
-                        :href="invoicesIndex.url()"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Back
-                    </Link>
-                    <Link
-                        :href="invoiceItemsIndex.url({ invoice: invoice.id })"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Items
-                    </Link>
-                    <button
+                    <Button as-child variant="outline">
+                        <Link :href="invoicesIndex.url()">Back</Link>
+                    </Button>
+                    <Button as-child variant="outline">
+                        <Link
+                            :href="
+                                invoiceItemsIndex.url({ invoice: invoice.id })
+                            "
+                            >Items</Link
+                        >
+                    </Button>
+                    <Button
+                        variant="outline"
                         type="button"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
                         :disabled="sendProcessing"
                         @click="send"
                     >
                         Send
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         v-if="!invoice.paid_at"
+                        variant="outline"
                         type="button"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
                         :disabled="markPaidProcessing"
                         @click="markAsPaid"
                     >
                         Mark as Paid
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         v-else
+                        variant="outline"
                         type="button"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
                         :disabled="markUnpaidProcessing"
                         @click="markAsUnpaid"
                     >
                         Mark as Unpaid
-                    </button>
-                    <Link
-                        :href="invoicesEdit.url(invoice.id)"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Edit
-                    </Link>
+                    </Button>
+                    <Button as-child>
+                        <Link :href="invoicesEdit.url(invoice.id)">Edit</Link>
+                    </Button>
                     <button
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
