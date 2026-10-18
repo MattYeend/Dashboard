@@ -58,22 +58,20 @@ function destroy(): void {
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
                     <Button as-child variant="outline">
-                        <Link
-                        :href="ticketStatusIndex.url()"
-                    >
-                        Back
-                    </Link>
+                        <Link :href="ticketStatusIndex.url()">Back</Link>
                     </Button>
                     <Button as-child>
-                        <Link
-                            :href="ticketStatusesEdit.url(ticketStatus.id)"
+                        <Link :href="ticketStatusesEdit.url(ticketStatus.id)"
+                            >Edit</Link
                         >
-                            Edit
-                        </Link>
                     </Button>
-                    <Button as-child variant="destructive" @click="requestDestroy">
+                    <button
+                        type="button"
+                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
+                        @click="requestDestroy"
+                    >
                         Delete
-                    </Button>
+                    </button>
                 </div>
             </div>
 

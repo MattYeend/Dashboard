@@ -88,40 +88,38 @@ function unresolve(): void {
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
                     <Button as-child variant="outline">
-                        <Link
-                            :href="ticketsIndex.url()"
-                        >
-                            Back
-                        </Link>
+                        <Link :href="ticketsIndex.url()">Back</Link>
                     </Button>
-                    <button
+                    <Button
                         v-if="!ticket.resolved_at"
+                        variant="outline"
                         type="button"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium disabled:opacity-50"
                         :disabled="resolveProcessing"
                         @click="resolve"
                     >
                         Mark as resolved
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         v-else
+                        variant="outline"
                         type="button"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium disabled:opacity-50"
                         :disabled="unresolveProcessing"
                         @click="unresolve"
                     >
                         Mark as unresolved
-                    </button>
+                    </Button>
                     <Button as-child>
-                        <Link
-                            :href="ticketsEdit.url(props.ticket.id)"
+                        <Link :href="ticketsEdit.url(props.ticket.id)"
+                            >Edit</Link
                         >
-                            Edit
-                        </Link>
                     </Button>
-                    <Button as-child variant="destructive" @click="requestDestroy">
+                    <button
+                        type="button"
+                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
+                        @click="requestDestroy"
+                    >
                         Delete
-                    </Button>
+                    </button>
                 </div>
             </div>
 
