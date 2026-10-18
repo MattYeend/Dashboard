@@ -1255,6 +1255,7 @@ export interface Course {
     estimated_duration_minutes: number | null;
     instructor_id: number | null;
     published_at: string | null;
+    is_published: boolean;
     meta: Record<string, unknown> | null;
     created_by: number | null;
     updated_by: number | null;
