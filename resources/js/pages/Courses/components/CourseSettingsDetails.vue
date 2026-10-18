@@ -20,11 +20,17 @@ const instructorName = computed<string>(
     () => props.course.instructor?.name ?? 'Unassigned',
 );
 
-const published = computed<string>(() =>
-    props.course.published_at
-        ? new Date(props.course.published_at).toLocaleDateString('en-GB')
-        : 'Draft',
-);
+const published = computed<string>(() => {
+    if (!props.course.published_at) {
+        return 'Draft';
+    }
+
+    const date = new Date(props.course.published_at).toLocaleDateString(
+        'en-GB',
+    );
+
+    return props.course.is_published ? date : `Scheduled for ${date}`;
+});
 </script>
 
 <template>
