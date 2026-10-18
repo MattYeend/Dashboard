@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { Button } from '@/components/ui/button';
 import ActivityTimeline from '@/pages/Activities/components/ActivityTimeline.vue';
 import DealAuditDetails from '@/pages/Deals/components/DealAuditDetails.vue';
 import DealBasicDetails from '@/pages/Deals/components/DealBasicDetails.vue';
@@ -60,18 +61,12 @@ function destroy(): void {
                     {{ deal.title }}
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
-                    <Link
-                        :href="dealsIndex.url()"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Back
-                    </Link>
-                    <Link
-                        :href="dealsEdit.url(props.deal.id)"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Edit
-                    </Link>
+                    <Button as-child variant="outline">
+                        <Link :href="dealsIndex.url()">Back</Link>
+                    </Button>
+                    <Button as-child>
+                        <Link :href="dealsEdit.url(props.deal.id)">Edit</Link>
+                    </Button>
                     <QuickLogModal
                         v-if="interaction_log_permissions_meta.can_create"
                         interactable-type="deal"

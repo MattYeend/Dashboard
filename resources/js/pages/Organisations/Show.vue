@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { Button } from '@/components/ui/button';
 import BulkInviteForm from '@/pages/Organisations/components/BulkInviteForm.vue';
 import InviteMemberForm from '@/pages/Organisations/components/InviteMemberForm.vue';
 import OrganisationAuditDetails from '@/pages/Organisations/components/OrganisationAuditDetails.vue';

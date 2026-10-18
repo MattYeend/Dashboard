@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { Button } from '@/components/ui/button';
 import CategoryAuditDetails from '@/pages/Categories/components/CategoryAuditDetails.vue';
 import CategoryBasicDetails from '@/pages/Categories/components/CategoryBasicDetails.vue';
 import {

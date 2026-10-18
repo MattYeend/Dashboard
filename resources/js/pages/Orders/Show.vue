@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { Button } from '@/components/ui/button';
 import ActivityTimeline from '@/pages/Activities/components/ActivityTimeline.vue';
 import OrderAuditDetails from '@/pages/Orders/components/OrderAuditDetails.vue';
 import OrderBasicDetails from '@/pages/Orders/components/OrderBasicDetails.vue';

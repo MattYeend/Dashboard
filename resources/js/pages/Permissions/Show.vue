@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { Button } from '@/components/ui/button';
 import PermissionAuditDetails from '@/pages/Permissions/components/PermissionAuditDetails.vue';
 import PermissionBasicDetails from '@/pages/Permissions/components/PermissionBasicDetails.vue';
 import PermissionRoleDetails from '@/pages/Permissions/components/PermissionRoleDetails.vue';
@@ -114,43 +115,33 @@ function forceDelete(): void {
                     {{ permission.name }}
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
-                    <Link
-                        :href="permissionsIndex.url()"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Back
-                    </Link>
+                    <Button as-child variant="outline">
+                        <Link
+                            :href="permissionsIndex.url()"
+                        >
+                            Back
+                        </Link>
+                    </Button>
 
                     <template v-if="!permission.deleted_at">
-                        <Link
-                            :href="permissionsEdit.url(permission.id)"
-                            class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                        >
-                            Edit
-                        </Link>
-                        <button
-                            type="button"
-                            class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
-                            @click="requestDestroy"
-                        >
+                        <Button as-child>
+                            <Link
+                                :href="permissionsEdit.url(permission.id)"
+                            >
+                                Edit
+                            </Link>
+                        </Button>
+                        <Button as-child variant="destructive" @click="requestDestroy">
                             Delete
-                        </button>
+                        </Button>
                     </template>
                     <template v-else>
-                        <button
-                            type="button"
-                            class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                            @click="requestRestore"
-                        >
+                        <Button as-child @click="requestRestore">
                             Restore
-                        </button>
-                        <button
-                            type="button"
-                            class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
-                            @click="requestForceDelete"
-                        >
+                        </Button>
+                        <Button as-child variant="destructive" @click="requestForceDelete">
                             Delete permanently
-                        </button>
+                        </Button>
                     </template>
                 </div>
             </div>

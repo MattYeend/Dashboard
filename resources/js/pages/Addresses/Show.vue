@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { Button } from '@/components/ui/button';
 import AddressAuditDetails from '@/pages/Addresses/components/AddressAuditDetails.vue';
 import AddressBasicDetails from '@/pages/Addresses/components/AddressBasicDetails.vue';
 import {
@@ -58,18 +59,14 @@ function destroy(): void {
                     {{ heading }}
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
-                    <Link
-                        :href="addressesIndex.url()"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Back
-                    </Link>
-                    <Link
-                        :href="addressesEdit.url(props.address.id)"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Edit
-                    </Link>
+                    <Button as-child variant="outline">
+                        <Link :href="addressesIndex.url()">Back</Link>
+                    </Button>
+                    <Button as-child>
+                        <Link :href="addressesEdit.url(props.address.id)"
+                            >Edit</Link
+                        >
+                    </Button>
                     <button
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"

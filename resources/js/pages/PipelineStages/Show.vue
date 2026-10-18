@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { Button } from '@/components/ui/button';
 import PipelineStageAppearanceDetails from '@/pages/PipelineStages/components/PipelineStageAppearanceDetails.vue';
 import PipelineStageAuditDetails from '@/pages/PipelineStages/components/PipelineStageAuditDetails.vue';
 import PipelineStageBasicDetails from '@/pages/PipelineStages/components/PipelineStageBasicDetails.vue';

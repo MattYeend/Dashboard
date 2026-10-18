@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { Button } from '@/components/ui/button';
 import PostAuditDetails from '@/pages/Posts/components/PostAuditDetails.vue';
 import PostBasicDetails from '@/pages/Posts/components/PostBasicDetails.vue';
 import PostCategoriesDetails from '@/pages/Posts/components/PostCategoriesDetails.vue';
@@ -51,25 +52,23 @@ function destroy(): void {
                     {{ post.title }}
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
-                    <Link
-                        :href="postsIndex.url()"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Back
-                    </Link>
-                    <Link
-                        :href="postsEdit.url(props.post.id)"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Edit
-                    </Link>
-                    <button
-                        type="button"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
-                        @click="requestDestroy"
-                    >
+                    <Button as-child variant="outline">
+                        <Link
+                            :href="postsIndex.url()"
+                        >
+                            Back
+                        </Link>
+                    </Button>
+                    <Button as-child>
+                        <Link
+                            :href="postsEdit.url(props.post.id)"
+                        >
+                            Edit
+                        </Link>
+                    </Button>
+                    <Button as-child variant="destructive" @click="requestDestroy">
                         Delete
-                    </button>
+                    </Button>
                 </div>
             </div>
 

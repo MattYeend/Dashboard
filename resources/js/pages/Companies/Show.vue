@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { Button } from '@/components/ui/button';
 import ActivityTimeline from '@/pages/Activities/components/ActivityTimeline.vue';
 import QuickLogModal from '@/pages/InteractionLogs/components/QuickLogModal.vue';
 import {
@@ -73,18 +74,12 @@ function destroy(): void {
                     {{ company.name }}
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
-                    <Link
-                        :href="companiesIndex.url()"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Back
-                    </Link>
-                    <Link
-                        :href="companiesEdit.url(company.id)"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Edit
-                    </Link>
+                    <Button as-child variant="outline">
+                        <Link :href="companiesIndex.url()">Back</Link>
+                    </Button>
+                    <Button as-child>
+                        <Link :href="companiesEdit.url(company.id)">Edit</Link>
+                    </Button>
                     <QuickLogModal
                         v-if="interaction_log_permissions_meta.can_create"
                         interactable-type="company"

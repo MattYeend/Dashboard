@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import { Button } from '@/components/ui/button';
 import { index as registrationInterestsIndex } from '@/routes/registration-interests';
 import type { PermissionsMeta, RegistrationInterest } from '@/types';
 import RegistrationInterestAuditDetails from './components/RegistrationInterestAuditDetails.vue';
@@ -21,12 +22,13 @@ defineProps<{
                 <h1 class="text-2xl font-semibold text-gray-300">
                     {{ interest.name }}
                 </h1>
-                <Link
-                    :href="registrationInterestsIndex().url"
-                    class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                >
-                    Back
-                </Link>
+                <Button as-child variant="outline">
+                    <Link
+                        :href="registrationInterestsIndex().url"
+                    >
+                        Back
+                    </Link>
+                </Button>
             </div>
 
             <div class="space-y-6">

@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { Button } from '@/components/ui/button';
 import TaskAssignmentDetails from '@/pages/Tasks/components/TaskAssignmentDetails.vue';
 import TaskAuditDetails from '@/pages/Tasks/components/TaskAuditDetails.vue';
 import TaskBasicDetails from '@/pages/Tasks/components/TaskBasicDetails.vue';

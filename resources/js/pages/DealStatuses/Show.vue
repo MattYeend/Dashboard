@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { Button } from '@/components/ui/button';
 import {
     edit as dealStatusesEdit,
     destroy as dealStatusesDestroy,
@@ -56,18 +57,14 @@ function destroy(): void {
                     {{ dealStatus.title }}
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
-                    <Link
-                        :href="dealStatusesIndex.url()"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Back
-                    </Link>
-                    <Link
-                        :href="dealStatusesEdit.url(dealStatus.id)"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Edit
-                    </Link>
+                    <Button as-child variant="outline">
+                        <Link :href="dealStatusesIndex.url()">Back</Link>
+                    </Button>
+                    <Button as-child>
+                        <Link :href="dealStatusesEdit.url(dealStatus.id)"
+                            >Edit</Link
+                        >
+                    </Button>
                     <button
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"

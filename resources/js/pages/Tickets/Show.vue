@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { Button } from '@/components/ui/button';
 import TicketAssignmentDetails from '@/pages/Tickets/components/TicketAssignmentDetails.vue';
 import TicketAuditDetails from '@/pages/Tickets/components/TicketAuditDetails.vue';
 import TicketBasicDetails from '@/pages/Tickets/components/TicketBasicDetails.vue';
@@ -86,12 +87,13 @@ function unresolve(): void {
                     {{ ticket.title }}
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
-                    <Link
-                        :href="ticketsIndex.url()"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Back
-                    </Link>
+                    <Button as-child variant="outline">
+                        <Link
+                            :href="ticketsIndex.url()"
+                        >
+                            Back
+                        </Link>
+                    </Button>
                     <button
                         v-if="!ticket.resolved_at"
                         type="button"
@@ -110,19 +112,16 @@ function unresolve(): void {
                     >
                         Mark as unresolved
                     </button>
-                    <Link
-                        :href="ticketsEdit.url(props.ticket.id)"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-                    >
-                        Edit
-                    </Link>
-                    <button
-                        type="button"
-                        class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
-                        @click="requestDestroy"
-                    >
+                    <Button as-child>
+                        <Link
+                            :href="ticketsEdit.url(props.ticket.id)"
+                        >
+                            Edit
+                        </Link>
+                    </Button>
+                    <Button as-child variant="destructive" @click="requestDestroy">
                         Delete
-                    </button>
+                    </Button>
                 </div>
             </div>
 
