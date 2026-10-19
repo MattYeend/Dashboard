@@ -208,7 +208,7 @@ class QueryService
         return $actor->can('update lessons');
     }
 
-        /**
+    /**
      * Get the data needed to render the create and edit forms.
      *
      * @return array<string, mixed>

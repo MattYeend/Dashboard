@@ -3,12 +3,14 @@ import { computed } from 'vue';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
- 
+
 defineProps<{
     errors: Partial<Record<string, string>>;
 }>();
- 
-const durationMinutes = defineModel<number | null>('durationMinutes', { required: true });
+
+const durationMinutes = defineModel<number | null>('durationMinutes', {
+    required: true,
+});
 const isPreview = defineModel<boolean>('isPreview', { required: true });
 const publishedAt = defineModel<string>('publishedAt', { required: true });
 
@@ -26,7 +28,7 @@ const durationInput = computed<string | number>({
     },
 });
 </script>
- 
+
 <template>
     <div class="grid gap-4 sm:grid-cols-3">
         <div class="grid gap-2">
@@ -40,15 +42,24 @@ const durationInput = computed<string | number>({
             />
             <InputError :message="errors.duration_minutes" />
         </div>
- 
+
         <div class="grid gap-2">
             <Label for="published-at">Publish at</Label>
-            <Input id="published-at" v-model="publishedAt" type="datetime-local" />
+            <Input
+                id="published-at"
+                v-model="publishedAt"
+                type="datetime-local"
+            />
             <InputError :message="errors.published_at" />
         </div>
- 
+
         <div class="flex items-center gap-2">
-            <input id="is-preview" v-model="isPreview" type="checkbox" class="size-4" />
+            <input
+                id="is-preview"
+                v-model="isPreview"
+                type="checkbox"
+                class="size-4"
+            />
             <Label for="is-preview">Free preview lesson</Label>
             <InputError :message="errors.is_preview" />
         </div>

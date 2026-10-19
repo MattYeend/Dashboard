@@ -45,13 +45,13 @@ class ImporterService
      * @var array<int, string>
      */
     protected const BOOLEAN_VALUES = [
-        '', 
-        '0', 
-        '1', 
-        'true', 
-        'false', 
-        'yes', 
-        'no'
+        '',
+        '0',
+        '1',
+        'true',
+        'false',
+        'yes',
+        'no',
     ];
 
     /**

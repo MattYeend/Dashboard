@@ -1,9 +1,9 @@
 <?php
- 
+
 declare(strict_types=1);
- 
+
 namespace App\Models;
- 
+
 use App\Contracts\Auditable;
 use App\Traits\BelongsToOrganisation;
 use Database\Factories\LessonFactory;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
- 
+
 /**
  * A single lesson inside a course.
  *
@@ -62,13 +62,13 @@ use Illuminate\Support\Carbon;
 ])]
 class Lesson extends Model implements Auditable
 {
-    /** 
-     * @use HasFactory<LessonFactory> 
+    /**
+     * @use HasFactory<LessonFactory>
      */
     use BelongsToOrganisation,
         HasFactory,
         SoftDeletes;
- 
+
     /**
      * Get the attributes that should be cast.
      *
@@ -84,7 +84,7 @@ class Lesson extends Model implements Auditable
             'meta' => 'array',
         ];
     }
- 
+
     /**
      * Get the course this lesson belongs to.
      *
@@ -94,7 +94,7 @@ class Lesson extends Model implements Auditable
     {
         return $this->belongsTo(Course::class);
     }
- 
+
     // /**
     //  * Get the quizzes attached to this lesson.
     //  *
@@ -104,7 +104,7 @@ class Lesson extends Model implements Auditable
     // {
     //     return $this->hasMany(Quiz::class);
     // }
- 
+
     /**
      * Get the user who created this lesson.
      *
@@ -114,7 +114,7 @@ class Lesson extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'created_by');
     }
- 
+
     /**
      * Get the user who last updated this lesson.
      *
@@ -124,7 +124,7 @@ class Lesson extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
- 
+
     /**
      * Get the user who deleted this lesson.
      *
@@ -134,7 +134,7 @@ class Lesson extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'deleted_by');
     }
- 
+
     /**
      * Get the user who restored this lesson.
      *
@@ -144,7 +144,7 @@ class Lesson extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'restored_by');
     }
- 
+
     /**
      * Determine whether the lesson is visible to learners.
      */
@@ -152,7 +152,7 @@ class Lesson extends Model implements Auditable
     {
         return $this->published_at !== null && $this->published_at->isPast();
     }
- 
+
     /**
      * Get the data captured in audit log snapshots.
      *

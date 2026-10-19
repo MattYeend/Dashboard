@@ -5,12 +5,12 @@ import { nullIfBlank, numberOrNull } from '@/lib/forms';
 import LessonForm from '@/pages/Lessons/components/LessonForm.vue';
 import { index as lessonsIndex, store } from '@/routes/lessons';
 import type { CourseOption } from '@/types';
- 
+
 const props = defineProps<{
     courses: CourseOption[];
     selectedCourseId: number | null;
 }>();
- 
+
 defineOptions({
     layout: {
         breadcrumbs: [
@@ -19,7 +19,7 @@ defineOptions({
         ],
     },
 });
- 
+
 const form = useForm({
     course_id: props.selectedCourseId,
     title: '',
@@ -30,27 +30,25 @@ const form = useForm({
     is_preview: false,
     published_at: '',
 });
- 
+
 /**
  * Submit the form, converting blank optional fields to null.
  */
 function submit(): void {
-    form
-        .transform((data) => ({
-            ...data,
-            summary: nullIfBlank(data.summary),
-            content: nullIfBlank(data.content),
-            video_url: nullIfBlank(data.video_url),
-            duration_minutes: numberOrNull(data.duration_minutes),
-            published_at: nullIfBlank(data.published_at),
-        }))
-        .post(store().url);
+    form.transform((data) => ({
+        ...data,
+        summary: nullIfBlank(data.summary),
+        content: nullIfBlank(data.content),
+        video_url: nullIfBlank(data.video_url),
+        duration_minutes: numberOrNull(data.duration_minutes),
+        published_at: nullIfBlank(data.published_at),
+    })).post(store().url);
 }
 </script>
- 
+
 <template>
     <Head title="Create lesson" />
- 
+
     <form class="mx-auto grid max-w-3xl gap-6 p-4" @submit.prevent="submit">
         <LessonForm
             v-model:course-id="form.course_id"
@@ -64,9 +62,11 @@ function submit(): void {
             :errors="form.errors"
             :courses="courses"
         />
- 
+
         <div class="flex gap-2">
-            <Button type="submit" :disabled="form.processing">Create lesson</Button>
+            <Button type="submit" :disabled="form.processing"
+                >Create lesson</Button
+            >
             <Button as-child variant="outline">
                 <Link :href="lessonsIndex().url">Cancel</Link>
             </Button>

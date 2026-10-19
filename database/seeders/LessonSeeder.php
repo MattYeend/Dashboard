@@ -1,9 +1,9 @@
 <?php
 
 declare(strict_types=1);
- 
+
 namespace Database\Seeders;
- 
+
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Organisation;
@@ -18,7 +18,7 @@ class LessonSeeder extends Seeder
     {
         $organisation = Organisation::query()->oldest('id')->firstOrFail();
         $organisation->makeCurrent();
- 
+
         $lessonsByCourse = [
             'introduction-to-laravel' => [
                 ['Installing Laravel', 'installing-laravel', 'Create a new project with Composer and run it locally.', 15, true],
@@ -44,14 +44,14 @@ class LessonSeeder extends Seeder
                 ['Logging and audit trails', 'logging-and-audit-trails', 'Record who did what, and when.', 20, false],
             ],
         ];
- 
+
         foreach ($lessonsByCourse as $courseSlug => $lessons) {
             $course = Course::query()->where('slug', $courseSlug)->first();
- 
+
             if ($course === null) {
                 continue;
             }
- 
+
             foreach ($lessons as $index => [$title, $slug, $summary, $minutes, $isPreview]) {
                 Lesson::updateOrCreate(
                     ['course_id' => $course->id, 'slug' => $slug],
@@ -59,7 +59,7 @@ class LessonSeeder extends Seeder
                         'organisation_id' => $organisation->id,
                         'title' => $title,
                         'summary' => $summary,
-                        'content' => '<p>' . $summary . '</p>',
+                        'content' => '<p>'.$summary.'</p>',
                         'position' => $index + 1,
                         'duration_minutes' => $minutes,
                         'is_preview' => $isPreview,

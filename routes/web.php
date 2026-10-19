@@ -932,7 +932,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/reorder', [LessonController::class, 'reorder'])->name('reorder');
             Route::post('/{id}/restore', [LessonController::class, 'restore'])->name('restore');
             Route::delete('/{id}/force', [LessonController::class, 'forceDelete'])->name('force-delete');
-        
+
             Route::get('/', [LessonController::class, 'index'])->name('index');
             Route::get('/create', [LessonController::class, 'create'])->name('create');
             Route::post('/', [LessonController::class, 'store'])->name('store');

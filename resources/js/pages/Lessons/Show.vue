@@ -8,12 +8,15 @@ import LessonNavigation from '@/pages/Lessons/components/LessonNavigation.vue';
 import LessonSettingsDetails from '@/pages/Lessons/components/LessonSettingsDetails.vue';
 import { edit, index as lessonsIndex } from '@/routes/lessons';
 import type { Lesson, LessonNeighbour } from '@/types';
- 
+
 const props = defineProps<{
     lesson: Lesson;
-    navigation: { previous: LessonNeighbour | null; next: LessonNeighbour | null };
+    navigation: {
+        previous: LessonNeighbour | null;
+        next: LessonNeighbour | null;
+    };
 }>();
- 
+
 defineOptions({
     layout: {
         breadcrumbs: [
@@ -23,10 +26,10 @@ defineOptions({
     },
 });
 </script>
- 
+
 <template>
     <Head :title="lesson.title" />
- 
+
     <div class="mx-auto grid max-w-3xl gap-6 p-4">
         <div class="flex items-center justify-between">
             <h1 class="text-xl text-gray-300">{{ lesson.title }}</h1>
@@ -39,11 +42,14 @@ defineOptions({
                 </Button>
             </div>
         </div>
- 
+
         <LessonBasicDetails :lesson="lesson" />
         <LessonContentDetails :lesson="lesson" />
         <LessonSettingsDetails :lesson="lesson" />
         <LessonAuditDetails :lesson="lesson" />
-        <LessonNavigation :previous="navigation.previous" :next="navigation.next" />
+        <LessonNavigation
+            :previous="navigation.previous"
+            :next="navigation.next"
+        />
     </div>
 </template>

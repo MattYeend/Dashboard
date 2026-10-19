@@ -4,7 +4,7 @@ defineProps<{
     title: string;
 }>();
 </script>
- 
+
 <template>
     <div v-if="embedUrl" class="aspect-video w-full border border-gray-500">
         <iframe

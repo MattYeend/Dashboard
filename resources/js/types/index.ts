@@ -1272,7 +1272,7 @@ export interface Course {
     updater?: { name: string };
     deleter?: { name: string };
     restorer?: { name: string };
-    lessons?: Lesson[]
+    lessons?: Lesson[];
 }
 
 export interface DifficultyOption {
@@ -1309,12 +1309,12 @@ export interface Lesson {
     deleter?: { name: string };
     restorer?: { name: string };
 }
- 
+
 export interface CourseOption {
     id: number;
     title: string;
 }
- 
+
 export interface LessonNeighbour {
     id: number;
     title: string;

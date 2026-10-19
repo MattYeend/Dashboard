@@ -32,7 +32,7 @@ return new class extends Migration
             $table->timestamp('restored_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
-        
+
             $table->unique(['course_id', 'slug']);
             $table->index('published_at');
             $table->index('created_at');

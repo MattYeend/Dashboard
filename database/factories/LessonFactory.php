@@ -26,7 +26,7 @@ class LessonFactory extends Factory
             'organisation_id' => Organisation::current()?->id ?? Organisation::query()->oldest('id')->value('id'),
             'course_id' => Course::factory(),
             'title' => 'Routing basics',
-            'slug' => 'routing-basics-' . Str::lower(Str::random(6)),
+            'slug' => 'routing-basics-'.Str::lower(Str::random(6)),
             'summary' => 'How Laravel maps URLs to controllers.',
             'content' => '<p>Routes are defined in <code>routes/web.php</code>.</p>',
             'position' => 1,
@@ -43,7 +43,7 @@ class LessonFactory extends Factory
     {
         return $this->state(['deleted_at' => now()]);
     }
-    
+
     /**
      * Indicate that the lesson is a free preview.
      */

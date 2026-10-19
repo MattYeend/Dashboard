@@ -1,9 +1,9 @@
 <?php
- 
+
 declare(strict_types=1);
- 
+
 namespace App\Services\Lessons;
- 
+
 use App\Models\Lesson;
 use Illuminate\Support\Facades\DB;
 
@@ -18,18 +18,18 @@ class PositionService
             ->where('course_id', $courseId)
             ->lockForUpdate()
             ->max('position');
- 
+
         return ((int) $max) + 1;
     }
- 
+
     /**
      * Rewrite positions to follow the given id order.
      *
-     * @param array<int, int> $orderedIds
+     * @param  array<int, int>  $orderedIds
      */
     public function reorder(
-        int $courseId, 
-        array $orderedIds, 
+        int $courseId,
+        array $orderedIds,
         int $actorId
     ): void {
         DB::transaction(function () use ($courseId, $orderedIds, $actorId): void {

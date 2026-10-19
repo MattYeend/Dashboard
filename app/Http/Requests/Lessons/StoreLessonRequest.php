@@ -10,7 +10,7 @@ use App\Services\Lessons\VideoUrlService;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
- 
+
 /**
  * Validates input when creating a lesson.
  */
@@ -23,7 +23,7 @@ class StoreLessonRequest extends FormRequest
     {
         return $this->user()?->can('create', Lesson::class) ?? false;
     }
- 
+
     /**
      * Get the validation rules.
      *
@@ -42,7 +42,7 @@ class StoreLessonRequest extends FormRequest
             'published_at' => $this->publishedAtRules(),
         ];
     }
- 
+
     /**
      * Get the custom validation messages.
      *
@@ -73,7 +73,7 @@ class StoreLessonRequest extends FormRequest
                 ->whereNull('deleted_at'),
         ];
     }
- 
+
     /**
      * Rules for the title field.
      *
@@ -83,7 +83,7 @@ class StoreLessonRequest extends FormRequest
     {
         return ['required', 'string', 'max:255'];
     }
- 
+
     /**
      * Rules for the summary field.
      *
@@ -93,7 +93,7 @@ class StoreLessonRequest extends FormRequest
     {
         return ['nullable', 'string', 'max:500'];
     }
- 
+
     /**
      * Rules for the content field.
      *
@@ -103,7 +103,7 @@ class StoreLessonRequest extends FormRequest
     {
         return ['nullable', 'string', 'max:200000'];
     }
- 
+
     /**
      * Rules for the video URL field.
      *
@@ -113,7 +113,7 @@ class StoreLessonRequest extends FormRequest
     {
         return ['nullable', 'url:https', 'max:2048'];
     }
- 
+
     /**
      * Rules for the duration field.
      *
@@ -123,7 +123,7 @@ class StoreLessonRequest extends FormRequest
     {
         return ['nullable', 'integer', 'min:1', 'max:1440'];
     }
- 
+
     /**
      * Rules for the preview flag.
      *
@@ -133,7 +133,7 @@ class StoreLessonRequest extends FormRequest
     {
         return ['boolean'];
     }
- 
+
     /**
      * Rules for the published at field.
      *
@@ -143,7 +143,7 @@ class StoreLessonRequest extends FormRequest
     {
         return ['nullable', 'date'];
     }
- 
+
     /**
      * Get the validation hooks to run after the base rules.
      *
