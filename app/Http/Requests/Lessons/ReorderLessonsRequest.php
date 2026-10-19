@@ -9,7 +9,6 @@ use App\Models\Lesson;
 use App\Models\Organisation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
 /**
  * Validates a lesson reorder request.
@@ -21,9 +20,10 @@ class ReorderLessonsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $course = Course::query()->find($this->input('course_id'));
+        $course = $this->course();
 
-        return $course !== null && ($this->user()?->can('update', $course) ?? false);
+        return $course !== null
+            && ($this->user()?->can('reorder', [Lesson::class, $course]) ?? false);
     }
 
     /**
@@ -47,31 +47,10 @@ class ReorderLessonsRequest extends FormRequest
     }
 
     /**
-     * Ensure the ids are exactly the lessons in the course.
-     *
-     * @return array<int, callable>
+     * Resolve the course being reordered, scoped to the current organisation.
      */
-    public function after(): array
+    public function course(): ?Course
     {
-        return [
-            function (Validator $validator): void {
-                if ($validator->errors()->isNotEmpty()) {
-                    return;
-                }
-
-                $existing = Lesson::query()
-                    ->where('course_id', $this->integer('course_id'))
-                    ->pluck('id')
-                    ->sort()
-                    ->values()
-                    ->all();
-
-                $submitted = collect($this->input('lesson_ids'))->map(fn ($id) => (int) $id)->sort()->values()->all();
-
-                if ($existing !== $submitted) {
-                    $validator->errors()->add('lesson_ids', 'The lesson order must include every lesson in the course.');
-                }
-            },
-        ];
+        return Course::query()->find($this->integer('course_id'));
     }
 }

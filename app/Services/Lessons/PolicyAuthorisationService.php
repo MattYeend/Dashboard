@@ -85,7 +85,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('update lessons')
+        return $actor->can('edit lessons')
             || $this->activeChecker->isPublished($target);
     }
 
@@ -98,7 +98,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('update lessons')
+        return $actor->can('edit lessons')
             && $this->activeChecker->isActive($target);
     }
 
@@ -108,7 +108,7 @@ class PolicyAuthorisationService
     public function canReorder(User $actor, Course $course): bool
     {
         return $this->belongsToCurrentOrganisation($course)
-            && $actor->can('update lessons');
+            && $actor->can('edit lessons');
     }
 
     /**
@@ -146,11 +146,12 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $this->activeChecker->canUserPerformAction(
-            $actor,
-            'restoreOrForceDelete',
-            $target
-        );
+        return $actor->can('force delete lessons')
+            && $this->activeChecker->canUserPerformAction(
+                $actor,
+                'restoreOrForceDelete',
+                $target
+            );
     }
 
     /**

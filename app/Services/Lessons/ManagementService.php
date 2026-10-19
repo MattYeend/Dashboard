@@ -178,7 +178,7 @@ class ManagementService
 
             if ($ids->count() !== $activeIds->count() || $ids->diff($activeIds)->isNotEmpty()) {
                 throw ValidationException::withMessages([
-                    'ordered_ids' => 'The order must contain every lesson in the course exactly once.',
+                    'lesson_ids' => 'The order must contain every lesson in the course exactly once.',
                 ]);
             }
 
@@ -188,7 +188,7 @@ class ManagementService
                 Log::ACTION_REORDER_LESSON,
                 $actor,
                 $course,
-                ['after' => ['ordered_ids' => $ids->all()]],
+                ['after' => ['lesson_ids' => $ids->all()]],
             );
         });
     }

@@ -55,17 +55,19 @@ class DataPreparationService
     }
 
     /**
-     * Prepare lesson data for update.
+     * Prepare lesson data for update. Call inside a transaction, as moving a
+     * lesson to another course reads the next position with a row lock.
      *
-     * The course, organisation and position are deliberately never updated
-     * here. Position changes go through PositionService::reorder().
+     * Position only changes here when the lesson moves course (it goes to the
+     * end of the new course). Manual reordering goes through
+     * PositionService::reorder().
      *
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      *
      * @throws InvalidArgumentException
      */
-    public function prepareForUpdate(array $data): array
+    public function prepareForUpdate(array $data, Lesson $lesson): array
     {
         $payload = [];
 
@@ -75,6 +77,31 @@ class DataPreparationService
 
         if (! empty($data['slug'])) {
             $payload['slug'] = $data['slug'];
+        }
+
+        if (
+            array_key_exists('course_id', $data)
+            && (int) $data['course_id'] !== $lesson->course_id
+        ) {
+            $course = Course::query()->findOrFail((int) $data['course_id']);
+
+            // Defence in depth behind the Form Request: never cross tenants.
+            if ($course->organisation_id !== $lesson->organisation_id) {
+                throw new InvalidArgumentException('A lesson cannot be moved to another organisation.');
+            }
+
+            $payload['course_id'] = $course->id;
+            $payload['position'] = $this->positionService->next($course->id);
+
+            // Keep the existing slug unless it collides in the new course.
+            if (empty($data['slug'])) {
+                $payload['slug'] = $this->slugService->generateUnique(
+                    Lesson::class,
+                    $lesson->slug,
+                    $lesson->id,
+                    scope: ['course_id' => $course->id],
+                );
+            }
         }
 
         if (array_key_exists('summary', $data)) {

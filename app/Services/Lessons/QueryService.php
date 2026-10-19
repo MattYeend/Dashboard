@@ -6,6 +6,7 @@ namespace App\Services\Lessons;
 
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Organisation;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -75,7 +76,7 @@ class QueryService
     public function courseOptions(User $actor): array
     {
         return Course::query()
-            ->where('organisation_id', $actor->organisation_id)
+            ->where('organisation_id', Organisation::current()?->id)
             ->when(
                 ! $this->isEditor($actor),
                 fn (Builder $query) => $query
@@ -100,7 +101,7 @@ class QueryService
     protected function buildQuery(User $actor, array $filters): Builder
     {
         $query = Lesson::query()
-            ->where('organisation_id', $actor->organisation_id)
+            ->where('organisation_id', Organisation::current()?->id)
             ->with([
                 'course:id,title,published_at',
                 'creator',
@@ -205,7 +206,7 @@ class QueryService
      */
     private function isEditor(User $actor): bool
     {
-        return $actor->can('update lessons');
+        return $actor->can('edit lessons');
     }
 
     /**
@@ -255,7 +256,7 @@ class QueryService
     protected function neighbourQuery(User $actor, Lesson $lesson): Builder
     {
         $query = Lesson::query()
-            ->where('organisation_id', $actor->organisation_id)
+            ->where('organisation_id', Organisation::current()?->id)
             ->where('course_id', $lesson->course_id);
 
         if (! $this->isEditor($actor)) {

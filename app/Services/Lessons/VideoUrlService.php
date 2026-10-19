@@ -51,16 +51,16 @@ class VideoUrlService
             return 'https://www.youtube-nocookie.com/embed/'.$m[1];
         }
 
-        if (str_contains($host, 'youtube.com')) {
+        if (in_array($host, ['youtube.com', 'www.youtube.com'], true)) {
             parse_str($parts['query'] ?? '', $query);
             $id = $query['v'] ?? '';
 
-            return preg_match('/^[A-Za-z0-9_-]{11}$/', (string) $id)
+            return is_string($id) && preg_match('/^[A-Za-z0-9_-]{11}$/', $id) === 1
                 ? 'https://www.youtube-nocookie.com/embed/'.$id
                 : null;
         }
 
-        if (str_contains($host, 'vimeo.com') && preg_match('#^/(\d+)$#', $path, $m)) {
+        if (in_array($host, ['vimeo.com', 'www.vimeo.com'], true) && preg_match('#^/(\d+)$#', $path, $m) === 1) {
             return 'https://player.vimeo.com/video/'.$m[1];
         }
 

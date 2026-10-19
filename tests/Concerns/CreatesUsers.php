@@ -120,4 +120,69 @@ trait CreatesUsers
 
         $user->unsetRelation('roles')->unsetRelation('permissions');
     }
+
+    /**
+     * A learner can only view lessons.
+     */
+    public function learnerUser(): User
+    {
+        return $this->userWithPermissions(['view any lessons', 'view lessons']);
+    }
+
+    /**
+     * An editor can manage lessons but is not an admin.
+     */
+    public function lessonEditorUser(): User
+    {
+        return $this->userWithPermissions([
+            'view any lessons',
+            'view lessons',
+            'create lessons',
+            'edit lessons',
+            'delete lessons',
+            'restore lessons',
+        ]);
+    }
+
+    /**
+     * Run a callback with another organisation as the current tenant,
+     * then restore the previous tenant and permissions team.
+     *
+     * @template T
+     *
+     * @param  callable(Organisation): T  $callback
+     * @return T
+     */
+    public function inOrganisation(Organisation $organisation, callable $callback): mixed
+    {
+        $previous = Organisation::current();
+        $previousTeamId = getPermissionsTeamId();
+
+        $organisation->makeCurrent();
+        setPermissionsTeamId($organisation->id);
+
+        try {
+            return $callback($organisation);
+        } finally {
+            if ($previous !== null) {
+                $previous->makeCurrent();
+            } else {
+                Organisation::forgetCurrent();
+            }
+
+            setPermissionsTeamId($previousTeamId);
+        }
+    }
+
+    /**
+     * Create (or fetch) a second organisation.
+     */
+    public function otherOrganisation(): Organisation
+    {
+        return Organisation::query()->firstOrCreate(
+            ['slug' => 'organisation-b'],
+            ['name' => 'Organisation B'],
+        );
+    }
 }
+

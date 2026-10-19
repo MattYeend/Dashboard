@@ -9,6 +9,7 @@ use App\Models\Lesson;
 use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
+use Illuminate\Support\Facades\DB;
 
 class UpdaterService
 {
@@ -37,26 +38,28 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($lesson);
 
-        $lessonData = $this->dataPreparation->prepareForUpdate($data);
+        return DB::transaction(function () use ($lesson, $data, $actor, $before, $updatedBy): Lesson {
+            $lessonData = $this->dataPreparation->prepareForUpdate($data, $lesson);
 
-        return $this->updateResource->handle(
-            $lesson,
-            $lessonData,
-            function (Lesson $lesson) use ($actor, $before, $updatedBy): void {
-                $lesson->forceFill([
-                    'updated_by' => $updatedBy,
-                ])->save();
-                $fresh = $lesson->fresh();
+            return $this->updateResource->handle(
+                $lesson,
+                $lessonData,
+                function (Lesson $lesson) use ($actor, $before, $updatedBy): void {
+                    $lesson->forceFill([
+                        'updated_by' => $updatedBy,
+                    ])->save();
+                    $fresh = $lesson->fresh();
 
-                $this->auditLogService->record(
-                    Log::ACTION_UPDATE_LESSON,
-                    $actor,
-                    $fresh,
-                    [
-                        'before' => $before,
-                        'after' => $this->auditLogService->snapshot($fresh),
-                    ],
-                );
-            });
+                    $this->auditLogService->record(
+                        Log::ACTION_UPDATE_LESSON,
+                        $actor,
+                        $fresh,
+                        [
+                            'before' => $before,
+                            'after' => $this->auditLogService->snapshot($fresh),
+                        ],
+                    );
+                });
+        });
     }
 }

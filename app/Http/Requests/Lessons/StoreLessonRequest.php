@@ -153,7 +153,13 @@ class StoreLessonRequest extends FormRequest
     {
         return [
             function (Validator $validator): void {
-                if (! app(VideoUrlService::class)->isAllowed($this->input('video_url'))) {
+                $url = $this->input('video_url');
+
+                if ($validator->errors()->has('video_url') || ! is_string($url)) {
+                    return;
+                }
+
+                if (! app(VideoUrlService::class)->isAllowed($url)) {
                     $validator->errors()->add('video_url', 'Videos can only be linked from YouTube or Vimeo.');
                 }
             },

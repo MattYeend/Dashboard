@@ -295,7 +295,7 @@ class LessonController extends Controller
 
         $this->management->reorder(
             $course,
-            $request->validated('ordered_ids'),
+            $request->validated('lesson_ids'),
             $request->user()
         );
 

@@ -927,6 +927,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
         Route::prefix('lessons')->name('lessons.')->group(function () {
+            Route::get('/export', [LessonController::class, 'export'])->name('export');
             Route::post('/bulk/delete', [LessonController::class, 'bulkDelete'])->name('bulk.delete');
             Route::post('/bulk/restore', [LessonController::class, 'bulkRestore'])->name('bulk.restore');
             Route::post('/reorder', [LessonController::class, 'reorder'])->name('reorder');

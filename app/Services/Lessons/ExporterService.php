@@ -6,6 +6,7 @@ namespace App\Services\Lessons;
 
 use App\Models\Lesson;
 use App\Models\Log;
+use App\Models\Organisation;
 use App\Models\User;
 use App\Services\AuditLogService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -27,7 +28,7 @@ class ExporterService
      */
     public function export(array $filters, User $actor): StreamedResponse
     {
-        $query = Lesson::query()->where('organisation_id', $actor->organisation_id);
+        $query = Lesson::query()->where('organisation_id', Organisation::current()?->id);
 
         if (($filters['trashed'] ?? null) === 'with') {
             $query->withTrashed();
