@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Lessons;
 
+use App\Models\Course;
 use App\Models\Lesson;
 use Illuminate\Support\Facades\DB;
 
@@ -14,12 +15,9 @@ class PositionService
      */
     public function next(int $courseId): int
     {
-        $max = Lesson::withTrashed()
-            ->where('course_id', $courseId)
-            ->lockForUpdate()
-            ->max('position');
+        Course::whereKey($courseId)->lockForUpdate()->first();
 
-        return ((int) $max) + 1;
+        return (Lesson::where('course_id', $courseId)->max('position') ?? 0) + 1;
     }
 
     /**
