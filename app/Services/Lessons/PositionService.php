@@ -17,7 +17,9 @@ class PositionService
     {
         Course::whereKey($courseId)->lockForUpdate()->first();
 
-        return (Lesson::where('course_id', $courseId)->max('position') ?? 0) + 1;
+        return (Lesson::withTrashed()
+            ->where('course_id', $courseId)
+            ->max('position') ?? 0) + 1;
     }
 
     /**
