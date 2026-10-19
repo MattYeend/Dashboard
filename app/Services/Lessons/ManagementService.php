@@ -170,21 +170,22 @@ class ManagementService
             ->unique()
             ->values();
 
-        $activeIds = Lesson::query()
-            ->where('course_id', $course->id)
-            ->pluck('id');
-
-        if ($ids->count() !== $activeIds->count() || $ids->diff($activeIds)->isNotEmpty()) {
-            throw ValidationException::withMessages([
-                'ordered_ids' => 'The order must contain every lesson in the course exactly once.',
-            ]);
-        }
-
         DB::transaction(function () use ($course, $ids, $actor): void {
+            $activeIds = Lesson::query()
+                ->where('course_id', $course->id)
+                ->lockForUpdate()
+                ->pluck('id');
+
+            if ($ids->count() !== $activeIds->count() || $ids->diff($activeIds)->isNotEmpty()) {
+                throw ValidationException::withMessages([
+                    'ordered_ids' => 'The order must contain every lesson in the course exactly once.',
+                ]);
+            }
+
             $this->positionService->reorder($course->id, $ids->all(), $actor->id);
 
             $this->auditLogService->record(
-                Log::ACTION_REORDER_LESSON,
+                Log::ACTION_REORDER_LESSONS,
                 $actor,
                 $course,
                 ['after' => ['ordered_ids' => $ids->all()]],
