@@ -50,6 +50,7 @@ class DatabaseSeeder extends Seeder
             PlanSeeder::class,
 
             CourseSeeder::class,
+            LessonSeeder::class,
 
             CategorySeeder::class,
             PostSeeder::class,
