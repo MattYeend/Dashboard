@@ -185,7 +185,7 @@ class ManagementService
             $this->positionService->reorder($course->id, $ids->all(), $actor->id);
 
             $this->auditLogService->record(
-                Log::ACTION_REORDER_LESSONS,
+                Log::ACTION_REORDER_LESSON,
                 $actor,
                 $course,
                 ['after' => ['ordered_ids' => $ids->all()]],

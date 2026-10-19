@@ -904,6 +904,18 @@ class Log extends Model implements Auditable
 
     public const ACTION_ASSIGN_COURSE = 399;
 
+    // Lesson Management
+    public const ACTION_CREATE_LESSON = 400;
+    public const ACTION_UPDATE_LESSON = 401;
+    public const ACTION_DELETE_LESSON = 402;
+    public const ACTION_RESTORE_LESSON = 403;
+    public const ACTION_FORCE_DELETE_LESSON = 404;
+    public const ACTION_BULK_DELETE_LESSON = 405;
+    public const ACTION_BULK_RESTORE_LESSON = 406;
+    public const ACTION_IMPORT_LESSON = 407;
+    public const ACTION_EXPORT_LESSON = 408;
+    public const ACTION_REORDER_LESSON = 409;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed

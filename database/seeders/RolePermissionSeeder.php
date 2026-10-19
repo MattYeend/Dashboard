@@ -492,6 +492,17 @@ class RolePermissionSeeder extends Seeder
             'force delete course',
             'import course',
             'export course',
+
+            // Lessons
+            'view any lessons',
+            'view lessons',
+            'create lessons',
+            'edit lessons',
+            'delete lessons',
+            'restore lessons',
+            'force delete lessons',
+            'import lessons',
+            'export lessons',
         ];
 
         foreach ($permissions as $permission) {
@@ -863,6 +874,15 @@ class RolePermissionSeeder extends Seeder
             'force delete course',
             'import course',
             'export course',
+            'view any lessons',
+            'view lessons',
+            'create lessons',
+            'edit lessons',
+            'delete lessons',
+            'restore lessons',
+            'force delete lessons',
+            'import lessons',
+            'export lessons',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -1152,6 +1172,11 @@ class RolePermissionSeeder extends Seeder
             'create course',
             'edit course',
             'export course',
+            'view any lessons',
+            'view lessons',
+            'create lessons',
+            'edit lessons',
+            'export lessons',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1345,6 +1370,10 @@ class RolePermissionSeeder extends Seeder
             'view course',
             'create course',
             'edit course',
+            'view any lessons',
+            'view lessons',
+            'create lessons',
+            'edit lessons',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -1407,6 +1436,8 @@ class RolePermissionSeeder extends Seeder
             'download attachments',
             'view any course',
             'view course',
+            'view any lessons',
+            'view lessons',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -1527,6 +1558,8 @@ class RolePermissionSeeder extends Seeder
             'download attachments',
             'view any course',
             'view course',
+            'view any lessons',
+            'view lessons',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
 
@@ -1779,6 +1812,8 @@ class RolePermissionSeeder extends Seeder
             'download attachments',
             'view any course',
             'view course',
+            'view any lessons',
+            'view lessons',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -1885,6 +1920,9 @@ class RolePermissionSeeder extends Seeder
             'view any course',
             'view course',
             'export course',
+            'view any lessons',
+            'view lessons',
+            'export lessons',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
@@ -1945,6 +1983,8 @@ class RolePermissionSeeder extends Seeder
             'change own password',
             'view any course',
             'view course',
+            'view any lessons',
+            'view lessons',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -2045,5 +2085,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Attachments');
         $this->command->info('- Organisations');
         $this->command->info('- Courses');
+        $this->command->info('- Lessons');
     }
 }

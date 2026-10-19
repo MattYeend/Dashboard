@@ -25,6 +25,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceItemController;
 use App\Http\Controllers\InvoiceStatusController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\LessonController;
 use App\Http\Controllers\Logs\LogController;
 use App\Http\Controllers\Logs\LogExportController;
 use App\Http\Controllers\NotificationBroadcastController;
@@ -923,6 +924,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{course}/edit', [CourseController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{course}', [CourseController::class, 'update'])->name('update');
             Route::delete('/{course}', [CourseController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('lessons')->name('lessons.')->group(function () {
+            Route::post('/bulk/delete', [LessonController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [LessonController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/reorder', [LessonController::class, 'reorder'])->name('reorder');
+            Route::post('/{id}/restore', [LessonController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [LessonController::class, 'forceDelete'])->name('force-delete');
+        
+            Route::get('/', [LessonController::class, 'index'])->name('index');
+            Route::get('/create', [LessonController::class, 'create'])->name('create');
+            Route::post('/', [LessonController::class, 'store'])->name('store');
+            Route::get('/{lesson}', [LessonController::class, 'show'])->name('show');
+            Route::get('/{lesson}/edit', [LessonController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{lesson}', [LessonController::class, 'update'])->name('update');
+            Route::delete('/{lesson}', [LessonController::class, 'destroy'])->name('destroy');
         });
     });
 });
