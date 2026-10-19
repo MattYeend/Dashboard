@@ -6,6 +6,7 @@ export interface ResourceTableColumn {
     key: string;
     label: string;
     class?: string;
+    format?: (value: any, row: any) => string;
 }
 
 interface Props {
@@ -44,7 +45,25 @@ function getRowKey(row: T): number | string {
 }
 
 function getCellValue(row: T, key: string): unknown {
-    return (row as Record<string, unknown>)[key];
+    return key
+        .split('.')
+        .reduce<unknown>(
+            (value, part) =>
+                value == null
+                    ? undefined
+                    : (value as Record<string, unknown>)[part],
+            row,
+        );
+}
+
+function renderCell(row: T, column: ResourceTableColumn): string {
+    const value = getCellValue(row, column.key);
+
+    if (column.format) {
+        return column.format(value, row);
+    }
+
+    return value == null || value === '' ? '-' : String(value);
 }
 
 const allSelected = computed({
@@ -138,7 +157,7 @@ watch(
                             class="px-6 py-4 text-sm whitespace-nowrap text-gray-400"
                         >
                             <slot :name="`cell-${column.key}`" :row="row">
-                                {{ getCellValue(row, column.key) ?? '-' }}
+                                {{ renderCell(row, column) }}
                             </slot>
                         </td>
                         <td

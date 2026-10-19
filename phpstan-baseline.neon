@@ -54,7 +54,6 @@ parameters:
 			count: 2
 			path: app/Http/Controllers/ContactController.php
 
-
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany\:\:active\(\)\.$#'
 			identifier: method.notFound
@@ -1574,6 +1573,72 @@ parameters:
 			path: app/Services/Labels/UpdaterService.php
 
 		-
+			message: '#^Strict comparison using \!\=\= between App\\Models\\Course and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Services/Lessons/ActiveCheckerService.php
+
+		-
+			message: '#^Anonymous function should return App\\Models\\Lesson but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Lessons/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Lesson\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Lessons/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Lesson\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Lessons/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Lesson\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Lessons/DeleterService.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: app/Services/Lessons/FormatterService.php
+
+		-
+			message: '#^Method App\\Services\\Lessons\\RestorerService\:\:restore\(\) should return App\\Models\\Lesson but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Lessons/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Lesson\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Lessons/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Lesson\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Lessons/RestorerService.php
+
+		-
+			message: '#^Anonymous function should return App\\Models\\Lesson but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Lessons/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Lesson\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Lessons/UpdaterService.php
+
+		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:likes\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -2790,3 +2855,9 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: app/Traits/Commentable.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: database/factories/LessonFactory.php

@@ -24,8 +24,16 @@ const columns: ResourceTableColumn[] = [
     { key: 'title', label: 'Title' },
     { key: 'course.title', label: 'Course' },
     { key: 'duration_minutes', label: 'Duration (minutes)' },
-    { key: 'published_at', label: 'Published' },
+    { key: 'published_at', label: 'Published', format: formatDateTime },
 ];
+
+function formatDateTime(value: string | null): string {
+    if (!value) {
+        return '-';
+    }
+
+    return new Date(value).toLocaleString();
+}
 </script>
 
 <template>
