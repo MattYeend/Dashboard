@@ -87,15 +87,15 @@ class Course extends Model implements Auditable
         return $this->belongsTo(User::class, 'instructor_id');
     }
 
-    // /**
-    //  * Get the lessons in this course.
-    //  *
-    //  * @return HasMany<Lesson, $this>
-    //  */
-    // public function lessons(): HasMany
-    // {
-    //     return $this->hasMany(Lesson::class)->orderBy('position');
-    // }
+    /**
+     * Get the lessons in this course.
+     *
+     * @return HasMany<Lesson, $this>
+     */
+    public function lessons(): HasMany
+    {
+        return $this->hasMany(Lesson::class)->orderBy('position');
+    }
 
     // /**
     //  * Get the quizzes in this course.
