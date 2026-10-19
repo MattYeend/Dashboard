@@ -99,9 +99,12 @@ class CourseController extends Controller
     ): Response {
         $this->authorize('view', $course);
 
-        $data = $this->query->getById(
-            $request->user(),
-            $course
+        $data = array_merge(
+            $this->query->getById(
+                $request->user(),
+                $course
+            ),
+            ['canEdit' => $request->user()->can('update', $course)],
         );
 
         return Inertia::render('Courses/Show', $data);

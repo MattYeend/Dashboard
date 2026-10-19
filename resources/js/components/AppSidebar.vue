@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/vue3';
 import {
     Archive,
     Bookmark,
+    BookOpen,
     Building2,
     CalendarDays,
     ClipboardList,
@@ -49,6 +50,7 @@ import { index as backupsIndex } from '@/routes/backups';
 import { index as calendarIndex } from '@/routes/calendar';
 import { index as coursesIndex } from '@/routes/courses';
 import { board as dealsBoard } from '@/routes/deals';
+import { index as lessonsIndex } from '@/routes/lessons';
 import { index as notificationBroadcastsIndex } from '@/routes/notification-broadcasts';
 import { show as profileShow } from '@/routes/profile';
 import { index as systemIndex } from '@/routes/system';
@@ -143,6 +145,7 @@ const navGroups: NavGroup[] = [
         title: 'Learning',
         items: [
             { title: 'Courses', href: coursesIndex().url, icon: GraduationCap },
+            { title: 'Lessons', href: lessonsIndex().url, icon: BookOpen },
         ],
     },
     {

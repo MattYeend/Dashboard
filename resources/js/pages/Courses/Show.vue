@@ -11,10 +11,12 @@ import {
 import type { Course } from '@/types';
 import CourseAuditDetails from './components/CourseAuditDetails.vue';
 import CourseBasicDetails from './components/CourseBasicDetails.vue';
+import CourseLessonList from './components/CourseLessonList.vue';
 import CourseSettingsDetails from './components/CourseSettingsDetails.vue';
 
 interface Props {
     course: Course;
+    canEdit: boolean;
 }
 
 const props = defineProps<Props>();
@@ -71,7 +73,7 @@ defineOptions({
                     <Button as-child variant="outline">
                         <Link :href="coursesIndex().url">Back</Link>
                     </Button>
-                    <Button as-child>
+                    <Button v-if="canEdit" as-child>
                         <Link :href="edit(props.course.id).url">Edit</Link>
                     </Button>
                     <button
@@ -87,6 +89,11 @@ defineOptions({
             <div class="space-y-6">
                 <CourseBasicDetails :course="course" />
                 <CourseSettingsDetails :course="course" />
+                <CourseLessonList
+                    :course-id="course.id"
+                    :lessons="course.lessons ?? []"
+                    :can-edit="canEdit"
+                />
                 <CourseAuditDetails :course="course" />
             </div>
         </div>

@@ -114,7 +114,10 @@ class LessonController extends Controller
 
         $data = array_merge(
             $this->query->getById($request->user(), $lesson),
-            ['navigation' => $this->query->neighbours($request->user(), $lesson)],
+            [
+                'navigation' => $this->query->neighbours($request->user(), $lesson),
+                'canEdit' => $request->user()->can('update', $lesson),
+            ],
         );
 
         return Inertia::render('Lessons/Show', $data);
