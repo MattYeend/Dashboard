@@ -207,4 +207,61 @@ class QueryService
     {
         return $actor->can('update lessons');
     }
+
+        /**
+     * Get the data needed to render the create and edit forms.
+     *
+     * @return array<string, mixed>
+     */
+    public function getFormData(User $actor): array
+    {
+        return [
+            'course_options' => $this->courseOptions($actor),
+        ];
+    }
+
+    /**
+     * Get the previous and next lessons in the same course.
+     *
+     * Uses the same visibility rules as the policy, so a learner can never
+     * discover the title of an unpublished lesson or one in an unpublished
+     * course.
+     *
+     * @return array{previous: array{id: int, title: string}|null, next: array{id: int, title: string}|null}
+     */
+    public function neighbours(User $actor, Lesson $lesson): array
+    {
+        $previous = $this->neighbourQuery($actor, $lesson)
+            ->where('position', '<', $lesson->position)
+            ->orderByDesc('position')
+            ->first(['id', 'title']);
+
+        $next = $this->neighbourQuery($actor, $lesson)
+            ->where('position', '>', $lesson->position)
+            ->orderBy('position')
+            ->first(['id', 'title']);
+
+        return [
+            'previous' => $previous ? ['id' => $previous->id, 'title' => $previous->title] : null,
+            'next' => $next ? ['id' => $next->id, 'title' => $next->title] : null,
+        ];
+    }
+
+    /**
+     * Build the base query for neighbouring lessons.
+     *
+     * @return Builder<Lesson>
+     */
+    protected function neighbourQuery(User $actor, Lesson $lesson): Builder
+    {
+        $query = Lesson::query()
+            ->where('organisation_id', $actor->organisation_id)
+            ->where('course_id', $lesson->course_id);
+
+        if (! $this->isEditor($actor)) {
+            $query = $this->filterService->applyPublishedOnly($query);
+        }
+
+        return $query;
+    }
 }
