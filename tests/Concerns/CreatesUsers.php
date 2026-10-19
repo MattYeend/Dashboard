@@ -185,4 +185,3 @@ trait CreatesUsers
         );
     }
 }
-
