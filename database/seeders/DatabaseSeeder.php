@@ -51,6 +51,9 @@ class DatabaseSeeder extends Seeder
 
             CourseSeeder::class,
             LessonSeeder::class,
+            // QuestionSeeder::class,
+            // AnswerSeeder::class,
+            QuizSeeder::class,
 
             CategorySeeder::class,
             PostSeeder::class,
