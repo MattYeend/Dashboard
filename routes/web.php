@@ -43,6 +43,7 @@ use App\Http\Controllers\PipelineStatusController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PlatformReportingController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RegistrationInterestController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SearchController;
@@ -941,6 +942,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{lesson}/edit', [LessonController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{lesson}', [LessonController::class, 'update'])->name('update');
             Route::delete('/{lesson}', [LessonController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('quizzes')->name('quizzes.')->group(function () {
+            Route::post('/bulk/delete', [QuizController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [QuizController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::get('/course-lessons', [QuizController::class, 'courseLessons'])->name('course-lessons');
+            Route::post('/{id}/restore', [QuizController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [QuizController::class, 'forceDelete'])->name('force-delete');
+        
+            Route::get('/', [QuizController::class, 'index'])->name('index');
+            Route::get('/create', [QuizController::class, 'create'])->name('create');
+            Route::post('/', [QuizController::class, 'store'])->name('store');
+            Route::get('/{quiz}', [QuizController::class, 'show'])->name('show');
+            Route::get('/{quiz}/edit', [QuizController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{quiz}', [QuizController::class, 'update'])->name('update');
+            Route::delete('/{quiz}', [QuizController::class, 'destroy'])->name('destroy');
         });
     });
 });

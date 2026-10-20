@@ -925,6 +925,17 @@ class Log extends Model implements Auditable
 
     public const ACTION_REORDER_LESSON = 409;
 
+    // Quiz Management
+    public const ACTION_CREATE_QUIZ = 410;
+    public const ACTION_UPDATE_QUIZ = 411;
+    public const ACTION_DELETE_QUIZ = 412;
+    public const ACTION_RESTORE_QUIZ = 413;
+    public const ACTION_FORCE_DELETE_QUIZ = 414;
+    public const ACTION_BULK_DELETE_QUIZZES = 415;
+    public const ACTION_BULK_RESTORE_QUIZZES = 416;
+    public const ACTION_IMPORT_QUIZ = 417;
+    public const ACTION_EXPORT_QUIZ = 418;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
