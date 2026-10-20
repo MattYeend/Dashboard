@@ -64,8 +64,8 @@ class DataPreparationService
      * @return array<string, mixed>
      */
     public function prepareForUpdate(
-        array $data, 
-        ?int $quizId = null, 
+        array $data,
+        ?int $quizId = null,
         ?string $currentTitle = null
     ): array {
         $allowed = [

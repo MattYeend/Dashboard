@@ -19,9 +19,9 @@ class QuizSeeder extends Seeder
     {
         $organisation = Organisation::query()->oldest('id')->firstOrFail();
         $organisation->makeCurrent();
- 
+
         $attachments = app(QuestionAttachmentService::class);
- 
+
         $quizzes = [
             [
                 'course' => 'introduction-to-laravel',
@@ -55,19 +55,19 @@ class QuizSeeder extends Seeder
                 ],
             ],
         ];
- 
+
         foreach ($quizzes as $data) {
             $course = Course::query()->where('slug', $data['course'])->first();
- 
+
             if ($course === null) {
                 continue;
             }
- 
+
             $lessonId = Lesson::query()
                 ->where('course_id', $course->id)
                 ->where('slug', $data['lesson'])
                 ->value('id');
- 
+
             $quiz = Quiz::updateOrCreate(
                 ['course_id' => $course->id, 'slug' => $data['slug']],
                 [
@@ -81,19 +81,19 @@ class QuizSeeder extends Seeder
                     'published_at' => now()->subDay(),
                 ],
             );
- 
+
             // $questionIds = Question::query()
             //     ->whereIn('prompt', $data['prompts'])
             //     ->pluck('id', 'prompt');
- 
+
             $selections = [];
- 
+
             // foreach ($data['prompts'] as $prompt) {
             //     if (isset($questionIds[$prompt])) {
             //         $selections[] = ['question_id' => $questionIds[$prompt], 'points' => null];
             //     }
             // }
- 
+
             $attachments->sync($quiz, $selections);
         }
     }

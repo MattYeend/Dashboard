@@ -1960,7 +1960,7 @@ class RolePermissionSeeder extends Seeder
             'export lessons',
             'view any quizzes',
             'view quizzes',
-            'export quizzes'
+            'export quizzes',
         ];
         $analyst->givePermissionTo($analystPermissions);
 

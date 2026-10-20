@@ -1,9 +1,9 @@
 <?php
- 
+
 declare(strict_types=1);
- 
+
 namespace App\Models;
- 
+
 use App\Contracts\Auditable;
 use App\Traits\BelongsToOrganisation;
 use Database\Factories\QuizFactory;
@@ -66,13 +66,13 @@ use Illuminate\Support\Carbon;
 ])]
 class Quiz extends Model implements Auditable
 {
-    /** 
-     * @use HasFactory<QuizFactory> 
+    /**
+     * @use HasFactory<QuizFactory>
      */
     use BelongsToOrganisation,
         HasFactory,
         SoftDeletes;
- 
+
     /**
      * Get the attributes that should be cast.
      *
@@ -91,7 +91,7 @@ class Quiz extends Model implements Auditable
             'meta' => 'array',
         ];
     }
- 
+
     /**
      * Get the course this quiz belongs to.
      *
@@ -101,7 +101,7 @@ class Quiz extends Model implements Auditable
     {
         return $this->belongsTo(Course::class);
     }
- 
+
     /**
      * Get the lesson this quiz is attached to, if any.
      *
@@ -111,7 +111,7 @@ class Quiz extends Model implements Auditable
     {
         return $this->belongsTo(Lesson::class);
     }
- 
+
     // /**
     //  * Get the questions in this quiz, in order.
     //  *
@@ -124,7 +124,7 @@ class Quiz extends Model implements Auditable
     //         ->withTimestamps()
     //         ->orderByPivot('position');
     // }
- 
+
     /**
      * Get the user who created this quiz.
      *
@@ -134,7 +134,7 @@ class Quiz extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'created_by');
     }
- 
+
     /**
      * Get the user who last updated this quiz.
      *
@@ -144,7 +144,7 @@ class Quiz extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
- 
+
     /**
      * Get the user who deleted this quiz.
      *
@@ -154,7 +154,7 @@ class Quiz extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'deleted_by');
     }
- 
+
     /**
      * Get the user who restored this quiz.
      *
@@ -164,7 +164,7 @@ class Quiz extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'restored_by');
     }
- 
+
     /**
      * Determine whether the quiz is visible to learners.
      */
@@ -212,7 +212,7 @@ class Quiz extends Model implements Auditable
             && $course->published_at !== null
             && $course->published_at->isPast();
     }
- 
+
     /**
      * Get the data captured in audit log snapshots.
      *

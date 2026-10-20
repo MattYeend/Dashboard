@@ -945,12 +945,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
         Route::prefix('quizzes')->name('quizzes.')->group(function () {
+            Route::get('/export', [QuizController::class, 'export'])->name('export');
+            Route::post('/import', [QuizController::class, 'import'])->name('import');
+            Route::post('/import/preview', [QuizController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [QuizController::class, 'importCommit'])->name('import.commit');
             Route::post('/bulk/delete', [QuizController::class, 'bulkDelete'])->name('bulk.delete');
             Route::post('/bulk/restore', [QuizController::class, 'bulkRestore'])->name('bulk.restore');
             Route::get('/course-lessons', [QuizController::class, 'courseLessons'])->name('course-lessons');
             Route::post('/{id}/restore', [QuizController::class, 'restore'])->name('restore');
             Route::delete('/{id}/force', [QuizController::class, 'forceDelete'])->name('force-delete');
-        
+
             Route::get('/', [QuizController::class, 'index'])->name('index');
             Route::get('/create', [QuizController::class, 'create'])->name('create');
             Route::post('/', [QuizController::class, 'store'])->name('store');

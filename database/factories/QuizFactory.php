@@ -28,7 +28,7 @@ class QuizFactory extends Factory
             'course_id' => Course::factory(),
             'lesson_id' => null,
             'title' => 'Laravel fundamentals check',
-            'slug' => 'laravel-fundamentals-check-' . Str::lower(Str::random(6)),
+            'slug' => 'laravel-fundamentals-check-'.Str::lower(Str::random(6)),
             'description' => '<p>A short check of the basics.</p>',
             'pass_mark_percentage' => 70,
             'shuffle_questions' => false,
@@ -36,7 +36,7 @@ class QuizFactory extends Factory
             'published_at' => now()->subDay(),
         ];
     }
-    
+
     /**
      * Indicate that the quiz is soft deleted.
      */
@@ -44,7 +44,7 @@ class QuizFactory extends Factory
     {
         return $this->state(['deleted_at' => now()]);
     }
-    
+
     /**
      * Indicate that the quiz is an unpublished draft.
      */
@@ -52,7 +52,7 @@ class QuizFactory extends Factory
     {
         return $this->state(['published_at' => null]);
     }
- 
+
     // /**
     //  * Attach the given questions in order.
     //  *
@@ -62,11 +62,11 @@ class QuizFactory extends Factory
     // {
     //     return $this->afterCreating(function (Quiz $quiz) use ($questions): void {
     //         $payload = [];
-    
+
     //         foreach ($questions as $index => $question) {
     //             $payload[$question->id] = ['position' => $index + 1];
     //         }
-    
+
     //         $quiz->questions()->sync($payload);
     //     });
     // }

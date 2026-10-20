@@ -1335,7 +1335,7 @@ export interface QuizQuestion {
     position: number;
     // answers: Answer[];
 }
- 
+
 export interface Quiz {
     id: number;
     organisation_id: number;
@@ -1363,7 +1363,7 @@ export interface Quiz {
     deleter?: { id: number; name: string } | null;
     restorer?: { id: number; name: string } | null;
 }
- 
+
 export interface QuestionOption {
     id: number;
     prompt: string;
@@ -1371,7 +1371,7 @@ export interface QuestionOption {
     type_label: string;
     points: number;
 }
- 
+
 export interface LessonOption {
     id: number;
     title: string;
