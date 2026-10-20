@@ -73,6 +73,12 @@ parameters:
 			path: app/Http/Controllers/OrganisationController.php
 
 		-
+			message: '#^Relation ''questions'' is not found in App\\Models\\Quiz model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Http/Controllers/QuizController.php
+
+		-
 			message: '#^Method App\\Http\\Requests\\Settings\\PasswordUpdateRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
 			identifier: return.type
 			count: 1
@@ -2305,6 +2311,72 @@ parameters:
 			path: app/Services/Posts/UpdaterService.php
 
 		-
+			message: '#^Method App\\Services\\Quizzes\\CreatorService\:\:create\(\) should return App\\Models\\Quiz but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Quizzes/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Quiz\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Quizzes/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Quiz\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Quizzes/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Quiz\:\:\$questions\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Services/Quizzes/FormatterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Quiz\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Quizzes/FormatterService.php
+
+		-
+			message: '#^Relation ''questions'' is not found in App\\Models\\Quiz model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Services/Quizzes/QueryService.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Quiz\:\:questions\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/Quizzes/QuestionAttachmentService.php
+
+		-
+			message: '#^Method App\\Services\\Quizzes\\RestorerService\:\:restore\(\) should return App\\Models\\Quiz but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Quizzes/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Quiz\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Quizzes/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Quizzes\\UpdaterService\:\:update\(\) should return App\\Models\\Quiz but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Quizzes/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Quiz\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Quizzes/UpdaterService.php
+
+		-
 			message: '#^Method App\\Services\\RegistrationInterests\\CreatorService\:\:create\(\) should return App\\Models\\RegistrationInterest but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
@@ -2861,3 +2933,9 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 1
 			path: database/factories/LessonFactory.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: database/factories/QuizFactory.php

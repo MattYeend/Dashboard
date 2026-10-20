@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Contracts\Auditable;
 use App\Traits\BelongsToOrganisation;
+use Carbon\CarbonInterface;
 use Database\Factories\QuizFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -37,11 +38,11 @@ use Illuminate\Support\Carbon;
  * @property int|null $updated_by
  * @property int|null $deleted_by
  * @property int|null $restored_by
- * @property Carbon|null $restored_at
+ * @property CarbonInterface|null $restored_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
- * @property-read Course $course
+ * @property CarbonInterface|null $deleted_at
+ * @property-read Course|null $course
  * @property-read Lesson|null $lesson
  */
 #[Fillable([
@@ -60,9 +61,6 @@ use Illuminate\Support\Carbon;
     'meta',
     'created_by',
     'updated_by',
-    'deleted_by',
-    'restored_by',
-    'restored_at',
 ])]
 class Quiz extends Model implements Auditable
 {
