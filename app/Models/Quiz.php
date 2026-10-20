@@ -8,13 +8,14 @@ use App\Contracts\Auditable;
 use App\Traits\BelongsToOrganisation;
 use Database\Factories\QuizFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
- 
+
 /**
  * A quiz attached to a course and optionally a lesson.
  *
@@ -170,6 +171,46 @@ class Quiz extends Model implements Auditable
     public function isPublished(): bool
     {
         return $this->published_at !== null && $this->published_at->isPast();
+    }
+
+    /**
+     * Limit the query to quizzes whose publish date has passed.
+     *
+     * @param  Builder<Quiz>  $query
+     * @return Builder<Quiz>
+     */
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->whereNotNull('published_at')
+            ->where('published_at', '<=', now());
+    }
+
+    /**
+     * Limit the query to published quizzes in published courses.
+     *
+     * @param  Builder<Quiz>  $query
+     * @return Builder<Quiz>
+     */
+    public function scopeVisibleToLearners(Builder $query): Builder
+    {
+        return $query->published()->whereHas('course', function (Builder $course): void {
+            $course->whereNotNull('published_at')
+                ->where('published_at', '<=', now());
+        });
+    }
+
+    /**
+     * Determine whether a learner may see this quiz (the course must be
+     * loaded to avoid an extra query).
+     */
+    public function isVisibleToLearners(): bool
+    {
+        $course = $this->course;
+
+        return $this->isPublished()
+            && $course !== null
+            && $course->published_at !== null
+            && $course->published_at->isPast();
     }
  
     /**
