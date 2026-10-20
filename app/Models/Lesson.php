@@ -92,15 +92,15 @@ class Lesson extends Model implements Auditable
         return $this->belongsTo(Course::class);
     }
 
-    // /**
-    //  * Get the quizzes attached to this lesson.
-    //  *
-    //  * @return HasMany<Quiz, $this>
-    //  */
-    // public function quizzes(): HasMany
-    // {
-    //     return $this->hasMany(Quiz::class);
-    // }
+    /**
+     * Get the quizzes attached to this lesson.
+     *
+     * @return HasMany<Quiz, $this>
+     */
+    public function quizzes(): HasMany
+    {
+        return $this->hasMany(Quiz::class);
+    }
 
     /**
      * Get the user who created this lesson.

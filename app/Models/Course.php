@@ -97,15 +97,15 @@ class Course extends Model implements Auditable
         return $this->hasMany(Lesson::class)->orderBy('position');
     }
 
-    // /**
-    //  * Get the quizzes in this course.
-    //  *
-    //  * @return HasMany<Quiz, $this>
-    //  */
-    // public function quizzes(): HasMany
-    // {
-    //     return $this->hasMany(Quiz::class);
-    // }
+    /**
+     * Get the quizzes in this course.
+     *
+     * @return HasMany<Quiz, $this>
+     */
+    public function quizzes(): HasMany
+    {
+        return $this->hasMany(Quiz::class);
+    }
 
     /**
      * Get the user who created this course.
