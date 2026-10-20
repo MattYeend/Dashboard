@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Quizzes;
 
+use App\Models\Quiz;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -12,7 +15,7 @@ class ImportQuizRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('import', Quiz::class);
     }
 
     /**
@@ -23,7 +26,12 @@ class ImportQuizRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'file' => [
+                'required',
+                'file',
+                'mimes:csv,txt',
+                'max:5120', // 5MB
+            ],
         ];
     }
 }
