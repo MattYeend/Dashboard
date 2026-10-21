@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 use App\Models\Activity;
 use App\Models\Address;
+use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Company;
 use App\Models\Contact;
+use App\Models\Course;
 use App\Models\Deal;
 use App\Models\DealStatus;
 use App\Models\Industry;
@@ -16,6 +18,8 @@ use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\InvoiceStatus;
 use App\Models\Label;
+use App\Models\Lesson;
+use App\Models\Like;
 use App\Models\Order;
 use App\Models\OrderStatus;
 use App\Models\Organisation;
@@ -24,8 +28,10 @@ use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\PipelineStatus;
 use App\Models\Post;
+use App\Models\Quiz;
 use App\Models\QuizQuestion;
 use App\Models\Report;
+use App\Models\Tag;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\Ticket;
@@ -69,6 +75,10 @@ function tenantResourceMap(): array
         'pipelines' => Pipeline::class,
         'pipeline-statuses' => PipelineStatus::class,
         'industries' => Industry::class,
+        'courses' => Course::class,
+        'lessons' => Lesson::class,
+        'quizzes' => Quiz::class,
+        'tags' => Tag::class,
     ];
 }
 
@@ -95,6 +105,10 @@ function tenantPartialResourceMap(): array
         'interaction-logs' => [
             'model' => InteractionLog::class,
             'actions' => ['update', 'destroy'],
+        ],
+        'attachments' => [
+            'model' => Attachment::class,
+            'actions' => ['destroy'],
         ],
     ];
 }
@@ -146,6 +160,8 @@ describe('resource coverage', function () {
             PipelineStage::class => 'nested under its parent pipeline (scoped route bindings, e.g. pipelines/{pipeline}/stages/{stage}) — covered by TenantNestedHttpIsolationTest.php instead',
 
             QuizQuestion::class => 'pivot with no HTTP resource of its own; managed through quizzes, so there is no route to probe',
+
+            Like::class => 'no HTTP resource of its own; created and removed through the Likeable trait on a parent model, covered by the model isolation tests',
         ];
 
         $partialModels = collect(tenantPartialResourceMap())

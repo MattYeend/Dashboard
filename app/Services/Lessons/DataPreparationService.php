@@ -35,7 +35,6 @@ class DataPreparationService
         $title = strip_tags($data['title']);
 
         return [
-            'organisation_id' => $course->organisation_id,
             'course_id' => $course->id,
             'title' => $title,
             'slug' => $data['slug'] ?? $this->slugService->generateUnique(

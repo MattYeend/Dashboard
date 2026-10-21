@@ -55,7 +55,7 @@ class CourseSeeder extends Seeder
 
         foreach ($courses as $course) {
             Course::updateOrCreate(
-                ['organisation_id' => $organisation->id, 'slug' => $course['slug']],
+                ['slug' => $course['slug']],
                 $course + [
                     'instructor_id' => $instructorId,
                     'published_at' => now()->subDay(),

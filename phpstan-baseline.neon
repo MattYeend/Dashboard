@@ -73,10 +73,16 @@ parameters:
 			path: app/Http/Controllers/OrganisationController.php
 
 		-
-			message: '#^Relation ''questions'' is not found in App\\Models\\Quiz model\.$#'
+			message: '#^Relation ''answers'' is not found in App\\Models\\Question model\.$#'
 			identifier: larastan.relationExistence
 			count: 2
 			path: app/Http/Controllers/QuizController.php
+
+		-
+			message: '#^Relation ''answers'' is not found in App\\Models\\Question model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Http/Requests/Quizzes/StoreQuizRequest.php
 
 		-
 			message: '#^Method App\\Http\\Requests\\Settings\\PasswordUpdateRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
@@ -515,6 +521,12 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: app/Models/Log.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Models/Quiz.php
 
 		-
 			message: '#^Method App\\Services\\Activities\\CreatorService\:\:create\(\) should return App\\Models\\Activity but returns Illuminate\\Database\\Eloquent\\Model\.$#'
@@ -2311,6 +2323,60 @@ parameters:
 			path: app/Services/Posts/UpdaterService.php
 
 		-
+			message: '#^Method App\\Services\\Questions\\CreatorService\:\:create\(\) should return App\\Models\\Question but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Questions/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Question\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Questions/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Question\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Questions/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Question\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Questions/DeleterService.php
+
+		-
+			message: '#^Method App\\Services\\Questions\\RestorerService\:\:restore\(\) should return App\\Models\\Question but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Questions/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Question\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Questions/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Question\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Questions/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Questions\\UpdaterService\:\:update\(\) should return App\\Models\\Question but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Questions/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Question\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Questions/UpdaterService.php
+
+		-
 			message: '#^Method App\\Services\\Quizzes\\CreatorService\:\:create\(\) should return App\\Models\\Quiz but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
@@ -2329,9 +2395,21 @@ parameters:
 			path: app/Services/Quizzes/DeleterService.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\Quiz\:\:\$questions\.$#'
+			message: '#^Access to an undefined property App\\Models\\Question\:\:\$answers\.$#'
 			identifier: property.notFound
-			count: 3
+			count: 2
+			path: app/Services/Quizzes/FormatterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Question\:\:\$pivot\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Services/Quizzes/FormatterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Question\:\:\$prompt\.$#'
+			identifier: property.notFound
+			count: 2
 			path: app/Services/Quizzes/FormatterService.php
 
 		-
@@ -2341,16 +2419,16 @@ parameters:
 			path: app/Services/Quizzes/FormatterService.php
 
 		-
-			message: '#^Relation ''questions'' is not found in App\\Models\\Quiz model\.$#'
-			identifier: larastan.relationExistence
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Question\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
 			count: 2
-			path: app/Services/Quizzes/QueryService.php
+			path: app/Services/Quizzes/FormatterService.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\Quiz\:\:questions\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Relation ''answers'' is not found in App\\Models\\Question model\.$#'
+			identifier: larastan.relationExistence
 			count: 1
-			path: app/Services/Quizzes/QuestionAttachmentService.php
+			path: app/Services/Quizzes/QueryService.php
 
 		-
 			message: '#^Method App\\Services\\Quizzes\\RestorerService\:\:restore\(\) should return App\\Models\\Quiz but returns Illuminate\\Database\\Eloquent\\Model\.$#'
@@ -2935,7 +3013,25 @@ parameters:
 			path: database/factories/LessonFactory.php
 
 		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/factories/QuestionFactory.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: database/factories/QuestionFactory.php
+
+		-
 			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
 			path: database/factories/QuizFactory.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>organisation_id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: database/factories/QuizQuestionFactory.php

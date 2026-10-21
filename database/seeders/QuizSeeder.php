@@ -71,7 +71,6 @@ class QuizSeeder extends Seeder
             $quiz = Quiz::updateOrCreate(
                 ['course_id' => $course->id, 'slug' => $data['slug']],
                 [
-                    'organisation_id' => $organisation->id,
                     'lesson_id' => $lessonId,
                     'title' => $data['title'],
                     'description' => '<p>A short check of this lesson.</p>',

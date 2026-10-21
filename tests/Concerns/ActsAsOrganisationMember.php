@@ -6,10 +6,12 @@ namespace Tests\Concerns;
 
 use App\Models\Activity;
 use App\Models\Address;
+use App\Models\Attachment;
 use App\Models\Comment;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Models\InteractionLog;
+use App\Models\Like;
 use App\Models\Order;
 use App\Models\Organisation;
 use App\Models\User;
@@ -87,6 +89,8 @@ trait ActsAsOrganisationMember
             Comment::class,
             Activity::class,
             InteractionLog::class,
+            Attachment::class,
+            Like::class,
         ];
 
         if (in_array($model, $polymorphic, true)) {

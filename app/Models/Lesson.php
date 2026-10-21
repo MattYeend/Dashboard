@@ -20,7 +20,6 @@ use Illuminate\Support\Carbon;
  * A single lesson inside a course.
  *
  * @property int $id
- * @property int $organisation_id
  * @property int $course_id
  * @property string $title
  * @property string $slug
@@ -43,7 +42,6 @@ use Illuminate\Support\Carbon;
  * @property-read Course $course
  */
 #[Fillable([
-    'organisation_id',
     'course_id',
     'title',
     'slug',

@@ -56,7 +56,6 @@ class LessonSeeder extends Seeder
                 Lesson::updateOrCreate(
                     ['course_id' => $course->id, 'slug' => $slug],
                     [
-                        'organisation_id' => $organisation->id,
                         'title' => $title,
                         'summary' => $summary,
                         'content' => '<p>'.$summary.'</p>',

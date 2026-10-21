@@ -21,7 +21,6 @@ use Illuminate\Support\Carbon;
  * A quiz attached to a course and optionally a lesson.
  *
  * @property int $id
- * @property int $organisation_id
  * @property int $course_id
  * @property int|null $lesson_id
  * @property string $title
@@ -46,7 +45,6 @@ use Illuminate\Support\Carbon;
  * @property-read Lesson|null $lesson
  */
 #[Fillable([
-    'organisation_id',
     'course_id',
     'lesson_id',
     'title',
