@@ -110,18 +110,18 @@ class Quiz extends Model implements Auditable
         return $this->belongsTo(Lesson::class);
     }
 
-    // /**
-    //  * Get the questions in this quiz, in order.
-    //  *
-    //  * @return BelongsToMany<Question, $this>
-    //  */
-    // public function questions(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(Question::class, 'quiz_question')
-    //         ->withPivot(['position', 'points'])
-    //         ->withTimestamps()
-    //         ->orderByPivot('position');
-    // }
+    /**
+     * Get the questions in this quiz, in order.
+     *
+     * @return BelongsToMany<Question, $this>
+     */
+    public function questions(): BelongsToMany
+    {
+        return $this->belongsToMany(Question::class, 'quiz_question')
+            ->withPivot(['position', 'points'])
+            ->withTimestamps()
+            ->orderByPivot('position');
+    }
 
     /**
      * Get the user who created this quiz.
@@ -233,12 +233,12 @@ class Quiz extends Model implements Auditable
             'show_correct_answers',
             'published_at',
         ]);
-        // + [
-        //     'questions' => $this->questions()->get()->map(fn (Question $question): array => [
-        //         'question_id' => $question->id,
-        //         'position' => $question->pivot->position,
-        //         'points' => $question->pivot->points,
-        //     ])->all(),
-        // ];
+        + [
+            'questions' => $this->questions()->get()->map(fn (Question $question): array => [
+                'question_id' => $question->id,
+                'position' => $question->pivot->position,
+                'points' => $question->pivot->points,
+            ])->all(),
+        ];
     }
 }

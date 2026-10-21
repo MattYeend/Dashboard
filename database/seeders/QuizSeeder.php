@@ -82,17 +82,17 @@ class QuizSeeder extends Seeder
                 ],
             );
 
-            // $questionIds = Question::query()
-            //     ->whereIn('prompt', $data['prompts'])
-            //     ->pluck('id', 'prompt');
+            $questionIds = Question::query()
+                ->whereIn('prompt', $data['prompts'])
+                ->pluck('id', 'prompt');
 
             $selections = [];
 
-            // foreach ($data['prompts'] as $prompt) {
-            //     if (isset($questionIds[$prompt])) {
-            //         $selections[] = ['question_id' => $questionIds[$prompt], 'points' => null];
-            //     }
-            // }
+            foreach ($data['prompts'] as $prompt) {
+                if (isset($questionIds[$prompt])) {
+                    $selections[] = ['question_id' => $questionIds[$prompt], 'points' => null];
+                }
+            }
 
             $attachments->sync($quiz, $selections);
         }

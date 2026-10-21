@@ -76,7 +76,7 @@ class QueryService
             ['quiz' => $formatted],
             $this->getPermissions($user),
             $this->baseData(),
-            // $editor ? ['question_options' => $this->questionOptions()] : [],
+            $editor ? ['question_options' => $this->questionOptions()] : [],
         );
     }
 
@@ -90,7 +90,7 @@ class QueryService
         return array_merge(
             $this->getPermissions($user),
             $this->baseData(),
-            // ['question_options' => $this->questionOptions()],
+            ['question_options' => $this->questionOptions()],
         );
     }
 
@@ -118,15 +118,15 @@ class QueryService
             ->get();
     }
 
-    // /**
-    //  * Questions that can be attached to a quiz.
-    //  *
-    //  * @return Collection<int, Question>
-    //  */
-    // public function questionOptions(): Collection
-    // {
-    //     return Question::query()->select('id', 'body', 'type')->orderBy('id')->get();
-    // }
+    /**
+     * Questions that can be attached to a quiz.
+     *
+     * @return Collection<int, Question>
+     */
+    public function questionOptions(): Collection
+    {
+        return Question::query()->select('id', 'body', 'type')->orderBy('id')->get();
+    }
 
     /**
      * Whether the user sees unpublished and trashed quizzes.

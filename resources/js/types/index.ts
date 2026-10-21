@@ -1322,7 +1322,7 @@ export interface LessonNeighbour {
 
 export interface QuizQuestion {
     id: number;
-    // type: Question['type'];
+    type: Question['type'];
     type_label: string;
     prompt: string;
     /** Only present for users who can edit quizzes. */
@@ -1367,7 +1367,7 @@ export interface Quiz {
 export interface QuestionOption {
     id: number;
     prompt: string;
-    // type: Question['type'];
+    type: Question['type'];
     type_label: string;
     points: number;
 }

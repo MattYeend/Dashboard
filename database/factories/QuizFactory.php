@@ -53,21 +53,21 @@ class QuizFactory extends Factory
         return $this->state(['published_at' => null]);
     }
 
-    // /**
-    //  * Attach the given questions in order.
-    //  *
-    //  * @param iterable<int, Question> $questions
-    //  */
-    // public function withQuestions(iterable $questions): static
-    // {
-    //     return $this->afterCreating(function (Quiz $quiz) use ($questions): void {
-    //         $payload = [];
+    /**
+     * Attach the given questions in order.
+     *
+     * @param iterable<int, Question> $questions
+     */
+    public function withQuestions(iterable $questions): static
+    {
+        return $this->afterCreating(function (Quiz $quiz) use ($questions): void {
+            $payload = [];
 
-    //         foreach ($questions as $index => $question) {
-    //             $payload[$question->id] = ['position' => $index + 1];
-    //         }
+            foreach ($questions as $index => $question) {
+                $payload[$question->id] = ['position' => $index + 1];
+            }
 
-    //         $quiz->questions()->sync($payload);
-    //     });
-    // }
+            $quiz->questions()->sync($payload);
+        });
+    }
 }

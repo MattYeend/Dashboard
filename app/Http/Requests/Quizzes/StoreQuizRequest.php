@@ -315,19 +315,19 @@ class StoreQuizRequest extends FormRequest
             $selections,
         );
 
-        // $unanswerable = Question::query()
-        //     ->whereIn('id', $ids)
-        //     ->whereDoesntHave('answers', fn ($query) => $query->where('is_correct', true))
-        //     ->pluck('id')
-        //     ->all();
+        $unanswerable = Question::query()
+            ->whereIn('id', $ids)
+            ->whereDoesntHave('answers', fn ($query) => $query->where('is_correct', true))
+            ->pluck('id')
+            ->all();
 
-        // foreach ($selections as $index => $selection) {
-        //     if (in_array((int) $selection['question_id'], $unanswerable, true)) {
-        //         $validator->errors()->add(
-        //             "questions.{$index}.question_id",
-        //             'This question has no correct answer, so it cannot be used in a quiz.',
-        //         );
-        //     }
-        // }
+        foreach ($selections as $index => $selection) {
+            if (in_array((int) $selection['question_id'], $unanswerable, true)) {
+                $validator->errors()->add(
+                    "questions.{$index}.question_id",
+                    'This question has no correct answer, so it cannot be used in a quiz.',
+                );
+            }
+        }
     }
 }

@@ -70,7 +70,7 @@ class QuizController extends Controller
 
         return Inertia::render('Quizzes/Create', [
             'courses' => $this->query->courseOptions(),
-            // 'questionOptions' => $this->query->questionOptions(),
+            'questionOptions' => $this->query->questionOptions(),
             'selectedCourseId' => $request->integer('course_id') ?: null,
         ]);
     }
@@ -142,7 +142,7 @@ class QuizController extends Controller
             'quiz' => $this->formatter->format($quiz),
             'courses' => $this->query->courseOptions(),
             'lessons' => $this->query->lessonOptionsFor($quiz->course_id),
-            // 'questionOptions' => $this->query->questionOptions(),
+            'questionOptions' => $this->query->questionOptions(),
         ]);
     }
 
