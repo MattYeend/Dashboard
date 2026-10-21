@@ -1377,7 +1377,8 @@ export interface LessonOption {
     title: string;
 }
 
-export type QuestionTypeValue = 'single_choice' | 'multiple_choice' | 'true_false' | 'short_text';
+export type QuestionTypeValue =
+    'single_choice' | 'multiple_choice' | 'true_false' | 'short_text';
 
 export interface Question {
     id: number;
