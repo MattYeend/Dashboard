@@ -30,8 +30,8 @@ use Illuminate\Support\Carbon;
 ])]
 class Like extends Model
 {
-    /** 
-     * @use HasFactory<LikeFactory> 
+    /**
+     * @use HasFactory<LikeFactory>
      */
     use BelongsToOrganisation,
         HasFactory;
