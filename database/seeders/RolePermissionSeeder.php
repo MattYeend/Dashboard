@@ -514,6 +514,17 @@ class RolePermissionSeeder extends Seeder
             'force delete quizzes',
             'import quizzes',
             'export quizzes',
+
+            // Questions
+            'view any question',
+            'view question',
+            'create question',
+            'edit question',
+            'delete question',
+            'restore question',
+            'force delete question',
+            'import question',
+            'export question',
         ];
 
         foreach ($permissions as $permission) {
@@ -903,6 +914,14 @@ class RolePermissionSeeder extends Seeder
             'force delete quizzes',
             'import quizzes',
             'export quizzes',
+            'view any question',
+            'view question',
+            'create question',
+            'edit question',
+            'delete question',
+            'restore question',
+            'import question',
+            'export question',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -2025,6 +2044,8 @@ class RolePermissionSeeder extends Seeder
             'view lessons',
             'view any quizzes',
             'view quizzes',
+            'view any question',
+            'view question',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -2127,5 +2148,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Courses');
         $this->command->info('- Lessons');
         $this->command->info('- Quizzes');
+        $this->command->info('- Questions');
     }
 }
