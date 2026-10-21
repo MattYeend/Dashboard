@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Models\Concerns\HasQuestions;
 use App\Traits\BelongsToOrganisation;
 use Database\Factories\LessonFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -64,7 +65,8 @@ class Lesson extends Model implements Auditable
      */
     use BelongsToOrganisation,
         HasFactory,
-        SoftDeletes;
+        SoftDeletes,
+        HasQuestions;
 
     /**
      * Get the attributes that should be cast.

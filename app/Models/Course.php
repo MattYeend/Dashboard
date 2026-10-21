@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Contracts\Auditable;
 use App\Enums\CourseDifficulty;
+use App\Models\Concerns\HasQuestions;
 use App\Traits\BelongsToOrganisation;
 use Database\Factories\CourseFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -60,7 +61,8 @@ class Course extends Model implements Auditable
      */
     use BelongsToOrganisation,
         HasFactory,
-        SoftDeletes;
+        SoftDeletes,
+        HasQuestions;
 
     /**
      * Get the attributes that should be cast.

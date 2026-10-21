@@ -190,6 +190,8 @@ class AppServiceProvider extends ServiceProvider
             'App\Models\Task' => Task::class,
         ]);
 
+        Relation::morphMap(config('questions.questionable_types', []));
+
         User::observe(UserObserver::class);
 
         Cashier::useCustomerModel(Organisation::class);

@@ -944,6 +944,21 @@ class Log extends Model implements Auditable
 
     public const ACTION_EXPORT_QUIZ = 418;
 
+    // Question Management
+    public const ACTION_CREATE_QUESTION = 419;
+
+    public const ACTION_UPDATE_QUESTION = 420;
+
+    public const ACTION_DELETE_QUESTION = 421;
+
+    public const ACTION_RESTORE_QUESTION = 422;
+
+    public const ACTION_FORCE_DELETE_QUESTION = 423;
+
+    public const ACTION_IMPORT_QUESTION = 424;
+
+    public const ACTION_EXPORT_QUESTION = 425;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
