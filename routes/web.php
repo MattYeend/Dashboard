@@ -43,6 +43,7 @@ use App\Http\Controllers\PipelineStatusController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PlatformReportingController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RegistrationInterestController;
 use App\Http\Controllers\ReportController;
@@ -962,6 +963,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{quiz}/edit', [QuizController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{quiz}', [QuizController::class, 'update'])->name('update');
             Route::delete('/{quiz}', [QuizController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('questions')->name('questions.')->group(function () {
+            Route::post('/bulk/delete', [QuestionController::class, 'bulkDelete'])->middleware('throttle:30,1')->name('bulk.delete');
+            Route::post('/bulk/restore', [QuestionController::class, 'bulkRestore'])->middleware('throttle:30,1')->name('bulk.restore');
+            Route::post('/{id}/restore', [QuestionController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [QuestionController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/export', [QuestionController::class, 'export'])->name('export');
+            Route::post('/import', [QuestionController::class, 'import'])->name('import');
+            Route::post('/import/preview', [QuestionController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [QuestionController::class, 'importCommit'])->name('import.commit');
+
+            Route::get('/', [QuestionController::class, 'index'])->name('index');
+            Route::get('/create', [QuestionController::class, 'create'])->name('create');
+            Route::post('/', [QuestionController::class, 'store'])->name('store');
+            Route::get('/{question}', [QuestionController::class, 'show'])->withTrashed()->name('show');
+            Route::get('/{question}/edit', [QuestionController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{question}', [QuestionController::class, 'update'])->name('update');
+            Route::delete('/{question}', [QuestionController::class, 'destroy'])->name('destroy');
         });
     });
 });
