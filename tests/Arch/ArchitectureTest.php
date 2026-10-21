@@ -24,6 +24,7 @@ arch('audited models implement Auditable')
         'App\Models\DashboardWidgetPreference',
         'App\Models\Like',
         'App\Models\OrganisationDataExport',
+        'App\Models\QuizQuestion',
     ]);
 
 arch('services use the Service suffix')

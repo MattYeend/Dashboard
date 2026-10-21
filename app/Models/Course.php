@@ -61,8 +61,8 @@ class Course extends Model implements Auditable
      */
     use BelongsToOrganisation,
         HasFactory,
-        SoftDeletes,
-        HasQuestions;
+        HasQuestions,
+        SoftDeletes;
 
     /**
      * Get the attributes that should be cast.

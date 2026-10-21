@@ -56,7 +56,7 @@ class QuizFactory extends Factory
     /**
      * Attach the given questions in order.
      *
-     * @param iterable<int, Question> $questions
+     * @param  iterable<int, Question>  $questions
      */
     public function withQuestions(iterable $questions): static
     {

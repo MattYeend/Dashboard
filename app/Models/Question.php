@@ -56,8 +56,8 @@ use Illuminate\Support\Carbon;
 ])]
 class Question extends Model implements Auditable
 {
-    /** 
-     * @use HasFactory<QuestionFactory> 
+    /**
+     * @use HasFactory<QuestionFactory>
      */
     use BelongsToOrganisation,
         HasFactory,

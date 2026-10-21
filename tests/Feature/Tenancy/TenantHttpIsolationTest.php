@@ -24,6 +24,7 @@ use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\PipelineStatus;
 use App\Models\Post;
+use App\Models\QuizQuestion;
 use App\Models\Report;
 use App\Models\Task;
 use App\Models\TaskStatus;
@@ -143,6 +144,8 @@ describe('resource coverage', function () {
             InvoiceItem::class => 'nested under its parent invoice (scoped route bindings, e.g. invoices/{invoice}/items/{invoiceItem}) — covered by TenantNestedHttpIsolationTest.php instead',
 
             PipelineStage::class => 'nested under its parent pipeline (scoped route bindings, e.g. pipelines/{pipeline}/stages/{stage}) — covered by TenantNestedHttpIsolationTest.php instead',
+
+            QuizQuestion::class => 'pivot with no HTTP resource of its own; managed through quizzes, so there is no route to probe',
         ];
 
         $partialModels = collect(tenantPartialResourceMap())

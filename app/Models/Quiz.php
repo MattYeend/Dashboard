@@ -233,7 +233,7 @@ class Quiz extends Model implements Auditable
             'show_correct_answers',
             'published_at',
         ]);
-        + [
+        +[
             'questions' => $this->questions()->get()->map(fn (Question $question): array => [
                 'question_id' => $question->id,
                 'position' => $question->pivot->position,
