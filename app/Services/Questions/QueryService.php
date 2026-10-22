@@ -58,7 +58,7 @@ class QueryService
      *
      * @return array<string, mixed>
      */
-        /**
+    /**
      * Get a single question by ID.
      *
      * @return array<string, mixed>
