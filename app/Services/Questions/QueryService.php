@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Services\Questions;
 
 use App\Enums\QuestionType;
+use App\Models\Answer;
 use App\Models\Question;
 use App\Models\User;
+use App\Services\Answers\FormatterService as AnswerFormatterService;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -16,6 +18,7 @@ class QueryService
      * Inject the required services into the query service.
      */
     public function __construct(
+        protected readonly AnswerFormatterService $answerFormatter,
         protected readonly SortingService $sortingService,
         protected readonly TrashFilterService $trashFilterService,
         protected readonly FilterService $filterService,
@@ -55,19 +58,37 @@ class QueryService
      *
      * @return array<string, mixed>
      */
+        /**
+     * Get a single question by ID.
+     *
+     * @return array<string, mixed>
+     */
     public function getById(User $user, Question $question): array
     {
         $question->loadMissing([
             'questionable',
+            'answers',
             'creator',
             'updater',
             'deleter',
             'restorer',
         ]);
 
+        $canViewCorrect = $user->can('viewCorrect', Answer::class);
+
         return array_merge(
             ['question' => $this->formatterService->format($question)],
             ['abilities' => $this->getAbilities($user, $question)],
+            [
+                'answers' => $question->answers
+                    ->map(fn (Answer $answer): array => $this->answerFormatter->format($answer, $canViewCorrect))
+                    ->values()
+                    ->all(),
+                'answer_permissions' => [
+                    'can_create' => $user->can('create', Answer::class),
+                    'can_view_correct' => $canViewCorrect,
+                ],
+            ],
             $this->getFormData(),
             $this->getPermissions($user),
             $this->baseData(),
