@@ -1333,7 +1333,7 @@ export interface QuizQuestion {
     points?: number | null;
     effective_points: number;
     position: number;
-    // answers: Answer[];
+    answers: Answer[];
 }
 
 export interface Quiz {
