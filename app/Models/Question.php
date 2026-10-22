@@ -54,6 +54,8 @@ use Illuminate\Support\Carbon;
     'position',
     'is_required',
     'meta',
+    'created_by',
+    'updated_by',
 ])]
 class Question extends Model implements Auditable
 {

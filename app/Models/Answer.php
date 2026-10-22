@@ -33,6 +33,10 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
+ * @property-read User|null $creator
+ * @property-read User|null $updater
+ * @property-read User|null $deleter
+ * @property-read User|null $restorer
  * @property-read Question $question
  */
 #[Fillable([
@@ -114,8 +118,9 @@ class Answer extends Model implements Auditable
         return [
             'is_correct' => 'boolean',
             'position' => 'integer',
-            'restored_at' => 'datetime',
             'meta' => 'array',
+            'restored_at' => 'immutable_datetime',
+            'deleted_at' => 'immutable_datetime',
         ];
     }
 

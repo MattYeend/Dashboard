@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Activity;
 use App\Models\Address;
+use App\Models\Answer;
 use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Comment;
@@ -27,6 +28,7 @@ use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\PipelineStatus;
 use App\Models\Post;
+use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\QuizQuestion;
 use App\Models\Report;
@@ -67,6 +69,8 @@ return [
         Industry::class,
         OrganisationDataExport::class,
         QuizQuestion::class,
+        Question::class,
+        Answer::class,
         Course::class,
         Lesson::class,
         Quiz::class,
