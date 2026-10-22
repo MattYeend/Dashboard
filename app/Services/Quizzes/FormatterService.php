@@ -24,7 +24,9 @@ class FormatterService
                     'type_label' => $question->type->label(),
                     'explanation' => $question->explanation,
                     'position' => $question->pivot->position,
+                    'default_points' => $question->points,
                     'points' => $question->pivot->points,
+                    'effective_points' => $question->pivot->points ?? $question->points,
                     'answers' => $question->relationLoaded('answers')
                         ? $question->answers->map(fn ($answer) => [
                             'id' => $answer->id,
@@ -63,7 +65,7 @@ class FormatterService
                     'type' => $question->type->value,
                     'type_label' => $question->type->label(),
                     'position' => $question->pivot->position,
-                    'points' => $question->pivot->points,
+                    'effective_points' => $question->pivot->points ?? $question->points,
                     'answers' => $question->relationLoaded('answers')
                         ? $question->answers->map(fn ($answer) => [
                             'id' => $answer->id,
@@ -89,7 +91,6 @@ class FormatterService
             'description' => $quiz->description,
             'course_id' => $quiz->course_id,
             'lesson_id' => $quiz->lesson_id,
-            'status' => $quiz->status,
             'pass_mark_percentage' => $quiz->pass_mark_percentage,
             'time_limit_minutes' => $quiz->time_limit_minutes,
             'max_attempts' => $quiz->max_attempts,

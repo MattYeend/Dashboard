@@ -5,13 +5,24 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\Models\Organisation;
+use App\Models\Quiz;
 use App\Models\User;
 use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Fortify\Features;
+use Tests\Concerns\CreatesQuizzes;
+use Tests\Concerns\CreatesUsers;
 
+/**
+ * @property User $editor
+ * @property User $learner
+ * @property Quiz $quiz
+ * 
+ * @mixin CreatesUsers
+ * @mixin CreatesQuizzes
+ */
 abstract class TestCase extends BaseTestCase
 {
     protected $seed = true;
