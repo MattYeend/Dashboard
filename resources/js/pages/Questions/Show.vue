@@ -3,7 +3,8 @@ import { Head, Link, router } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { destroy, edit, index, restore } from '@/routes/questions';
-import type { Question, QuestionAbilities } from '@/types';
+import type { Answer, Question, QuestionAbilities } from '@/types';
+import QuestionAnswers from './components/QuestionAnswers.vue';
 import QuestionAuditDetails from './components/QuestionAuditDetails.vue';
 import QuestionBasicDetails from './components/QuestionBasicDetails.vue';
 import QuestionLinkDetails from './components/QuestionLinkDetails.vue';
@@ -12,6 +13,8 @@ import QuestionTypeDetails from './components/QuestionTypeDetails.vue';
 const props = defineProps<{
     question: Question;
     abilities: QuestionAbilities;
+    answers: Answer[];
+    answer_permissions: { can_create: boolean; can_view_correct: boolean };
 }>();
 
 function remove(): void {
@@ -60,6 +63,12 @@ function restoreQuestion(): void {
             <QuestionLinkDetails :question="question" />
             <QuestionBasicDetails :question="question" />
             <QuestionTypeDetails :question="question" />
+            <QuestionAnswers
+                :question-id="question.id"
+                :answers="answers"
+                :can-create="answer_permissions.can_create"
+                :can-view-correct="answer_permissions.can_view_correct"
+            />
             <QuestionAuditDetails :question="question" />
         </div>
     </AppLayout>
