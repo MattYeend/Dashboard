@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\ApiTokenController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\BackupController;
@@ -983,6 +984,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{question}/edit', [QuestionController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{question}', [QuestionController::class, 'update'])->name('update');
             Route::delete('/{question}', [QuestionController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('answers')->name('answers.')->group(function () {
+            Route::post('/bulk/delete', [AnswerController::class, 'bulkDelete'])->middleware('throttle:30,1')->name('bulk.delete');
+            Route::post('/bulk/restore', [AnswerController::class, 'bulkRestore'])->middleware('throttle:30,1')->name('bulk.restore');
+            Route::post('/{id}/restore', [AnswerController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [AnswerController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/export', [AnswerController::class, 'export'])->middleware('throttle:10,1')->name('export');
+            Route::post('/import', [AnswerController::class, 'import'])->middleware('throttle:10,1')->name('import');
+            Route::post('/import/preview', [AnswerController::class, 'importPreview'])->middleware('throttle:10,1')->name('import.preview');
+            Route::post('/import/commit', [AnswerController::class, 'importCommit'])->middleware('throttle:10,1')->name('import.commit');
+
+            Route::get('/', [AnswerController::class, 'index'])->name('index');
+            Route::get('/create', [AnswerController::class, 'create'])->name('create');
+            Route::post('/', [AnswerController::class, 'store'])->name('store');
+            Route::get('/{answer}', [AnswerController::class, 'show'])->name('show');
+            Route::get('/{answer}/edit', [AnswerController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{answer}', [AnswerController::class, 'update'])->name('update');
+            Route::delete('/{answer}', [AnswerController::class, 'destroy'])->name('destroy');
         });
     });
 });
