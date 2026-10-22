@@ -73,18 +73,6 @@ parameters:
 			path: app/Http/Controllers/OrganisationController.php
 
 		-
-			message: '#^Relation ''answers'' is not found in App\\Models\\Question model\.$#'
-			identifier: larastan.relationExistence
-			count: 2
-			path: app/Http/Controllers/QuizController.php
-
-		-
-			message: '#^Relation ''answers'' is not found in App\\Models\\Question model\.$#'
-			identifier: larastan.relationExistence
-			count: 1
-			path: app/Http/Requests/Quizzes/StoreQuizRequest.php
-
-		-
 			message: '#^Method App\\Http\\Requests\\Settings\\PasswordUpdateRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
 			identifier: return.type
 			count: 1
@@ -689,6 +677,66 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Addresses/UpdaterService.php
+
+		-
+			message: '#^Anonymous function should return App\\Models\\Answer but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Answers/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Answer\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Answers/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Answer\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Answers/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Answer\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Answers/DeleterService.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: app/Services/Answers/FormatterService.php
+
+		-
+			message: '#^Anonymous function should return App\\Models\\Answer but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Answers/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Answer\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Answers/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Answer\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Answers/RestorerService.php
+
+		-
+			message: '#^Anonymous function should return App\\Models\\Answer but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Answers/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Answer\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Answers/UpdaterService.php
 
 		-
 			message: '#^Method App\\Services\\Attachments\\CreatorService\:\:create\(\) should return App\\Models\\Attachment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
@@ -2395,7 +2443,7 @@ parameters:
 			path: app/Services/Quizzes/DeleterService.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\Question\:\:\$answers\.$#'
+			message: '#^Access to an undefined property App\\Models\\Answer\:\:\$body\.$#'
 			identifier: property.notFound
 			count: 2
 			path: app/Services/Quizzes/FormatterService.php
@@ -2419,16 +2467,16 @@ parameters:
 			path: app/Services/Quizzes/FormatterService.php
 
 		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Question\>\:\:map\(\) contains unresolvable type\.$#'
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Answer\>\:\:map\(\) contains unresolvable type\.$#'
 			identifier: argument.unresolvableType
 			count: 2
 			path: app/Services/Quizzes/FormatterService.php
 
 		-
-			message: '#^Relation ''answers'' is not found in App\\Models\\Question model\.$#'
-			identifier: larastan.relationExistence
-			count: 1
-			path: app/Services/Quizzes/QueryService.php
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Question\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 2
+			path: app/Services/Quizzes/FormatterService.php
 
 		-
 			message: '#^Method App\\Services\\Quizzes\\RestorerService\:\:restore\(\) should return App\\Models\\Quiz but returns Illuminate\\Database\\Eloquent\\Model\.$#'
@@ -3035,3 +3083,9 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 1
 			path: database/factories/QuizQuestionFactory.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Console\\Command\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: database/seeders/AnswerSeeder.php
