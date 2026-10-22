@@ -82,8 +82,8 @@ class QuizSeeder extends Seeder
             );
 
             $questionIds = Question::query()
-                ->whereIn('prompt', $data['prompts'])
-                ->pluck('id', 'prompt');
+                ->whereIn('question', $data['prompts'])
+                ->pluck('id', 'question');
 
             $selections = [];
 

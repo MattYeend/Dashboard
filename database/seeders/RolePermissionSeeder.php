@@ -525,6 +525,18 @@ class RolePermissionSeeder extends Seeder
             'force delete question',
             'import question',
             'export question',
+
+            // Answers
+            'view any answer',
+            'view answer',
+            'view correct answer',
+            'create answer',
+            'edit answer',
+            'delete answer',
+            'restore answer',
+            'force delete answer',
+            'import answer',
+            'export answer',
         ];
 
         foreach ($permissions as $permission) {
@@ -922,6 +934,15 @@ class RolePermissionSeeder extends Seeder
             'restore question',
             'import question',
             'export question',
+            'view any answer',
+            'view answer',
+            'view correct answer',
+            'create answer',
+            'edit answer',
+            'delete answer',
+            'restore answer',
+            'import answer',
+            'export answer',
         ];
         $admin->givePermissionTo($adminPermissions);
 
@@ -1221,6 +1242,12 @@ class RolePermissionSeeder extends Seeder
             'create quizzes',
             'edit quizzes',
             'export quizzes',
+            'view any answer',
+            'view answer',
+            'view correct answer',
+            'create answer',
+            'edit answer',
+            'export answer',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1422,6 +1449,11 @@ class RolePermissionSeeder extends Seeder
             'view quizzes',
             'create quizzes',
             'edit quizzes',
+            'view any answer',
+            'view answer',
+            'view correct answer',
+            'create answer',
+            'edit answer',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -2046,6 +2078,8 @@ class RolePermissionSeeder extends Seeder
             'view quizzes',
             'view any question',
             'view question',
+            'view any answer',
+            'view answer',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -2149,5 +2183,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Lessons');
         $this->command->info('- Quizzes');
         $this->command->info('- Questions');
+        $this->command->info('- Answers');
     }
 }
