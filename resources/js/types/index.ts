@@ -1268,6 +1268,7 @@ export interface Course {
     instructor?: { id: number; name: string } | null;
     lessons_count?: number;
     quizzes_count?: number;
+    quizzes?: Quiz[];
     creator?: { name: string };
     updater?: { name: string };
     deleter?: { name: string };

@@ -12,3 +12,16 @@ export function parseNullableNumber(
 
     return Number.isNaN(parsed) ? null : parsed;
 }
+
+/**
+ * Convert an input value to a number, or null when blank or not numeric.
+ */
+export function toNullableNumber(value: string | number): number | null {
+    if (value === '') {
+        return null;
+    }
+
+    const parsed = Number(value);
+
+    return Number.isNaN(parsed) ? null : parsed;
+}

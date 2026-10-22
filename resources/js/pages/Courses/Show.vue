@@ -12,6 +12,7 @@ import type { Course } from '@/types';
 import CourseAuditDetails from './components/CourseAuditDetails.vue';
 import CourseBasicDetails from './components/CourseBasicDetails.vue';
 import CourseLessonList from './components/CourseLessonList.vue';
+import CourseQuizList from './components/CourseQuizList.vue'; // ADDED
 import CourseSettingsDetails from './components/CourseSettingsDetails.vue';
 
 interface Props {
@@ -92,6 +93,12 @@ defineOptions({
                 <CourseLessonList
                     :course-id="course.id"
                     :lessons="course.lessons ?? []"
+                    :can-edit="canEdit"
+                />
+                <!-- ADDED -->
+                <CourseQuizList
+                    :course-id="course.id"
+                    :quizzes="course.quizzes ?? []"
                     :can-edit="canEdit"
                 />
                 <CourseAuditDetails :course="course" />

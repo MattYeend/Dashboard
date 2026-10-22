@@ -6,6 +6,7 @@ import {
     BookOpen,
     Building2,
     CalendarDays,
+    ClipboardCheck,
     ClipboardList,
     Contact2,
     CreditCard,
@@ -53,6 +54,7 @@ import { board as dealsBoard } from '@/routes/deals';
 import { index as lessonsIndex } from '@/routes/lessons';
 import { index as notificationBroadcastsIndex } from '@/routes/notification-broadcasts';
 import { show as profileShow } from '@/routes/profile';
+import { index as quizzesIndex } from '@/routes/quizzes';
 import { index as systemIndex } from '@/routes/system';
 import type { NavGroup, NavItem } from '@/types';
 
@@ -146,6 +148,7 @@ const navGroups: NavGroup[] = [
         items: [
             { title: 'Courses', href: coursesIndex().url, icon: GraduationCap },
             { title: 'Lessons', href: lessonsIndex().url, icon: BookOpen },
+            { title: 'Quizzes', href: quizzesIndex().url, icon: ClipboardCheck },
         ],
     },
     {

@@ -1,0 +1,65 @@
+<script setup lang="ts">
+import { computed } from 'vue';
+import BulkActionButton from '@/components/table/BulkActionButton.vue';
+import ResourceTable from '@/components/table/ResourceTable.vue';
+import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
+import RowActions from '@/components/table/RowActions.vue';
+import { edit as quizzesEdit, show as quizzesShow } from '@/routes/quizzes';
+import type { Quiz } from '@/types';
+
+const props = defineProps<{
+    quizzes: Quiz[];
+}>();
+
+const selected = defineModel<Array<number | string>>('selected', {
+    required: true,
+});
+
+const emit = defineEmits<{
+    delete: [id: number];
+    bulkDelete: [ids: Array<number | string>];
+}>();
+
+const columns: ResourceTableColumn[] = [
+    { key: 'title', label: 'Title' },
+    { key: 'course_title', label: 'Course' },
+    { key: 'lesson_title', label: 'Lesson' },
+    { key: 'questions_count', label: 'Questions' },
+    { key: 'pass_mark_percentage', label: 'Pass mark (%)' },
+    { key: 'published_at', label: 'Published' },
+];
+
+const rows = computed(() =>
+    props.quizzes.map((quiz) => ({
+        ...quiz,
+        course_title: quiz.course?.title ?? '-',
+        lesson_title: quiz.lesson?.title ?? 'Whole course',
+        questions_count: quiz.questions_count ?? 0,
+    })),
+);
+</script>
+
+<template>
+    <ResourceTable
+        v-model:selected="selected"
+        :rows="rows"
+        :columns="columns"
+        row-key="id"
+        selectable
+        empty-message="No quizzes found."
+    >
+        <template #bulk-actions="{ selected: selection }">
+            <BulkActionButton @click="emit('bulkDelete', selection)">
+                Delete selected
+            </BulkActionButton>
+        </template>
+
+        <template #actions="{ row }">
+            <RowActions
+                :show-href="quizzesShow.url(row.id)"
+                :edit-href="quizzesEdit.url(row.id)"
+                @delete="emit('delete', row.id)"
+            />
+        </template>
+    </ResourceTable>
+</template>
