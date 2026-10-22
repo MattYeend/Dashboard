@@ -31,4 +31,12 @@ class AnswerFactory extends Factory
             'position' => 1,
         ];
     }
+
+    /**
+     * Indicate that the answer is soft deleted.
+     */
+    public function deleted(): static
+    {
+        return $this->state(fn (): array => ['deleted_at' => now()]);
+    }
 }
