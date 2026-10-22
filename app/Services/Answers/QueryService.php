@@ -105,6 +105,27 @@ class QueryService
     }
 
     /**
+     * Format a single answer for a JSON response, respecting the answer key.
+     *
+     * @return array<string, mixed>
+     */
+    public function format(User $user, Answer $answer): array
+    {
+        $answer->loadMissing([
+            'question',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
+        ]);
+
+        return $this->formatterService->format(
+            $answer,
+            $user->can('viewCorrect', Answer::class)
+        );
+    }
+
+    /**
      * Build the base query with filters.
      *
      * @param  array<string, mixed>  $filters

@@ -80,7 +80,7 @@ class AnswerController extends Controller
         $answer = $this->management->store($request);
 
         if ($request->wantsJson()) {
-            return response()->json($answer, 201);
+            return response()->json($this->query->format($request->user(), $answer), 201);
         }
 
         return to_route('answers.show', $answer)
@@ -124,7 +124,7 @@ class AnswerController extends Controller
         $answer = $this->management->update($request, $answer);
 
         if ($request->wantsJson()) {
-            return response()->json($answer);
+            return response()->json($this->query->format($request->user(), $answer));
         }
 
         return to_route('answers.show', $answer)
