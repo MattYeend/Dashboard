@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Quizzes;
 
 use App\Models\Quiz;
+use Illuminate\Support\Str;
 
 class FormatterService
 {
@@ -104,8 +105,8 @@ class FormatterService
             'updated_at' => $quiz->updated_at,
             'course' => $quiz->course ? ['id' => $quiz->course->id, 'title' => $quiz->course->title] : null,
             'lesson' => $quiz->lesson ? ['id' => $quiz->lesson->id, 'title' => $quiz->lesson->title] : null,
-            'course_title' => $quiz->course?->title ?? '-',
-            'lesson_title' => $quiz->lesson?->title ?? 'Whole course',
+            'course_title' => $quiz->course ? Str::limit($quiz->course->title, 15) : '-',
+            'lesson_title' => $quiz->lesson ? Str::limit($quiz->lesson->title, 15) : 'Whole course',
             'questions_count' => $quiz->questions_count
                 ?? ($quiz->relationLoaded('questions') ? $quiz->questions->count() : null),
         ];
