@@ -49,7 +49,9 @@ const showCorrectAnswers = defineModel<boolean>('showCorrectAnswers', {
                 type="number"
                 min="1"
                 max="600"
-                @update:model-value="timeLimitMinutes = toNullableNumber($event)"
+                @update:model-value="
+                    timeLimitMinutes = toNullableNumber($event)
+                "
             />
             <InputError :message="errors.time_limit_minutes" />
         </div>

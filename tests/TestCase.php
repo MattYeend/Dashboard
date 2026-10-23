@@ -19,7 +19,7 @@ use Tests\Concerns\CreatesUsers;
  * @property User $editor
  * @property User $learner
  * @property Quiz $quiz
- * 
+ *
  * @mixin CreatesUsers
  * @mixin CreatesQuizzes
  */

@@ -55,7 +55,10 @@ const questions = defineModel<QuizQuestionSelection[]>('questions', {
             v-model:show-correct-answers="showCorrectAnswers"
             :errors="errors"
         />
-        <QuizPublishingForm v-model:published-at="publishedAt" :errors="errors" />
+        <QuizPublishingForm
+            v-model:published-at="publishedAt"
+            :errors="errors"
+        />
         <QuizQuestionsForm
             v-model:questions="questions"
             :errors="errors"

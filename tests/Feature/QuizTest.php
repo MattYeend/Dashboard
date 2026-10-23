@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Log;
 use App\Models\Quiz;
 use App\Services\AuditLogService;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Concerns\CreatesQuizzes;
@@ -178,6 +179,8 @@ describe('store', function () {
         $course = $this->courseFor($superAdmin);
         $question = $this->questionIn($this->testOrganisation->id);
 
+        $this->app->make(ExceptionHandler::class)->ignore(RuntimeException::class);
+
         $this->partialMock(AuditLogService::class, function ($mock) {
             $mock->shouldReceive('record')
                 ->andThrow(new RuntimeException('Simulated failure after questions are attached.'));
@@ -192,7 +195,6 @@ describe('store', function () {
         $this->assertDatabaseMissing('quizzes', ['title' => 'Laravel Basics Quiz']);
         $this->assertDatabaseCount('quiz_question', 0); // now meaningful: rows were written, then rolled back
     });
-
 
     test('user without permission cannot create a quiz', function () {
         $user = $this->normalUser();
@@ -402,6 +404,8 @@ describe('update', function () {
 
         $before = $quiz->questions()->orderBy('quiz_question.position')->pluck('questions.id')->all();
         $replacement = $this->questionIn($this->testOrganisation->id);
+
+        $this->app->make(ExceptionHandler::class)->ignore(RuntimeException::class);
 
         $this->partialMock(AuditLogService::class, function ($mock) {
             $mock->shouldReceive('record')

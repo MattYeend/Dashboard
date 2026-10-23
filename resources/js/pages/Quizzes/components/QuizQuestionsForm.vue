@@ -78,7 +78,9 @@ function move(index: number, direction: -1 | 1): void {
 
 <template>
     <section class="grid gap-4">
-        <h2 class="text-lg text-gray-300">Questions ({{ questions.length }})</h2>
+        <h2 class="text-lg text-gray-300">
+            Questions ({{ questions.length }})
+        </h2>
         <InputError :message="errors.questions" />
 
         <QuizQuestionPicker

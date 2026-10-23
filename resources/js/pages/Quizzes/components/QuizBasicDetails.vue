@@ -26,7 +26,7 @@ defineProps<{
         </div>
         <div class="sm:col-span-2">
             <dt class="text-xs text-gray-400">Description</dt>
-            <dd class="whitespace-pre-line text-sm text-gray-300">
+            <dd class="text-sm whitespace-pre-line text-gray-300">
                 {{ quiz.description ?? 'None' }}
             </dd>
         </div>

@@ -9,7 +9,9 @@ defineProps<{
 
 <template>
     <section class="grid gap-4 border-b border-gray-500 pb-4">
-        <h2 class="text-lg text-gray-300">Questions ({{ questions.length }})</h2>
+        <h2 class="text-lg text-gray-300">
+            Questions ({{ questions.length }})
+        </h2>
 
         <ol class="grid gap-4">
             <li

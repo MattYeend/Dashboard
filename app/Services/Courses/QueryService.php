@@ -55,11 +55,11 @@ class QueryService
     public function getById(User $user, Course $course): array
     {
         $course->loadMissing([
-            'instructor', 
-            'creator', 
-            'updater', 
-            'deleter', 
-            'restorer'
+            'instructor',
+            'creator',
+            'updater',
+            'deleter',
+            'restorer',
         ]);
 
         $canManage = $user->can('update', $course);

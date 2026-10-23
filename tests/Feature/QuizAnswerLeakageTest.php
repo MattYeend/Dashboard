@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Concerns\CreatesQuizzes;
 use Tests\Concerns\CreatesUsers;
+use Tests\TestCase;
 
 uses(
     LazilyRefreshDatabase::class,
@@ -14,7 +15,7 @@ uses(
 );
 
 beforeEach(function () {
-    /** @var \Tests\TestCase&\Tests\Concerns\CreatesUsers&\Tests\Concerns\CreatesQuizzes $this */
+    /** @var TestCase&CreatesUsers&CreatesQuizzes $this */
     $this->editor = $this->adminUser();
 
     $this->learner = $this->userWithPermissions([

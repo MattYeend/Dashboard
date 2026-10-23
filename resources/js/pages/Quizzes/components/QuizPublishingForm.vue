@@ -13,11 +13,7 @@ const publishedAt = defineModel<string>('publishedAt', { required: true });
 <template>
     <div class="grid gap-2 border-b border-gray-500 pb-4">
         <Label for="published-at">Publish date (leave blank for draft)</Label>
-        <Input
-            id="published-at"
-            v-model="publishedAt"
-            type="datetime-local"
-        />
+        <Input id="published-at" v-model="publishedAt" type="datetime-local" />
         <InputError :message="errors.published_at" />
     </div>
 </template>

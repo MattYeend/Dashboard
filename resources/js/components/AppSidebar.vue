@@ -148,7 +148,11 @@ const navGroups: NavGroup[] = [
         items: [
             { title: 'Courses', href: coursesIndex().url, icon: GraduationCap },
             { title: 'Lessons', href: lessonsIndex().url, icon: BookOpen },
-            { title: 'Quizzes', href: quizzesIndex().url, icon: ClipboardCheck },
+            {
+                title: 'Quizzes',
+                href: quizzesIndex().url,
+                icon: ClipboardCheck,
+            },
         ],
     },
     {
