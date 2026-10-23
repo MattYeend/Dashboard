@@ -87,10 +87,10 @@ trait CreatesUsers
         setPermissionsTeamId($organisation->id);
 
         foreach ($permissions as $permission) {
-            Permission::firstOrCreate([
-                'name' => $permission,
-                'guard_name' => 'web',
-            ]);
+            Permission::query()
+                ->where('name', $permission)
+                ->where('guard_name', 'web')
+                ->firstOrFail();
         }
 
         $user->givePermissionTo($permissions);

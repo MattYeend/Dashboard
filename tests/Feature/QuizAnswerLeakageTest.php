@@ -20,8 +20,8 @@ beforeEach(function () {
     $this->learner = $this->userWithPermissions([
         'view any quizzes',
         'view quizzes',
-        'view any courses',
-        'view courses',
+        'view any course',
+        'view course',
     ]);
 
     $this->quiz = $this->quizFor($this->editor, [], 2);
