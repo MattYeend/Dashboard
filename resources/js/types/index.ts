@@ -1359,6 +1359,9 @@ export interface Quiz {
     lesson?: { id: number; title: string } | null;
     questions?: QuizQuestion[];
     questions_count?: number | null;
+    published_at_iso: string | null;
+    course_title?: string;
+    lesson_title?: string;
     creator?: { id: number; name: string } | null;
     updater?: { id: number; name: string } | null;
     deleter?: { id: number; name: string } | null;

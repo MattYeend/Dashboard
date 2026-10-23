@@ -33,7 +33,7 @@ const form = useForm({
     max_attempts: props.quiz.max_attempts,
     shuffle_questions: props.quiz.shuffle_questions,
     show_correct_answers: props.quiz.show_correct_answers,
-    published_at: props.quiz.published_at?.slice(0, 16) ?? '',
+    published_at: props.quiz.published_at_iso?.slice(0, 16) ?? '',
     questions: (props.quiz.questions ?? []).map((question) => ({
         question_id: question.id,
         points: question.points ?? null,

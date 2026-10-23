@@ -96,13 +96,16 @@ class FormatterService
             'max_attempts' => $quiz->max_attempts,
             'shuffle_questions' => $quiz->shuffle_questions,
             'show_correct_answers' => $quiz->show_correct_answers,
-            'published_at' => $quiz->published_at,
+            'published_at' => $quiz->published_at?->format('d/m/Y H:i'),
+            'published_at_iso' => $quiz->published_at?->toIso8601String(),
             'is_published' => $quiz->isPublished(),
             'meta' => $quiz->meta,
             'created_at' => $quiz->created_at,
             'updated_at' => $quiz->updated_at,
             'course' => $quiz->course ? ['id' => $quiz->course->id, 'title' => $quiz->course->title] : null,
             'lesson' => $quiz->lesson ? ['id' => $quiz->lesson->id, 'title' => $quiz->lesson->title] : null,
+            'course_title' => $quiz->course?->title ?? '-',
+            'lesson_title' => $quiz->lesson?->title ?? 'Whole course',
             'questions_count' => $quiz->questions_count
                 ?? ($quiz->relationLoaded('questions') ? $quiz->questions->count() : null),
         ];
