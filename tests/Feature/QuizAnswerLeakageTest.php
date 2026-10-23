@@ -17,7 +17,12 @@ beforeEach(function () {
     /** @var \Tests\TestCase&\Tests\Concerns\CreatesUsers&\Tests\Concerns\CreatesQuizzes $this */
     $this->editor = $this->adminUser();
 
-    $this->learner = $this->userWithPermissions(['view any quizzes', 'view quizzes']);
+    $this->learner = $this->userWithPermissions([
+        'view any quizzes',
+        'view quizzes',
+        'view any courses',
+        'view courses',
+    ]);
 
     $this->quiz = $this->quizFor($this->editor, [], 2);
 });

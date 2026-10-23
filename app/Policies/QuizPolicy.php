@@ -7,6 +7,7 @@ namespace App\Policies;
 use App\Models\Quiz;
 use App\Models\User;
 use App\Services\Quizzes\PolicyAuthorisationService;
+use Illuminate\Auth\Access\Response;
 
 /**
  * Authorisation rules for quizzes.
@@ -29,11 +30,19 @@ class QuizPolicy
     /**
      * Determine whether the user can view the quiz.
      *
-     * Non-editors are refused when the quiz or its course is unpublished.
+     * Users who may list quizzes but cannot see this one (unpublished quiz or
+     * course) receive a 404 so the existence of the record is not disclosed.
+     * Users with no quiz access at all receive a 403.
      */
-    public function view(User $user, Quiz $quiz): bool
+    public function view(User $user, Quiz $quiz): Response
     {
-        return $this->authorisationService->canView($user, $quiz);
+        if ($this->authorisationService->canView($user, $quiz)) {
+            return Response::allow();
+        }
+
+        return $this->authorisationService->canViewAny($user)
+            ? Response::denyAsNotFound()
+            : Response::deny();
     }
 
     /**

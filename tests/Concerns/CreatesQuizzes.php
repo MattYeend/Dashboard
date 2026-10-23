@@ -152,7 +152,7 @@ trait CreatesQuizzes
      * @param  callable(): T  $callback
      * @return T
      */
-    protected function inOrganisation(Organisation $organisation, callable $callback): mixed
+    protected function runInTenant(Organisation $organisation, callable $callback): mixed
     {
         $result = $organisation->execute($callback);
 
@@ -169,7 +169,7 @@ trait CreatesQuizzes
     {
         $organisation = $this->foreignOrganisation();
 
-        return $this->inOrganisation($organisation, fn (): Course => Course::factory()->create([
+        return $this->runInTenant($organisation, fn (): Course => Course::factory()->create([
             'organisation_id' => $organisation->id,
             'published_at' => now()->subDay(),
         ]));
@@ -182,7 +182,7 @@ trait CreatesQuizzes
     {
         $organisation = $this->foreignOrganisation();
 
-        return $this->inOrganisation($organisation, function () use ($organisation): Lesson {
+        return $this->runInTenant($organisation, function () use ($organisation): Lesson {
             $course = Course::factory()->create([
                 'organisation_id' => $organisation->id,
                 'published_at' => now()->subDay(),
@@ -202,7 +202,7 @@ trait CreatesQuizzes
     {
         $organisation = $this->foreignOrganisation();
 
-        return $this->inOrganisation($organisation, function () use ($organisation, $attributes): Quiz {
+        return $this->runInTenant($organisation, function () use ($organisation, $attributes): Quiz {
             $course = Course::factory()->create([
                 'organisation_id' => $organisation->id,
                 'published_at' => now()->subDay(),
@@ -223,7 +223,7 @@ trait CreatesQuizzes
     {
         $organisation = $this->foreignOrganisation();
 
-        return $this->inOrganisation(
+        return $this->runInTenant(
             $organisation,
             fn (): Question => $this->questionIn($organisation->id, $withCorrect),
         );

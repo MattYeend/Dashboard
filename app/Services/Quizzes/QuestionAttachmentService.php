@@ -12,7 +12,7 @@ use App\Models\Quiz;
 class QuestionAttachmentService
 {
     /**
-     * Position follows the order of the array, so the client never sets it directly.
+     * Replace the quiz's questions with the given selections, in array order.
      *
      * @param  array<int, array{question_id: int, points: int|null}>  $selections
      */
@@ -21,9 +21,10 @@ class QuestionAttachmentService
         $payload = [];
 
         foreach (array_values($selections) as $index => $selection) {
-            $payload[(int) $selection['question_id']] = [
+            $payload[$selection['question_id']] = [
+                'organisation_id' => $quiz->organisation_id,
                 'position' => $index + 1,
-                'points' => $selection['points'] ?? null,
+                'points' => $selection['points'],
             ];
         }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Log;
 use App\Models\Quiz;
+use App\Services\AuditLogService;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Concerns\CreatesQuizzes;
@@ -129,10 +130,10 @@ describe('store', function () {
             ->first();
 
         expect($log)->not->toBeNull()
-            ->and($log->data)->toHaveKey('questions')
-            ->and(collect($log->data['questions'])->pluck('question_id')->all())
+            ->and($log->data['after'])->toHaveKey('questions')
+            ->and(collect($log->data['after']['questions'])->pluck('question_id')->all())
             ->toBe([$second->id, $first->id])
-            ->and($log->data['questions'][0]['points'])->toBe(3);
+            ->and($log->data['after']['questions'][0]['points'])->toBe(3);
     });
 
     test('slug, organisation_id and position in the request body are ignored', function () {
@@ -172,13 +173,14 @@ describe('store', function () {
         ]);
     });
 
-    test('creating a quiz is atomic when attaching questions fails', function () {
+    test('creating a quiz is atomic when a later step fails', function () {
         $superAdmin = $this->superAdminUser();
         $course = $this->courseFor($superAdmin);
         $question = $this->questionIn($this->testOrganisation->id);
 
-        Quiz::created(function () {
-            throw new RuntimeException('Simulated failure after the quiz row is written.');
+        $this->partialMock(AuditLogService::class, function ($mock) {
+            $mock->shouldReceive('record')
+                ->andThrow(new RuntimeException('Simulated failure after questions are attached.'));
         });
 
         $this->actingAs($superAdmin)
@@ -188,8 +190,9 @@ describe('store', function () {
             ->assertStatus(500);
 
         $this->assertDatabaseMissing('quizzes', ['title' => 'Laravel Basics Quiz']);
-        $this->assertDatabaseCount('quiz_question', 0);
+        $this->assertDatabaseCount('quiz_question', 0); // now meaningful: rows were written, then rolled back
     });
+
 
     test('user without permission cannot create a quiz', function () {
         $user = $this->normalUser();
@@ -393,15 +396,16 @@ describe('update', function () {
         ]);
     });
 
-    test('updating a quiz is atomic when the update fails', function () {
+    test('updating a quiz is atomic when a later step fails', function () {
         $superAdmin = $this->superAdminUser();
         $quiz = $this->quizFor($superAdmin, ['title' => 'Original'], 2);
 
         $before = $quiz->questions()->orderBy('quiz_question.position')->pluck('questions.id')->all();
         $replacement = $this->questionIn($this->testOrganisation->id);
 
-        Quiz::updated(function () {
-            throw new RuntimeException('Simulated failure after the quiz row is updated.');
+        $this->partialMock(AuditLogService::class, function ($mock) {
+            $mock->shouldReceive('record')
+                ->andThrow(new RuntimeException('Simulated failure after questions are synced.'));
         });
 
         $this->actingAs($superAdmin)
@@ -411,6 +415,10 @@ describe('update', function () {
             ->assertStatus(500);
 
         $this->assertDatabaseHas('quizzes', ['id' => $quiz->id, 'title' => 'Original']);
+        $this->assertDatabaseMissing('quiz_question', [
+            'quiz_id' => $quiz->id,
+            'question_id' => $replacement->id,
+        ]);
 
         expect($quiz->questions()->orderBy('quiz_question.position')->pluck('questions.id')->all())
             ->toBe($before);

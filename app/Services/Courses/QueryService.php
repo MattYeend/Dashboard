@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Str;
 
@@ -53,7 +54,23 @@ class QueryService
      */
     public function getById(User $user, Course $course): array
     {
-        $course->loadMissing(['instructor', 'creator', 'updater', 'deleter', 'restorer']);
+        $course->loadMissing([
+            'instructor', 
+            'creator', 
+            'updater', 
+            'deleter', 
+            'restorer'
+        ]);
+
+        $canManage = $user->can('update', $course);
+
+        $course->load([
+            'quizzes' => fn (HasMany $quizzes) => $quizzes
+                ->select(['id', 'course_id', 'title', 'pass_mark_percentage'])
+                ->withCount('questions')
+                ->when(! $canManage, fn (Builder $query) => $query->published())
+                ->orderBy('title'),
+        ]);
 
         return array_merge(
             ['course' => $this->formatterService->format($course)],

@@ -365,6 +365,6 @@ class QuizController extends Controller
 
         $validated = $request->validate(['course_id' => ['required', 'integer']]);
 
-        return response()->json($this->query->lessonOptionsFor($validated['course_id']));
+        return response()->json($this->query->lessonOptionsFor((int) $validated['course_id']));
     }
 }

@@ -119,13 +119,24 @@ class QueryService
     }
 
     /**
-     * Questions that can be attached to a quiz.
+     * Questions that can be attached to a quiz, shaped for the picker.
      *
-     * @return Collection<int, Question>
+     * @return array<int, array{id: int, prompt: string, type: string, type_label: string, points: int}>
      */
-    public function questionOptions(): Collection
+    public function questionOptions(): array
     {
-        return Question::query()->select('id', 'body', 'type')->orderBy('id')->get();
+        return Question::query()
+            ->select('id', 'question', 'type', 'points')
+            ->orderBy('id')
+            ->get()
+            ->map(fn (Question $question): array => [
+                'id' => $question->id,
+                'prompt' => $question->question,
+                'type' => $question->type->value,
+                'type_label' => $question->type->label(),
+                'points' => $question->points,
+            ])
+            ->all();
     }
 
     /**

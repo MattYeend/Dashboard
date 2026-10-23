@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Courses;
 
 use App\Models\Course;
+use App\Models\Quiz;
 use Illuminate\Support\Str;
 
 class FormatterService
@@ -42,6 +43,17 @@ class FormatterService
                 'id' => $course->instructor->id,
                 'name' => $course->instructor->name,
             ] : null,
+            ...($course->relationLoaded('quizzes') ? [
+                'quizzes' => $course->quizzes
+                    ->map(static fn (Quiz $quiz): array => [
+                        'id' => $quiz->id,
+                        'title' => $quiz->title,
+                        'pass_mark_percentage' => $quiz->pass_mark_percentage,
+                        'questions_count' => $quiz->questions_count,
+                    ])
+                    ->values()
+                    ->all(),
+            ] : []),
         ];
     }
 }

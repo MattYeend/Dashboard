@@ -19,7 +19,7 @@ class FormatterService
             'questions' => $quiz->relationLoaded('questions')
                 ? $quiz->questions->map(fn ($question) => [
                     'id' => $question->id,
-                    'prompt' => $question->prompt,
+                    'prompt' => $question->question,
                     'type' => $question->type->value,
                     'type_label' => $question->type->label(),
                     'explanation' => $question->explanation,
@@ -30,7 +30,7 @@ class FormatterService
                     'answers' => $question->relationLoaded('answers')
                         ? $question->answers->map(fn ($answer) => [
                             'id' => $answer->id,
-                            'body' => $answer->body,
+                            'answer' => $answer->answer,
                             'is_correct' => (bool) $answer->is_correct,
                         ])->values()->all()
                         : [],
@@ -61,7 +61,7 @@ class FormatterService
             'questions' => $quiz->relationLoaded('questions')
                 ? $quiz->questions->map(fn ($question) => [
                     'id' => $question->id,
-                    'prompt' => $question->prompt,
+                    'prompt' => $question->question,
                     'type' => $question->type->value,
                     'type_label' => $question->type->label(),
                     'position' => $question->pivot->position,
@@ -69,7 +69,7 @@ class FormatterService
                     'answers' => $question->relationLoaded('answers')
                         ? $question->answers->map(fn ($answer) => [
                             'id' => $answer->id,
-                            'body' => $answer->body,
+                            'answer' => $answer->answer,
                         ])->values()->all()
                         : [],
                 ])->values()->all()

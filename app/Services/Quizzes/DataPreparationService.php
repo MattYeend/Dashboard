@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Quizzes;
 
+use App\Models\Quiz;
 use App\Services\SlugService;
 
 class DataPreparationService
@@ -38,7 +39,7 @@ class DataPreparationService
     {
         $payload = [
             'title' => $data['title'],
-            'slug' => $this->slugService->generateUnique($data['title'], 'quizzes'),
+            'slug' => $this->slugService->generateUnique(Quiz::class, $data['title']),
             'description' => $this->purify($data['description'] ?? null),
             'course_id' => $data['course_id'],
             'lesson_id' => $data['lesson_id'] ?? null,
@@ -95,7 +96,7 @@ class DataPreparationService
         }
 
         if (isset($payload['title']) && $payload['title'] !== $currentTitle) {
-            $payload['slug'] = $this->slugService->generateUnique($payload['title'], 'quizzes', $quizId);
+            $payload['slug'] = $this->slugService->generateUnique(Quiz::class, $payload['title'], $quizId);
         }
 
         return $payload;
