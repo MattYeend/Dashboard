@@ -511,9 +511,9 @@ parameters:
 			path: app/Models/Log.php
 
 		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
+			message: '#^Access to an undefined property App\\Models\\Question\:\:\$pivot\.$#'
+			identifier: property.notFound
+			count: 2
 			path: app/Models/Quiz.php
 
 		-
@@ -1091,6 +1091,12 @@ parameters:
 			identifier: property.notFound
 			count: 3
 			path: app/Services/Courses/ImporterService.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:published\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/Courses/QueryService.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Course\)\: array\<string, mixed\> given\.$#'
@@ -2443,33 +2449,9 @@ parameters:
 			path: app/Services/Quizzes/DeleterService.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\Answer\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Services/Quizzes/FormatterService.php
-
-		-
 			message: '#^Access to an undefined property App\\Models\\Question\:\:\$pivot\.$#'
 			identifier: property.notFound
-			count: 4
-			path: app/Services/Quizzes/FormatterService.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Question\:\:\$prompt\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Services/Quizzes/FormatterService.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Quiz\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Quizzes/FormatterService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Answer\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 2
+			count: 3
 			path: app/Services/Quizzes/FormatterService.php
 
 		-
