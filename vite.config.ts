@@ -7,6 +7,8 @@ import { bunny } from 'laravel-vite-plugin/fonts';
 import { defineConfig } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 
+const analyse = process.env.ANALYSE === 'true';
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -31,8 +33,8 @@ export default defineConfig({
         wayfinder({
             formVariants: true,
         }),
-        visualizer({
-            filename: './public/build/stats.json',
+        analyse && visualizer({
+            filename: './build-stats/stats.json',
             template: 'raw-data',
             gzipSize: true,
             brotliSize: true,

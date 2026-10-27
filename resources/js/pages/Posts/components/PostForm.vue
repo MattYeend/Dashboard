@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { InertiaFormProps } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
+import { defineAsyncComponent } from 'vue';
 import { Button } from '@/components/ui/button';
 import PostCategoriesForm from '@/pages/Posts/components/PostCategoriesForm.vue';
-import PostDetailsForm from '@/pages/Posts/components/PostDetailsForm.vue';
+const PostDetailsForm = defineAsyncComponent(() => import( '@/pages/Posts/components/PostDetailsForm.vue'));
 import PostImageForm from '@/pages/Posts/components/PostImageForm.vue';
 import PostTagsForm from '@/pages/Posts/components/PostTagsForm.vue';
 import { index as postsIndex } from '@/routes/posts';
