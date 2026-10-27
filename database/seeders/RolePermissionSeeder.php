@@ -626,7 +626,6 @@ class RolePermissionSeeder extends Seeder
             'view api logs',
             'clear cache',
             'view system info',
-            'view logs',
             'view any contact information',
             'view contact information',
             'create contact information',
@@ -945,6 +944,7 @@ class RolePermissionSeeder extends Seeder
             'export answer',
         ];
         $admin->givePermissionTo($adminPermissions);
+        $admin->revokePermissionTo('view logs');
 
         // Manager role - can manage content and users but limited system access
         $manager = Role::firstOrCreate([

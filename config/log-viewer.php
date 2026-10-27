@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'back_to_system_url' => config('app.url', null),
+    'back_to_system_url' => env('APP_URL'),
 
     'back_to_system_label' => null, // Displayed by default: "Back to {{ app.name }}"
 
@@ -123,6 +123,7 @@ return [
     'api_middleware' => [
         EnsureFrontendRequestsAreStateful::class,
         'auth',
+        'throttle:api',
         AuthorizeLogViewer::class,
     ],
 
