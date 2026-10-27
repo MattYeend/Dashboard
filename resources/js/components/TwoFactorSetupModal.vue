@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Form } from '@inertiajs/vue3';
+import { Check, Copy, ScanLine } from '@lucide/vue';
 import { useClipboard } from '@vueuse/core';
 import DOMPurify from 'dompurify';
-import { Check, Copy, ScanLine } from '@lucide/vue';
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue';
 import AlertError from '@/components/AlertError.vue';
 import InputError from '@/components/InputError.vue';
