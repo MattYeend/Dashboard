@@ -2,6 +2,9 @@
     "$schema": "https://www.schemastore.org/package.json",
     "private": true,
     "type": "module",
+    "engines": {
+        "node": ">=22.13.0"
+    },
     "scripts": {
         "build": "vite build",
         "build:analyse": "cross-env ANALYSE=true vite build",
@@ -11,10 +14,11 @@
         "format:check": "prettier --check resources/",
         "lint": "eslint . --fix",
         "lint:check": "eslint .",
-        "types:check": "vue-tsc --noEmit"
+        "types:check": "vue-tsc --noEmit",
+        "audit:check": "npm audit --omit=dev --audit-level=high"
     },
     "devDependencies": {
-        "@eslint/js": "^9.39.5",
+        "@eslint/js": "^10.0.1",
         "@laravel/vite-plugin-wayfinder": "^0.1.11",
         "@stylistic/eslint-plugin": "^5.10.0",
         "@tailwindcss/typography": "^0.5.20",
@@ -24,7 +28,7 @@
         "@vue/eslint-config-typescript": "^14.9.0",
         "concurrently": "^10.0.5",
         "cross-env": "^10.1.0",
-        "eslint": "^9.39.5",
+        "eslint": "^10.13.0",
         "eslint-config-prettier": "^10.0.1",
         "eslint-import-resolver-typescript": "^4.4.4",
         "eslint-plugin-import": "^2.32.0",
