@@ -41,7 +41,7 @@
         "@inertiajs/vite": "^3.9.1",
         "@inertiajs/vue3": "^3.9.1",
         "@laravel/passkeys": "^0.4.0",
-        "@lucide/vue": "^1.59.0",
+        "@lucide/vue": "^1.61.0",
         "@tiptap/core": "^3.32.0",
         "@tiptap/extension-blockquote": "^3.31.4",
         "@tiptap/extension-bold": "^3.31.4",
