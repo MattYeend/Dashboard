@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import {
-    FileText,
-    PhoneCall,
-    Mail,
-    ListChecks,
-    RefreshCw,
-} from '@lucide/vue';
+import { FileText, PhoneCall, Mail, ListChecks, RefreshCw } from '@lucide/vue';
 import { computed } from 'vue';
 import type { Activity } from '@/types';
 
