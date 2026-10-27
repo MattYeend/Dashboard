@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ListTodo } from 'lucide-vue-next';
+import { ListTodo } from '@lucide/vue';
 import StatCard from '@/pages/Dashboard/components/StatCard.vue';
 
 defineProps<{

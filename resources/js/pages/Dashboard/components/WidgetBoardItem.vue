@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Trash2, X } from 'lucide-vue-next';
+import { Trash2, X } from '@lucide/vue';
 import DashboardWidgetComponent from '@/pages/Dashboard/components/DashboardWidget.vue';
 import type { DashboardStats, DashboardWidget } from '@/types';
 

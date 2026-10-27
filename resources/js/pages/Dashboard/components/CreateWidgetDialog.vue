@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { Plus } from 'lucide-vue-next';
+import { Plus } from '@lucide/vue';
 import { ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import {

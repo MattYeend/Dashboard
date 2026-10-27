@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GitBranch } from 'lucide-vue-next';
+import { GitBranch } from '@lucide/vue';
 import StatCard from '@/pages/Dashboard/components/StatCard.vue';
 
 defineProps<{

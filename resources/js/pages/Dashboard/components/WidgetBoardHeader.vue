@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Pencil } from 'lucide-vue-next';
+import { Pencil } from '@lucide/vue';
 import CreateWidgetDialog from '@/pages/Dashboard/components/CreateWidgetDialog.vue';
 import type { DashboardMetric } from '@/types';
 

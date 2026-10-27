@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ShoppingCart } from 'lucide-vue-next';
+import { ShoppingCart } from '@lucide/vue';
 import StatCard from '@/pages/Dashboard/components/StatCard.vue';
 
 defineProps<{

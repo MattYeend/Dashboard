@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Handshake } from 'lucide-vue-next';
+import { Handshake } from '@lucide/vue';
 import StatCard from '@/pages/Dashboard/components/StatCard.vue';
 
 defineProps<{

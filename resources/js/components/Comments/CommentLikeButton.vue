@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
-import { Heart } from 'lucide-vue-next';
+import { Heart } from '@lucide/vue';
 import type { Comment } from '@/types';
 
 interface Props {

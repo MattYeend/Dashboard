@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
-import { Heart } from 'lucide-vue-next';
+import { Heart } from '@lucide/vue';
 import { like as postsLike, unlike as postsUnlike } from '@/routes/posts';
 import type { Post } from '@/types';
 

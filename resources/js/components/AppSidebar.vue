@@ -31,7 +31,7 @@ import {
     User2,
     UserPlus,
     Workflow,
-} from 'lucide-vue-next';
+} from '@lucide/vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';

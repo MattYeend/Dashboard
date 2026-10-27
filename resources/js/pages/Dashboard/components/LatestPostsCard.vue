@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Newspaper } from 'lucide-vue-next';
+import { Newspaper } from '@lucide/vue';
 import type { DashboardLatestPost } from '@/types';
 
 defineProps<{
