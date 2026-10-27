@@ -197,8 +197,9 @@ class AppServiceProvider extends ServiceProvider
         Cashier::useCustomerModel(Organisation::class);
         Cashier::useSubscriptionModel(Subscription::class);
 
-        Gate::define('viewLogViewer', function (?User $user): bool {
-            return $user !== null && $user->can('view logs');
+        Gate::define('viewLogViewer', static function (?User $user): bool {
+            return $user !== null
+                && app(UserRoleCheckerService::class)->isSuperAdmin($user);
         });
 
         $this->registerPasskeyAuditLogging();
