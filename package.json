@@ -82,7 +82,7 @@
         "vuedraggable": "^4.1.0"
     },
     "optionalDependencies": {
-        "@rollup/rollup-linux-x64-gnu": "4.65.0",
+        "@rollup/rollup-linux-x64-gnu": "4.67.4",
         "@rollup/rollup-win32-x64-msvc": "4.65.0",
         "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1",
         "@tailwindcss/oxide-win32-x64-msvc": "^4.0.1",
