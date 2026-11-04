@@ -68,7 +68,11 @@ class QueryService
             'quizzes' => fn (HasMany $quizzes) => $quizzes
                 ->select(['id', 'course_id', 'title', 'pass_mark_percentage'])
                 ->withCount('questions')
-                ->when(! $canManage, fn (Builder $query) => $query->published())
+                ->when(
+                    ! $canManage,
+                    fn (Builder $query) => $query->whereNotNull('published_at')
+                        ->where('published_at', '<=', now())
+                )
                 ->orderBy('title'),
         ]);
 

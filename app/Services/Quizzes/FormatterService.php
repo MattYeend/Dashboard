@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Quizzes;
 
+use App\Models\Answer;
+use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Support\Str;
 
@@ -18,24 +20,29 @@ class FormatterService
     {
         return array_merge($this->base($quiz), [
             'questions' => $quiz->relationLoaded('questions')
-                ? $quiz->questions->map(fn ($question) => [
-                    'id' => $question->id,
-                    'prompt' => $question->question,
-                    'type' => $question->type->value,
-                    'type_label' => $question->type->label(),
-                    'explanation' => $question->explanation,
-                    'position' => $question->pivot->position,
-                    'default_points' => $question->points,
-                    'points' => $question->pivot->points,
-                    'effective_points' => $question->pivot->points ?? $question->points,
-                    'answers' => $question->relationLoaded('answers')
-                        ? $question->answers->map(fn ($answer) => [
-                            'id' => $answer->id,
-                            'answer' => $answer->answer,
-                            'is_correct' => (bool) $answer->is_correct,
-                        ])->values()->all()
-                        : [],
-                ])->values()->all()
+                ? $quiz->questions->map(
+                    fn (Question $question): array => [
+                        'id' => $question->id,
+                        'prompt' => $question->question,
+                        'type' => $question->type->value,
+                        'type_label' => $question->type->label(),
+                        'explanation' => $question->explanation,
+                        'position' => $question->pivot->position,
+                        'default_points' => $question->points,
+                        'points' => $question->pivot->points,
+                        'effective_points' => $question->pivot->points
+                            ?? $question->points,
+                        'answers' => $question->relationLoaded('answers')
+                            ? $question->answers->map(
+                                fn (Answer $answer): array => [
+                                    'id' => $answer->id,
+                                    'answer' => $answer->answer,
+                                    'is_correct' => (bool) $answer->is_correct,
+                                ]
+                            )->values()->all()
+                            : [],
+                    ]
+                )->values()->all()
                 : null,
             'created_by' => $quiz->created_by,
             'updated_by' => $quiz->updated_by,
@@ -60,20 +67,25 @@ class FormatterService
     {
         return array_merge($this->base($quiz), [
             'questions' => $quiz->relationLoaded('questions')
-                ? $quiz->questions->map(fn ($question) => [
-                    'id' => $question->id,
-                    'prompt' => $question->question,
-                    'type' => $question->type->value,
-                    'type_label' => $question->type->label(),
-                    'position' => $question->pivot->position,
-                    'effective_points' => $question->pivot->points ?? $question->points,
-                    'answers' => $question->relationLoaded('answers')
-                        ? $question->answers->map(fn ($answer) => [
-                            'id' => $answer->id,
-                            'answer' => $answer->answer,
-                        ])->values()->all()
-                        : [],
-                ])->values()->all()
+                ? $quiz->questions->map(
+                    fn (Question $question): array => [
+                        'id' => $question->id,
+                        'prompt' => $question->question,
+                        'type' => $question->type->value,
+                        'type_label' => $question->type->label(),
+                        'position' => $question->pivot->position,
+                        'effective_points' => $question->pivot->points
+                            ?? $question->points,
+                        'answers' => $question->relationLoaded('answers')
+                            ? $question->answers->map(
+                                fn (Answer $answer): array => [
+                                    'id' => $answer->id,
+                                    'answer' => $answer->answer,
+                                ]
+                            )->values()->all()
+                            : [],
+                    ]
+                )->values()->all()
                 : null,
         ]);
     }
@@ -103,12 +115,30 @@ class FormatterService
             'meta' => $quiz->meta,
             'created_at' => $quiz->created_at,
             'updated_at' => $quiz->updated_at,
-            'course' => $quiz->course ? ['id' => $quiz->course->id, 'title' => $quiz->course->title] : null,
-            'lesson' => $quiz->lesson ? ['id' => $quiz->lesson->id, 'title' => $quiz->lesson->title] : null,
-            'course_title' => $quiz->course ? Str::limit($quiz->course->title, 15) : '-',
-            'lesson_title' => $quiz->lesson ? Str::limit($quiz->lesson->title, 15) : 'Whole course',
+            'course' => $quiz->course
+                ? [
+                    'id' => $quiz->course->id,
+                    'title' => $quiz->course->title,
+                ]
+                : null,
+            'lesson' => $quiz->lesson
+                ? [
+                    'id' => $quiz->lesson->id,
+                    'title' => $quiz->lesson->title,
+                ]
+                : null,
+            'course_title' => $quiz->course
+                ? Str::limit($quiz->course->title, 15)
+                : '-',
+            'lesson_title' => $quiz->lesson
+                ? Str::limit($quiz->lesson->title, 15)
+                : 'Whole course',
             'questions_count' => $quiz->questions_count
-                ?? ($quiz->relationLoaded('questions') ? $quiz->questions->count() : null),
+                ?? (
+                    $quiz->relationLoaded('questions')
+                        ? $quiz->questions->count()
+                        : null
+                ),
         ];
     }
 
@@ -117,6 +147,11 @@ class FormatterService
      */
     protected function person(mixed $user): ?array
     {
-        return $user ? ['id' => $user->id, 'name' => $user->name] : null;
+        return $user
+            ? [
+                'id' => $user->id,
+                'name' => $user->name,
+            ]
+            : null;
     }
 }

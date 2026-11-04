@@ -177,7 +177,8 @@ class Quiz extends Model implements Auditable
      */
     public function scopePublished(Builder $query): Builder
     {
-        return $query->whereNotNull('published_at')
+        return $query
+            ->whereNotNull('published_at')
             ->where('published_at', '<=', now());
     }
 
