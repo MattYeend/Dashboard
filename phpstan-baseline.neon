@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			identifier: nullsafe.neverNull
+			path: database/seeders/AnswerSeeder.php
+			reportUnmatched: False
+
+		-
 			message: '#^Method App\\Actions\\Fortify\\CreateNewUser\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
 			identifier: return.type
 			count: 1

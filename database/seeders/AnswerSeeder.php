@@ -65,9 +65,7 @@ class AnswerSeeder extends Seeder
             $question = Question::query()->where('question', $questionText)->first();
 
             if ($question === null) {
-                if (isset($this->command)) {
-                    $this->command->warn("Question not found, skipping: {$questionText}");
-                }
+                $this->command?->warn("Question not found, skipping: {$questionText}");
 
                 continue;
             }
