@@ -45,7 +45,7 @@
     },
     "dependencies": {
         "@inertiajs/vite": "^3.9.1",
-        "@inertiajs/vue3": "^3.9.1",
+        "@inertiajs/vue3": "^3.10.0",
         "@laravel/passkeys": "^0.4.0",
         "@lucide/vue": "^1.62.0",
         "@tiptap/core": "^3.32.2",
