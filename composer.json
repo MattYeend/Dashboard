@@ -26,7 +26,7 @@
         "opcodesio/log-viewer": "^3.24",
         "spatie/laravel-backup": "^10.3",
         "spatie/laravel-multitenancy": "^4.2",
-        "spatie/laravel-permission": "^7.4"
+        "spatie/laravel-permission": "^8.3"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.7",
