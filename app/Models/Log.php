@@ -974,6 +974,21 @@ class Log extends Model implements Auditable
 
     public const ACTION_EXPORT_ANSWER = 432;
 
+    // Product Management
+    public const ACTION_CREATE_PRODUCT = 900;
+
+    public const ACTION_UPDATE_PRODUCT = 901;
+
+    public const ACTION_DELETE_PRODUCT = 902;
+
+    public const ACTION_RESTORE_PRODUCT = 903;
+
+    public const ACTION_FORCE_DELETE_PRODUCT = 904;
+
+    public const ACTION_IMPORT_PRODUCT = 905;
+
+    public const ACTION_EXPORT_PRODUCT = 906;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
