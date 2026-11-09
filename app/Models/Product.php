@@ -1,12 +1,167 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Contracts\Auditable;
+use App\Traits\BelongsToOrganisation;
+use Database\Factories\ProductFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
-class Product extends Model
+/**
+ * @property int $id
+ * @property string $sku
+ * @property string $name
+ * @property string|null $description
+ * @property string $unit
+ * @property string $unit_price
+ * @property string|null $cost_price
+ * @property string $tax_rate
+ * @property string $currency
+ * @property bool $is_active
+ * @property array<string, mixed>|null $meta
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property int|null $deleted_by
+ * @property int|null $restored_by
+ * @property Carbon|null $restored_at
+ * @property Carbon|null $deleted_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property-read User|null $creator
+ * @property-read User|null $updater
+ * @property-read User|null $deleter
+ * @property-read User|null $restorer
+ */
+#[Fillable([
+    'sku',
+    'name',
+    'description',
+    'unit',
+    'unit_price',
+    'cost_price',
+    'tax_rate',
+    'currency',
+    'is_active',
+    'meta',
+    'created_by',
+    'created_at',
+    'updated_by',
+    'updated_at',
+])]
+class Product extends Model implements Auditable
 {
-    /** @use HasFactory<\Database\Factories\ProductFactory> */
-    use HasFactory;
+    /** 
+     * @use HasFactory<ProductFactory> 
+     */
+    use BelongsToOrganisation,
+        HasFactory,
+        SoftDeletes;
+
+    /**
+     * Units a product can be sold in. Single source of truth for the
+     * validation rules, the import validator and the form select.
+     *
+     * @var array<int, string>
+     */
+    public const UNITS = [
+        'each',
+        'hour',
+        'day',
+        'week',
+        'month',
+        'year',
+        'kg',
+        'metre',
+        'licence',
+    ];
+
+    /**
+     * Get the user who created this product.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * Get the user who last updated this product.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function updater(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    /**
+     * Get the user who deleted this product.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function deleter(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'deleted_by');
+    }
+
+    /**
+     * Get the user who restored this product.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function restorer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'restored_by');
+    }
+
+    /**
+     * Get a snapshot of the product's auditable attributes.
+     *
+     * Used by the audit log to capture before/after state on create,
+     * update, delete and restore actions.
+     *
+     * @return array<string, mixed>
+     */
+    public function auditSnapshot(): array
+    {
+        return $this->only([
+            'id',
+            'sku',
+            'name',
+            'description',
+            'unit',
+            'unit_price',
+            'cost_price',
+            'tax_rate',
+            'currency',
+            'is_active',
+            'meta',
+        ]);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'unit_price' => 'decimal:2',
+            'cost_price' => 'decimal:2',
+            'tax_rate' => 'decimal:2',
+            'is_active' => 'boolean',
+            'meta' => 'array',
+            'restored_at' => 'immutable_datetime',
+            'deleted_at' => 'immutable_datetime',
+        ];
+    }
 }
