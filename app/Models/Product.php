@@ -57,8 +57,8 @@ use Illuminate\Support\Carbon;
 ])]
 class Product extends Model implements Auditable
 {
-    /** 
-     * @use HasFactory<ProductFactory> 
+    /**
+     * @use HasFactory<ProductFactory>
      */
     use BelongsToOrganisation,
         HasFactory,
