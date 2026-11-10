@@ -2,11 +2,11 @@
 import { Link } from '@inertiajs/vue3';
 
 import { Button } from '@/components/ui/button';
+import type { ProductFormData } from '@/types/forms/products';
 
 import ProductBasicDetailsForm from './ProductBasicDetailsForm.vue';
 import ProductPricingForm from './ProductPricingForm.vue';
 import ProductStatusForm from './ProductStatusForm.vue';
-import type { ProductFormData } from '@/types/forms/products';
 
 defineProps<{
     errors: Partial<Record<keyof ProductFormData, string>>;
@@ -50,6 +50,7 @@ const form = defineModel<ProductFormData>({ required: true });
             <Button type="submit" :disabled="processing">
                 {{ submitLabel }}
             </Button>
+
             <Button as-child variant="outline">
                 <Link :href="cancelHref">Cancel</Link>
             </Button>

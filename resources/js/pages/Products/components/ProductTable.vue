@@ -44,9 +44,7 @@ const columns: ResourceTableColumn[] = [
             </BulkActionButton>
         </template>
 
-        <template #cell-tax_rate="{ row }">
-            {{ row.tax_rate }}%
-        </template>
+        <template #cell-tax_rate="{ row }"> {{ row.tax_rate }}% </template>
 
         <template #cell-is_active="{ row }">
             {{ row.is_active ? 'Yes' : 'No' }}

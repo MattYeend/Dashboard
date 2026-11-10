@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { Head, useForm } from '@inertiajs/vue3';
-
-import AppLayout from '@/layouts/AppLayout.vue';
+import ProductForm from '@/pages/Products/components/ProductForm.vue';
 import { index, store } from '@/routes/products';
-
-import ProductForm from './components/ProductForm.vue';
 import type { ProductFormData } from '@/types/forms/products';
 
 defineProps<{
@@ -32,9 +29,9 @@ function submit(): void {
 <template>
     <Head title="Create product" />
 
-    <AppLayout :breadcrumbs="[{ title: 'Products', href: index.url() }, { title: 'Create', href: '#' }]">
-        <div class="mx-auto w-full max-w-4xl p-4">
-            <h1 class="mb-6 text-2xl font-semibold">Create product</h1>
+    <div class="py-6">
+        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+            <h1 class="mb-6 text-2xl font-semibold">Create Product</h1>
 
             <ProductForm
                 v-model="form"
@@ -47,5 +44,5 @@ function submit(): void {
                 @submit="submit"
             />
         </div>
-    </AppLayout>
+    </div>
 </template>

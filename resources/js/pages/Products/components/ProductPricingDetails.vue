@@ -10,7 +10,9 @@ defineProps<{
     <dl class="grid gap-4 sm:grid-cols-2">
         <div>
             <dt class="text-sm text-muted-foreground">Unit price</dt>
-            <dd class="font-medium">{{ product.formatted_unit_price }} per {{ product.unit }}</dd>
+            <dd class="font-medium">
+                {{ product.formatted_unit_price }} per {{ product.unit }}
+            </dd>
         </div>
         <div>
             <dt class="text-sm text-muted-foreground">Cost price</dt>

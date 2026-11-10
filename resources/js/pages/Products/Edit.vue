@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import { Head, useForm } from '@inertiajs/vue3';
-
-import AppLayout from '@/layouts/AppLayout.vue';
-import { index, show, update } from '@/routes/products';
+import ProductForm from '@/pages/Products/components/ProductForm.vue';
+import { show, update } from '@/routes/products';
 import type { Product } from '@/types';
-
-import ProductForm from './components/ProductForm.vue';
 import type { ProductFormData } from '@/types/forms/products';
 
 const props = defineProps<{
@@ -34,15 +31,9 @@ function submit(): void {
 <template>
     <Head :title="`Edit ${product.name}`" />
 
-    <AppLayout
-        :breadcrumbs="[
-            { title: 'Products', href: index.url() },
-            { title: product.name, href: show.url(product.id) },
-            { title: 'Edit', href: '#' },
-        ]"
-    >
-        <div class="mx-auto w-full max-w-4xl p-4">
-            <h1 class="mb-6 text-2xl font-semibold">Edit product</h1>
+    <div class="py-6">
+        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+            <h1 class="mb-6 text-2xl font-semibold">Edit Product</h1>
 
             <ProductForm
                 v-model="form"
@@ -55,5 +46,5 @@ function submit(): void {
                 @submit="submit"
             />
         </div>
-    </AppLayout>
+    </div>
 </template>

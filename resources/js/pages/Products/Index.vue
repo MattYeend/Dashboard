@@ -7,7 +7,6 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import { useBulkAction, useRowAction } from '@/composables/useConfirmedAction';
 import { useIndexFilters } from '@/composables/useIndexFilters';
-import AppLayout from '@/layouts/AppLayout.vue';
 import {
     create as productsCreate,
     destroy as productsDestroy,
@@ -61,55 +60,53 @@ const bulkDeleteAction = useBulkAction(
 <template>
     <Head title="Products" />
 
-    <AppLayout :breadcrumbs="[{ title: 'Products', href: '#' }]">
-        <div class="py-6">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <IndexHeader
-                    title="Products"
-                    :create-href="productsCreate.url()"
-                    create-label="Create product"
-                    :can-create="permissions_meta.can_create"
-                    :export-href="productsExport.url()"
-                    :can-export="permissions_meta.can_export"
-                />
-
-                <FilterBar
-                    v-model="filters"
-                    :fields="filterFields"
-                    @change="applyFilters"
-                />
-
-                <ProductTable
-                    v-model:selected="selectedIds"
-                    :products="products.data"
-                    @delete="deleteAction.request"
-                    @bulk-delete="bulkDeleteAction.request"
-                />
-
-                <Pagination
-                    :meta="products.meta"
-                    :links="products.links"
-                    resource-label="products"
-                />
-            </div>
-
-            <ConfirmDialog
-                v-model:open="deleteAction.open"
-                title="Delete product"
-                description="This product will be moved to trash."
-                confirm-label="Delete"
-                :processing="deleteAction.processing"
-                @confirm="deleteAction.confirm"
+    <div class="py-6">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <IndexHeader
+                title="Products"
+                :create-href="productsCreate.url()"
+                create-label="Add Product"
+                :can-create="permissions_meta.can_create"
+                :export-href="productsExport.url()"
+                :can-export="permissions_meta.can_export"
             />
 
-            <ConfirmDialog
-                v-model:open="bulkDeleteAction.open"
-                title="Delete products"
-                :description="`${bulkDeleteAction.ids.length} product(s) will be moved to trash.`"
-                confirm-label="Delete"
-                :processing="bulkDeleteAction.processing"
-                @confirm="bulkDeleteAction.confirm"
+            <FilterBar
+                v-model="filters"
+                :fields="filterFields"
+                @change="applyFilters"
+            />
+
+            <ProductTable
+                v-model:selected="selectedIds"
+                :products="products.data"
+                @delete="deleteAction.request"
+                @bulk-delete="bulkDeleteAction.request"
+            />
+
+            <Pagination
+                :meta="products.meta"
+                :links="products.links"
+                resource-label="products"
             />
         </div>
-    </AppLayout>
+
+        <ConfirmDialog
+            v-model:open="deleteAction.open"
+            title="Delete product"
+            description="This product will be moved to trash."
+            confirm-label="Delete"
+            :processing="deleteAction.processing"
+            @confirm="deleteAction.confirm"
+        />
+
+        <ConfirmDialog
+            v-model:open="bulkDeleteAction.open"
+            title="Delete products"
+            :description="`${bulkDeleteAction.ids.length} product(s) will be moved to trash.`"
+            confirm-label="Delete"
+            :processing="bulkDeleteAction.processing"
+            @confirm="bulkDeleteAction.confirm"
+        />
+    </div>
 </template>

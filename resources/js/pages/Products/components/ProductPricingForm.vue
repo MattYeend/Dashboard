@@ -78,7 +78,11 @@ const costPrice = computed<string>({
                 class="h-9 rounded-md border border-input px-3 text-sm"
                 required
             >
-                <option v-for="currency in currencies" :key="currency" :value="currency">
+                <option
+                    v-for="currency in currencies"
+                    :key="currency"
+                    :value="currency"
+                >
                     {{ currency }}
                 </option>
             </select>
