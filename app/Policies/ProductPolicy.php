@@ -1,18 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\Product;
 use App\Models\User;
+use App\Services\Products\PolicyAuthorisationService;
 
 class ProductPolicy
 {
+    /**
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**
@@ -20,7 +30,7 @@ class ProductPolicy
      */
     public function view(User $user, Product $product): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $product);
     }
 
     /**
@@ -28,7 +38,7 @@ class ProductPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canCreate($user);
     }
 
     /**
@@ -36,7 +46,7 @@ class ProductPolicy
      */
     public function update(User $user, Product $product): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $product);
     }
 
     /**
@@ -44,7 +54,7 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $product);
     }
 
     /**
@@ -52,7 +62,7 @@ class ProductPolicy
      */
     public function restore(User $user, Product $product): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $product);
     }
 
     /**
@@ -60,6 +70,38 @@ class ProductPolicy
      */
     public function forceDelete(User $user, Product $product): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $product);
+    }
+
+    /**
+     * Determine whether the user can bulk delete models.
+     */
+    public function bulkDelete(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can bulk restore models.
+     */
+    public function bulkRestore(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can import models.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisationService->canImport($user);
+    }
+
+    /**
+     * Determine whether the user can export models.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->canExport($user);
     }
 }
