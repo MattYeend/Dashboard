@@ -8,3 +8,4 @@ parameters:
         - database/factories
         - database/seeders
     level: 5
+    tmpDir: storage/framework/phpstan
