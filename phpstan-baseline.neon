@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			identifier: nullsafe.neverNull
-			path: database/seeders/AnswerSeeder.php
-			reportUnmatched: False
-
-		-
 			message: '#^Method App\\Actions\\Fortify\\CreateNewUser\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
 			identifier: return.type
 			count: 1
@@ -2374,6 +2369,66 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Posts/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Products\\CreatorService\:\:create\(\) should return App\\Models\\Product but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Products/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Product\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Products/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Product\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Products/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Product\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Products/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Products/ExporterService.php
+
+		-
+			message: '#^Method App\\Services\\Products\\RestorerService\:\:restore\(\) should return App\\Models\\Product but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Products/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Product\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Products/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Product\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Products/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Products\\UpdaterService\:\:update\(\) should return App\\Models\\Product but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Products/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Product\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Products/UpdaterService.php
 
 		-
 			message: '#^Method App\\Services\\Questions\\CreatorService\:\:create\(\) should return App\\Models\\Question but returns Illuminate\\Database\\Eloquent\\Model\.$#'
