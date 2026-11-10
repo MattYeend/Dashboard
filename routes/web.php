@@ -44,6 +44,7 @@ use App\Http\Controllers\PipelineStatusController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PlatformReportingController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RegistrationInterestController;
@@ -1004,6 +1005,33 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{answer}/edit', [AnswerController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{answer}', [AnswerController::class, 'update'])->name('update');
             Route::delete('/{answer}', [AnswerController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('products')->name('products.')->group(function () {
+            Route::post('/bulk/delete', [ProductController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [ProductController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [ProductController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [ProductController::class, 'forceDelete'])->name('force-delete');
+
+            Route::post('/import', [ProductController::class, 'import'])->name('import');
+            Route::post('/import/preview', [ProductController::class, 'importPreview'])
+                ->middleware('throttle:10,1')
+                ->name('import.preview');
+            Route::post('/import/commit', [ProductController::class, 'importCommit'])
+                ->middleware('throttle:10,1')
+                ->name('import.commit');
+            Route::get('/export', [ProductController::class, 'export'])
+                ->middleware('throttle:10,1')
+                ->name('export');
+
+            Route::get('/', [ProductController::class, 'index'])->name('index');
+            Route::get('/create', [ProductController::class, 'create'])->name('create');
+            Route::post('/', [ProductController::class, 'store'])->name('store');
+            Route::get('/{product}', [ProductController::class, 'show'])->name('show');
+            Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
+            Route::put('/{product}', [ProductController::class, 'update'])->name('update');
+            Route::patch('/{product}', [ProductController::class, 'update'])->name('patch');
+            Route::delete('/{product}', [ProductController::class, 'destroy'])->name('destroy');
         });
     });
 });
