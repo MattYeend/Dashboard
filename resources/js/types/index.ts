@@ -1,6 +1,7 @@
 export * from './auth';
 export * from './import';
 export * from './navigation';
+export * from './product';
 export * from './ui';
 
 export interface TicketStatus {
