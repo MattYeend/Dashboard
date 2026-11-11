@@ -547,6 +547,16 @@ class RolePermissionSeeder extends Seeder
             'restore product',
             'import product',
             'export product',
+
+            // Quote statuses
+            'view any quote status',
+            'create quote status',
+            'view quote status',
+            'edit quote status',
+            'delete quote status',
+            'restore quote status',
+            'import quote status',
+            'export quote status',
         ];
 
         foreach ($permissions as $permission) {
@@ -960,6 +970,14 @@ class RolePermissionSeeder extends Seeder
             'restore product',
             'import product',
             'export product',
+            'view any quote status',
+            'create quote status',
+            'view quote status',
+            'edit quote status',
+            'delete quote status',
+            'restore quote status',
+            'import quote status',
+            'export quote status',
         ];
         $admin->givePermissionTo($adminPermissions);
         $admin->revokePermissionTo('view logs');
@@ -1272,6 +1290,8 @@ class RolePermissionSeeder extends Seeder
             'edit product',
             'import product',
             'export product',
+            'view any quote status',
+            'view quote status',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1482,6 +1502,8 @@ class RolePermissionSeeder extends Seeder
             'view product',
             'create product',
             'edit product',
+            'view any quote status',
+            'view quote status',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -2110,6 +2132,8 @@ class RolePermissionSeeder extends Seeder
             'view answer',
             'view any product',
             'view product',
+            'view any quote status',
+            'view quote status',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -2215,5 +2239,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Questions');
         $this->command->info('- Answers');
         $this->command->info('- Products');
+        $this->command->info('- Quote Statuses');
     }
 }
