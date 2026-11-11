@@ -47,6 +47,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\QuoteStatusController;
 use App\Http\Controllers\RegistrationInterestController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SearchController;
@@ -1031,6 +1032,33 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{product}', [ProductController::class, 'update'])->name('update');
             Route::delete('/{product}', [ProductController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('quote-statuses')->name('quote-statuses.')->group(function () {
+            Route::post('/bulk/delete', [QuoteStatusController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [QuoteStatusController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [QuoteStatusController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [QuoteStatusController::class, 'forceDelete'])->name('force-delete');
+
+            Route::post('/import', [QuoteStatusController::class, 'import'])->name('import');
+            Route::post('/import/preview', [QuoteStatusController::class, 'importPreview'])
+                ->middleware('throttle:10,1')
+                ->name('import.preview');
+            Route::post('/import/commit', [QuoteStatusController::class, 'importCommit'])
+                ->middleware('throttle:10,1')
+                ->name('import.commit');
+            Route::get('/export', [QuoteStatusController::class, 'export'])
+                ->middleware('throttle:10,1')
+                ->name('export');
+
+            Route::get('/', [QuoteStatusController::class, 'index'])->name('index');
+            Route::get('/create', [QuoteStatusController::class, 'create'])->name('create');
+            Route::post('/', [QuoteStatusController::class, 'store'])->name('store');
+            Route::get('/{quoteStatus}', [QuoteStatusController::class, 'show'])->name('show');
+            Route::get('/{quoteStatus}/edit', [QuoteStatusController::class, 'edit'])->name('edit');
+            Route::put('/{quoteStatus}', [QuoteStatusController::class, 'update'])->name('update');
+            Route::patch('/{quoteStatus}', [QuoteStatusController::class, 'update'])->name('patch');
+            Route::delete('/{quoteStatus}', [QuoteStatusController::class, 'destroy'])->name('destroy');
         });
     });
 });
