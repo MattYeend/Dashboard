@@ -47,4 +47,12 @@ class QuoteStatusFactory extends Factory
             'system_key' => $key,
         ]);
     }
+
+    /**
+     * Indicate that the quote status is soft deleted.
+     */
+    public function deleted(): static
+    {
+        return $this->state(['deleted_at' => now()]);
+    }
 }
