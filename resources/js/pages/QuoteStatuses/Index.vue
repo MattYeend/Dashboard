@@ -15,10 +15,10 @@ import {
 } from '@/routes/quote-statuses';
 import quoteStatusesBulk from '@/routes/quote-statuses/bulk';
 import type {
-    QuoteStatus,
     Pagination as PaginationMeta,
     PaginationLink,
     PermissionsMeta,
+    QuoteStatus,
 } from '@/types';
 import QuoteStatusTable from './components/QuoteStatusTable.vue';
 
@@ -67,7 +67,7 @@ const bulkDeleteAction = useBulkAction(
             <IndexHeader
                 title="Quote Statuses"
                 :create-href="quoteStatusesCreate.url()"
-                create-label="Create Quote Status"
+                create-label="Add Quote Status"
                 :can-create="permissions_meta.can_create"
                 :export-href="quoteStatusesExport.url()"
                 :can-export="permissions_meta.can_export"

@@ -2,10 +2,10 @@
 import { Link } from '@inertiajs/vue3';
 
 import { Button } from '@/components/ui/button';
+import type { QuoteStatusFormData } from '@/types/forms/quote-statuses';
 
 import QuoteStatusBasicDetailsForm from './QuoteStatusBasicDetailsForm.vue';
 import QuoteStatusColourForm from './QuoteStatusColourForm.vue';
-import type { QuoteStatusFormData } from '@/types/forms/quote-statuses';
 
 defineProps<{
     errors: Partial<Record<keyof QuoteStatusFormData, string>>;

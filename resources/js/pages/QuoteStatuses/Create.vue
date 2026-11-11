@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { Head, useForm } from '@inertiajs/vue3';
-
-import AppLayout from '@/layouts/AppLayout.vue';
+import QuoteStatusForm from '@/pages/QuoteStatuses/components/QuoteStatusForm.vue';
 import { index, store } from '@/routes/quote-statuses';
-
-import QuoteStatusForm from './components/QuoteStatusForm.vue';
 import type { QuoteStatusFormData } from '@/types/forms/quote-statuses';
 
 const form = useForm<QuoteStatusFormData>({
@@ -22,14 +19,9 @@ function submit(): void {
 <template>
     <Head title="Create quote status" />
 
-    <AppLayout
-        :breadcrumbs="[
-            { title: 'Quote statuses', href: index.url() },
-            { title: 'Create', href: '#' },
-        ]"
-    >
-        <div class="mx-auto w-full max-w-3xl p-4">
-            <h1 class="mb-6 text-2xl font-semibold">Create quote status</h1>
+    <div class="py-6">
+        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+            <h1 class="mb-6 text-2xl font-semibold">Create Quote Status</h1>
 
             <QuoteStatusForm
                 v-model="form"
@@ -41,5 +33,5 @@ function submit(): void {
                 @submit="submit"
             />
         </div>
-    </AppLayout>
+    </div>
 </template>
