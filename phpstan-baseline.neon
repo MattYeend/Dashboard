@@ -2551,12 +2551,6 @@ parameters:
 			path: app/Services/QuoteStatuses/DeleterService.php
 
 		-
-			message: '#^Property App\\Models\\QuoteStatus\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Services/QuoteStatuses/DeleterService.php
-
-		-
 			message: '#^Method App\\Services\\QuoteStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\QuoteStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
@@ -2565,12 +2559,6 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\QuoteStatus\)\: void given\.$#'
 			identifier: argument.type
-			count: 1
-			path: app/Services/QuoteStatuses/RestorerService.php
-
-		-
-			message: '#^Property App\\Models\\QuoteStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
 			count: 1
 			path: app/Services/QuoteStatuses/RestorerService.php
 
