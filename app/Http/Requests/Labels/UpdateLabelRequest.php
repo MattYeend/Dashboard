@@ -93,7 +93,7 @@ class UpdateLabelRequest extends FormRequest
             'sometimes',
             'nullable',
             'string',
-            'regex:/^#[0-9a-fA-F]{6}$/',
+            'regex:/^#[0-9A-Fa-f]{6}\z/D',
         ];
     }
 
@@ -108,7 +108,7 @@ class UpdateLabelRequest extends FormRequest
             'sometimes',
             'nullable',
             'string',
-            'regex:/^#[0-9a-fA-F]{6}$/',
+            'regex:/^#[0-9A-Fa-f]{6}\z/D',
         ];
     }
 

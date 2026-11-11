@@ -84,9 +84,9 @@ class QuoteStatusSeeder extends Seeder
             [
                 'system_key' => QuoteStatus::KEY_CONVERTED,
                 'title' => 'Converted',
-                'description' => 'Quote has been converted into an order.',
-                'background_colour' => '#d6bcfa',
-                'text_colour' => '#553c9a',
+                'description' => 'The quote has been converted into an order or invoice.',
+                'background_colour' => '#a5f3fc',
+                'text_colour' => '#164e63',
                 'meta' => null,
             ],
         ];

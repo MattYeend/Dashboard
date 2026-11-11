@@ -90,7 +90,7 @@ class StoreLabelRequest extends FormRequest
         return [
             'nullable',
             'string',
-            'regex:/^#[0-9a-fA-F]{6}$/',
+            'regex:/^#[0-9A-Fa-f]{6}\z/D',
         ];
     }
 
@@ -104,7 +104,7 @@ class StoreLabelRequest extends FormRequest
         return [
             'nullable',
             'string',
-            'regex:/^#[0-9a-fA-F]{6}$/',
+            'regex:/^#[0-9A-Fa-f]{6}\z/D',
         ];
     }
 

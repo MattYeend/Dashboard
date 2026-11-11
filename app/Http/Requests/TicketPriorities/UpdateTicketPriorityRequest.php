@@ -99,7 +99,7 @@ class UpdateTicketPriorityRequest extends FormRequest
             'sometimes',
             'string',
             'max:7',
-            'regex:/^#[0-9A-Fa-f]{6}$/',
+            'regex:/^#[0-9A-Fa-f]{6}\z/D',
         ];
     }
 
@@ -114,7 +114,7 @@ class UpdateTicketPriorityRequest extends FormRequest
             'sometimes',
             'string',
             'max:7',
-            'regex:/^#[0-9A-Fa-f]{6}$/',
+            'regex:/^#[0-9A-Fa-f]{6}\z/D',
         ];
     }
 

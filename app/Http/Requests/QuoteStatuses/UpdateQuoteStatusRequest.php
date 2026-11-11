@@ -120,7 +120,7 @@ class UpdateQuoteStatusRequest extends FormRequest
             'sometimes',
             'required',
             'string',
-            'regex:/^#[0-9A-Fa-f]{6}$/',
+            'regex:/^#[0-9A-Fa-f]{6}\z/D',
         ];
     }
 
@@ -135,7 +135,7 @@ class UpdateQuoteStatusRequest extends FormRequest
             'sometimes',
             'required',
             'string',
-            'regex:/^#[0-9A-Fa-f]{6}$/',
+            'regex:/^#[0-9A-Fa-f]{6}\z/D',
         ];
     }
 

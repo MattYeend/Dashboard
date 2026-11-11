@@ -92,7 +92,7 @@ class StoreQuoteStatusRequest extends FormRequest
         return [
             'required',
             'string',
-            'regex:/^#[0-9A-Fa-f]{6}$/',
+            'regex:/^#[0-9A-Fa-f]{6}\z/D',
         ];
     }
 
@@ -106,7 +106,7 @@ class StoreQuoteStatusRequest extends FormRequest
         return [
             'required',
             'string',
-            'regex:/^#[0-9A-Fa-f]{6}$/',
+            'regex:/^#[0-9A-Fa-f]{6}\z/D',
         ];
     }
 

@@ -111,7 +111,7 @@ class StorePipelineStageRequest extends FormRequest
             'nullable',
             'string',
             'max:7',
-            'regex:/^#[0-9A-Fa-f]{6}$/',
+            'regex:/^#[0-9A-Fa-f]{6}\z/D',
         ];
     }
 
@@ -126,7 +126,7 @@ class StorePipelineStageRequest extends FormRequest
             'nullable',
             'string',
             'max:7',
-            'regex:/^#[0-9A-Fa-f]{6}$/',
+            'regex:/^#[0-9A-Fa-f]{6}\z/D',
         ];
     }
 

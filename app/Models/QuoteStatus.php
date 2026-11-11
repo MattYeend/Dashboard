@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Contracts\Auditable;
 use App\Traits\BelongsToOrganisation;
+use Carbon\CarbonImmutable;
 use Database\Factories\QuoteStatusFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,8 +27,8 @@ use Illuminate\Support\Carbon;
  * @property int|null $updated_by
  * @property int|null $deleted_by
  * @property int|null $restored_by
- * @property Carbon|null $restored_at
- * @property Carbon|null $deleted_at
+ * @property CarbonImmutable|null $restored_at
+ * @property CarbonImmutable|null $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read User|null $creator
@@ -40,7 +41,6 @@ use Illuminate\Support\Carbon;
     'description',
     'background_colour',
     'text_colour',
-    'system_key',
     'meta',
     'created_by',
     'created_at',

@@ -88,7 +88,7 @@ class UpdateOrganisationSettingsRequest extends FormRequest
             'sometimes',
             'nullable',
             'string',
-            'regex:/^#[0-9A-Fa-f]{6}$/',
+            'regex:/^#[0-9A-Fa-f]{6}\z/D',
         ];
     }
 
