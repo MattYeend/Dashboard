@@ -1004,6 +1004,31 @@ class Log extends Model implements Auditable
 
     public const ACTION_EXPORT_QUOTE_STATUS = 446;
 
+    // Quote Management
+    public const ACTION_CREATE_QUOTE = 447;
+
+    public const ACTION_UPDATE_QUOTE = 448;
+
+    public const ACTION_DELETE_QUOTE = 449;
+
+    public const ACTION_RESTORE_QUOTE = 450;
+
+    public const ACTION_FORCE_DELETE_QUOTE = 451;
+
+    public const ACTION_IMPORT_QUOTE = 452;
+
+    public const ACTION_EXPORT_QUOTE = 453;
+
+    public const ACTION_SEND_QUOTE = 454;
+
+    public const ACTION_ACCEPT_QUOTE = 455;
+
+    public const ACTION_DECLINE_QUOTE = 456;
+
+    public const ACTION_EXPIRE_QUOTE = 457;
+
+    public const ACTION_CONVERT_QUOTE = 458;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
