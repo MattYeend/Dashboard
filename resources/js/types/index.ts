@@ -2,6 +2,7 @@ export * from './auth';
 export * from './import';
 export * from './navigation';
 export * from './product';
+export * from './quote-status';
 export * from './ui';
 
 export interface TicketStatus {
