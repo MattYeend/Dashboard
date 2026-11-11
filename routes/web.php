@@ -1056,8 +1056,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/', [QuoteStatusController::class, 'store'])->name('store');
             Route::get('/{quoteStatus}', [QuoteStatusController::class, 'show'])->name('show');
             Route::get('/{quoteStatus}/edit', [QuoteStatusController::class, 'edit'])->name('edit');
-            Route::put('/{quoteStatus}', [QuoteStatusController::class, 'update'])->name('update');
-            Route::patch('/{quoteStatus}', [QuoteStatusController::class, 'update'])->name('patch');
+            Route::match(['put', 'patch'], '/{quoteStatus}', [QuoteStatusController::class, 'update'])->name('update');
             Route::delete('/{quoteStatus}', [QuoteStatusController::class, 'destroy'])->name('destroy');
         });
     });
