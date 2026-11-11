@@ -2533,6 +2533,60 @@ parameters:
 			path: app/Services/Quizzes/UpdaterService.php
 
 		-
+			message: '#^Method App\\Services\\QuoteStatuses\\CreatorService\:\:create\(\) should return App\\Models\\QuoteStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/QuoteStatuses/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\QuoteStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuoteStatuses/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\QuoteStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuoteStatuses/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\QuoteStatus\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/QuoteStatuses/DeleterService.php
+
+		-
+			message: '#^Method App\\Services\\QuoteStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\QuoteStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/QuoteStatuses/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\QuoteStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuoteStatuses/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\QuoteStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/QuoteStatuses/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\QuoteStatuses\\UpdaterService\:\:update\(\) should return App\\Models\\QuoteStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/QuoteStatuses/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\QuoteStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuoteStatuses/UpdaterService.php
+
+		-
 			message: '#^Method App\\Services\\RegistrationInterests\\CreatorService\:\:create\(\) should return App\\Models\\RegistrationInterest but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1

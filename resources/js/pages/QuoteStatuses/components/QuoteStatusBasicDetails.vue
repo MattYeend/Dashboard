@@ -14,11 +14,15 @@ defineProps<{
         </div>
         <div>
             <dt class="text-sm text-muted-foreground">Type</dt>
-            <dd>{{ quoteStatus.is_system ? 'System status' : 'Custom status' }}</dd>
+            <dd>
+                {{ quoteStatus.is_system ? 'System status' : 'Custom status' }}
+            </dd>
         </div>
         <div class="sm:col-span-2">
             <dt class="text-sm text-muted-foreground">Description</dt>
-            <dd class="whitespace-pre-line">{{ quoteStatus.description ?? 'None' }}</dd>
+            <dd class="whitespace-pre-line">
+                {{ quoteStatus.description ?? 'None' }}
+            </dd>
         </div>
     </dl>
 </template>

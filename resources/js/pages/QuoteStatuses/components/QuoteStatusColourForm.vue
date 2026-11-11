@@ -42,7 +42,10 @@ const form = defineModel<QuoteStatusFormData>({ required: true });
         <div class="sm:col-span-2">
             <span
                 class="inline-block rounded-md border-2 px-3 py-1 text-sm font-medium"
-                :style="{ color: form.text_colour, borderColor: form.background_colour }"
+                :style="{
+                    color: form.text_colour,
+                    borderColor: form.background_colour,
+                }"
             >
                 {{ form.title || 'Preview' }}
             </span>

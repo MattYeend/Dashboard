@@ -53,7 +53,8 @@ const isSelectable = (row: QuoteStatus): boolean => !row.is_system;
             <span
                 v-if="row.is_system"
                 class="ml-2 text-xs text-muted-foreground"
-            >System</span>
+                >System</span
+            >
         </template>
 
         <template #cell-description="{ row }">

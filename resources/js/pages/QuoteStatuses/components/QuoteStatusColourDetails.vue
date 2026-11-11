@@ -21,7 +21,10 @@ defineProps<{
             <dd>
                 <span
                     class="inline-block rounded-md border-2 px-3 py-1 text-sm font-medium"
-                    :style="{ color: quoteStatus.text_colour, borderColor: quoteStatus.background_colour }"
+                    :style="{
+                        color: quoteStatus.text_colour,
+                        borderColor: quoteStatus.background_colour,
+                    }"
                 >
                     {{ quoteStatus.title }}
                 </span>

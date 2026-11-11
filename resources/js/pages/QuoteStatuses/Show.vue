@@ -18,7 +18,12 @@ defineProps<{
 <template>
     <Head :title="quoteStatus.title" />
 
-    <AppLayout :breadcrumbs="[{ title: 'Quote statuses', href: index.url() }, { title: quoteStatus.title, href: '#' }]">
+    <AppLayout
+        :breadcrumbs="[
+            { title: 'Quote statuses', href: index.url() },
+            { title: quoteStatus.title, href: '#' },
+        ]"
+    >
         <div class="mx-auto grid w-full max-w-3xl gap-8 p-4">
             <div class="flex items-center justify-between">
                 <h1 class="text-2xl font-semibold">{{ quoteStatus.title }}</h1>

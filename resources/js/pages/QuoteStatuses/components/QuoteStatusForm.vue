@@ -26,7 +26,11 @@ const form = defineModel<QuoteStatusFormData>({ required: true });
     <form class="grid gap-8" @submit.prevent="emit('submit')">
         <section class="grid gap-4">
             <h2 class="text-lg font-semibold">Basic details</h2>
-            <QuoteStatusBasicDetailsForm v-model="form" :errors="errors" :is-system="isSystem" />
+            <QuoteStatusBasicDetailsForm
+                v-model="form"
+                :errors="errors"
+                :is-system="isSystem"
+            />
         </section>
 
         <section class="grid gap-4">
@@ -35,7 +39,9 @@ const form = defineModel<QuoteStatusFormData>({ required: true });
         </section>
 
         <div class="flex items-center gap-3">
-            <Button type="submit" :disabled="processing">{{ submitLabel }}</Button>
+            <Button type="submit" :disabled="processing">{{
+                submitLabel
+            }}</Button>
             <Button as-child variant="outline">
                 <Link :href="cancelHref">Cancel</Link>
             </Button>
