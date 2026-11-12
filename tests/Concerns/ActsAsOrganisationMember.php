@@ -14,6 +14,7 @@ use App\Models\InteractionLog;
 use App\Models\Like;
 use App\Models\Order;
 use App\Models\Organisation;
+use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -91,6 +92,7 @@ trait ActsAsOrganisationMember
             InteractionLog::class,
             Attachment::class,
             Like::class,
+            Quote::class,
         ];
 
         if (in_array($model, $polymorphic, true)) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\Company;
 use App\Models\Quote;
 use App\Models\QuoteStatus;
 use App\Models\User;
@@ -37,12 +38,16 @@ class QuoteFactory extends Factory
 
         return [
             'organisation_id' => Tenant::current()?->id,
-            'quotable_type' => null,
-            'quotable_id' => null,
-            'quote_number' => 'QUO-'.strtoupper($this->faker->unique()->bothify('####-????')),
+            'quotable_type' => (new Company)->getMorphClass(),
+            'quotable_id' => Company::factory(),
+            'quote_number' => 'QUO-'.strtoupper(
+                $this->faker->unique()->bothify('####-????')
+            ),
             'title' => $this->faker->sentence(4),
             'description' => $this->faker->paragraph(),
-            'notes' => $this->faker->boolean(40) ? $this->faker->sentence() : null,
+            'notes' => $this->faker->boolean(40)
+                ? $this->faker->sentence()
+                : null,
             'terms' => 'Payment due within 30 days of the order date.',
             'subtotal' => $subtotal,
             'discount_amount' => $discount,
@@ -51,7 +56,9 @@ class QuoteFactory extends Factory
             'currency' => 'GBP',
             'issued_at' => now(),
             'valid_until' => now()->addDays(30),
-            'status_id' => QuoteStatus::query()->where('system_key', QuoteStatus::KEY_DRAFT)->value('id'),
+            'status_id' => QuoteStatus::query()
+                ->where('system_key', QuoteStatus::KEY_DRAFT)
+                ->value('id'),
             'meta' => null,
         ];
     }

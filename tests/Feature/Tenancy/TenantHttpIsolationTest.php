@@ -29,9 +29,12 @@ use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\PipelineStatus;
 use App\Models\Post;
+use App\Models\Product;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\QuizQuestion;
+use App\Models\Quote;
+use App\Models\QuoteStatus;
 use App\Models\Report;
 use App\Models\Tag;
 use App\Models\Task;
@@ -58,6 +61,9 @@ function tenantResourceMap(): array
     return [
         'contacts' => Contact::class,
         'companies' => Company::class,
+        'products' => Product::class,
+        'quotes' => Quote::class,
+        'quote-statuses' => QuoteStatus::class,
         'task-statuses' => TaskStatus::class,
         'tasks' => Task::class,
         'order-statuses' => OrderStatus::class,
