@@ -28,9 +28,12 @@ use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\PipelineStatus;
 use App\Models\Post;
+use App\Models\Product;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\QuizQuestion;
+use App\Models\Quote;
+use App\Models\QuoteStatus;
 use App\Models\Report;
 use App\Models\Tag;
 use App\Models\Task;
@@ -77,6 +80,9 @@ return [
         Attachment::class,
         Like::class,
         Tag::class,
+        Product::class,
+        Quote::class,
+        QuoteStatus::class,
     ],
 
     /*
@@ -92,6 +98,7 @@ return [
 
     'central_tables' => [
         'migrations',                   // framework
+        'quote_status_backfill_log',    // temporary rollback log for quote status backfill migration
         'cache',                        // framework
         'cache_locks',                  // framework
         'jobs',                         // framework (tenant carried in the payload)
