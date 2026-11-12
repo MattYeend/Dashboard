@@ -9,6 +9,7 @@ use App\Models\QuoteStatus;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 class QueryService
 {
@@ -104,7 +105,7 @@ class QueryService
     /**
      * Statuses for the index filter.
      *
-     * @return \Illuminate\Support\Collection<int, QuoteStatus>
+     * @return Collection<int, QuoteStatus>
      */
     protected function statuses()
     {
