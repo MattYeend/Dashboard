@@ -38,7 +38,10 @@ function show(value: string | null): string {
         </div>
         <div v-if="quote.converted_order">
             <dt class="text-sm text-muted-foreground">Converted to order</dt>
-            <dd>{{ quote.converted_order.order_number }} on {{ show(quote.converted_at) }}</dd>
+            <dd>
+                {{ quote.converted_order.order_number }} on
+                {{ show(quote.converted_at) }}
+            </dd>
         </div>
     </dl>
 </template>

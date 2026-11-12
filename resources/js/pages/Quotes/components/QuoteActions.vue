@@ -26,26 +26,46 @@ function post(url: string, message: string): void {
         </Button>
         <Button
             v-if="abilities.send"
-            @click="post(send.url(props.quote.id), 'Send this quote? It can no longer be edited.')"
+            @click="
+                post(
+                    send.url(props.quote.id),
+                    'Send this quote? It can no longer be edited.',
+                )
+            "
         >
             Send
         </Button>
         <Button
             v-if="abilities.accept"
-            @click="post(accept.url(props.quote.id), 'Record this quote as accepted?')"
+            @click="
+                post(
+                    accept.url(props.quote.id),
+                    'Record this quote as accepted?',
+                )
+            "
         >
             Mark accepted
         </Button>
         <Button
             v-if="abilities.decline"
             variant="outline"
-            @click="post(decline.url(props.quote.id), 'Record this quote as declined?')"
+            @click="
+                post(
+                    decline.url(props.quote.id),
+                    'Record this quote as declined?',
+                )
+            "
         >
             Mark declined
         </Button>
         <Button
             v-if="abilities.convert"
-            @click="post(convert.url(props.quote.id), 'Convert this quote into an order?')"
+            @click="
+                post(
+                    convert.url(props.quote.id),
+                    'Convert this quote into an order?',
+                )
+            "
         >
             Convert to order
         </Button>

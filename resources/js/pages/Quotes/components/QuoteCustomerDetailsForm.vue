@@ -20,7 +20,10 @@ let requestToken = 0;
 async function loadOptions(type: string): Promise<void> {
     options.value = [];
 
-    if (type === '' || !props.quotableTypes.some((item) => item.value === type)) {
+    if (
+        type === '' ||
+        !props.quotableTypes.some((item) => item.value === type)
+    ) {
         return;
     }
 
@@ -29,7 +32,10 @@ async function loadOptions(type: string): Promise<void> {
 
     try {
         const response = await fetch(quotableOptions.url(type), {
-            headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            headers: {
+                Accept: 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
             credentials: 'same-origin',
         });
 
@@ -70,11 +76,17 @@ onMounted(() => {
                 required
             >
                 <option value="" disabled>Select a type</option>
-                <option v-for="type in quotableTypes" :key="type.value" :value="type.value">
+                <option
+                    v-for="type in quotableTypes"
+                    :key="type.value"
+                    :value="type.value"
+                >
                     {{ type.label }}
                 </option>
             </select>
-            <p v-if="errors.quotable_type" class="text-sm text-destructive">{{ errors.quotable_type }}</p>
+            <p v-if="errors.quotable_type" class="text-sm text-destructive">
+                {{ errors.quotable_type }}
+            </p>
         </div>
 
         <div class="grid gap-2">
@@ -89,11 +101,17 @@ onMounted(() => {
                 <option :value="null" disabled>
                     {{ loading ? 'Loading...' : 'Select a customer' }}
                 </option>
-                <option v-for="option in options" :key="option.value" :value="option.value">
+                <option
+                    v-for="option in options"
+                    :key="option.value"
+                    :value="option.value"
+                >
                     {{ option.label }}
                 </option>
             </select>
-            <p v-if="errors.quotable_id" class="text-sm text-destructive">{{ errors.quotable_id }}</p>
+            <p v-if="errors.quotable_id" class="text-sm text-destructive">
+                {{ errors.quotable_id }}
+            </p>
         </div>
     </div>
 </template>

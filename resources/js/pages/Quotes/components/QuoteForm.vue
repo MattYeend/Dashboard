@@ -29,7 +29,11 @@ const form = defineModel<QuoteFormData>({ required: true });
     <form class="grid gap-8" @submit.prevent="emit('submit')">
         <section class="grid gap-4">
             <h2 class="text-lg font-semibold">Customer</h2>
-            <QuoteCustomerDetailsForm v-model="form" :errors="errors" :quotable-types="quotableTypes" />
+            <QuoteCustomerDetailsForm
+                v-model="form"
+                :errors="errors"
+                :quotable-types="quotableTypes"
+            />
         </section>
 
         <section class="grid gap-4">
@@ -39,7 +43,11 @@ const form = defineModel<QuoteFormData>({ required: true });
 
         <section class="grid gap-4">
             <h2 class="text-lg font-semibold">Amounts</h2>
-            <QuoteAmountsForm v-model="form" :errors="errors" :currencies="currencies" />
+            <QuoteAmountsForm
+                v-model="form"
+                :errors="errors"
+                :currencies="currencies"
+            />
         </section>
 
         <section class="grid gap-4">
@@ -48,7 +56,9 @@ const form = defineModel<QuoteFormData>({ required: true });
         </section>
 
         <div class="flex items-center gap-3">
-            <Button type="submit" :disabled="processing">{{ submitLabel }}</Button>
+            <Button type="submit" :disabled="processing">{{
+                submitLabel
+            }}</Button>
             <Button as-child variant="outline">
                 <Link :href="cancelHref">Cancel</Link>
             </Button>
