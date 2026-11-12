@@ -47,6 +47,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\QuoteStatusController;
 use App\Http\Controllers\RegistrationInterestController;
 use App\Http\Controllers\ReportController;
@@ -1058,6 +1059,49 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{quoteStatus}/edit', [QuoteStatusController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{quoteStatus}', [QuoteStatusController::class, 'update'])->name('update');
             Route::delete('/{quoteStatus}', [QuoteStatusController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('quotes')->name('quotes.')->group(function () {
+            Route::post('/bulk/delete', [QuoteController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [QuoteController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [QuoteController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [QuoteController::class, 'forceDelete'])->name('force-delete');
+
+            Route::post('/import', [QuoteController::class, 'import'])->name('import');
+            Route::post('/import/preview', [QuoteController::class, 'importPreview'])
+                ->middleware('throttle:10,1')
+                ->name('import.preview');
+            Route::post('/import/commit', [QuoteController::class, 'importCommit'])
+                ->middleware('throttle:10,1')
+                ->name('import.commit');
+            Route::get('/export', [QuoteController::class, 'export'])
+                ->middleware('throttle:10,1')
+                ->name('export');
+            Route::get('/quotable-options/{type}', [QuoteController::class, 'quotableOptions'])
+                ->middleware('throttle:60,1')
+                ->name('quotable-options');
+
+            Route::get('/', [QuoteController::class, 'index'])->name('index');
+            Route::get('/create', [QuoteController::class, 'create'])->name('create');
+            Route::post('/', [QuoteController::class, 'store'])->name('store');
+            Route::get('/{quote}', [QuoteController::class, 'show'])->name('show');
+            Route::get('/{quote}/edit', [QuoteController::class, 'edit'])->name('edit');
+            Route::put('/{quote}', [QuoteController::class, 'update'])->name('update');
+            Route::patch('/{quote}', [QuoteController::class, 'update'])->name('patch');
+            Route::delete('/{quote}', [QuoteController::class, 'destroy'])->name('destroy');
+
+            Route::post('/{quote}/send', [QuoteController::class, 'send'])
+                ->middleware('throttle:20,1')
+                ->name('send');
+            Route::post('/{quote}/accept', [QuoteController::class, 'accept'])
+                ->middleware('throttle:20,1')
+                ->name('accept');
+            Route::post('/{quote}/decline', [QuoteController::class, 'decline'])
+                ->middleware('throttle:20,1')
+                ->name('decline');
+            Route::post('/{quote}/convert', [QuoteController::class, 'convert'])
+                ->middleware('throttle:20,1')
+                ->name('convert');
         });
     });
 });
