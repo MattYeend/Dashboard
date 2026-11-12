@@ -80,7 +80,7 @@ use Illuminate\Support\Facades\DB;
 ])]
 class Quote extends Model implements Auditable
 {
-    /** 
+    /**
      * @use HasFactory<QuoteFactory>
      */
     use BelongsToOrganisation,

@@ -73,18 +73,6 @@ parameters:
 			path: app/Http/Controllers/OrganisationController.php
 
 		-
-			message: '#^Parameter \$request of method App\\Http\\Controllers\\QuoteController\:\:store\(\) has invalid type App\\Http\\Requests\\StoreQuoteRequest\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Http/Controllers/QuoteController.php
-
-		-
-			message: '#^Parameter \$request of method App\\Http\\Controllers\\QuoteController\:\:update\(\) has invalid type App\\Http\\Requests\\UpdateQuoteRequest\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Http/Controllers/QuoteController.php
-
-		-
 			message: '#^Method App\\Http\\Requests\\Settings\\PasswordUpdateRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
 			identifier: return.type
 			count: 1
