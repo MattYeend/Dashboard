@@ -85,30 +85,6 @@ parameters:
 			path: app/Http/Controllers/QuoteController.php
 
 		-
-			message: '#^Call to an undefined method App\\Services\\Quotes\\QuotableTypeRegistryService\:\:all\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Requests/Quotes/StoreQuoteRequest.php
-
-		-
-			message: '#^Call to an undefined method App\\Services\\Quotes\\QuotableTypeRegistryService\:\:modelClassForKey\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Requests/Quotes/StoreQuoteRequest.php
-
-		-
-			message: '#^Call to an undefined method App\\Services\\Quotes\\QuotableTypeRegistryService\:\:all\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Requests/Quotes/UpdateQuoteRequest.php
-
-		-
-			message: '#^Call to an undefined method App\\Services\\Quotes\\QuotableTypeRegistryService\:\:modelClassForKey\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Requests/Quotes/UpdateQuoteRequest.php
-
-		-
 			message: '#^Method App\\Http\\Requests\\Settings\\PasswordUpdateRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
 			identifier: return.type
 			count: 1
@@ -2609,6 +2585,72 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/QuoteStatuses/UpdaterService.php
+
+		-
+			message: '#^Method App\\Services\\Quotes\\CreatorService\:\:create\(\) should return App\\Models\\Quote but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Quotes/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Quote\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Quotes/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Quote\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Quotes/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\Quote\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Quotes/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Quotes/FormatterService.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: app/Services/Quotes/FormatterService.php
+
+		-
+			message: '#^Method App\\Services\\Quotes\\RestorerService\:\:restore\(\) should return App\\Models\\Quote but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Quotes/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Quote\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Quotes/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\Quote\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/Quotes/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\Quotes\\UpdaterService\:\:update\(\) should return App\\Models\\Quote but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Quotes/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Quote\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Quotes/UpdaterService.php
 
 		-
 			message: '#^Method App\\Services\\RegistrationInterests\\CreatorService\:\:create\(\) should return App\\Models\\RegistrationInterest but returns Illuminate\\Database\\Eloquent\\Model\.$#'
