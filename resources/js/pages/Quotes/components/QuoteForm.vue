@@ -2,12 +2,12 @@
 import { Link } from '@inertiajs/vue3';
 
 import { Button } from '@/components/ui/button';
+import type { QuoteFormData, SelectOption } from '@/types/forms/quotes';
 
 import QuoteAmountsForm from './QuoteAmountsForm.vue';
 import QuoteBasicDetailsForm from './QuoteBasicDetailsForm.vue';
 import QuoteCustomerDetailsForm from './QuoteCustomerDetailsForm.vue';
 import QuoteDateDetailsForm from './QuoteDateDetailsForm.vue';
-import type { QuoteFormData, SelectOption } from '@/types/forms/quotes';
 
 defineProps<{
     errors: Partial<Record<keyof QuoteFormData, string>>;
