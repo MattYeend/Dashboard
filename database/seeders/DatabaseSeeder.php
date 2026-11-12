@@ -48,6 +48,7 @@ class DatabaseSeeder extends Seeder
             OrderSeeder::class,
             ProductSeeder::class,
             QuoteStatusSeeder::class,
+            QuoteSeeder::class,
 
             PlanSeeder::class,
 
