@@ -49,3 +49,8 @@ Schedule::command('backup:monitor')
     ->dailyAt('03:00')
     ->environments(['production', 'staging'])
     ->onOneServer();
+
+Schedule::command('quotes:expire')
+    ->dailyAt('01:00')
+    ->onOneServer()
+    ->withoutOverlapping();
