@@ -8,11 +8,13 @@ use App\Models\Log;
 use App\Models\Order;
 use App\Models\Quote;
 use App\Models\QuoteStatus;
+use App\Models\Organisation;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Services\Quotes\DeleterService;
 use App\Services\Quotes\TransitionService;
 use App\Services\Quotes\UpdaterService;
-use Database\Seeders\QuoteStatusSeeder;
+// use Database\Seeders\QuoteStatusSeeder;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -26,8 +28,37 @@ uses(
 );
 
 beforeEach(function () {
-    $this->seed(QuoteStatusSeeder::class);
+    $this->superAdminUser();
+
+    seedQuoteStatusesForCurrentOrganisation();
 });
+
+/**
+ * Seed the six system quote statuses into the current organisation.
+ *
+ * QuoteStatusSeeder targets the default organisation, which is not the
+ * organisation the tests run in, so the rows are created here instead.
+ */
+function seedQuoteStatusesForCurrentOrganisation(): void
+{
+    $organisation = Organisation::current();
+
+    Model::unguarded(function () use ($organisation): void {
+        foreach (QuoteStatus::SYSTEM_KEYS as $key) {
+            QuoteStatus::withoutGlobalScopes()->firstOrCreate(
+                [
+                    'system_key' => $key,
+                    'organisation_id' => $organisation->id,
+                ],
+                [
+                    'title' => ucfirst($key),
+                    'background_colour' => '#e2e8f0',
+                    'text_colour' => '#1a202c',
+                ],
+            );
+        }
+    });
+}
 
 /**
  * Create a quote for a company in the given status.

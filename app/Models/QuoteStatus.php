@@ -49,7 +49,9 @@ use Illuminate\Support\Carbon;
 ])]
 class QuoteStatus extends Model implements Auditable
 {
-    /** @use HasFactory<QuoteStatusFactory> */
+    /** 
+     * @use HasFactory<QuoteStatusFactory> 
+     */
     use BelongsToOrganisation,
         HasFactory,
         SoftDeletes;

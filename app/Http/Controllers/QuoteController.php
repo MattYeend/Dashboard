@@ -11,6 +11,7 @@ use App\Http\Requests\Quotes\UpdateQuoteRequest;
 use App\Models\Quote;
 use App\Services\Quotes\ManagementService;
 use App\Services\Quotes\QueryService;
+use App\Services\Quotes\QuotableTypeRegistryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -310,7 +311,15 @@ class QuoteController extends Controller
     {
         $this->authorize('create', Quote::class);
 
-        return response()->json($this->query->getQuotableOptions($type));
+        abort_unless(
+            app(QuotableTypeRegistryService::class)
+                ->modelClassForKey($type) !== null,
+            404
+        );
+
+        return response()->json(
+            $this->query->getQuotableOptions($type)
+        );
     }
 
     /**
