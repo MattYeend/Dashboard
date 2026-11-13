@@ -4,6 +4,7 @@ export * from './navigation';
 export * from './product';
 export * from './quote';
 export * from './quote-status';
+export * from './payment-status';
 export * from './ui';
 
 export interface TicketStatus {
