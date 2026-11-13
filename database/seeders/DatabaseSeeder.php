@@ -49,6 +49,7 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             QuoteStatusSeeder::class,
             QuoteSeeder::class,
+            PaymentStatusSeeder::class,
 
             PlanSeeder::class,
 
