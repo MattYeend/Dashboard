@@ -25,6 +25,7 @@ use App\Models\Order;
 use App\Models\OrderStatus;
 use App\Models\Organisation;
 use App\Models\OrganisationDataExport;
+use App\Models\PaymentStatus;
 use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\PipelineStatus;
@@ -64,6 +65,7 @@ function tenantResourceMap(): array
         'products' => Product::class,
         'quotes' => Quote::class,
         'quote-statuses' => QuoteStatus::class,
+        'payment-statuses' => PaymentStatus::class,
         'task-statuses' => TaskStatus::class,
         'tasks' => Task::class,
         'order-statuses' => OrderStatus::class,
