@@ -1565,7 +1565,7 @@ class RolePermissionSeeder extends Seeder
             'create quote',
             'edit quote',
             'send quote',
-            'view any payment status', 
+            'view any payment status',
             'view payment status',
         ];
         $editor->givePermissionTo($editorPermissions);

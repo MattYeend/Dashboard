@@ -49,8 +49,8 @@ use Illuminate\Support\Carbon;
 ])]
 class PaymentStatus extends Model implements Auditable
 {
-    /** 
-     * @use HasFactory<PaymentStatusFactory> 
+    /**
+     * @use HasFactory<PaymentStatusFactory>
      */
     use BelongsToOrganisation,
         HasFactory,
