@@ -1,19 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\PaymentStatus;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\PaymentStatuses\PolicyAuthorisationService;
 
 class PaymentStatusPolicy
 {
+    /**
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**
@@ -21,7 +30,7 @@ class PaymentStatusPolicy
      */
     public function view(User $user, PaymentStatus $paymentStatus): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $paymentStatus);
     }
 
     /**
@@ -29,7 +38,7 @@ class PaymentStatusPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canCreate($user);
     }
 
     /**
@@ -37,7 +46,7 @@ class PaymentStatusPolicy
      */
     public function update(User $user, PaymentStatus $paymentStatus): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $paymentStatus);
     }
 
     /**
@@ -45,7 +54,7 @@ class PaymentStatusPolicy
      */
     public function delete(User $user, PaymentStatus $paymentStatus): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $paymentStatus);
     }
 
     /**
@@ -53,7 +62,7 @@ class PaymentStatusPolicy
      */
     public function restore(User $user, PaymentStatus $paymentStatus): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $paymentStatus);
     }
 
     /**
@@ -61,6 +70,38 @@ class PaymentStatusPolicy
      */
     public function forceDelete(User $user, PaymentStatus $paymentStatus): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $paymentStatus);
+    }
+
+    /**
+     * Determine whether the user can bulk delete models.
+     */
+    public function bulkDelete(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can bulk restore models.
+     */
+    public function bulkRestore(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can import models.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisationService->canImport($user);
+    }
+
+    /**
+     * Determine whether the user can export models.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->canExport($user);
     }
 }

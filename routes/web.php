@@ -36,6 +36,7 @@ use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\OrganisationController;
 use App\Http\Controllers\OrganisationSelectController;
 use App\Http\Controllers\OrganisationSwitchController;
+use App\Http\Controllers\PaymentStatusController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PermissionMatrixController;
 use App\Http\Controllers\PipelineController;
@@ -1101,6 +1102,32 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/{quote}/convert', [QuoteController::class, 'convert'])
                 ->middleware('throttle:20,1')
                 ->name('convert');
+        });
+
+        Route::prefix('payment-statuses')->name('payment-statuses.')->group(function () {
+            Route::post('/bulk/delete', [PaymentStatusController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [PaymentStatusController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [PaymentStatusController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [PaymentStatusController::class, 'forceDelete'])->name('force-delete');
+
+            Route::post('/import', [PaymentStatusController::class, 'import'])->name('import');
+            Route::post('/import/preview', [PaymentStatusController::class, 'importPreview'])
+                ->middleware('throttle:10,1')
+                ->name('import.preview');
+            Route::post('/import/commit', [PaymentStatusController::class, 'importCommit'])
+                ->middleware('throttle:10,1')
+                ->name('import.commit');
+            Route::get('/export', [PaymentStatusController::class, 'export'])
+                ->middleware('throttle:10,1')
+                ->name('export');
+
+            Route::get('/', [PaymentStatusController::class, 'index'])->name('index');
+            Route::get('/create', [PaymentStatusController::class, 'create'])->name('create');
+            Route::post('/', [PaymentStatusController::class, 'store'])->name('store');
+            Route::get('/{paymentStatus}', [PaymentStatusController::class, 'show'])->name('show');
+            Route::get('/{paymentStatus}/edit', [PaymentStatusController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{paymentStatus}', [PaymentStatusController::class, 'update'])->name('update');
+            Route::delete('/{paymentStatus}', [PaymentStatusController::class, 'destroy'])->name('destroy');
         });
     });
 });
