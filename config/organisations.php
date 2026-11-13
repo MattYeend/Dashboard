@@ -24,6 +24,7 @@ use App\Models\Like;
 use App\Models\Order;
 use App\Models\OrderStatus;
 use App\Models\OrganisationDataExport;
+use App\Models\PaymentStatus;
 use App\Models\Pipeline;
 use App\Models\PipelineStage;
 use App\Models\PipelineStatus;
@@ -83,6 +84,7 @@ return [
         Product::class,
         Quote::class,
         QuoteStatus::class,
+        PaymentStatus::class,
     ],
 
     /*
