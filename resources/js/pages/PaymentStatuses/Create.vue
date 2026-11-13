@@ -3,9 +3,9 @@ import { Head, useForm } from '@inertiajs/vue3';
 
 import AppLayout from '@/layouts/AppLayout.vue';
 import { index, store } from '@/routes/payment-statuses';
+import type { PaymentStatusFormData } from '@/types/forms/payment-statuses';
 
 import PaymentStatusForm from './components/PaymentStatusForm.vue';
-import type { PaymentStatusFormData } from '@/types/forms/payment-statuses';
 
 const form = useForm<PaymentStatusFormData>({
     title: '',

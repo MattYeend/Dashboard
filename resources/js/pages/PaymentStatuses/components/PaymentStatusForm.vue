@@ -2,10 +2,10 @@
 import { Link } from '@inertiajs/vue3';
 
 import { Button } from '@/components/ui/button';
+import type { PaymentStatusFormData } from '@/types/forms/payment-statuses';
 
 import PaymentStatusBasicDetailsForm from './PaymentStatusBasicDetailsForm.vue';
 import PaymentStatusColourForm from './PaymentStatusColourForm.vue';
-import type { PaymentStatusFormData } from '@/types/forms/payment-statuses';
 
 defineProps<{
     errors: Partial<Record<keyof PaymentStatusFormData, string>>;
