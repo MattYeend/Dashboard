@@ -571,6 +571,16 @@ class RolePermissionSeeder extends Seeder
             'accept quote',
             'decline quote',
             'convert quote',
+
+            // Payment statuses
+            'view any payment status',
+            'create payment status',
+            'view payment status',
+            'edit payment status',
+            'delete payment status',
+            'restore payment status',
+            'import payment status',
+            'export payment status',
         ];
 
         foreach ($permissions as $permission) {
@@ -1004,6 +1014,14 @@ class RolePermissionSeeder extends Seeder
             'accept quote',
             'decline quote',
             'convert quote',
+            'view any payment status',
+            'create payment status',
+            'view payment status',
+            'edit payment status',
+            'delete payment status',
+            'restore payment status',
+            'import payment status',
+            'export payment status',
         ];
         $admin->givePermissionTo($adminPermissions);
         $admin->revokePermissionTo('view logs');
@@ -1328,6 +1346,8 @@ class RolePermissionSeeder extends Seeder
             'accept quote',
             'decline quote',
             'convert quote',
+            'view any payment status',
+            'view payment status',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1545,6 +1565,8 @@ class RolePermissionSeeder extends Seeder
             'create quote',
             'edit quote',
             'send quote',
+            'view any payment status', 
+            'view payment status',
         ];
         $editor->givePermissionTo($editorPermissions);
 
