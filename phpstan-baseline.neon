@@ -1993,6 +1993,60 @@ parameters:
 			path: app/Services/Organisations/UpdaterService.php
 
 		-
+			message: '#^Method App\\Services\\PaymentStatuses\\CreatorService\:\:create\(\) should return App\\Models\\PaymentStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/PaymentStatuses/CreatorService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:forceHandle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PaymentStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PaymentStatuses/DeleterService.php
+
+		-
+			message: '#^Parameter \#2 \$beforeDelete of method App\\Actions\\DeleteResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PaymentStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PaymentStatuses/DeleterService.php
+
+		-
+			message: '#^Property App\\Models\\PaymentStatus\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/PaymentStatuses/DeleterService.php
+
+		-
+			message: '#^Method App\\Services\\PaymentStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\PaymentStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/PaymentStatuses/RestorerService.php
+
+		-
+			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PaymentStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PaymentStatuses/RestorerService.php
+
+		-
+			message: '#^Property App\\Models\\PaymentStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/PaymentStatuses/RestorerService.php
+
+		-
+			message: '#^Method App\\Services\\PaymentStatuses\\UpdaterService\:\:update\(\) should return App\\Models\\PaymentStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/PaymentStatuses/UpdaterService.php
+
+		-
+			message: '#^Parameter \#3 \$afterUpdate of method App\\Actions\\UpdateResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PaymentStatus\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PaymentStatuses/UpdaterService.php
+
+		-
 			message: '#^Method App\\Services\\Permissions\\CreatorService\:\:create\(\) should return App\\Models\\Permission but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
