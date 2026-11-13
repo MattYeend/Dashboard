@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +15,37 @@ return new class extends Migration
     {
         Schema::create('payment_statuses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('organisation_id')
+                ->nullable()
+                ->constrained('organisations')
+                ->cascadeOnDelete();
+
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->string('background_colour', 7)->default('#ffffff');
+            $table->string('text_colour', 7)->default('#000000');
+
+            // Immutable key used by workflow code. Null for custom statuses.
+            // A unique index over a nullable column allows many NULLs in MySQL.
+            $table->string('system_key', 32)->nullable();
+
+            $table->json('meta')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('deleted_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('restored_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamp('restored_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->unique(['organisation_id', 'system_key']);
+            $table->index('title');
+            $table->index('created_by');
+            $table->index('updated_by');
+            $table->index('deleted_by');
+            $table->index('restored_by');
+            $table->index('restored_at');
+            $table->index('deleted_at');
         });
     }
 
