@@ -4,7 +4,7 @@ import { computed } from 'vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import type { QuoteFormData } from '@/types/forms/quotes';
+import type { QuoteFormData } from '@/types/forms/quotes-form-data';
 
 defineProps<{
     errors: Partial<Record<keyof QuoteFormData, string>>;

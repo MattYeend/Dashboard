@@ -2,7 +2,7 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import QuoteForm from '@/pages/Quotes/components/QuoteForm.vue';
 import { index, store } from '@/routes/quotes';
-import type { QuoteFormData, SelectOption } from '@/types/forms/quotes';
+import type { QuoteFormData, SelectOption } from '@/types/forms/quotes-form-data';
 
 defineProps<{
     quotableTypes: SelectOption[];

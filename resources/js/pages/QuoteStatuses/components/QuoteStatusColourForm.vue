@@ -2,7 +2,7 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import type { QuoteStatusFormData } from '@/types/forms/quote-statuses';
+import type { QuoteStatusFormData } from '@/types/forms/quote-statuses-form-data';
 
 defineProps<{
     errors: Partial<Record<keyof QuoteStatusFormData, string>>;

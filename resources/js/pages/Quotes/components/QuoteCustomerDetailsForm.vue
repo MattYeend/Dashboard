@@ -4,7 +4,7 @@ import { onMounted, ref, watch } from 'vue';
 import { Label } from '@/components/ui/label';
 import { quotableOptions } from '@/routes/quotes';
 
-import type { QuoteFormData, SelectOption } from '@/types/forms/quotes';
+import type { QuoteFormData, SelectOption } from '@/types/forms/quotes-form-data';
 
 const props = defineProps<{
     errors: Partial<Record<keyof QuoteFormData, string>>;

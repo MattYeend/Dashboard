@@ -2,7 +2,7 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import ProductForm from '@/pages/Products/components/ProductForm.vue';
 import { index, store } from '@/routes/products';
-import type { ProductFormData } from '@/types/forms/products';
+import type { ProductFormData } from '@/types/forms/products-form-data';
 
 defineProps<{
     units: string[];

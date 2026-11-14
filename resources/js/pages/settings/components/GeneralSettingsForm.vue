@@ -5,13 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { update as updateGeneral } from '@/routes/settings/general';
 import type { Setting } from '@/types';
-
-interface GeneralSettingsFormData {
-    site_name: string;
-    support_email: string;
-    timezone: string;
-    date_format: string;
-}
+import type { GeneralSettingsFormData } from '@/types/forms';
 
 const props = defineProps<{
     setting: Setting;

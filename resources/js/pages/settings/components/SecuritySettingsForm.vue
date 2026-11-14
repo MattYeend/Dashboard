@@ -7,13 +7,7 @@ import { Label } from '@/components/ui/label';
 import { nullIfBlank, numberOrNull } from '@/lib/forms';
 import { update as updateSecurity } from '@/routes/settings/security';
 import type { Setting } from '@/types';
-
-interface SecuritySettingsFormData {
-    two_factor_required: boolean;
-    session_timeout_minutes: number;
-    max_login_attempts: number;
-    password_expiry_days: string;
-}
+import type { SecuritySettingsFormData } from '@/types/forms';
 
 const props = defineProps<{
     setting: Setting;

@@ -9,7 +9,7 @@ import QuoteCustomerDetails from '@/pages/Quotes/components/QuoteCustomerDetails
 import QuoteDateDetails from '@/pages/Quotes/components/QuoteDateDetails.vue';
 import { index as quotesIndex } from '@/routes/quotes';
 import type { Quote } from '@/types';
-import type { QuoteAbilities } from '@/types/forms/quotes';
+import type { QuoteAbilities } from '@/types/forms/quotes-form-data';
 
 defineProps<{
     quote: Quote;

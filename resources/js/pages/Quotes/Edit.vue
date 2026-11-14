@@ -3,7 +3,7 @@ import { Head, useForm } from '@inertiajs/vue3';
 import QuoteForm from '@/pages/Quotes/components/QuoteForm.vue';
 import { show, update } from '@/routes/quotes';
 import type { Quote } from '@/types';
-import type { QuoteFormData, SelectOption } from '@/types/forms/quotes';
+import type { QuoteFormData, SelectOption } from '@/types/forms/quotes-form-data';
 
 const props = defineProps<{
     quote: Quote;

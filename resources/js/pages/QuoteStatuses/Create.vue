@@ -2,7 +2,7 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import QuoteStatusForm from '@/pages/QuoteStatuses/components/QuoteStatusForm.vue';
 import { index, store } from '@/routes/quote-statuses';
-import type { QuoteStatusFormData } from '@/types/forms/quote-statuses';
+import type { QuoteStatusFormData } from '@/types/forms/quote-statuses-form-data';
 
 const form = useForm<QuoteStatusFormData>({
     title: '',

@@ -6,13 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { update as updateSystem } from '@/routes/settings/system';
 import type { Setting } from '@/types';
-
-interface SystemSettingsFormData {
-    maintenance_mode: boolean;
-    allow_registrations: boolean;
-    default_pagination: number;
-    default_locale: string;
-}
+import type { SystemSettingsFormData } from '@/types/forms';
 
 const props = defineProps<{
     setting: Setting;
