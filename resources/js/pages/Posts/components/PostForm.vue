@@ -10,14 +10,7 @@ const PostDetailsForm = defineAsyncComponent(
 import PostImageForm from '@/pages/Posts/components/PostImageForm.vue';
 import PostTagsForm from '@/pages/Posts/components/PostTagsForm.vue';
 import { index as postsIndex } from '@/routes/posts';
-
-interface PostFormData {
-    title: string;
-    description: string;
-    image: File | null;
-    category_ids: number[];
-    tag_ids: number[];
-}
+import type { PostFormData } from '@/types/forms';
 
 interface CategoryOption {
     id: number;

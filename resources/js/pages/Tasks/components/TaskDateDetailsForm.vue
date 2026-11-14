@@ -3,15 +3,7 @@ import type { InertiaFormProps } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
-interface TaskFormData {
-    title: string;
-    description: string | null;
-    due_date: string | null;
-    assigned_date: string | null;
-    assigned_to: number | null;
-    status_id: number | null;
-}
+import type { TaskFormData } from '@/types/forms';
 
 interface Props {
     errors: Partial<InertiaFormProps<TaskFormData>['errors']>;

@@ -12,15 +12,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import type { TaskStatus } from '@/types';
-
-interface TaskFormData {
-    title: string;
-    description: string | null;
-    due_date: string | null;
-    assigned_date: string | null;
-    assigned_to: number | null;
-    status_id: number | null;
-}
+import type { TaskFormData } from '@/types/forms';
 
 interface Props {
     statuses: TaskStatus[];
