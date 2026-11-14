@@ -2,15 +2,9 @@
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { index as pipelineStatusesIndex } from '@/routes/pipeline-statuses';
+import type { PipelineStatusFormData } from '@/types/forms';
 import PipelineStatusBasicDetailsForm from './PipelineStatusBasicDetailsForm.vue';
 import PipelineStatusColourForm from './PipelineStatusColourForm.vue';
-
-export interface PipelineStatusFormData {
-    title: string;
-    description: string | null;
-    background_colour: string;
-    text_colour: string;
-}
 
 interface Errors {
     title?: string;

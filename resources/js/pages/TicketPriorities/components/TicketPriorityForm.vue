@@ -2,15 +2,9 @@
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { index as ticketPrioritiesIndex } from '@/routes/ticket-priorities';
+import type { TicketPriorityFormData } from '@/types/forms';
 import TicketPriorityBasicDetailsForm from './TicketPriorityBasicDetailsForm.vue';
 import TicketPriorityColourForm from './TicketPriorityColourForm.vue';
-
-export interface TicketPriorityFormData {
-    title: string;
-    level: number;
-    background_colour: string;
-    text_colour: string;
-}
 
 interface Errors {
     title?: string;

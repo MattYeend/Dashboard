@@ -2,15 +2,9 @@
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { index as taskStatusesIndex } from '@/routes/task-statuses';
+import type { TaskStatusFormData } from '@/types/forms';
 import TaskStatusBasicDetailsForm from './TaskStatusBasicDetailsForm.vue';
 import TaskStatusColourForm from './TaskStatusColourForm.vue';
-
-export interface TaskStatusFormData {
-    title: string;
-    description: string | null;
-    background_colour: string;
-    text_colour: string;
-}
 
 interface Errors {
     title?: string;

@@ -2,15 +2,9 @@
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { index as ticketStatusesIndex } from '@/routes/ticket-statuses';
+import type { TicketStatusFormData } from '@/types/forms';
 import TicketStatusBasicDetailsForm from './TicketStatusBasicDetailsForm.vue';
 import TicketStatusColourForm from './TicketStatusColourForm.vue';
-
-export interface TicketStatusFormData {
-    title: string;
-    description: string | null;
-    background_colour: string;
-    text_colour: string;
-}
 
 interface Errors {
     title?: string;

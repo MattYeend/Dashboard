@@ -2,15 +2,9 @@
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { index as dealStatusesIndex } from '@/routes/deal-statuses';
+import type { DealStatusFormData } from '@/types/forms';
 import DealStatusBasicDetailsForm from './DealStatusBasicDetailsForm.vue';
 import DealStatusColourForm from './DealStatusColourForm.vue';
-
-export interface DealStatusFormData {
-    title: string;
-    description: string | null;
-    background_colour: string;
-    text_colour: string;
-}
 
 interface Errors {
     title?: string;

@@ -2,15 +2,9 @@
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { index as orderStatusesIndex } from '@/routes/order-statuses';
+import type { OrderStatusFormData } from '@/types/forms';
 import OrderStatusBasicDetailsForm from './OrderStatusBasicDetailsForm.vue';
 import OrderStatusColourForm from './OrderStatusColourForm.vue';
-
-export interface OrderStatusFormData {
-    title: string;
-    description: string | null;
-    background_colour: string;
-    text_colour: string;
-}
 
 interface Errors {
     title?: string;

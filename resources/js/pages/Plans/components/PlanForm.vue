@@ -2,17 +2,10 @@
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { index as plansIndex } from '@/routes/plans';
+import type { PlanFormData } from '@/types/forms';
 import PlanBasicDetailsForm from './PlanBasicDetailsForm.vue';
 import PlanDescriptionForm from './PlanDescriptionForm.vue';
 import PlanPricingForm from './PlanPricingForm.vue';
-
-export interface PlanFormData {
-    name: string;
-    slug: string | null;
-    description: string | null;
-    price_per_user_per_month: number;
-    is_active: boolean;
-}
 
 interface Errors {
     name?: string;

@@ -2,15 +2,9 @@
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { index as invoiceStatusesIndex } from '@/routes/invoice-statuses';
+import type { InvoiceStatusFormData } from '@/types/forms';
 import InvoiceStatusBasicDetailsForm from './InvoiceStatusBasicDetailsForm.vue';
 import InvoiceStatusColourForm from './InvoiceStatusColourForm.vue';
-
-export interface InvoiceStatusFormData {
-    title: string;
-    description: string | null;
-    background_colour: string;
-    text_colour: string;
-}
 
 interface Errors {
     title?: string;

@@ -2,14 +2,9 @@
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { index as industriesIndex } from '@/routes/industries';
+import type { IndustryFormData } from '@/types/forms';
 import IndustryBasicDetailsForm from './IndustryBasicDetailsForm.vue';
 import IndustryDescriptionForm from './IndustryDescriptionForm.vue';
-
-export interface IndustryFormData {
-    title: string;
-    code: string | null;
-    description: string | null;
-}
 
 interface Errors {
     title?: string;

@@ -2,15 +2,9 @@
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { index as labelsIndex } from '@/routes/labels';
+import type { LabelFormData } from '@/types/forms';
 import LabelBasicDetailsForm from './LabelBasicDetailsForm.vue';
 import LabelColourForm from './LabelColourForm.vue';
-
-export interface LabelFormData {
-    name: string;
-    slug: string | null;
-    background_colour: string;
-    text_colour: string;
-}
 
 interface Errors {
     name?: string;
