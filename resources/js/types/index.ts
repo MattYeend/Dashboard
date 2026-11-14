@@ -18,75 +18,15 @@ export * from './contact';
 export * from './industry';
 export * from './task';
 export * from './user';
-
-export interface Order {
-    id: number;
-    organisation_id: number;
-    orderable_id: number;
-    orderable_type: string;
-    orderable_type_key: string;
-    orderable_type_label: string | null;
-    orderable_name: string | null;
-    order_number: string;
-    title: string;
-    description: string | null;
-    notes: string | null;
-    subtotal: number;
-    discount_amount: number;
-    tax_amount: number;
-    total_amount: number;
-    currency: string;
-    formatted_total: string;
-    ordered_at: string | null;
-    due_at: string | null;
-    completed_at: string | null;
-    status_id: number | null;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    status?: {
-        id: number;
-        title: string;
-        background_colour: string | null;
-        text_colour: string | null;
-    } | null;
-    tags?: { id: number; name: string }[];
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
+export * from './invoice';
+export * from './invoice-item';
+export * from './order';
+export * from './plan';
+export * from './subscription';
 
 export interface UserOption {
     id: number;
     name: string;
-}
-
-export interface Plan {
-    id: number;
-    name: string;
-    slug: string;
-    description: string | null;
-    price_per_user_per_month: number;
-    is_active: boolean;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
 }
 
 export interface UserSession {
@@ -191,83 +131,6 @@ export interface Tag {
     organisation_id: number;
     name: string;
     slug: string;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
-export interface Invoice {
-    id: number;
-    organisation_id: number;
-    invoice_number: string;
-    company_id: number | null;
-    order_id: number | null;
-    status_id: number | null;
-    issue_date: string | null;
-    due_date: string | null;
-    sent_at: string | null;
-    paid_at: string | null;
-    subtotal: number;
-    tax_total: number;
-    total: number;
-    currency: string;
-    formatted_total: string;
-    notes: string | null;
-    items?: InvoiceItem[];
-    items_count?: number;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    company?: { id: number; name: string } | null;
-    contact?: {
-        id: number;
-        name: string | null;
-        phone: string | null;
-        email: string | null;
-        address: string | null;
-        city: string | null;
-        postal_code: string | null;
-        country: string | null;
-    } | null;
-    order?: { id: number } | null;
-    status?: {
-        id: number;
-        title: string;
-        background_colour: string | null;
-        text_colour: string | null;
-    } | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
-export interface InvoiceItem {
-    id: number;
-    organisation_id: number;
-    invoice_id: number;
-    description: string;
-    quantity: number;
-    unit_price: number;
-    tax_rate: string;
-    total: number;
-    position: number;
     meta: Record<string, unknown> | null;
     created_by: number | null;
     updated_by: number | null;
@@ -897,21 +760,6 @@ export interface ReportPermissionsMeta {
 export interface CommentMention {
     id: number;
     name: string;
-}
-
-export interface Subscription {
-    id: number;
-    organisation_id: number;
-    plan_id: number | null;
-    stripe_id: string;
-    stripe_status: string;
-    payment_status: 'current' | 'past_due' | 'unpaid';
-    quantity: number | null;
-    trial_ends_at: string | null;
-    ends_at: string | null;
-    created_at: string;
-    updated_at: string;
-    plan?: { id: number; name: string } | null;
 }
 
 export interface OrganisationMembership {

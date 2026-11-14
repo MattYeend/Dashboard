@@ -1,0 +1,43 @@
+export interface Order {
+    id: number;
+    organisation_id: number;
+    orderable_id: number;
+    orderable_type: string;
+    orderable_type_key: string;
+    orderable_type_label: string | null;
+    orderable_name: string | null;
+    order_number: string;
+    title: string;
+    description: string | null;
+    notes: string | null;
+    subtotal: number;
+    discount_amount: number;
+    tax_amount: number;
+    total_amount: number;
+    currency: string;
+    formatted_total: string;
+    ordered_at: string | null;
+    due_at: string | null;
+    completed_at: string | null;
+    status_id: number | null;
+    meta: Record<string, unknown> | null;
+    created_by: number | null;
+    updated_by: number | null;
+    deleted_by: number | null;
+    restored_by: number | null;
+    restored_at: string | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    status?: {
+        id: number;
+        title: string;
+        background_colour: string | null;
+        text_colour: string | null;
+    } | null;
+    tags?: { id: number; name: string }[];
+    creator?: { name: string };
+    updater?: { name: string };
+    deleter?: { name: string };
+    restorer?: { name: string };
+}
