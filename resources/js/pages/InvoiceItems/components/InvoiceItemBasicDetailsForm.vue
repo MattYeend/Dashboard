@@ -3,14 +3,7 @@ import type { InertiaFormProps } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
-interface InvoiceItemFormData {
-    description: string;
-    quantity: number;
-    unit_price: number;
-    tax_rate: number;
-    position: number;
-}
+import type { InvoiceItemFormData } from '@/types/forms';
 
 interface Props {
     errors: Partial<InertiaFormProps<InvoiceItemFormData>['errors']>;

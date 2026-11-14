@@ -4,14 +4,7 @@ import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import InvoiceItemBasicDetailsForm from '@/pages/InvoiceItems/components/InvoiceItemBasicDetailsForm.vue';
 import { index as invoiceItemsIndex } from '@/routes/invoices/items';
-
-interface InvoiceItemFormData {
-    description: string;
-    quantity: number;
-    unit_price: number;
-    tax_rate: number;
-    position: number;
-}
+import type { InvoiceItemFormData } from '@/types/forms';
 
 interface Props {
     invoiceId: number;
