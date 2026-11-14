@@ -37,6 +37,16 @@ export * from './post';
 export * from './tag';
 export * from './ticket';
 export * from './ticket-priority';
+export * from './activity-log';
+export * from './api-token';
+export * from './organisation';
+export * from './organisation-data-privacy-permissions';
+export * from './organisation-membership';
+export * from './permission';
+export * from './platform-reporting-metrics';
+export * from './registration-interest';
+export * from './report';
+import type { ActivityLog } from './activity-log';
 
 export interface UserOption {
     id: number;
@@ -48,37 +58,6 @@ export interface UserSession {
     user_agent: string | null;
     last_active_at: string;
     is_current: boolean;
-}
-
-export interface ApiToken {
-    id: number;
-    name: string;
-    abilities: string[];
-    last_used_at: string | null;
-    expires_at: string | null;
-    created_at: string;
-    updated_at: string;
-}
-
-export interface RegistrationInterest {
-    id: number;
-    name: string;
-    email: string;
-    phone: string | null;
-    company: string | null;
-    message: string | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
 }
 
 export interface NotificationBroadcast {
@@ -251,31 +230,6 @@ export interface CalendarEvent {
     show_url: string;
 }
 
-export interface RoleOption {
-    id: number;
-    name: string;
-}
-
-export interface Permission {
-    id: number;
-    name: string;
-    guard_name: string;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    roles?: RoleOption[];
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
 export interface Setting {
     id: number;
     site_name: string;
@@ -303,125 +257,9 @@ export interface SettingsPermissions {
     can_edit_security: boolean;
 }
 
-export interface ActivityLog {
-    id: number;
-    action_id: number;
-    action_label: string;
-    data: Record<string, unknown> | null;
-    logged_in_user_id: number | null;
-    related_to_user_id: number | null;
-    logged_in_user?: { id: number; name: string } | null;
-    related_to_user?: { id: number; name: string } | null;
-    created_at: string;
-}
-
-export interface OrganisationSettings {
-    logo_attachment_id: number | null;
-    accent_colour: string | null;
-    default_timezone: string | null;
-    default_locale: string | null;
-    notification_preferences: {
-        email_notifications: boolean;
-        weekly_digest: boolean;
-    } | null;
-}
-
-export interface Organisation {
-    id: number;
-    name: string;
-    slug: string;
-    meta: Record<string, unknown> | null;
-    settings: OrganisationSettings | null;
-    members_count?: number;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
-export interface Report {
-    id: number;
-    organisation_id: number;
-    title: string;
-    description: string | null;
-    type: string;
-    type_label: string | null;
-    format: 'pdf' | 'csv' | 'xlsx';
-    filters: Record<string, unknown> | null;
-    is_scheduled: boolean;
-    schedule_frequency: 'daily' | 'weekly' | 'monthly' | null;
-    schedule_time: string | null;
-    recipients: string[] | null;
-    last_run_at: string | null;
-    next_run_at: string | null;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-    can_update?: boolean;
-    can_delete?: boolean;
-    can_schedule?: boolean;
-}
-
-export interface ReportType {
-    value: string;
-    label: string;
-}
-
-export interface ReportPermissionsMeta {
-    can_create: boolean;
-    can_view_any: boolean;
-    can_export: boolean;
-    can_schedule: boolean;
-}
-
-export interface OrganisationMembership {
-    id: number;
-    organisation_id: number;
-    user_id: number;
-    status: 'invited' | 'active';
-    invited_role: string | null;
-    invited_at: string | null;
-    joined_at: string | null;
-    user?: { id: number; name: string; email: string };
-}
-
 export interface OrganisationMembershipPermissionsMeta {
     can_invite: boolean;
     can_remove: boolean;
-}
-
-export interface PlatformReportingMetrics {
-    organisation_count: number;
-    subscription_counts: {
-        active: number;
-        trialing: number;
-        cancelled: number;
-    };
-    total_active_members: number;
-    signups_over_time: Record<string, number>;
-}
-
-export interface OrganisationDataPrivacyPermissions {
-    can_export: boolean;
-    can_delete: boolean;
 }
 
 export interface AuditLogEntry extends ActivityLog {
