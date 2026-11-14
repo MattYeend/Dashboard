@@ -3,8 +3,8 @@ import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { update as invoiceStatusesUpdate } from '@/routes/invoice-statuses';
 import type { InvoiceStatus } from '@/types';
-import InvoiceStatusForm from './components/InvoiceStatusForm.vue';
 import type { InvoiceStatusFormData } from '@/types/forms';
+import InvoiceStatusForm from './components/InvoiceStatusForm.vue';
 
 const props = defineProps<{
     invoiceStatus: InvoiceStatus;

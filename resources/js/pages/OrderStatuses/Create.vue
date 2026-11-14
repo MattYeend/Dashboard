@@ -2,8 +2,8 @@
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { store as orderStatusesStore } from '@/routes/order-statuses';
-import OrderStatusForm from './components/OrderStatusForm.vue';
 import type { OrderStatusFormData } from '@/types/forms';
+import OrderStatusForm from './components/OrderStatusForm.vue';
 
 const form = useForm<OrderStatusFormData>({
     title: '',

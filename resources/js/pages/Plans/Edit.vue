@@ -3,8 +3,8 @@ import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { update as plansUpdate } from '@/routes/plans';
 import type { Plan } from '@/types';
-import PlanForm from './components/PlanForm.vue';
 import type { PlanFormData } from '@/types/forms';
+import PlanForm from './components/PlanForm.vue';
 
 const props = defineProps<{
     plan: Plan;

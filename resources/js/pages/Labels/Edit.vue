@@ -3,8 +3,8 @@ import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { update as labelsUpdate } from '@/routes/labels';
 import type { Label } from '@/types';
-import LabelForm from './components/LabelForm.vue';
 import type { LabelFormData } from '@/types/forms';
+import LabelForm from './components/LabelForm.vue';
 
 const props = defineProps<{
     label: Label;

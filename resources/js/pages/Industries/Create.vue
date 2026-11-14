@@ -2,8 +2,8 @@
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { store as industriesStore } from '@/routes/industries';
-import IndustryForm from './components/IndustryForm.vue';
 import type { IndustryFormData } from '@/types/forms';
+import IndustryForm from './components/IndustryForm.vue';
 
 const form = useForm<IndustryFormData>({
     title: '',

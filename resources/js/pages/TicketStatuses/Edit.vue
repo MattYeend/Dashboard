@@ -3,8 +3,8 @@ import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { update as ticketStatusesUpdate } from '@/routes/ticket-statuses';
 import type { TicketStatus } from '@/types';
-import TicketStatusForm from './components/TicketStatusForm.vue';
 import type { TicketStatusFormData } from '@/types/forms';
+import TicketStatusForm from './components/TicketStatusForm.vue';
 
 const props = defineProps<{
     ticketStatus: TicketStatus;

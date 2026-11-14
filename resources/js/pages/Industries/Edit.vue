@@ -3,8 +3,8 @@ import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { update as industriesUpdate } from '@/routes/industries';
 import type { Industry } from '@/types';
-import IndustryForm from './components/IndustryForm.vue';
 import type { IndustryFormData } from '@/types/forms';
+import IndustryForm from './components/IndustryForm.vue';
 
 const props = defineProps<{
     industry: Industry;

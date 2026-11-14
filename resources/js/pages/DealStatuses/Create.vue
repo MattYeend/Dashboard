@@ -2,8 +2,8 @@
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { store as dealStatusesStore } from '@/routes/deal-statuses';
-import DealStatusForm from './components/DealStatusForm.vue';
 import type { DealStatusFormData } from '@/types/forms';
+import DealStatusForm from './components/DealStatusForm.vue';
 
 const form = useForm<DealStatusFormData>({
     title: '',
@@ -33,7 +33,7 @@ function submit(): void {
             <DealStatusForm
                 :form="form"
                 :errors="form.errors"
-                submit-label="Create Order Status"
+                submit-label="Create Deal Status"
                 :processing="form.processing"
                 @update:form="onFormUpdate"
                 @submit="submit"

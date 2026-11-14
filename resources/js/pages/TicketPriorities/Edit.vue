@@ -2,8 +2,8 @@
 import { useForm } from '@inertiajs/vue3';
 import { update as ticketPrioritiesUpdate } from '@/routes/ticket-priorities';
 import type { TicketPriority } from '@/types';
-import TicketPriorityForm from './components/TicketPriorityForm.vue';
 import type { TicketPriorityFormData } from '@/types/forms';
+import TicketPriorityForm from './components/TicketPriorityForm.vue';
 
 const props = defineProps<{
     ticketPriority: TicketPriority;

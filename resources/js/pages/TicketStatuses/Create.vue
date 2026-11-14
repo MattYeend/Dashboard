@@ -2,8 +2,8 @@
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { store as ticketStatusesStore } from '@/routes/ticket-statuses';
-import TicketStatusForm from './components/TicketStatusForm.vue';
 import type { TicketStatusFormData } from '@/types/forms';
+import TicketStatusForm from './components/TicketStatusForm.vue';
 
 const form = useForm<TicketStatusFormData>({
     title: '',

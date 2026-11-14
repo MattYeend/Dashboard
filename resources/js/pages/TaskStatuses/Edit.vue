@@ -3,8 +3,8 @@ import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { update as taskStatusesUpdate } from '@/routes/task-statuses';
 import type { TaskStatus } from '@/types';
-import TaskStatusForm from './components/TaskStatusForm.vue';
 import type { TaskStatusFormData } from '@/types/forms';
+import TaskStatusForm from './components/TaskStatusForm.vue';
 
 const props = defineProps<{
     taskStatus: TaskStatus;

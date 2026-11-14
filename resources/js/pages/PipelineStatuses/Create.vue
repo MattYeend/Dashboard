@@ -2,8 +2,8 @@
 import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { store as pipelineStatusesStore } from '@/routes/pipeline-statuses';
-import PipelineStatusForm from './components/PipelineStatusForm.vue';
 import type { PipelineStatusFormData } from '@/types/forms';
+import PipelineStatusForm from './components/PipelineStatusForm.vue';
 
 const form = useForm<PipelineStatusFormData>({
     title: '',
