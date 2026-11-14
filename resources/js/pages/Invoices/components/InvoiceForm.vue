@@ -8,10 +8,7 @@ import InvoiceDateDetailsForm from '@/pages/Invoices/components/InvoiceDateDetai
 import InvoiceTotalsDetailsForm from '@/pages/Invoices/components/InvoiceTotalsDetailsForm.vue';
 import { index as invoicesIndex } from '@/routes/invoices';
 import type { InvoiceStatus, UserOption } from '@/types';
-import type {
-    InvoiceContactFormData,
-    InvoiceFormData,
-} from '@/types/forms';
+import type { InvoiceContactFormData, InvoiceFormData } from '@/types/forms';
 
 interface Props {
     isEditing: boolean;
@@ -34,7 +31,9 @@ const taxTotal = defineModel<number | null>('taxTotal', { default: null });
 const total = defineModel<number | null>('total', { default: null });
 const currency = defineModel<string>('currency', { required: true });
 const notes = defineModel<string | null>('notes', { default: null });
-const contact = defineModel<InvoiceContactFormData>('contact', { required: true });
+const contact = defineModel<InvoiceContactFormData>('contact', {
+    required: true,
+});
 </script>
 
 <template>

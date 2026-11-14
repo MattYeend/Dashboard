@@ -14,9 +14,7 @@ import type { TicketStatusSelectionFormData } from '@/types/forms';
 
 interface Props {
     statuses: TicketStatus[];
-    errors: Partial<
-        InertiaFormProps<TicketStatusSelectionFormData>['errors']
-    >;
+    errors: Partial<InertiaFormProps<TicketStatusSelectionFormData>['errors']>;
 }
 
 defineProps<Props>();

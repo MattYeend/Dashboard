@@ -3,10 +3,7 @@ import type { InertiaFormProps } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import type {
-    InvoiceContactFormData,
-    InvoiceFormData,
-} from '@/types/forms';
+import type { InvoiceContactFormData, InvoiceFormData } from '@/types/forms';
 
 interface Props {
     errors: Partial<InertiaFormProps<InvoiceFormData>['errors']>;
@@ -14,7 +11,9 @@ interface Props {
 
 defineProps<Props>();
 
-const contact = defineModel<InvoiceContactFormData>('contact', { required: true });
+const contact = defineModel<InvoiceContactFormData>('contact', {
+    required: true,
+});
 
 function updateField(field: keyof InvoiceContactFormData, value: string): void {
     contact.value = {
