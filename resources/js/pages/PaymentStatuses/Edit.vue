@@ -4,7 +4,7 @@ import { Head, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { index, show, update } from '@/routes/payment-statuses';
 import type { PaymentStatus } from '@/types';
-import type { PaymentStatusFormData } from '@/types/forms/payment-statuses-form-data.js';
+import type { PaymentStatusFormData } from '@/types/forms';
 
 import PaymentStatusForm from './components/PaymentStatusForm.vue';
 

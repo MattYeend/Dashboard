@@ -2,7 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 
 import { Button } from '@/components/ui/button';
-import type { PaymentStatusFormData } from '@/types/forms/payment-statuses-form-data.js';
+import type { PaymentStatusFormData } from '@/types/forms';
 
 import PaymentStatusBasicDetailsForm from './PaymentStatusBasicDetailsForm.vue';
 import PaymentStatusColourForm from './PaymentStatusColourForm.vue';

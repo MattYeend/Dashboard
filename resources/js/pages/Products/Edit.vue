@@ -3,7 +3,7 @@ import { Head, useForm } from '@inertiajs/vue3';
 import ProductForm from '@/pages/Products/components/ProductForm.vue';
 import { show, update } from '@/routes/products';
 import type { Product } from '@/types';
-import type { ProductFormData } from '@/types/forms/products-form-data';
+import type { ProductFormData } from '@/types/forms';
 
 const props = defineProps<{
     product: Product;

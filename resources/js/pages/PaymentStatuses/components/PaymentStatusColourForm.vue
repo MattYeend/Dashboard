@@ -2,7 +2,7 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import type { PaymentStatusFormData } from '@/types/forms/payment-statuses-form-data';
+import type { PaymentStatusFormData } from '@/types/forms';
 
 defineProps<{
     errors: Partial<Record<keyof PaymentStatusFormData, string>>;

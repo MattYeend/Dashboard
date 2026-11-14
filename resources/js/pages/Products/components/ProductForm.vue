@@ -2,7 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 
 import { Button } from '@/components/ui/button';
-import type { ProductFormData } from '@/types/forms/products-form-data.js';
+import type { ProductFormData } from '@/types/forms';
 
 import ProductBasicDetailsForm from './ProductBasicDetailsForm.vue';
 import ProductPricingForm from './ProductPricingForm.vue';

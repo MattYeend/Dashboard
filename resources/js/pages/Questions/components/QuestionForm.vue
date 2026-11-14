@@ -4,7 +4,7 @@ import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
 import { store, update } from '@/routes/questions';
 import type { Question, SelectOption } from '@/types';
-import type { QuestionFormData } from '@/types/forms/question-form-data.js';
+import type { QuestionFormData } from '@/types/forms';
 import QuestionBasicDetailsForm from './QuestionBasicDetailsForm.vue';
 import QuestionLinkDetailsForm from './QuestionLinkDetailsForm.vue';
 import QuestionTypeDetailsForm from './QuestionTypeDetailsForm.vue';

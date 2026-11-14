@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Label } from '@/components/ui/label';
 
-import type { ProductFormData } from '@/types/forms/products-form-data';
+import type { ProductFormData } from '@/types/forms';
 
 defineProps<{
     errors: Partial<Record<keyof ProductFormData, string>>;

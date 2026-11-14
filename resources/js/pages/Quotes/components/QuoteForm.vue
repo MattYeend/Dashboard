@@ -2,7 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 
 import { Button } from '@/components/ui/button';
-import type { QuoteFormData, SelectOption } from '@/types/forms/quotes-form-data.js';
+import type { QuoteFormData, SelectOption } from '@/types/forms';
 
 import QuoteAmountsForm from './QuoteAmountsForm.vue';
 import QuoteBasicDetailsForm from './QuoteBasicDetailsForm.vue';

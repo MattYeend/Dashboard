@@ -3,7 +3,7 @@ import { computed } from 'vue';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import type { ProductFormData } from '@/types/forms/products-form-data';
+import type { ProductFormData } from '@/types/forms';
 
 defineProps<{
     errors: Partial<Record<keyof ProductFormData, string>>;

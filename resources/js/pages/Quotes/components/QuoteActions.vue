@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { accept, convert, decline, edit, send } from '@/routes/quotes';
 import type { Quote } from '@/types';
 
-import type { QuoteAbilities } from '@/types/forms/quotes-form-data';
+import type { QuoteAbilities } from '@/types/forms';
 
 const props = defineProps<{
     quote: Quote;

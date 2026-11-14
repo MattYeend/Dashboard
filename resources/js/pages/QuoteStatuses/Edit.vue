@@ -3,7 +3,7 @@ import { Head, useForm } from '@inertiajs/vue3';
 import QuoteStatusForm from '@/pages/QuoteStatuses/components/QuoteStatusForm.vue';
 import { show, update } from '@/routes/quote-statuses';
 import type { QuoteStatus } from '@/types';
-import type { QuoteStatusFormData } from '@/types/forms/quote-statuses-form-data';
+import type { QuoteStatusFormData } from '@/types/forms';
 
 const props = defineProps<{
     quoteStatus: QuoteStatus;

@@ -2,7 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 
 import { Button } from '@/components/ui/button';
-import type { QuoteStatusFormData } from '@/types/forms/quote-statuses-form-data.js';
+import type { QuoteStatusFormData } from '@/types/forms';
 
 import QuoteStatusBasicDetailsForm from './QuoteStatusBasicDetailsForm.vue';
 import QuoteStatusColourForm from './QuoteStatusColourForm.vue';
