@@ -10,14 +10,11 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import type { TicketPriority } from '@/types';
-
-interface TicketPriorityFormData {
-    ticket_priority_id: number | null;
-}
+import type { TicketPrioritySelectionFormData } from '@/types/forms';
 
 interface Props {
     priorities: TicketPriority[];
-    errors: Partial<InertiaFormProps<TicketPriorityFormData>['errors']>;
+    errors: Partial<InertiaFormProps<TicketPrioritySelectionFormData>['errors']>;
 }
 
 defineProps<Props>();

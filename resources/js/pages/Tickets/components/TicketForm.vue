@@ -9,16 +9,7 @@ import TicketPriorityForm from '@/pages/Tickets/components/TicketPriorityForm.vu
 import TicketStatusForm from '@/pages/Tickets/components/TicketStatusForm.vue';
 import { index as ticketsIndex } from '@/routes/tickets';
 import type { Label, TicketPriority, TicketStatus, UserOption } from '@/types';
-
-interface TicketFormData {
-    title: string;
-    description: string | null;
-    ticket_status_id: number | null;
-    ticket_priority_id: number | null;
-    assigned_to: number | null;
-    due_date: string | null;
-    label_ids: number[];
-}
+import type { TicketFormData } from '@/types/forms';
 
 interface Props {
     isEditing: boolean;

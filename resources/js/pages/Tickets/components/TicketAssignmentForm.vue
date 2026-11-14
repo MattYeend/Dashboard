@@ -11,11 +11,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import type { UserOption } from '@/types';
-
-interface TicketAssignmentFormData {
-    assigned_to: number | null;
-    due_date: string | null;
-}
+import type { TicketAssignmentFormData } from '@/types/forms';
 
 interface Props {
     users: UserOption[];
