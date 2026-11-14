@@ -3,7 +3,7 @@ import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import type { TicketStatusFormData } from './TicketStatusForm.vue';
+import type { TicketStatusFormData } from '@/types/forms';
 
 interface Errors {
     title?: string;

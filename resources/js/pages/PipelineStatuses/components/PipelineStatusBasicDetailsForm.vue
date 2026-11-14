@@ -3,7 +3,7 @@ import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import type { PipelineStatusFormData } from './PipelineStatusForm.vue';
+import type { PipelineStatusFormData } from '@/types/forms';
 
 interface Errors {
     title?: string;

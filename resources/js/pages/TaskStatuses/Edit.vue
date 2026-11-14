@@ -4,7 +4,7 @@ import { nullIfBlank } from '@/lib/forms';
 import { update as taskStatusesUpdate } from '@/routes/task-statuses';
 import type { TaskStatus } from '@/types';
 import TaskStatusForm from './components/TaskStatusForm.vue';
-import type { TaskStatusFormData } from './components/TaskStatusForm.vue';
+import type { TaskStatusFormData } from '@/types/forms';
 
 const props = defineProps<{
     taskStatus: TaskStatus;

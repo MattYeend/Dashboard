@@ -4,7 +4,7 @@ import { nullIfBlank } from '@/lib/forms';
 import { update as orderStatusesUpdate } from '@/routes/order-statuses';
 import type { OrderStatus } from '@/types';
 import OrderStatusForm from './components/OrderStatusForm.vue';
-import type { OrderStatusFormData } from './components/OrderStatusForm.vue';
+import type { OrderStatusFormData } from '@/types/forms';
 
 const props = defineProps<{
     orderStatus: OrderStatus;

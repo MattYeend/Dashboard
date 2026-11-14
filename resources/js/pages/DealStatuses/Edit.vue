@@ -3,7 +3,7 @@ import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { update as orderStatusesUpdate } from '@/routes/order-statuses';
 import type { DealStatus } from '@/types';
-import type { DealStatusFormData } from './components/DealStatusForm.vue';
+import type { DealStatusFormData } from '@/types/forms';
 import DealStatusForm from './components/DealStatusForm.vue';
 
 const props = defineProps<{

@@ -4,7 +4,7 @@ import { nullIfBlank } from '@/lib/forms';
 import { update as labelsUpdate } from '@/routes/labels';
 import type { Label } from '@/types';
 import LabelForm from './components/LabelForm.vue';
-import type { LabelFormData } from './components/LabelForm.vue';
+import type { LabelFormData } from '@/types/forms';
 
 const props = defineProps<{
     label: Label;

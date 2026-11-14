@@ -3,7 +3,7 @@ import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { store as plansStore } from '@/routes/plans';
 import PlanForm from './components/PlanForm.vue';
-import type { PlanFormData } from './components/PlanForm.vue';
+import type { PlanFormData } from '@/types/forms';
 
 const form = useForm<PlanFormData>({
     name: '',

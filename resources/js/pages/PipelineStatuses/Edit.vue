@@ -4,7 +4,7 @@ import { nullIfBlank } from '@/lib/forms';
 import { update as pipelineStatusesUpdate } from '@/routes/pipeline-statuses';
 import type { PipelineStatus } from '@/types';
 import PipelineStatusForm from './components/PipelineStatusForm.vue';
-import type { PipelineStatusFormData } from './components/PipelineStatusForm.vue';
+import type { PipelineStatusFormData } from '@/types/forms';
 
 const props = defineProps<{
     pipelineStatus: PipelineStatus;

@@ -9,7 +9,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import type { TicketPriorityFormData } from './TicketPriorityForm.vue';
+import type { TicketPriorityFormData } from '@/types/forms';
 
 interface Errors {
     title?: string;

@@ -3,7 +3,7 @@ import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import type { PlanFormData } from './PlanForm.vue';
+import type { PlanFormData } from '@/types/forms';
 
 interface Errors {
     price_per_user_per_month?: string;

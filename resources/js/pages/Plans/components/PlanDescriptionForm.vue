@@ -2,7 +2,7 @@
 import InputError from '@/components/InputError.vue';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import type { PlanFormData } from './PlanForm.vue';
+import type { PlanFormData } from '@/types/forms';
 
 interface Errors {
     description?: string;

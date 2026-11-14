@@ -4,7 +4,7 @@ import { nullIfBlank } from '@/lib/forms';
 import { update as invoiceStatusesUpdate } from '@/routes/invoice-statuses';
 import type { InvoiceStatus } from '@/types';
 import InvoiceStatusForm from './components/InvoiceStatusForm.vue';
-import type { InvoiceStatusFormData } from './components/InvoiceStatusForm.vue';
+import type { InvoiceStatusFormData } from '@/types/forms';
 
 const props = defineProps<{
     invoiceStatus: InvoiceStatus;

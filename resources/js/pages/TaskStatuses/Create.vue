@@ -3,7 +3,7 @@ import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { store as taskStatusesStore } from '@/routes/task-statuses';
 import TaskStatusForm from './components/TaskStatusForm.vue';
-import type { TaskStatusFormData } from './components/TaskStatusForm.vue';
+import type { TaskStatusFormData } from '@/types/forms';
 
 const form = useForm<TaskStatusFormData>({
     title: '',

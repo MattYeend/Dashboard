@@ -3,7 +3,7 @@ import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { store as invoiceStatusesStore } from '@/routes/invoice-statuses';
 import InvoiceStatusForm from './components/InvoiceStatusForm.vue';
-import type { InvoiceStatusFormData } from './components/InvoiceStatusForm.vue';
+import type { InvoiceStatusFormData } from '@/types/forms';
 
 const form = useForm<InvoiceStatusFormData>({
     title: '',

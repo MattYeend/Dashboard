@@ -2,7 +2,7 @@
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import type { InvoiceStatusFormData } from './InvoiceStatusForm.vue';
+import type { InvoiceStatusFormData } from '@/types/forms';
 
 interface Errors {
     background_colour?: string;

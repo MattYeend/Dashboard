@@ -3,7 +3,7 @@ import { useForm } from '@inertiajs/vue3';
 import { nullIfBlank } from '@/lib/forms';
 import { store as labelsStore } from '@/routes/labels';
 import LabelForm from './components/LabelForm.vue';
-import type { LabelFormData } from './components/LabelForm.vue';
+import type { LabelFormData } from '@/types/forms';
 
 const form = useForm<LabelFormData>({
     name: '',
