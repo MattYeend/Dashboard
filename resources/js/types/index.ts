@@ -6,72 +6,12 @@ export * from './quote';
 export * from './quote-status';
 export * from './payment-status';
 export * from './ui';
-
-export interface TicketStatus {
-    id: number;
-    organisation_id: number;
-    title: string;
-    description: string | null;
-    background_colour: string;
-    text_colour: string;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
-export interface TaskStatus {
-    id: number;
-    organisation_id: number;
-    title: string;
-    description: string | null;
-    background_colour: string;
-    text_colour: string;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
-export interface OrderStatus {
-    id: number;
-    organisation_id: number;
-    title: string;
-    description: string | null;
-    background_colour: string;
-    text_colour: string;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
+export * from './deal-status';
+export * from './invoice-status';
+export * from './order-status';
+export * from './pipeline-status';
+export * from './task-status';
+export * from './ticket-status';
 
 export interface Order {
     id: number;
@@ -378,27 +318,6 @@ export interface Post {
     restorer?: { name: string };
 }
 
-export interface InvoiceStatus {
-    id: number;
-    organisation_id: number;
-    title: string;
-    description: string | null;
-    background_colour: string;
-    text_colour: string;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
 
 export interface Comment {
     id: number;
@@ -547,28 +466,6 @@ export interface RegistrationInterest {
     restorer?: { name: string };
 }
 
-export interface PipelineStatus {
-    id: number;
-    organisation_id: number;
-    title: string;
-    description: string | null;
-    background_colour: string;
-    text_colour: string;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
 export interface Pipeline {
     id: number;
     organisation_id: number;
@@ -622,28 +519,6 @@ export interface PipelineStage {
     updated_at: string;
     deleted_at: string | null;
     pipeline?: { id: number; title: string } | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
-export interface DealStatus {
-    id: number;
-    organisation_id: number;
-    title: string;
-    description: string | null;
-    background_colour: string;
-    text_colour: string;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
     creator?: { name: string };
     updater?: { name: string };
     deleter?: { name: string };
