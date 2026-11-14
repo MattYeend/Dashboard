@@ -6,15 +6,7 @@ import ContactBasicDetailsForm from '@/pages/Contacts/components/ContactBasicDet
 import ContactTagsForm from '@/pages/Contacts/components/ContactTagsForm.vue';
 import ContactTypeForm from '@/pages/Contacts/components/ContactTypeForm.vue';
 import { index as contactsIndex } from '@/routes/contacts';
-
-interface ContactFormData {
-    name: string;
-    phone: string;
-    email: string;
-    contactable_type: string;
-    contactable_id: number | null;
-    tag_ids: number[];
-}
+import type { ContactFormData } from '@/types/forms';
 
 interface Props {
     isEditing: boolean;

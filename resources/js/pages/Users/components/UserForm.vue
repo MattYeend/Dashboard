@@ -5,16 +5,7 @@ import { Button } from '@/components/ui/button';
 import UserBasicDetailsForm from '@/pages/Users/components/UserBasicDetailsForm.vue';
 import UserRoleDetailsForm from '@/pages/Users/components/UserRoleDetailsForm.vue';
 import { index as usersIndex } from '@/routes/users';
-
-interface UserFormData {
-    name: string;
-    email: string;
-    password: string;
-    password_confirmation: string;
-    role: string;
-    roles: string[];
-    locale: string;
-}
+import type { UserFormData } from '@/types/forms';
 
 interface Props {
     isEditing: boolean;

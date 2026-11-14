@@ -9,11 +9,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-
-interface AddressTypeFormData {
-    addressable_type: string;
-    addressable_id: number | null;
-}
+import type { AddressTypeFormData } from '@/types/forms';
 
 interface Props {
     errors: Partial<InertiaFormProps<AddressTypeFormData>['errors']>;

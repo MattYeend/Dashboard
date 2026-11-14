@@ -6,19 +6,7 @@ import AddressLineDetailsForm from '@/pages/Addresses/components/AddressLineDeta
 import AddressLocationDetailsForm from '@/pages/Addresses/components/AddressLocationDetailsForm.vue';
 import AddressTypeForm from '@/pages/Addresses/components/AddressTypeForm.vue';
 import { index as addressesIndex } from '@/routes/addresses';
-
-interface AddressFormData {
-    addressable_type: string;
-    addressable_id: number | null;
-    address_line_one: string;
-    address_line_two: string;
-    town: string;
-    city: string;
-    county: string;
-    postcode: string;
-    country: string;
-    is_primary: boolean;
-}
+import type { AddressFormData } from '@/types/forms';
 
 interface Props {
     isEditing: boolean;

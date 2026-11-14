@@ -2,13 +2,7 @@
 import { Button } from '@/components/ui/button';
 import NotificationBroadcastAudienceForm from '@/pages/NotificationBroadcasts/components/NotificationBroadcastAudienceForm.vue';
 import NotificationBroadcastBasicDetailsForm from '@/pages/NotificationBroadcasts/components/NotificationBroadcastBasicDetailsForm.vue';
-
-interface NotificationBroadcastFormData {
-    title: string;
-    body: string;
-    audience_type: 'all' | 'role' | 'users';
-    audience_ids: string;
-}
+import type { NotificationBroadcastFormData } from '@/types/forms';
 
 defineProps<{
     errors: Partial<Record<keyof NotificationBroadcastFormData, string>>;

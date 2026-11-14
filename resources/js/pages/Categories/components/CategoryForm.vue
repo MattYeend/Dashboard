@@ -5,13 +5,7 @@ import { Button } from '@/components/ui/button';
 import CategoryDetailsForm from '@/pages/Categories/components/CategoryDetailsForm.vue';
 import CategoryHierarchyForm from '@/pages/Categories/components/CategoryHierarchyForm.vue';
 import { index as categoriesIndex } from '@/routes/categories';
-
-interface CategoryFormData {
-    parent_id: number | null;
-    name: string;
-    slug: string;
-    description: string;
-}
+import type { CategoryFormData } from '@/types/forms';
 
 interface Props {
     isEditing: boolean;

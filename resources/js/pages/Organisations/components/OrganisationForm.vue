@@ -4,11 +4,7 @@ import { Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import OrganisationDetailsForm from '@/pages/Organisations/components/OrganisationDetailsForm.vue';
 import { index as organisationsIndex } from '@/routes/organisations';
-
-interface OrganisationFormData {
-    name: string;
-    slug: string;
-}
+import type { OrganisationFormData } from '@/types/forms';
 
 interface Props {
     isEditing: boolean;
