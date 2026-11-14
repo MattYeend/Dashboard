@@ -9,11 +9,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-
-interface OrderTypeFormData {
-    orderable_type: string;
-    orderable_id: number | null;
-}
+import type { OrderTypeFormData } from '@/types/forms';
 
 interface Props {
     errors: Partial<InertiaFormProps<OrderTypeFormData>['errors']>;

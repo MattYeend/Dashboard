@@ -9,22 +9,7 @@ import CompanyRegistrationDetailsForm from '@/pages/Companies/components/Company
 import CompanyTagsForm from '@/pages/Companies/components/CompanyTagsForm.vue';
 import { index as companiesIndex } from '@/routes/companies';
 import type { Industry, UserOption } from '@/types';
-
-interface CompanyFormData {
-    name: string;
-    slug: string | null;
-    email: string | null;
-    phone: string | null;
-    website: string | null;
-    registration_number: string | null;
-    vat_number: string | null;
-    description: string | null;
-    industry_id: number | null;
-    account_manager_id: number | null;
-    employee_count: number | null;
-    founded_year: number | null;
-    tag_ids: number[];
-}
+import type { CompanyFormData } from '@/types/forms';
 
 interface Props {
     isEditing: boolean;

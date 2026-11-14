@@ -3,20 +3,7 @@ import type { InertiaFormProps } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
-interface CompanyFormData {
-    name: string;
-    slug: string | null;
-    email: string | null;
-    phone: string | null;
-    website: string | null;
-    registration_number: string | null;
-    vat_number: string | null;
-    description: string | null;
-    industry_id: number | null;
-    employee_count: number | null;
-    founded_year: number | null;
-}
+import type { CompanyFormData } from '@/types/forms';
 
 interface Props {
     errors: Partial<InertiaFormProps<CompanyFormData>['errors']>;

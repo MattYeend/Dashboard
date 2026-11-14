@@ -7,23 +7,7 @@ import OrderBasicDetailsForm from '@/pages/Orders/components/OrderBasicDetailsFo
 import OrderTypeForm from '@/pages/Orders/components/OrderTypeForm.vue';
 import { index as ordersIndex } from '@/routes/orders';
 import type { OrderStatus } from '@/types';
-
-interface OrderFormData {
-    title: string;
-    description: string | null;
-    notes: string | null;
-    subtotal: number;
-    discount_amount: number;
-    tax_amount: number;
-    total_amount: number;
-    currency: string;
-    ordered_at: string | null;
-    due_at: string | null;
-    completed_at: string | null;
-    status_id: number | null;
-    orderable_type: string;
-    orderable_id: number | null;
-}
+import type { OrderFormData } from '@/types/forms';
 
 interface Props {
     isEditing: boolean;
