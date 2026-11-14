@@ -26,6 +26,17 @@ export * from './subscription';
 export * from './deal';
 export * from './pipeline';
 export * from './pipeline-stage';
+export * from './activity';
+export * from './attachment';
+export * from './category';
+export * from './comment';
+export * from './interaction-log';
+export * from './label';
+export * from './notification';
+export * from './post';
+export * from './tag';
+export * from './ticket';
+export * from './ticket-priority';
 
 export interface UserOption {
     id: number;
@@ -49,106 +60,6 @@ export interface ApiToken {
     updated_at: string;
 }
 
-export interface Category {
-    id: number;
-    organisation_id: number;
-    parent_id: number | null;
-    name: string;
-    slug: string;
-    description: string | null;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    parent?: { id: number; name: string } | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
-export interface Post {
-    id: number;
-    organisation_id: number;
-    title: string;
-    description: string;
-    image: string | null;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    categories?: { id: number; name: string }[];
-    tags?: { id: number; name: string }[];
-    likes_count?: number;
-    liked_by_user?: boolean;
-    comments?: Comment[];
-    comments_count?: number;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
-
-export interface Comment {
-    id: number;
-    organisation_id: number;
-    commentable_id: number;
-    commentable_type: string;
-    commentable_type_key: string | null;
-    commentable_type_label: string | null;
-    commentable_name: string | null;
-    content: string;
-    mentions?: CommentMention[];
-    meta: Record<string, unknown> | null;
-    likes_count?: number;
-    liked_by_user?: boolean;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-    can_update?: boolean;
-    can_delete?: boolean;
-}
-
-export interface Tag {
-    id: number;
-    organisation_id: number;
-    name: string;
-    slug: string;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
 export interface RegistrationInterest {
     id: number;
     name: string;
@@ -168,153 +79,6 @@ export interface RegistrationInterest {
     updater?: { name: string };
     deleter?: { name: string };
     restorer?: { name: string };
-}
-
-export interface TicketPriority {
-    id: number;
-    organisation_id: number;
-    title: string;
-    level: number;
-    background_colour: string;
-    text_colour: string;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
-export interface Label {
-    id: number;
-    organisation_id: number;
-    name: string;
-    slug: string;
-    background_colour: string;
-    text_colour: string;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
-export interface Ticket {
-    id: number;
-    organisation_id: number;
-    title: string;
-    description: string | null;
-    due_date: string | null;
-    resolved_at: string | null;
-    ticket_status_id: number | null;
-    ticket_priority_id: number | null;
-    assigned_to: number | null;
-    meta: Record<string, unknown> | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    status?: {
-        id: number;
-        title: string;
-        background_colour: string | null;
-        text_colour: string | null;
-    } | null;
-    priority?: {
-        id: number;
-        title: string;
-        background_colour: string | null;
-        text_colour: string | null;
-    } | null;
-    assignee?: { id: number; name: string } | null;
-    labels?: { id: number; name: string }[];
-    comments?: Comment[];
-    comments_count?: number;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-}
-
-export interface Activity {
-    id: number;
-    organisation_id: number;
-    activityable_id: number;
-    activityable_type: string;
-    activityable_type_key: string;
-    activityable_type_label: string | null;
-    activityable_name: string | null;
-    type:
-        | 'note'
-        | 'status_change'
-        | 'task_created'
-        | 'call_logged'
-        | 'email_logged';
-    type_label: string;
-    description: string | null;
-    meta: Record<string, unknown> | null;
-    occurred_at: string;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    deleter?: { name: string };
-    restorer?: { name: string };
-    can_update?: boolean;
-    can_delete?: boolean;
-}
-
-export interface InteractionLog {
-    id: number;
-    organisation_id: number;
-    interactable_id: number;
-    interactable_type: string;
-    interactable_type_key: string;
-    interactable_type_label: string | null;
-    type: 'call' | 'email';
-    subject: string;
-    outcome: string | null;
-    notes: string | null;
-    occurred_at: string;
-    contact_id: number | null;
-    contact?: { id: number; name: string } | null;
-    created_by: number | null;
-    updated_by: number | null;
-    deleted_by: number | null;
-    restored_by: number | null;
-    restored_at: string | null;
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
-    creator?: { name: string };
-    updater?: { name: string };
-    can_update?: boolean;
-    can_delete?: boolean;
 }
 
 export interface NotificationBroadcast {
@@ -360,18 +124,6 @@ export interface AuthUser {
     name: string;
     email: string;
     avatar?: string;
-}
-
-export interface Notification {
-    id: string;
-    type: string | null;
-    title: string | null;
-    body: string | null;
-    action_url: string | null;
-    subject_type: string | null;
-    subject_id: number | null;
-    read_at: string | null;
-    created_at: string;
 }
 
 export interface DashboardStats {
@@ -497,20 +249,6 @@ export interface CalendarEvent {
     background_colour: string | null;
     text_colour: string | null;
     show_url: string;
-}
-
-export interface Attachment {
-    id: number;
-    organisation_id: number;
-    original_filename: string;
-    mime_type: string;
-    size_bytes: number;
-    size_human: string;
-    download_url: string;
-    created_at: string;
-    deleted_at: string | null;
-    creator?: { id: number; name: string } | null;
-    deleter?: { id: number; name: string } | null;
 }
 
 export interface RoleOption {
@@ -652,11 +390,6 @@ export interface ReportPermissionsMeta {
     can_view_any: boolean;
     can_export: boolean;
     can_schedule: boolean;
-}
-
-export interface CommentMention {
-    id: number;
-    name: string;
 }
 
 export interface OrganisationMembership {
