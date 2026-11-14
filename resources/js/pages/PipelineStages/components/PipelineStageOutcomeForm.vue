@@ -2,11 +2,7 @@
 import type { InertiaFormProps } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
 import { Label } from '@/components/ui/label';
-
-interface PipelineStageFormData {
-    is_won: boolean;
-    is_lost: boolean;
-}
+import type { PipelineStageFormData } from '@/types/forms';
 
 interface Props {
     errors: Partial<InertiaFormProps<PipelineStageFormData>['errors']>;

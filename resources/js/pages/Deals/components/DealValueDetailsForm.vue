@@ -4,14 +4,7 @@ import CurrencySelect from '@/components/CurrencySelect.vue';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
-interface DealValueFormData {
-    value: number;
-    currency: string;
-    probability: number;
-    expected_close_date: string | null;
-    closed_at: string | null;
-}
+import type { DealValueFormData } from '@/types/forms';
 
 interface Props {
     errors: Partial<InertiaFormProps<DealValueFormData>['errors']>;

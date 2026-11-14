@@ -4,12 +4,7 @@ import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-
-interface PipelineStageFormData {
-    title: string;
-    description: string | null;
-    position: number;
-}
+import type { PipelineStageFormData } from '@/types/forms';
 
 interface Props {
     errors: Partial<InertiaFormProps<PipelineStageFormData>['errors']>;

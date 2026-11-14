@@ -4,11 +4,7 @@ import { computed } from 'vue';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
-interface PipelineStageFormData {
-    background_colour: string;
-    text_colour: string;
-}
+import type { PipelineStageFormData } from '@/types/forms';
 
 interface Props {
     errors: Partial<InertiaFormProps<PipelineStageFormData>['errors']>;

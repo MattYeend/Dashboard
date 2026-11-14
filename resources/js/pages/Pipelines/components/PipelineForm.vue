@@ -5,14 +5,7 @@ import { Button } from '@/components/ui/button';
 import PipelineBasicDetailsForm from '@/pages/Pipelines/components/PipelineBasicDetailsForm.vue';
 import { index as pipelinesIndex } from '@/routes/pipelines';
 import type { PipelineStatus, UserOption } from '@/types';
-
-interface PipelineFormData {
-    title: string;
-    description: string | null;
-    is_default: boolean;
-    status_id: number | null;
-    assigned_to: number | null;
-}
+import type { PipelineFormData } from '@/types/forms';
 
 interface Props {
     isEditing: boolean;

@@ -6,16 +6,7 @@ import PipelineStageAppearanceForm from '@/pages/PipelineStages/components/Pipel
 import PipelineStageBasicDetailsForm from '@/pages/PipelineStages/components/PipelineStageBasicDetailsForm.vue';
 import PipelineStageOutcomeForm from '@/pages/PipelineStages/components/PipelineStageOutcomeForm.vue';
 import { index as pipelineStagesIndex } from '@/routes/pipelines/stages';
-
-interface PipelineStageFormData {
-    title: string;
-    description: string | null;
-    position: number;
-    background_colour: string;
-    text_colour: string;
-    is_won: boolean;
-    is_lost: boolean;
-}
+import type { PipelineStageFormData } from '@/types/forms';
 
 interface Props {
     pipelineId: number;

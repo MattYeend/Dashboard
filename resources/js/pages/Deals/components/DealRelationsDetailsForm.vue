@@ -10,11 +10,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import type { Company, Invoice } from '@/types';
-
-interface DealRelationsFormData {
-    company_id: number | null;
-    invoice_id: number | null;
-}
+import type { DealRelationsFormData } from '@/types/forms';
 
 interface Props {
     companies: Company[];

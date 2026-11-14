@@ -13,14 +13,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import type { PipelineStatus, UserOption } from '@/types';
-
-interface PipelineBasicFormData {
-    title: string;
-    description: string | null;
-    is_default: boolean;
-    status_id: number | null;
-    assigned_to: number | null;
-}
+import type { PipelineBasicFormData } from '@/types/forms';
 
 interface Props {
     statuses: PipelineStatus[];

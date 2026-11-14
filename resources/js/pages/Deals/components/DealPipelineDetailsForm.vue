@@ -11,12 +11,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import type { DealStatus, Pipeline, PipelineStage } from '@/types';
-
-interface DealPipelineFormData {
-    pipeline_id: number | null;
-    stage_id: number | null;
-    status_id: number | null;
-}
+import type { DealPipelineFormData } from '@/types/forms';
 
 interface Props {
     pipelines: Pipeline[];
