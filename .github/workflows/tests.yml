@@ -20,6 +20,7 @@ permissions:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     strategy:
       fail-fast: false
@@ -73,7 +74,7 @@ jobs:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
           extensions: mbstring, pdo_mysql, pdo_pgsql, sqlite3
-          coverage: xdebug
+          coverage: none
 
       - name: Generate audit key
         run: echo "AUDIT_LOG_HMAC_KEY=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
@@ -101,4 +102,4 @@ jobs:
         run: npm run build
 
       - name: Tests
-        run: ./vendor/bin/pest
+        run: ./vendor/bin/pest --parallel

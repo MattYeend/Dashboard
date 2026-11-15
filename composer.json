@@ -84,14 +84,14 @@
             "npm run lint:check",
             "npm run format:check",
             "npm run types:check",
-            "@test"
+            "@php artisan test --parallel"
         ],
         "test": [
             "Composer\\Config::disableProcessTimeout",
             "@php artisan config:clear --ansi",
             "@lint:check",
             "@analyse",
-            "@php artisan test"
+            "@php artisan test --parallel"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
