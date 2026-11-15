@@ -15,16 +15,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->decimal('amount_paid', 10, 2)->default(0.00)->after('total');
+            $table->unsignedBigInteger('amount_paid')->default(0)->after('total');
         });
 
-        $driver = DB::getDriverName();
-
-        DB::statement(
-            $driver === 'mysql'
-                ? 'ALTER TABLE invoices DROP CHECK invoices_amount_paid_not_negative'
-                : 'ALTER TABLE invoices DROP CONSTRAINT invoices_amount_paid_not_negative'
-        );
+        DB::statement('ALTER TABLE invoices ADD CONSTRAINT invoices_amount_paid_not_negative CHECK (amount_paid >= 0)');
     }
 
     /**
@@ -32,14 +26,14 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement(
-            DB::getDriverName() === 'mysql'
-                ? 'ALTER TABLE invoices DROP CHECK invoices_amount_paid_not_negative'
-                : 'ALTER TABLE invoices DROP CONSTRAINT invoices_amount_paid_not_negative'
-        );
+        if (Schema::hasColumn('invoices', 'amount_paid')) {
+            if (DB::getDriverName() === 'pgsql') {
+                DB::statement('ALTER TABLE invoices DROP CONSTRAINT IF EXISTS invoices_amount_paid_not_negative');
+            }
 
-        Schema::table('invoices', function (Blueprint $table) {
-            $table->dropColumn('amount_paid');
-        });
+            Schema::table('invoices', function (Blueprint $table) {
+                $table->dropColumn('amount_paid');
+            });
+        }
     }
 };
