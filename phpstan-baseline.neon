@@ -73,6 +73,18 @@ parameters:
 			path: app/Http/Controllers/OrganisationController.php
 
 		-
+			message: '#^Parameter \$request of method App\\Http\\Controllers\\PaymentController\:\:store\(\) has invalid type App\\Http\\Requests\\StorePaymentRequest\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/PaymentController.php
+
+		-
+			message: '#^Parameter \$request of method App\\Http\\Controllers\\PaymentController\:\:update\(\) has invalid type App\\Http\\Requests\\UpdatePaymentRequest\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/PaymentController.php
+
+		-
 			message: '#^Method App\\Http\\Requests\\Settings\\PasswordUpdateRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
 			identifier: return.type
 			count: 1
@@ -509,6 +521,30 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: app/Models/Log.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Support\\Carbon\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Models/Payment.php
+
+		-
+			message: '#^Using nullsafe property access on non\-nullable type App\\Enums\\PaymentMethod\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Models/Payment.php
+
+		-
+			message: '#^Using nullsafe property access on non\-nullable type App\\Enums\\PaymentType\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Models/Payment.php
+
+		-
+			message: '#^Using nullsafe property access on non\-nullable type App\\Models\\PaymentStatus\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Models/Payment.php
 
 		-
 			message: '#^Access to an undefined property App\\Models\\Question\:\:\$pivot\.$#'
