@@ -1044,6 +1044,27 @@ class Log extends Model implements Auditable
 
     public const ACTION_EXPORT_PAYMENT_STATUS = 465;
 
+    // Payment Management
+    public const ACTION_CREATE_PAYMENT = 466;
+
+    public const ACTION_UPDATE_PAYMENT = 467;
+
+    public const ACTION_DELETE_PAYMENT = 468;
+
+    public const ACTION_RESTORE_PAYMENT = 469;
+
+    public const ACTION_FORCE_DELETE_PAYMENT = 470;
+
+    public const ACTION_IMPORT_PAYMENT = 471;
+
+    public const ACTION_EXPORT_PAYMENT = 472;
+
+    public const ACTION_REFUND_PAYMENT = 473;
+
+    public const ACTION_TRANSITION_PAYMENT = 474;
+
+    public const ACTION_RECALCULATE_INVOICE_BALANCE = 475;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
