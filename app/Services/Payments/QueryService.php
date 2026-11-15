@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Services\Invoices\BalanceService;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 class QueryService
 {
@@ -117,9 +118,9 @@ class QueryService
     /**
      * Invoices that can currently receive a payment, with their balance.
      *
-     * @return \Illuminate\Support\Collection<int, array<string, mixed>>
+     * @return Collection<int, array<string, mixed>>
      */
-    public function payableInvoiceOptions(): \Illuminate\Support\Collection
+    public function payableInvoiceOptions(): Collection
     {
         return Invoice::query()
             ->with('status')
