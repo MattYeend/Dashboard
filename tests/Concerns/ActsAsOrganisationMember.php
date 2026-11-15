@@ -74,8 +74,7 @@ trait ActsAsOrganisationMember
      * Create a record of the given scoped model for use in tenancy tests.
      * Polymorphic models need a parent to attach to via forModel(), created
      * fresh in whichever organisation is currently active when this runs;
-     * payments get an invoice in the same way; every other model is created
-     * directly. Always call this from inside
+     * every other model is created directly. Always call this from inside
      * the target organisation's execute() context.
      *
      * @param  array<string, mixed>  $attributes

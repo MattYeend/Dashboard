@@ -37,7 +37,6 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --tmpfs /var/lib/mysql
           --health-cmd="mysqladmin ping -ppassword"
           --health-interval=10s
           --health-timeout=5s
@@ -102,5 +101,8 @@ jobs:
           CI: true
         run: npm run build
 
+      - name: Check MySQL
+        if: matrix.database == 'mysql'
+        run: mysql -h127.0.0.1 -uroot -ppassword -e "SELECT VERSION(); SHOW DATABASES;"
       - name: Tests
-        run: ./vendor/bin/pest ${{ matrix.database == 'pgsql' && '--parallel' || '' }}
+        run: ./vendor/bin/pest --parallel --processes=4
