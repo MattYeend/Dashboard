@@ -36,6 +36,7 @@ use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\OrganisationController;
 use App\Http\Controllers\OrganisationSelectController;
 use App\Http\Controllers\OrganisationSwitchController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentStatusController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PermissionMatrixController;
@@ -1128,6 +1129,37 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{paymentStatus}/edit', [PaymentStatusController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{paymentStatus}', [PaymentStatusController::class, 'update'])->name('update');
             Route::delete('/{paymentStatus}', [PaymentStatusController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('payments')->name('payments.')->group(function () {
+            Route::post('/bulk/delete', [PaymentController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [PaymentController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [PaymentController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [PaymentController::class, 'forceDelete'])->name('force-delete');
+
+            Route::post('/import', [PaymentController::class, 'import'])->name('import');
+            Route::post('/import/preview', [PaymentController::class, 'importPreview'])
+                ->middleware('throttle:10,1')
+                ->name('import.preview');
+            Route::post('/import/commit', [PaymentController::class, 'importCommit'])
+                ->middleware('throttle:10,1')
+                ->name('import.commit');
+            Route::get('/export', [PaymentController::class, 'export'])
+                ->middleware('throttle:10,1')
+                ->name('export');
+
+            Route::get('/', [PaymentController::class, 'index'])->name('index');
+            Route::get('/create', [PaymentController::class, 'create'])->name('create');
+            Route::post('/', [PaymentController::class, 'store'])
+                ->middleware('throttle:30,1')
+                ->name('store');
+            Route::post('/{payment}/refund', [PaymentController::class, 'refund'])
+                ->middleware('throttle:10,1')
+                ->name('refund');
+            Route::get('/{payment}', [PaymentController::class, 'show'])->name('show');
+            Route::get('/{payment}/edit', [PaymentController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{payment}', [PaymentController::class, 'update'])->name('update');
+            Route::delete('/{payment}', [PaymentController::class, 'destroy'])->name('destroy');
         });
     });
 });
