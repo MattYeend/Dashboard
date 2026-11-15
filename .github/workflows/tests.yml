@@ -104,5 +104,11 @@ jobs:
       - name: Check MySQL
         if: matrix.database == 'mysql'
         run: mysql -h127.0.0.1 -uroot -ppassword -e "SELECT VERSION(); SHOW DATABASES;"
+
+      - name: Migrate once (MySQL)
+        if: matrix.database == 'mysql'
+        timeout-minutes: 5
+        run: php artisan migrate:fresh --force
       - name: Tests
+        timeout-minutes: 20
         run: ./vendor/bin/pest --parallel --processes=4

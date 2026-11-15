@@ -18,7 +18,13 @@ return new class extends Migration
             $table->decimal('amount_paid', 10, 2)->default(0.00)->after('total_amount');
         });
 
-        DB::statement('ALTER TABLE invoices ADD CONSTRAINT invoices_amount_paid_not_negative CHECK (amount_paid >= 0)');
+        $driver = DB::getDriverName();
+
+        DB::statement(
+            $driver === 'mysql'
+                ? 'ALTER TABLE invoices DROP CHECK invoices_amount_paid_not_negative'
+                : 'ALTER TABLE invoices DROP CONSTRAINT invoices_amount_paid_not_negative'
+        );
     }
 
     /**
@@ -29,7 +35,7 @@ return new class extends Migration
         DB::statement('ALTER TABLE invoices DROP CONSTRAINT invoices_amount_paid_not_negative');
 
         Schema::table('invoices', function (Blueprint $table) {
-            $table->dropColumn(['amount_paid', 'paid_at']);
+            $table->dropColumn(['amount_paid']);
         });
     }
 };
