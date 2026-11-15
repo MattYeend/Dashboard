@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Contracts\Auditable;
 use App\Traits\BelongsToOrganisation;
 use Database\Factories\InvoiceFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,6 +29,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $sent_at
  * @property Carbon|null $paid_at
  * @property Carbon|null $overdue_notified_at
+ * @property int $amount_paid
+ * @property-read Collection<int, Payment> $payments
  * @property int $subtotal
  * @property int $tax_total
  * @property int $total
@@ -153,6 +156,16 @@ class Invoice extends Model implements Auditable
     }
 
     /**
+     * Get the payments and refunds recorded against this invoice.
+     *
+     * @return HasMany<Payment, $this>
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
      * Get the user who created this invoice.
      *
      * @return BelongsTo<User, $this>
@@ -233,6 +246,7 @@ class Invoice extends Model implements Auditable
             'issue_date' => 'date',
             'due_date' => 'date',
             'sent_at' => 'immutable_datetime',
+            'amount_paid' => 'decimal:2',
             'paid_at' => 'immutable_datetime',
             'overdue_notified_at' => 'immutable_datetime',
             'subtotal' => 'integer',
