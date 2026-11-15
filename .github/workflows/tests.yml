@@ -37,6 +37,7 @@ jobs:
         ports:
           - 3306:3306
         options: >-
+          --tmpfs /var/lib/mysql
           --health-cmd="mysqladmin ping -ppassword"
           --health-interval=10s
           --health-timeout=5s
@@ -102,4 +103,4 @@ jobs:
         run: npm run build
 
       - name: Tests
-        run: ./vendor/bin/pest --parallel
+        run: ./vendor/bin/pest ${{ matrix.database == 'pgsql' && '--parallel' || '' }}
