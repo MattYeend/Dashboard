@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\NotificationBroadcasts;
 
+use App\Models\NotificationBroadcast;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -48,7 +49,11 @@ class UpdateNotificationBroadcastRequest extends FormRequest
             'body.max' => 'The body may not exceed 5000 characters.',
             'audience_type.required' => 'The audience type is required.',
             'audience_type.in' => 'The selected audience type is invalid.',
-            'audience_ids.required_unless' => 'The audience must be specified unless targeting all users.',
+            'audience_ids.required_if' => 'The audience must be specified when targeting roles or specific users.',
+            'audience_ids.prohibited_if' => 'An audience list cannot be provided when targeting all users.',
+            'audience_ids.max' => 'You may not select more than 1000 audience entries.',
+            'audience_ids.*.exists' => 'One or more selected audience entries do not exist.',
+            'audience_ids.*.distinct' => 'The audience list contains duplicate entries.',
         ];
     }
 
@@ -92,7 +97,8 @@ class UpdateNotificationBroadcastRequest extends FormRequest
         return [
             'sometimes',
             'required',
-            Rule::in(['all', 'role', 'users']),
+            'string',
+            Rule::in(NotificationBroadcast::AUDIENCES),
         ];
     }
 
@@ -104,10 +110,11 @@ class UpdateNotificationBroadcastRequest extends FormRequest
     protected function audienceIdsRules(): array
     {
         return [
-            'sometimes',
             'nullable',
             'array',
-            'required_unless:audience_type,all',
+            'max:1000',
+            'required_if:audience_type,' . NotificationBroadcast::AUDIENCE_ROLE . ',' . NotificationBroadcast::AUDIENCE_USERS,
+            'prohibited_if:audience_type,' . NotificationBroadcast::AUDIENCE_ALL,
         ];
     }
 
@@ -118,8 +125,23 @@ class UpdateNotificationBroadcastRequest extends FormRequest
      */
     protected function audienceIdRules(): array
     {
-        return [
-            'string',
-        ];
+        $type = $this->input(
+            'audience_type',
+            $this->route('notification_broadcast')?->audience_type,
+        );
+
+        return match ($type) {
+            NotificationBroadcast::AUDIENCE_USERS => [
+                'integer',
+                'distinct',
+                Rule::exists('users', 'id')->whereNull('deleted_at'),
+            ],
+            NotificationBroadcast::AUDIENCE_ROLE => [
+                'string',
+                'distinct',
+                Rule::exists('roles', 'name')->where('guard_name', 'web'),
+            ],
+            default => ['string'],
+        };
     }
 }
