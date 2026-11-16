@@ -25,12 +25,6 @@ use RuntimeException;
  */
 class SendNotificationBroadcast
 {
-    private const AUDIENCE_ALL = 'all';
-
-    private const AUDIENCE_ROLE = 'role';
-
-    private const AUDIENCE_USERS = 'users';
-
     /**
      * Inject the required services into the action.
      */
@@ -96,9 +90,9 @@ class SendNotificationBroadcast
     {
         return match ($notificationBroadcast->audience_type) {
             // Spatie's role() scope - never interpolate raw role names into SQL.
-            self::AUDIENCE_ROLE => User::role($notificationBroadcast->audience_ids ?? [])->get(),
-            self::AUDIENCE_USERS => User::query()->whereIn('id', $notificationBroadcast->audience_ids ?? [])->get(),
-            self::AUDIENCE_ALL => User::query()->get(),
+            NotificationBroadcast::AUDIENCE_ROLE => User::role($notificationBroadcast->audience_ids ?? [])->get(),
+            NotificationBroadcast::AUDIENCE_USERS => User::query()->whereIn('id', $notificationBroadcast->audience_ids ?? [])->get(),
+            NotificationBroadcast::AUDIENCE_ALL => User::query()->get(),
             default => throw new RuntimeException('Unsupported audience type.'),
         };
     }
