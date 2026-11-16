@@ -69,7 +69,10 @@ class ExporterService
 
             $query->orderBy('id')->chunk(200, function (Collection $activities) use ($handle): void {
                 foreach ($activities as $activity) {
-                    fputcsv($handle, array_values($this->formatterService->forExport($activity)));
+                    fputcsv($handle, array_map(
+                        fn (mixed $value): mixed => $this->sanitiseCell($value),
+                        array_values($this->formatterService->forExport($activity))
+                    ));
                 }
             });
 
@@ -81,5 +84,23 @@ class ExporterService
             'activities-'.now()->format('Y-m-d-His').'.csv',
             ['Content-Type' => 'text/csv']
         );
+    }
+
+    /**
+     * Neutralise spreadsheet formula injection (CSV injection).
+     *
+     * Any string starting with =, +, - or @ (or a tab or carriage return)
+     * is prefixed with a single quote so spreadsheet software treats it as
+     * plain text.
+     */
+    private function sanitiseCell(mixed $value): mixed
+    {
+        if (! is_string($value) || $value === '') {
+            return $value;
+        }
+
+        return preg_match('/^[=+\-@\t\r]/', $value) === 1
+            ? "'".$value
+            : $value;
     }
 }
