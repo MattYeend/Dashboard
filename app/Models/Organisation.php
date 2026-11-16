@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Laravel\Cashier\Billable;
@@ -160,6 +161,15 @@ class Organisation extends Tenant implements Auditable
             ->where('attachable_type', self::class)
             ->where('attachable_id', $this->id)
             ->find($attachmentId);
+    }
+
+    /**
+     * @return HasMany<Subscription, $this>
+     */
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class, $this->getForeignKey())
+            ->orderBy('created_at', 'desc');
     }
 
     /**

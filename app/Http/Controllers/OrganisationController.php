@@ -222,7 +222,7 @@ class OrganisationController extends Controller
      */
     public function restore(Request $request, int $id): JsonResponse|RedirectResponse
     {
-        $organisation = Organisation::withTrashed()->findOrFail($id);
+        $organisation = Organisation::onlyTrashed()->findOrFail($id);
         $this->authorize('restore', $organisation);
 
         $this->management->restore($id, $request->user());
@@ -241,7 +241,7 @@ class OrganisationController extends Controller
         Request $request,
         int $id
     ): JsonResponse|RedirectResponse {
-        $organisation = Organisation::withTrashed()->findOrFail($id);
+        $organisation = Organisation::onlyTrashed()->findOrFail($id);
         $this->authorize('forceDelete', $organisation);
 
         $this->management->forceDelete($id, $request->user());
@@ -261,7 +261,7 @@ class OrganisationController extends Controller
         $this->authorize('bulkDelete', Organisation::class);
 
         $result = $this->management->bulkDelete(
-            $request->input('ids'),
+            $request->validated('ids'),
             $request->user(),
             fn (Organisation $organisation) => $this->authorize('delete', $organisation)
         );
@@ -281,7 +281,7 @@ class OrganisationController extends Controller
         $this->authorize('bulkRestore', Organisation::class);
 
         $result = $this->management->bulkRestore(
-            $request->input('ids'),
+            $request->validated('ids'),
             $request->user(),
             fn (Organisation $organisation) => $this->authorize('restore', $organisation)
         );
@@ -454,7 +454,7 @@ class OrganisationController extends Controller
      * Work out the seat-count and cost impact of adding the given number
      * of new members, if the organisation has an active subscription.
      *
-     * @return array{current_seats: int, projected_seats: int, current_total: string, projected_total: string}|null
+     * @return array{current_seats: int, projected_seats: int, current_total: int, projected_total: int}|null
      */
     private function seatImpactFor(Organisation $organisation, int $additionalMembers): ?array
     {
