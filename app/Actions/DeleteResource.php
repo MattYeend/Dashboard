@@ -12,28 +12,34 @@ class DeleteResource
     /**
      * Run pre-deletion side effects then soft delete the model.
      *
-     * @param  callable(Model): void  $beforeDelete
+     * @template TModel of Model
+     *
+     * @param  TModel  $model
+     * @param  callable(TModel): void  $beforeDelete
      */
     public function handle(Model $model, callable $beforeDelete): bool
     {
-        return DB::transaction(function () use ($model, $beforeDelete) {
+        return DB::transaction(function () use ($model, $beforeDelete): bool {
             $beforeDelete($model);
 
-            return $model->delete();
+            return (bool) $model->delete();
         });
     }
 
     /**
      * Run pre-deletion side effects then permanently delete the model.
      *
-     * @param  callable(Model): void  $beforeDelete
+     * @template TModel of Model
+     *
+     * @param  TModel  $model
+     * @param  callable(TModel): void  $beforeDelete
      */
     public function forceHandle(Model $model, callable $beforeDelete): bool
     {
-        return DB::transaction(function () use ($model, $beforeDelete) {
+        return DB::transaction(function () use ($model, $beforeDelete): bool {
             $beforeDelete($model);
 
-            return $model->forceDelete();
+            return (bool) $model->forceDelete();
         });
     }
 }
