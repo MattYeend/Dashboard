@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Carbon\CarbonImmutable;;
 
 /**
  * @property int $id
@@ -133,7 +134,7 @@ class InteractionLog extends Model implements Auditable
      *
      * @return array<string, string>
      */
-    public function casts(): array
+    protected function casts(): array
     {
         return [
             'type' => InteractionLogType::class,

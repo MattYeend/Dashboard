@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 class RestorerService
 {
     /**
-     * Inject the required services into the resorer service.
+     * Inject the required services into the restorer service.
      */
     public function __construct(
         protected readonly AuditLogService $auditLogService,

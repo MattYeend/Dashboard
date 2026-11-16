@@ -118,7 +118,7 @@ class Activity extends Model implements Auditable
      *
      * @return array<string, string>
      */
-    public function casts(): array
+    protected function casts(): array
     {
         return [
             'type' => ActivityType::class,

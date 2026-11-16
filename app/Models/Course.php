@@ -74,8 +74,8 @@ class Course extends Model implements Auditable
     {
         return [
             'difficulty' => CourseDifficulty::class,
-            'published_at' => 'datetime',
-            'restored_at' => 'datetime',
+            'published_at' => 'immutable_datetime',
+            'restored_at' => 'immutable_datetime',
             'meta' => 'array',
         ];
     }

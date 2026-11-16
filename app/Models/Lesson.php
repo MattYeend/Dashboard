@@ -67,22 +67,6 @@ class Lesson extends Model implements Auditable
         SoftDeletes;
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, mixed>
-     */
-    protected function casts(): array
-    {
-        return [
-            'position' => 'integer',
-            'is_preview' => 'boolean',
-            'published_at' => 'datetime',
-            'restored_at' => 'datetime',
-            'meta' => 'array',
-        ];
-    }
-
-    /**
      * Get the course this lesson belongs to.
      *
      * @return BelongsTo<Course, $this>
@@ -148,6 +132,22 @@ class Lesson extends Model implements Auditable
     public function isPublished(): bool
     {
         return $this->published_at !== null && $this->published_at->isPast();
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, mixed>
+     */
+    protected function casts(): array
+    {
+        return [
+            'position' => 'integer',
+            'is_preview' => 'boolean',
+            'published_at' => 'immutable_datetime',
+            'restored_at' => 'immutable_datetime',
+            'meta' => 'array',
+        ];
     }
 
     /**
