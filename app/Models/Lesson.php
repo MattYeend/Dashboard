@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Contracts\Auditable;
 use App\Models\Concerns\HasQuestions;
 use App\Traits\BelongsToOrganisation;
+use Carbon\CarbonImmutable;
 use Database\Factories\LessonFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,7 +30,7 @@ use Illuminate\Support\Carbon;
  * @property int $position
  * @property int|null $duration_minutes
  * @property bool $is_preview
- * @property Carbon|null $published_at
+ * @property CarbonImmutable|null $published_at
  * @property array<string, mixed>|null $meta
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -146,6 +147,7 @@ class Lesson extends Model implements Auditable
             'is_preview' => 'boolean',
             'published_at' => 'immutable_datetime',
             'restored_at' => 'immutable_datetime',
+            'deleted_at' => 'immutable_datetime',
             'meta' => 'array',
         ];
     }

@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Contracts\Auditable;
 use App\Enums\ActivityType;
 use App\Traits\BelongsToOrganisation;
+use Carbon\CarbonImmutable;
 use Database\Factories\ActivityFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,7 +24,7 @@ use Illuminate\Support\Carbon;
  * @property ActivityType $type
  * @property string|null $description
  * @property array|null $meta
- * @property Carbon $occurred_at
+ * @property CarbonImmutable $occurred_at
  * @property int|null $created_by
  * @property int|null $updated_by
  * @property int|null $deleted_by
@@ -125,6 +126,7 @@ class Activity extends Model implements Auditable
             'meta' => 'array',
             'occurred_at' => 'immutable_datetime',
             'restored_at' => 'immutable_datetime',
+            'deleted_at' => 'immutable_datetime',
         ];
     }
 }

@@ -13,30 +13,6 @@ parameters:
 			path: app/Models/Activity.php
 
 		-
-			message: '#^PHPDoc tag @property for property App\\Models\\Course\:\:\$deleted_at contains unknown class App\\Models\\CarbonImmutable\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Course.php
-
-		-
-			message: '#^PHPDoc tag @property for property App\\Models\\Course\:\:\$restored_at contains unknown class App\\Models\\CarbonImmutable\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Course.php
-
-		-
-			message: '#^PHPDoc tag @property for property App\\Models\\InteractionLog\:\:\$deleted_at contains unknown class App\\Models\\CarbonImmutable\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/InteractionLog.php
-
-		-
-			message: '#^PHPDoc tag @property for property App\\Models\\InteractionLog\:\:\$restored_at contains unknown class App\\Models\\CarbonImmutable\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/InteractionLog.php
-
-		-
 			message: '#^PHPDoc tag @property for property App\\Models\\Lesson\:\:\$deleted_at contains unknown class App\\Models\\CarbonImmutable\.$#'
 			identifier: class.notFound
 			count: 1
@@ -73,24 +49,6 @@ parameters:
 			path: app/Services/Activities/RestorerService.php
 
 		-
-			message: '#^Method App\\Services\\Addresses\\QueryService\:\:applySorting\(\) should return Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Address\> but returns Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Contact\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Addresses/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\Comments\\MentionParserService\:\:matchTokens\(\) should return Illuminate\\Support\\Collection\<int, string\> but returns Illuminate\\Support\\Collection\<int, lowercase\-string&non\-empty\-string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Comments/MentionParserService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Company\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Companies/QueryService.php
-
-		-
 			message: '#^Variable \$header on left side of \?\? always exists and is not nullable\.$#'
 			identifier: nullCoalesce.variable
 			count: 1
@@ -115,12 +73,6 @@ parameters:
 			path: app/Services/Contacts/QueryService.php
 
 		-
-			message: '#^Property App\\Models\\Course\:\:\$deleted_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Services/Courses/DeleterService.php
-
-		-
 			message: '#^Access to an undefined property App\\Models\\User\:\:\$organisation_id\.$#'
 			identifier: property.notFound
 			count: 3
@@ -131,12 +83,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Courses/QueryService.php
-
-		-
-			message: '#^Property App\\Models\\Course\:\:\$restored_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Services/Courses/RestorerService.php
 
 		-
 			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
@@ -191,12 +137,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Industries/QueryService.php
-
-		-
-			message: '#^Property App\\Models\\InteractionLog\:\:\$deleted_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Services/InteractionLogs/DeleterService.php
 
 		-
 			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Support\\Carbon\. Use \-\> instead\.$#'

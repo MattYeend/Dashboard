@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Contracts\Auditable;
 use App\Traits\BelongsToOrganisation;
+use Carbon\CarbonImmutable;
 use Database\Factories\ReportFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,8 +26,8 @@ use Illuminate\Support\Carbon;
  * @property string|null $schedule_frequency
  * @property string|null $schedule_time
  * @property array<int, string>|null $recipients
- * @property Carbon|null $last_run_at
- * @property Carbon|null $next_run_at
+ * @property CarbonImmutable|null $last_run_at
+ * @property CarbonImmutable|null $next_run_at
  * @property array<string, mixed>|null $meta
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -145,6 +146,7 @@ class Report extends Model implements Auditable
             'last_run_at' => 'immutable_datetime',
             'next_run_at' => 'immutable_datetime',
             'restored_at' => 'immutable_datetime',
+            'deleted_at' => 'immutable_datetime',
         ];
     }
 }
