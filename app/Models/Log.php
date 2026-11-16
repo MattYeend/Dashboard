@@ -1109,7 +1109,7 @@ class Log extends Model implements Auditable
     /**
      * Get the user who performed the action.
      *
-     * @return BelongsTo<User,Log>
+     * @return BelongsTo<User, $this>
      */
     public function loggedInUser(): BelongsTo
     {
@@ -1119,7 +1119,7 @@ class Log extends Model implements Auditable
     /**
      * Get the user related to the action, if applicable.
      *
-     * @return BelongsTo<User,Log>
+     * @return BelongsTo<User, $this>
      */
     public function relatedToUser(): BelongsTo
     {
