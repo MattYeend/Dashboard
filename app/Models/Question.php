@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Contracts\Auditable;
 use App\Enums\QuestionType;
 use App\Traits\BelongsToOrganisation;
+use Carbon\CarbonImmutable;
 use Database\Factories\QuestionFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
-use Carbon\CarbonImmutable;
 
 /**
  * @property int $id

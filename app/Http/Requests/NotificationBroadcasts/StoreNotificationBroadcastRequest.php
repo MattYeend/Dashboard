@@ -110,8 +110,8 @@ class StoreNotificationBroadcastRequest extends FormRequest
             'nullable',
             'array',
             'max:1000',
-            'required_if:audience_type,' . NotificationBroadcast::AUDIENCE_ROLE . ',' . NotificationBroadcast::AUDIENCE_USERS,
-            'prohibited_if:audience_type,' . NotificationBroadcast::AUDIENCE_ALL,
+            'required_if:audience_type,'.NotificationBroadcast::AUDIENCE_ROLE.','.NotificationBroadcast::AUDIENCE_USERS,
+            'prohibited_if:audience_type,'.NotificationBroadcast::AUDIENCE_ALL,
         ];
     }
 

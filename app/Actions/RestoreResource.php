@@ -24,7 +24,7 @@ class RestoreResource
     public function handle(Model $model, callable $afterRestore): Model
     {
         if (! method_exists($model, 'restore')) {
-            throw new LogicException($model::class . ' does not support soft deletes.');
+            throw new LogicException($model::class.' does not support soft deletes.');
         }
 
         return DB::transaction(function () use ($model, $afterRestore): Model {

@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Contracts\Auditable;
 use App\Traits\BelongsToOrganisation;
 use App\Traits\Likeable;
+use Carbon\CarbonImmutable;
 use Database\Factories\PostFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
-use Carbon\CarbonImmutable;
 
 /**
  * @property int $id

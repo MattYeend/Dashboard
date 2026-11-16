@@ -8,6 +8,7 @@ use App\Contracts\Auditable;
 use App\Enums\PaymentMethod;
 use App\Enums\PaymentType;
 use App\Traits\BelongsToOrganisation;
+use Carbon\CarbonImmutable;
 use Database\Factories\PaymentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Carbon\CarbonImmutable;
 
 /**
  * @property int $id

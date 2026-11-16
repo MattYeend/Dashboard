@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use Carbon\CarbonImmutable;
 use Database\Factories\NotificationBroadcastFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Carbon\CarbonImmutable;
 
 /**
  * @property int $id
@@ -19,7 +19,7 @@ use Carbon\CarbonImmutable;
  * @property string $body
  * @property string $audience_type
  * @property array|null $audience_ids
-  * @property CarbonImmutable|null $sent_at
+ * @property CarbonImmutable|null $sent_at
  * @property int|null $sent_by
  * @property array|null $meta
  * @property int|null $created_by

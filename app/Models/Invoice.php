@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Contracts\Auditable;
 use App\Traits\BelongsToOrganisation;
+use Carbon\CarbonImmutable;
 use Database\Factories\InvoiceFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Collection;
@@ -17,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
-use Carbon\CarbonImmutable;
 
 /**
  * @property int $id

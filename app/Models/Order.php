@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Contracts\Auditable;
 use App\Traits\BelongsToOrganisation;
+use Carbon\CarbonImmutable;
 use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
-use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
 /**

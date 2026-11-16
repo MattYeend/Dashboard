@@ -27,7 +27,7 @@ class AdminBroadcastNotification extends Notification implements ShouldQueue, Sh
     private readonly string $title;
 
     private readonly string $body;
-    
+
     /**
      * Inject the broadcast being delivered.
      */

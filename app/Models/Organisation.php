@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use Carbon\CarbonImmutable;
 use Database\Factories\OrganisationFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +16,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Laravel\Cashier\Billable;
 use Spatie\Multitenancy\Models\Tenant;
-use Carbon\CarbonImmutable;
 
 /**
  * @property int $id
