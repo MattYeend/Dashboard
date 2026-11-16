@@ -4,9 +4,11 @@ import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { Button } from '@/components/ui/button';
 import InvoiceAuditDetails from '@/pages/Invoices/components/InvoiceAuditDetails.vue';
+import InvoiceBalanceSummary from '@/pages/Invoices/components/InvoiceBalanceSummary.vue';
 import InvoiceBasicDetails from '@/pages/Invoices/components/InvoiceBasicDetails.vue';
 import InvoiceContactDetails from '@/pages/Invoices/components/InvoiceContactDetails.vue';
 import InvoiceDateDetails from '@/pages/Invoices/components/InvoiceDateDetails.vue';
+import InvoicePayments from '@/pages/Invoices/components/InvoicePayments.vue';
 import InvoiceTotalsDetails from '@/pages/Invoices/components/InvoiceTotalsDetails.vue';
 import {
     edit as invoicesEdit,
@@ -17,10 +19,11 @@ import {
     markAsUnpaid as invoicesMarkAsUnpaid,
 } from '@/routes/invoices';
 import { index as invoiceItemsIndex } from '@/routes/invoices/items';
-import type { Invoice, PermissionsMeta } from '@/types';
+import type { Invoice, Payment, PermissionsMeta } from '@/types';
 
 interface Props {
     invoice: Invoice;
+    payments: Payment[];
     permissions_meta: PermissionsMeta;
 }
 
@@ -166,6 +169,20 @@ function markAsUnpaid(): void {
                 <InvoiceContactDetails :invoice="invoice" />
                 <InvoiceDateDetails :invoice="invoice" />
                 <InvoiceTotalsDetails :invoice="invoice" />
+
+                <section class="grid gap-4">
+                    <h2 class="text-lg font-semibold">Balance</h2>
+                    <InvoiceBalanceSummary :invoice="invoice" />
+                </section>
+
+                <InvoicePayments
+                    :invoice="invoice"
+                    :payments="payments"
+                    :can-record-payment="
+                        permissions_meta.can_record_payment ?? false
+                    "
+                />
+
                 <InvoiceAuditDetails :invoice="invoice" />
             </div>
         </div>

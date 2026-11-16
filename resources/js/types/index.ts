@@ -30,6 +30,7 @@ export * from './organisation';
 export * from './organisation-data-privacy-permissions';
 export * from './organisation-membership';
 export * from './payment-status';
+export * from './payment';
 export * from './permission';
 export * from './pipeline';
 export * from './pipeline-stage';
@@ -70,6 +71,7 @@ export interface PermissionsMeta {
     can_create: boolean;
     can_view_any: boolean;
     can_export?: boolean;
+    can_record_payment?: boolean;
 }
 
 export interface PaginationLink {

@@ -44,6 +44,7 @@ export * from './ticket-priority-selection-form-data';
 export * from './ticket-status-form-data';
 export * from './ticket-status-selection-form-data';
 export * from './user-form-data';
+export * from './payment-form-data';
 export * from './payment-statuses-form-data';
 export * from './products-form-data';
 export * from './question-form-data';

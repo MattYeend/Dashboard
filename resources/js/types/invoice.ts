@@ -14,6 +14,8 @@ export interface Invoice {
     subtotal: number;
     tax_total: number;
     total: number;
+    amount_paid: string;
+    balance_due: string;
     currency: string;
     formatted_total: string;
     notes: string | null;
