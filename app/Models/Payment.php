@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Carbon;
+use Carbon\CarbonImmutable;
 
 /**
  * @property int $id
@@ -28,17 +28,17 @@ use Illuminate\Support\Carbon;
  * @property string $currency
  * @property string|null $reference
  * @property string|null $stripe_payment_intent_id
- * @property Carbon $paid_at
+ * @property CarbonImmutable $paid_at
  * @property string|null $notes
  * @property array<string, mixed>|null $meta
  * @property int|null $created_by
  * @property int|null $updated_by
  * @property int|null $deleted_by
  * @property int|null $restored_by
- * @property Carbon|null $restored_at
- * @property Carbon|null $deleted_at
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property CarbonImmutable|null $restored_at
+ * @property CarbonImmutable|null $deleted_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable $updated_at
  * @property-read Invoice $invoice
  * @property-read PaymentStatus $status
  * @property-read Payment|null $parentPayment
@@ -200,12 +200,12 @@ class Payment extends Model implements Auditable
             'invoice_id' => $this->invoice_id,
             'status_id' => $this->status_id,
             'parent_payment_id' => $this->parent_payment_id,
-            'type' => $this->type?->value,
-            'method' => $this->method?->value,
+            'type' => $this->type->value,
+            'method' => $this->method->value,
             'amount' => $this->amount,
             'currency' => $this->currency,
             'reference' => $this->reference,
-            'paid_at' => $this->paid_at?->toIso8601String(),
+            'paid_at' => $this->paid_at->toIso8601String(),
         ];
     }
 
