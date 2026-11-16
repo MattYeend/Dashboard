@@ -31,34 +31,59 @@ function startRefund(payment: Payment): void {
         <div class="flex items-center justify-between">
             <h2 class="text-lg font-semibold">Payments</h2>
             <Button v-if="canRecordPayment" as-child size="sm">
-                <Link :href="create.url({ query: { invoice_id: invoice.id } })">Record payment</Link>
+                <Link :href="create.url({ query: { invoice_id: invoice.id } })"
+                    >Record payment</Link
+                >
             </Button>
         </div>
 
-        <p v-if="payments.length === 0" class="text-sm text-muted-foreground">No payments recorded yet.</p>
+        <p v-if="payments.length === 0" class="text-sm text-muted-foreground">
+            No payments recorded yet.
+        </p>
 
         <ul v-else class="grid gap-2">
-            <li v-for="payment in payments" :key="payment.id" class="flex items-center justify-between gap-4">
+            <li
+                v-for="payment in payments"
+                :key="payment.id"
+                class="flex items-center justify-between gap-4"
+            >
                 <div>
-                    <Link :href="show.url(payment.id)" class="text-sm font-medium underline">
-                        {{ payment.type === 'refund' ? 'Refund' : 'Payment' }} {{ formatDate(payment.paid_at) }}
+                    <Link
+                        :href="show.url(payment.id)"
+                        class="text-sm font-medium underline"
+                    >
+                        {{ payment.type === 'refund' ? 'Refund' : 'Payment' }}
+                        {{ formatDate(payment.paid_at) }}
                     </Link>
                     <p class="text-sm text-muted-foreground">
-                        {{ payment.method_label }}<span v-if="payment.reference">, {{ payment.reference }}</span>
+                        {{ payment.method_label
+                        }}<span v-if="payment.reference"
+                            >, {{ payment.reference }}</span
+                        >
                     </p>
                 </div>
 
                 <div class="flex items-center gap-3">
                     <span class="text-sm font-medium">
-                        {{ payment.type === 'refund' ? '-' : '' }}{{ formatMoney(payment.amount, payment.currency) }}
+                        {{ payment.type === 'refund' ? '-' : ''
+                        }}{{ formatMoney(payment.amount, payment.currency) }}
                     </span>
-                    <Button v-if="payment.can_refund" size="sm" variant="outline" @click="startRefund(payment)">
+                    <Button
+                        v-if="payment.can_refund"
+                        size="sm"
+                        variant="outline"
+                        @click="startRefund(payment)"
+                    >
                         Refund
                     </Button>
                 </div>
             </li>
         </ul>
 
-        <RefundPaymentDialog v-if="refunding" v-model:open="dialogOpen" :payment="refunding" />
+        <RefundPaymentDialog
+            v-if="refunding"
+            v-model:open="dialogOpen"
+            :payment="refunding"
+        />
     </section>
 </template>

@@ -11,7 +11,9 @@ defineProps<{
     <dl class="grid gap-4 sm:grid-cols-2">
         <div>
             <dt class="text-sm text-muted-foreground">Type</dt>
-            <dd class="font-medium">{{ payment.type === 'refund' ? 'Refund' : 'Payment' }}</dd>
+            <dd class="font-medium">
+                {{ payment.type === 'refund' ? 'Refund' : 'Payment' }}
+            </dd>
         </div>
         <div>
             <dt class="text-sm text-muted-foreground">Status</dt>
@@ -31,7 +33,8 @@ defineProps<{
         <div>
             <dt class="text-sm text-muted-foreground">Amount</dt>
             <dd class="font-medium">
-                {{ payment.type === 'refund' ? '-' : '' }}{{ formatMoney(payment.amount, payment.currency) }}
+                {{ payment.type === 'refund' ? '-' : ''
+                }}{{ formatMoney(payment.amount, payment.currency) }}
             </dd>
         </div>
         <div>

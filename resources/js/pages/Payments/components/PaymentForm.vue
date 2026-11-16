@@ -46,7 +46,9 @@ const form = defineModel<PaymentFormData>({ required: true });
         </section>
 
         <div class="flex items-center gap-3">
-            <Button type="submit" :disabled="processing">{{ submitLabel }}</Button>
+            <Button type="submit" :disabled="processing">{{
+                submitLabel
+            }}</Button>
             <Button as-child variant="outline">
                 <Link :href="cancelHref">Cancel</Link>
             </Button>

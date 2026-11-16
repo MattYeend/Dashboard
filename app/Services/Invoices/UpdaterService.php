@@ -171,7 +171,7 @@ class UpdaterService
                 'invoice' => 'An invoice with payments cannot be marked as unpaid. Remove the payments instead.',
             ]);
         }
-        
+
         $actor = User::findOrFail($actorId);
         $before = $this->auditLogService->snapshot($invoice);
 

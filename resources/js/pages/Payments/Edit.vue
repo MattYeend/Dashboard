@@ -28,14 +28,12 @@ const form = useForm<PaymentFormData>({
  * Submit only the editable fields.
  */
 function submit(): void {
-    form
-        .transform((data) => ({
-            method: data.method,
-            paid_at: data.paid_at,
-            reference: data.reference?.trim() || null,
-            notes: data.notes?.trim() || null,
-        }))
-        .put(update.url(props.payment.id));
+    form.transform((data) => ({
+        method: data.method,
+        paid_at: data.paid_at,
+        reference: data.reference?.trim() || null,
+        notes: data.notes?.trim() || null,
+    })).put(update.url(props.payment.id));
 }
 </script>
 

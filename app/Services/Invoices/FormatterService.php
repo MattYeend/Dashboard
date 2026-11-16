@@ -6,7 +6,6 @@ namespace App\Services\Invoices;
 
 use App\Models\Invoice;
 use App\Services\CurrencyFormatterService;
-use App\Services\Invoices\BalanceService;
 
 class FormatterService
 {

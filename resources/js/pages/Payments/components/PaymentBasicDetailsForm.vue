@@ -27,7 +27,10 @@ const props = defineProps<{
 const form = defineModel<PaymentFormData>({ required: true });
 
 const selectedInvoice = computed(
-    () => props.invoices.find((invoice) => String(invoice.id) === form.value.invoice_id) ?? null,
+    () =>
+        props.invoices.find(
+            (invoice) => String(invoice.id) === form.value.invoice_id,
+        ) ?? null,
 );
 </script>
 
@@ -45,13 +48,15 @@ const selectedInvoice = computed(
                         :key="invoice.id"
                         :value="String(invoice.id)"
                     >
-                        {{ invoice.invoice_number }} (due {{ formatMoney(invoice.balance_due) }})
+                        {{ invoice.invoice_number }} (due
+                        {{ formatMoney(invoice.balance_due) }})
                     </SelectItem>
                 </SelectContent>
             </Select>
             <InputError :message="errors.invoice_id" />
             <p v-if="selectedInvoice" class="text-sm text-muted-foreground">
-                Outstanding balance: {{ formatMoney(selectedInvoice.balance_due) }}
+                Outstanding balance:
+                {{ formatMoney(selectedInvoice.balance_due) }}
             </p>
         </div>
 
@@ -76,7 +81,11 @@ const selectedInvoice = computed(
                     <SelectValue placeholder="Select a method" />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem v-for="option in methods" :key="option.value" :value="option.value">
+                    <SelectItem
+                        v-for="option in methods"
+                        :key="option.value"
+                        :value="option.value"
+                    >
                         {{ option.label }}
                     </SelectItem>
                 </SelectContent>

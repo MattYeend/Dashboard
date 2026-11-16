@@ -57,7 +57,8 @@ function submit(): void {
             <DialogHeader>
                 <DialogTitle>Refund payment</DialogTitle>
                 <DialogDescription>
-                    A refund is recorded as a separate entry and cannot be undone.
+                    A refund is recorded as a separate entry and cannot be
+                    undone.
                 </DialogDescription>
             </DialogHeader>
 
@@ -77,13 +78,25 @@ function submit(): void {
 
                 <div class="grid gap-2">
                     <Label for="refund_notes">Reason</Label>
-                    <Textarea id="refund_notes" v-model="form.notes" rows="3" maxlength="2000" />
+                    <Textarea
+                        id="refund_notes"
+                        v-model="form.notes"
+                        rows="3"
+                        maxlength="2000"
+                    />
                     <InputError :message="form.errors.notes" />
                 </div>
 
                 <DialogFooter>
-                    <Button type="button" variant="outline" @click="open = false">Cancel</Button>
-                    <Button type="submit" :disabled="form.processing">Refund</Button>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        @click="open = false"
+                        >Cancel</Button
+                    >
+                    <Button type="submit" :disabled="form.processing"
+                        >Refund</Button
+                    >
                 </DialogFooter>
             </form>
         </DialogContent>

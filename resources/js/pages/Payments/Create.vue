@@ -35,13 +35,11 @@ const form = useForm<PaymentFormData>({
  * a double submit.
  */
 function submit(): void {
-    form
-        .transform((data) => ({
-            ...data,
-            reference: data.reference?.trim() || null,
-            notes: data.notes?.trim() || null,
-        }))
-        .post(store.url());
+    form.transform((data) => ({
+        ...data,
+        reference: data.reference?.trim() || null,
+        notes: data.notes?.trim() || null,
+    })).post(store.url());
 }
 </script>
 

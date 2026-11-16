@@ -114,7 +114,9 @@ function formatMoney(row: Payment): string {
             <RowActions
                 v-else
                 :show-href="paymentsShow.url(row.id)"
-                :edit-href="row.deleted_at ? undefined : paymentsEdit.url(row.id)"
+                :edit-href="
+                    row.deleted_at ? undefined : paymentsEdit.url(row.id)
+                "
                 @delete="emit('delete', row.id)"
             />
         </template>
