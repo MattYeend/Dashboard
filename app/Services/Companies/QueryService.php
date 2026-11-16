@@ -32,6 +32,9 @@ class QueryService
 
     /**
      * Get paginated companies with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return array<string, mixed>
      */
     public function getPaginated(
         User $user,
@@ -52,6 +55,8 @@ class QueryService
 
     /**
      * Get a single company by ID.
+     *
+     * @return array<string, mixed>
      */
     public function getById(User $user, Company $company): array
     {
@@ -75,6 +80,8 @@ class QueryService
 
     /**
      * Get data needed to populate create and edit forms.
+     * 
+     * @return array<string, mixed>
      */
     public function getFormData(): array
     {
@@ -96,6 +103,8 @@ class QueryService
 
     /**
      * Get a capped, recent slice of related contacts, orders and deals for the Show page widget.
+     * 
+     * @return array<string, mixed>
      */
     public function getRelatedSummaries(Company $company): array
     {
@@ -120,6 +129,9 @@ class QueryService
 
     /**
      * Build the base query with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return Builder<Company>
      */
     protected function buildQuery(array $filters): Builder
     {
@@ -140,6 +152,9 @@ class QueryService
 
     /**
      * Paginate the query and return as a plain array.
+     *
+     * @param  Builder<Company>  $query
+     * @return array<string, mixed>
      */
     protected function paginate(
         Builder $query,
@@ -149,10 +164,9 @@ class QueryService
 
         return [
             'companies' => [
-                'data' => array_map(
-                    fn (Company $company) => $this->formatterService->format($company),
-                    $paginator->items()
-                ),
+                'data' => $paginator->getCollection()
+                    ->map(fn (Company $company): array => $this->formatterService->format($company))
+                    ->all(),
                 'links' => $paginator->linkCollection()->toArray(),
                 'meta' => [
                     'current_page' => $paginator->currentPage(),
@@ -168,6 +182,8 @@ class QueryService
 
     /**
      * Get user permissions for the authenticated user.
+     * 
+     * @return array<string, mixed>
      */
     protected function getPermissions(User $user): array
     {
@@ -182,6 +198,8 @@ class QueryService
 
     /**
      * Get base data for the view.
+     * 
+     * @return array<string, mixed>
      */
     protected function baseData(): array
     {
@@ -193,6 +211,10 @@ class QueryService
 
     /**
      * Apply sorting and trash filtering to the query.
+     *
+     * @param  Builder<Company>  $query
+     * @param  array<string, mixed>  $filters
+     * @return Builder<Company>
      */
     private function applySorting(
         Builder $query,
