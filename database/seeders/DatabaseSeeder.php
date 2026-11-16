@@ -68,6 +68,7 @@ class DatabaseSeeder extends Seeder
             InvoiceStatusSeeder::class,
             InvoiceSeeder::class,
             InvoiceItemSeeder::class,
+            PaymentSeeder::class,
 
             PipelineStatusSeeder::class,
             PipelineSeeder::class,

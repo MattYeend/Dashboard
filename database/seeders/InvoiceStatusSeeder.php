@@ -45,6 +45,12 @@ class InvoiceStatusSeeder extends Seeder
                 'text_colour' => '#1e40af',
             ],
             [
+                'title' => 'Partially Paid',
+                'description' => 'Some, but not all, of the invoice has been paid.',
+                'background_colour' => '#bee3f8',
+                'text_colour' => '#2b6cb0',
+            ],
+            [
                 'title' => 'Paid',
                 'description' => 'Invoice has been paid in full.',
                 'background_colour' => '#d1fae5',
