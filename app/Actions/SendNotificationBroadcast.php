@@ -25,6 +25,12 @@ use RuntimeException;
  */
 class SendNotificationBroadcast
 {
+    private const AUDIENCE_ALL = 'all';
+
+    private const AUDIENCE_ROLE = 'role';
+
+    private const AUDIENCE_USERS = 'users';
+
     /**
      * Inject the required services into the action.
      */
@@ -35,40 +41,47 @@ class SendNotificationBroadcast
     /**
      * Send the notification broadcast to its configured audience.
      *
+     * The returned instance is the locked, freshly loaded row, so callers
+     * should use it rather than the instance they passed in.
+     *
      * @throws RuntimeException
      */
     public function handle(NotificationBroadcast $notificationBroadcast, int $actorId): NotificationBroadcast
     {
-        if ($notificationBroadcast->sent_at !== null) {
-            throw new RuntimeException('This notification has already been sent.');
-        }
-
         $actor = User::findOrFail($actorId);
-        $before = $this->auditLogService->snapshot($notificationBroadcast);
 
-        return DB::transaction(function () use ($notificationBroadcast, $actor, $before): NotificationBroadcast {
-            $recipients = $this->resolveRecipients($notificationBroadcast);
+        return DB::transaction(function () use ($notificationBroadcast, $actor): NotificationBroadcast {
+            $locked = NotificationBroadcast::query()
+                ->lockForUpdate()
+                ->findOrFail($notificationBroadcast->getKey());
 
-            if ($recipients->isNotEmpty()) {
-                Notification::send($recipients, new AdminBroadcastNotification($notificationBroadcast));
+            if ($locked->sent_at !== null) {
+                throw new RuntimeException('This notification has already been sent.');
             }
 
-            $notificationBroadcast->sent_at = now();
-            $notificationBroadcast->sent_by = $actor->id;
-            $notificationBroadcast->updated_by = $actor->id;
-            $notificationBroadcast->save();
+            $before = $this->auditLogService->snapshot($locked);
+            $recipients = $this->resolveRecipients($locked);
+
+            if ($recipients->isNotEmpty()) {
+                Notification::send($recipients, new AdminBroadcastNotification($locked));
+            }
+
+            $locked->sent_at = now();
+            $locked->sent_by = $actor->id;
+            $locked->updated_by = $actor->id;
+            $locked->save();
 
             $this->auditLogService->record(
                 Log::ACTION_SEND_NOTIFICATION_BROADCAST,
                 $actor,
-                $notificationBroadcast,
+                $locked,
                 [
                     'before' => $before,
-                    'after' => $this->auditLogService->snapshot($notificationBroadcast),
+                    'after' => $this->auditLogService->snapshot($locked),
                 ],
             );
 
-            return $notificationBroadcast;
+            return $locked;
         });
     }
 
@@ -76,14 +89,17 @@ class SendNotificationBroadcast
      * Resolve the actual recipient collection for the broadcast's audience type.
      *
      * @return Collection<int, User>
+     *
+     * @throws RuntimeException
      */
     private function resolveRecipients(NotificationBroadcast $notificationBroadcast): Collection
     {
         return match ($notificationBroadcast->audience_type) {
             // Spatie's role() scope - never interpolate raw role names into SQL.
-            'role' => User::role($notificationBroadcast->audience_ids ?? [])->get(),
-            'users' => User::query()->whereIn('id', $notificationBroadcast->audience_ids ?? [])->get(),
-            default => User::query()->get(),
+            self::AUDIENCE_ROLE => User::role($notificationBroadcast->audience_ids ?? [])->get(),
+            self::AUDIENCE_USERS => User::query()->whereIn('id', $notificationBroadcast->audience_ids ?? [])->get(),
+            self::AUDIENCE_ALL => User::query()->get(),
+            default => throw new RuntimeException('Unsupported audience type.'),
         };
     }
 }
