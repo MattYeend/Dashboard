@@ -57,10 +57,6 @@ abstract class TestCase extends BaseTestCase
 
         setPermissionsTeamId($organisation->id);
 
-        // PaymentStatus is tenant scoped. run() targets the default
-        // organisation, so seed this one explicitly. Idempotent.
-        app(PaymentStatusSeeder::class)->seedForOrganisation($organisation);
-
         return $organisation;
     }
 
@@ -74,8 +70,11 @@ abstract class TestCase extends BaseTestCase
 
         // Only A is seeded: PaymentFactory runs inside A's context, while
         // the isolation tests require B to hold zero rows of every model.
-        app(PaymentStatusSeeder::class)->seedForOrganisation(
-            $this->organisationA
+        // It must run inside execute(), because BelongsToOrganisation
+        // rejects a record whose organisation differs from the current one.
+        $this->organisationA->execute(
+            fn () => app(PaymentStatusSeeder::class)
+                ->seedForOrganisation($this->organisationA)
         );
     }
 

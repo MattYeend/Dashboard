@@ -19,8 +19,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @method static $this withSession(array $data)
- * @method static $this actingAsWithoutOrganisation(User $user)
+ * @method $this withSession(array $data)
+ * @method $this actingAsWithoutOrganisation(User $user)
  */
 trait ActsAsOrganisationMember
 {

@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\InvoiceStatus;
 use App\Models\Log;
+use Database\Seeders\PaymentStatusSeeder;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Concerns\CreatesUsers;
@@ -14,6 +15,13 @@ uses(
     LazilyRefreshDatabase::class,
     CreatesUsers::class,
 );
+
+beforeEach(function () {
+    // Invoice formatting resolves the 'completed' payment status for the
+    // current organisation. TestCase::setUp() has already made the test
+    // organisation current, so the BelongsToOrganisation check passes.
+    app(PaymentStatusSeeder::class)->seedForOrganisation($this->testOrganisation);
+});
 
 describe('index', function () {
     test('authenticated user with permission can list invoices', function () {

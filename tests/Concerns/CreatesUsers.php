@@ -7,7 +7,6 @@ namespace Tests\Concerns;
 use App\Models\Organisation;
 use App\Models\Permission;
 use App\Models\User;
-use Database\Seeders\PaymentStatusSeeder;
 
 trait CreatesUsers
 {
@@ -25,11 +24,6 @@ trait CreatesUsers
         $organisation->makeCurrent();
 
         setPermissionsTeamId($organisation->id);
-
-        // PaymentStatus is tenant scoped. Seed this organisation explicitly,
-        // because run() targets the default organisation instead. The seeder
-        // skips existing rows, so repeat calls are safe.
-        app(PaymentStatusSeeder::class)->seedForOrganisation($organisation);
 
         return $organisation;
     }
