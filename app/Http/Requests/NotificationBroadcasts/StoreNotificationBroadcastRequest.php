@@ -49,7 +49,11 @@ class StoreNotificationBroadcastRequest extends FormRequest
             'body.max' => 'The body may not exceed 5000 characters.',
             'audience_type.required' => 'The audience type is required.',
             'audience_type.in' => 'The selected audience type is invalid.',
-            'audience_ids.required_unless' => 'The audience must be specified unless targeting all users.',
+            'audience_ids.required_if' => 'The audience must be specified when targeting roles or specific users.',
+            'audience_ids.prohibited_if' => 'An audience list cannot be provided when targeting all users.',
+            'audience_ids.max' => 'You may not select more than 1000 audience entries.',
+            'audience_ids.*.exists' => 'One or more selected audience entries do not exist.',
+            'audience_ids.*.distinct' => 'The audience list contains duplicate entries.',
         ];
     }
 
@@ -90,7 +94,8 @@ class StoreNotificationBroadcastRequest extends FormRequest
     {
         return [
             'required',
-            Rule::in(['all', 'role', 'users']),
+            'string',
+            Rule::in(NotificationBroadcast::AUDIENCES),
         ];
     }
 
@@ -104,7 +109,9 @@ class StoreNotificationBroadcastRequest extends FormRequest
         return [
             'nullable',
             'array',
-            'required_unless:audience_type,all',
+            'max:1000',
+            'required_if:audience_type,' . NotificationBroadcast::AUDIENCE_ROLE . ',' . NotificationBroadcast::AUDIENCE_USERS,
+            'prohibited_if:audience_type,' . NotificationBroadcast::AUDIENCE_ALL,
         ];
     }
 
@@ -115,8 +122,18 @@ class StoreNotificationBroadcastRequest extends FormRequest
      */
     protected function audienceIdRules(): array
     {
-        return [
-            'string',
-        ];
+        return match ($this->input('audience_type')) {
+            NotificationBroadcast::AUDIENCE_USERS => [
+                'integer',
+                'distinct',
+                Rule::exists('users', 'id')->whereNull('deleted_at'),
+            ],
+            NotificationBroadcast::AUDIENCE_ROLE => [
+                'string',
+                'distinct',
+                Rule::exists('roles', 'name')->where('guard_name', 'web'),
+            ],
+            default => ['string'],
+        };
     }
 }
