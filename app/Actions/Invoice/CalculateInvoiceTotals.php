@@ -17,12 +17,13 @@ class CalculateInvoiceTotals
     public function execute(Invoice $invoice): array
     {
         $aggregates = $invoice->items()
+            ->toBase()
             ->selectRaw('COALESCE(SUM(quantity * unit_price), 0) as subtotal')
             ->selectRaw('COALESCE(SUM(total), 0) as total')
             ->first();
 
-        $subtotal = (int) $aggregates->subtotal;
-        $total = (int) $aggregates->total;
+        $subtotal = (int) ($aggregates->subtotal ?? 0);
+        $total = (int) ($aggregates->total ?? 0);
 
         return [
             'subtotal' => $subtotal,
