@@ -42,9 +42,10 @@ class CreatorService
                     $data['activityable_id'],
                 );
 
-                $activity = Activity::create($activityData);
-
-                $activity->forceFill(['created_by' => $createdBy])->save();
+                $activity = Activity::create([
+                    ...$activityData,
+                    'created_by' => $createdBy,
+                ]);
 
                 $this->auditLogService->record(
                     Log::ACTION_CREATE_ACTIVITY,
