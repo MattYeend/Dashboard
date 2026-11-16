@@ -340,13 +340,13 @@ class ContactController extends Controller
             ->map(fn (array $pair) => [
                 'contact' => [
                     'id' => $pair['contact']->id,
-                    'contactable_name' => $pair['contact']->contactable?->name ?? null,
+                    'contactable_name' => data_get($pair['contact'], 'contactable.name'),
                     'email' => $pair['contact']->email,
                     'phone' => $pair['contact']->phone,
                 ],
                 'duplicate' => [
                     'id' => $pair['duplicate']->id,
-                    'contactable_name' => $pair['duplicate']->contactable?->name ?? null,
+                    'contactable_name' => data_get($pair['duplicate'], 'contactable.name'),
                     'email' => $pair['duplicate']->email,
                     'phone' => $pair['duplicate']->phone,
                 ],
