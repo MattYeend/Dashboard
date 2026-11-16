@@ -581,6 +581,17 @@ class RolePermissionSeeder extends Seeder
             'restore payment status',
             'import payment status',
             'export payment status',
+
+            // Payments
+            'view any payment',
+            'create payment',
+            'view payment',
+            'edit payment',
+            'delete payment',
+            'restore payment',
+            'import payment',
+            'export payment',
+            'refund payment',
         ];
 
         foreach ($permissions as $permission) {
@@ -1022,6 +1033,15 @@ class RolePermissionSeeder extends Seeder
             'restore payment status',
             'import payment status',
             'export payment status',
+            'view any payment',
+            'create payment',
+            'view payment',
+            'edit payment',
+            'delete payment',
+            'restore payment',
+            'import payment',
+            'export payment',
+            'refund payment',
         ];
         $admin->givePermissionTo($adminPermissions);
         $admin->revokePermissionTo('view logs');
@@ -1348,6 +1368,14 @@ class RolePermissionSeeder extends Seeder
             'convert quote',
             'view any payment status',
             'view payment status',
+            'view any payment',
+            'create payment',
+            'view payment',
+            'edit payment',
+            'delete payment',
+            'restore payment',
+            'export payment',
+            'refund payment',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1567,6 +1595,9 @@ class RolePermissionSeeder extends Seeder
             'send quote',
             'view any payment status',
             'view payment status',
+            'view any payment',
+            'view payment',
+            'create payment',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -2306,5 +2337,7 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Products');
         $this->command->info('- Quote Statuses');
         $this->command->info('- Quotes');
+        $this->command->info('- Payment Statuses');
+        $this->command->info('- Payments');
     }
 }
