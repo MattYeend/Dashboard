@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -111,7 +112,7 @@ class Quiz extends Model implements Auditable
     /**
      * Get the questions in this quiz, in order.
      *
-     * @return BelongsToMany<Question, $this>
+     * @return BelongsToMany<Question, $this, Pivot, 'pivot'>
      */
     public function questions(): BelongsToMany
     {
@@ -234,8 +235,8 @@ class Quiz extends Model implements Auditable
         ]) + [
             'questions' => $this->questions()->get()->map(fn (Question $question): array => [
                 'question_id' => $question->id,
-                'position' => $question->pivot->position,
-                'points' => $question->pivot->points,
+                'position' => $question->pivot->getAttribute('position'),
+                'points' => $question->pivot->getAttribute('points'),
             ])->all(),
         ];
     }
