@@ -73,18 +73,6 @@ parameters:
 			path: app/Http/Controllers/OrganisationController.php
 
 		-
-			message: '#^Parameter \$request of method App\\Http\\Controllers\\PaymentController\:\:store\(\) has invalid type App\\Http\\Requests\\StorePaymentRequest\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Http/Controllers/PaymentController.php
-
-		-
-			message: '#^Parameter \$request of method App\\Http\\Controllers\\PaymentController\:\:update\(\) has invalid type App\\Http\\Requests\\UpdatePaymentRequest\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Http/Controllers/PaymentController.php
-
-		-
 			message: '#^Method App\\Http\\Requests\\Settings\\PasswordUpdateRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
 			identifier: return.type
 			count: 1
@@ -1579,6 +1567,12 @@ parameters:
 			path: app/Services/Invoices/DeleterService.php
 
 		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:withTrashed\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/Invoices/QueryService.php
+
+		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Invoice\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1603,7 +1597,7 @@ parameters:
 			path: app/Services/Invoices/RestorerService.php
 
 		-
-			message: '#^Method App\\Services\\Invoices\\UpdaterService\:\:update\(\) should return App\\Models\\Invoice but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			message: '#^Anonymous function should return App\\Models\\Invoice but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
 			path: app/Services/Invoices/UpdaterService.php
