@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Models\Organisation;
 use App\Models\PaymentStatus;
 use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
@@ -20,19 +21,34 @@ class PaymentStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        $organisation = $this->defaultOrganisation();
-
-        foreach ($this->getStatuses() as $status) {
-            PaymentStatus::firstOrCreate(
-                [
-                    'system_key' => $status['system_key'],
-                    'organisation_id' => $organisation->id,
-                ],
-                $status
-            );
-        }
+        $this->seedForOrganisation($this->defaultOrganisation());
     }
 
+    /**
+     * Seed the system payment statuses for one organisation.
+     *
+     * Bypasses the tenant global scope and sets organisation_id explicitly so
+     * the result never depends on the current tenant context.
+     */
+    public function seedForOrganisation(Organisation $organisation): void
+    {
+        foreach ($this->getStatuses() as $status) {
+            $exists = PaymentStatus::withoutGlobalScopes()
+                ->withTrashed()
+                ->where('organisation_id', $organisation->id)
+                ->where('system_key', $status['system_key'])
+                ->exists();
+
+            if ($exists) {
+                continue;
+            }
+
+            $model = new PaymentStatus($status);
+            $model->organisation_id = $organisation->id; // Not mass-assignable by design.
+            $model->save();
+        }
+    }
+    
     /**
      * Get the predefined payment status records to seed.
      *
