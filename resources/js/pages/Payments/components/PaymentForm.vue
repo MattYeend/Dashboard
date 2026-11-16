@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-
 import { Button } from '@/components/ui/button';
 import type { PayableInvoiceOption, PaymentMethodOption } from '@/types';
-
+import type { PaymentFormData } from '@/types/forms';
 import PaymentBasicDetailsForm from './PaymentBasicDetailsForm.vue';
 import PaymentReferenceDetailsForm from './PaymentReferenceDetailsForm.vue';
-import type { PaymentFormData } from '@/types/forms';
 
 defineProps<{
     errors: Partial<Record<keyof PaymentFormData, string>>;

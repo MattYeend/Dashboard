@@ -7,6 +7,7 @@ import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
 import { useBulkAction, useRowAction } from '@/composables/useConfirmedAction';
 import { useIndexFilters } from '@/composables/useIndexFilters';
+import PaymentTable from '@/pages/Payments/components/PaymentTable.vue';
 import {
     create as paymentsCreate,
     destroy as paymentsDestroy,
@@ -21,7 +22,6 @@ import type {
     PaymentMethodOption,
     PermissionsMeta,
 } from '@/types';
-import PaymentTable from '@/pages/Payments/components/PaymentTable.vue';
 
 interface StatusOption {
     id: number;
