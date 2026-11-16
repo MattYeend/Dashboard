@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Services\Addresses;
 
 use App\Models\Address;
+use App\Services\Concerns\ResolvesRecordName;
 
 class FormatterService
 {
+    use ResolvesRecordName;
+
     public function __construct(
         private readonly AddressableTypeRegistryService $registry,
     ) {}
@@ -43,11 +46,7 @@ class FormatterService
             'addressable_type_label' => $address->addressable_type
                 ? ($this->registry->labelForModel($address->addressable_type) ?? class_basename($address->addressable_type))
                 : null,
-            'addressable_name' => $address->addressable
-                ? ($address->addressable->name
-                    ?? $address->addressable->title
-                    ?? '#'.$address->addressable->id)
-                : null,
+            'addressable_name' => $this->resolveRecordName($address->addressable),
             'addressable_type_key' => $this->registry->keyForModel($address->addressable_type),
         ];
     }

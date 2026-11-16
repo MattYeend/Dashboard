@@ -34,7 +34,7 @@ class FormatterService
             'updated_at' => $answer->updated_at,
             'deleted_at' => $answer->deleted_at,
             'restored_at' => $answer->restored_at,
-            'question' => $answer->relationLoaded('question') && $answer->question
+            'question' => $answer->relationLoaded('question')
                 ? ['id' => $answer->question->id, 'question' => $answer->question->question]
                 : null,
             'creator' => $answer->creator ? ['id' => $answer->creator->id, 'name' => $answer->creator->name] : null,

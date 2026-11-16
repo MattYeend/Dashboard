@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Services\Activities;
 
 use App\Models\Activity;
+use App\Services\Concerns\ResolvesRecordName;
 
 class FormatterService
 {
+    use ResolvesRecordName;
+
     public function __construct(
         private readonly ActivityableTypeRegistryService $registry,
     ) {}
@@ -25,9 +28,7 @@ class FormatterService
             'activityable_type_label' => $activity->activityable_type
                 ? ($this->registry->labelForModel($activity->activityable_type) ?? class_basename($activity->activityable_type))
                 : null,
-            'activityable_name' => $activity->activityable
-                ? ($activity->activityable->name ?? $activity->activityable->title ?? '#'.$activity->activityable->id)
-                : null,
+            'activityable_name' => $this->resolveRecordName($activity->activityable),
             'type' => $activity->type->value,
             'type_label' => $activity->type->label(),
             'description' => $activity->description,
@@ -52,8 +53,8 @@ class FormatterService
             'ID' => $activity->id,
             'Type' => $activity->type->label(),
             'Description' => $activity->description,
-            'Occurred at' => $activity->occurred_at?->format('d/m/Y H:i'),
-            'Logged by' => $activity->creator?->name ?? 'System',
+            'Occurred at' => $activity->occurred_at->format('d/m/Y H:i'),
+            'Logged by' => $activity->creator->name ?? 'System',
         ];
     }
 }

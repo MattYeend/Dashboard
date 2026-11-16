@@ -6,9 +6,12 @@ namespace App\Services\Comments;
 
 use App\Models\Comment;
 use App\Models\User;
+use App\Services\Concerns\ResolvesRecordName;
 
 class FormatterService
 {
+    use ResolvesRecordName;
+
     public function __construct(
         private readonly CommentableTypeRegistryService $registry,
     ) {}
@@ -24,11 +27,7 @@ class FormatterService
             'commentable_id' => $comment->commentable_id,
             'commentable_type_key' => $this->registry->keyForModel($comment->commentable_type),
             'commentable_type_label' => $this->registry->labelForModel($comment->commentable_type),
-            'commentable_name' => $comment->commentable
-                ? ($comment->commentable->name
-                    ?? $comment->commentable->title
-                    ?? '#'.$comment->commentable->id)
-                : null,
+            'commentable_name' => $this->resolveRecordName($comment->commentable),
             'content' => $comment->content,
             'mentions' => $comment->mentions->map(fn (User $mentionedUser): array => [
                 'id' => $mentionedUser->id,
