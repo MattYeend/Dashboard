@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Carbon\CarbonImmutable;
 
 /**
  * @property int $id
@@ -24,8 +25,8 @@ use Illuminate\Support\Carbon;
  * @property string $mime_type
  * @property int $size_bytes
  * @property array<string, mixed>|null $meta
- * @property Carbon|null $deleted_at
- * @property Carbon|null $restored_at
+ * @property CarbonImmutable|null $deleted_at
+ * @property CarbonImmutable|null $restored_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Model $attachable

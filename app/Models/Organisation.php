@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Laravel\Cashier\Billable;
 use Spatie\Multitenancy\Models\Tenant;
+use Carbon\CarbonImmutable;
 
 /**
  * @property int $id
@@ -22,8 +23,8 @@ use Spatie\Multitenancy\Models\Tenant;
  * @property string $slug
  * @property array|null $meta
  * @property array|null $settings
- * @property Carbon|null $deleted_at
- * @property Carbon|null $restored_at
+ * @property CarbonImmutable|null $deleted_at
+ * @property CarbonImmutable|null $restored_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property string|null $stripe_id

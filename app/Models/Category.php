@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Carbon\CarbonImmutable;
 
 /**
  * @property int $id
@@ -23,12 +24,11 @@ use Illuminate\Support\Carbon;
  * @property string $slug
  * @property string|null $description
  * @property array<string, mixed>|null $meta
- * @property Carbon|null $deleted_at
- * @property Carbon|null $restored_at
+ * @property CarbonImmutable|null $deleted_at
+ * @property CarbonImmutable|null $restored_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Category|null $parent
- * @property-read User|null $accountManager
  */
 #[Fillable([
     'parent_id',
@@ -63,7 +63,7 @@ class Category extends Model implements Auditable
     /**
      * Get the child categories.
      *
-     * @return HasMany<Category>
+     * @return HasMany<Category, $this>
      */
     public function children(): HasMany
     {

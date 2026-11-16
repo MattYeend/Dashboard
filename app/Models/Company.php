@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Carbon\CarbonImmutable;
 
 /**
  * @property int $id
@@ -32,8 +33,8 @@ use Illuminate\Support\Carbon;
  * @property int|null $employee_count
  * @property int|null $founded_year
  * @property array<string, mixed>|null $meta
- * @property Carbon|null $deleted_at
- * @property Carbon|null $restored_at
+ * @property CarbonImmutable|null $deleted_at
+ * @property CarbonImmutable|null $restored_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Industry|null $industry
