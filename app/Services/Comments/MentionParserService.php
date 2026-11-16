@@ -50,8 +50,8 @@ class MentionParserService
     {
         preg_match_all('/@([a-zA-Z0-9]+)/', $body, $matches);
 
-        return collect($matches[1] ?? [])
-            ->map(fn (string $token): string => strtolower($token));
+        return collect($matches[1])
+            ->map(fn (string $token): string => Str::lower($token));
     }
 
     /**
