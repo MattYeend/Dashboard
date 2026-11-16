@@ -24,6 +24,9 @@ class QueryService
 
     /**
      * Get paginated comments with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return array<string, mixed>
      */
     public function getPaginated(
         User $actor,
@@ -45,6 +48,8 @@ class QueryService
 
     /**
      * Get a single comment by ID.
+     *
+     * @return array<string, mixed>
      */
     public function getById(User $user, Comment $comment): array
     {
@@ -67,6 +72,8 @@ class QueryService
 
     /**
      * Get the data needed to render the "Create Comment" form.
+     *
+     * @return array<string, mixed>
      */
     public function getFormData(): array
     {
@@ -108,6 +115,9 @@ class QueryService
 
     /**
      * Build the base query with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return Builder<Comment>
      */
     protected function buildQuery(array $filters): Builder
     {
@@ -127,6 +137,9 @@ class QueryService
 
     /**
      * Paginate the query and return as plain array.
+     *
+     * @param  Builder<Comment>  $query
+     * @return array<string, mixed>
      */
     protected function paginate(
         Builder $query,
@@ -156,6 +169,8 @@ class QueryService
 
     /**
      * Get user permissions for the authenticated user.
+     *
+     * @return array<string, mixed>
      */
     protected function getPermissions(User $user): array
     {
@@ -170,6 +185,8 @@ class QueryService
 
     /**
      * Get base data for the view.
+     *
+     * @return array<string, mixed>
      */
     protected function baseData(): array
     {
@@ -182,6 +199,10 @@ class QueryService
 
     /**
      * Apply trash filtering and sorting to the query.
+     *
+     * @param  Builder<Comment>  $query
+     * @param  array<string, mixed>  $filters
+     * @return Builder<Comment>
      */
     private function applySorting(
         Builder $query,

@@ -24,6 +24,9 @@ class QueryService
 
     /**
      * Get paginated addresses with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return array<string, mixed>
      */
     public function getPaginated(
         User $actor,
@@ -44,6 +47,8 @@ class QueryService
 
     /**
      * Get a single address by ID.
+     *
+     * @return array<string, mixed>
      */
     public function getById(User $user, Address $address): array
     {
@@ -65,6 +70,8 @@ class QueryService
 
     /**
      * Get the data needed to render the "Create Address" form.
+     *
+     * @return array<string, mixed>
      */
     public function getFormData(): array
     {
@@ -83,6 +90,9 @@ class QueryService
 
     /**
      * Build the base query with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return Builder<Address>
      */
     protected function buildQuery(array $filters): Builder
     {
@@ -101,6 +111,9 @@ class QueryService
 
     /**
      * Paginate the query and return as plain array.
+     *
+     * @param  Builder<Address>  $query
+     * @return array<string, mixed>
      */
     protected function paginate(
         Builder $query,
@@ -129,6 +142,8 @@ class QueryService
 
     /**
      * Get user permissions for the authenticated user.
+     *
+     * @return array<string, mixed>
      */
     protected function getPermissions(User $user): array
     {
@@ -143,6 +158,8 @@ class QueryService
 
     /**
      * Get base data for the view.
+     *
+     * @return array<string, mixed>
      */
     protected function baseData(): array
     {
@@ -155,6 +172,10 @@ class QueryService
 
     /**
      * Apply trash filtering and sorting to the query.
+     *
+     * @param  Builder<Address>  $query
+     * @param  array<string, mixed>  $filters
+     * @return Builder<Address>
      */
     private function applySorting(
         Builder $query,

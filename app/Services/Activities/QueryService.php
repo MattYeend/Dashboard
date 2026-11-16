@@ -29,6 +29,9 @@ class QueryService
      * The activityable_type supplied by the client is a short registry key
      * such as "company". The database stores the fully-qualified model
      * class name, such as App\Models\Company.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return array<string, mixed>
      */
     public function getPaginated(
         User $actor,
@@ -50,6 +53,9 @@ class QueryService
 
     /**
      * Build the base query with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return Builder<Activity>
      */
     protected function buildQuery(array $filters): Builder
     {
@@ -115,6 +121,9 @@ class QueryService
 
     /**
      * Paginate the query and return as plain array.
+     *
+     * @param  Builder<Activity>  $query
+     * @return array<string, mixed>
      */
     protected function paginate(
         Builder $query,
@@ -149,6 +158,8 @@ class QueryService
 
     /**
      * Get user permissions for the authenticated user.
+     *
+     * @return array<string, mixed>
      */
     protected function getPermissions(User $user): array
     {
@@ -163,6 +174,8 @@ class QueryService
 
     /**
      * Get base data for the view.
+     *
+     * @return array<string, mixed>
      */
     protected function baseData(): array
     {
@@ -177,6 +190,9 @@ class QueryService
      * Unscoped query across every activityable record.
      *
      * Used by the admin-only export.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return Builder<Activity>
      */
     public function forExportAll(array $filters = []): Builder
     {

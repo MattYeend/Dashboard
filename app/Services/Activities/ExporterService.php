@@ -7,6 +7,7 @@ namespace App\Services\Activities;
 use App\Models\Activity;
 use App\Models\Log;
 use App\Services\AuditLogService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -62,11 +63,11 @@ class ExporterService
             ],
         );
 
-        $callback = function () use ($query, $columns) {
+        $callback = function () use ($query, $columns): void {
             $handle = fopen('php://output', 'w');
             fputcsv($handle, $columns);
 
-            $query->orderBy('id')->chunk(200, function ($activities) use ($handle) {
+            $query->orderBy('id')->chunk(200, function (Collection $activities) use ($handle): void {
                 foreach ($activities as $activity) {
                     fputcsv($handle, array_values($this->formatterService->forExport($activity)));
                 }
