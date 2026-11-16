@@ -1,124 +1,88 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Using nullsafe property access on non\-nullable type App\\Models\\PaymentStatus\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
+			message: '#^PHPDoc tag @property for property App\\Models\\Activity\:\:\$deleted_at contains unknown class App\\Models\\CarbonImmutable\.$#'
+			identifier: class.notFound
 			count: 1
-			path: app/Models/Payment.php
+			path: app/Models/Activity.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\Question\:\:\$pivot\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Models/Quiz.php
+			message: '#^PHPDoc tag @property for property App\\Models\\Activity\:\:\$restored_at contains unknown class App\\Models\\CarbonImmutable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Activity.php
 
 		-
-			message: '#^Property App\\Models\\Activity\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			message: '#^PHPDoc tag @property for property App\\Models\\Course\:\:\$deleted_at contains unknown class App\\Models\\CarbonImmutable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Course.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Models\\Course\:\:\$restored_at contains unknown class App\\Models\\CarbonImmutable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Course.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Models\\InteractionLog\:\:\$deleted_at contains unknown class App\\Models\\CarbonImmutable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/InteractionLog.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Models\\InteractionLog\:\:\$restored_at contains unknown class App\\Models\\CarbonImmutable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/InteractionLog.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Models\\Lesson\:\:\$deleted_at contains unknown class App\\Models\\CarbonImmutable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Lesson.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Models\\Lesson\:\:\$restored_at contains unknown class App\\Models\\CarbonImmutable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Lesson.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Models\\Report\:\:\$deleted_at contains unknown class App\\Models\\CarbonImmutable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Report.php
+
+		-
+			message: '#^PHPDoc tag @property for property App\\Models\\Report\:\:\$restored_at contains unknown class App\\Models\\CarbonImmutable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Report.php
+
+		-
+			message: '#^Property App\\Models\\Activity\:\:\$deleted_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Activities/DeleterService.php
 
 		-
-			message: '#^Parameter \#1 \$activity of method App\\Services\\Activities\\FormatterService\:\:forExport\(\) expects App\\Models\\Activity, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Activities/ExporterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Activities/FormatterService.php
-
-		-
-			message: '#^Ternary operator condition is always true\.$#'
-			identifier: ternary.alwaysTrue
-			count: 1
-			path: app/Services/Activities/FormatterService.php
-
-		-
-			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Support\\Carbon\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: app/Services/Activities/FormatterService.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: app/Services/Activities/FormatterService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Activity\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Activities/QueryService.php
-
-		-
-			message: '#^Property App\\Models\\Activity\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			message: '#^Property App\\Models\\Activity\:\:\$restored_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Activities/RestorerService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Addresses/FormatterService.php
-
-		-
-			message: '#^Ternary operator condition is always true\.$#'
-			identifier: ternary.alwaysTrue
-			count: 1
-			path: app/Services/Addresses/FormatterService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Address\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
+			message: '#^Method App\\Services\\Addresses\\QueryService\:\:applySorting\(\) should return Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Address\> but returns Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Contact\>\.$#'
+			identifier: return.type
 			count: 1
 			path: app/Services/Addresses/QueryService.php
-
-		-
-			message: '#^Right side of && is always true\.$#'
-			identifier: booleanAnd.rightAlwaysTrue
-			count: 1
-			path: app/Services/Answers/FormatterService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Category\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Categories/QueryService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Comments/FormatterService.php
-
-		-
-			message: '#^Ternary operator condition is always true\.$#'
-			identifier: ternary.alwaysTrue
-			count: 1
-			path: app/Services/Comments/FormatterService.php
 
 		-
 			message: '#^Method App\\Services\\Comments\\MentionParserService\:\:matchTokens\(\) should return Illuminate\\Support\\Collection\<int, string\> but returns Illuminate\\Support\\Collection\<int, lowercase\-string&non\-empty\-string\>\.$#'
 			identifier: return.type
 			count: 1
 			path: app/Services/Comments/MentionParserService.php
-
-		-
-			message: '#^Offset 1 on array\{list\<string\>, list\<non\-empty\-string\>\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: app/Services/Comments/MentionParserService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Comment\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Comments/QueryService.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Company\)\: array\<string, mixed\> given\.$#'
@@ -151,7 +115,7 @@ parameters:
 			path: app/Services/Contacts/QueryService.php
 
 		-
-			message: '#^Property App\\Models\\Course\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			message: '#^Property App\\Models\\Course\:\:\$deleted_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Courses/DeleterService.php
@@ -169,7 +133,7 @@ parameters:
 			path: app/Services/Courses/QueryService.php
 
 		-
-			message: '#^Property App\\Models\\Course\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			message: '#^Property App\\Models\\Course\:\:\$restored_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Courses/RestorerService.php
@@ -229,7 +193,7 @@ parameters:
 			path: app/Services/Industries/QueryService.php
 
 		-
-			message: '#^Property App\\Models\\InteractionLog\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			message: '#^Property App\\Models\\InteractionLog\:\:\$deleted_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/InteractionLogs/DeleterService.php
@@ -295,7 +259,7 @@ parameters:
 			path: app/Services/Lessons/ActiveCheckerService.php
 
 		-
-			message: '#^Property App\\Models\\Lesson\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			message: '#^Property App\\Models\\Lesson\:\:\$deleted_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Lessons/DeleterService.php
@@ -307,7 +271,7 @@ parameters:
 			path: app/Services/Lessons/FormatterService.php
 
 		-
-			message: '#^Property App\\Models\\Lesson\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			message: '#^Property App\\Models\\Lesson\:\:\$restored_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Lessons/RestorerService.php
@@ -535,13 +499,13 @@ parameters:
 			path: app/Services/Quotes/FormatterService.php
 
 		-
-			message: '#^Property App\\Models\\Report\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			message: '#^Property App\\Models\\Report\:\:\$deleted_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Reports/DeleterService.php
 
 		-
-			message: '#^Property App\\Models\\Report\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			message: '#^Property App\\Models\\Report\:\:\$restored_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Reports/RestorerService.php
