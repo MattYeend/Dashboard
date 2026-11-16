@@ -27,12 +27,13 @@ class MigrateUserSubscriptionsToOrganisations extends Command
         Subscription::query()
             ->whereNull('organisation_id')
             ->whereNotNull('user_id')
-            ->each(function (Subscription $subscription) use ($dryRun) {
-                $user = User::find($subscription->user_id);
+            ->eachById(function (Subscription $subscription) use ($dryRun): void {
+                $userId = (int) $subscription->getAttribute('user_id');
+                $user = User::find($userId);
 
                 if ($user === null) {
                     $this->error(
-                        "User {$subscription->user_id} not found for subscription {$subscription->id}"
+                        "User {$userId} not found for subscription {$subscription->id}"
                     );
 
                     return;

@@ -1,48 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method App\\Actions\\Fortify\\CreateNewUser\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Actions/Fortify/CreateNewUser.php
-
-		-
-			message: '#^Method App\\Actions\\Fortify\\CreateNewUser\:\:passwordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Actions/Fortify/CreateNewUser.php
-
-		-
-			message: '#^Method App\\Actions\\Fortify\\ResetUserPassword\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Actions/Fortify/ResetUserPassword.php
-
-		-
-			message: '#^Method App\\Actions\\Fortify\\ResetUserPassword\:\:passwordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Actions/Fortify/ResetUserPassword.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\InvoiceItem\:\:\$subtotal\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Actions/Invoice/CalculateInvoiceTotals.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:restore\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Actions/RestoreResource.php
-
-		-
-			message: '#^Property App\\Models\\NotificationBroadcast\:\:\$sent_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Actions/SendNotificationBroadcast.php
-
-		-
 			message: '#^Access to an undefined property App\\Models\\Subscription\:\:\$user_id\.$#'
 			identifier: property.notFound
 			count: 2
@@ -71,54 +29,6 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: app/Http/Controllers/OrganisationController.php
-
-		-
-			message: '#^Method App\\Http\\Requests\\Settings\\PasswordUpdateRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Http/Requests/Settings/PasswordUpdateRequest.php
-
-		-
-			message: '#^Method App\\Http\\Requests\\Settings\\PasswordUpdateRequest\:\:passwordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Http/Requests/Settings/PasswordUpdateRequest.php
-
-		-
-			message: '#^Method App\\Http\\Requests\\Settings\\ProfileDeleteRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Http/Requests/Settings/ProfileDeleteRequest.php
-
-		-
-			message: '#^Method App\\Http\\Requests\\Settings\\ProfileDeleteRequest\:\:passwordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Http/Requests/Settings/ProfileDeleteRequest.php
-
-		-
-			message: '#^Method App\\Http\\Requests\\Users\\StoreUserRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Http/Requests/Users/StoreUserRequest.php
-
-		-
-			message: '#^Method App\\Http\\Requests\\Users\\StoreUserRequest\:\:passwordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Http/Requests/Users/StoreUserRequest.php
-
-		-
-			message: '#^Method App\\Http\\Requests\\Users\\UpdateUserRequest\:\:optionalPasswordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Http/Requests/Users/UpdateUserRequest.php
-
-		-
-			message: '#^Method App\\Http\\Requests\\Users\\UpdateUserRequest\:\:passwordRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\ValidationRule\|string\> but returns array\<int, Illuminate\\Validation\\Rules\\Password\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Http/Requests/Users/UpdateUserRequest.php
 
 		-
 			message: '#^Access to an undefined property App\\Http\\Resources\\CompanyResource\:\:\$creator\.$#'
@@ -601,18 +511,6 @@ parameters:
 			path: app/Services/Activities/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\Activities\\RestorerService\:\:restore\(\) should return App\\Models\\Activity but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Activities/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Activity\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Activities/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Activity\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -673,18 +571,6 @@ parameters:
 			path: app/Services/Addresses/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\Addresses\\RestorerService\:\:restore\(\) should return App\\Models\\Address but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Addresses/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Address\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Addresses/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Address\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -733,18 +619,6 @@ parameters:
 			path: app/Services/Answers/FormatterService.php
 
 		-
-			message: '#^Anonymous function should return App\\Models\\Answer but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Answers/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Answer\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Answers/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Answer\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -787,18 +661,6 @@ parameters:
 			path: app/Services/Attachments/DeleterService.php
 
 		-
-			message: '#^Method App\\Services\\Attachments\\RestorerService\:\:restore\(\) should return App\\Models\\Attachment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Attachments/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Attachment\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Attachments/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Attachment\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -833,18 +695,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Categories/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\Categories\\RestorerService\:\:restore\(\) should return App\\Models\\Category but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Categories/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Category\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Categories/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\Category\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -919,18 +769,6 @@ parameters:
 			path: app/Services/Comments/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\Comments\\RestorerService\:\:restore\(\) should return App\\Models\\Comment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Comments/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Comment\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Comments/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Comment\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -977,18 +815,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Companies/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\Companies\\RestorerService\:\:restore\(\) should return App\\Models\\Company but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Companies/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Company\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Companies/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\Company\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -1057,18 +883,6 @@ parameters:
 			path: app/Services/Contacts/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\Contacts\\RestorerService\:\:restore\(\) should return App\\Models\\Contact but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Contacts/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Contact\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Contacts/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Contact\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -1121,18 +935,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Courses/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\Courses\\RestorerService\:\:restore\(\) should return App\\Models\\Course but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Courses/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Course\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Courses/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\Course\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -1207,18 +1009,6 @@ parameters:
 			path: app/Services/DealStatuses/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\DealStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\DealStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/DealStatuses/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\DealStatus\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/DealStatuses/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\DealStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -1279,18 +1069,6 @@ parameters:
 			path: app/Services/Deals/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\Deals\\RestorerService\:\:restore\(\) should return App\\Models\\Deal but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Deals/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Deal\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Deals/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Deal\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -1337,18 +1115,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Industries/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\Industries\\RestorerService\:\:restore\(\) should return App\\Models\\Industry but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Industries/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Industry\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Industries/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\Industry\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -1453,18 +1219,6 @@ parameters:
 			path: app/Services/InvoiceItems/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\InvoiceItems\\RestorerService\:\:restore\(\) should return App\\Models\\InvoiceItem but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/InvoiceItems/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\InvoiceItem\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/InvoiceItems/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\InvoiceItem\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -1511,18 +1265,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/InvoiceStatuses/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\InvoiceStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\InvoiceStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/InvoiceStatuses/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\InvoiceStatus\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/InvoiceStatuses/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\InvoiceStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -1579,18 +1321,6 @@ parameters:
 			path: app/Services/Invoices/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\Invoices\\RestorerService\:\:restore\(\) should return App\\Models\\Invoice but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Invoices/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Invoice\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Invoices/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Invoice\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -1637,18 +1367,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Labels/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\Labels\\RestorerService\:\:restore\(\) should return App\\Models\\Label but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Labels/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Label\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Labels/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\Label\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -1705,18 +1423,6 @@ parameters:
 			path: app/Services/Lessons/FormatterService.php
 
 		-
-			message: '#^Method App\\Services\\Lessons\\RestorerService\:\:restore\(\) should return App\\Models\\Lesson but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Lessons/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Lesson\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Lessons/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Lesson\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -1771,34 +1477,10 @@ parameters:
 			path: app/Services/NotificationBroadcasts/DeleterService.php
 
 		-
-			message: '#^Property App\\Models\\NotificationBroadcast\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Services/NotificationBroadcasts/DeleterService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\NotificationBroadcast\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: app/Services/NotificationBroadcasts/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\NotificationBroadcasts\\RestorerService\:\:restore\(\) should return App\\Models\\NotificationBroadcast but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/NotificationBroadcasts/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\NotificationBroadcast\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/NotificationBroadcasts/RestorerService.php
-
-		-
-			message: '#^Property App\\Models\\NotificationBroadcast\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Services/NotificationBroadcasts/RestorerService.php
 
 		-
 			message: '#^Method App\\Services\\NotificationBroadcasts\\UpdaterService\:\:update\(\) should return App\\Models\\NotificationBroadcast but returns Illuminate\\Database\\Eloquent\\Model\.$#'
@@ -1841,18 +1523,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/OrderStatuses/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\OrderStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\OrderStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/OrderStatuses/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\OrderStatus\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/OrderStatuses/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\OrderStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -1913,18 +1583,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Orders/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\Orders\\RestorerService\:\:restore\(\) should return App\\Models\\Order but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Orders/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Order\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Orders/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\Order\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -1993,18 +1651,6 @@ parameters:
 			path: app/Services/Organisations/PolicyAuthorisationService.php
 
 		-
-			message: '#^Method App\\Services\\Organisations\\RestorerService\:\:restore\(\) should return App\\Models\\Organisation but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Organisations/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Organisation\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Organisations/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Organisation\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -2045,18 +1691,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/PaymentStatuses/DeleterService.php
-
-		-
-			message: '#^Method App\\Services\\PaymentStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\PaymentStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/PaymentStatuses/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PaymentStatus\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/PaymentStatuses/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\PaymentStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -2191,18 +1825,6 @@ parameters:
 			path: app/Services/Payments/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\Payments\\RestorerService\:\:restore\(\) should return App\\Models\\Payment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Payments/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Payment\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Payments/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Payment\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -2243,18 +1865,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Permissions/DeleterService.php
-
-		-
-			message: '#^Method App\\Services\\Permissions\\RestorerService\:\:restore\(\) should return App\\Models\\Permission but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Permissions/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Permission\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Permissions/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\Permission\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -2317,18 +1927,6 @@ parameters:
 			path: app/Services/PipelineStages/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\PipelineStages\\RestorerService\:\:restore\(\) should return App\\Models\\PipelineStage but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/PipelineStages/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PipelineStage\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/PipelineStages/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\PipelineStage\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -2377,18 +1975,6 @@ parameters:
 			path: app/Services/PipelineStatuses/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\PipelineStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\PipelineStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/PipelineStatuses/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\PipelineStatus\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/PipelineStatuses/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\PipelineStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -2435,18 +2021,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Pipelines/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\Pipelines\\RestorerService\:\:restore\(\) should return App\\Models\\Pipeline but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Pipelines/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Pipeline\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Pipelines/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\Pipeline\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -2509,18 +2083,6 @@ parameters:
 			path: app/Services/Plans/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\Plans\\RestorerService\:\:restore\(\) should return App\\Models\\Plan but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Plans/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Plan\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Plans/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Plan\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -2567,18 +2129,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Posts/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\Posts\\RestorerService\:\:restore\(\) should return App\\Models\\Post but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Posts/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Post\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Posts/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\Post\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -2629,18 +2179,6 @@ parameters:
 			path: app/Services/Products/ExporterService.php
 
 		-
-			message: '#^Method App\\Services\\Products\\RestorerService\:\:restore\(\) should return App\\Models\\Product but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Products/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Product\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Products/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Product\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -2681,18 +2219,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Questions/DeleterService.php
-
-		-
-			message: '#^Method App\\Services\\Questions\\RestorerService\:\:restore\(\) should return App\\Models\\Question but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Questions/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Question\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Questions/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\Question\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -2737,18 +2263,6 @@ parameters:
 			path: app/Services/Quizzes/FormatterService.php
 
 		-
-			message: '#^Method App\\Services\\Quizzes\\RestorerService\:\:restore\(\) should return App\\Models\\Quiz but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Quizzes/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Quiz\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Quizzes/RestorerService.php
-
-		-
 			message: '#^Method App\\Services\\Quizzes\\UpdaterService\:\:update\(\) should return App\\Models\\Quiz but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
@@ -2777,18 +2291,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/QuoteStatuses/DeleterService.php
-
-		-
-			message: '#^Method App\\Services\\QuoteStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\QuoteStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/QuoteStatuses/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\QuoteStatus\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/QuoteStatuses/RestorerService.php
 
 		-
 			message: '#^Method App\\Services\\QuoteStatuses\\UpdaterService\:\:update\(\) should return App\\Models\\QuoteStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
@@ -2839,18 +2341,6 @@ parameters:
 			path: app/Services/Quotes/FormatterService.php
 
 		-
-			message: '#^Method App\\Services\\Quotes\\RestorerService\:\:restore\(\) should return App\\Models\\Quote but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Quotes/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Quote\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Quotes/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Quote\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -2893,18 +2383,6 @@ parameters:
 			path: app/Services/RegistrationInterests/DeleterService.php
 
 		-
-			message: '#^Method App\\Services\\RegistrationInterests\\RestorerService\:\:restore\(\) should return App\\Models\\RegistrationInterest but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/RegistrationInterests/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\RegistrationInterest\)\: void given\.$#'
-			identifier: argument.type
-			count: 2
-			path: app/Services/RegistrationInterests/RestorerService.php
-
-		-
 			message: '#^Method App\\Services\\Reports\\CreatorService\:\:create\(\) should return App\\Models\\Report but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
@@ -2927,18 +2405,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Reports/DeleterService.php
-
-		-
-			message: '#^Method App\\Services\\Reports\\RestorerService\:\:restore\(\) should return App\\Models\\Report but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Reports/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Report\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Reports/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\Report\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -2995,18 +2461,6 @@ parameters:
 			path: app/Services/Tags/DeleterService.php
 
 		-
-			message: '#^Method App\\Services\\Tags\\RestorerService\:\:restore\(\) should return App\\Models\\Tag but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Tags/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Tag\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Tags/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Tag\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -3053,18 +2507,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/TaskStatuses/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\TaskStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\TaskStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/TaskStatuses/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TaskStatus\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/TaskStatuses/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\TaskStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -3115,18 +2557,6 @@ parameters:
 			path: app/Services/Tasks/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\Tasks\\RestorerService\:\:restore\(\) should return App\\Models\\Task but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Tasks/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Task\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Tasks/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\Task\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -3173,18 +2603,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/TicketPriorities/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\TicketPriorities\\RestorerService\:\:restore\(\) should return App\\Models\\TicketPriority but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/TicketPriorities/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TicketPriority\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/TicketPriorities/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\TicketPriority\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -3241,18 +2659,6 @@ parameters:
 			path: app/Services/TicketStatuses/QueryService.php
 
 		-
-			message: '#^Method App\\Services\\TicketStatuses\\RestorerService\:\:restore\(\) should return App\\Models\\TicketStatus but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/TicketStatuses/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\TicketStatus\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/TicketStatuses/RestorerService.php
-
-		-
 			message: '#^Property App\\Models\\TicketStatus\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -3293,18 +2699,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Services/Tickets/DeleterService.php
-
-		-
-			message: '#^Method App\\Services\\Tickets\\RestorerService\:\:restore\(\) should return App\\Models\\Ticket but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Tickets/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\Ticket\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Tickets/RestorerService.php
 
 		-
 			message: '#^Property App\\Models\\Ticket\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
@@ -3389,18 +2783,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/Users/QueryService.php
-
-		-
-			message: '#^Method App\\Services\\Users\\RestorerService\:\:restore\(\) should return App\\Models\\User but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Users/RestorerService.php
-
-		-
-			message: '#^Parameter \#2 \$afterRestore of method App\\Actions\\RestoreResource\:\:handle\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model\)\: void, Closure\(App\\Models\\User\)\: void given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Users/RestorerService.php
 
 		-
 			message: '#^Method App\\Services\\Users\\UpdaterService\:\:update\(\) should return App\\Models\\User but returns Illuminate\\Database\\Eloquent\\Model\.$#'
