@@ -48,7 +48,7 @@ class PaymentStatusSeeder extends Seeder
             $model->save();
         }
     }
-    
+
     /**
      * Get the predefined payment status records to seed.
      *
