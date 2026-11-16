@@ -7,6 +7,7 @@ namespace App\Notifications;
 use App\Models\NotificationBroadcast;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Notifications\Notification;
 
 /**
@@ -14,16 +15,28 @@ use Illuminate\Notifications\Notification;
  * NotificationBroadcast is sent. Database-channel only, so it surfaces
  * through the existing polling inbox rather than sending email/SMS.
  */
-class AdminBroadcastNotification extends Notification implements ShouldQueue
+class AdminBroadcastNotification extends Notification implements ShouldQueue, ShouldQueueAfterCommit
 {
     use Queueable;
 
     /**
      * Inject the broadcast being delivered.
      */
-    public function __construct(
-        private readonly NotificationBroadcast $broadcast,
-    ) {}
+    private readonly int $broadcastId;
+
+    private readonly string $title;
+
+    private readonly string $body;
+    
+    /**
+     * Inject the broadcast being delivered.
+     */
+    public function __construct(NotificationBroadcast $broadcast)
+    {
+        $this->broadcastId = $broadcast->id;
+        $this->title = $broadcast->title;
+        $this->body = $broadcast->body;
+    }
 
     /**
      * Get the notification's delivery channels.
@@ -43,9 +56,9 @@ class AdminBroadcastNotification extends Notification implements ShouldQueue
     public function toDatabase(object $notifiable): array
     {
         return [
-            'notification_broadcast_id' => $this->broadcast->id,
-            'title' => $this->broadcast->title,
-            'body' => $this->broadcast->body,
+            'notification_broadcast_id' => $this->broadcastId,
+            'title' => $this->title,
+            'body' => $this->body,
         ];
     }
 }
