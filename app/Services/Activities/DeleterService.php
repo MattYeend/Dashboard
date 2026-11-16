@@ -22,7 +22,7 @@ class DeleterService
     ) {}
 
     /**
-     * Soft delete a activity.
+     * Soft delete an activity.
      *
      * @throws \Exception
      */
@@ -50,7 +50,7 @@ class DeleterService
     }
 
     /**
-     * Force delete a activity (permanent deletion).
+     * Force delete an activity (permanent deletion).
      *
      * @throws \Exception
      */
@@ -74,6 +74,8 @@ class DeleterService
 
     /**
      * Delete multiple activities.
+     *
+     * @param  array<int, int>  $activityIds
      *
      * @throws \Exception
      */
