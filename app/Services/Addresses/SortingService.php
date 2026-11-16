@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Addresses;
 
-use App\Models\Contact;
+use App\Models\Address;
 use Illuminate\Database\Eloquent\Builder;
 
 class SortingService
@@ -12,8 +12,8 @@ class SortingService
     /**
      * Apply sorting to query.
      *
-     * @param  Builder<Contact>  $query
-     * @return Builder<Contact>
+     * @param  Builder<Address>  $query
+     * @return Builder<Address>
      */
     public function applySorting(
         Builder $query,
