@@ -7,6 +7,7 @@ namespace Tests;
 use App\Models\Organisation;
 use App\Models\Quiz;
 use App\Models\User;
+use Database\Seeders\PaymentStatusSeeder;
 use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -56,6 +57,10 @@ abstract class TestCase extends BaseTestCase
 
         setPermissionsTeamId($organisation->id);
 
+        // PaymentStatus is tenant scoped. run() targets the default
+        // organisation, so seed this one explicitly. Idempotent.
+        app(PaymentStatusSeeder::class)->seedForOrganisation($organisation);
+
         return $organisation;
     }
 
@@ -66,6 +71,12 @@ abstract class TestCase extends BaseTestCase
     {
         $this->organisationA = Organisation::factory()->create();
         $this->organisationB = Organisation::factory()->create();
+
+        // Only A is seeded: PaymentFactory runs inside A's context, while
+        // the isolation tests require B to hold zero rows of every model.
+        app(PaymentStatusSeeder::class)->seedForOrganisation(
+            $this->organisationA
+        );
     }
 
     /**
