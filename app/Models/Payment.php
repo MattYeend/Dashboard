@@ -159,7 +159,7 @@ class Payment extends Model implements Auditable
     {
         $this->loadMissing('status');
 
-        return $this->status?->system_key === $systemKey;
+        return $this->status->system_key === $systemKey;
     }
 
     /**

@@ -233,11 +233,16 @@ class Quiz extends Model implements Auditable
             'show_correct_answers',
             'published_at',
         ]) + [
-            'questions' => $this->questions()->get()->map(fn (Question $question): array => [
-                'question_id' => $question->id,
-                'position' => $question->pivot->getAttribute('position'),
-                'points' => $question->pivot->getAttribute('points'),
-            ])->all(),
+            'questions' => $this->questions()->get()->map(function (Question $question): array {
+                /** @var Pivot $pivot */
+                $pivot = $question->getRelation('pivot');
+
+                return [
+                    'question_id' => $question->id,
+                    'position' => $pivot->getAttribute('position'),
+                    'points' => $pivot->getAttribute('points'),
+                ];
+            })->all(),
         ];
     }
 }
