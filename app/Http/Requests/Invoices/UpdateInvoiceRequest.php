@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Invoices;
 
+use App\Models\InvoiceStatus;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -131,7 +132,8 @@ class UpdateInvoiceRequest extends FormRequest
             'sometimes',
             'nullable',
             'integer',
-            'exists:invoice_statuses,id',
+            Rule::exists('invoice_statuses', 'id'),
+            Rule::notIn($this->derivedStatusIds()),
         ];
     }
 
@@ -381,5 +383,22 @@ class UpdateInvoiceRequest extends FormRequest
             'nullable',
             'array',
         ];
+    }
+
+    /**
+     * Status IDs that can only be set by recording payments.
+     *
+     * @return array<int, int>
+     */
+    private function derivedStatusIds(): array
+    {
+        $currentStatusId = $this->route('invoice')?->status_id;
+
+        return InvoiceStatus::query()
+            ->whereIn('title', ['Partially Paid', 'Paid'])
+            ->pluck('id')
+            ->reject(fn (int $id): bool => $id === $currentStatusId)
+            ->values()
+            ->all();
     }
 }

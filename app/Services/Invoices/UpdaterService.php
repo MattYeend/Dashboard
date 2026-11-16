@@ -13,6 +13,8 @@ use App\Models\Log;
 use App\Models\User;
 use App\Notifications\InvoiceOverdueNotification;
 use App\Services\AuditLogService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class UpdaterService
 {
@@ -25,6 +27,7 @@ class UpdaterService
         protected readonly UpdateResource $updateResource,
         protected readonly MarkInvoiceAsPaid $markInvoiceAsPaid,
         protected readonly SendInvoiceToCustomer $sendInvoiceToCustomer,
+        protected readonly BalanceService $balance,
     ) {}
 
     /**
@@ -40,43 +43,59 @@ class UpdaterService
         int $updatedBy
     ): Invoice {
         $actor = User::findOrFail($updatedBy);
-
-        $before = $this->auditLogService->snapshot($invoice);
-
         $invoiceData = $this->dataPreparation->prepareForUpdate($data);
 
-        return $this->updateResource->handle(
-            $invoice,
-            $invoiceData,
-            function (Invoice $invoice) use ($actor, $before, $data, $updatedBy): void {
-                $invoice->forceFill([
-                    'updated_by' => $updatedBy,
-                ])->save();
+        return DB::transaction(function () use ($invoice, $data, $invoiceData, $actor, $updatedBy): Invoice {
+            $invoice = Invoice::query()->whereKey($invoice->id)->lockForUpdate()->firstOrFail();
 
-                $contactData = $this->dataPreparation->prepareUpdate($data);
+            $hasTotal = array_key_exists('total', $invoiceData);
 
-                if ($contactData !== null) {
-                    $contact = $invoice->contact()->updateOrCreate([], $contactData);
+            if ($hasTotal && (int) $invoiceData['total'] < (int) $invoice->amount_paid) {
+                throw ValidationException::withMessages([
+                    'total' => 'The total cannot be lower than the amount already paid.',
+                ]);
+            }
 
-                    $addressData = $this->dataPreparation->prepareAddressForContactUpdate($data);
+            $totalChanged = $hasTotal && (int) $invoiceData['total'] !== (int) $invoice->total;
+            $before = $this->auditLogService->snapshot($invoice);
 
-                    if ($addressData !== null) {
-                        $contact->addresses()->updateOrCreate([], $addressData);
+            return $this->updateResource->handle(
+                $invoice,
+                $invoiceData,
+                function (Invoice $invoice) use ($actor, $before, $data, $updatedBy, $totalChanged): void {
+                    $invoice->forceFill([
+                        'updated_by' => $updatedBy,
+                    ])->save();
+
+                    $contactData = $this->dataPreparation->prepareUpdate($data);
+
+                    if ($contactData !== null) {
+                        $contact = $invoice->contact()->updateOrCreate([], $contactData);
+
+                        $addressData = $this->dataPreparation->prepareAddressForContactUpdate($data);
+
+                        if ($addressData !== null) {
+                            $contact->addresses()->updateOrCreate([], $addressData);
+                        }
                     }
-                }
 
-                $fresh = $invoice->fresh();
+                    if ($totalChanged) {
+                        $this->balance->recalculate($invoice, $actor);
+                    }
 
-                $this->auditLogService->record(
-                    Log::ACTION_UPDATE_INVOICE,
-                    $actor,
-                    $fresh,
-                    [
-                        'before' => $before,
-                        'after' => $this->auditLogService->snapshot($fresh),
-                    ],
-                );
-            });
+                    $fresh = $invoice->fresh();
+
+                    $this->auditLogService->record(
+                        Log::ACTION_UPDATE_INVOICE,
+                        $actor,
+                        $fresh,
+                        [
+                            'before' => $before,
+                            'after' => $this->auditLogService->snapshot($fresh),
+                        ],
+                    );
+                });
+        });
     }
 
     /**
@@ -147,6 +166,12 @@ class UpdaterService
      */
     public function markAsUnpaid(Invoice $invoice, int $actorId): Invoice
     {
+        if ($invoice->payments()->exists()) {
+            throw ValidationException::withMessages([
+                'invoice' => 'An invoice with payments cannot be marked as unpaid. Remove the payments instead.',
+            ]);
+        }
+        
         $actor = User::findOrFail($actorId);
         $before = $this->auditLogService->snapshot($invoice);
 

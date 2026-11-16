@@ -7,7 +7,10 @@ namespace App\Services\Invoices;
 use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\InvoiceStatus;
+use App\Models\Payment;
 use App\Models\User;
+use App\Services\Payments\ActiveCheckerService as PaymentActiveCheckerService;
+use App\Services\Payments\QueryService as PaymentQueryService;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -20,7 +23,9 @@ class QueryService
         protected readonly SortingService $sortingService,
         protected readonly TrashFilterService $trashFilterService,
         protected readonly FilterService $filterService,
-        protected readonly FormatterService $formatterService
+        protected readonly FormatterService $formatterService,
+        protected readonly PaymentQueryService $paymentQuery,
+        protected readonly PaymentActiveCheckerService $paymentChecker
     ) {}
 
     /**
@@ -61,8 +66,13 @@ class QueryService
         ]);
 
         return array_merge(
-            ['invoice' => $this->formatterService->format($invoice)],
-            $this->getPermissions($user),
+            [
+                'invoice' => $this->formatterService->format($invoice),
+                'payments' => $user->can('viewAny', Payment::class)
+                    ? $this->paymentQuery->forInvoice($user, $invoice)
+                    : [],
+            ],
+            $this->getPermissions($user, $invoice),
             $this->baseData(),
         );
     }
@@ -70,15 +80,24 @@ class QueryService
     /**
      * Get data needed to populate create and edit forms.
      */
-    public function getFormData(): array
+    public function getFormData(?Invoice $invoice = null): array
     {
         return [
-            'statuses' => InvoiceStatus::orderBy('title')->get([
-                'id',
-                'title',
-                'background_colour',
-                'text_colour',
-            ]),
+            'statuses' => InvoiceStatus::query()
+                ->where(function (Builder $query) use ($invoice): void {
+                    $query->whereNotIn('title', ['Partially Paid', 'Paid']);
+
+                    if ($invoice !== null && $invoice->status_id !== null) {
+                        $query->orWhere('id', $invoice->status_id);
+                    }
+                })
+                ->orderBy('title')
+                ->get([
+                    'id',
+                    'title',
+                    'background_colour',
+                    'text_colour',
+                ]),
             'companies' => Company::orderBy('name')->get([
                 'id',
                 'name',
@@ -91,7 +110,9 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Invoice::query()->with([
+        $query = Invoice::query()->withCount([
+            'payments' => fn (Builder $query) => $query->withTrashed(),
+        ])->with([
             'company',
             'contact.addresses',
             'order',
@@ -138,15 +159,20 @@ class QueryService
     /**
      * Get user permissions for the authenticated user.
      */
-    protected function getPermissions(User $user): array
+    protected function getPermissions(User $user, ?Invoice $invoice = null): array
     {
-        return [
-            'permissions_meta' => [
-                'can_create' => $user->can('create', Invoice::class),
-                'can_view_any' => $user->can('viewAny', Invoice::class),
-                'can_export' => $user->can('export', Invoice::class),
-            ],
+        $permissions = [
+            'can_create' => $user->can('create', Invoice::class),
+            'can_view_any' => $user->can('viewAny', Invoice::class),
+            'can_export' => $user->can('export', Invoice::class),
         ];
+
+        if ($invoice !== null) {
+            $permissions['can_record_payment'] = $user->can('create', Payment::class)
+                && $this->paymentChecker->invoiceAcceptsPayments($invoice);
+        }
+
+        return ['permissions_meta' => $permissions];
     }
 
     /**

@@ -59,8 +59,38 @@ class ActiveCheckerService
     ): bool {
         return match ($action) {
             'modify' => $this->roleChecker->isAdmin($actor) && $this->canBeModified($target),
+            'delete' => $this->roleChecker->isAdmin($actor) && $this->canBeDeleted($target),
+            'forceDelete' => $this->roleChecker->isAdmin($actor) && $this->canBeForceDeleted($target),
             'restoreOrForceDelete' => $this->roleChecker->isAdmin($actor) && $this->canBeRestoredOrForceDeleted($target),
             default => false,
         };
+    }
+
+    /**
+     * Check if the invoice has any payments, including soft-deleted ones.
+     */
+    public function hasPayments(Invoice $invoice): bool
+    {
+        if (isset($invoice->payments_count)) {
+            return $invoice->payments_count > 0;
+        }
+
+        return $invoice->payments()->withTrashed()->exists();
+    }
+
+    /**
+     * Check if invoice is active and has no payments, so it can be soft-deleted.
+     */
+    public function canBeDeleted(Invoice $invoice): bool
+    {
+        return $this->isActive($invoice) && ! $this->hasPayments($invoice);
+    }
+
+    /**
+     * Check if invoice is soft-deleted and has no payments, so it can be force-deleted.
+     */
+    public function canBeForceDeleted(Invoice $invoice): bool
+    {
+        return $this->isTrashed($invoice) && ! $this->hasPayments($invoice);
     }
 }

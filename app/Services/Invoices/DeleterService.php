@@ -10,6 +10,7 @@ use App\Models\Log;
 use App\Models\User;
 use App\Services\AuditLogService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class DeleterService
 {
@@ -28,6 +29,8 @@ class DeleterService
      */
     public function delete(Invoice $invoice, int $deletedBy, ?User $actor = null): bool
     {
+        $this->assertHasNoPayments($invoice);
+
         $actor ??= User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
@@ -53,6 +56,8 @@ class DeleterService
      */
     public function forceDelete(Invoice $invoice, int $deletedBy): bool
     {
+        $this->assertHasNoPayments($invoice);
+
         $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->forceHandle(
@@ -88,5 +93,17 @@ class DeleterService
         });
 
         return $count;
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    private function assertHasNoPayments(Invoice $invoice): void
+    {
+        if ($invoice->payments()->withTrashed()->exists()) {
+            throw ValidationException::withMessages([
+                'invoice' => 'An invoice with payments cannot be deleted. Refund and remove the payments first.',
+            ]);
+        }
     }
 }

@@ -6,11 +6,13 @@ namespace App\Services\Invoices;
 
 use App\Models\Invoice;
 use App\Services\CurrencyFormatterService;
+use App\Services\Invoices\BalanceService;
 
 class FormatterService
 {
     public function __construct(
-        private readonly CurrencyFormatterService $currencyFormatter
+        private readonly CurrencyFormatterService $currencyFormatter,
+        private readonly BalanceService $balance,
     ) {}
 
     /**
@@ -38,6 +40,8 @@ class FormatterService
             'subtotal' => $invoice->subtotal,
             'tax_total' => $invoice->tax_total,
             'total' => $invoice->total,
+            'amount_paid' => $this->balance->poundsFromPence($invoice->amount_paid),
+            'balance_due' => $this->balance->balanceDue($invoice),
             'items' => $invoice->relationLoaded('items')
                 ? $invoice->items->map(fn ($item) => [
                     'id' => $item->id,
