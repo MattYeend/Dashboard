@@ -47,6 +47,21 @@ use Carbon\CarbonImmutable;
 ])]
 class NotificationBroadcast extends Model implements Auditable
 {
+    public const AUDIENCE_ALL = 'all';
+
+    public const AUDIENCE_ROLE = 'role';
+
+    public const AUDIENCE_USERS = 'users';
+
+    /**
+     * @var array<int, string>
+     */
+    public const AUDIENCES = [
+        self::AUDIENCE_ALL,
+        self::AUDIENCE_ROLE,
+        self::AUDIENCE_USERS,
+    ];
+
     /**
      * @use HasFactory<NotificationBroadcastFactory>
      */
