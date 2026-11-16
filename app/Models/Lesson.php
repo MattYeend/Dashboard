@@ -35,10 +35,10 @@ use Illuminate\Support\Carbon;
  * @property int|null $updated_by
  * @property int|null $deleted_by
  * @property int|null $restored_by
- * @property Carbon|null $restored_at
+ * @property CarbonImmutable|null $restored_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property CarbonImmutable|null $deleted_at
  * @property-read Course $course
  */
 #[Fillable([

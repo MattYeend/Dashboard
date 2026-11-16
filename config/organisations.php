@@ -86,7 +86,7 @@ return [
         Quote::class,
         QuoteStatus::class,
         PaymentStatus::class,
-        // Payment::class,
+        Payment::class,
     ],
 
     /*

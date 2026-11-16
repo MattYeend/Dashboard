@@ -53,8 +53,8 @@ use Illuminate\Support\Carbon;
  * @property int|null $account_manager_id
  * @property int|null $employee_count
  * @property int|null $founded_year
- * @property Carbon|null $deleted_at
- * @property Carbon|null $restored_at
+ * @property CarbonImmutable|null $deleted_at
+ * @property CarbonImmutable|null $restored_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Industry|null $industry

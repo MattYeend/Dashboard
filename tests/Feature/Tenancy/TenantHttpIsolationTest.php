@@ -25,7 +25,7 @@ use App\Models\Order;
 use App\Models\OrderStatus;
 use App\Models\Organisation;
 use App\Models\OrganisationDataExport;
-// use App\Models\Payment;
+use App\Models\Payment;
 use App\Models\PaymentStatus;
 use App\Models\Pipeline;
 use App\Models\PipelineStage;
@@ -92,7 +92,7 @@ function tenantResourceMap(): array
         'questions' => Question::class,
         'answers' => Answer::class,
         'tags' => Tag::class,
-        // 'payments' => Payment::class,
+        'payments' => Payment::class,
     ];
 }
 
