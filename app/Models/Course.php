@@ -8,6 +8,7 @@ use App\Contracts\Auditable;
 use App\Enums\CourseDifficulty;
 use App\Models\Concerns\HasQuestions;
 use App\Traits\BelongsToOrganisation;
+use Carbon\CarbonImmutable;
 use Database\Factories\CourseFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
