@@ -17,13 +17,13 @@ use App\Services\Payments\TransitionService;
 use App\Services\Payments\UpdaterService;
 use Database\Seeders\PaymentStatusSeeder;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Tests\Concerns\CreatesUsers;
-use Illuminate\Database\Eloquent\Model;
 
 uses(
     LazilyRefreshDatabase::class,

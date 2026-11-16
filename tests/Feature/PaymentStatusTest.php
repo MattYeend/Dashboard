@@ -608,7 +608,7 @@ describe('system statuses', function () {
         $this->seed(PaymentStatusSeeder::class);
         $this->seed(PaymentStatusSeeder::class);
 
-    expect(PaymentStatus::withoutGlobalScopes()->whereNotNull('system_key')->count())->toBe(4);
+        expect(PaymentStatus::withoutGlobalScopes()->whereNotNull('system_key')->count())->toBe(4);
     });
 });
 
