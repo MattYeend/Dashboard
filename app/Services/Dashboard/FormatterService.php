@@ -68,7 +68,7 @@ class FormatterService
         return $logs->map(fn (Log $log) => [
             'id' => $log->id,
             'action' => Log::actionLabel($log->action_id),
-            'user' => $log->loggedInUser?->name ?? 'System',
+            'user' => $log->loggedInUser->name ?? 'System',
             'created_at' => $log->created_at->toIso8601String(),
         ])->all();
     }

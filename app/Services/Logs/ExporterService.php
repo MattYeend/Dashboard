@@ -54,7 +54,7 @@ class ExporterService
             ['filters' => $filters, 'count' => (clone $query)->count()],
         );
 
-        $callback = function () use ($query) {
+        $callback = function () use ($query): void {
             $handle = fopen('php://output', 'w');
             fputcsv($handle, [
                 'ID',
@@ -67,18 +67,18 @@ class ExporterService
                 'Date',
             ]);
 
-            $query->orderBy('id')->chunk(500, function ($logs) use ($handle) {
+            $query->orderBy('id')->chunk(500, function ($logs) use ($handle): void {
                 foreach ($logs as $log) {
-                    fputcsv($handle, [
+                    fputcsv($handle, array_map($this->sanitiseCell(...), [
                         $log->id,
                         Log::actionLabel($log->action_id),
-                        $log->loggedInUser?->name ?? 'System',
-                        $log->relatedToUser?->name ?? '',
+                        $log->loggedInUser->name ?? 'System',
+                        $log->relatedToUser->name ?? '',
                         json_encode($log->data),
                         $log->sequence,
                         $log->hash,
                         $log->created_at,
-                    ]);
+                    ]));
                 }
             });
 
@@ -90,5 +90,19 @@ class ExporterService
             'audit-trail-'.now()->format('Y-m-d-His').'.csv',
             ['Content-Type' => 'text/csv']
         );
+    }
+
+    /**
+     * Neutralise spreadsheet formula injection in a single cell.
+     */
+    private function sanitiseCell(mixed $value): mixed
+    {
+        if (! is_string($value) || $value === '') {
+            return $value;
+        }
+
+        return in_array($value[0], ['=', '+', '-', '@', "\t", "\r"], true)
+            ? "'".$value
+            : $value;
     }
 }
