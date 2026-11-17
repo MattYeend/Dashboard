@@ -19,18 +19,6 @@ parameters:
 			path: app/Services/Deals/PipelineStageUpdaterService.php
 
 		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Deal\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Deals/QueryService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Industry\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Industries/QueryService.php
-
-		-
 			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Support\\Carbon\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 3
@@ -55,34 +43,10 @@ parameters:
 			path: app/Services/InvoiceItems/PolicyAuthorisationService.php
 
 		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\InvoiceItem\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/InvoiceItems/QueryService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\InvoiceStatus\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/InvoiceStatuses/QueryService.php
-
-		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:withTrashed\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: app/Services/Invoices/QueryService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Invoice\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Invoices/QueryService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Label\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Labels/QueryService.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between App\\Models\\Course and null will always evaluate to true\.$#'
@@ -107,24 +71,6 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 2
 			path: app/Services/Logs/ExporterService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\NotificationBroadcast\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/NotificationBroadcasts/QueryService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\OrderStatus\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/OrderStatuses/QueryService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Order\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Orders/QueryService.php
 
 		-
 			message: '#^Cannot call method lt\(\) on string\.$#'

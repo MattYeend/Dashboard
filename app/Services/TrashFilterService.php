@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TrashFilterService
 {
@@ -16,8 +17,9 @@ class TrashFilterService
         ?string $trashed = null
     ): Builder {
         return match ($trashed) {
-            'only' => $query->onlyTrashed(),
-            'with' => $query->withTrashed(),
+            'only' => $query->withoutGlobalScope(SoftDeletingScope::class)
+                ->whereNotNull($query->getModel()->getTable().'.deleted_at'),
+            'with' => $query->withoutGlobalScope(SoftDeletingScope::class),
             default => $query,
         };
     }
