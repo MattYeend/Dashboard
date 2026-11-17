@@ -7,6 +7,7 @@ namespace App\Services\Quizzes;
 use App\Models\Answer;
 use App\Models\Question;
 use App\Models\Quiz;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class FormatterService
@@ -27,10 +28,10 @@ class FormatterService
                         'type' => $question->type->value,
                         'type_label' => $question->type->label(),
                         'explanation' => $question->explanation,
-                        'position' => $question->pivot->position,
+                        'position' => $this->pivotValue($question, 'position'),
                         'default_points' => $question->points,
-                        'points' => $question->pivot->points,
-                        'effective_points' => $question->pivot->points
+                        'points' => $this->pivotValue($question, 'points'),
+                        'effective_points' => $this->pivotValue($question, 'points')
                             ?? $question->points,
                         'answers' => $question->relationLoaded('answers')
                             ? $question->answers->map(
@@ -73,8 +74,8 @@ class FormatterService
                         'prompt' => $question->question,
                         'type' => $question->type->value,
                         'type_label' => $question->type->label(),
-                        'position' => $question->pivot->position,
-                        'effective_points' => $question->pivot->points
+                        'position' => $this->pivotValue($question, 'position'),
+                        'effective_points' => $this->pivotValue($question, 'points')
                             ?? $question->points,
                         'answers' => $question->relationLoaded('answers')
                             ? $question->answers->map(
@@ -140,6 +141,21 @@ class FormatterService
                         : null
                 ),
         ];
+    }
+
+    /**
+     * Read an attribute from the question's loaded quiz pivot record, or
+     * null when the question was not loaded through the quiz relation.
+     */
+    protected function pivotValue(Question $question, string $key): mixed
+    {
+        if (! $question->relationLoaded('pivot')) {
+            return null;
+        }
+
+        $pivot = $question->getRelation('pivot');
+
+        return $pivot instanceof Model ? $pivot->getAttribute($key) : null;
     }
 
     /**
