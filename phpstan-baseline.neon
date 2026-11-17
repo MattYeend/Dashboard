@@ -31,12 +31,6 @@ parameters:
 			path: app/Services/InteractionLogs/UpdaterService.php
 
 		-
-			message: '#^Default value of the parameter \#3 \$context \(array\{\}\) of method App\\Services\\InvoiceItems\\ImporterService\:\:persistRow\(\) is incompatible with type array\{invoice\: App\\Models\\Invoice\}\.$#'
-			identifier: parameter.defaultValue
-			count: 1
-			path: app/Services/InvoiceItems/ImporterService.php
-
-		-
 			message: '#^Using nullsafe property access on non\-nullable type App\\Models\\Invoice\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
@@ -169,12 +163,6 @@ parameters:
 			path: app/Services/Payments/QueryService.php
 
 		-
-			message: '#^Default value of the parameter \#3 \$context \(array\{\}\) of method App\\Services\\PipelineStages\\ImporterService\:\:persistRow\(\) is incompatible with type array\{pipeline\: App\\Models\\Pipeline\}\.$#'
-			identifier: parameter.defaultValue
-			count: 1
-			path: app/Services/PipelineStages/ImporterService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\PipelineStage\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -257,18 +245,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: app/Services/TicketStatuses/QueryService.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:onlyTrashed\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Services/TrashFilterService.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:withTrashed\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Services/TrashFilterService.php
 
 		-
 			message: '#^Variable \$user in PHPDoc tag @var does not exist\.$#'

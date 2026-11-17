@@ -12,6 +12,7 @@ use App\Services\AuditLogService;
 use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
 
 /**
  * Handles CSV import of invoice items, scoped to a single parent
@@ -62,12 +63,12 @@ class ImporterService
      * parent invoice passed via context.
      *
      * @param  array<string, mixed>  $data
-     * @param  array{invoice: Invoice}  $context
+     * @param  array{invoice?: Invoice}  $context
      */
     protected function persistRow(array $data, int $actorId, array $context = []): void
     {
-        /** @var Invoice $invoice */
-        $invoice = $context['invoice'];
+        $invoice = $context['invoice']
+            ?? throw new InvalidArgumentException('An invoice is required to import invoice items.');
 
         $quantity = (int) $data['quantity'];
         $unitPrice = (int) $data['unit_price'];
@@ -81,7 +82,7 @@ class ImporterService
             'unit_price' => $unitPrice,
             'tax_rate' => $taxRate,
             'total' => $total,
-            'position' => $invoice->items()->max('position') + 1,
+            'position' => ((int) $invoice->items()->max('position')) + 1,
             'created_by' => $actorId,
         ]);
     }

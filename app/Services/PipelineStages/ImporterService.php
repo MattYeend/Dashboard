@@ -12,6 +12,7 @@ use App\Services\AuditLogService;
 use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
 
 /**
  * Handles CSV import of pipeline stages, scoped to a single parent
@@ -66,12 +67,13 @@ class ImporterService
      * the parent pipeline passed via context.
      *
      * @param  array<string, mixed>  $data
-     * @param  array{pipeline: Pipeline}  $context
+     * @param  array{pipeline?: Pipeline}  $context
      */
     protected function persistRow(array $data, int $actorId, array $context = []): void
     {
         /** @var Pipeline $pipeline */
-        $pipeline = $context['pipeline'];
+        $pipeline = $context['pipeline']
+            ?? throw new InvalidArgumentException('A pipeline is required to import pipeline stages.');
 
         PipelineStage::create([
             'pipeline_id' => $pipeline->id,
