@@ -38,6 +38,7 @@ use App\Models\Post;
 use App\Models\Product;
 use App\Models\Quiz;
 use App\Models\Quote;
+use App\Models\QuoteItem;
 use App\Models\QuoteStatus;
 use App\Models\Report;
 use App\Models\Setting;
@@ -196,6 +197,11 @@ class AppServiceProvider extends ServiceProvider
 
         Route::bind('pipelineStage', function ($value, $route) {
             return PipelineStage::where('pipeline_id', $route->parameter('pipeline'))
+                ->findOrFail($value);
+        });
+
+        Route::bind('quoteItem', function (string $value, $route): QuoteItem {
+            return QuoteItem::where('quote_id', $route->parameter('quote'))
                 ->findOrFail($value);
         });
 

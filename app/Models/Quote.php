@@ -12,9 +12,11 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -52,6 +54,7 @@ use Illuminate\Support\Facades\DB;
  * @property-read Model $quotable
  * @property-read QuoteStatus|null $status
  * @property-read Order|null $convertedOrder
+ * @property-read Collection<int, QuoteItem> $items
  * @property-read User|null $creator
  * @property-read User|null $updater
  * @property-read User|null $deleter
@@ -116,6 +119,16 @@ class Quote extends Model implements Auditable
     public function convertedOrder(): BelongsTo
     {
         return $this->belongsTo(Order::class, 'converted_order_id');
+    }
+
+    /**
+     * Get the line items on this quote, in display order.
+     *
+     * @return HasMany<QuoteItem, $this>
+     */
+    public function items(): HasMany
+    {
+        return $this->hasMany(QuoteItem::class)->orderBy('position')->orderBy('id');
     }
 
     /**
