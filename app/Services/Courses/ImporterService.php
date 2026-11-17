@@ -76,6 +76,13 @@ class ImporterService
     ): array {
         $handle = fopen($file->getRealPath(), 'r');
 
+        if ($handle === false) {
+            return [
+                'imported' => 0,
+                'skipped' => [['row' => 0, 'reason' => 'The uploaded file could not be read.']],
+            ];
+        }
+
         $header = fgetcsv($handle);
         $header = array_map(fn (?string $column) => strtolower(trim((string) $column)), $header ?: []);
 

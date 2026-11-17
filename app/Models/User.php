@@ -34,6 +34,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $role
  * @property bool $is_platform_admin
  * @property string $locale
+ * @property int|null $organisation_id
  * @property array<string, mixed>|null $meta
  * @property string|null $two_factor_secret
  * @property string|null $two_factor_recovery_codes
