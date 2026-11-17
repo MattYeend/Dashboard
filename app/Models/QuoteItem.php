@@ -65,8 +65,8 @@ use Illuminate\Support\Carbon;
 ])]
 class QuoteItem extends Model implements Auditable
 {
-    /** 
-     * @use HasFactory<QuoteItemFactory> 
+    /**
+     * @use HasFactory<QuoteItemFactory>
      */
     use BelongsToOrganisation,
         HasFactory,

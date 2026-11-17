@@ -7,8 +7,8 @@ namespace App\Services\Quotes;
 use App\Models\Quote;
 use App\Models\QuoteItem;
 use Illuminate\Support\Facades\DB;
-use LogicException;
 use InvalidArgumentException;
+use LogicException;
 
 class TotalsService
 {
