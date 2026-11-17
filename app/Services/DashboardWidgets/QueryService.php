@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\DashboardWidgets;
 
+use App\Models\DashboardWidgetPreference;
 use App\Models\User;
 use App\Services\CustomDashboardWidgets\QueryService as CustomDashboardWidgetQueryService;
 use App\Support\DashboardWidgetRegistry;
@@ -11,7 +12,7 @@ use App\Support\DashboardWidgetRegistry;
 class QueryService
 {
     public function __construct(
-        protected CustomDashboardWidgetQueryService $customWidgetQuery,
+        protected readonly CustomDashboardWidgetQueryService $customWidgetQuery,
     ) {}
 
     /**
@@ -29,12 +30,13 @@ class QueryService
         $builtIn = collect(DashboardWidgetRegistry::all())
             ->map(function (array $widget, int $index) use ($preferences) {
                 $preference = $preferences->get($widget['key']);
+                $hasPreference = $preference instanceof DashboardWidgetPreference;
 
                 return [
                     ...$widget,
                     'type' => 'builtin',
-                    'position' => $preference?->position ?? $index,
-                    'is_visible' => $preference?->is_visible ?? true,
+                    'position' => $hasPreference ? $preference->position : $index,
+                    'is_visible' => $hasPreference ? $preference->is_visible : true,
                 ];
             });
 
