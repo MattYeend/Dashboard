@@ -54,16 +54,4 @@ class CreatorService
                 return $newPlan;
             });
     }
-
-    /**
-     * Create the plan record.
-     *
-     * @param  array<string, mixed>  $data
-     */
-    protected function createIndustry(array $data, int $createdBy): Plan
-    {
-        $planData = $this->dataPreparation->prepareForCreation($data, $createdBy);
-
-        return Plan::create($planData);
-    }
 }
