@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Services\Quotes;
 
 use App\Models\Quote;
+use App\Services\Concerns\ResolvesRelatedName;
 use App\Services\CurrencyFormatterService;
 
 class FormatterService
 {
+    use ResolvesRelatedName;
+
     public function __construct(
         private readonly QuotableTypeRegistryService $registry,
         private readonly CurrencyFormatterService $currencyFormatter
@@ -71,9 +74,7 @@ class FormatterService
             'quotable_type_label' => $quote->quotable_type
                 ? ($this->registry->labelForModel($quote->quotable_type) ?? class_basename($quote->quotable_type))
                 : null,
-            'quotable_name' => $quote->quotable
-                ? ($quote->quotable->name ?? $quote->quotable->title ?? '#'.$quote->quotable->id)
-                : null,
+            'quotable_name' => $this->relatedName($quote->quotable),
             'quotable_type_key' => $this->registry->keyForModel($quote->quotable_type),
         ];
     }
