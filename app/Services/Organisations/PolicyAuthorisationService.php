@@ -216,7 +216,7 @@ class PolicyAuthorisationService
 
         return $roles
             ->filter(fn (Role $role) => ($ranks[$role->name] ?? PHP_INT_MAX) >= $actorRank)
-            ->map(fn (Role $role) => ['id' => $role->id, 'name' => $role->name])
+            ->map(fn (Role $role) => ['id' => (int) $role->id, 'name' => $role->name])
             ->values();
     }
 

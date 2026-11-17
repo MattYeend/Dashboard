@@ -55,12 +55,6 @@ parameters:
 			path: app/Services/Organisations/InvitationService.php
 
 		-
-			message: '#^Method App\\Services\\Organisations\\PolicyAuthorisationService\:\:assignableRolesFor\(\) should return Illuminate\\Support\\Collection\<int, array\{id\: int, name\: string\}\> but returns Illuminate\\Support\\Collection\<int, array\{id\: int\|string, name\: string\}\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Organisations/PolicyAuthorisationService.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$amount\.$#'
 			identifier: property.notFound
 			count: 1
