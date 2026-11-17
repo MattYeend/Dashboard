@@ -8,6 +8,7 @@ use App\Models\Log;
 use App\Models\Payment;
 use App\Services\AuditLogService;
 use App\Services\TrashFilterService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -52,6 +53,8 @@ class ExporterService
         $query = Payment::query()->with(['invoice', 'status']);
 
         $query = $this->filterService->applyAll($query, $filters);
+
+        /** @var Builder<Payment> $query */
         $query = $this->trashFilterService->applyFilter($query, $filters['trashed'] ?? null);
 
         $this->auditLogService->record(
@@ -67,6 +70,7 @@ class ExporterService
 
             $query->orderBy('id')->chunk(500, function ($payments) use ($handle): void {
                 foreach ($payments as $payment) {
+                    /** @var Payment $payment */
                     $row = [
                         'id' => $payment->id,
                         'invoice_number' => $payment->invoice?->invoice_number,

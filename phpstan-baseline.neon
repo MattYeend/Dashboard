@@ -1,40 +1,16 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
+			message: '#^Parameter \#1 \$likeable of method App\\Services\\Likes\\DeleterService\:\:delete\(\) expects App\\Contracts\\Likeable&Illuminate\\Database\\Eloquent\\Model, App\\Models\\Comment given\.$#'
+			identifier: argument.type
 			count: 1
-			path: app/Services/Dashboard/FormatterService.php
+			path: app/Actions/Like/UnlikeComment.php
 
 		-
-			message: '#^Property App\\Models\\Deal\:\:\$closed_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
+			message: '#^Parameter \#1 \$likeable of method App\\Services\\Likes\\DeleterService\:\:delete\(\) expects App\\Contracts\\Likeable&Illuminate\\Database\\Eloquent\\Model, App\\Models\\Post given\.$#'
+			identifier: argument.type
 			count: 1
-			path: app/Services/Deals/PipelineStageUpdaterService.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:withTrashed\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Services/Invoices/QueryService.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:likes\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Services/Likes/DeleterService.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 2
-			path: app/Services/Logs/ExporterService.php
-
-		-
-			message: '#^Cannot call method lt\(\) on string\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Services/Organisations/InvitationService.php
+			path: app/Actions/Like/UnlikePost.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$amount\.$#'

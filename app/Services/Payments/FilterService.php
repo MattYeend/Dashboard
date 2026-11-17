@@ -143,8 +143,6 @@ class FilterService
             return null;
         }
 
-        $date = CarbonImmutable::createFromFormat('!Y-m-d', $value);
-
-        return $date === false ? null : $date;
+        return CarbonImmutable::createFromFormat('!Y-m-d', $value) ?: null;
     }
 }

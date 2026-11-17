@@ -118,7 +118,7 @@ class QueryService
     /**
      * Invoices that can currently receive a payment, with their balance.
      *
-     * @return Collection<int, array<string, mixed>>
+     * @return Collection<int, array{id: int, invoice_number: string, total_amount: string, amount_paid: string, balance_due: string}>
      */
     public function payableInvoiceOptions(): Collection
     {
