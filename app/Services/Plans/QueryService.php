@@ -22,7 +22,7 @@ class QueryService
     ) {}
 
     /**
-     * Get paginated industries with filters.
+     * Get paginated plans with filters.
      */
     public function getPaginated(
         User $user,
@@ -91,6 +91,8 @@ class QueryService
 
     /**
      * Paginate the query and return as a plain array.
+     *
+     * @param  Builder<Plan>  $query
      */
     protected function paginate(
         Builder $query,
@@ -122,10 +124,6 @@ class QueryService
      */
     protected function getPermissions(User $user): array
     {
-        if (! $user) {
-            return ['permissions_meta' => []];
-        }
-
         return [
             'permissions_meta' => [
                 'can_create' => $user->can('create', Plan::class),
