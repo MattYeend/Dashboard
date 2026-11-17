@@ -1,54 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^PHPDoc tag @property for property App\\Models\\Activity\:\:\$deleted_at contains unknown class App\\Models\\CarbonImmutable\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Activity.php
-
-		-
-			message: '#^PHPDoc tag @property for property App\\Models\\Activity\:\:\$restored_at contains unknown class App\\Models\\CarbonImmutable\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Activity.php
-
-		-
-			message: '#^PHPDoc tag @property for property App\\Models\\Lesson\:\:\$deleted_at contains unknown class App\\Models\\CarbonImmutable\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Lesson.php
-
-		-
-			message: '#^PHPDoc tag @property for property App\\Models\\Lesson\:\:\$restored_at contains unknown class App\\Models\\CarbonImmutable\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Lesson.php
-
-		-
-			message: '#^PHPDoc tag @property for property App\\Models\\Report\:\:\$deleted_at contains unknown class App\\Models\\CarbonImmutable\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Report.php
-
-		-
-			message: '#^PHPDoc tag @property for property App\\Models\\Report\:\:\$restored_at contains unknown class App\\Models\\CarbonImmutable\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Report.php
-
-		-
-			message: '#^Property App\\Models\\Activity\:\:\$deleted_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Services/Activities/DeleterService.php
-
-		-
-			message: '#^Property App\\Models\\Activity\:\:\$restored_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Services/Activities/RestorerService.php
-
-		-
 			message: '#^Variable \$header on left side of \?\? always exists and is not nullable\.$#'
 			identifier: nullCoalesce.variable
 			count: 1
@@ -199,22 +151,10 @@ parameters:
 			path: app/Services/Lessons/ActiveCheckerService.php
 
 		-
-			message: '#^Property App\\Models\\Lesson\:\:\$deleted_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Services/Lessons/DeleterService.php
-
-		-
 			message: '#^Ternary operator condition is always true\.$#'
 			identifier: ternary.alwaysTrue
 			count: 1
 			path: app/Services/Lessons/FormatterService.php
-
-		-
-			message: '#^Property App\\Models\\Lesson\:\:\$restored_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Services/Lessons/RestorerService.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:likes\(\)\.$#'
@@ -437,18 +377,6 @@ parameters:
 			identifier: ternary.alwaysTrue
 			count: 1
 			path: app/Services/Quotes/FormatterService.php
-
-		-
-			message: '#^Property App\\Models\\Report\:\:\$deleted_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Services/Reports/DeleterService.php
-
-		-
-			message: '#^Property App\\Models\\Report\:\:\$restored_at \(App\\Models\\CarbonImmutable\|null\) does not accept Carbon\\CarbonImmutable\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Services/Reports/RestorerService.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\TaskStatus\)\: array\<string, mixed\> given\.$#'

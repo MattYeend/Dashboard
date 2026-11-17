@@ -132,9 +132,9 @@ trait ImportsViaPreview
      */
     public function commit(string $token, int $actorId): array
     {
-        $context = Cache::get($this->importCacheKey($token))['context'] ?? [];
-
         [$header, $rows] = $this->readStoredFile($token, $actorId);
+
+        $context = Cache::get($this->importCacheKey($token))['context'] ?? [];
 
         $actor = User::findOrFail($actorId);
         $imported = 0;
@@ -143,7 +143,7 @@ trait ImportsViaPreview
         DB::transaction(function () use ($rows, $header, $actorId, $context, &$imported, &$skipped) {
             foreach ($rows as $rowNumber => $data) {
                 if ($data === null) {
-                    $skipped[] = ['row' => $rowNumber, 'reason' => 'Expected '.count($header ?? []).' columns'];
+                    $skipped[] = ['row' => $rowNumber, 'reason' => 'Expected '.count($header).' columns'];
 
                     continue;
                 }
@@ -201,7 +201,7 @@ trait ImportsViaPreview
         }
 
         $header = fgetcsv($stream);
-        $header = array_map(fn (string $column) => strtolower(trim($column)), $header ?: []);
+        $header = array_map(fn (?string $column) => strtolower(trim((string) $column)), $header ?: []);
 
         $rows = [];
         $rowNumber = 1;
