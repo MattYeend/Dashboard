@@ -73,17 +73,17 @@ class ExporterService
                     /** @var Payment $payment */
                     $row = [
                         'id' => $payment->id,
-                        'invoice_number' => $payment->invoice?->invoice_number,
+                        'invoice_number' => $payment->invoice->invoice_number ?? null,
                         'type' => $payment->type->value,
-                        'status' => $payment->status?->title,
+                        'status' => $payment->status->title ?? null,
                         'method' => $payment->method->value,
                         'amount' => $payment->amount,
                         'currency' => $payment->currency,
                         'reference' => $payment->reference,
-                        'paid_at' => $payment->paid_at?->toIso8601String(),
+                        'paid_at' => $payment->paid_at->toIso8601String(),
                         'parent_payment_id' => $payment->parent_payment_id,
                         'created_by' => $payment->created_by,
-                        'created_at' => $payment->created_at?->toIso8601String(),
+                        'created_at' => $payment->created_at->toIso8601String(),
                     ];
 
                     fputcsv($handle, array_map($this->sanitiseCell(...), $row));
