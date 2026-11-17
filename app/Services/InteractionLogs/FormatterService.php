@@ -23,13 +23,13 @@ class FormatterService
             'subject' => $interactionLog->subject,
             'outcome' => $interactionLog->outcome,
             'notes' => $interactionLog->notes,
-            'occurred_at' => $interactionLog->occurred_at?->toIso8601String(),
+            'occurred_at' => $interactionLog->occurred_at->toIso8601String(),
             'contact' => $interactionLog->contact ? [
                 'id' => $interactionLog->contact->id,
                 'name' => $interactionLog->contact->name,
             ] : null,
-            'created_at' => $interactionLog->created_at?->toIso8601String(),
-            'updated_at' => $interactionLog->updated_at?->toIso8601String(),
+            'created_at' => $interactionLog->created_at->toIso8601String(),
+            'updated_at' => $interactionLog->updated_at->toIso8601String(),
             'creator' => $interactionLog->creator ? ['name' => $interactionLog->creator->name] : null,
             'updater' => $interactionLog->updater ? ['name' => $interactionLog->updater->name] : null,
         ];
