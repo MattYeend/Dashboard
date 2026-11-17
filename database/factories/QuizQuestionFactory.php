@@ -33,7 +33,7 @@ class QuizQuestionFactory extends Factory
             'quiz_id' => Quiz::factory(),
             // Inherit the organisation from the parent quiz so the pivot can never
             // disagree with it; fall back to the current tenant if the quiz has none.
-            'organisation_id' => fn (array $attributes): ?int => Quiz::find($attributes['quiz_id'])?->organisation_id
+            'organisation_id' => fn (array $attributes): ?int => Quiz::find($attributes['quiz_id'])->organisation_id
                 ?? Tenant::current()?->id,
             'question_id' => Question::factory(),
             'position' => 1,

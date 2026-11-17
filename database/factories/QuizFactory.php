@@ -24,7 +24,7 @@ class QuizFactory extends Factory
     public function definition(): array
     {
         return [
-            'organisation_id' => Organisation::current()?->id ?? Organisation::query()->oldest('id')->value('id'),
+            'organisation_id' => Organisation::current()->id ?? Organisation::query()->oldest('id')->value('id'),
             'course_id' => Course::factory(),
             'lesson_id' => null,
             'title' => 'Laravel fundamentals check',

@@ -25,7 +25,7 @@ class QuestionFactory extends Factory
     public function definition(): array
     {
         return [
-            'organisation_id' => Organisation::current()?->id ?? Organisation::query()->oldest('id')->value('id'),
+            'organisation_id' => Organisation::current()->id ?? Organisation::query()->oldest('id')->value('id'),
             'questionable_type' => (new Quiz)->getMorphClass(),
             'questionable_id' => Quiz::factory(),
             'question' => rtrim($this->faker->sentence(8), '.').'?',
@@ -52,7 +52,7 @@ class QuestionFactory extends Factory
     public function forQuestionable(Model $questionable): static
     {
         return $this->state([
-            'organisation_id' => $questionable->organisation_id,
+            'organisation_id' => $questionable->getAttribute('organisation_id'),
             'questionable_type' => $questionable->getMorphClass(),
             'questionable_id' => $questionable->getKey(),
         ]);
