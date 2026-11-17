@@ -13,6 +13,7 @@ use App\Services\Payments\ActiveCheckerService as PaymentActiveCheckerService;
 use App\Services\Payments\QueryService as PaymentQueryService;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class QueryService
 {
@@ -111,8 +112,9 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = Invoice::query()->withCount([
-            /** @param Builder<Payment> $query */
-            'payments' => fn (Builder $query) => $query->withTrashed(),
+            'payments' => static function (Builder $query): void {
+                $query->withoutGlobalScope(SoftDeletingScope::class);
+            },
         ])->with([
             'company',
             'contact.addresses',
@@ -131,7 +133,7 @@ class QueryService
 
     /**
      * Paginate the query and return as a plain array.
-     * 
+     *
      * @param  Builder<Invoice>  $query
      */
     protected function paginate(
