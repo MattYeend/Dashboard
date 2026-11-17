@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Auditable;
-use App\Models\Invoice;
 use App\Traits\BelongsToOrganisation;
 use Carbon\CarbonImmutable;
 use Database\Factories\InvoiceItemFactory;

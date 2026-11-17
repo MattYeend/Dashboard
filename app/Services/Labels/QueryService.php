@@ -92,7 +92,7 @@ class QueryService
 
     /**
      * Paginate the query and return as a plain array.
-     * 
+     *
      * @param  Builder<Label>  $query
      */
     protected function paginate(

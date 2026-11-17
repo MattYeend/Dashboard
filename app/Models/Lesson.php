@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Contracts\Auditable;
 use App\Models\Concerns\HasQuestions;
-use App\Models\Course;
 use App\Traits\BelongsToOrganisation;
 use Carbon\CarbonImmutable;
 use Database\Factories\LessonFactory;

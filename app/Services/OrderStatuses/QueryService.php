@@ -78,7 +78,7 @@ class QueryService
 
     /**
      * Paginate the query and return as plain array.
-     * 
+     *
      * @param  Builder<OrderStatus>  $query
      */
     protected function paginate(Builder $query, int $perPage): array
