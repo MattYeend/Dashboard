@@ -1,8 +1,3 @@
 parameters:
-	ignoreErrors:
-		-
-			message: '#^Trait App\\Traits\\Commentable is used zero times and is not analysed\.$#'
-			identifier: trait.unused
-			count: 1
-			path: app/Traits/Commentable.php
+	ignoreErrors: []
 

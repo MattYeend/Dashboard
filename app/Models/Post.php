@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Contracts\Auditable;
 use App\Contracts\HasLikes;
 use App\Traits\BelongsToOrganisation;
+use App\Traits\Commentable;
 use App\Traits\Likeable;
 use Carbon\CarbonImmutable;
 use Database\Factories\PostFactory;
@@ -15,7 +16,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -52,6 +52,7 @@ class Post extends Model implements Auditable, HasLikes
      * @use HasFactory<PostFactory>
      */
     use BelongsToOrganisation,
+        Commentable,
         HasFactory,
         Likeable,
         SoftDeletes;
@@ -64,16 +65,6 @@ class Post extends Model implements Auditable, HasLikes
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'category_post');
-    }
-
-    /**
-     * Get the comments on this post.
-     *
-     * @return MorphMany<Comment, $this>
-     */
-    public function comments(): MorphMany
-    {
-        return $this->morphMany(Comment::class, 'commentable');
     }
 
     /**
