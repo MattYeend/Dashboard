@@ -40,7 +40,6 @@ class CreatorService
 
         $this->policyAuthorisationService->authoriseRoleAssignmentOnCreate($actor, $tierRole, $functionalRoles);
 
-        /** @var User $user */
         return $this->createResource->handle(
             $data,
             function (array $data) use ($createdBy, $actor, $tierRole, $functionalRoles): User {

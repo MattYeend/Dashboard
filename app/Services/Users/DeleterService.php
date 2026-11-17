@@ -35,9 +35,10 @@ class DeleterService
         return $this->deleteResource->handle(
             $user,
             function (User $user) use ($actor, $deletedBy): void {
-                $user->deleted_by = $deletedBy;
-                $user->deleted_at = now();
-                $user->save();
+                $user->forceFill([
+                    'deleted_by' => $deletedBy,
+                    'deleted_at' => now(),
+                ])->save();
 
                 $this->auditLogService->record(
                     Log::ACTION_DELETE_USER,
