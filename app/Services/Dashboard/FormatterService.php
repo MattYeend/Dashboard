@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Dashboard;
 
 use App\Models\Log;
+use App\Models\TaskStatus;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
@@ -24,14 +25,14 @@ class FormatterService
     }
 
     /**
-     * Converts the TaskStatus collection into {label, value, colours} shape
-     * for a doughnut chart.
+     * @param  Collection<int, TaskStatus>  $breakdown
+     * @return array<int, array{label: string, value: int, background_colour: string|null, text_colour: string|null}>
      */
     public function formatTaskStatusChart(Collection $breakdown): array
     {
-        return $breakdown->map(fn ($status) => [
+        return $breakdown->map(fn (TaskStatus $status) => [
             'label' => $status->title,
-            'value' => $status->tasks_count,
+            'value' => (int) $status->getAttribute('tasks_count'),
             'background_colour' => $status->background_colour,
             'text_colour' => $status->text_colour,
         ])->values()->all();
@@ -60,14 +61,14 @@ class FormatterService
     }
 
     /**
-     * Flattens audit log rows for a recent-activity feed.
+     * @param  Collection<int, Log>  $logs
      */
     public function formatAuditFeed(Collection $logs): array
     {
         return $logs->map(fn (Log $log) => [
             'id' => $log->id,
-            'action' => $log->action,
-            'user' => $log->user?->name ?? 'System',
+            'action' => Log::actionLabel($log->action_id),
+            'user' => $log->loggedInUser?->name ?? 'System',
             'created_at' => $log->created_at->toIso8601String(),
         ])->all();
     }

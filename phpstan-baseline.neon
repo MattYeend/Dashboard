@@ -1,34 +1,16 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			message: '#^Access to an undefined property App\\Models\\Log\:\:\$action\.$#'
 			identifier: property.notFound
 			count: 1
-			path: app/Services/Contacts/FormatterService.php
+			path: app/Services/Dashboard/FormatterService.php
 
 		-
-			message: '#^Ternary operator condition is always true\.$#'
-			identifier: ternary.alwaysTrue
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
 			count: 1
-			path: app/Services/Contacts/FormatterService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Contact\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Contacts/QueryService.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\User\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: app/Services/Courses/ImporterService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Course\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/Courses/QueryService.php
+			path: app/Services/Dashboard/FormatterService.php
 
 		-
 			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
@@ -37,28 +19,10 @@ parameters:
 			path: app/Services/Dashboard/FormatterService.php
 
 		-
-			message: '#^Relation ''user'' is not found in App\\Models\\Log model\.$#'
+			message: '#^Relation ''actor'' is not found in App\\Models\\Log model\.$#'
 			identifier: larastan.relationExistence
 			count: 1
 			path: app/Services/Dashboard/QueryService.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>is_visible" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: app/Services/DashboardWidgets/QueryService.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>position" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: app/Services/DashboardWidgets/QueryService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\DealStatus\)\: array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/DealStatuses/QueryService.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_closing\.$#'
@@ -175,18 +139,6 @@ parameters:
 			path: app/Services/OrderStatuses/QueryService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Orders/FormatterService.php
-
-		-
-			message: '#^Ternary operator condition is always true\.$#'
-			identifier: ternary.alwaysTrue
-			count: 1
-			path: app/Services/Orders/FormatterService.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\Order\)\: array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -283,22 +235,10 @@ parameters:
 			path: app/Services/Payments/FilterService.php
 
 		-
-			message: '#^Ternary operator condition is always true\.$#'
-			identifier: ternary.alwaysTrue
-			count: 2
-			path: app/Services/Payments/FormatterService.php
-
-		-
 			message: '#^Method App\\Services\\Payments\\QueryService\:\:payableInvoiceOptions\(\) should return Illuminate\\Support\\Collection\<int, array\<string, mixed\>\> but returns Illuminate\\Support\\Collection\<int, array\{id\: int, invoice_number\: string, total_amount\: string, amount_paid\: string, balance_due\: string\}\>\.$#'
 			identifier: return.type
 			count: 1
 			path: app/Services/Payments/QueryService.php
-
-		-
-			message: '#^Ternary operator condition is always true\.$#'
-			identifier: ternary.alwaysTrue
-			count: 1
-			path: app/Services/PipelineStages/FormatterService.php
 
 		-
 			message: '#^Default value of the parameter \#3 \$context \(array\{\}\) of method App\\Services\\PipelineStages\\ImporterService\:\:persistRow\(\) is incompatible with type array\{pipeline\: App\\Models\\Pipeline\}\.$#'
@@ -359,18 +299,6 @@ parameters:
 			identifier: property.notFound
 			count: 3
 			path: app/Services/Quizzes/FormatterService.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Quotes/FormatterService.php
-
-		-
-			message: '#^Ternary operator condition is always true\.$#'
-			identifier: ternary.alwaysTrue
-			count: 1
-			path: app/Services/Quotes/FormatterService.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(Illuminate\\Database\\Eloquent\\Model\)\: mixed\)\|null, Closure\(App\\Models\\TaskStatus\)\: array\<string, mixed\> given\.$#'

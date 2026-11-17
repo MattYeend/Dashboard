@@ -82,7 +82,7 @@ class QueryService
     public function getRecentAuditLogs(int $limit = 10): Collection
     {
         return Log::query()
-            ->with('actor:id,name')
+            ->with('loggedInUser:id,name')
             ->latest()
             ->limit($limit)
             ->get();
