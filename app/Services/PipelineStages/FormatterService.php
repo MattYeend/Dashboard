@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\PipelineStages;
 
+use App\Models\Pipeline;
 use App\Models\PipelineStage;
 
 class FormatterService
@@ -34,14 +35,28 @@ class FormatterService
             'updated_by' => $pipelineStage->updated_by,
             'deleted_by' => $pipelineStage->deleted_by,
             'restored_by' => $pipelineStage->restored_by,
-            'pipeline' => $pipelineStage->pipeline ? [
-                'id' => $pipelineStage->pipeline->id,
-                'title' => $pipelineStage->pipeline->title,
-            ] : null,
+            'pipeline' => $this->formatPipeline($pipelineStage->pipeline),
             'creator' => $pipelineStage->creator ? ['id' => $pipelineStage->creator->id, 'name' => $pipelineStage->creator->name] : null,
             'updater' => $pipelineStage->updater ? ['id' => $pipelineStage->updater->id, 'name' => $pipelineStage->updater->name] : null,
             'deleter' => $pipelineStage->deleter ? ['id' => $pipelineStage->deleter->id, 'name' => $pipelineStage->deleter->name] : null,
             'restorer' => $pipelineStage->restorer ? ['id' => $pipelineStage->restorer->id, 'name' => $pipelineStage->restorer->name] : null,
+        ];
+    }
+
+    /**
+     * Format the parent pipeline, or null when it is missing or soft-deleted.
+     *
+     * @return array{id: int, title: string}|null
+     */
+    private function formatPipeline(?Pipeline $pipeline): ?array
+    {
+        if ($pipeline === null) {
+            return null;
+        }
+
+        return [
+            'id' => $pipeline->id,
+            'title' => $pipeline->title,
         ];
     }
 }
