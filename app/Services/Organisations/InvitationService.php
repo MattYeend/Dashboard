@@ -10,6 +10,7 @@ use App\Models\OrganisationMembership;
 use App\Models\User;
 use App\Notifications\OrganisationInvitationNotification;
 use App\Services\AuditLogService;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -202,7 +203,7 @@ class InvitationService
         }
 
         if ($membership->invited_at !== null
-            && $membership->invited_at->lt(now()->subDays(self::INVITATION_EXPIRY_DAYS))
+            && Carbon::parse($membership->invited_at)->lt(now()->subDays(self::INVITATION_EXPIRY_DAYS))
         ) {
             throw ValidationException::withMessages([
                 'token' => 'This invitation has expired. Please ask for a new one to be sent.',
