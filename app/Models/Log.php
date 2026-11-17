@@ -1066,6 +1066,21 @@ class Log extends Model implements Auditable
 
     public const ACTION_RECALCULATE_INVOICE_BALANCE = 475;
 
+    // Quote Item Management
+    public const ACTION_CREATE_QUOTE_ITEM = 476;
+
+    public const ACTION_UPDATE_QUOTE_ITEM = 477;
+
+    public const ACTION_DELETE_QUOTE_ITEM = 478;
+
+    public const ACTION_RESTORE_QUOTE_ITEM = 479;
+
+    public const ACTION_FORCE_DELETE_QUOTE_ITEM = 480;
+
+    public const ACTION_IMPORT_QUOTE_ITEM = 481;
+
+    public const ACTION_EXPORT_QUOTE_ITEM = 482;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
