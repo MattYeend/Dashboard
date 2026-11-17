@@ -61,12 +61,6 @@ parameters:
 			path: app/Services/Payments/ExporterService.php
 
 		-
-			message: '#^Method App\\Services\\Plans\\DataPreparationService\:\:prepareForCreation\(\) invoked with 2 parameters, 1 required\.$#'
-			identifier: arguments.count
-			count: 1
-			path: app/Services/Plans/CreatorService.php
-
-		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
 			count: 1
@@ -79,62 +73,8 @@ parameters:
 			path: app/Services/Plans/QueryService.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Products/ExporterService.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Question\:\:\$pivot\.$#'
-			identifier: property.notFound
-			count: 3
-			path: app/Services/Quizzes/FormatterService.php
-
-		-
-			message: '#^Variable \$user in PHPDoc tag @var does not exist\.$#'
-			identifier: varTag.variableNotFound
-			count: 1
-			path: app/Services/Users/CreatorService.php
-
-		-
-			message: '#^Property App\\Models\\User\:\:\$deleted_at is not writable\.$#'
-			identifier: assign.propertyReadOnly
-			count: 1
-			path: app/Services/Users/DeleterService.php
-
-		-
 			message: '#^Trait App\\Traits\\Commentable is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
 			path: app/Traits/Commentable.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: database/factories/LessonFactory.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organisation_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: database/factories/QuestionFactory.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: database/factories/QuestionFactory.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: database/factories/QuizFactory.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>organisation_id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: database/factories/QuizQuestionFactory.php
 

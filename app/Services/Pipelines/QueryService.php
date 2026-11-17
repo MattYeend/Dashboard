@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Plans;
+namespace App\Services\Pipelines;
 
-use App\Models\Plan;
+use App\Models\Pipeline;
+use App\Models\PipelineStatus;
 use App\Models\User;
 use App\Services\TrashFilterService;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,10 +23,10 @@ class QueryService
     ) {}
 
     /**
-     * Get paginated plans with filters.
+     * Get paginated pipeline with filters.
      */
     public function getPaginated(
-        User $user,
+        User $actor,
         array $filters = []
     ): array {
         $query = $this->buildQuery($filters);
@@ -36,17 +37,20 @@ class QueryService
 
         return array_merge(
             $paginated,
-            $this->getPermissions($user),
+            $this->getPermissions($actor),
             $this->baseData(),
         );
     }
 
     /**
-     * Get a single plan by ID.
+     * Get a single pipeline by ID.
      */
-    public function getById(User $user, Plan $plan): array
+    public function getById(User $user, Pipeline $pipeline): array
     {
-        $plan->loadMissing([
+        $pipeline->loadMissing([
+            'status',
+            'stages',
+            'assignee',
             'creator',
             'updater',
             'deleter',
@@ -54,23 +58,22 @@ class QueryService
         ]);
 
         return array_merge(
-            ['plan' => $this->formatterService->format($plan)],
+            ['pipeline' => $this->formatterService->format($pipeline)],
             $this->getPermissions($user),
             $this->baseData(),
         );
     }
 
     /**
-     * Get data needed to populate create and edit forms.
+     * Get the data required to render the create-pipeline form, including
+     * the assignable users list and permissions for the current user.
      */
-    public function getFormData(): array
+    public function getCreateData(User $user): array
     {
-        return [
-            'users' => User::orderBy('name')->get([
-                'id',
-                'name',
-            ]),
-        ];
+        return array_merge(
+            $this->getPermissions($user),
+            $this->baseData(),
+        );
     }
 
     /**
@@ -78,21 +81,24 @@ class QueryService
      */
     protected function buildQuery(array $filters): Builder
     {
-        $query = Plan::query()->with([
+        $query = Pipeline::query()->with(
+            'status',
+            'assignee',
             'creator',
             'updater',
             'deleter',
-            'restorer',
-        ]);
+            'restorer'
+        )->withCount('stages');
+
         $query = $this->filterService->applyAll($query, $filters);
 
         return $this->applySorting($query, $filters);
     }
 
     /**
-     * Paginate the query and return as a plain array.
+     * Paginate the query and return as plain array.
      *
-     * @param  Builder<Plan>  $query
+     * @param  Builder<Pipeline>  $query
      */
     protected function paginate(
         Builder $query,
@@ -101,9 +107,9 @@ class QueryService
         $paginator = $query->paginate($perPage)->withQueryString();
 
         return [
-            'plans' => [
+            'pipelines' => [
                 'data' => array_map(
-                    fn (Plan $plan) => $this->formatterService->format($plan),
+                    fn (Pipeline $pipeline) => $this->formatterService->format($pipeline),
                     $paginator->items()
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
@@ -126,8 +132,9 @@ class QueryService
     {
         return [
             'permissions_meta' => [
-                'can_create' => $user->can('create', Plan::class),
-                'can_view_any' => $user->can('viewAny', Plan::class),
+                'can_create' => $user->can('create', Pipeline::class),
+                'can_view_any' => $user->can('viewAny', Pipeline::class),
+                'can_export' => $user->can('export', Pipeline::class),
             ],
         ];
     }
@@ -140,11 +147,19 @@ class QueryService
         return [
             'sort_fields' => $this->sortingService->getAvailableSortFields(),
             'trash_filters' => $this->trashFilterService->getFilterOptions(),
+            'users' => User::query()
+                ->select('id', 'name')
+                ->orderBy('name')
+                ->get(),
+            'statuses' => PipelineStatus::query()
+                ->select('id', 'title', 'background_colour', 'text_colour')
+                ->orderBy('title')
+                ->get(),
         ];
     }
 
     /**
-     * Apply sorting and trash filtering to the query.
+     * Apply sorting to the query.
      */
     private function applySorting(
         Builder $query,
@@ -157,7 +172,7 @@ class QueryService
 
         return $this->sortingService->applySorting(
             $query,
-            $filters['sort_by'] ?? 'price',
+            $filters['sort_by'] ?? 'title',
             $filters['sort_direction'] ?? 'asc'
         );
     }

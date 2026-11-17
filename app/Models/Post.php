@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Contracts\HasLikes;
 use App\Traits\BelongsToOrganisation;
 use App\Traits\Likeable;
 use Carbon\CarbonImmutable;
@@ -45,7 +46,7 @@ use Illuminate\Support\Carbon;
     'created_by',
     'updated_by',
 ])]
-class Post extends Model implements Auditable
+class Post extends Model implements Auditable, HasLikes
 {
     /**
      * @use HasFactory<PostFactory>

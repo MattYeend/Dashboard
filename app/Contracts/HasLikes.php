@@ -6,7 +6,7 @@ namespace App\Contracts;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-interface Likeable
+interface HasLikes
 {
     /**
      * Get the likes belonging to this model.
