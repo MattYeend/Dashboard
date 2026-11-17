@@ -6,6 +6,7 @@ namespace App\Services\Deals;
 
 use App\Actions\UpdateResource;
 use App\Models\Deal;
+use App\Models\DealStatus;
 use App\Models\Log;
 use App\Models\PipelineStage;
 use App\Models\User;
@@ -40,9 +41,11 @@ class PipelineStageUpdaterService
             function () use (&$deal, $stage, $actor, $before) {
                 $deal->stage_id = $stage->id;
 
-                if ($stage->dealStatus?->is_closing) {
+                $dealStatus = $stage->dealStatus;
+
+                if ($dealStatus instanceof DealStatus && $dealStatus->is_closing) {
                     $deal->status_id = $stage->deal_status_id;
-                    $deal->closed_at = now()->toDateString();
+                    $deal->closed_at = now()->startOfDay();
                 }
 
                 $deal->updated_by = $actor->id;
