@@ -81,6 +81,8 @@ class QueryService
 
     /**
      * Paginate the query and return as a plain array.
+     * 
+     * @param  Builder<NotificationBroadcast>  $query
      */
     protected function paginate(Builder $query, int $perPage): array
     {

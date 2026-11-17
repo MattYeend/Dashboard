@@ -111,6 +111,7 @@ class QueryService
     protected function buildQuery(array $filters): Builder
     {
         $query = Invoice::query()->withCount([
+            /** @param Builder<Payment> $query */
             'payments' => fn (Builder $query) => $query->withTrashed(),
         ])->with([
             'company',
@@ -130,6 +131,8 @@ class QueryService
 
     /**
      * Paginate the query and return as a plain array.
+     * 
+     * @param  Builder<Invoice>  $query
      */
     protected function paginate(
         Builder $query,

@@ -92,6 +92,8 @@ class QueryService
 
     /**
      * Paginate the query and return as a plain array.
+     * 
+     * @param  Builder<Industry>  $query
      */
     protected function paginate(
         Builder $query,

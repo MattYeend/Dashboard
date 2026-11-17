@@ -22,7 +22,7 @@ class QueryService
     ) {}
 
     /**
-     * Get paginated task statuses with filters.
+     * Get paginated invoice statuses with filters.
      */
     public function getPaginated(
         User $actor,
@@ -78,6 +78,8 @@ class QueryService
 
     /**
      * Paginate the query and return as plain array.
+     * 
+     * @param  Builder<InvoiceStatus>  $query
      */
     protected function paginate(
         Builder $query,

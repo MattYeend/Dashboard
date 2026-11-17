@@ -1,28 +1,10 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Access to an undefined property App\\Models\\Log\:\:\$action\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/Dashboard/FormatterService.php
-
-		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: app/Services/Dashboard/FormatterService.php
-
-		-
 			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
 			path: app/Services/Dashboard/FormatterService.php
-
-		-
-			message: '#^Relation ''actor'' is not found in App\\Models\\Log model\.$#'
-			identifier: larastan.relationExistence
-			count: 1
-			path: app/Services/Dashboard/QueryService.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_closing\.$#'

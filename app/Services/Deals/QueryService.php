@@ -133,6 +133,8 @@ class QueryService
 
     /**
      * Paginate the query and return as plain array.
+     *
+     * @param  Builder<Deal>  $query
      */
     protected function paginate(
         Builder $query,
