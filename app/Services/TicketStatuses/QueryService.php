@@ -79,6 +79,8 @@ class QueryService
 
     /**
      * Paginate the query and return as plain array.
+     *
+     * @param  Builder<TicketStatus>  $query
      */
     protected function paginate(Builder $query, int $perPage): array
     {
@@ -108,10 +110,6 @@ class QueryService
      */
     protected function getPermissions(User $user): array
     {
-        if (! $user) {
-            return ['permissions_meta' => []];
-        }
-
         return [
             'permissions_meta' => [
                 'can_create' => $user->can('create', TicketStatus::class),

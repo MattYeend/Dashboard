@@ -126,6 +126,8 @@ class QueryService
 
     /**
      * Paginate the query and return as a plain array.
+     *
+     * @param  Builder<Task>  $query
      */
     protected function paginate(
         Builder $query,

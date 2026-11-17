@@ -78,6 +78,8 @@ class QueryService
 
     /**
      * Paginate the query and return as plain array.
+     *
+     * @param  Builder<PipelineStatus>  $query
      */
     protected function paginate(
         Builder $query,
