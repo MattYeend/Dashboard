@@ -22,7 +22,7 @@ class QueryService
     ) {}
 
     /**
-     * Get paginated task statuses with filters.
+     * Get paginated deal statuses with filters.
      */
     public function getPaginated(
         User $actor,
@@ -85,11 +85,14 @@ class QueryService
     ): array {
         $paginator = $query->paginate($perPage)->withQueryString();
 
+        /** @var array<int, DealStatus> $items */
+        $items = $paginator->items();
+
         return [
             'dealStatuses' => [
                 'data' => array_map(
                     fn (DealStatus $dealStatus) => $this->formatterService->format($dealStatus),
-                    $paginator->items()
+                    $items
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
                 'meta' => [

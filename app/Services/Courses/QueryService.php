@@ -164,11 +164,14 @@ class QueryService
     {
         $paginator = $query->paginate($perPage)->withQueryString();
 
+        /** @var array<int, Course> $items */
+        $items = $paginator->items();
+
         return [
             'courses' => [
                 'data' => array_map(
                     fn (Course $course) => $this->formatterService->format($course),
-                    $paginator->items()
+                    $items
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
                 'meta' => [

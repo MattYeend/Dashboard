@@ -115,11 +115,14 @@ class QueryService
     ): array {
         $paginator = $query->paginate($perPage)->withQueryString();
 
+        /** @var array<int, Contact> $items */
+        $items = $paginator->items();
+
         return [
             'contacts' => [
                 'data' => array_map(
                     fn (Contact $contact) => $this->formatterService->format($contact),
-                    $paginator->items()
+                    $items
                 ),
                 'links' => $paginator->linkCollection()->toArray(),
                 'meta' => [
