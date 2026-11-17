@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Services\Orders;
 
 use App\Models\Order;
+use App\Services\Concerns\ResolvesRelatedName;
 use App\Services\CurrencyFormatterService;
 
 class FormatterService
 {
+    use ResolvesRelatedName;
+
     public function __construct(
         private readonly OrderableTypeRegistryService $registry,
         private readonly CurrencyFormatterService $currencyFormatter
@@ -59,11 +62,7 @@ class FormatterService
             'orderable_type_label' => $order->orderable_type
                 ? ($this->registry->labelForModel($order->orderable_type) ?? class_basename($order->orderable_type))
                 : null,
-            'orderable_name' => $order->orderable
-                ? ($order->orderable->name
-                    ?? $order->orderable->title
-                    ?? '#'.$order->orderable->id)
-                : null,
+            'orderable_name' => $this->relatedName($order->orderable),
             'orderable_type_key' => $this->registry->keyForModel($order->orderable_type),
         ];
     }
