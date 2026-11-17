@@ -155,5 +155,7 @@ return [
     'global_scope_bypass_allow_list' => [
         'app/Actions/Organisations/CascadeSoftDeleteOrganisationScopedRecords.php',
         'app/Services/Organisations/DataExportService.php',
+        'app/Services/Invoices/QueryService.php',
+        'app/Services/TrashFilterService.php',
     ],
 ];
