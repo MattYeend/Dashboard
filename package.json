@@ -19,6 +19,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
+        "@inertiajs/vite": "^3.11.0",
         "@laravel/vite-plugin-wayfinder": "^0.1.11",
         "@stylistic/eslint-plugin": "^5.10.0",
         "@tailwindcss/typography": "^0.5.20",
@@ -34,6 +35,7 @@
         "eslint-plugin-import": "^2.32.0",
         "eslint-plugin-vue": "^10.12.1",
         "fontaine": "^0.8.2",
+        "laravel-vite-plugin": "^3.0.0",
         "prettier": "^3.9.10",
         "prettier-plugin-tailwindcss": "^0.8.1",
         "rollup-plugin-visualizer": "^7.1.2",
@@ -44,7 +46,6 @@
         "vue-tsc": "^3.3.13"
     },
     "dependencies": {
-        "@inertiajs/vite": "^3.11.0",
         "@inertiajs/vue3": "^3.11.0",
         "@laravel/passkeys": "^0.4.0",
         "@lucide/vue": "^1.70.0",
@@ -70,7 +71,6 @@
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "dompurify": "^3.4.12",
-        "laravel-vite-plugin": "^3.0.0",
         "reka-ui": "^2.10.4",
         "tailwind-merge": "^3.2.0",
         "tailwindcss": "^4.3.5",
