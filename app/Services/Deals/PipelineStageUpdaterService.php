@@ -11,6 +11,7 @@ use App\Models\Log;
 use App\Models\PipelineStage;
 use App\Models\User;
 use App\Services\AuditLogService;
+use Illuminate\Support\Carbon;
 
 class PipelineStageUpdaterService
 {
@@ -45,7 +46,7 @@ class PipelineStageUpdaterService
 
                 if ($dealStatus instanceof DealStatus && $dealStatus->is_closing) {
                     $deal->status_id = $stage->deal_status_id;
-                    $deal->closed_at = now()->startOfDay();
+                    $deal->closed_at = Carbon::today();
                 }
 
                 $deal->updated_by = $actor->id;
