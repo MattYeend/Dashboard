@@ -8,6 +8,7 @@ use App\Models\Log;
 use App\Models\Product;
 use App\Services\AuditLogService;
 use App\Services\TrashFilterService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -52,6 +53,8 @@ class ExporterService
         $query = Product::query();
 
         $query = $this->filterService->applySearch($query, $filters['search'] ?? null);
+
+        /** @var Builder<Product> $query */
         $query = $this->trashFilterService->applyFilter($query, $filters['trashed'] ?? null);
 
         $this->auditLogService->record(
@@ -67,6 +70,7 @@ class ExporterService
 
             $query->orderBy('id')->chunk(500, function ($products) use ($handle): void {
                 foreach ($products as $product) {
+                    /** @var Product $product */
                     $row = $product->only(self::COLUMNS);
                     $row['is_active'] = $product->is_active ? '1' : '0';
 
