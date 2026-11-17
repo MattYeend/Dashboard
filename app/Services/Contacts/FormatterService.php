@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Contacts;
 
 use App\Models\Contact;
+use Illuminate\Database\Eloquent\Model;
 
 class FormatterService
 {
@@ -41,12 +42,31 @@ class FormatterService
             'contactable_type_label' => $contact->contactable_type
                 ? ($this->registry->labelForModel($contact->contactable_type) ?? class_basename($contact->contactable_type))
                 : null,
-            'contactable_name' => $contact->contactable
-                ? ($contact->contactable->name
-                    ?? $contact->contactable->title
-                    ?? '#'.$contact->contactable->id)
-                : null,
+            'contactable_name' => $this->contactableName($contact),
             'contactable_type_key' => $this->registry->keyForModel($contact->contactable_type),
         ];
+    }
+
+    /**
+     * Resolve a display name for the contact's owner, falling back to its key.
+     */
+    private function contactableName(Contact $contact): ?string
+    {
+        /** @var Model|null $owner */
+        $owner = $contact->contactable;
+
+        if ($owner === null) {
+            return null;
+        }
+
+        foreach (['name', 'title'] as $attribute) {
+            $value = $owner->getAttribute($attribute);
+
+            if (is_string($value) && $value !== '') {
+                return $value;
+            }
+        }
+
+        return '#'.$owner->getKey();
     }
 }
