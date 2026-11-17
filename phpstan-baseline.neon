@@ -31,28 +31,10 @@ parameters:
 			path: app/Services/InteractionLogs/UpdaterService.php
 
 		-
-			message: '#^Using nullsafe property access on non\-nullable type App\\Models\\Invoice\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: app/Services/InvoiceItems/PolicyAuthorisationService.php
-
-		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:withTrashed\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: app/Services/Invoices/QueryService.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between App\\Models\\Course and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: app/Services/Lessons/ActiveCheckerService.php
-
-		-
-			message: '#^Ternary operator condition is always true\.$#'
-			identifier: ternary.alwaysTrue
-			count: 1
-			path: app/Services/Lessons/FormatterService.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:likes\(\)\.$#'

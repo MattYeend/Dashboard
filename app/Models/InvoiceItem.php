@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Auditable;
+use App\Models\Invoice;
 use App\Traits\BelongsToOrganisation;
 use Carbon\CarbonImmutable;
 use Database\Factories\InvoiceItemFactory;
@@ -33,7 +34,7 @@ use Illuminate\Support\Carbon;
  * @property CarbonImmutable|null $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property-read Invoice $invoice
+ * @property-read Invoice|null $invoice
  * @property-read User|null $creator
  * @property-read User|null $updater
  * @property-read User|null $deleter

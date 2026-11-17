@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Contracts\Auditable;
 use App\Models\Concerns\HasQuestions;
+use App\Models\Course;
 use App\Traits\BelongsToOrganisation;
 use Carbon\CarbonImmutable;
 use Database\Factories\LessonFactory;
@@ -40,7 +41,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property CarbonImmutable|null $deleted_at
- * @property-read Course $course
+ * @property-read Course|null $course
  */
 #[Fillable([
     'course_id',
