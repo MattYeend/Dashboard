@@ -1,3 +1,14 @@
 parameters:
-	ignoreErrors: []
+	ignoreErrors:
+		-
+			message: '#^Parameter \$request of method App\\Http\\Controllers\\QuoteItemController\:\:store\(\) has invalid type App\\Http\\Requests\\StoreQuoteItemRequest\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/QuoteItemController.php
+
+		-
+			message: '#^Parameter \$request of method App\\Http\\Controllers\\QuoteItemController\:\:update\(\) has invalid type App\\Http\\Requests\\UpdateQuoteItemRequest\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/QuoteItemController.php
 
