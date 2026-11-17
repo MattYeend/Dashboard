@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Dashboard;
 
+use App\Models\Log;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
@@ -63,7 +64,7 @@ class FormatterService
      */
     public function formatAuditFeed(Collection $logs): array
     {
-        return $logs->map(fn ($log) => [
+        return $logs->map(fn (Log $log) => [
             'id' => $log->id,
             'action' => $log->action,
             'user' => $log->user?->name ?? 'System',

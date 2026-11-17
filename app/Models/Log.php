@@ -28,6 +28,7 @@ use LogicException;
  * @property Carbon|null $sealed_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property-read User|null $user
  * @property-read User|null $loggedInUser
  * @property-read User|null $relatedToUser
  */
@@ -1220,5 +1221,15 @@ class Log extends Model implements Auditable
         }
 
         return $labels;
+    }
+
+    /**
+     * Get the user who performed the logged action.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
