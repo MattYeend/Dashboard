@@ -11,6 +11,7 @@ use App\Services\AuditLogService;
 use App\Services\Concerns\ImportsViaPreview;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use LogicException;
 
 /**
@@ -133,7 +134,7 @@ class ImporterService
                 try {
                     $this->creator->create($quote, $this->attributesFromRow($data), $actorId);
                     $imported++;
-                } catch (\Illuminate\Validation\ValidationException $exception) {
+                } catch (ValidationException $exception) {
                     $skipped[] = ['row' => $rowNumber, 'reason' => collect($exception->errors())->flatten()->first()];
                 }
             }
