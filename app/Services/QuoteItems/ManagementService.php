@@ -32,8 +32,8 @@ class ManagementService
     public function store(StoreQuoteItemRequest $request, Quote $quote): QuoteItem
     {
         return $this->creator->create(
-            $quote,
             $request->validated(),
+            $quote->id,
             $request->user()->id
         );
     }

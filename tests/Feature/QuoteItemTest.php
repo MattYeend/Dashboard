@@ -91,6 +91,7 @@ describe('store', function () {
         $quote = Quote::factory()->create();
 
         $payload = [
+            'name' => 'Bespoke cabinetry',
             'description' => 'Bespoke cabinetry, fitted',
             'quantity' => 2,
             'unit_price' => 15000,
@@ -124,7 +125,7 @@ describe('store', function () {
             ->assertStatus(403);
     });
 
-    test('store fails validation when description is missing', function () {
+    test('store fails validation when name and product are both missing', function () {
         $superAdmin = $this->superAdminUser();
         $quote = Quote::factory()->create();
 
@@ -134,25 +135,20 @@ describe('store', function () {
                 'unit_price' => 1000,
             ])
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['description']);
+            ->assertJsonValidationErrors(['name']);
     });
 
-    test('store defaults quantity to one when omitted', function () {
+    test('store fails validation when quantity is omitted', function () {
         $superAdmin = $this->superAdminUser();
         $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
             ->postJson("/quotes/{$quote->id}/items", [
-                'description' => 'Missing quantity item',
+                'name' => 'Missing quantity item',
                 'unit_price' => 1000,
             ])
-            ->assertStatus(201);
-
-        $this->assertDatabaseHas('quote_items', [
-            'quote_id' => $quote->id,
-            'description' => 'Missing quantity item',
-            'quantity' => 1,
-        ]);
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['quantity']);
     });
 
     test('store fails validation when quantity is less than one', function () {
@@ -219,7 +215,7 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson("/quotes/{$quote->id}/items", [
-                'description' => 'Minimal item',
+                'name' => 'Minimal item',
                 'quantity' => 1,
                 'unit_price' => 500,
             ])
@@ -227,10 +223,10 @@ describe('store', function () {
 
         $this->assertDatabaseHas('quote_items', [
             'quote_id' => $quote->id,
-            'description' => 'Minimal item',
+            'name' => 'Minimal item',
             'quantity' => 1,
             'unit_price' => 500,
-            'tax_rate' => 0,
+            'tax_rate' => 20,
         ]);
     });
 
@@ -240,13 +236,21 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson("/quotes/{$quote->id}/items", [
-                'description' => 'Total override attempt',
+                'name' => 'Total override attempt',
                 'quantity' => 2,
                 'unit_price' => 1000,
-                'total' => 999999,
+                'line_total' => 999999,
+                'line_tax' => 999999,
             ])
             ->assertStatus(201)
-            ->assertJsonMissing(['total' => 999999]);
+            ->assertJsonMissing(['line_total' => '999999.00']);
+
+            $this->assertDatabaseHas('quote_items', [
+                'quote_id' => $quote->id,
+                'name' => 'Total override attempt',
+                'line_total' => 2000.00,
+                'line_tax' => 400.00,
+            ]);
     });
 
     test('store returns 404 when the quote does not exist', function () {
@@ -381,7 +385,28 @@ describe('update', function () {
         $this->actingAs($superAdmin)
             ->patchJson("/quotes/{$quote->id}/items/{$item->id}", ['quantity' => 5])
             ->assertStatus(200)
-            ->assertJsonFragment(['quantity' => 5]);
+            ->assertJsonFragment(['quantity' => '5.00']);
+    });
+
+    test('recalculates line totals when quantity or unit_price changes', function () {
+        $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create([
+            'quote_id' => $quote->id,
+            'quantity' => 1,
+            'unit_price' => 1000,
+            'discount_percent' => 0,
+            'tax_rate' => 20,
+        ]);
+
+        $this->actingAs($superAdmin)
+            ->putJson("/quotes/{$quote->id}/items/{$item->id}", ['quantity' => 4])
+            ->assertStatus(200);
+
+        $item->refresh();
+
+        expect($item->line_total)->toBe('4000.00')
+            ->and($item->line_tax)->toBe('800.00');
     });
 
     test('user without permission cannot update an quote item', function () {
@@ -437,26 +462,6 @@ describe('update', function () {
         ]);
     });
 
-    test('recalculates total when quantity or unit_price changes', function () {
-        $superAdmin = $this->superAdminUser();
-        $quote = Quote::factory()->create();
-        $item = QuoteItem::factory()->create([
-            'quote_id' => $quote->id,
-            'quantity' => 1,
-            'unit_price' => 1000,
-        ]);
-
-        $originalTotal = $item->total;
-
-        $this->actingAs($superAdmin)
-            ->putJson("/quotes/{$quote->id}/items/{$item->id}", ['quantity' => 4])
-            ->assertStatus(200);
-
-        $item->refresh();
-
-        expect($item->total)->not->toBe($originalTotal);
-    });
-
     test('update returns 404 when the item belongs to a different quote', function () {
         $superAdmin = $this->superAdminUser();
         $quote = Quote::factory()->create();
@@ -481,7 +486,7 @@ describe('update', function () {
             ->assertOk();
 
         $log = Log::query()
-            ->where('action_id', Log::ACTION_UPDATE_INVOICE_ITEM)
+            ->where('action_id', Log::ACTION_UPDATE_QUOTE_ITEM)
             ->where('logged_in_user_id', $actor->id)
             ->first();
 

@@ -11,6 +11,7 @@ use App\Models\Quote;
 use App\Models\QuoteItem;
 use App\Models\User;
 use App\Services\AuditLogService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreatorService
 {

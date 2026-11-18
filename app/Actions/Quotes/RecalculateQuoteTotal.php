@@ -28,8 +28,8 @@ class RecalculateQuoteTotal
             $totals = $this->calculateQuoteTotals->execute($quote);
 
             $quote->subtotal = $totals['subtotal'];
-            $quote->tax_total = $totals['tax_total'];
-            $quote->total = $totals['total'];
+            $quote->tax_amount = $totals['tax_total'];
+            $quote->total_amount = $totals['total'];
             $quote->save();
 
             return $quote;
