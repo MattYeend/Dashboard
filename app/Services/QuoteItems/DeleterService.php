@@ -52,9 +52,10 @@ class DeleterService
             return $this->deleteResource->handle(
                 $item,
                 function (QuoteItem $item) use ($quote, $actor, $deletedBy): void {
-                    $item->deleted_by = $deletedBy;
-                    $item->deleted_at = now();
-                    $item->save();
+                    $item->forceFill([
+                        'deleted_by' => $deletedBy,
+                        'deleted_at' => now(),
+                    ])->save();
 
                     $this->totals->recalculate($quote);
 
