@@ -9,6 +9,7 @@ use App\Models\Quote;
 use App\Models\QuoteItem;
 use App\Services\AuditLogService;
 use App\Services\TrashFilterService;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -67,7 +68,8 @@ class ExporterService
             $handle = fopen('php://output', 'w');
             fputcsv($handle, self::COLUMNS);
 
-            $query->orderBy('position')->orderBy('id')->chunk(500, function ($items) use ($handle): void {
+            $query->orderBy('position')->orderBy('id')->chunk(500, function (Collection $items) use ($handle): void {
+                /** @var Collection<int, QuoteItem> $items */
                 foreach ($items as $item) {
                     $row = $item->only(self::COLUMNS);
                     $row['sku'] = $item->product?->sku;
