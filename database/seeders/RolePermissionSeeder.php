@@ -592,6 +592,16 @@ class RolePermissionSeeder extends Seeder
             'import payment',
             'export payment',
             'refund payment',
+
+            // Quote items
+            'view any quote item',
+            'create quote item',
+            'view quote item',
+            'edit quote item',
+            'delete quote item',
+            'restore quote item',
+            'import quote item',
+            'export quote item',
         ];
 
         foreach ($permissions as $permission) {
@@ -1042,6 +1052,14 @@ class RolePermissionSeeder extends Seeder
             'import payment',
             'export payment',
             'refund payment',
+            'view any quote item',
+            'create quote item',
+            'view quote item',
+            'edit quote item',
+            'delete quote item',
+            'restore quote item',
+            'import quote item',
+            'export quote item',
         ];
         $admin->givePermissionTo($adminPermissions);
         $admin->revokePermissionTo('view logs');
@@ -1376,6 +1394,13 @@ class RolePermissionSeeder extends Seeder
             'restore payment',
             'export payment',
             'refund payment',
+            'view any quote item',
+            'create quote item',
+            'view quote item',
+            'edit quote item',
+            'delete quote item',
+            'import quote item',
+            'export quote item',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1598,6 +1623,11 @@ class RolePermissionSeeder extends Seeder
             'view any payment',
             'view payment',
             'create payment',
+            'view any quote item',
+            'view quote item',
+            'create quote item',
+            'edit quote item',
+            'delete quote item',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -2230,6 +2260,8 @@ class RolePermissionSeeder extends Seeder
             'view quote status',
             'view any quote',
             'view quote',
+            'view any quote item',
+            'view quote item',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -2337,6 +2369,7 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Products');
         $this->command->info('- Quote Statuses');
         $this->command->info('- Quotes');
+        $this->command->info('- Quote Items');
         $this->command->info('- Payment Statuses');
         $this->command->info('- Payments');
     }
