@@ -72,9 +72,18 @@ class ImporterService
      * @param  array<string, mixed>  $data
      * @param  array<string, mixed>  $context
      */
-    protected function persistRow(array $data, int $actorId, array $context = []): void
-    {
-        $this->creator->create($this->scopedQuote(), $this->attributesFromRow($data), $actorId);
+    protected function persistRow(
+        array $data,
+        int $actorId,
+        array $context = []
+    ): void {
+        $quote = $this->scopedQuote();
+
+        $this->creator->create(
+            $this->attributesFromRow($data),
+            $quote->id,
+            $actorId
+        );
     }
 
     /**
@@ -132,7 +141,11 @@ class ImporterService
                 }
 
                 try {
-                    $this->creator->create($quote, $this->attributesFromRow($data), $actorId);
+                    $this->creator->create(
+                        $this->attributesFromRow($data),
+                        $quote->id,
+                        $actorId
+                    );
                     $imported++;
                 } catch (ValidationException $exception) {
                     $skipped[] = ['row' => $rowNumber, 'reason' => collect($exception->errors())->flatten()->first()];

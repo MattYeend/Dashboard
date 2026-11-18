@@ -52,7 +52,7 @@ class CreatorService
 
                 // Built entirely server side by prepareForCreation, so
                 // forceFill is safe and gives a single INSERT.
-                $newQuoteItem = (new QuoteItem())->forceFill([
+                $newQuoteItem = (new QuoteItem)->forceFill([
                     ...$this->dataPreparation->prepareForCreation($data, $quote, $position),
                     'created_by' => $createdBy,
                 ]);

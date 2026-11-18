@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\QuoteItems;
 
-use App\Actions\UpdateResource;
 use App\Actions\Quotes\RecalculateQuoteTotal;
+use App\Actions\UpdateResource;
 use App\Models\Log;
 use App\Models\QuoteItem;
 use App\Models\User;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Models\Log;
 use App\Models\Quote;
 use App\Models\QuoteItem;
-use App\Models\Log;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Concerns\CreatesUsers;
@@ -245,12 +245,12 @@ describe('store', function () {
             ->assertStatus(201)
             ->assertJsonMissing(['line_total' => '999999.00']);
 
-            $this->assertDatabaseHas('quote_items', [
-                'quote_id' => $quote->id,
-                'name' => 'Total override attempt',
-                'line_total' => 2000.00,
-                'line_tax' => 400.00,
-            ]);
+        $this->assertDatabaseHas('quote_items', [
+            'quote_id' => $quote->id,
+            'name' => 'Total override attempt',
+            'line_total' => 2000.00,
+            'line_tax' => 400.00,
+        ]);
     });
 
     test('store returns 404 when the quote does not exist', function () {

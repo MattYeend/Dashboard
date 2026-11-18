@@ -165,7 +165,7 @@ class PolicyAuthorisationService
 
         $target->loadMissing('quote.creator');
 
-        $creator = $target->quote?->creator;
+        $creator = $target->quote->creator;
 
         if (! $creator instanceof User) {
             return false;
