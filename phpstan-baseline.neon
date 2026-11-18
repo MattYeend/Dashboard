@@ -1,14 +1,38 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Parameter \$request of method App\\Http\\Controllers\\QuoteItemController\:\:store\(\) has invalid type App\\Http\\Requests\\StoreQuoteItemRequest\.$#'
-			identifier: class.notFound
+			message: '#^Using nullsafe property access "\?\-\>tax_rate" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
 			count: 1
-			path: app/Http/Controllers/QuoteItemController.php
+			path: app/Services/QuoteItems/DataPreparationService.php
 
 		-
-			message: '#^Parameter \$request of method App\\Http\\Controllers\\QuoteItemController\:\:update\(\) has invalid type App\\Http\\Requests\\UpdateQuoteItemRequest\.$#'
-			identifier: class.notFound
+			message: '#^Using nullsafe property access "\?\-\>unit" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
 			count: 1
-			path: app/Http/Controllers/QuoteItemController.php
+			path: app/Services/QuoteItems/DataPreparationService.php
+
+		-
+			message: '#^Property App\\Models\\QuoteItem\:\:\$deleted_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/QuoteItems/DeleterService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$product\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/QuoteItems/ExporterService.php
+
+		-
+			message: '#^Method App\\Services\\QuoteItems\\QueryService\:\:productOptions\(\) should return array\<int, array\<string, mixed\>\> but returns array\<int, App\\Models\\Product\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/QuoteItems/QueryService.php
+
+		-
+			message: '#^Property App\\Models\\QuoteItem\:\:\$restored_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/QuoteItems/RestorerService.php
 

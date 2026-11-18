@@ -32,7 +32,7 @@ class DataPreparationService
             'quantity' => $data['quantity'],
             'unit_price' => $data['unit_price'] ?? $product?->unit_price,
             'discount_percent' => $data['discount_percent'] ?? 0,
-            'tax_rate' => $data['tax_rate'] ?? $product?->tax_rate ?? 20,
+            'tax_rate' => $data['tax_rate'] ?? $product->tax_rate ?? 20,
         ]);
 
         return [
@@ -41,7 +41,7 @@ class DataPreparationService
             'position' => $position,
             'name' => trim((string) ($data['name'] ?? $product?->name)),
             'description' => $data['description'] ?? $product?->description,
-            'unit' => $data['unit'] ?? $product?->unit ?? 'each',
+            'unit' => $data['unit'] ?? $product->unit ?? 'each',
             ...$line,
             'meta' => $data['meta'] ?? null,
         ];
