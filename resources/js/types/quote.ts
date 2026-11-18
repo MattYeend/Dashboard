@@ -1,3 +1,5 @@
+import type { QuoteItem } from './quote-item';
+
 export interface Quote {
     id: number;
     quotable_type: string;
@@ -42,6 +44,8 @@ export interface Quote {
     quotable_type_label?: string | null;
     quotable_name?: string | null;
     quotable_type_key?: string;
+    items?: QuoteItem[];
+    items_count?: number | null;
     creator?: { name: string } | null;
     updater?: { name: string } | null;
     deleter?: { name: string } | null;

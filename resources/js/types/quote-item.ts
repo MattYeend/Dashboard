@@ -1,0 +1,30 @@
+export interface QuoteItem {
+    id: number;
+    quote_id: number;
+    product_id: number | null;
+    name: string;
+    description: string | null;
+    unit: string;
+    quantity: string;
+    unit_price: string;
+    discount_percent: string;
+    tax_rate: string;
+    line_subtotal?: string;
+    line_tax?: string;
+    line_total?: string;
+    position: number;
+    meta: Record<string, unknown> | null;
+    created_by: number | null;
+    updated_by: number | null;
+    deleted_by: number | null;
+    restored_by: number | null;
+    restored_at: string | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    product?: { id: number; sku: string; name: string } | null;
+    creator?: { name: string } | null;
+    updater?: { name: string } | null;
+    deleter?: { id: number; name: string } | null;
+    restorer?: { id: number; name: string } | null;
+}

@@ -20,17 +20,6 @@ export interface QuoteAbilities {
     convert: boolean;
 }
 
-export interface QuoteItemAbilities {
-    create: boolean;
-    import: boolean;
-    export: boolean;
-}
-
-export interface ProductOption {
-    id: number;
-    name: string;
-}
-
 export interface SelectOption {
     value: number | string;
     label: string;

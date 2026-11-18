@@ -1104,6 +1104,34 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/{quote}/convert', [QuoteController::class, 'convert'])
                 ->middleware('throttle:20,1')
                 ->name('convert');
+
+            Route::prefix('/{quote}/items')->name('items.')->scopeBindings()->group(function () {
+                Route::post('/bulk/delete', [QuoteItemController::class, 'bulkDelete'])->name('bulk.delete');
+                Route::post('/bulk/restore', [QuoteItemController::class, 'bulkRestore'])->name('bulk.restore');
+                Route::post('/{id}/restore', [QuoteItemController::class, 'restore'])->name('restore');
+                Route::delete('/{id}/force', [QuoteItemController::class, 'forceDelete'])->name('force-delete');
+
+                Route::post('/import', [QuoteItemController::class, 'import'])->name('import');
+                Route::post('/import/preview', [QuoteItemController::class, 'importPreview'])
+                    ->middleware('throttle:10,1')
+                    ->name('import.preview');
+                Route::post('/import/commit', [QuoteItemController::class, 'importCommit'])
+                    ->middleware('throttle:10,1')
+                    ->name('import.commit');
+                Route::get('/export', [QuoteItemController::class, 'export'])
+                    ->middleware('throttle:10,1')
+                    ->name('export');
+
+                Route::get('/', [QuoteItemController::class, 'index'])->name('index');
+                Route::get('/create', [QuoteItemController::class, 'create'])->name('create');
+                Route::post('/', [QuoteItemController::class, 'store'])
+                    ->middleware('throttle:60,1')
+                    ->name('store');
+                Route::get('/{quoteItem}', [QuoteItemController::class, 'show'])->name('show');
+                Route::get('/{quoteItem}/edit', [QuoteItemController::class, 'edit'])->name('edit');
+                Route::match(['put', 'patch'], '/{quoteItem}', [QuoteItemController::class, 'update'])->name('update');
+                Route::delete('/{quoteItem}', [QuoteItemController::class, 'destroy'])->name('destroy');
+            });
         });
 
         Route::prefix('payment-statuses')->name('payment-statuses.')->group(function () {
@@ -1162,29 +1190,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::match(['put', 'patch'], '/{payment}', [PaymentController::class, 'update'])->name('update');
             Route::delete('/{payment}', [PaymentController::class, 'destroy'])->name('destroy');
         });
-
-        Route::prefix('quotes/{quote}/items')->name('quotes.items.')->group(function () {
-            Route::post('/bulk/delete', [QuoteItemController::class, 'bulkDelete'])->name('bulk.delete');
-            Route::post('/bulk/restore', [QuoteItemController::class, 'bulkRestore'])->name('bulk.restore');
-            Route::post('/{id}/restore', [QuoteItemController::class, 'restore'])->name('restore');
-            Route::delete('/{id}/force', [QuoteItemController::class, 'forceDelete'])->name('force-delete');
-
-            Route::post('/import', [QuoteItemController::class, 'import'])->name('import');
-            Route::post('/import/preview', [QuoteItemController::class, 'importPreview'])
-                ->middleware('throttle:10,1')
-                ->name('import.preview');
-            Route::post('/import/commit', [QuoteItemController::class, 'importCommit'])
-                ->middleware('throttle:10,1')
-                ->name('import.commit');
-            Route::get('/export', [QuoteItemController::class, 'export'])
-                ->middleware('throttle:10,1')
-                ->name('export');
-
-            Route::post('/', [QuoteItemController::class, 'store'])->middleware('throttle:60,1')->name('store');
-            Route::match(['put', 'patch'], '/{quoteItem}', [QuoteItemController::class, 'update'])->name('update');
-            Route::delete('/{quoteItem}', [QuoteItemController::class, 'destroy'])->name('destroy');
-        });
-
     });
 });
 

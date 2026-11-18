@@ -11,10 +11,13 @@ use App\Http\Requests\QuoteItems\UpdateQuoteItemRequest;
 use App\Models\Quote;
 use App\Models\QuoteItem;
 use App\Services\QuoteItems\ManagementService;
+use App\Services\QuoteItems\QueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class QuoteItemController extends Controller
@@ -25,11 +28,48 @@ class QuoteItemController extends Controller
      * Inject the required services into the controller.
      */
     public function __construct(
+        private readonly QueryService $query,
         private readonly ManagementService $management,
     ) {}
 
     /**
-     * Add a line to the quote.
+     * Display a listing of the resource.
+     *
+     * Authorises via the 'viewAny' policy before returning data.
+     */
+    public function index(Quote $quote, Request $request): Response
+    {
+        $this->authorize('viewAny', QuoteItem::class);
+
+        $data = $this->query->getPaginated(
+            $request->user(),
+            $quote,
+            $request->only([
+                'search',
+                'sort_by',
+                'sort_direction',
+                'trashed',
+                'per_page',
+            ])
+        );
+
+        return Inertia::render('QuoteItems/Index', $data);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * Authorises via the 'create' policy before rendering.
+     */
+    public function create(Quote $quote): Response
+    {
+        $this->authorize('create', QuoteItem::class);
+
+        return Inertia::render('QuoteItems/Create', $this->query->getFormData($quote));
+    }
+
+    /**
+     * Store a newly created resource in storage.
      *
      * Validation and authorisation are handled by StoreQuoteItemRequest.
      */
@@ -43,11 +83,42 @@ class QuoteItemController extends Controller
             return response()->json($item, 201);
         }
 
-        return redirect()->route('quotes.show', $quote->id);
+        return redirect()->route('quotes.items.show', [$quote->id, $item->id]);
     }
 
     /**
-     * Update a line of the quote.
+     * Display the specified resource.
+     *
+     * Authorises via the 'view' policy before rendering.
+     */
+    public function show(Quote $quote, QuoteItem $quoteItem, Request $request): Response
+    {
+        $this->authorize('view', $quoteItem);
+
+        $data = $this->query->getById($request->user(), $quote, $quoteItem);
+
+        return Inertia::render('QuoteItems/Show', $data);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * Authorises via the 'update' policy before rendering.
+     */
+    public function edit(Quote $quote, QuoteItem $quoteItem, Request $request): Response
+    {
+        $this->authorize('update', $quoteItem);
+
+        $data = array_merge(
+            $this->query->getById($request->user(), $quote, $quoteItem),
+            $this->query->getFormData($quote)
+        );
+
+        return Inertia::render('QuoteItems/Edit', $data);
+    }
+
+    /**
+     * Update the specified resource in storage.
      *
      * Validation and authorisation are handled by UpdateQuoteItemRequest.
      */
@@ -62,11 +133,11 @@ class QuoteItemController extends Controller
             return response()->json($item);
         }
 
-        return redirect()->route('quotes.show', $quote->id);
+        return redirect()->route('quotes.items.show', [$quote->id, $item->id]);
     }
 
     /**
-     * Remove a line from the quote.
+     * Remove the specified resource from storage.
      *
      * Authorises via the 'delete' policy before proceeding.
      */
@@ -83,21 +154,21 @@ class QuoteItemController extends Controller
             return response()->json(null, 204);
         }
 
-        return redirect()->route('quotes.show', $quote->id);
+        return redirect()->route('quotes.items.index', $quote->id);
     }
 
     /**
-     * Restore a soft-deleted line of the quote.
+     * Restore a soft-deleted quote item.
      *
-     * Route model binding excludes trashed records, so the line is resolved
-     * manually and only within this quote.
+     * Route model binding excludes trashed records, so the item is resolved
+     * manually through the parent quote.
      */
     public function restore(
+        Quote $quote,
         int $id,
-        Request $request,
-        Quote $quote
+        Request $request
     ): JsonResponse|RedirectResponse {
-        $item = QuoteItem::onlyTrashed()->where('quote_id', $quote->id)->findOrFail($id);
+        $item = $quote->items()->onlyTrashed()->findOrFail($id);
 
         $this->authorize('restore', $item);
 
@@ -107,18 +178,18 @@ class QuoteItemController extends Controller
             return response()->json(null, 204);
         }
 
-        return redirect()->route('quotes.show', $quote->id);
+        return redirect()->route('quotes.items.index', $quote->id);
     }
 
     /**
-     * Permanently delete a soft-deleted line of the quote.
+     * Permanently delete a soft-deleted quote item.
      */
     public function forceDelete(
+        Quote $quote,
         int $id,
-        Request $request,
-        Quote $quote
+        Request $request
     ): JsonResponse|RedirectResponse {
-        $item = QuoteItem::onlyTrashed()->where('quote_id', $quote->id)->findOrFail($id);
+        $item = $quote->items()->onlyTrashed()->findOrFail($id);
 
         $this->authorize('forceDelete', $item);
 
@@ -128,14 +199,16 @@ class QuoteItemController extends Controller
             return response()->json(null, 204);
         }
 
-        return redirect()->route('quotes.show', $quote->id);
+        return redirect()->route('quotes.items.index', $quote->id);
     }
 
     /**
-     * Bulk soft-delete lines of the quote. Each line is authorised.
+     * Bulk soft-delete quote items. Each item is authorised individually.
      */
-    public function bulkDelete(BulkIdsRequest $request, Quote $quote): JsonResponse|RedirectResponse
-    {
+    public function bulkDelete(
+        Quote $quote,
+        BulkIdsRequest $request
+    ): JsonResponse|RedirectResponse {
         $this->authorize('bulkDelete', QuoteItem::class);
 
         $result = $this->management->bulkDelete(
@@ -149,14 +222,16 @@ class QuoteItemController extends Controller
             return response()->json($result);
         }
 
-        return redirect()->route('quotes.show', $quote->id);
+        return redirect()->route('quotes.items.index', $quote->id);
     }
 
     /**
-     * Bulk restore lines of the quote. Each line is authorised.
+     * Bulk restore quote items. Each item is authorised individually.
      */
-    public function bulkRestore(BulkIdsRequest $request, Quote $quote): JsonResponse|RedirectResponse
-    {
+    public function bulkRestore(
+        Quote $quote,
+        BulkIdsRequest $request
+    ): JsonResponse|RedirectResponse {
         $this->authorize('bulkRestore', QuoteItem::class);
 
         $result = $this->management->bulkRestore(
@@ -170,16 +245,18 @@ class QuoteItemController extends Controller
             return response()->json($result);
         }
 
-        return redirect()->route('quotes.show', $quote->id);
+        return redirect()->route('quotes.items.index', $quote->id);
     }
 
     /**
-     * Import lines from an uploaded CSV file into the quote.
+     * Import quote items from an uploaded CSV file.
      *
      * Authorisation is handled by ImportQuoteItemRequest::authorize().
      */
-    public function import(ImportQuoteItemRequest $request, Quote $quote): JsonResponse|RedirectResponse
-    {
+    public function import(
+        ImportQuoteItemRequest $request,
+        Quote $quote
+    ): JsonResponse|RedirectResponse {
         $result = $this->management->import($request, $quote);
 
         if ($request->wantsJson()) {
@@ -187,17 +264,19 @@ class QuoteItemController extends Controller
         }
 
         return redirect()
-            ->route('quotes.show', $quote->id)
+            ->route('quotes.items.index', $quote->id)
             ->with('import_result', $result);
     }
 
     /**
-     * Export the quote's lines as a CSV download.
+     * Export the quote's items as a CSV download.
      *
      * Authorises via the 'export' policy before proceeding.
      */
-    public function export(Request $request, Quote $quote): JsonResponse|RedirectResponse|StreamedResponse
-    {
+    public function export(
+        Quote $quote,
+        Request $request
+    ): JsonResponse|RedirectResponse|StreamedResponse {
         $this->authorize('export', [QuoteItem::class, $quote]);
 
         return $this->management->export(

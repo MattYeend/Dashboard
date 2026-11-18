@@ -42,6 +42,7 @@ export * from './product';
 export * from './question';
 export * from './quiz';
 export * from './quote';
+export * from './quote-item';
 export * from './quote-status';
 export * from './registration-interest';
 export * from './report';

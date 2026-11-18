@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\Services\Quotes;
 
 use App\Models\Quote;
-use App\Models\QuoteItem;
 use App\Models\QuoteStatus;
 use App\Models\User;
 use App\Services\TrashFilterService;
-use App\Services\QuoteItems\QueryService as QuoteItemQueryService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -24,7 +22,6 @@ class QueryService
         protected readonly FilterService $filterService,
         protected readonly FormatterService $formatterService,
         protected readonly QuotableTypeRegistryService $registry,
-        protected readonly QuoteItemQueryService $itemQuery,
     ) {}
 
     /**
@@ -64,10 +61,9 @@ class QueryService
             'updater',
             'deleter',
             'restorer',
-            'items.product',
-            'items.creator',
-            'items.updater',
         ]);
+
+        $quote->loadCount('items');
 
         return array_merge(
             ['quote' => $this->formatterService->format($quote)],
@@ -79,14 +75,6 @@ class QueryService
                 'decline' => $user->can('decline', $quote),
                 'convert' => $user->can('convert', $quote),
             ]],
-            [
-                'products' => $user->can('update', $quote) ? $this->itemQuery->productOptions($quote) : [],
-                'item_abilities' => [
-                    'create' => $user->can('create', [QuoteItem::class, $quote]),
-                    'import' => $user->can('import', [QuoteItem::class, $quote]),
-                    'export' => $user->can('export', [QuoteItem::class, $quote]),
-                ],
-            ],
             $this->getFormData(),
             $this->getPermissions($user),
             $this->baseData(),
