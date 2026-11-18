@@ -85,6 +85,7 @@ use App\Policies\PostPolicy;
 use App\Policies\ProductPolicy;
 use App\Policies\QuizPolicy;
 use App\Policies\QuotePolicy;
+use App\Policies\QuoteItemPolicy;
 use App\Policies\QuoteStatusPolicy;
 use App\Policies\ReportPolicy;
 use App\Policies\SettingPolicy;
@@ -179,6 +180,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Product::class, ProductPolicy::class);
         Gate::policy(Quiz::class, QuizPolicy::class);
         Gate::policy(Quote::class, QuotePolicy::class);
+        Gate::policy(QuoteItem::class, QuoteItemPolicy::class);
         Gate::policy(QuoteStatus::class, QuoteStatusPolicy::class);
         Gate::policy(Report::class, ReportPolicy::class);
         Gate::policy(Setting::class, SettingPolicy::class);

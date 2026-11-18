@@ -50,6 +50,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\QuoteItemController;
 use App\Http\Controllers\QuoteStatusController;
 use App\Http\Controllers\RegistrationInterestController;
 use App\Http\Controllers\ReportController;
@@ -1161,6 +1162,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::match(['put', 'patch'], '/{payment}', [PaymentController::class, 'update'])->name('update');
             Route::delete('/{payment}', [PaymentController::class, 'destroy'])->name('destroy');
         });
+
+        Route::prefix('quotes/{quote}/items')->name('quotes.items.')->group(function () {
+            Route::post('/bulk/delete', [QuoteItemController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [QuoteItemController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [QuoteItemController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [QuoteItemController::class, 'forceDelete'])->name('force-delete');
+
+            Route::post('/import', [QuoteItemController::class, 'import'])->name('import');
+            Route::post('/import/preview', [QuoteItemController::class, 'importPreview'])
+                ->middleware('throttle:10,1')
+                ->name('import.preview');
+            Route::post('/import/commit', [QuoteItemController::class, 'importCommit'])
+                ->middleware('throttle:10,1')
+                ->name('import.commit');
+            Route::get('/export', [QuoteItemController::class, 'export'])
+                ->middleware('throttle:10,1')
+                ->name('export');
+
+            Route::post('/', [QuoteItemController::class, 'store'])->middleware('throttle:60,1')->name('store');
+            Route::match(['put', 'patch'], '/{quoteItem}', [QuoteItemController::class, 'update'])->name('update');
+            Route::delete('/{quoteItem}', [QuoteItemController::class, 'destroy'])->name('destroy');
+        });
+
     });
 });
 
