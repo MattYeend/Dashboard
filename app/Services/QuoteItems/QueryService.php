@@ -53,11 +53,15 @@ class QueryService
      */
     public function productOptions(Quote $quote): array
     {
+        $columns = ['id', 'sku', 'name', 'description', 'unit', 'unit_price', 'tax_rate'];
+
         return Product::query()
             ->where('is_active', true)
             ->where('currency', $quote->currency)
             ->orderBy('name')
-            ->get(['id', 'sku', 'name', 'description', 'unit', 'unit_price', 'tax_rate'])
+            ->get($columns)
+            ->map(static fn (Product $product): array => $product->only($columns))
+            ->values()
             ->all();
     }
 }
