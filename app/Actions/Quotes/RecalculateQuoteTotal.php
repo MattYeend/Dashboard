@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Quote;
+namespace App\Actions\Quotes;
 
 use App\Models\Quote;
 use Illuminate\Support\Facades\DB;
