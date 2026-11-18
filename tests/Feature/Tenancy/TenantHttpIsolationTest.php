@@ -36,6 +36,7 @@ use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\QuizQuestion;
 use App\Models\Quote;
+use App\Models\QuoteItem;
 use App\Models\QuoteStatus;
 use App\Models\Report;
 use App\Models\Tag;
@@ -172,6 +173,8 @@ describe('resource coverage', function () {
             InvoiceItem::class => 'nested under its parent invoice (scoped route bindings, e.g. invoices/{invoice}/items/{invoiceItem}) — covered by TenantNestedHttpIsolationTest.php instead',
 
             PipelineStage::class => 'nested under its parent pipeline (scoped route bindings, e.g. pipelines/{pipeline}/stages/{stage}) — covered by TenantNestedHttpIsolationTest.php instead',
+
+            QuoteItem::class => 'nested under its parent quote (scoped route bindings, e.g. quotes/{quote}/items/{quoteItem}) — covered by TenantNestedHttpIsolationTest.php instead',
 
             QuizQuestion::class => 'pivot with no HTTP resource of its own; managed through quizzes, so there is no route to probe',
 

@@ -7,6 +7,8 @@ use App\Models\InvoiceItem;
 use App\Models\Organisation;
 use App\Models\Pipeline;
 use App\Models\PipelineStage;
+use App\Models\Quote;
+use App\Models\QuoteItem;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\Concerns\ActsAsOrganisationMember;
 
@@ -325,6 +327,156 @@ describe('pipeline stages', function () {
                     route(
                         'pipelines.show',
                         $pipeline->id,
+                    ),
+                )
+                ->assertStatus(404);
+        },
+    );
+});
+
+describe('quote items', function () {
+    test(
+        'returns 404 when another organisation\'s quote item is requested',
+        function () {
+            $quote = $this->organisationA->execute(
+                fn () => Quote::factory()->create(),
+            );
+
+            $item = $this->organisationA->execute(
+                fn () => QuoteItem::factory()->create([
+                    'quote_id' => $quote->id,
+                ]),
+            );
+
+            $userB = $this->memberOf($this->organisationB);
+
+            $responses = [
+                'show' => $this
+                    ->actingAsMemberOf(
+                        $this->organisationB,
+                        $userB,
+                    )
+                    ->get(
+                        route(
+                            'quotes.items.show',
+                            [$quote->id, $item->id],
+                        ),
+                    )
+                    ->status(),
+
+                'edit' => $this
+                    ->actingAsMemberOf(
+                        $this->organisationB,
+                        $userB,
+                    )
+                    ->get(
+                        route(
+                            'quotes.items.edit',
+                            [$quote->id, $item->id],
+                        ),
+                    )
+                    ->status(),
+
+                'update' => $this
+                    ->actingAsMemberOf(
+                        $this->organisationB,
+                        $userB,
+                    )
+                    ->put(
+                        route(
+                            'quotes.items.update',
+                            [$quote->id, $item->id],
+                        ),
+                        [],
+                    )
+                    ->status(),
+
+                'destroy' => $this
+                    ->actingAsMemberOf(
+                        $this->organisationB,
+                        $userB,
+                    )
+                    ->delete(
+                        route(
+                            'quotes.items.destroy',
+                            [$quote->id, $item->id],
+                        ),
+                    )
+                    ->status(),
+            ];
+
+            expect($responses)->toBe([
+                'show' => 404,
+                'edit' => 404,
+                'update' => 404,
+                'destroy' => 404,
+            ]);
+
+            expect(
+                QuoteItem::withoutGlobalScopes()
+                    ->whereKey($item->id)
+                    ->exists(),
+            )->toBeTrue();
+        },
+    );
+
+    test(
+        'does not bulk delete another organisation\'s quote items',
+        function () {
+            $quote = $this->organisationA->execute(
+                fn () => Quote::factory()->create(),
+            );
+
+            $item = $this->organisationA->execute(
+                fn () => QuoteItem::factory()->create([
+                    'quote_id' => $quote->id,
+                ]),
+            );
+
+            $userB = $this->memberOf($this->organisationB);
+
+            $this
+                ->actingAsMemberOf(
+                    $this->organisationB,
+                    $userB,
+                )
+                ->post(
+                    route(
+                        'quotes.items.bulk.delete',
+                        $quote->id,
+                    ),
+                    [
+                        'ids' => [$item->id],
+                    ],
+                );
+
+            expect(
+                QuoteItem::withoutGlobalScopes()
+                    ->whereKey($item->id)
+                    ->whereNull('deleted_at')
+                    ->exists(),
+            )->toBeTrue();
+        },
+    );
+
+    test(
+        'cannot even reach the quote item through its own quote from a different organisation',
+        function () {
+            $quote = $this->organisationA->execute(
+                fn () => Quote::factory()->create(),
+            );
+
+            $userB = $this->memberOf($this->organisationB);
+
+            $this
+                ->actingAsMemberOf(
+                    $this->organisationB,
+                    $userB,
+                )
+                ->get(
+                    route(
+                        'quotes.show',
+                        $quote->id,
                     ),
                 )
                 ->assertStatus(404);

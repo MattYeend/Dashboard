@@ -35,6 +35,7 @@ use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\QuizQuestion;
 use App\Models\Quote;
+use App\Models\QuoteItem;
 use App\Models\QuoteStatus;
 use App\Models\Report;
 use App\Models\Tag;
@@ -84,6 +85,7 @@ return [
         Tag::class,
         Product::class,
         Quote::class,
+        QuoteItem::class,
         QuoteStatus::class,
         PaymentStatus::class,
         Payment::class,

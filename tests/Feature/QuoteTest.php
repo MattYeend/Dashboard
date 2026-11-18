@@ -3,18 +3,19 @@
 declare(strict_types=1);
 
 use App\Actions\Quotes\ConvertQuoteToOrder;
+use App\Actions\Quotes\RecalculateQuoteTotal;
 use App\Models\Company;
 use App\Models\Log;
 use App\Models\Order;
 use App\Models\Organisation;
 use App\Models\Quote;
+use App\Models\QuoteItem;
 use App\Models\QuoteStatus;
 use App\Models\User;
 use App\Services\Quotes\DeleterService;
 use App\Services\Quotes\TransitionService;
 use App\Services\Quotes\UpdaterService;
 use Illuminate\Auth\Access\AuthorizationException;
-// use Database\Seeders\QuoteStatusSeeder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -77,11 +78,28 @@ function makeQuote(
 }
 
 /**
+ * Create a draft quote with one line so that it passes the send checks
+ * (at least one line and a total greater than zero).
+ *
+ * @param  array<string, mixed>  $state
+ */
+function makeSendableQuote(Company $company, array $state = []): Quote
+{
+    $quote = makeQuote($company, state: $state);
+
+    QuoteItem::factory()->create(['quote_id' => $quote->id]);
+
+    app(RecalculateQuoteTotal::class)->execute($quote);
+
+    return $quote->fresh();
+}
+
+/**
  * Create a quote that has been sent and accepted, ready to convert.
  */
 function makeAcceptedQuote(Company $company, User $actor): Quote
 {
-    $quote = makeQuote($company);
+    $quote = makeSendableQuote($company);
     $service = app(TransitionService::class);
 
     $service->send($quote, $actor);
@@ -150,7 +168,7 @@ describe('create', function () {
 });
 
 describe('store', function () {
-    test('authenticated user with permission can create a draft quote and the total is calculated on the server', function () {
+    test('authenticated user with permission can create a draft quote and hostile values are ignored', function () {
         $superAdmin = $this->superAdminUser();
         $company = Company::factory()->create();
 
@@ -159,9 +177,6 @@ describe('store', function () {
                 'quotable_type' => 'company',
                 'quotable_id' => $company->id,
                 'title' => 'Server maths',
-                'subtotal' => '100.00',
-                'discount_amount' => '10.00',
-                'tax_amount' => '18.00',
                 'currency' => 'GBP',
                 // Hostile extras that must be ignored:
                 'total_amount' => '1.00',
@@ -173,7 +188,7 @@ describe('store', function () {
 
         $quote = Quote::where('title', 'Server maths')->firstOrFail();
 
-        expect($quote->total_amount)->toBe('108.00')
+        expect($quote->total_amount)->toBe('0.00')
             ->and($quote->isStatus(QuoteStatus::KEY_DRAFT))->toBeTrue()
             ->and($quote->converted_order_id)->toBeNull();
     });
@@ -252,21 +267,6 @@ describe('store', function () {
             ->assertJsonValidationErrors(['title']);
     });
 
-    test('store fails validation when subtotal is missing', function () {
-        $superAdmin = $this->superAdminUser();
-        $company = Company::factory()->create();
-
-        $this->actingAs($superAdmin)
-            ->postJson('/quotes', [
-                'quotable_type' => 'company',
-                'quotable_id' => $company->id,
-                'title' => 'Missing subtotal',
-                'currency' => 'GBP',
-            ])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['subtotal']);
-    });
-
     test('store fails validation when currency is not permitted', function () {
         $superAdmin = $this->superAdminUser();
         $company = Company::factory()->create();
@@ -281,23 +281,6 @@ describe('store', function () {
             ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['currency']);
-    });
-
-    test('store fails validation when the discount is larger than the subtotal', function () {
-        $superAdmin = $this->superAdminUser();
-        $company = Company::factory()->create();
-
-        $this->actingAs($superAdmin)
-            ->postJson('/quotes', [
-                'quotable_type' => 'company',
-                'quotable_id' => $company->id,
-                'title' => 'Too generous',
-                'subtotal' => '50.00',
-                'discount_amount' => '60.00',
-                'currency' => 'GBP',
-            ])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['discount_amount']);
     });
 
     test('store fails validation when valid_until is before issued_at', function () {
@@ -540,9 +523,10 @@ describe('update', function () {
         ]);
     });
 
-    test('total is recalculated on the server when amounts change', function () {
+    test('total comes from the lines and client supplied amounts are ignored on update', function () {
         $superAdmin = $this->superAdminUser();
-        $quote = makeQuote(Company::factory()->create());
+        $quote = makeSendableQuote(Company::factory()->create());
+        $before = $quote->total_amount;
 
         $this->actingAs($superAdmin)
             ->putJson("/quotes/{$quote->id}", [
@@ -553,7 +537,8 @@ describe('update', function () {
             ])
             ->assertStatus(200);
 
-        expect($quote->fresh()->total_amount)->toBe('216.00');
+        expect($before)->not->toBe('0.00')
+            ->and($quote->fresh()->total_amount)->toBe($before);
     });
 
     test('update fails validation when valid_until is not a valid date', function () {
@@ -618,7 +603,7 @@ describe('update', function () {
 
     test('only a draft quote can be edited', function () {
         $admin = $this->adminUser();
-        $quote = makeQuote(Company::factory()->create(), state: ['title' => 'Original']);
+        $quote = makeSendableQuote(Company::factory()->create(), state: ['title' => 'Original']);
         app(TransitionService::class)->send($quote, $admin);
 
         $this->actingAs($admin)
@@ -630,7 +615,7 @@ describe('update', function () {
 
     test('editing a sent quote is blocked at service level, covering the Super Admin bypass', function () {
         $admin = $this->adminUser();
-        $quote = makeQuote(Company::factory()->create());
+        $quote = makeSendableQuote(Company::factory()->create());
         app(TransitionService::class)->send($quote, $admin);
 
         app(UpdaterService::class)
@@ -669,7 +654,7 @@ describe('destroy', function () {
 
     test('a sent quote cannot be deleted', function () {
         $admin = $this->adminUser();
-        $quote = makeQuote(Company::factory()->create());
+        $quote = makeSendableQuote(Company::factory()->create());
         app(TransitionService::class)->send($quote, $admin);
 
         $this->actingAs($admin)
@@ -681,7 +666,7 @@ describe('destroy', function () {
 
     test('deleting a sent quote is blocked at service level', function () {
         $admin = $this->adminUser();
-        $quote = makeQuote(Company::factory()->create());
+        $quote = makeSendableQuote(Company::factory()->create());
         app(TransitionService::class)->send($quote, $admin);
 
         app(DeleterService::class)->delete($quote->fresh(), $admin->id);
@@ -923,7 +908,7 @@ describe('quotable options', function () {
 describe('transitions', function () {
     test('a draft quote can be sent over HTTP', function () {
         $admin = $this->adminUser();
-        $quote = makeQuote(Company::factory()->create());
+        $quote = makeSendableQuote(Company::factory()->create());
 
         $this->actingAs($admin)
             ->postJson(route('quotes.send', $quote))
@@ -951,7 +936,7 @@ describe('transitions', function () {
 
     test('a quote moves through send and accept and records timestamps', function () {
         $admin = $this->adminUser();
-        $quote = makeQuote(Company::factory()->create());
+        $quote = makeSendableQuote(Company::factory()->create());
         $service = app(TransitionService::class);
 
         $service->send($quote, $admin);
@@ -966,7 +951,7 @@ describe('transitions', function () {
 
     test('a sent quote can be declined over HTTP', function () {
         $admin = $this->adminUser();
-        $quote = makeQuote(Company::factory()->create());
+        $quote = makeSendableQuote(Company::factory()->create());
         app(TransitionService::class)->send($quote, $admin);
 
         $this->actingAs($admin)
@@ -992,11 +977,11 @@ describe('expiry', function () {
         $company = Company::factory()->create();
         $service = app(TransitionService::class);
 
-        $overdue = makeQuote($company, state: ['valid_until' => now()->addDay()]);
+        $overdue = makeSendableQuote($company, state: ['valid_until' => now()->addDay()]);
         $service->send($overdue, $admin);
         $overdue->forceFill(['valid_until' => now()->subHour()])->save();
 
-        $current = makeQuote($company, state: ['valid_until' => now()->addDays(10)]);
+        $current = makeSendableQuote($company, state: ['valid_until' => now()->addDays(10)]);
         $service->send($current, $admin);
 
         $expired = $service->expireOverdue($admin);
@@ -1083,7 +1068,7 @@ describe('import', function () {
 
         $quote = Quote::where('title', 'Imported')->firstOrFail();
 
-        expect($quote->total_amount)->toBe('120.00')
+        expect($quote->total_amount)->toBe('0.00')
             ->and($quote->isStatus(QuoteStatus::KEY_DRAFT))->toBeTrue();
     });
 
