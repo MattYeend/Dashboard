@@ -70,7 +70,7 @@ class DataPreparationService
     }
 
     /**
-     * Calculate the line total (unit price × quantity, plus tax) in minor units.
+     * Calculate the line total (unit price x quantity, plus tax) in minor units.
      */
     private function calculateTotal(
         int $quantity,

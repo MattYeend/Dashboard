@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace App\Services\QuoteItems;
 
+use App\Actions\Quote\RecalculateQuoteTotal;
 use App\Actions\RestoreResource;
 use App\Models\Log;
-use App\Models\Quote;
 use App\Models\QuoteItem;
 use App\Models\User;
 use App\Services\AuditLogService;
-use App\Services\Quotes\TotalsService;
-use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 
 class RestorerService
 {
@@ -22,58 +20,77 @@ class RestorerService
      */
     public function __construct(
         protected readonly AuditLogService $auditLogService,
-        protected readonly ActiveCheckerService $activeChecker,
-        protected readonly TotalsService $totals,
         protected readonly RestoreResource $restoreResource,
+        protected readonly RecalculateQuoteTotal $recalculateQuoteTotal,
     ) {}
 
     /**
-     * Restore a soft-deleted line and recalculate the quote header.
+     * Restore a soft-deleted quote item.
      *
-     * @throws AuthorizationException
-     * @throws ValidationException
+     * @throws \Exception
      */
     public function restore(
-        QuoteItem $item,
+        QuoteItem $quoteItem,
         int $restoredBy,
         ?User $actor = null
     ): QuoteItem {
         $actor ??= User::findOrFail($restoredBy);
 
-        return DB::transaction(function () use ($item, $restoredBy, $actor): QuoteItem {
-            $quote = Quote::query()
-                ->with('status')
-                ->whereKey($item->quote_id)
-                ->lockForUpdate()
-                ->firstOrFail();
+        $quoteItem->loadMissing('quote');
 
-            if (! $this->activeChecker->quoteAcceptsChanges($quote) || ! $item->trashed()) {
-                throw new AuthorizationException('Lines can only be restored on a draft quote.');
+        return $this->restoreResource->handle(
+            $quoteItem,
+            function (QuoteItem $quoteItem) use ($actor, $restoredBy): void {
+                $quoteItem->restored_by = $restoredBy;
+                $quoteItem->restored_at = now();
+                $quoteItem->save();
+
+                $this->recalculateQuoteTotal->execute(
+                    $quoteItem->quote
+                );
+
+                $this->auditLogService->record(
+                    Log::ACTION_RESTORE_QUOTE_ITEM,
+                    $actor,
+                    $quoteItem,
+                    [
+                        'after' => $this->auditLogService->snapshot(
+                            $quoteItem
+                        ),
+                    ],
+                );
             }
+        );
+    }
 
-            if (QuoteItem::query()->where('quote_id', $quote->id)->count() >= QuoteItem::MAX_PER_QUOTE) {
-                throw ValidationException::withMessages([
-                    'quantity' => 'A quote can hold at most '.QuoteItem::MAX_PER_QUOTE.' lines.',
-                ]);
+    /**
+     * Restore multiple soft-deleted quote items.
+     *
+     * @param  array<int, int|string>  $quoteItemIds
+     * @return int Number of quote items restored
+     *
+     * @throws \Exception
+     */
+    public function restoreMultiple(
+        array $quoteItemIds,
+        int $restoredBy
+    ): int {
+        $count = 0;
+
+        DB::transaction(function () use ($quoteItemIds, $restoredBy, &$count): void {
+            $actor = User::findOrFail($restoredBy);
+
+            /** @var Collection<int, QuoteItem> $quoteItems */
+            $quoteItems = QuoteItem::onlyTrashed()
+                ->whereIn('id', array_map('intval', $quoteItemIds))
+                ->get();
+
+            foreach ($quoteItems as $quoteItem) {
+                $this->restore($quoteItem, $restoredBy, $actor);
+                $count++;
             }
-
-            return $this->restoreResource->handle(
-                $item,
-                function (QuoteItem $item) use ($quote, $actor, $restoredBy): void {
-                    $item->forceFill([
-                        'restored_by' => $restoredBy,
-                        'restored_at' => now(),
-                    ])->save();
-
-                    $this->totals->recalculate($quote);
-
-                    $this->auditLogService->record(
-                        Log::ACTION_RESTORE_QUOTE_ITEM,
-                        $actor,
-                        $item,
-                        ['before' => $this->auditLogService->snapshot($item)],
-                    );
-                });
         });
+
+        return $count;
     }
 }

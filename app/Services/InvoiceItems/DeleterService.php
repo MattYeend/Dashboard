@@ -51,7 +51,7 @@ class DeleterService
                 );
 
                 $this->auditLogService->record(
-                    Log::ACTION_DELETE_INVOICE,
+                    Log::ACTION_DELETE_INVOICE_ITEM,
                     $actor,
                     $invoiceItem,
                     [

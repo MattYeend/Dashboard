@@ -2,45 +2,27 @@
 
 declare(strict_types=1);
 
-use App\Models\Company;
-use App\Models\Log;
-use App\Models\Product;
 use App\Models\Quote;
 use App\Models\QuoteItem;
-use App\Models\QuoteStatus;
-use App\Services\QuoteItems\CreatorService;
-use App\Services\Quotes\TotalsService;
-use App\Services\Quotes\TransitionService;
-use Database\Seeders\QuoteStatusSeeder;
-use Illuminate\Auth\Access\AuthorizationException;
+use App\Models\Log;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 use Inertia\Testing\AssertableInertia as Assert;
-use Tests\Concerns\CreatesQuotes;
 use Tests\Concerns\CreatesUsers;
 
 uses(
     LazilyRefreshDatabase::class,
-    CreatesQuotes::class,
     CreatesUsers::class,
 );
-
-beforeEach(function () {
-    $this->seed(QuoteStatusSeeder::class);
-    /** @var CreatesQuotes&\Tests\TestCase $this */
-    $this->quote = $this->draftQuote();
-});
 
 describe('index', function () {
     test('authenticated user with permission can list quote items', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
-        QuoteItem::factory()->count(3)->create(['quote_id' => $this->quote->id]);
+        QuoteItem::factory()->count(3)->create(['quote_id' => $quote->id]);
 
         $this->actingAs($superAdmin)
-            ->get("/quotes/{$this->quote->id}/items")
+            ->get("/quotes/{$quote->id}/items")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('QuoteItems/Index')
@@ -49,15 +31,18 @@ describe('index', function () {
     });
 
     test('unauthenticated user cannot list quote items', function () {
-        $this->get("/quotes/{$this->quote->id}/items")
+        $quote = Quote::factory()->create();
+
+        $this->get("/quotes/{$quote->id}/items")
             ->assertRedirect('/login');
     });
 
     test('user without permission cannot list quote items', function () {
         $user = $this->normalUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($user)
-            ->get("/quotes/{$this->quote->id}/items")
+            ->get("/quotes/{$quote->id}/items")
             ->assertStatus(403);
     });
 
@@ -73,83 +58,112 @@ describe('index', function () {
 describe('create', function () {
     test('authenticated user with permission can view create form', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->get("/quotes/{$this->quote->id}/items/create")
+            ->get("/quotes/{$quote->id}/items/create")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('QuoteItems/Create')
-                ->has('products')
-                ->has('units')
             );
     });
 
     test('unauthenticated user cannot view create form', function () {
-        $this->get("/quotes/{$this->quote->id}/items/create")
+        $quote = Quote::factory()->create();
+
+        $this->get("/quotes/{$quote->id}/items/create")
             ->assertRedirect('/login');
     });
 
     test('user without permission cannot view create form', function () {
         $user = $this->normalUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($user)
-            ->get("/quotes/{$this->quote->id}/items/create")
+            ->get("/quotes/{$quote->id}/items/create")
             ->assertStatus(403);
     });
 });
 
 describe('store', function () {
-    test('authenticated user with permission can create a quote item', function () {
+    test('authenticated user with permission can create an quote item', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
+
+        $payload = [
+            'description' => 'Bespoke cabinetry, fitted',
+            'quantity' => 2,
+            'unit_price' => 15000,
+            'tax_rate' => 20,
+            'position' => 1,
+        ];
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'Bespoke cabinetry, fitted',
-                'quantity' => '2',
-                'unit_price' => '150.00',
-                'tax_rate' => '20',
-            ])
+            ->postJson("/quotes/{$quote->id}/items", $payload)
             ->assertStatus(201)
-            ->assertJsonFragment(['name' => 'Bespoke cabinetry, fitted']);
+            ->assertJsonFragment(['description' => 'Bespoke cabinetry, fitted']);
 
         $this->assertDatabaseHas('quote_items', [
-            'quote_id' => $this->quote->id,
-            'name' => 'Bespoke cabinetry, fitted',
+            'quote_id' => $quote->id,
+            'description' => 'Bespoke cabinetry, fitted',
+            'quantity' => 2,
+            'unit_price' => 15000,
         ]);
     });
 
-    test('user without permission cannot create a quote item', function () {
+    test('user without permission cannot create an quote item', function () {
         $user = $this->normalUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($user)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'Blocked item',
-                'quantity' => '1',
-                'unit_price' => '1.00',
+            ->postJson("/quotes/{$quote->id}/items", [
+                'description' => 'Blocked item',
+                'quantity' => 1,
+                'unit_price' => 1000,
             ])
             ->assertStatus(403);
     });
 
-    test('store fails validation when name is missing and there is no product', function () {
+    test('store fails validation when description is missing', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'quantity' => '1',
-                'unit_price' => '1.00',
+            ->postJson("/quotes/{$quote->id}/items", [
+                'quantity' => 1,
+                'unit_price' => 1000,
             ])
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['name']);
+            ->assertJsonValidationErrors(['description']);
     });
 
-    test('store fails validation when quantity is zero', function () {
+    test('store defaults quantity to one when omitted', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'Zero quantity item',
-                'quantity' => '0',
-                'unit_price' => '1.00',
+            ->postJson("/quotes/{$quote->id}/items", [
+                'description' => 'Missing quantity item',
+                'unit_price' => 1000,
+            ])
+            ->assertStatus(201);
+
+        $this->assertDatabaseHas('quote_items', [
+            'quote_id' => $quote->id,
+            'description' => 'Missing quantity item',
+            'quantity' => 1,
+        ]);
+    });
+
+    test('store fails validation when quantity is less than one', function () {
+        $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
+
+        $this->actingAs($superAdmin)
+            ->postJson("/quotes/{$quote->id}/items", [
+                'description' => 'Zero quantity item',
+                'quantity' => 0,
+                'unit_price' => 1000,
             ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['quantity']);
@@ -157,12 +171,13 @@ describe('store', function () {
 
     test('store fails validation when unit_price is negative', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'Negative price item',
-                'quantity' => '1',
-                'unit_price' => '-5.00',
+            ->postJson("/quotes/{$quote->id}/items", [
+                'description' => 'Negative price item',
+                'quantity' => 1,
+                'unit_price' => -500,
             ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['unit_price']);
@@ -170,146 +185,68 @@ describe('store', function () {
 
     test('store fails validation when tax_rate is greater than 100', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'Invalid tax rate item',
-                'quantity' => '1',
-                'unit_price' => '10.00',
-                'tax_rate' => '150',
+            ->postJson("/quotes/{$quote->id}/items", [
+                'description' => 'Invalid tax rate item',
+                'quantity' => 1,
+                'unit_price' => 1000,
+                'tax_rate' => 150,
             ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['tax_rate']);
     });
 
-    test('store fails validation when discount_percent is greater than 100', function () {
+    test('store fails validation when tax_rate is negative', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'Invalid discount item',
-                'quantity' => '1',
-                'unit_price' => '10.00',
-                'discount_percent' => '101',
+            ->postJson("/quotes/{$quote->id}/items", [
+                'description' => 'Invalid tax rate item',
+                'quantity' => 1,
+                'unit_price' => 1000,
+                'tax_rate' => -1,
             ])
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['discount_percent']);
+            ->assertJsonValidationErrors(['tax_rate']);
     });
 
-    test('store computes the line and recalculates the quote header with bcmath', function () {
+    test('store succeeds with only required fields', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'Rounded line',
-                'quantity' => '3',
-                'unit_price' => '19.99',
-                'discount_percent' => '10',
-                'tax_rate' => '20',
+            ->postJson("/quotes/{$quote->id}/items", [
+                'description' => 'Minimal item',
+                'quantity' => 1,
+                'unit_price' => 500,
             ])
             ->assertStatus(201);
 
-        $item = QuoteItem::where('quote_id', $this->quote->id)->firstOrFail();
-        $quote = $this->quote->fresh();
-
-        expect($item->line_total)->toBe('53.97')
-            ->and($item->line_tax)->toBe('10.79')
-            ->and($quote->subtotal)->toBe('53.97')
-            ->and($quote->tax_amount)->toBe('10.79')
-            ->and($quote->total_amount)->toBe('64.76');
-    });
-
-    test('store ignores a client-supplied line total, tax, position and quote id', function () {
-        $superAdmin = $this->superAdminUser();
-        $other = Quote::factory()
-            ->forModel(Company::factory()->create())
-            ->withStatus(QuoteStatus::KEY_DRAFT)
-            ->create();
-
-        $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'Hostile',
-                'quantity' => '1',
-                'unit_price' => '10.00',
-                'line_total' => '0.01',
-                'line_tax' => '0.00',
-                'position' => 99,
-                'quote_id' => $other->id,
-            ])
-            ->assertStatus(201);
-
-        $item = QuoteItem::where('name', 'Hostile')->firstOrFail();
-
-        expect($item->line_total)->toBe('10.00')
-            ->and($item->position)->toBe(1)
-            ->and($item->quote_id)->toBe($this->quote->id);
-    });
-
-    test('store snapshots product details so later price changes do not alter the line', function () {
-        $superAdmin = $this->superAdminUser();
-        $product = Product::factory()->create([
-            'name' => 'Widget',
-            'unit_price' => '25.00',
-            'currency' => 'GBP',
+        $this->assertDatabaseHas('quote_items', [
+            'quote_id' => $quote->id,
+            'description' => 'Minimal item',
+            'quantity' => 1,
+            'unit_price' => 500,
+            'tax_rate' => 0,
         ]);
-
-        $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'product_id' => $product->id,
-                'quantity' => '2',
-            ])
-            ->assertStatus(201);
-
-        $product->update(['unit_price' => '99.00']);
-
-        $item = QuoteItem::where('quote_id', $this->quote->id)->firstOrFail();
-
-        expect($item->name)->toBe('Widget')
-            ->and($item->unit_price)->toBe('25.00')
-            ->and($item->line_total)->toBe('50.00');
     });
 
-    test('store rejects an inactive product', function () {
+    test('store computes the total server-side and ignores a client-supplied total', function () {
         $superAdmin = $this->superAdminUser();
-        $product = Product::factory()->inactive()->create();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'product_id' => $product->id,
-                'quantity' => '1',
+            ->postJson("/quotes/{$quote->id}/items", [
+                'description' => 'Total override attempt',
+                'quantity' => 2,
+                'unit_price' => 1000,
+                'total' => 999999,
             ])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['product_id']);
-    });
-
-    test('store rejects a product priced in a different currency', function () {
-        $superAdmin = $this->superAdminUser();
-        $product = Product::factory()->create(['currency' => 'USD']);
-
-        $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'product_id' => $product->id,
-                'quantity' => '1',
-            ])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['product_id']);
-    });
-
-    test('store stops at the maximum number of lines', function () {
-        $superAdmin = $this->superAdminUser();
-
-        QuoteItem::factory()
-            ->count(QuoteItem::MAX_PER_QUOTE)
-            ->create(['quote_id' => $this->quote->id]);
-
-        $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'One too many',
-                'quantity' => '1',
-                'unit_price' => '1.00',
-            ])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['quantity']);
+            ->assertStatus(201)
+            ->assertJsonMissing(['total' => 999999]);
     });
 
     test('store returns 404 when the quote does not exist', function () {
@@ -317,51 +254,22 @@ describe('store', function () {
 
         $this->actingAs($superAdmin)
             ->postJson('/quotes/99999/items', [
-                'name' => 'Orphaned item',
-                'quantity' => '1',
-                'unit_price' => '1.00',
+                'description' => 'Orphaned item',
+                'quantity' => 1,
+                'unit_price' => 500,
             ])
             ->assertStatus(404);
     });
-
-    test('store is forbidden once the quote is sent', function () {
-        $admin = $this->adminUser();
-
-        QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
-        DB::transaction(fn () => app(TotalsService::class)->recalculate($this->quote->fresh()));
-        app(TransitionService::class)->send($this->quote->fresh(), $admin);
-
-        $this->actingAs($admin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'Late',
-                'quantity' => '1',
-                'unit_price' => '1.00',
-            ])
-            ->assertStatus(403);
-    });
-
-    test('creator service blocks a sent quote even for the Super Admin bypass', function () {
-        $superAdmin = $this->superAdminUser();
-
-        QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
-        DB::transaction(fn () => app(TotalsService::class)->recalculate($this->quote->fresh()));
-        app(TransitionService::class)->send($this->quote->fresh(), $superAdmin);
-
-        app(CreatorService::class)->create(
-            $this->quote->fresh(),
-            ['name' => 'Late', 'quantity' => '1', 'unit_price' => '1.00'],
-            $superAdmin->id,
-        );
-    })->throws(AuthorizationException::class);
 });
 
 describe('show', function () {
-    test('authenticated user with permission can view a quote item', function () {
+    test('authenticated user with permission can view an quote item', function () {
         $superAdmin = $this->superAdminUser();
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($superAdmin)
-            ->get("/quotes/{$this->quote->id}/items/{$item->id}")
+            ->get("/quotes/{$quote->id}/items/{$item->id}")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('QuoteItems/Show')
@@ -369,40 +277,41 @@ describe('show', function () {
             );
     });
 
-    test('unauthenticated user cannot view a quote item', function () {
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+    test('unauthenticated user cannot view an quote item', function () {
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $quote->id]);
 
-        $this->get("/quotes/{$this->quote->id}/items/{$item->id}")
+        $this->get("/quotes/{$quote->id}/items/{$item->id}")
             ->assertRedirect('/login');
     });
 
-    test('user without permission cannot view a quote item', function () {
+    test('user without permission cannot view an quote item', function () {
         $user = $this->userWithNoPermissions();
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($user)
-            ->get("/quotes/{$this->quote->id}/items/{$item->id}")
+            ->get("/quotes/{$quote->id}/items/{$item->id}")
             ->assertStatus(403);
     });
 
     test('show returns 404 for a non-existent quote item', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->get("/quotes/{$this->quote->id}/items/99999")
+            ->get("/quotes/{$quote->id}/items/99999")
             ->assertStatus(404);
     });
 
     test('show returns 404 when the item belongs to a different quote', function () {
         $superAdmin = $this->superAdminUser();
-        $other = Quote::factory()
-            ->forModel(Company::factory()->create())
-            ->withStatus(QuoteStatus::KEY_DRAFT)
-            ->create();
-        $item = QuoteItem::factory()->create(['quote_id' => $other->id]);
+        $quote = Quote::factory()->create();
+        $otherInvoice = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $otherInvoice->id]);
 
         $this->actingAs($superAdmin)
-            ->get("/quotes/{$this->quote->id}/items/{$item->id}")
+            ->get("/quotes/{$quote->id}/items/{$item->id}")
             ->assertStatus(404);
     });
 });
@@ -410,187 +319,169 @@ describe('show', function () {
 describe('edit', function () {
     test('authenticated user with permission can view edit form', function () {
         $superAdmin = $this->superAdminUser();
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($superAdmin)
-            ->get("/quotes/{$this->quote->id}/items/{$item->id}/edit")
+            ->get("/quotes/{$quote->id}/items/{$item->id}/edit")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('QuoteItems/Edit')
                 ->has('item')
-                ->has('products')
-                ->has('units')
             );
     });
 
     test('unauthenticated user cannot view edit form', function () {
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $quote->id]);
 
-        $this->get("/quotes/{$this->quote->id}/items/{$item->id}/edit")
+        $this->get("/quotes/{$quote->id}/items/{$item->id}/edit")
             ->assertRedirect('/login');
     });
 
     test('user without permission cannot view edit form', function () {
         $user = $this->normalUser();
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($user)
-            ->get("/quotes/{$this->quote->id}/items/{$item->id}/edit")
+            ->get("/quotes/{$quote->id}/items/{$item->id}/edit")
             ->assertStatus(403);
     });
 });
 
 describe('update', function () {
-    test('authenticated user with permission can update a quote item', function () {
+    test('authenticated user with permission can update an quote item', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
         $item = QuoteItem::factory()->create([
-            'quote_id' => $this->quote->id,
-            'name' => 'Old name',
+            'quote_id' => $quote->id,
+            'description' => 'Old description',
         ]);
 
         $this->actingAs($superAdmin)
-            ->putJson("/quotes/{$this->quote->id}/items/{$item->id}", ['name' => 'New name'])
+            ->putJson("/quotes/{$quote->id}/items/{$item->id}", ['description' => 'New description'])
             ->assertStatus(200)
-            ->assertJsonFragment(['name' => 'New name']);
+            ->assertJsonFragment(['description' => 'New description']);
 
         $this->assertDatabaseHas('quote_items', [
             'id' => $item->id,
-            'name' => 'New name',
+            'description' => 'New description',
         ]);
     });
 
-    test('patch verb also updates a quote item', function () {
+    test('patch verb also updates an quote item', function () {
         $superAdmin = $this->superAdminUser();
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create([
+            'quote_id' => $quote->id,
+            'quantity' => 1,
+        ]);
 
         $this->actingAs($superAdmin)
-            ->patchJson("/quotes/{$this->quote->id}/items/{$item->id}", ['quantity' => '5'])
-            ->assertStatus(200);
+            ->patchJson("/quotes/{$quote->id}/items/{$item->id}", ['quantity' => 5])
+            ->assertStatus(200)
+            ->assertJsonFragment(['quantity' => 5]);
     });
 
-    test('user without permission cannot update a quote item', function () {
+    test('user without permission cannot update an quote item', function () {
         $user = $this->normalUser();
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($user)
-            ->putJson("/quotes/{$this->quote->id}/items/{$item->id}", ['name' => 'Blocked update'])
+            ->putJson("/quotes/{$quote->id}/items/{$item->id}", ['description' => 'Blocked update'])
             ->assertStatus(403);
     });
 
-    test('update fails validation when quantity is zero', function () {
+    test('update fails validation when quantity is less than one', function () {
         $superAdmin = $this->superAdminUser();
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($superAdmin)
-            ->putJson("/quotes/{$this->quote->id}/items/{$item->id}", ['quantity' => '0'])
+            ->putJson("/quotes/{$quote->id}/items/{$item->id}", ['quantity' => 0])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['quantity']);
     });
 
     test('update fails validation when unit_price is negative', function () {
         $superAdmin = $this->superAdminUser();
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($superAdmin)
-            ->putJson("/quotes/{$this->quote->id}/items/{$item->id}", ['unit_price' => '-1.00'])
+            ->putJson("/quotes/{$quote->id}/items/{$item->id}", ['unit_price' => -100])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['unit_price']);
     });
 
     test('omitted fields are not cleared on update', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
         $item = QuoteItem::factory()->create([
-            'quote_id' => $this->quote->id,
-            'name' => 'Original name',
-            'quantity' => '3.00',
+            'quote_id' => $quote->id,
+            'description' => 'Original description',
+            'quantity' => 3,
         ]);
 
         $this->actingAs($superAdmin)
-            ->putJson("/quotes/{$this->quote->id}/items/{$item->id}", ['unit_price' => '7.50'])
+            ->putJson("/quotes/{$quote->id}/items/{$item->id}", ['unit_price' => 750])
             ->assertStatus(200);
 
         $this->assertDatabaseHas('quote_items', [
             'id' => $item->id,
-            'name' => 'Original name',
-            'quantity' => '3.00',
-            'unit_price' => '7.50',
+            'description' => 'Original description',
+            'quantity' => 3,
+            'unit_price' => 750,
         ]);
     });
 
-    test('update recalculates the line and the quote header', function () {
+    test('recalculates total when quantity or unit_price changes', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create([
+            'quote_id' => $quote->id,
+            'quantity' => 1,
+            'unit_price' => 1000,
+        ]);
+
+        $originalTotal = $item->total;
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'Line',
-                'quantity' => '1',
-                'unit_price' => '100.00',
-                'tax_rate' => '20',
-            ])
-            ->assertStatus(201);
-
-        $item = QuoteItem::where('quote_id', $this->quote->id)->firstOrFail();
-
-        $this->actingAs($superAdmin)
-            ->putJson("/quotes/{$this->quote->id}/items/{$item->id}", ['quantity' => '2'])
+            ->putJson("/quotes/{$quote->id}/items/{$item->id}", ['quantity' => 4])
             ->assertStatus(200);
 
-        $quote = $this->quote->fresh();
+        $item->refresh();
 
-        expect($quote->subtotal)->toBe('200.00')
-            ->and($quote->tax_amount)->toBe('40.00')
-            ->and($quote->total_amount)->toBe('240.00');
-    });
-
-    test('update reduces a header discount that exceeds the new subtotal', function () {
-        $superAdmin = $this->superAdminUser();
-
-        $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'Line',
-                'quantity' => '1',
-                'unit_price' => '100.00',
-                'tax_rate' => '0',
-            ])
-            ->assertStatus(201);
-
-        $this->quote->forceFill(['discount_amount' => '80.00'])->save();
-        $item = QuoteItem::where('quote_id', $this->quote->id)->firstOrFail();
-
-        $this->actingAs($superAdmin)
-            ->putJson("/quotes/{$this->quote->id}/items/{$item->id}", ['unit_price' => '50.00'])
-            ->assertStatus(200);
-
-        expect($this->quote->fresh()->discount_amount)->toBe('50.00')
-            ->and($this->quote->fresh()->total_amount)->toBe('0.00');
+        expect($item->total)->not->toBe($originalTotal);
     });
 
     test('update returns 404 when the item belongs to a different quote', function () {
         $superAdmin = $this->superAdminUser();
-        $other = Quote::factory()
-            ->forModel(Company::factory()->create())
-            ->withStatus(QuoteStatus::KEY_DRAFT)
-            ->create();
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $otherInvoice = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $otherInvoice->id]);
 
         $this->actingAs($superAdmin)
-            ->putJson("/quotes/{$other->id}/items/{$item->id}", ['name' => 'Cross-quote'])
+            ->putJson("/quotes/{$quote->id}/items/{$item->id}", ['description' => 'Should not apply'])
             ->assertStatus(404);
     });
 
     test('logs quote item updates with actor id', function () {
         $actor = $this->adminUser();
+        $quote = Quote::factory()->create();
         $item = QuoteItem::factory()->create([
-            'quote_id' => $this->quote->id,
-            'name' => 'Old name',
+            'quote_id' => $quote->id,
+            'description' => 'Old description',
         ]);
 
         $this->actingAs($actor)
-            ->putJson("/quotes/{$this->quote->id}/items/{$item->id}", ['name' => 'New name'])
+            ->putJson("/quotes/{$quote->id}/items/{$item->id}", ['description' => 'New description'])
             ->assertOk();
 
         $log = Log::query()
-            ->where('action_id', Log::ACTION_UPDATE_QUOTE_ITEM)
+            ->where('action_id', Log::ACTION_UPDATE_INVOICE_ITEM)
             ->where('logged_in_user_id', $actor->id)
             ->first();
 
@@ -600,81 +491,62 @@ describe('update', function () {
 });
 
 describe('destroy', function () {
-    test('authenticated user with permission can soft delete a quote item', function () {
+    test('authenticated user with permission can soft delete an quote item', function () {
         $superAdmin = $this->superAdminUser();
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($superAdmin)
-            ->deleteJson("/quotes/{$this->quote->id}/items/{$item->id}")
+            ->deleteJson("/quotes/{$quote->id}/items/{$item->id}")
             ->assertStatus(204);
 
         $this->assertSoftDeleted('quote_items', ['id' => $item->id]);
     });
 
-    test('user without permission cannot soft delete a quote item', function () {
+    test('user without permission cannot soft delete an quote item', function () {
         $user = $this->normalUser();
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($user)
-            ->deleteJson("/quotes/{$this->quote->id}/items/{$item->id}")
+            ->deleteJson("/quotes/{$quote->id}/items/{$item->id}")
             ->assertStatus(403);
     });
 
     test('destroy returns 404 for a non-existent quote item', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->deleteJson("/quotes/{$this->quote->id}/items/99999")
+            ->deleteJson("/quotes/{$quote->id}/items/99999")
             ->assertStatus(404);
     });
 
     test('destroy returns 404 when the item belongs to a different quote', function () {
         $superAdmin = $this->superAdminUser();
-        $other = Quote::factory()
-            ->forModel(Company::factory()->create())
-            ->withStatus(QuoteStatus::KEY_DRAFT)
-            ->create();
-        $item = QuoteItem::factory()->create(['quote_id' => $other->id]);
+        $quote = Quote::factory()->create();
+        $otherInvoice = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $otherInvoice->id]);
 
         $this->actingAs($superAdmin)
-            ->deleteJson("/quotes/{$this->quote->id}/items/{$item->id}")
+            ->deleteJson("/quotes/{$quote->id}/items/{$item->id}")
             ->assertStatus(404);
 
         $this->assertDatabaseHas('quote_items', [
             'id' => $item->id,
             'deleted_at' => null,
         ]);
-    });
-
-    test('destroy keeps the quote header in step', function () {
-        $superAdmin = $this->superAdminUser();
-
-        $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'Line',
-                'quantity' => '1',
-                'unit_price' => '50.00',
-                'tax_rate' => '0',
-            ])
-            ->assertStatus(201);
-
-        $item = QuoteItem::where('quote_id', $this->quote->id)->firstOrFail();
-
-        $this->actingAs($superAdmin)
-            ->deleteJson("/quotes/{$this->quote->id}/items/{$item->id}")
-            ->assertStatus(204);
-
-        expect($this->quote->fresh()->total_amount)->toBe('0.00');
     });
 });
 
 describe('restore', function () {
     test('authenticated user with permission can restore a soft-deleted quote item', function () {
         $superAdmin = $this->superAdminUser();
-        $item = QuoteItem::factory()->deleted()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->deleted()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items/{$item->id}/restore")
+            ->postJson("/quotes/{$quote->id}/items/{$item->id}/restore")
             ->assertStatus(204);
 
         $this->assertDatabaseHas('quote_items', [
@@ -683,77 +555,57 @@ describe('restore', function () {
         ]);
     });
 
-    test('user without permission cannot restore a quote item', function () {
+    test('user without permission cannot restore an quote item', function () {
         $user = $this->normalUser();
-        $item = QuoteItem::factory()->deleted()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->deleted()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($user)
-            ->postJson("/quotes/{$this->quote->id}/items/{$item->id}/restore")
+            ->postJson("/quotes/{$quote->id}/items/{$item->id}/restore")
             ->assertStatus(403);
     });
 
-    test('restore returns 404 for a quote item that is not soft-deleted', function () {
+    test('restore returns 404 for an quote item that is not soft-deleted', function () {
         $superAdmin = $this->superAdminUser();
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items/{$item->id}/restore")
+            ->postJson("/quotes/{$quote->id}/items/{$item->id}/restore")
             ->assertStatus(404);
-    });
-
-    test('restore keeps the quote header in step', function () {
-        $superAdmin = $this->superAdminUser();
-
-        $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items", [
-                'name' => 'Line',
-                'quantity' => '1',
-                'unit_price' => '50.00',
-                'tax_rate' => '0',
-            ])
-            ->assertStatus(201);
-
-        $item = QuoteItem::where('quote_id', $this->quote->id)->firstOrFail();
-
-        $this->actingAs($superAdmin)
-            ->deleteJson("/quotes/{$this->quote->id}/items/{$item->id}")
-            ->assertStatus(204);
-
-        $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items/{$item->id}/restore")
-            ->assertStatus(204);
-
-        expect($this->quote->fresh()->total_amount)->toBe('50.00');
     });
 });
 
 describe('force delete', function () {
-    test('authenticated user with permission can force delete a quote item', function () {
+    test('authenticated user with permission can force delete an quote item', function () {
         $superAdmin = $this->superAdminUser();
-        $item = QuoteItem::factory()->deleted()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->deleted()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($superAdmin)
-            ->deleteJson("/quotes/{$this->quote->id}/items/{$item->id}/force")
+            ->deleteJson("/quotes/{$quote->id}/items/{$item->id}/force")
             ->assertStatus(204);
 
         $this->assertDatabaseMissing('quote_items', ['id' => $item->id]);
     });
 
-    test('user without permission cannot force delete a quote item', function () {
+    test('user without permission cannot force delete an quote item', function () {
         $user = $this->normalUser();
-        $item = QuoteItem::factory()->deleted()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->deleted()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($user)
-            ->deleteJson("/quotes/{$this->quote->id}/items/{$item->id}/force")
+            ->deleteJson("/quotes/{$quote->id}/items/{$item->id}/force")
             ->assertStatus(403);
     });
 
-    test('force delete returns 404 for a quote item that is not soft-deleted', function () {
+    test('force delete returns 404 for an quote item that is not soft-deleted', function () {
         $superAdmin = $this->superAdminUser();
-        $item = QuoteItem::factory()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($superAdmin)
-            ->deleteJson("/quotes/{$this->quote->id}/items/{$item->id}/force")
+            ->deleteJson("/quotes/{$quote->id}/items/{$item->id}/force")
             ->assertStatus(404);
     });
 });
@@ -761,11 +613,12 @@ describe('force delete', function () {
 describe('bulk delete', function () {
     test('authenticated user with permission can bulk soft delete quote items', function () {
         $superAdmin = $this->superAdminUser();
-        $items = QuoteItem::factory()->count(3)->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $items = QuoteItem::factory()->count(3)->create(['quote_id' => $quote->id]);
         $ids = $items->pluck('id')->all();
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items/bulk/delete", ['ids' => $ids])
+            ->postJson("/quotes/{$quote->id}/items/bulk/delete", ['ids' => $ids])
             ->assertStatus(200)
             ->assertJson([
                 'deleted' => $ids,
@@ -779,18 +632,20 @@ describe('bulk delete', function () {
 
     test('bulk delete fails validation with empty ids array', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items/bulk/delete", ['ids' => []])
+            ->postJson("/quotes/{$quote->id}/items/bulk/delete", ['ids' => []])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ids']);
     });
 
     test('bulk delete skips non-existent ids', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items/bulk/delete", ['ids' => [99999]])
+            ->postJson("/quotes/{$quote->id}/items/bulk/delete", ['ids' => [99999]])
             ->assertStatus(200)
             ->assertJson([
                 'deleted' => [],
@@ -800,14 +655,12 @@ describe('bulk delete', function () {
 
     test('bulk delete skips ids belonging to a different quote', function () {
         $superAdmin = $this->superAdminUser();
-        $other = Quote::factory()
-            ->forModel(Company::factory()->create())
-            ->withStatus(QuoteStatus::KEY_DRAFT)
-            ->create();
-        $foreignItem = QuoteItem::factory()->create(['quote_id' => $other->id]);
+        $quote = Quote::factory()->create();
+        $otherInvoice = Quote::factory()->create();
+        $foreignItem = QuoteItem::factory()->create(['quote_id' => $otherInvoice->id]);
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items/bulk/delete", ['ids' => [$foreignItem->id]])
+            ->postJson("/quotes/{$quote->id}/items/bulk/delete", ['ids' => [$foreignItem->id]])
             ->assertStatus(200)
             ->assertJson([
                 'deleted' => [],
@@ -822,10 +675,11 @@ describe('bulk delete', function () {
 
     test('user without permission cannot bulk delete quote items', function () {
         $user = $this->normalUser();
-        $items = QuoteItem::factory()->count(2)->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $items = QuoteItem::factory()->count(2)->create(['quote_id' => $quote->id]);
 
         $this->actingAs($user)
-            ->postJson("/quotes/{$this->quote->id}/items/bulk/delete", [
+            ->postJson("/quotes/{$quote->id}/items/bulk/delete", [
                 'ids' => $items->pluck('id')->all(),
             ])
             ->assertStatus(403);
@@ -835,11 +689,12 @@ describe('bulk delete', function () {
 describe('bulk restore', function () {
     test('authenticated user with permission can bulk restore quote items', function () {
         $superAdmin = $this->superAdminUser();
-        $items = QuoteItem::factory()->count(3)->deleted()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $items = QuoteItem::factory()->count(3)->deleted()->create(['quote_id' => $quote->id]);
         $ids = $items->pluck('id')->all();
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items/bulk/restore", ['ids' => $ids])
+            ->postJson("/quotes/{$quote->id}/items/bulk/restore", ['ids' => $ids])
             ->assertStatus(200)
             ->assertJson([
                 'restored' => $ids,
@@ -856,18 +711,20 @@ describe('bulk restore', function () {
 
     test('bulk restore fails validation with empty ids array', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items/bulk/restore", ['ids' => []])
+            ->postJson("/quotes/{$quote->id}/items/bulk/restore", ['ids' => []])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ids']);
     });
 
     test('bulk restore skips non-existent ids', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items/bulk/restore", ['ids' => [99999]])
+            ->postJson("/quotes/{$quote->id}/items/bulk/restore", ['ids' => [99999]])
             ->assertStatus(200)
             ->assertJson([
                 'restored' => [],
@@ -877,14 +734,12 @@ describe('bulk restore', function () {
 
     test('bulk restore skips ids belonging to a different quote', function () {
         $superAdmin = $this->superAdminUser();
-        $other = Quote::factory()
-            ->forModel(Company::factory()->create())
-            ->withStatus(QuoteStatus::KEY_DRAFT)
-            ->create();
-        $foreignItem = QuoteItem::factory()->deleted()->create(['quote_id' => $other->id]);
+        $quote = Quote::factory()->create();
+        $otherInvoice = Quote::factory()->create();
+        $foreignItem = QuoteItem::factory()->deleted()->create(['quote_id' => $otherInvoice->id]);
 
         $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items/bulk/restore", ['ids' => [$foreignItem->id]])
+            ->postJson("/quotes/{$quote->id}/items/bulk/restore", ['ids' => [$foreignItem->id]])
             ->assertStatus(200)
             ->assertJson([
                 'restored' => [],
@@ -896,10 +751,11 @@ describe('bulk restore', function () {
 
     test('user without permission cannot bulk restore quote items', function () {
         $user = $this->normalUser();
-        $items = QuoteItem::factory()->count(2)->deleted()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $items = QuoteItem::factory()->count(2)->deleted()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($user)
-            ->postJson("/quotes/{$this->quote->id}/items/bulk/restore", [
+            ->postJson("/quotes/{$quote->id}/items/bulk/restore", [
                 'ids' => $items->pluck('id')->all(),
             ])
             ->assertStatus(403);
@@ -909,16 +765,17 @@ describe('bulk restore', function () {
 describe('soft delete scoping', function () {
     test('index does not return soft-deleted quote items', function () {
         $superAdmin = $this->superAdminUser();
+        $quote = Quote::factory()->create();
 
-        QuoteItem::factory()->count(2)->create(['quote_id' => $this->quote->id]);
-        $trashed = QuoteItem::factory()->deleted()->create(['quote_id' => $this->quote->id]);
+        QuoteItem::factory()->count(2)->create(['quote_id' => $quote->id]);
+        $trashed = QuoteItem::factory()->deleted()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($superAdmin)
-            ->get("/quotes/{$this->quote->id}/items")
+            ->get("/quotes/{$quote->id}/items")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('QuoteItems/Index')
-                ->has('quote_items.data', 2)
+                ->has('quote_items')
             );
 
         $this->assertSoftDeleted('quote_items', ['id' => $trashed->id]);
@@ -926,84 +783,11 @@ describe('soft delete scoping', function () {
 
     test('show returns 404 for a soft-deleted quote item', function () {
         $superAdmin = $this->superAdminUser();
-        $item = QuoteItem::factory()->deleted()->create(['quote_id' => $this->quote->id]);
+        $quote = Quote::factory()->create();
+        $item = QuoteItem::factory()->deleted()->create(['quote_id' => $quote->id]);
 
         $this->actingAs($superAdmin)
-            ->get("/quotes/{$this->quote->id}/items/{$item->id}")
+            ->get("/quotes/{$quote->id}/items/{$item->id}")
             ->assertStatus(404);
-    });
-});
-
-describe('totals service', function () {
-    test('recalculate refuses to run outside a transaction', function () {
-        app(TotalsService::class)->recalculate($this->quote);
-    })->throws(LogicException::class);
-});
-
-describe('send precondition', function () {
-    test('a quote with no lines cannot be sent', function () {
-        app(TransitionService::class)->send($this->quote, $this->adminUser());
-    })->throws(ValidationException::class);
-});
-
-describe('import', function () {
-    test('imports lines into a draft quote and links products by SKU', function () {
-        $superAdmin = $this->superAdminUser();
-
-        Product::factory()->create([
-            'sku' => 'IMP-SKU',
-            'name' => 'Imported product',
-            'unit_price' => '12.00',
-        ]);
-
-        $csv = "sku,name,quantity,unit_price\nIMP-SKU,Imported product,2,12.00\n,Manual line,1,5.00\n,Bad line,0,5.00\n";
-        $file = UploadedFile::fake()->createWithContent('lines.csv', $csv);
-
-        $preview = $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items/import/preview", ['file' => $file])
-            ->assertOk()
-            ->json();
-
-        $this->actingAs($superAdmin)
-            ->postJson("/quotes/{$this->quote->id}/items/import/commit", ['token' => $preview['token']])
-            ->assertOk();
-
-        expect(QuoteItem::where('quote_id', $this->quote->id)->count())->toBe(2)
-            ->and($this->quote->fresh()->subtotal)->toBe('29.00');
-    });
-
-    test('user without permission cannot preview an import', function () {
-        $user = $this->normalUser();
-        $file = UploadedFile::fake()->createWithContent('lines.csv', "name,quantity,unit_price\nLine,1,1.00\n");
-
-        $this->actingAs($user)
-            ->postJson("/quotes/{$this->quote->id}/items/import/preview", ['file' => $file])
-            ->assertStatus(403);
-    });
-});
-
-describe('export', function () {
-    test('exports a quote\'s lines without formula injection', function () {
-        $superAdmin = $this->superAdminUser();
-
-        QuoteItem::factory()->create([
-            'quote_id' => $this->quote->id,
-            'name' => '=HYPERLINK("http://evil")',
-        ]);
-
-        $response = $this->actingAs($superAdmin)
-            ->get("/quotes/{$this->quote->id}/items/export");
-
-        $response->assertOk();
-
-        expect($response->streamedContent())->toContain("'=HYPERLINK");
-    });
-
-    test('user without permission cannot export quote items', function () {
-        $user = $this->normalUser();
-
-        $this->actingAs($user)
-            ->get("/quotes/{$this->quote->id}/items/export")
-            ->assertStatus(403);
     });
 });

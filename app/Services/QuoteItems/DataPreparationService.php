@@ -37,6 +37,7 @@ class DataPreparationService
 
         return [
             'quote_id' => $quote->id,
+            'organisation_id' => $quote->organisation_id,
             'product_id' => $product?->id,
             'position' => $position,
             'name' => trim((string) ($data['name'] ?? $product?->name)),

@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace App\Services\QuoteItems;
 
 use App\Actions\CreateResource;
+use App\Actions\Quote\RecalculateQuoteTotal;
 use App\Models\Log;
 use App\Models\Quote;
 use App\Models\QuoteItem;
 use App\Models\User;
 use App\Services\AuditLogService;
-use App\Services\Quotes\TotalsService;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 
 class CreatorService
 {
@@ -22,68 +19,59 @@ class CreatorService
      */
     public function __construct(
         protected readonly DataPreparationService $dataPreparation,
-        protected readonly ActiveCheckerService $activeChecker,
-        protected readonly TotalsService $totals,
         protected readonly AuditLogService $auditLogService,
         protected readonly CreateResource $createResource,
+        protected readonly RecalculateQuoteTotal $recalculateQuoteTotal,
     ) {}
 
     /**
-     * Add a line to a quote.
+     * Create a new quote item.
      *
      * @param  array<string, mixed>  $data
      *
-     * @throws AuthorizationException
-     * @throws ValidationException
+     * @throws ModelNotFoundException
      */
-    public function create(Quote $quote, array $data, int $createdBy): QuoteItem
-    {
+    public function create(
+        array $data,
+        int $quoteId,
+        int $createdBy
+    ): QuoteItem {
         $actor = User::findOrFail($createdBy);
 
         return $this->createResource->handle(
             $data,
-            function (array $data) use ($quote, $createdBy, $actor): QuoteItem {
-                return DB::transaction(function () use ($quote, $data, $createdBy, $actor): QuoteItem {
-                    $locked = Quote::query()
-                        ->with('status')
-                        ->whereKey($quote->id)
-                        ->lockForUpdate()
-                        ->firstOrFail();
+            function (array $data) use ($quoteId, $createdBy, $actor): QuoteItem {
+                $quote = Quote::query()->lockForUpdate()->findOrFail($quoteId);
 
-                    // Second layer: Super Admin bypasses the policy through Gate::before.
-                    if (! $this->activeChecker->quoteAcceptsChanges($locked)) {
-                        throw new AuthorizationException('Lines can only be added to a draft quote.');
-                    }
-
-                    $existing = QuoteItem::query()->where('quote_id', $locked->id)->count();
-
-                    if ($existing >= QuoteItem::MAX_PER_QUOTE) {
-                        throw ValidationException::withMessages([
-                            'quantity' => 'A quote can hold at most '.QuoteItem::MAX_PER_QUOTE.' lines.',
-                        ]);
-                    }
-
-                    $position = (int) QuoteItem::withTrashed()
-                        ->where('quote_id', $locked->id)
+                $position = isset($data['position'])
+                    ? (int) $data['position']
+                    : (int) QuoteItem::withTrashed()
+                        ->where('quote_id', $quote->id)
                         ->max('position') + 1;
 
-                    $item = QuoteItem::create(
-                        $this->dataPreparation->prepareForCreation($data, $locked, $position)
-                    );
+                // Built entirely server side by prepareForCreation, so
+                // forceFill is safe and gives a single INSERT.
+                $newQuoteItem = (new QuoteItem())->forceFill([
+                    ...$this->dataPreparation->prepareForCreation($data, $quote, $position),
+                    'created_by' => $createdBy,
+                ]);
+                $newQuoteItem->save();
 
-                    $item->forceFill(['created_by' => $createdBy])->save();
+                $this->recalculateQuoteTotal->execute($quote);
 
-                    $this->totals->recalculate($locked);
+                $this->auditLogService->record(
+                    Log::ACTION_CREATE_QUOTE_ITEM,
+                    $actor,
+                    $newQuoteItem,
+                    [
+                        'after' => $this->auditLogService->snapshot(
+                            $newQuoteItem
+                        ),
+                    ],
+                );
 
-                    $this->auditLogService->record(
-                        Log::ACTION_CREATE_QUOTE_ITEM,
-                        $actor,
-                        $item,
-                        ['after' => $this->auditLogService->snapshot($item)],
-                    );
-
-                    return $item;
-                });
-            });
+                return $newQuoteItem;
+            }
+        );
     }
 }

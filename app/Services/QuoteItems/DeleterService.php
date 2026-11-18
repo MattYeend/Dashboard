@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Services\QuoteItems;
 
 use App\Actions\DeleteResource;
+use App\Actions\Quote\RecalculateQuoteTotal;
 use App\Models\Log;
-use App\Models\Quote;
 use App\Models\QuoteItem;
 use App\Models\User;
 use App\Services\AuditLogService;
-use App\Services\Quotes\TotalsService;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 
 class DeleterService
@@ -21,80 +19,108 @@ class DeleterService
      */
     public function __construct(
         protected readonly AuditLogService $auditLogService,
-        protected readonly ActiveCheckerService $activeChecker,
-        protected readonly TotalsService $totals,
         protected readonly DeleteResource $deleteResource,
+        protected readonly RecalculateQuoteTotal $recalculateQuoteTotal,
     ) {}
 
     /**
-     * Soft delete a line and recalculate the quote header.
+     * Soft delete a quote item.
      *
-     * @throws AuthorizationException
+     * @throws \Exception
      */
     public function delete(
-        QuoteItem $item,
+        QuoteItem $quoteItem,
         int $deletedBy,
         ?User $actor = null
     ): bool {
         $actor ??= User::findOrFail($deletedBy);
 
-        return DB::transaction(function () use ($item, $deletedBy, $actor): bool {
-            $quote = Quote::query()
-                ->with('status')
-                ->whereKey($item->quote_id)
-                ->lockForUpdate()
-                ->firstOrFail();
+        $quoteItem->loadMissing('quote');
 
-            if (! $this->activeChecker->quoteAcceptsChanges($quote) || $item->trashed()) {
-                throw new AuthorizationException('Lines can only be removed from a draft quote.');
+        return $this->deleteResource->handle(
+            $quoteItem,
+            function (QuoteItem $quoteItem) use ($actor, $deletedBy): void {
+                $quoteItem->deleted_by = $deletedBy;
+                $quoteItem->deleted_at = now();
+                $quoteItem->save();
+
+                $this->recalculateQuoteTotal->execute(
+                    $quoteItem->quote
+                );
+
+                $this->auditLogService->record(
+                    Log::ACTION_DELETE_QUOTE_ITEM,
+                    $actor,
+                    $quoteItem,
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $quoteItem
+                        ),
+                    ],
+                );
             }
-
-            return $this->deleteResource->handle(
-                $item,
-                function (QuoteItem $item) use ($quote, $actor, $deletedBy): void {
-                    $item->forceFill([
-                        'deleted_by' => $deletedBy,
-                        'deleted_at' => now(),
-                    ])->save();
-
-                    $this->totals->recalculate($quote);
-
-                    $this->auditLogService->record(
-                        Log::ACTION_DELETE_QUOTE_ITEM,
-                        $actor,
-                        $item,
-                        ['before' => $this->auditLogService->snapshot($item)],
-                    );
-                });
-        });
+        );
     }
 
     /**
-     * Force delete a trashed line (permanent deletion).
+     * Force delete a quote item (permanent deletion).
      *
-     * Totals are unaffected because trashed lines are already excluded.
+     * Soft deleted lines are already excluded from the totals, so no
+     * recalculation is needed here.
      *
-     * @throws AuthorizationException
+     * @throws \Exception
      */
     public function forceDelete(
-        QuoteItem $item,
+        QuoteItem $quoteItem,
         int $deletedBy
     ): bool {
-        if (! $this->activeChecker->canBeForceDeleted($item)) {
-            throw new AuthorizationException('Only a trashed line can be permanently deleted.');
-        }
-
         $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->forceHandle(
-            $item,
-            function (QuoteItem $item) use ($actor): void {
+            $quoteItem,
+            function (QuoteItem $quoteItem) use ($actor): void {
                 $this->auditLogService->record(
                     Log::ACTION_FORCE_DELETE_QUOTE_ITEM,
                     $actor,
-                    $item,
-                    ['before' => $this->auditLogService->snapshot($item)],
+                    $quoteItem,
+                    [
+                        'before' => $this->auditLogService->snapshot(
+                            $quoteItem
+                        ),
+                    ],
                 );
-            });
+            }
+        );
+    }
+
+    /**
+     * Delete multiple quote items.
+     *
+     * @param  array<int, int|string>  $quoteItemIds
+     *
+     * @throws \Exception
+     */
+    public function deleteMultiple(
+        array $quoteItemIds,
+        int $deletedBy
+    ): int {
+        $count = 0;
+
+        DB::transaction(function () use ($quoteItemIds, $deletedBy, &$count): void {
+            $actor = User::findOrFail($deletedBy);
+
+            // Tenant global scope restricts this to the current tenant.
+            $quoteItems = QuoteItem::query()
+                ->whereIn('id', array_map('intval', $quoteItemIds))
+                ->get();
+
+            foreach ($quoteItems as $quoteItem) {
+                if ($this->delete($quoteItem, $deletedBy, $actor)) {
+                    $count++;
+                }
+            }
+        });
+
+        return $count;
     }
 }

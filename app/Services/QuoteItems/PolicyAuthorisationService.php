@@ -8,7 +8,6 @@ use App\Models\Quote;
 use App\Models\QuoteItem;
 use App\Models\User;
 use App\Services\Concerns\ChecksOrganisationBoundary;
-use App\Services\Quotes\PolicyAuthorisationService as QuotePolicyService;
 use App\Services\UserRoleCheckerService;
 
 class PolicyAuthorisationService
@@ -20,9 +19,16 @@ class PolicyAuthorisationService
      */
     public function __construct(
         protected readonly ActiveCheckerService $activeChecker,
-        protected readonly UserRoleCheckerService $roleChecker,
-        protected readonly QuotePolicyService $quotePolicy,
+        protected readonly UserRoleCheckerService $roleChecker
     ) {}
+
+    /**
+     * Check if user is a regular user, admin, or super admin.
+     */
+    public function isUser(User $user): bool
+    {
+        return $this->roleChecker->isUser($user);
+    }
 
     /**
      * Check if user is admin or super admin.
@@ -32,77 +38,139 @@ class PolicyAuthorisationService
         return $this->roleChecker->isAdmin($user);
     }
 
+    /**
+     * Check if quote item is active (not soft-deleted).
+     */
+    public function isActive(QuoteItem $quoteItem): bool
+    {
+        return $this->activeChecker->isActive($quoteItem);
+    }
+
+    /**
+     * Check if quote item is soft-deleted.
+     */
+    public function isTrashed(QuoteItem $quoteItem): bool
+    {
+        return $this->activeChecker->isTrashed($quoteItem);
+    }
+
+    /**
+     * Determine whether the user can view any quote items.
+     */
     public function canViewAny(User $actor): bool
     {
         return $actor->can('view any quote item');
     }
 
     /**
-     * Adding a line needs the permission and the right to edit the quote.
+     * Determine whether the user can create quote items.
      */
-    public function canCreate(User $actor, Quote $quote): bool
+    public function canCreate(User $actor): bool
     {
-        return $actor->can('create quote item')
-            && $this->quotePolicy->canUpdate($actor, $quote);
-    }
-
-    public function canView(User $actor, QuoteItem $target): bool
-    {
-        return $this->belongsToCurrentOrganisation($target)
-            && $actor->can('view quote item')
-            && $this->activeChecker->isActive($target);
-    }
-
-    public function canUpdate(User $actor, QuoteItem $target): bool
-    {
-        return $this->canModifyThrough($actor, $target)
-            && $actor->can('edit quote item')
-            && $this->activeChecker->canBeModified($target);
-    }
-
-    public function canDelete(User $actor, QuoteItem $target): bool
-    {
-        return $this->canModifyThrough($actor, $target)
-            && $actor->can('delete quote item')
-            && $this->activeChecker->canBeModified($target);
-    }
-
-    public function canRestore(User $actor, QuoteItem $target): bool
-    {
-        return $this->canModifyThrough($actor, $target)
-            && $actor->can('restore quote item')
-            && $this->activeChecker->canBeRestored($target);
-    }
-
-    public function canForceDelete(User $actor, QuoteItem $target): bool
-    {
-        return $this->belongsToCurrentOrganisation($target)
-            && $this->activeChecker->canUserPerformAction($actor, 'restoreOrForceDelete', $target);
-    }
-
-    public function canImport(User $actor, Quote $quote): bool
-    {
-        return $actor->can('import quote item')
-            && $this->quotePolicy->canUpdate($actor, $quote);
-    }
-
-    public function canExport(User $actor, Quote $quote): bool
-    {
-        return $actor->can('export quote item')
-            && $this->quotePolicy->canView($actor, $quote);
+        return $actor->can('create quote item');
     }
 
     /**
-     * The parent quote must be editable by this user.
+     * Determine whether the user can view the quote item.
      */
-    private function canModifyThrough(User $actor, QuoteItem $target): bool
+    public function canView(User $actor, QuoteItem $target): bool
     {
-        if (! $this->belongsToCurrentOrganisation($target)) {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
             return false;
         }
 
-        $target->loadMissing('quote.status');
+        return $actor->can('view quote item') && $this->activeChecker->isActive($target);
+    }
 
-        return $this->quotePolicy->canUpdate($actor, $target->quote);
+    /**
+     * Determine whether the user can update the quote item.
+     */
+    public function canUpdate(User $actor, QuoteItem $target): bool
+    {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('edit quote item') && $this->activeChecker->isActive($target);
+    }
+
+    /**
+     * Determine whether the user can delete the quote item.
+     */
+    public function canDelete(User $actor, QuoteItem $target): bool
+    {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('delete quote item') && $this->activeChecker->canBeModified($target);
+    }
+
+    /**
+     * Determine whether the user can restore the quote item.
+     */
+    public function canRestore(User $actor, QuoteItem $target): bool
+    {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('restore quote item') && $this->activeChecker->canBeRestoredOrForceDeleted($target);
+    }
+
+    /**
+     * Determine whether the user can permanently delete the quote item.
+     */
+    public function canForceDelete(User $actor, QuoteItem $target): bool
+    {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $this->activeChecker->canUserPerformAction(
+            $actor,
+            'restoreOrForceDelete',
+            $target
+        );
+    }
+
+    /**
+     * Determine whether the user can import quote items.
+     */
+    public function canImport(User $actor): bool
+    {
+        return $actor->can('import quote item');
+    }
+
+    /**
+     * Determine whether the user can export quote items.
+     */
+    public function canExport(User $actor): bool
+    {
+        return $actor->can('export quote item');
+    }
+
+    /**
+     * Determine whether the quote item's parent quote was created by a
+     * user who outranks the actor.
+     *
+     * Prevents admins from managing quote items belonging to invoices
+     * created by super admins.
+     */
+    private function targetOutranksActor(User $actor, QuoteItem $target): bool
+    {
+        if ($this->roleChecker->isSuperAdmin($actor)) {
+            return false;
+        }
+
+        $target->loadMissing('quote.creator');
+
+        $creator = $target->quote?->creator;
+
+        if (! $creator instanceof User) {
+            return false;
+        }
+
+        return $this->roleChecker->isSuperAdmin($creator);
     }
 }

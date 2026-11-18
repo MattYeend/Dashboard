@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Models\Quote;
 use App\Models\QuoteItem;
 use App\Models\User;
 use App\Services\QuoteItems\PolicyAuthorisationService;
@@ -19,11 +18,11 @@ class QuoteItemPolicy
     ) {}
 
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the user can view any quote items.
      */
     public function viewAny(User $user): bool
     {
-        return $this->authorisationService->canViewAny($user);
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
@@ -35,11 +34,11 @@ class QuoteItemPolicy
     }
 
     /**
-     * Determine whether the user can add a line to the given quote.
+     * Determine whether the user can create quote items.
      */
-    public function create(User $user, Quote $quote): bool
+    public function create(User $user): bool
     {
-        return $this->authorisationService->canCreate($user, $quote);
+        return $this->authorisationService->isAdmin($user);
     }
 
     /**
@@ -75,34 +74,18 @@ class QuoteItemPolicy
     }
 
     /**
-     * Determine whether the user can bulk delete models.
+     * Determine whether the user can import quote items.
      */
-    public function bulkDelete(User $user): bool
+    public function import(User $user): bool
     {
-        return $this->authorisationService->isAdmin($user);
+        return $this->authorisationService->canImport($user);
     }
 
     /**
-     * Determine whether the user can bulk restore models.
+     * Determine whether the user can export quote items.
      */
-    public function bulkRestore(User $user): bool
+    public function export(User $user): bool
     {
-        return $this->authorisationService->isAdmin($user);
-    }
-
-    /**
-     * Determine whether the user can import lines into the given quote.
-     */
-    public function import(User $user, Quote $quote): bool
-    {
-        return $this->authorisationService->canImport($user, $quote);
-    }
-
-    /**
-     * Determine whether the user can export the given quote's lines.
-     */
-    public function export(User $user, Quote $quote): bool
-    {
-        return $this->authorisationService->canExport($user, $quote);
+        return $this->authorisationService->canExport($user);
     }
 }
