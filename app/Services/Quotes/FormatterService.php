@@ -7,6 +7,7 @@ namespace App\Services\Quotes;
 use App\Models\Quote;
 use App\Services\Concerns\ResolvesRelatedName;
 use App\Services\CurrencyFormatterService;
+use App\Services\QuoteItems\FormatterService as QuoteItemFormatterService;
 
 class FormatterService
 {
@@ -14,7 +15,8 @@ class FormatterService
 
     public function __construct(
         private readonly QuotableTypeRegistryService $registry,
-        private readonly CurrencyFormatterService $currencyFormatter
+        private readonly CurrencyFormatterService $currencyFormatter,
+        private readonly QuoteItemFormatterService $itemFormatter,
     ) {}
 
     /**
@@ -76,6 +78,11 @@ class FormatterService
                 : null,
             'quotable_name' => $this->relatedName($quote->quotable),
             'quotable_type_key' => $this->registry->keyForModel($quote->quotable_type),
+            'items' => $quote->relationLoaded('items')
+                ? $quote->items->map(fn ($item) => $this->itemFormatter->format($item))->all()
+                : [],
+            'items_count' => $quote->getAttributes()['items_count']
+                ?? ($quote->relationLoaded('items') ? $quote->items->count() : null),
         ];
     }
 }

@@ -37,9 +37,6 @@ class StoreQuoteRequest extends FormRequest
             'description' => $this->descriptionRules(),
             'notes' => $this->notesRules(),
             'terms' => $this->termsRules(),
-            'subtotal' => $this->moneyRules(required: true),
-            'discount_amount' => $this->moneyRules(required: false),
-            'tax_amount' => $this->moneyRules(required: false),
             'currency' => $this->currencyRules(),
             'issued_at' => $this->issuedAtRules(),
             'valid_until' => $this->validUntilRules(),
@@ -59,9 +56,6 @@ class StoreQuoteRequest extends FormRequest
             'quotable_id.required' => 'The customer is required.',
             'title.required' => 'The title is required.',
             'title.max' => 'The title may not exceed 255 characters.',
-            'subtotal.min' => 'The subtotal cannot be negative.',
-            'discount_amount.min' => 'The discount amount cannot be negative.',
-            'tax_amount.min' => 'The tax amount cannot be negative.',
             'currency.in' => 'Please select a valid currency.',
             'valid_until.after_or_equal' => 'The valid until date cannot be before the issue date.',
         ];
@@ -152,22 +146,6 @@ class StoreQuoteRequest extends FormRequest
     }
 
     /**
-     * Get validation rules shared by the three money fields.
-     *
-     * @return array<mixed>
-     */
-    protected function moneyRules(bool $required): array
-    {
-        return [
-            $required ? 'required' : 'nullable',
-            'numeric',
-            'min:0',
-            'max:99999999.99',
-            'decimal:0,2',
-        ];
-    }
-
-    /**
      * Get validation rules for the currency field.
      *
      * @return array<mixed>
@@ -234,7 +212,6 @@ class StoreQuoteRequest extends FormRequest
                 }
 
                 $this->validateCustomerExists($validator);
-                $this->validateDiscountWithinSubtotal($validator);
             },
         ];
     }
@@ -259,19 +236,6 @@ class StoreQuoteRequest extends FormRequest
 
         if (! $exists) {
             $validator->errors()->add('quotable_id', 'The selected customer does not exist.');
-        }
-    }
-
-    /**
-     * A header discount cannot exceed the subtotal.
-     */
-    protected function validateDiscountWithinSubtotal(Validator $validator): void
-    {
-        $subtotal = (string) ($this->input('subtotal') ?? '0');
-        $discount = (string) ($this->input('discount_amount') ?? '0');
-
-        if (bccomp($discount === '' ? '0' : $discount, $subtotal === '' ? '0' : $subtotal, 2) === 1) {
-            $validator->errors()->add('discount_amount', 'The discount cannot exceed the subtotal.');
         }
     }
 }

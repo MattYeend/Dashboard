@@ -7,13 +7,20 @@ import QuoteAuditDetails from '@/pages/Quotes/components/QuoteAuditDetails.vue';
 import QuoteBasicDetails from '@/pages/Quotes/components/QuoteBasicDetails.vue';
 import QuoteCustomerDetails from '@/pages/Quotes/components/QuoteCustomerDetails.vue';
 import QuoteDateDetails from '@/pages/Quotes/components/QuoteDateDetails.vue';
+import QuoteItemsPanel from '@/pages/Quotes/components/QuoteItemsPanel.vue';
 import { index as quotesIndex } from '@/routes/quotes';
 import type { Quote } from '@/types';
-import type { QuoteAbilities } from '@/types/forms';
+import type {
+    ProductOption,
+    QuoteAbilities,
+    QuoteItemAbilities,
+} from '@/types/forms';
 
 defineProps<{
     quote: Quote;
     abilities: QuoteAbilities;
+    products: ProductOption[];
+    item_abilities: QuoteItemAbilities;
 }>();
 </script>
 
@@ -50,6 +57,16 @@ defineProps<{
                 <section class="grid gap-4">
                     <h2 class="text-lg font-semibold">Amounts</h2>
                     <QuoteAmountDetails :quote="quote" />
+                </section>
+
+                <section class="grid gap-4">
+                    <h2 class="text-lg font-semibold">Lines</h2>
+                    <QuoteItemsPanel
+                        :quote="quote"
+                        :products="products"
+                        :can-edit="abilities.update"
+                        :item-abilities="item_abilities"
+                    />
                 </section>
 
                 <section class="grid gap-4">

@@ -27,11 +27,7 @@ class DataPreparationService
      */
     public function prepareForCreation(array $data): array
     {
-        $amounts = $this->totals->applyDiscount(
-            $data['subtotal'] ?? 0,
-            $data['discount_amount'] ?? 0,
-            $data['tax_amount'] ?? 0,
-        );
+        $amounts = $this->totals->applyDiscount(0, 0, 0);
 
         return [
             'quotable_type' => $this->resolveQuotableType((string) $data['quotable_type']),
@@ -50,8 +46,9 @@ class DataPreparationService
     }
 
     /**
-     * Prepare quote data for update. Only allow-listed fields are copied,
-     * and totals are recalculated from the merged values.
+     * Prepare quote data for update. Only allow-listed fields are copied.
+     * Subtotal and tax are derived from the lines, so only a change to the
+     * header discount triggers a recalculation here.
      *
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
@@ -91,11 +88,11 @@ class DataPreparationService
             $payload['valid_until'] = $this->parseEndOfDay($data['valid_until']);
         }
 
-        if (array_intersect(['subtotal', 'discount_amount', 'tax_amount'], array_keys($data)) !== []) {
+        if (array_key_exists('discount_amount', $data)) {
             $payload += $this->totals->applyDiscount(
-                $data['subtotal'] ?? $quote->subtotal,
-                $data['discount_amount'] ?? $quote->discount_amount,
-                $data['tax_amount'] ?? $quote->tax_amount,
+                $quote->subtotal,
+                $data['discount_amount'] ?? 0,
+                $quote->tax_amount,
             );
         }
 

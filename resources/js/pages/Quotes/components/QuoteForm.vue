@@ -14,6 +14,7 @@ defineProps<{
     processing: boolean;
     quotableTypes: SelectOption[];
     currencies: string[];
+    showDiscount: boolean;
     submitLabel: string;
     cancelHref: string;
 }>();
@@ -47,6 +48,7 @@ const form = defineModel<QuoteFormData>({ required: true });
                 v-model="form"
                 :errors="errors"
                 :currencies="currencies"
+                :show-discount="showDiscount"
             />
         </section>
 

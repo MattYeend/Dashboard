@@ -182,6 +182,12 @@ class TransitionService
                 ]);
             }
 
+            if (! $quote->items()->exists()) {
+                throw ValidationException::withMessages([
+                    'items' => 'Add at least one line before sending the quote.',
+                ]);
+            }
+
             if (bccomp((string) $quote->total_amount, '0', 2) !== 1) {
                 throw ValidationException::withMessages([
                     'total_amount' => 'A quote must have a total greater than zero before it is sent.',

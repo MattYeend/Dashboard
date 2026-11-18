@@ -32,8 +32,6 @@ class ImporterService
         'quotable_type',
         'quotable_id',
         'title',
-        'subtotal',
-        'tax_amount',
     ];
 
     /**
@@ -176,20 +174,6 @@ class ImporterService
             return 'title may not exceed 255 characters';
         }
 
-        foreach (['subtotal', 'discount_amount', 'tax_amount'] as $column) {
-            $value = trim((string) ($data[$column] ?? ''));
-
-            if ($value !== '' && ! preg_match('/^\d{1,8}(\.\d{1,2})?$/', $value)) {
-                return "{$column} must be a non-negative amount with up to 2 decimal places";
-            }
-        }
-
-        $discount = trim((string) ($data['discount_amount'] ?? ''));
-
-        if ($discount !== '' && bccomp($discount, trim((string) $data['subtotal']), 2) === 1) {
-            return 'discount_amount cannot exceed subtotal';
-        }
-
         $currency = strtoupper(trim((string) ($data['currency'] ?? '')));
 
         if ($currency !== '' && ! in_array($currency, config('currencies.allowed'), true)) {
@@ -215,11 +199,7 @@ class ImporterService
      */
     private function attributesFromRow(array $data, int $actorId): array
     {
-        $amounts = $this->totals->applyDiscount(
-            $data['subtotal'],
-            $data['discount_amount'] ?? 0,
-            $data['tax_amount'],
-        );
+        $amounts = $this->totals->applyDiscount(0, 0, 0);
 
         $issued = trim((string) ($data['issued_at'] ?? ''));
         $valid = trim((string) ($data['valid_until'] ?? ''));

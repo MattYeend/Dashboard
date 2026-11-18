@@ -37,9 +37,6 @@ class UpdateQuoteRequest extends FormRequest
             'description' => $this->descriptionRules(),
             'notes' => $this->notesRules(),
             'terms' => $this->termsRules(),
-            'subtotal' => $this->moneyRules(required: true),
-            'discount_amount' => $this->moneyRules(required: false),
-            'tax_amount' => $this->moneyRules(required: false),
             'currency' => $this->currencyRules(),
             'issued_at' => $this->issuedAtRules(),
             'valid_until' => $this->validUntilRules(),
@@ -59,9 +56,7 @@ class UpdateQuoteRequest extends FormRequest
             'quotable_id.required_with' => 'The customer is required when a customer type is supplied.',
             'title.required' => 'The title is required.',
             'title.max' => 'The title may not exceed 255 characters.',
-            'subtotal.min' => 'The subtotal cannot be negative.',
             'discount_amount.min' => 'The discount amount cannot be negative.',
-            'tax_amount.min' => 'The tax amount cannot be negative.',
             'currency.in' => 'Please select a valid currency.',
             'valid_until.after_or_equal' => 'The valid until date cannot be before the issue date.',
         ];
@@ -153,14 +148,15 @@ class UpdateQuoteRequest extends FormRequest
     }
 
     /**
-     * Get validation rules shared by the three money fields.
+     * Get validation rules for the discount_amount field.
      *
      * @return array<mixed>
      */
-    protected function moneyRules(bool $required): array
+    protected function discountAmountRules(): array
     {
         return [
-            ...($required ? ['sometimes', 'required'] : ['nullable']),
+            'sometimes',
+            'nullable',
             'numeric',
             'min:0',
             'max:99999999.99',
@@ -270,17 +266,18 @@ class UpdateQuoteRequest extends FormRequest
 
     /**
      * A header discount cannot exceed the subtotal.
-     * Values missing from the request fall back to the stored quote.
+     * The subtotal is derived from the lines, so it is always the stored value.
      */
     protected function validateDiscountWithinSubtotal(Validator $validator): void
     {
         /** @var Quote $quote */
         $quote = $this->route('quote');
 
-        $subtotal = (string) ($this->has('subtotal') ? $this->input('subtotal') : $quote->subtotal);
-        $discount = (string) ($this->has('discount_amount') ? $this->input('discount_amount') : $quote->discount_amount);
+        $discount = $this->has('discount_amount')
+            ? (string) ($this->input('discount_amount') ?? '0')
+            : (string) $quote->discount_amount;
 
-        if (bccomp($discount === '' ? '0' : $discount, $subtotal === '' ? '0' : $subtotal, 2) === 1) {
+        if (bccomp($discount, (string) $quote->subtotal, 2) === 1) {
             $validator->errors()->add('discount_amount', 'The discount cannot exceed the subtotal.');
         }
     }

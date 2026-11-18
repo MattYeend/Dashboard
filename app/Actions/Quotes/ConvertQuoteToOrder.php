@@ -39,7 +39,7 @@ class ConvertQuoteToOrder
     {
         return DB::transaction(function () use ($quote, $actor): Order {
             $locked = Quote::query()
-                ->with('status')
+                ->with(['status', 'items'])
                 ->whereKey($quote->id)
                 ->lockForUpdate()
                 ->firstOrFail();
@@ -65,7 +65,7 @@ class ConvertQuoteToOrder
                 'orderable_id' => $locked->quotable_id,
                 'title' => $locked->title,
                 'description' => $locked->description,
-                'notes' => trim("Converted from quote {$locked->quote_number}.\n".($locked->notes ?? '')),
+                'notes' => $this->buildNotes($locked),
                 'subtotal' => $locked->subtotal,
                 'discount_amount' => $locked->discount_amount,
                 'tax_amount' => $locked->tax_amount,
@@ -96,5 +96,30 @@ class ConvertQuoteToOrder
 
             return $order;
         });
+    }
+
+    /**
+     * Build the order notes: provenance, the original notes and a line summary.
+     */
+    private function buildNotes(Quote $quote): string
+    {
+        $limit = 50;
+
+        $lines = $quote->items
+            ->take($limit)
+            ->map(fn ($item) => sprintf('- %s x %s @ %s', $item->quantity, $item->name, $item->unit_price))
+            ->implode("\n");
+
+        $remaining = $quote->items->count() - $limit;
+
+        if ($remaining > 0) {
+            $lines .= "\n".sprintf('- and %d more line(s)', $remaining);
+        }
+
+        return trim(implode("\n", array_filter([
+            "Converted from quote {$quote->quote_number}.",
+            $quote->notes,
+            $lines === '' ? null : "Lines:\n".$lines,
+        ])));
     }
 }

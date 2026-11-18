@@ -5,9 +5,7 @@ export interface QuoteFormData {
     description: string | null;
     notes: string | null;
     terms: string | null;
-    subtotal: string;
     discount_amount: string;
-    tax_amount: string;
     currency: string;
     issued_at: string | null;
     valid_until: string | null;
@@ -20,6 +18,17 @@ export interface QuoteAbilities {
     accept: boolean;
     decline: boolean;
     convert: boolean;
+}
+
+export interface QuoteItemAbilities {
+    create: boolean;
+    import: boolean;
+    export: boolean;
+}
+
+export interface ProductOption {
+    id: number;
+    name: string;
 }
 
 export interface SelectOption {

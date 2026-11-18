@@ -1,12 +1,22 @@
 <script setup lang="ts">
 import { Head, useForm } from '@inertiajs/vue3';
 import QuoteForm from '@/pages/Quotes/components/QuoteForm.vue';
+import QuoteItemsPanel from '@/pages/Quotes/components/QuoteItemsPanel.vue';
 import { show, update } from '@/routes/quotes';
 import type { Quote } from '@/types';
-import type { QuoteFormData, SelectOption } from '@/types/forms';
+import type {
+    ProductOption,
+    QuoteAbilities,
+    QuoteFormData,
+    QuoteItemAbilities,
+    SelectOption,
+} from '@/types/forms';
 
 const props = defineProps<{
     quote: Quote;
+    abilities: QuoteAbilities;
+    products: ProductOption[];
+    item_abilities: QuoteItemAbilities;
     quotableTypes: SelectOption[];
     currencies: string[];
 }>();
@@ -18,9 +28,7 @@ const form = useForm<QuoteFormData>({
     description: props.quote.description,
     notes: props.quote.notes,
     terms: props.quote.terms,
-    subtotal: props.quote.subtotal,
     discount_amount: props.quote.discount_amount,
-    tax_amount: props.quote.tax_amount,
     currency: props.quote.currency,
     issued_at: props.quote.issued_at,
     valid_until: props.quote.valid_until,
@@ -44,10 +52,21 @@ function submit(): void {
                 :processing="form.processing"
                 :quotable-types="quotableTypes"
                 :currencies="currencies"
+                :show-discount="true"
                 submit-label="Save changes"
                 :cancel-href="show.url(quote.id)"
                 @submit="submit"
             />
+
+            <section class="mt-8 grid gap-4">
+                <h2 class="text-lg font-semibold">Lines</h2>
+                <QuoteItemsPanel
+                    :quote="quote"
+                    :products="products"
+                    :can-edit="abilities.update"
+                    :item-abilities="item_abilities"
+                />
+            </section>
         </div>
     </div>
 </template>

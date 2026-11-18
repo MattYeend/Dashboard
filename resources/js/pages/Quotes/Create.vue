@@ -16,9 +16,7 @@ const form = useForm<QuoteFormData>({
     description: null,
     notes: null,
     terms: null,
-    subtotal: '0.00',
     discount_amount: '0.00',
-    tax_amount: '0.00',
     currency: 'GBP',
     issued_at: null,
     valid_until: null,
@@ -42,6 +40,7 @@ function submit(): void {
                 :processing="form.processing"
                 :quotable-types="quotableTypes"
                 :currencies="currencies"
+                :show-discount="false"
                 submit-label="Create quote"
                 :cancel-href="index.url()"
                 @submit="submit"
