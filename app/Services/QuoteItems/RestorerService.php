@@ -60,9 +60,10 @@ class RestorerService
             return $this->restoreResource->handle(
                 $item,
                 function (QuoteItem $item) use ($quote, $actor, $restoredBy): void {
-                    $item->restored_by = $restoredBy;
-                    $item->restored_at = now();
-                    $item->save();
+                    $item->forceFill([
+                        'restored_by' => $restoredBy,
+                        'restored_at' => now(),
+                    ])->save();
 
                     $this->totals->recalculate($quote);
 
