@@ -178,6 +178,7 @@ class DealStatus extends Model implements Auditable
         return $this->only([
             'id',
             'title',
+            'is_closing',
             'description',
             'background_colour',
             'text_colour',
@@ -194,6 +195,7 @@ class DealStatus extends Model implements Auditable
     protected function casts(): array
     {
         return [
+            'is_closing' => 'boolean',
             'meta' => 'array',
             'restored_at' => 'immutable_datetime',
             'deleted_at' => 'immutable_datetime',
