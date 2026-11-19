@@ -60,8 +60,8 @@ use Illuminate\Support\Carbon;
 ])]
 class PipelineStage extends Model implements Auditable
 {
-    /** 
-     * @use HasFactory<PipelineStageFactory> 
+    /**
+     * @use HasFactory<PipelineStageFactory>
      */
     use BelongsToOrganisation,
         HasFactory,

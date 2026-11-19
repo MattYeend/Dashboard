@@ -75,9 +75,9 @@ use Illuminate\Support\Facades\DB;
 ])]
 class Order extends Model implements Auditable
 {
-    /** 
+    /**
      * @use HasFactory<OrderFactory>
-    */
+     */
     use BelongsToOrganisation,
         HasFactory,
         SoftDeletes;

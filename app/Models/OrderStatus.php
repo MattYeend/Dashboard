@@ -49,8 +49,8 @@ use Illuminate\Support\Carbon;
 ])]
 class OrderStatus extends Model implements Auditable
 {
-    /** 
-     * @use HasFactory<OrderStatusFactory> 
+    /**
+     * @use HasFactory<OrderStatusFactory>
      */
     use BelongsToOrganisation,
         HasFactory,

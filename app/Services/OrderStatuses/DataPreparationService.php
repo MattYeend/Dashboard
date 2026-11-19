@@ -8,7 +8,7 @@ class DataPreparationService
 {
     /**
      * Prepare order status data for creation.
-     * 
+     *
      * system_key is never copied, so a status created through the app
      * can never become a system status.
      *

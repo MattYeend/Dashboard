@@ -32,8 +32,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 ])]
 class QuizQuestion extends Pivot
 {
-    /** 
-     * @use HasFactory<QuizQuestionFactory> 
+    /**
+     * @use HasFactory<QuizQuestionFactory>
      */
     use BelongsToOrganisation, HasFactory;
 

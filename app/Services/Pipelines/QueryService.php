@@ -153,9 +153,9 @@ class QueryService
                 ->get(),
             'statuses' => PipelineStatus::query()
                 ->select(
-                    'id', 
-                    'title', 
-                    'background_colour', 
+                    'id',
+                    'title',
+                    'background_colour',
                     'system_key',
                     'text_colour'
                 )

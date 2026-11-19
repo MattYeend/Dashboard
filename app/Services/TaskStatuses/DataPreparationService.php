@@ -30,7 +30,7 @@ class DataPreparationService
      * Prepare task status data for update.
      *
      * The allow-list deliberately excludes system_key, which is immutable.
-     * 
+     *
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */

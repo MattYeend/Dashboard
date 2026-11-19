@@ -8,7 +8,7 @@ class DataPreparationService
 {
     /**
      * Prepare ticket status data for creation.
-     * 
+     *
      * system_key is never copied, so a status created through the app
      * can never become a system status.
      *
@@ -28,7 +28,7 @@ class DataPreparationService
 
     /**
      * Prepare ticket status data for update.
-     * 
+     *
      * The allow-list deliberately excludes system_key, which is immutable.
      *
      * @param  array<string, mixed>  $data

@@ -52,8 +52,8 @@ use Illuminate\Support\Carbon;
 ])]
 class DealStatus extends Model implements Auditable
 {
-    /** 
-     * @use HasFactory<DealStatusFactory> 
+    /**
+     * @use HasFactory<DealStatusFactory>
      */
     use BelongsToOrganisation,
         HasFactory,

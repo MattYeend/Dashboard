@@ -43,7 +43,7 @@ trait SeedsSystemStatuses
                 : (clone $query)->where('title', $status['title'])->first();
 
             if ($model === null) {
-                $model = new $modelClass();
+                $model = new $modelClass;
                 $model->forceFill([...$status, 'organisation_id' => $organisationId])->save();
 
                 continue;

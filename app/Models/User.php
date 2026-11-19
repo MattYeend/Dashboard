@@ -75,8 +75,8 @@ use Spatie\Permission\Traits\HasRoles;
 ])]
 class User extends Authenticatable implements Auditable, MustVerifyEmail, PasskeyUser
 {
-    /** 
-     * @use HasFactory<UserFactory> 
+    /**
+     * @use HasFactory<UserFactory>
      */
     use HasApiTokens,
         HasFactory,
