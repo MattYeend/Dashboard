@@ -21,15 +21,9 @@ class OrderStatusSeeder extends Seeder
     {
         $organisation = $this->defaultOrganisation();
 
-        if (OrderStatus::where('organisation_id', $organisation->id)->exists()) {
-            $this->command->info('Order statuses already seeded, skipping...');
-
-            return;
-        }
-
-        $organisation = $this->defaultOrganisation();
         $statuses = [
             [
+                'system_key' => OrderStatus::KEY_PENDING,
                 'title' => 'Pending',
                 'description' => 'Order has been placed but payment has not yet been confirmed.',
                 'background_colour' => '#e2e8f0',
@@ -37,6 +31,7 @@ class OrderStatusSeeder extends Seeder
                 'meta' => null,
             ],
             [
+                'system_key' => OrderStatus::KEY_PROCESSING,
                 'title' => 'Processing',
                 'description' => 'Payment has been confirmed and the order is being prepared.',
                 'background_colour' => '#bee3f8',
@@ -51,6 +46,7 @@ class OrderStatusSeeder extends Seeder
                 'meta' => null,
             ],
             [
+                'system_key' => OrderStatus::KEY_DELIVERED,
                 'title' => 'Delivered',
                 'description' => 'Order has been delivered to the customer.',
                 'background_colour' => '#c6f6d5',
@@ -65,6 +61,7 @@ class OrderStatusSeeder extends Seeder
                 'meta' => null,
             ],
             [
+                'system_key' => OrderStatus::KEY_CANCELLED,
                 'title' => 'Cancelled',
                 'description' => 'Order has been cancelled and will not be fulfilled.',
                 'background_colour' => '#e2e8f0',
@@ -87,14 +84,6 @@ class OrderStatusSeeder extends Seeder
             ],
         ];
 
-        foreach ($statuses as $status) {
-            OrderStatus::firstOrCreate(
-                [
-                    'title' => $status['title'],
-                    'organisation_id' => $organisation->id,
-                ],
-                $status
-            );
-        }
+        $this->seedSystemStatuses(OrderStatus::class, (int) $organisation->id, $statuses);
     }
 }

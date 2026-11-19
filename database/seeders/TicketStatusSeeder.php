@@ -6,11 +6,13 @@ namespace Database\Seeders;
 
 use App\Models\TicketStatus;
 use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
+use Database\Seeders\Concerns\SeedsSystemStatuses;
 use Illuminate\Database\Seeder;
 
 class TicketStatusSeeder extends Seeder
 {
-    use ResolvesDefaultOrganisation;
+    use ResolvesDefaultOrganisation,
+        SeedsSystemStatuses;
 
     /**
      * Run the database seeds.
@@ -19,14 +21,9 @@ class TicketStatusSeeder extends Seeder
     {
         $organisation = $this->defaultOrganisation();
 
-        if (TicketStatus::withoutGlobalScope('organisation')->where('organisation_id', $organisation->id)->exists()) {
-            $this->command->info('Ticket statuses already seeded, skipping...');
-
-            return;
-        }
-
         $statuses = [
             [
+                'system_key' => TicketStatus::KEY_OPEN,
                 'title' => 'Open',
                 'description' => 'The ticket has been created and is awaiting action.',
                 'background_colour' => '#e2e8f0',
@@ -34,6 +31,7 @@ class TicketStatusSeeder extends Seeder
                 'meta' => null,
             ],
             [
+                'system_key' => TicketStatus::KEY_IN_PROGRESS,
                 'title' => 'In Progress',
                 'description' => 'The ticket is currently being worked on.',
                 'background_colour' => '#bee3f8',
@@ -55,6 +53,7 @@ class TicketStatusSeeder extends Seeder
                 'meta' => null,
             ],
             [
+                'system_key' => TicketStatus::KEY_RESOLVED,
                 'title' => 'Resolved',
                 'description' => 'The ticket has been resolved and is awaiting confirmation from the customer.',
                 'background_colour' => '#c6f6d5',
@@ -62,6 +61,7 @@ class TicketStatusSeeder extends Seeder
                 'meta' => null,
             ],
             [
+                'system_key' => TicketStatus::KEY_CLOSED,
                 'title' => 'Closed',
                 'description' => 'The ticket has been closed and no further action is required.',
                 'background_colour' => '#e2e8f0',
@@ -77,14 +77,6 @@ class TicketStatusSeeder extends Seeder
             ],
         ];
 
-        foreach ($statuses as $status) {
-            TicketStatus::withoutGlobalScope('organisation')->firstOrCreate(
-                [
-                    'title' => $status['title'],
-                    'organisation_id' => $organisation->id,
-                ],
-                $status
-            );
-        }
+        $this->seedSystemStatuses(TicketStatus::class, (int) $organisation->id, $statuses);
     }
 }

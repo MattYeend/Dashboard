@@ -6,11 +6,13 @@ namespace Database\Seeders;
 
 use App\Models\PipelineStatus;
 use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
+use Database\Seeders\Concerns\SeedsSystemStatuses;
 use Illuminate\Database\Seeder;
 
 class PipelineStatusSeeder extends Seeder
 {
-    use ResolvesDefaultOrganisation;
+    use ResolvesDefaultOrganisation,
+        SeedsSystemStatuses;
 
     /**
      * Run the database seeds.
@@ -19,15 +21,9 @@ class PipelineStatusSeeder extends Seeder
     {
         $organisation = $this->defaultOrganisation();
 
-        if (PipelineStatus::where('organisation_id', $organisation->id)->exists()) {
-            $this->command->info('Pipeline statuses already seeded, skipping...');
-
-            return;
-        }
-
-        $organisation = $this->defaultOrganisation();
         $statuses = [
             [
+                'system_key' => PipelineStatus::KEY_OPEN,
                 'title' => 'Open',
                 'description' => 'Deal is active and progressing through the pipeline.',
                 'background_colour' => '#e2e8f0',
@@ -63,6 +59,7 @@ class PipelineStatusSeeder extends Seeder
                 'meta' => null,
             ],
             [
+                'system_key' => PipelineStatus::KEY_WON,
                 'title' => 'Won',
                 'description' => 'Deal was successfully closed with the prospect.',
                 'background_colour' => '#c6f6d5',
@@ -70,6 +67,7 @@ class PipelineStatusSeeder extends Seeder
                 'meta' => null,
             ],
             [
+                'system_key' => PipelineStatus::KEY_LOST,
                 'title' => 'Lost',
                 'description' => 'Deal did not proceed and has been closed unsuccessfully.',
                 'background_colour' => '#fed7d7',
@@ -85,14 +83,6 @@ class PipelineStatusSeeder extends Seeder
             ],
         ];
 
-        foreach ($statuses as $status) {
-            PipelineStatus::firstOrCreate(
-                [
-                    'title' => $status['title'],
-                    'organisation_id' => $organisation->id,
-                ],
-                $status
-            );
-        }
+        $this->seedSystemStatuses(PipelineStatus::class, (int) $organisation->id, $statuses);
     }
 }

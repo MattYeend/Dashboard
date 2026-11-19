@@ -6,11 +6,13 @@ namespace Database\Seeders;
 
 use App\Models\TaskStatus;
 use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
+use Database\Seeders\Concerns\SeedsSystemStatuses;
 use Illuminate\Database\Seeder;
 
 class TaskStatusSeeder extends Seeder
 {
-    use ResolvesDefaultOrganisation;
+    use ResolvesDefaultOrganisation,
+        SeedsSystemStatuses;
 
     /**
      * Run the database seeds.
@@ -19,15 +21,9 @@ class TaskStatusSeeder extends Seeder
     {
         $organisation = $this->defaultOrganisation();
 
-        if (TaskStatus::where('organisation_id', $organisation->id)->exists()) {
-            $this->command->info('Task statuses already seeded, skipping...');
-
-            return;
-        }
-
-        $organisation = $this->defaultOrganisation();
         $statuses = [
             [
+                'system_key' => TaskStatus::KEY_TODO,
                 'title' => 'To Do',
                 'description' => 'Task has been created but work has not yet started.',
                 'background_colour' => '#e2e8f0',
@@ -35,6 +31,7 @@ class TaskStatusSeeder extends Seeder
                 'meta' => null,
             ],
             [
+                'system_key' => TaskStatus::KEY_IN_PROGRESS,
                 'title' => 'In Progress',
                 'description' => 'Task is actively being worked on.',
                 'background_colour' => '#bee3f8',
@@ -56,6 +53,7 @@ class TaskStatusSeeder extends Seeder
                 'meta' => null,
             ],
             [
+                'system_key' => TaskStatus::KEY_DONE,
                 'title' => 'Done',
                 'description' => 'Task has been completed and signed off.',
                 'background_colour' => '#c6f6d5',
@@ -71,14 +69,6 @@ class TaskStatusSeeder extends Seeder
             ],
         ];
 
-        foreach ($statuses as $status) {
-            TaskStatus::firstOrCreate(
-                [
-                    'title' => $status['title'],
-                    'organisation_id' => $organisation->id,
-                ],
-                $status
-            );
-        }
+        $this->seedSystemStatuses(TaskStatus::class, (int) $organisation->id, $statuses);
     }
 }

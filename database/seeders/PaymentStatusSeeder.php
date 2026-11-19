@@ -7,11 +7,13 @@ namespace Database\Seeders;
 use App\Models\Organisation;
 use App\Models\PaymentStatus;
 use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
+use Database\Seeders\Concerns\SeedsSystemStatuses;
 use Illuminate\Database\Seeder;
 
 class PaymentStatusSeeder extends Seeder
 {
-    use ResolvesDefaultOrganisation;
+    use ResolvesDefaultOrganisation,
+        SeedsSystemStatuses;
 
     /**
      * Run the database seeds.
@@ -28,25 +30,17 @@ class PaymentStatusSeeder extends Seeder
      * Seed the system payment statuses for one organisation.
      *
      * Bypasses the tenant global scope and sets organisation_id explicitly so
-     * the result never depends on the current tenant context.
+     * the result never depends on the current tenant context. system_key is
+     * not mass-assignable by design, so the shared trait assigns it with
+     * forceFill(). Soft deleted system statuses are restored.
      */
     public function seedForOrganisation(Organisation $organisation): void
     {
-        foreach ($this->getStatuses() as $status) {
-            $exists = PaymentStatus::withoutGlobalScopes()
-                ->withTrashed()
-                ->where('organisation_id', $organisation->id)
-                ->where('system_key', $status['system_key'])
-                ->exists();
-
-            if ($exists) {
-                continue;
-            }
-
-            $model = new PaymentStatus($status);
-            $model->organisation_id = $organisation->id; // Not mass-assignable by design.
-            $model->save();
-        }
+        $this->seedSystemStatuses(
+            PaymentStatus::class,
+            (int) $organisation->id,
+            $this->getStatuses(),
+        );
     }
 
     /**
