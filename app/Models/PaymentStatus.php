@@ -41,7 +41,6 @@ use Illuminate\Support\Carbon;
     'description',
     'background_colour',
     'text_colour',
-    'system_key',
     'meta',
     'created_by',
     'created_at',

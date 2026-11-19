@@ -75,7 +75,9 @@ use Illuminate\Support\Facades\DB;
 ])]
 class Order extends Model implements Auditable
 {
-    /** @use HasFactory<OrderFactory> */
+    /** 
+     * @use HasFactory<OrderFactory>
+    */
     use BelongsToOrganisation,
         HasFactory,
         SoftDeletes;
@@ -98,6 +100,18 @@ class Order extends Model implements Auditable
     public function status(): BelongsTo
     {
         return $this->belongsTo(OrderStatus::class, 'status_id');
+    }
+
+    /**
+     * Whether the order currently holds the given system status key.
+     *
+     * Uses loadMissing() so it is safe under Model::shouldBeStrict().
+     */
+    public function isStatus(string $systemKey): bool
+    {
+        $this->loadMissing('status');
+
+        return $this->status?->system_key === $systemKey;
     }
 
     /**

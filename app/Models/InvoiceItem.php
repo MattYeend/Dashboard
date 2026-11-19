@@ -55,7 +55,9 @@ use Illuminate\Support\Carbon;
 ])]
 class InvoiceItem extends Model implements Auditable
 {
-    /** @use HasFactory<InvoiceItemFactory> */
+    /** 
+     * @use HasFactory<InvoiceItemFactory> 
+     */
     use BelongsToOrganisation,
         HasFactory,
         SoftDeletes;

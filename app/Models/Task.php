@@ -94,6 +94,18 @@ class Task extends Model implements Auditable
     }
 
     /**
+     * Whether the task currently holds the given system status key.
+     *
+     * Uses loadMissing() so it is safe under Model::shouldBeStrict().
+     */
+    public function isStatus(string $systemKey): bool
+    {
+        $this->loadMissing('status');
+
+        return $this->status?->system_key === $systemKey;
+    }
+
+    /**
      * Get the tags associated with this task.
      *
      * @return BelongsToMany<Tag, $this>

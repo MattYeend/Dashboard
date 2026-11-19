@@ -53,7 +53,9 @@ use Illuminate\Support\Carbon;
 ])]
 class Pipeline extends Model implements Auditable
 {
-    /** @use HasFactory<PipelineFactory> */
+    /** 
+     * @use HasFactory<PipelineFactory> 
+    */
     use BelongsToOrganisation,
         HasFactory,
         SoftDeletes;
@@ -66,6 +68,18 @@ class Pipeline extends Model implements Auditable
     public function status(): BelongsTo
     {
         return $this->belongsTo(PipelineStatus::class, 'status_id');
+    }
+
+    /**
+     * Whether the pipeline currently holds the given system status key.
+     *
+     * Uses loadMissing() so it is safe under Model::shouldBeStrict().
+     */
+    public function isStatus(string $systemKey): bool
+    {
+        $this->loadMissing('status');
+
+        return $this->status?->system_key === $systemKey;
     }
 
     /**

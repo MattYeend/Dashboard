@@ -23,6 +23,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $description
  * @property string $background_colour
  * @property string $text_colour
+ * @property string|null $system_key
  * @property array<string, mixed>|null $meta
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -51,10 +52,58 @@ use Illuminate\Support\Carbon;
 ])]
 class DealStatus extends Model implements Auditable
 {
-    /** @use HasFactory<DealStatusFactory> */
+    /** 
+     * @use HasFactory<DealStatusFactory> 
+     */
     use BelongsToOrganisation,
         HasFactory,
         SoftDeletes;
+
+    public const KEY_NEW = 'new';
+
+    public const KEY_WON = 'won';
+
+    public const KEY_LOST = 'lost';
+
+    /**
+     * The keys the Deals workflow depends on. Statuses carrying one of
+     * these keys cannot be deleted or renamed.
+     *
+     * @var array<int, string>
+     */
+    public const SYSTEM_KEYS = [
+        self::KEY_NEW,
+        self::KEY_WON,
+        self::KEY_LOST,
+    ];
+
+    /**
+     * Resolve the ID of a system status for the current organisation.
+     *
+     * The BelongsToOrganisation global scope limits the lookup to the
+     * current tenant. A missing row means the seeder has not been run,
+     * which is a configuration fault, so it fails loudly.
+     *
+     * @throws \RuntimeException
+     */
+    public static function idForKey(string $key): int
+    {
+        $id = static::query()->where('system_key', $key)->value('id');
+
+        if ($id === null) {
+            throw new \RuntimeException("Deal status '{$key}' is missing. Run DealStatusSeeder.");
+        }
+
+        return (int) $id;
+    }
+
+    /**
+     * Whether this status is a protected system status.
+     */
+    public function isSystem(): bool
+    {
+        return $this->system_key !== null;
+    }
 
     /**
      * Get the deals with this status.
@@ -67,7 +116,9 @@ class DealStatus extends Model implements Auditable
     }
 
     /**
-     * Pipeline stages that close a deal into this status.
+     * Get the pipeline stages that close a deal into this status.
+     *
+     * @return HasMany<PipelineStage, $this>
      */
     public function stages(): HasMany
     {
@@ -130,6 +181,7 @@ class DealStatus extends Model implements Auditable
             'description',
             'background_colour',
             'text_colour',
+            'system_key',
             'meta',
         ]);
     }

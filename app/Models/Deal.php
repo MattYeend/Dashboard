@@ -108,6 +108,18 @@ class Deal extends Model implements Auditable
     }
 
     /**
+     * Whether the deal currently holds the given system status key.
+     *
+     * Uses loadMissing() so it is safe under Model::shouldBeStrict().
+     */
+    public function isStatus(string $systemKey): bool
+    {
+        $this->loadMissing('status');
+
+        return $this->status?->system_key === $systemKey;
+    }
+
+    /**
      * Get the company this deal belongs to.
      *
      * @return BelongsTo<Company, $this>

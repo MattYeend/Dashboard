@@ -22,6 +22,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $description
  * @property string $background_colour
  * @property string $text_colour
+ * @property string|null $system_key
  * @property array<string, mixed>|null $meta
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -49,10 +50,67 @@ use Illuminate\Support\Carbon;
 ])]
 class InvoiceStatus extends Model implements Auditable
 {
-    /** @use HasFactory<InvoiceStatusFactory> */
+    /** 
+     * @use HasFactory<InvoiceStatusFactory> 
+     */
     use BelongsToOrganisation,
         HasFactory,
         SoftDeletes;
+
+    public const KEY_DRAFT = 'draft';
+
+    public const KEY_SENT = 'sent';
+
+    public const KEY_PARTIALLY_PAID = 'partially_paid';
+
+    public const KEY_PAID = 'paid';
+
+    public const KEY_OVERDUE = 'overdue';
+
+    public const KEY_CANCELLED = 'cancelled';
+
+    /**
+     * The keys the Invoices workflow depends on. Statuses carrying one of
+     * these keys cannot be deleted or renamed.
+     *
+     * @var array<int, string>
+     */
+    public const SYSTEM_KEYS = [
+        self::KEY_DRAFT,
+        self::KEY_SENT,
+        self::KEY_PARTIALLY_PAID,
+        self::KEY_PAID,
+        self::KEY_OVERDUE,
+        self::KEY_CANCELLED,
+    ];
+
+    /**
+     * Resolve the ID of a system status for the current organisation.
+     *
+     * The BelongsToOrganisation global scope limits the lookup to the
+     * current tenant. A missing row means the seeder has not been run,
+     * which is a configuration fault, so it fails loudly.
+     *
+     * @throws \RuntimeException
+     */
+    public static function idForKey(string $key): int
+    {
+        $id = static::query()->where('system_key', $key)->value('id');
+
+        if ($id === null) {
+            throw new \RuntimeException("Invoice status '{$key}' is missing. Run InvoiceStatusSeeder.");
+        }
+
+        return (int) $id;
+    }
+
+    /**
+     * Whether this status is a protected system status.
+     */
+    public function isSystem(): bool
+    {
+        return $this->system_key !== null;
+    }
 
     /**
      * Get the invoices with this status.
@@ -120,6 +178,7 @@ class InvoiceStatus extends Model implements Auditable
             'description',
             'background_colour',
             'text_colour',
+            'system_key',
             'meta',
         ]);
     }

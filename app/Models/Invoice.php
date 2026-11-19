@@ -147,6 +147,18 @@ class Invoice extends Model implements Auditable
     }
 
     /**
+     * Whether the invoice currently holds the given system status key.
+     *
+     * Uses loadMissing() so it is safe under Model::shouldBeStrict().
+     */
+    public function isStatus(string $systemKey): bool
+    {
+        $this->loadMissing('status');
+
+        return $this->status?->system_key === $systemKey;
+    }
+
+    /**
      * Get the deal this invoice was raised from.
      *
      * @return HasOne<Deal, $this>

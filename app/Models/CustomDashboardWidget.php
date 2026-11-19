@@ -34,7 +34,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 ])]
 class CustomDashboardWidget extends Model
 {
-    /** @use HasFactory<CustomDashboardWidgetFactory> */
+    /** 
+     * @use HasFactory<CustomDashboardWidgetFactory> 
+     */
     use HasFactory;
 
     /**

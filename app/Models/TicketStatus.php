@@ -19,9 +19,10 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property string $title
- * @property string $description
+ * @property string|null $description
  * @property string $background_colour
  * @property string $text_colour
+ * @property string|null $system_key
  * @property array<string, mixed>|null $meta
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -56,6 +57,55 @@ class TicketStatus extends Model implements Auditable
         HasFactory,
         SoftDeletes;
 
+    public const KEY_OPEN = 'open';
+
+    public const KEY_IN_PROGRESS = 'in_progress';
+
+    public const KEY_RESOLVED = 'resolved';
+
+    public const KEY_CLOSED = 'closed';
+
+    /**
+     * The keys the Tickets workflow depends on. Statuses carrying one of
+     * these keys cannot be deleted or renamed.
+     *
+     * @var array<int, string>
+     */
+    public const SYSTEM_KEYS = [
+        self::KEY_OPEN,
+        self::KEY_IN_PROGRESS,
+        self::KEY_RESOLVED,
+        self::KEY_CLOSED,
+    ];
+
+    /**
+     * Resolve the ID of a system status for the current organisation.
+     *
+     * The BelongsToOrganisation global scope limits the lookup to the
+     * current tenant. A missing row means the seeder has not been run,
+     * which is a configuration fault, so it fails loudly.
+     *
+     * @throws \RuntimeException
+     */
+    public static function idForKey(string $key): int
+    {
+        $id = static::query()->where('system_key', $key)->value('id');
+
+        if ($id === null) {
+            throw new \RuntimeException("Ticket status '{$key}' is missing. Run TicketStatusSeeder.");
+        }
+
+        return (int) $id;
+    }
+
+    /**
+     * Whether this status is a protected system status.
+     */
+    public function isSystem(): bool
+    {
+        return $this->system_key !== null;
+    }
+
     /**
      * Get the tickets with this status.
      *
@@ -63,7 +113,7 @@ class TicketStatus extends Model implements Auditable
      */
     public function tickets(): HasMany
     {
-        return $this->hasMany(Ticket::class, 'status_id');
+        return $this->hasMany(Ticket::class, 'ticket_status_id');
     }
 
     /**
@@ -119,8 +169,11 @@ class TicketStatus extends Model implements Auditable
         return $this->only([
             'id',
             'title',
+            'description',
             'background_colour',
             'text_colour',
+            'system_key',
+            'meta',
         ]);
     }
 

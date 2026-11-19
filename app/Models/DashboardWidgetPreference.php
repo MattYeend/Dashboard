@@ -29,7 +29,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 ])]
 class DashboardWidgetPreference extends Model
 {
-    /** @use HasFactory<DashboardWidgetPreferenceFactory> */
+    /** 
+     * @use HasFactory<DashboardWidgetPreferenceFactory> 
+     */
     use HasFactory;
 
     /**

@@ -46,7 +46,9 @@ use Illuminate\Support\Carbon;
 ])]
 class Industry extends Model implements Auditable
 {
-    /** @use HasFactory<IndustryFactory> */
+    /** 
+     * @use HasFactory<IndustryFactory> 
+     */
     use BelongsToOrganisation,
         HasFactory,
         SoftDeletes;

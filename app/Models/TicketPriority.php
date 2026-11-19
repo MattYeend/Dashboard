@@ -49,7 +49,9 @@ use Illuminate\Support\Carbon;
 ])]
 class TicketPriority extends Model implements Auditable
 {
-    /** @use HasFactory<TicketPriorityFactory> */
+    /** 
+     * @use HasFactory<TicketPriorityFactory> 
+     */
     use BelongsToOrganisation,
         HasFactory,
         SoftDeletes;

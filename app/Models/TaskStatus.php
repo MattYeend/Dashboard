@@ -22,6 +22,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $description
  * @property string $background_colour
  * @property string $text_colour
+ * @property string|null $system_key
  * @property array<string, mixed>|null $meta
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -55,6 +56,52 @@ class TaskStatus extends Model implements Auditable
     use BelongsToOrganisation,
         HasFactory,
         SoftDeletes;
+
+    public const KEY_TODO = 'todo';
+
+    public const KEY_IN_PROGRESS = 'in_progress';
+
+    public const KEY_DONE = 'done';
+
+    /**
+     * The keys the Tasks workflow depends on. Statuses carrying one of
+     * these keys cannot be deleted or renamed.
+     *
+     * @var array<int, string>
+     */
+    public const SYSTEM_KEYS = [
+        self::KEY_TODO,
+        self::KEY_IN_PROGRESS,
+        self::KEY_DONE,
+    ];
+
+    /**
+     * Resolve the ID of a system status for the current organisation.
+     *
+     * The BelongsToOrganisation global scope limits the lookup to the
+     * current tenant. A missing row means the seeder has not been run,
+     * which is a configuration fault, so it fails loudly.
+     *
+     * @throws \RuntimeException
+     */
+    public static function idForKey(string $key): int
+    {
+        $id = static::query()->where('system_key', $key)->value('id');
+
+        if ($id === null) {
+            throw new \RuntimeException("Task status '{$key}' is missing. Run TaskStatusSeeder.");
+        }
+
+        return (int) $id;
+    }
+
+    /**
+     * Whether this status is a protected system status.
+     */
+    public function isSystem(): bool
+    {
+        return $this->system_key !== null;
+    }
 
     /**
      * Get the tasks with this status.
@@ -122,6 +169,7 @@ class TaskStatus extends Model implements Auditable
             'description',
             'background_colour',
             'text_colour',
+            'system_key',
             'meta',
         ]);
     }

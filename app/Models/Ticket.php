@@ -75,6 +75,18 @@ class Ticket extends Model implements Auditable
     }
 
     /**
+     * Whether the ticket currently holds the given system status key.
+     *
+     * Uses loadMissing() so it is safe under Model::shouldBeStrict().
+     */
+    public function isStatus(string $systemKey): bool
+    {
+        $this->loadMissing('status');
+
+        return $this->status?->system_key === $systemKey;
+    }
+
+    /**
      * Get the priority of this ticket.
      *
      * @return BelongsTo<TicketPriority, $this>
