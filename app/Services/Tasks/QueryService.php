@@ -76,6 +76,7 @@ class QueryService
             'statuses' => TaskStatus::orderBy('title')->get([
                 'id',
                 'title',
+                'system_key',
                 'background_colour',
                 'text_colour',
             ]),

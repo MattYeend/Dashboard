@@ -79,6 +79,7 @@ class FormatterService
             'status' => $deal->status ? [
                 'id' => $deal->status->id,
                 'title' => $deal->status->title,
+                'system_key' => $deal->status->system_key,
                 'background_colour' => $deal->status->background_colour,
                 'text_colour' => $deal->status->text_colour,
             ] : null,

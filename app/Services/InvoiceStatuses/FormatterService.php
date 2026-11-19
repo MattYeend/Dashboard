@@ -21,6 +21,8 @@ class FormatterService
             'description' => $invoiceStatus->description,
             'background_colour' => $invoiceStatus->background_colour,
             'text_colour' => $invoiceStatus->text_colour,
+            'system_key' => $invoiceStatus->system_key,
+            'is_system' => $invoiceStatus->isSystem(),
             'meta' => $invoiceStatus->meta,
             'created_at' => $invoiceStatus->created_at,
             'updated_at' => $invoiceStatus->updated_at,

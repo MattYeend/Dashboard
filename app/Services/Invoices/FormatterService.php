@@ -94,6 +94,7 @@ class FormatterService
             'status' => $invoice->status ? [
                 'id' => $invoice->status->id,
                 'title' => $invoice->status->title,
+                'system_key' => $invoice->status->system_key,
                 'background_colour' => $invoice->status->background_colour,
                 'text_colour' => $invoice->status->text_colour,
             ] : null,

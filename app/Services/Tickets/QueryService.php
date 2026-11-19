@@ -83,6 +83,9 @@ class QueryService
             'ticket_statuses' => TicketStatus::orderBy('title')->get([
                 'id',
                 'title',
+                'system_key',
+                'background_colour',
+                'text_colour',
             ]),
             'ticket_priorities' => TicketPriority::orderBy('title')->get([
                 'id',

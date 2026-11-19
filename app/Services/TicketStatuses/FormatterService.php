@@ -21,6 +21,8 @@ class FormatterService
             'description' => $ticketStatus->description,
             'background_colour' => $ticketStatus->background_colour,
             'text_colour' => $ticketStatus->text_colour,
+            'system_key' => $ticketStatus->system_key,
+            'is_system' => $ticketStatus->isSystem(),
             'meta' => $ticketStatus->meta,
             'created_at' => $ticketStatus->created_at,
             'updated_at' => $ticketStatus->updated_at,

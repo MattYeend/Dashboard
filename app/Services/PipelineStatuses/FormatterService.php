@@ -21,6 +21,8 @@ class FormatterService
             'description' => $pipelineStatus->description,
             'background_colour' => $pipelineStatus->background_colour,
             'text_colour' => $pipelineStatus->text_colour,
+            'system_key' => $pipelineStatus->system_key,
+            'is_system' => $pipelineStatus->isSystem(),
             'meta' => $pipelineStatus->meta,
             'created_at' => $pipelineStatus->created_at,
             'updated_at' => $pipelineStatus->updated_at,

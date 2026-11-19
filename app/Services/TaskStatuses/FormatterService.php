@@ -21,6 +21,8 @@ class FormatterService
             'description' => $taskStatus->description,
             'background_colour' => $taskStatus->background_colour,
             'text_colour' => $taskStatus->text_colour,
+            'system_key' => $taskStatus->system_key,
+            'is_system' => $taskStatus->isSystem(),
             'meta' => $taskStatus->meta,
             'created_at' => $taskStatus->created_at,
             'updated_at' => $taskStatus->updated_at,

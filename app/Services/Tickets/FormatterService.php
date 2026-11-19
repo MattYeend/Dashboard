@@ -25,6 +25,9 @@ class FormatterService
             'status' => $ticket->status ? [
                 'id' => $ticket->status->id,
                 'title' => $ticket->status->title,
+                'system_key' => $ticket->status->system_key,
+                'background_colour' => $ticket->status->background_colour,
+                'text_colour' => $ticket->status->text_colour,
             ] : null,
             'priority' => $ticket->priority ? [
                 'id' => $ticket->priority->id,

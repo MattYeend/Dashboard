@@ -21,6 +21,8 @@ class FormatterService
             'description' => $orderStatus->description,
             'background_colour' => $orderStatus->background_colour,
             'text_colour' => $orderStatus->text_colour,
+            'system_key' => $orderStatus->system_key,
+            'is_system' => $orderStatus->isSystem(),
             'meta' => $orderStatus->meta,
             'created_at' => $orderStatus->created_at,
             'updated_at' => $orderStatus->updated_at,

@@ -86,7 +86,11 @@ class QueryService
         return [
             'statuses' => InvoiceStatus::query()
                 ->where(function (Builder $query) use ($invoice): void {
-                    $query->whereNotIn('title', ['Partially Paid', 'Paid']);
+                    $query->whereNull('system_key')
+                        ->orWhereNotIn('system_key', [
+                            InvoiceStatus::KEY_PARTIALLY_PAID,
+                            InvoiceStatus::KEY_PAID,
+                        ]);
 
                     if ($invoice !== null && $invoice->status_id !== null) {
                         $query->orWhere('id', $invoice->status_id);
@@ -96,6 +100,7 @@ class QueryService
                 ->get([
                     'id',
                     'title',
+                    'system_key',
                     'background_colour',
                     'text_colour',
                 ]),

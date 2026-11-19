@@ -34,6 +34,7 @@ class FormatterService
             'status' => $pipeline->status ? [
                 'id' => $pipeline->status->id,
                 'title' => $pipeline->status->title,
+                'system_key' => $pipeline->status->system_key,
                 'background_colour' => $pipeline->status->background_colour,
                 'text_colour' => $pipeline->status->text_colour,
             ] : null,

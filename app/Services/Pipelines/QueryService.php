@@ -152,7 +152,13 @@ class QueryService
                 ->orderBy('name')
                 ->get(),
             'statuses' => PipelineStatus::query()
-                ->select('id', 'title', 'background_colour', 'text_colour')
+                ->select(
+                    'id', 
+                    'title', 
+                    'background_colour', 
+                    'system_key',
+                    'text_colour'
+                )
                 ->orderBy('title')
                 ->get(),
         ];

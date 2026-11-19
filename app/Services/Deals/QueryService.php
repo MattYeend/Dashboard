@@ -90,6 +90,7 @@ class QueryService
             'deal_statuses' => DealStatus::orderBy('title')->get([
                 'id',
                 'title',
+                'system_key',
                 'background_colour',
                 'text_colour',
             ]),

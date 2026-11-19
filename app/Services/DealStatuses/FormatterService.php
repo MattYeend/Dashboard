@@ -9,7 +9,7 @@ use App\Models\DealStatus;
 class FormatterService
 {
     /**
-     * Format a single invoice status with all data.
+     * Format a single deal status with all data.
      *
      * @return array<string, mixed>
      */
@@ -21,6 +21,8 @@ class FormatterService
             'description' => $dealStatus->description,
             'background_colour' => $dealStatus->background_colour,
             'text_colour' => $dealStatus->text_colour,
+            'system_key' => $dealStatus->system_key,
+            'is_system' => $dealStatus->isSystem(),
             'meta' => $dealStatus->meta,
             'created_at' => $dealStatus->created_at,
             'updated_at' => $dealStatus->updated_at,

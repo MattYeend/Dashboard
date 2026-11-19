@@ -43,6 +43,7 @@ class FormatterService
             'status' => $task->status ? [
                 'id' => $task->status->id,
                 'title' => $task->status->title,
+                'system_key' => $task->status->system_key,
                 'background_colour' => $task->status->background_colour,
                 'text_colour' => $task->status->text_colour,
             ] : null,
