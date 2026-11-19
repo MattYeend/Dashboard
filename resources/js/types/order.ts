@@ -32,6 +32,7 @@ export interface Order {
     status?: {
         id: number;
         title: string;
+        system_key: string | null;
         background_colour: string | null;
         text_colour: string | null;
     } | null;

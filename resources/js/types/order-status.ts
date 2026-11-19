@@ -5,6 +5,8 @@ export interface OrderStatus {
     description: string | null;
     background_colour: string;
     text_colour: string;
+    system_key: string | null;
+    is_system: boolean;
     meta: Record<string, unknown> | null;
     created_by: number | null;
     updated_by: number | null;
