@@ -20,19 +20,19 @@ trait SeedsSystemStatuses
      *
      * @template TModel of Model
      *
-     * @param class-string<TModel> $modelClass
-     * @param array<int, array<string, mixed>> $statuses   Trusted, hard-coded seed data only.
+     * @param  class-string<TModel>  $modelClass
+     * @param  array<int, array<string, mixed>>  $statuses  Trusted, hard-coded seed data only.
      */
     protected function seedSystemStatuses(
-        string $modelClass, 
-        int $organisationId, 
+        string $modelClass,
+        int $organisationId,
         array $statuses
     ): void {
         foreach ($statuses as $attributes) {
             $systemKey = $attributes['system_key'] ?? null;
             unset($attributes['system_key']);
 
-            $query = (new $modelClass())
+            $query = (new $modelClass)
                 ->newQuery()
                 ->withoutGlobalScopes()
                 ->where('organisation_id', $organisationId);
@@ -48,7 +48,7 @@ trait SeedsSystemStatuses
             $model = $query->first();
 
             if ($model === null) {
-                $model = new $modelClass();
+                $model = new $modelClass;
                 $model->forceFill($attributes);
                 $model->forceFill([
                     'organisation_id' => $organisationId,
