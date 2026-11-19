@@ -6,11 +6,13 @@ namespace Database\Seeders;
 
 use App\Models\OrderStatus;
 use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
+use Database\Seeders\Concerns\SeedsSystemStatuses;
 use Illuminate\Database\Seeder;
 
 class OrderStatusSeeder extends Seeder
 {
-    use ResolvesDefaultOrganisation;
+    use ResolvesDefaultOrganisation,
+        SeedsSystemStatuses;
 
     /**
      * Run the database seeds.

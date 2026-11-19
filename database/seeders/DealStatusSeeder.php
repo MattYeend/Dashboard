@@ -6,11 +6,13 @@ namespace Database\Seeders;
 
 use App\Models\DealStatus;
 use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
+use Database\Seeders\Concerns\SeedsSystemStatuses;
 use Illuminate\Database\Seeder;
 
 class DealStatusSeeder extends Seeder
 {
-    use ResolvesDefaultOrganisation;
+    use ResolvesDefaultOrganisation,
+        SeedsSystemStatuses;
 
     /**
      * Run the database seeds.
@@ -19,14 +21,9 @@ class DealStatusSeeder extends Seeder
     {
         $organisation = $this->defaultOrganisation();
 
-        if (DealStatus::where('organisation_id', $organisation->id)->exists()) {
-            $this->command->info('Deal statuses already seeded, skipping...');
-
-            return;
-        }
-
         $statuses = [
             [
+                'system_key' => DealStatus::KEY_NEW,
                 'title' => 'New',
                 'description' => 'Deal has been created and has not yet been reviewed.',
                 'background_colour' => '#e2e8f0',
@@ -59,6 +56,7 @@ class DealStatusSeeder extends Seeder
                 'meta' => null,
             ],
             [
+                'system_key' => DealStatus::KEY_WON,
                 'title' => 'Won',
                 'description' => 'Deal has been agreed and closed successfully.',
                 'background_colour' => '#c6f6d5',
@@ -67,6 +65,7 @@ class DealStatusSeeder extends Seeder
                 'meta' => null,
             ],
             [
+                'system_key' => DealStatus::KEY_LOST,
                 'title' => 'Lost',
                 'description' => 'Deal did not proceed and has been closed unsuccessfully.',
                 'background_colour' => '#fed7d7',
@@ -84,19 +83,17 @@ class DealStatusSeeder extends Seeder
             ],
         ];
 
-        foreach ($statuses as $status) {
-            DealStatus::firstOrCreate(
-                [
-                    'title' => $status['title'],
-                    'organisation_id' => $organisation->id,
-                ],
-                $status
-            );
-        }
+        $this->seedSystemStatuses(DealStatus::class, (int) $organisation->id, $statuses);
 
         // Ensure closing flags are correct even if rows already existed.
-        DealStatus::updateOrCreate(['title' => 'Won'], ['is_closing' => true, 'organisation_id' => $organisation->id]);
-        DealStatus::updateOrCreate(['title' => 'Lost'], ['is_closing' => true, 'organisation_id' => $organisation->id]);
-        DealStatus::updateOrCreate(['title' => 'Open'], ['is_closing' => false, 'organisation_id' => $organisation->id]);
+        DealStatus::withoutGlobalScopes()
+            ->where('organisation_id', $organisation->id)
+            ->whereIn('system_key', [DealStatus::KEY_WON, DealStatus::KEY_LOST])
+            ->update(['is_closing' => true]);
+
+        DealStatus::withoutGlobalScopes()
+            ->where('organisation_id', $organisation->id)
+            ->where('system_key', DealStatus::KEY_NEW)
+            ->update(['is_closing' => false]);
     }
 }
