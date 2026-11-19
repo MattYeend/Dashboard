@@ -22,8 +22,9 @@ class DeleterService
     ) {}
 
     /**
-     * Soft delete a orderStatus.
+     * Soft delete an order status.
      *
+     * @throws \DomainException When the status is a protected system status.
      * @throws \Exception
      */
     public function delete(
@@ -31,6 +32,8 @@ class DeleterService
         int $deletedBy,
         ?User $actor = null
     ): bool {
+        $this->ensureNotSystem($orderStatus);
+
         $actor ??= User::findOrFail($deletedBy);
 
         return $this->deleteResource->handle(
@@ -50,14 +53,17 @@ class DeleterService
     }
 
     /**
-     * Force delete a orderStatus (permanent deletion).
+     * Force delete an order status (permanent deletion).
      *
+     * @throws \DomainException When the status is a protected system status.
      * @throws \Exception
      */
     public function forceDelete(
         OrderStatus $orderStatus,
         int $deletedBy
     ): bool {
+        $this->ensureNotSystem($orderStatus);
+
         $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->forceHandle(
@@ -73,7 +79,10 @@ class DeleterService
     }
 
     /**
-     * Delete multiple orderStatuses.
+     * Delete multiple order statuses.
+     *
+     * System statuses are skipped rather than rejected, so one protected row
+     * cannot roll back the whole batch. The returned count excludes them.
      *
      * @throws \Exception
      */
@@ -88,6 +97,10 @@ class DeleterService
             $orderStatuses = OrderStatus::whereIn('id', $orderStatusIds)->get();
 
             foreach ($orderStatuses as $orderStatus) {
+                if ($orderStatus->isSystem()) {
+                    continue;
+                }
+
                 if ($this->delete($orderStatus, $deletedBy, $actor)) {
                     $count++;
                 }
@@ -95,5 +108,17 @@ class DeleterService
         });
 
         return $count;
+    }
+
+    /**
+     * Refuse to delete a protected system status.
+     *
+     * @throws \DomainException
+     */
+    protected function ensureNotSystem(OrderStatus $orderStatus): void
+    {
+        if ($orderStatus->isSystem()) {
+            throw new \DomainException('System statuses cannot be deleted.');
+        }
     }
 }

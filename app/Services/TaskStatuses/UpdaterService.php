@@ -26,6 +26,7 @@ class UpdaterService
      *
      * @param  array<string, mixed>  $data
      *
+     * @throws \DomainException When a system status would be renamed.
      * @throws \Exception
      */
     public function update(
@@ -38,6 +39,8 @@ class UpdaterService
         $before = $this->auditLogService->snapshot($taskStatus);
 
         $taskStatusData = $this->dataPreparation->prepareForUpdate($data);
+
+        $this->ensureNotRenamed($taskStatus, $taskStatusData);
 
         return $this->updateResource->handle(
             $taskStatus,
@@ -58,5 +61,26 @@ class UpdaterService
                     ],
                 );
             });
+    }
+
+    /**
+     * Refuse to rename a protected system status.
+     *
+     * The title is part of the workflow contract for system statuses. An
+     * unchanged title is allowed so edit forms that always send it still work.
+     *
+     * @param  array<string, mixed>  $payload
+     *
+     * @throws \DomainException
+     */
+    protected function ensureNotRenamed(TaskStatus $taskStatus, array $payload): void
+    {
+        if (
+            $taskStatus->isSystem()
+            && array_key_exists('title', $payload)
+            && $payload['title'] !== $taskStatus->title
+        ) {
+            throw new \DomainException('System statuses cannot be renamed.');
+        }
     }
 }

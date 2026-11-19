@@ -22,8 +22,9 @@ class DeleterService
     ) {}
 
     /**
-     * Soft delete a ticketStatus.
+     * Soft delete a ticket status.
      *
+     * @throws \DomainException When the status is a protected system status.
      * @throws \Exception
      */
     public function delete(
@@ -31,6 +32,7 @@ class DeleterService
         int $deletedBy,
         ?User $actor = null
     ): bool {
+        $this->ensureNotSystem($ticketStatus);
 
         $actor ??= User::findOrFail($deletedBy);
 
@@ -51,14 +53,17 @@ class DeleterService
     }
 
     /**
-     * Force delete a ticketStatus (permanent deletion).
+     * Force delete a ticket status (permanent deletion).
      *
+     * @throws \DomainException When the status is a protected system status.
      * @throws \Exception
      */
     public function forceDelete(
         TicketStatus $ticketStatus,
         int $deletedBy
     ): bool {
+        $this->ensureNotSystem($ticketStatus);
+
         $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->forceHandle(
@@ -74,7 +79,10 @@ class DeleterService
     }
 
     /**
-     * Delete multiple ticketStatuses.
+     * Delete multiple ticket statuses.
+     *
+     * System statuses are skipped rather than rejected, so one protected row
+     * cannot roll back the whole batch. The returned count excludes them.
      *
      * @throws \Exception
      */
@@ -88,6 +96,10 @@ class DeleterService
             $ticketStatuses = TicketStatus::whereIn('id', $ticketStatusIds)->get();
 
             foreach ($ticketStatuses as $ticketStatus) {
+                if ($ticketStatus->isSystem()) {
+                    continue;
+                }
+
                 if ($this->delete($ticketStatus, $deletedBy)) {
                     $count++;
                 }
@@ -95,5 +107,17 @@ class DeleterService
         });
 
         return $count;
+    }
+
+    /**
+     * Refuse to delete a protected system status.
+     *
+     * @throws \DomainException
+     */
+    protected function ensureNotSystem(TicketStatus $ticketStatus): void
+    {
+        if ($ticketStatus->isSystem()) {
+            throw new \DomainException('System statuses cannot be deleted.');
+        }
     }
 }

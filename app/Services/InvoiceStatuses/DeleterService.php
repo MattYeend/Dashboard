@@ -22,8 +22,9 @@ class DeleterService
     ) {}
 
     /**
-     * Soft delete a invoiceStatus.
+     * Soft delete an invoice status.
      *
+     * @throws \DomainException When the status is a protected system status.
      * @throws \Exception
      */
     public function delete(
@@ -31,6 +32,7 @@ class DeleterService
         int $deletedBy,
         ?User $actor = null
     ): bool {
+        $this->ensureNotSystem($invoiceStatus);
 
         $actor ??= User::findOrFail($deletedBy);
 
@@ -51,14 +53,17 @@ class DeleterService
     }
 
     /**
-     * Force delete a invoiceStatus (permanent deletion).
+     * Force delete an invoice status (permanent deletion).
      *
+     * @throws \DomainException When the status is a protected system status.
      * @throws \Exception
      */
     public function forceDelete(
         InvoiceStatus $invoiceStatus,
         int $deletedBy
     ): bool {
+        $this->ensureNotSystem($invoiceStatus);
+
         $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->forceHandle(
@@ -74,7 +79,10 @@ class DeleterService
     }
 
     /**
-     * Delete multiple invoiceStatuses.
+     * Delete multiple invoice statuses.
+     *
+     * System statuses are skipped rather than rejected, so one protected row
+     * cannot roll back the whole batch. The returned count excludes them.
      *
      * @throws \Exception
      */
@@ -88,6 +96,10 @@ class DeleterService
             $invoiceStatuses = InvoiceStatus::whereIn('id', $invoiceStatusIds)->get();
 
             foreach ($invoiceStatuses as $invoiceStatus) {
+                if ($invoiceStatus->isSystem()) {
+                    continue;
+                }
+
                 if ($this->delete($invoiceStatus, $deletedBy)) {
                     $count++;
                 }
@@ -95,5 +107,17 @@ class DeleterService
         });
 
         return $count;
+    }
+
+    /**
+     * Refuse to delete a protected system status.
+     *
+     * @throws \DomainException
+     */
+    protected function ensureNotSystem(InvoiceStatus $invoiceStatus): void
+    {
+        if ($invoiceStatus->isSystem()) {
+            throw new \DomainException('System statuses cannot be deleted.');
+        }
     }
 }

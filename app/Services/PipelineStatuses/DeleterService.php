@@ -22,8 +22,9 @@ class DeleterService
     ) {}
 
     /**
-     * Soft delete a pipelineStatus.
+     * Soft delete a pipeline status.
      *
+     * @throws \DomainException When the status is a protected system status.
      * @throws \Exception
      */
     public function delete(
@@ -31,6 +32,7 @@ class DeleterService
         int $deletedBy,
         ?User $actor = null
     ): bool {
+        $this->ensureNotSystem($pipelineStatus);
 
         $actor ??= User::findOrFail($deletedBy);
 
@@ -51,14 +53,17 @@ class DeleterService
     }
 
     /**
-     * Force delete a pipelineStatus (permanent deletion).
+     * Force delete a pipeline status (permanent deletion).
      *
+     * @throws \DomainException When the status is a protected system status.
      * @throws \Exception
      */
     public function forceDelete(
         PipelineStatus $pipelineStatus,
         int $deletedBy
     ): bool {
+        $this->ensureNotSystem($pipelineStatus);
+
         $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->forceHandle(
@@ -74,7 +79,10 @@ class DeleterService
     }
 
     /**
-     * Delete multiple pipelineStatuses.
+     * Delete multiple pipeline statuses.
+     *
+     * System statuses are skipped rather than rejected, so one protected row
+     * cannot roll back the whole batch. The returned count excludes them.
      *
      * @throws \Exception
      */
@@ -88,6 +96,10 @@ class DeleterService
             $pipelineStatuses = PipelineStatus::whereIn('id', $pipelineStatusIds)->get();
 
             foreach ($pipelineStatuses as $pipelineStatus) {
+                if ($pipelineStatus->isSystem()) {
+                    continue;
+                }
+
                 if ($this->delete($pipelineStatus, $deletedBy)) {
                     $count++;
                 }
@@ -95,5 +107,17 @@ class DeleterService
         });
 
         return $count;
+    }
+
+    /**
+     * Refuse to delete a protected system status.
+     *
+     * @throws \DomainException
+     */
+    protected function ensureNotSystem(PipelineStatus $pipelineStatus): void
+    {
+        if ($pipelineStatus->isSystem()) {
+            throw new \DomainException('System statuses cannot be deleted.');
+        }
     }
 }

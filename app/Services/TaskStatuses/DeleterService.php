@@ -22,8 +22,9 @@ class DeleterService
     ) {}
 
     /**
-     * Soft delete a taskStatus.
+     * Soft delete a task status.
      *
+     * @throws \DomainException When the status is a protected system status.
      * @throws \Exception
      */
     public function delete(
@@ -31,6 +32,7 @@ class DeleterService
         int $deletedBy,
         ?User $actor = null
     ): bool {
+        $this->ensureNotSystem($taskStatus);
 
         $actor ??= User::findOrFail($deletedBy);
 
@@ -51,14 +53,17 @@ class DeleterService
     }
 
     /**
-     * Force delete a taskStatus (permanent deletion).
+     * Force delete a task status (permanent deletion).
      *
+     * @throws \DomainException When the status is a protected system status.
      * @throws \Exception
      */
     public function forceDelete(
         TaskStatus $taskStatus,
         int $deletedBy
     ): bool {
+        $this->ensureNotSystem($taskStatus);
+
         $actor = User::findOrFail($deletedBy);
 
         return $this->deleteResource->forceHandle(
@@ -74,7 +79,10 @@ class DeleterService
     }
 
     /**
-     * Delete multiple taskStatuses.
+     * Delete multiple task statuses.
+     *
+     * System statuses are skipped rather than rejected, so one protected row
+     * cannot roll back the whole batch. The returned count excludes them.
      *
      * @throws \Exception
      */
@@ -88,6 +96,10 @@ class DeleterService
             $taskStatuses = TaskStatus::whereIn('id', $taskStatusIds)->get();
 
             foreach ($taskStatuses as $taskStatus) {
+                if ($taskStatus->isSystem()) {
+                    continue;
+                }
+
                 if ($this->delete($taskStatus, $deletedBy)) {
                     $count++;
                 }
@@ -95,5 +107,17 @@ class DeleterService
         });
 
         return $count;
+    }
+
+    /**
+     * Refuse to delete a protected system status.
+     *
+     * @throws \DomainException
+     */
+    protected function ensureNotSystem(TaskStatus $taskStatus): void
+    {
+        if ($taskStatus->isSystem()) {
+            throw new \DomainException('System statuses cannot be deleted.');
+        }
     }
 }
