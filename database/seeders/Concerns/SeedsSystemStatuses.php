@@ -11,17 +11,14 @@ trait SeedsSystemStatuses
     /**
      * Seed a set of statuses for one organisation, idempotently.
      *
-     * Rows with a system_key are matched on (organisation_id, system_key) so a
-     * renamed title never creates a duplicate. Rows without one are matched on
-     * (organisation_id, title). The tenant global scope, and the soft delete
-     * scope with it, is bypassed, so soft deleted rows are found and restored.
-     *
-     * Existing rows are not overwritten, which preserves edits made by users.
+     * Existing rows are matched by system key first, then title.
+     * Soft deleted rows are included and restored when necessary.
+     * Existing attributes are not overwritten.
      *
      * @template TModel of Model
      *
      * @param  class-string<TModel>  $modelClass
-     * @param  array<int, array<string, mixed>>  $statuses  Trusted, hard-coded seed data only.
+     * @param  array<int, array<string, mixed>>  $statuses
      */
     protected function seedSystemStatuses(
         string $modelClass,
@@ -37,15 +34,19 @@ trait SeedsSystemStatuses
                 ->withoutGlobalScopes()
                 ->where('organisation_id', $organisationId);
 
+            $model = null;
+
             if ($systemKey !== null) {
-                $query->where('system_key', $systemKey);
-            } else {
-                $query->whereNull('system_key')
-                    ->where('title', $attributes['title']);
+                $model = (clone $query)
+                    ->where('system_key', $systemKey)
+                    ->first();
             }
 
-            /** @var TModel|null $model */
-            $model = $query->first();
+            if ($model === null) {
+                $model = (clone $query)
+                    ->where('title', $attributes['title'])
+                    ->first();
+            }
 
             if ($model === null) {
                 $model = new $modelClass;
@@ -59,10 +60,21 @@ trait SeedsSystemStatuses
                 continue;
             }
 
-            // Restore soft deleted rows without relying on the SoftDeletes trait,
-            // which PHPStan cannot see on the generic Model type.
+            if (
+                $systemKey !== null
+                && $model->getAttribute('system_key') === null
+            ) {
+                $model->forceFill([
+                    'system_key' => $systemKey,
+                ]);
+            }
+
             if ($model->getAttribute('deleted_at') !== null) {
-                $model->forceFill(['deleted_at' => null])->save();
+                $model->forceFill(['deleted_at' => null]);
+            }
+
+            if ($model->isDirty()) {
+                $model->save();
             }
         }
     }
