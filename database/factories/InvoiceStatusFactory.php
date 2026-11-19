@@ -21,8 +21,19 @@ class InvoiceStatusFactory extends Factory
             'description' => $this->faker->sentence(),
             'background_colour' => $this->faker->hexColor(),
             'text_colour' => $this->faker->hexColor(),
+            'system_key' => null,
             'meta' => null,
         ];
+    }
+
+    /**
+     * State for a protected system status.
+     */
+    public function system(string $key): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'system_key' => $key,
+        ]);
     }
 
     /**

@@ -80,7 +80,9 @@ class InvoiceFactory extends Factory
     public function sent(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status_id' => InvoiceStatus::where('title', 'Sent')->value('id'),
+            'status_id' => InvoiceStatus::query()
+                ->where('system_key', InvoiceStatus::KEY_SENT)
+                ->value('id'),
             'sent_at' => now()->subDays(5),
         ]);
     }
@@ -91,7 +93,9 @@ class InvoiceFactory extends Factory
     public function paid(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status_id' => InvoiceStatus::where('title', 'Paid')->value('id'),
+            'status_id' => InvoiceStatus::query()
+                ->where('system_key', InvoiceStatus::KEY_PAID)
+                ->value('id'),
             'sent_at' => now()->subDays(10),
             'paid_at' => now()->subDays(2),
             'due_date' => now()->subDays(10),
@@ -104,7 +108,9 @@ class InvoiceFactory extends Factory
     public function overdue(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status_id' => InvoiceStatus::where('title', 'Overdue')->value('id'),
+            'status_id' => InvoiceStatus::query()
+                ->where('system_key', InvoiceStatus::KEY_OVERDUE)
+                ->value('id'),
             'sent_at' => now()->subDays(20),
             'due_date' => now()->subDays(14),
             'overdue_notified_at' => null,
@@ -117,7 +123,9 @@ class InvoiceFactory extends Factory
     public function overdueNotified(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status_id' => InvoiceStatus::where('title', 'Overdue')->value('id'),
+            'status_id' => InvoiceStatus::query()
+                ->where('system_key', InvoiceStatus::KEY_OVERDUE)
+                ->value('id'),
             'sent_at' => now()->subDays(20),
             'due_date' => now()->subDays(14),
             'overdue_notified_at' => now()->subDay(),

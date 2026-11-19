@@ -58,7 +58,9 @@ class DealFactory extends Factory
     public function won(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status_id' => DealStatus::where('title', 'Won')->value('id'),
+            'status_id' => DealStatus::query()
+                ->where('system_key', DealStatus::KEY_WON)
+                ->value('id'),
             'probability' => 100,
             'closed_at' => now(),
         ]);
@@ -70,19 +72,23 @@ class DealFactory extends Factory
     public function lost(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status_id' => DealStatus::where('title', 'Lost')->value('id'),
+            'status_id' => DealStatus::query()
+                ->where('system_key', DealStatus::KEY_LOST)
+                ->value('id'),
             'probability' => 0,
             'closed_at' => now(),
         ]);
     }
 
     /**
-     * Indicate that the deal is still open.
+     * Indicate that the deal is still open (the default "New" status).
      */
     public function open(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status_id' => DealStatus::where('title', 'Open')->value('id'),
+            'status_id' => DealStatus::query()
+                ->where('system_key', DealStatus::KEY_NEW)
+                ->value('id'),
             'closed_at' => null,
         ]);
     }

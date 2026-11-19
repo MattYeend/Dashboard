@@ -34,6 +34,7 @@ class OrderStatusFactory extends Factory
             'description' => $this->faker->sentence(),
             'background_colour' => $this->faker->hexColor(),
             'text_colour' => $this->faker->hexColor(),
+            'system_key' => null,
             'meta' => null,
             'created_by' => null,
             'updated_by' => null,
@@ -41,6 +42,16 @@ class OrderStatusFactory extends Factory
             'restored_by' => null,
             'restored_at' => null,
         ];
+    }
+
+    /**
+     * State for a protected system status.
+     */
+    public function system(string $key): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'system_key' => $key,
+        ]);
     }
 
     /**
@@ -120,6 +131,7 @@ class OrderStatusFactory extends Factory
             'description' => 'Order has been placed but payment has not yet been confirmed.',
             'background_colour' => '#e2e8f0',
             'text_colour' => '#1a202c',
+            'system_key' => OrderStatus::KEY_PENDING,
         ]);
     }
 
@@ -133,6 +145,7 @@ class OrderStatusFactory extends Factory
             'description' => 'Payment has been confirmed and the order is being prepared.',
             'background_colour' => '#bee3f8',
             'text_colour' => '#2b6cb0',
+            'system_key' => OrderStatus::KEY_PROCESSING,
         ]);
     }
 
@@ -159,6 +172,7 @@ class OrderStatusFactory extends Factory
             'description' => 'Order has been delivered to the customer.',
             'background_colour' => '#c6f6d5',
             'text_colour' => '#22543d',
+            'system_key' => OrderStatus::KEY_DELIVERED,
         ]);
     }
 
@@ -185,6 +199,7 @@ class OrderStatusFactory extends Factory
             'description' => 'Order has been cancelled and will not be fulfilled.',
             'background_colour' => '#e2e8f0',
             'text_colour' => '#718096',
+            'system_key' => OrderStatus::KEY_CANCELLED,
         ]);
     }
 

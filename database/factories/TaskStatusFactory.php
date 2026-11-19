@@ -34,6 +34,7 @@ class TaskStatusFactory extends Factory
             'description' => $this->faker->sentence(),
             'background_colour' => $this->faker->hexColor(),
             'text_colour' => $this->faker->hexColor(),
+            'system_key' => null,
             'meta' => null,
             'created_by' => null,
             'updated_by' => null,
@@ -41,6 +42,16 @@ class TaskStatusFactory extends Factory
             'restored_by' => null,
             'restored_at' => null,
         ];
+    }
+
+    /**
+     * State for a protected system status.
+     */
+    public function system(string $key): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'system_key' => $key,
+        ]);
     }
 
     /**
@@ -120,6 +131,7 @@ class TaskStatusFactory extends Factory
             'description' => 'Task has been created but work has not yet started.',
             'background_colour' => '#e2e8f0',
             'text_colour' => '#1a202c',
+            'system_key' => TaskStatus::KEY_TODO,
         ]);
     }
 
@@ -133,6 +145,7 @@ class TaskStatusFactory extends Factory
             'description' => 'Task is actively being worked on.',
             'background_colour' => '#bee3f8',
             'text_colour' => '#2b6cb0',
+            'system_key' => TaskStatus::KEY_IN_PROGRESS,
         ]);
     }
 
@@ -146,6 +159,7 @@ class TaskStatusFactory extends Factory
             'description' => 'Task has been completed and signed off.',
             'background_colour' => '#c6f6d5',
             'text_colour' => '#22543d',
+            'system_key' => TaskStatus::KEY_DONE,
         ]);
     }
 

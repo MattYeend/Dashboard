@@ -34,6 +34,7 @@ class PipelineStatusFactory extends Factory
             'description' => $this->faker->sentence(),
             'background_colour' => $this->faker->hexColor(),
             'text_colour' => $this->faker->hexColor(),
+            'system_key' => null,
             'meta' => null,
             'created_by' => null,
             'updated_by' => null,
@@ -41,6 +42,16 @@ class PipelineStatusFactory extends Factory
             'restored_by' => null,
             'restored_at' => null,
         ];
+    }
+
+    /**
+     * State for a protected system status.
+     */
+    public function system(string $key): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'system_key' => $key,
+        ]);
     }
 
     /**
@@ -120,6 +131,7 @@ class PipelineStatusFactory extends Factory
             'description' => 'Deal is active and progressing through the pipeline.',
             'background_colour' => '#e2e8f0',
             'text_colour' => '#1a202c',
+            'system_key' => PipelineStatus::KEY_OPEN,
         ]);
     }
 
@@ -185,6 +197,7 @@ class PipelineStatusFactory extends Factory
             'description' => 'Deal was successfully closed with the prospect.',
             'background_colour' => '#c6f6d5',
             'text_colour' => '#22543d',
+            'system_key' => PipelineStatus::KEY_WON,
         ]);
     }
 
@@ -198,6 +211,7 @@ class PipelineStatusFactory extends Factory
             'description' => 'Deal did not proceed and has been closed unsuccessfully.',
             'background_colour' => '#fed7d7',
             'text_colour' => '#742a2a',
+            'system_key' => PipelineStatus::KEY_LOST,
         ]);
     }
 

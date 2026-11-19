@@ -33,6 +33,7 @@ class TicketStatusFactory extends Factory
             'title' => $this->faker->unique()->words(2, true),
             'background_colour' => $this->faker->hexColor(),
             'text_colour' => $this->faker->hexColor(),
+            'system_key' => null,
             'meta' => null,
             'created_by' => null,
             'updated_by' => null,
@@ -40,6 +41,16 @@ class TicketStatusFactory extends Factory
             'restored_by' => null,
             'restored_at' => null,
         ];
+    }
+
+    /**
+     * State for a protected system status.
+     */
+    public function system(string $key): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'system_key' => $key,
+        ]);
     }
 
     /**
@@ -108,6 +119,7 @@ class TicketStatusFactory extends Factory
             'title' => 'Open',
             'background_colour' => '#e2e8f0',
             'text_colour' => '#1a202c',
+            'system_key' => TicketStatus::KEY_OPEN,
         ]);
     }
 
@@ -120,6 +132,7 @@ class TicketStatusFactory extends Factory
             'title' => 'In Progress',
             'background_colour' => '#bee3f8',
             'text_colour' => '#2b6cb0',
+            'system_key' => TicketStatus::KEY_IN_PROGRESS,
         ]);
     }
 
@@ -156,6 +169,7 @@ class TicketStatusFactory extends Factory
             'title' => 'Resolved',
             'background_colour' => '#c6f6d5',
             'text_colour' => '#22543d',
+            'system_key' => TicketStatus::KEY_RESOLVED,
         ]);
     }
 
@@ -168,6 +182,7 @@ class TicketStatusFactory extends Factory
             'title' => 'Closed',
             'background_colour' => '#e2e8f0',
             'text_colour' => '#718096',
+            'system_key' => TicketStatus::KEY_CLOSED,
         ]);
     }
 
