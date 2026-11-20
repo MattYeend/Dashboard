@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import {
     Archive,
+    Banknote,
     Bookmark,
     BookOpen,
     Building2,
@@ -11,6 +12,7 @@ import {
     Contact2,
     CreditCard,
     FileBarChart,
+    FileText,
     FolderGit2,
     GraduationCap,
     History,
@@ -21,6 +23,7 @@ import {
     MapPin,
     Megaphone,
     Newspaper,
+    Package,
     Receipt,
     Settings,
     ShieldCheck,
@@ -124,6 +127,15 @@ const navGroups: NavGroup[] = [
                 ],
             },
             {
+                title: 'Quotes',
+                href: '/quotes',
+                icon: FileText,
+                children: [
+                    { title: 'All Quotes', href: '/quotes' },
+                    { title: 'Quote Statuses', href: '/quote-statuses' },
+                ],
+            },
+            {
                 title: 'Invoices',
                 href: '/invoices',
                 icon: Receipt,
@@ -133,6 +145,11 @@ const navGroups: NavGroup[] = [
                 ],
             },
             {
+                title: 'Payments',
+                href: '/payments',
+                icon: Banknote,
+            },
+            {
                 title: 'Orders',
                 href: '/orders',
                 icon: ClipboardList,
@@ -140,6 +157,11 @@ const navGroups: NavGroup[] = [
                     { title: 'All Orders', href: '/orders' },
                     { title: 'Order Statuses', href: '/order-statuses' },
                 ],
+            },
+            {
+                title: 'Products',
+                href: '/products',
+                icon: Package,
             },
         ],
     },
