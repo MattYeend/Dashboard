@@ -38,13 +38,13 @@ class UpdaterService
 
         $before = $this->auditLogService->snapshot($campaignStatuses);
 
-        $dealStatusData = $this->dataPreparation->prepareForUpdate($data);
+        $campaignStatusData = $this->dataPreparation->prepareForUpdate($data);
 
-        $this->ensureNotRenamed($campaignStatuses, $dealStatusData);
+        $this->ensureNotRenamed($campaignStatuses, $campaignStatusData);
 
         return $this->updateResource->handle(
             $campaignStatuses,
-            $dealStatusData,
+            $campaignStatusData,
             function (CampaignStatus $campaignStatuses) use ($actor, $before, $updatedBy): void {
                 $campaignStatuses->forceFill([
                     'updated_by' => $updatedBy,

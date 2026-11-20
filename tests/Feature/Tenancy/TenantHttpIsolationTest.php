@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\Address;
 use App\Models\Answer;
 use App\Models\Attachment;
+use App\Models\CampaignStatus;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Company;
@@ -67,6 +68,7 @@ function tenantResourceMap(): array
         'products' => Product::class,
         'quotes' => Quote::class,
         'quote-statuses' => QuoteStatus::class,
+        'campaign-statuses' => CampaignStatus::class,
         'payment-statuses' => PaymentStatus::class,
         'task-statuses' => TaskStatus::class,
         'tasks' => Task::class,

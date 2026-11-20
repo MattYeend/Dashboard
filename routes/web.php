@@ -1206,10 +1206,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/', [CampaignStatusController::class, 'index'])->name('index');
             Route::get('/create', [CampaignStatusController::class, 'create'])->name('create');
             Route::post('/', [CampaignStatusController::class, 'store'])->name('store');
-            Route::get('/{deal_status}', [CampaignStatusController::class, 'show'])->name('show');
-            Route::get('/{deal_status}/edit', [CampaignStatusController::class, 'edit'])->name('edit');
-            Route::match(['put', 'patch'], '/{deal_status}', [CampaignStatusController::class, 'update'])->name('update');
-            Route::delete('/{deal_status}', [CampaignStatusController::class, 'destroy'])->name('destroy');
+            Route::get('/{campaign_status}', [CampaignStatusController::class, 'show'])->name('show');
+            Route::get('/{campaign_status}/edit', [CampaignStatusController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{campaign_status}', [CampaignStatusController::class, 'update'])->name('update');
+            Route::delete('/{campaign_status}', [CampaignStatusController::class, 'destroy'])->name('destroy');
         });
     });
 });

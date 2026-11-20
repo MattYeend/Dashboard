@@ -22,7 +22,7 @@ class QueryService
     ) {}
 
     /**
-     * Get paginated deal statuses with filters.
+     * Get paginated campaign statuses with filters.
      */
     public function getPaginated(
         User $actor,
@@ -89,7 +89,7 @@ class QueryService
         $items = $paginator->items();
 
         return [
-            'dealStatuses' => [
+            'campaignStatuses' => [
                 'data' => array_map(
                     fn (CampaignStatus $campaignStatus) => $this->formatterService->format($campaignStatus),
                     $items

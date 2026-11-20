@@ -8,7 +8,7 @@ use App\Models\CampaignStatus;
 use App\Models\User;
 use App\Services\CampaignStatuses\PolicyAuthorisationService;
 
-class DealStatusPolicy
+class CampaignStatusPolicy
 {
     /**
      * Inject the required services into the policy.
