@@ -10,6 +10,7 @@ use App\Http\Controllers\ApiTokenController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CampaignStatusController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
@@ -1189,6 +1190,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{payment}/edit', [PaymentController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{payment}', [PaymentController::class, 'update'])->name('update');
             Route::delete('/{payment}', [PaymentController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('campaign-statuses')->name('campaign-statuses.')->group(function () {
+            Route::post('/bulk/delete', [CampaignStatusController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [CampaignStatusController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [CampaignStatusController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [CampaignStatusController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/export', [CampaignStatusController::class, 'export'])->name('export');
+            Route::post('/import', [CampaignStatusController::class, 'import'])->name('import');
+            Route::post('/import/preview', [CampaignStatusController::class, 'importPreview'])->name('import.preview');
+            Route::post('/import/commit', [CampaignStatusController::class, 'importCommit'])->name('import.commit');
+
+            Route::get('/', [CampaignStatusController::class, 'index'])->name('index');
+            Route::get('/create', [CampaignStatusController::class, 'create'])->name('create');
+            Route::post('/', [CampaignStatusController::class, 'store'])->name('store');
+            Route::get('/{deal_status}', [CampaignStatusController::class, 'show'])->name('show');
+            Route::get('/{deal_status}/edit', [CampaignStatusController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{deal_status}', [CampaignStatusController::class, 'update'])->name('update');
+            Route::delete('/{deal_status}', [CampaignStatusController::class, 'destroy'])->name('destroy');
         });
     });
 });

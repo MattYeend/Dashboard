@@ -19,7 +19,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class DealStatusController extends Controller
+class CampaignStatusController extends Controller
 {
     use AuthorizesRequests;
 
