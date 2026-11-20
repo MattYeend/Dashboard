@@ -9,8 +9,8 @@ import LessonContentDetails from '@/pages/Lessons/components/LessonContentDetail
 import LessonNavigation from '@/pages/Lessons/components/LessonNavigation.vue';
 import LessonSettingsDetails from '@/pages/Lessons/components/LessonSettingsDetails.vue';
 import {
+    edit as lessonsEdit,
     destroy as lessonsDestroy,
-    edit,
     index as lessonsIndex,
 } from '@/routes/lessons';
 import type { Lesson, LessonNeighbour } from '@/types';
@@ -32,21 +32,10 @@ const deleteDialogOpen = ref(false);
 const deleteProcessing = ref(false);
 
 function requestDestroy(): void {
-    if (!props.lesson?.id) {
-        return;
-    }
-
     deleteDialogOpen.value = true;
 }
 
-/**
- * Move the lesson to trash, then close the confirmation dialog.
- */
 function destroy(): void {
-    if (!props.lesson?.id) {
-        return;
-    }
-
     deleteProcessing.value = true;
 
     router.delete(lessonsDestroy.url(props.lesson.id), {
@@ -60,7 +49,7 @@ function destroy(): void {
 defineOptions({
     layout: {
         breadcrumbs: [
-            { title: 'Lessons', href: lessonsIndex().url },
+            { title: 'Lessons', href: lessonsIndex.url() },
             { title: 'Details', href: '#' },
         ],
     },
@@ -80,12 +69,15 @@ defineOptions({
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
                     <Button as-child variant="outline">
-                        <Link :href="lessonsIndex().url">Back</Link>
+                        <Link :href="lessonsIndex.url()">Back</Link>
                     </Button>
                     <Button v-if="canEdit" as-child>
-                        <Link :href="edit(props.lesson.id).url">Edit</Link>
+                        <Link :href="lessonsEdit.url(props.lesson.id)"
+                            >Edit</Link
+                        >
                     </Button>
                     <button
+                        v-if="canEdit"
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
                         @click="requestDestroy"
