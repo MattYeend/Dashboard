@@ -3,17 +3,17 @@ import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { Button } from '@/components/ui/button';
+import CourseAuditDetails from '@/pages/Courses/components/CourseAuditDetails.vue';
+import CourseBasicDetails from '@/pages/Courses/components/CourseBasicDetails.vue';
+import CourseLessonList from '@/pages/Courses/components/CourseLessonList.vue';
+import CourseQuizList from '@/pages/Courses/components/CourseQuizList.vue';
+import CourseSettingsDetails from '@/pages/Courses/components/CourseSettingsDetails.vue';
 import {
+    edit as coursesEdit,
     destroy as coursesDestroy,
-    edit,
     index as coursesIndex,
 } from '@/routes/courses';
 import type { Course } from '@/types';
-import CourseAuditDetails from './components/CourseAuditDetails.vue';
-import CourseBasicDetails from './components/CourseBasicDetails.vue';
-import CourseLessonList from './components/CourseLessonList.vue';
-import CourseQuizList from './components/CourseQuizList.vue'; // ADDED
-import CourseSettingsDetails from './components/CourseSettingsDetails.vue';
 
 interface Props {
     course: Course;
@@ -26,21 +26,10 @@ const deleteDialogOpen = ref(false);
 const deleteProcessing = ref(false);
 
 function requestDestroy(): void {
-    if (!props.course?.id) {
-        return;
-    }
-
     deleteDialogOpen.value = true;
 }
 
-/**
- * Move the course to trash, then close the confirmation dialog.
- */
 function destroy(): void {
-    if (!props.course?.id) {
-        return;
-    }
-
     deleteProcessing.value = true;
 
     router.delete(coursesDestroy.url(props.course.id), {
@@ -54,7 +43,7 @@ function destroy(): void {
 defineOptions({
     layout: {
         breadcrumbs: [
-            { title: 'Courses', href: coursesIndex().url },
+            { title: 'Courses', href: coursesIndex.url() },
             { title: 'Details', href: '#' },
         ],
     },
@@ -72,12 +61,15 @@ defineOptions({
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
                     <Button as-child variant="outline">
-                        <Link :href="coursesIndex().url">Back</Link>
+                        <Link :href="coursesIndex.url()">Back</Link>
                     </Button>
                     <Button v-if="canEdit" as-child>
-                        <Link :href="edit(props.course.id).url">Edit</Link>
+                        <Link :href="coursesEdit.url(props.course.id)"
+                            >Edit</Link
+                        >
                     </Button>
                     <button
+                        v-if="canEdit"
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
                         @click="requestDestroy"
@@ -95,7 +87,6 @@ defineOptions({
                     :lessons="course.lessons ?? []"
                     :can-edit="canEdit"
                 />
-                <!-- ADDED -->
                 <CourseQuizList
                     :course-id="course.id"
                     :quizzes="course.quizzes ?? []"
