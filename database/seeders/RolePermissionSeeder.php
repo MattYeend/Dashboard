@@ -548,15 +548,16 @@ class RolePermissionSeeder extends Seeder
             'import product',
             'export product',
 
-            // Quote statuses
-            'view any quote status',
-            'create quote status',
-            'view quote status',
-            'edit quote status',
-            'delete quote status',
-            'restore quote status',
-            'import quote status',
-            'export quote status',
+            // Quote status management
+            'view quote statuses',
+            'create quote statuses',
+            'edit quote statuses',
+            'delete quote statuses',
+            'restore quote statuses',
+            'force delete quote statuses',
+            'import quote statuses',
+            'export quote statuses',
+            'assign quote statuses',
 
             // Quotes
             'view any quote',
@@ -572,15 +573,16 @@ class RolePermissionSeeder extends Seeder
             'decline quote',
             'convert quote',
 
-            // Payment statuses
-            'view any payment status',
-            'create payment status',
-            'view payment status',
-            'edit payment status',
-            'delete payment status',
-            'restore payment status',
-            'import payment status',
-            'export payment status',
+            // Payment status management
+            'view payment statuses',
+            'create payment statuses',
+            'edit payment statuses',
+            'delete payment statuses',
+            'restore payment statuses',
+            'force delete payment statuses',
+            'import payment statuses',
+            'export payment statuses',
+            'assign payment statuses',
 
             // Payments
             'view any payment',
@@ -602,6 +604,17 @@ class RolePermissionSeeder extends Seeder
             'restore quote item',
             'import quote item',
             'export quote item',
+
+            // Campaign status management
+            'view campaign statuses',
+            'create campaign statuses',
+            'edit campaign statuses',
+            'delete campaign statuses',
+            'restore campaign statuses',
+            'force delete campaign statuses',
+            'import campaign statuses',
+            'export campaign statuses',
+            'assign campaign statuses',
         ];
 
         foreach ($permissions as $permission) {
@@ -1015,14 +1028,15 @@ class RolePermissionSeeder extends Seeder
             'restore product',
             'import product',
             'export product',
-            'view any quote status',
-            'create quote status',
-            'view quote status',
-            'edit quote status',
-            'delete quote status',
-            'restore quote status',
-            'import quote status',
-            'export quote status',
+            'view quote statuses',
+            'create quote statuses',
+            'edit quote statuses',
+            'delete quote statuses',
+            'restore quote statuses',
+            'force delete quote statuses',
+            'import quote statuses',
+            'export quote statuses',
+            'assign quote statuses',
             'view any quote',
             'create quote',
             'view quote',
@@ -1035,14 +1049,15 @@ class RolePermissionSeeder extends Seeder
             'accept quote',
             'decline quote',
             'convert quote',
-            'view any payment status',
-            'create payment status',
-            'view payment status',
-            'edit payment status',
-            'delete payment status',
-            'restore payment status',
-            'import payment status',
-            'export payment status',
+            'view payment statuses',
+            'create payment statuses',
+            'edit payment statuses',
+            'delete payment statuses',
+            'restore payment statuses',
+            'force delete payment statuses',
+            'import payment statuses',
+            'export payment statuses',
+            'assign payment statuses',
             'view any payment',
             'create payment',
             'view payment',
@@ -1060,6 +1075,15 @@ class RolePermissionSeeder extends Seeder
             'restore quote item',
             'import quote item',
             'export quote item',
+            'view campaign statuses',
+            'create campaign statuses',
+            'edit campaign statuses',
+            'delete campaign statuses',
+            'restore campaign statuses',
+            'force delete campaign statuses',
+            'import campaign statuses',
+            'export campaign statuses',
+            'assign campaign statuses',
         ];
         $admin->givePermissionTo($adminPermissions);
         $admin->revokePermissionTo('view logs');
@@ -1372,8 +1396,15 @@ class RolePermissionSeeder extends Seeder
             'edit product',
             'import product',
             'export product',
-            'view any quote status',
-            'view quote status',
+            'view quote statuses',
+            'create quote statuses',
+            'edit quote statuses',
+            'delete quote statuses',
+            'restore quote statuses',
+            'force delete quote statuses',
+            'import quote statuses',
+            'export quote statuses',
+            'assign quote statuses',
             'view any quote',
             'create quote',
             'view quote',
@@ -1384,8 +1415,15 @@ class RolePermissionSeeder extends Seeder
             'accept quote',
             'decline quote',
             'convert quote',
-            'view any payment status',
-            'view payment status',
+            'view payment statuses',
+            'create payment statuses',
+            'edit payment statuses',
+            'delete payment statuses',
+            'restore payment statuses',
+            'force delete payment statuses',
+            'import payment statuses',
+            'export payment statuses',
+            'assign payment statuses',
             'view any payment',
             'create payment',
             'view payment',
@@ -1401,6 +1439,15 @@ class RolePermissionSeeder extends Seeder
             'delete quote item',
             'import quote item',
             'export quote item',
+            'view campaign statuses',
+            'create campaign statuses',
+            'edit campaign statuses',
+            'delete campaign statuses',
+            'restore campaign statuses',
+            'force delete campaign statuses',
+            'import campaign statuses',
+            'export campaign statuses',
+            'assign campaign statuses',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1611,15 +1658,23 @@ class RolePermissionSeeder extends Seeder
             'view product',
             'create product',
             'edit product',
-            'view any quote status',
-            'view quote status',
+            'view quote statuses',
+            'create quote statuses',
+            'edit quote statuses',
+            'delete quote statuses',
+            'restore quote statuses',
+            'assign quote statuses',
             'view any quote',
             'view quote',
             'create quote',
             'edit quote',
             'send quote',
-            'view any payment status',
-            'view payment status',
+            'view payment statuses',
+            'create payment statuses',
+            'edit payment statuses',
+            'delete payment statuses',
+            'restore payment statuses',
+            'assign payment statuses',
             'view any payment',
             'view payment',
             'create payment',
@@ -1628,6 +1683,12 @@ class RolePermissionSeeder extends Seeder
             'create quote item',
             'edit quote item',
             'delete quote item',
+            'view campaign statuses',
+            'create campaign statuses',
+            'edit campaign statuses',
+            'delete campaign statuses',
+            'restore campaign statuses',
+            'assign campaign statuses',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -1694,6 +1755,9 @@ class RolePermissionSeeder extends Seeder
             'view lessons',
             'view any quizzes',
             'view quizzes',
+            'view quote statuses',
+            'view payment statuses',
+            'view campaign statuses',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -1818,6 +1882,15 @@ class RolePermissionSeeder extends Seeder
             'view lessons',
             'view any quizzes',
             'view quizzes',
+            'view quote statuses',
+            'create quote statuses',
+            'edit quote statuses',
+            'view payment statuses',
+            'create payment statuses',
+            'edit payment statuses',
+            'view campaign statuses',
+            'create campaign statuses',
+            'edit campaign statuses',
         ];
         $moderator->givePermissionTo($moderatorPermissions);
 
@@ -2074,6 +2147,30 @@ class RolePermissionSeeder extends Seeder
             'view lessons',
             'view any quizzes',
             'view quizzes',
+            'view quote statuses',
+            'create quote statuses',
+            'edit quote statuses',
+            'delete quote statuses',
+            'restore quote statuses',
+            'import quote statuses',
+            'export quote statuses',
+            'assign quote statuses',
+            'view payment statuses',
+            'create payment statuses',
+            'edit payment statuses',
+            'delete payment statuses',
+            'restore payment statuses',
+            'import payment statuses',
+            'export payment statuses',
+            'assign payment statuses',
+            'view campaign statuses',
+            'create campaign statuses',
+            'edit campaign statuses',
+            'delete campaign statuses',
+            'restore campaign statuses',
+            'import campaign statuses',
+            'export campaign statuses',
+            'assign campaign statuses',
         ];
         $support->givePermissionTo($supportPermissions);
 
@@ -2186,6 +2283,15 @@ class RolePermissionSeeder extends Seeder
             'view any quizzes',
             'view quizzes',
             'export quizzes',
+            'view quote statuses',
+            'export quote statuses',
+            'assign quote statuses',
+            'view payment statuses',
+            'export payment statuses',
+            'assign payment statuses',
+            'view campaign statuses',
+            'export campaign statuses',
+            'assign campaign statuses',
         ];
         $analyst->givePermissionTo($analystPermissions);
 
@@ -2256,12 +2362,13 @@ class RolePermissionSeeder extends Seeder
             'view answer',
             'view any product',
             'view product',
-            'view any quote status',
-            'view quote status',
+            'view quote statuses',
             'view any quote',
             'view quote',
             'view any quote item',
             'view quote item',
+            'view payment statuses',
+            'view campaign statuses',
         ];
         $user->givePermissionTo($userPermissions);
 
@@ -2300,6 +2407,9 @@ class RolePermissionSeeder extends Seeder
             'view ticket',
             'view any labels',
             'view labels',
+            'view quote statuses',
+            'view payment statuses',
+            'view campaign statuses',
         ];
         $guest->givePermissionTo($guestPermissions);
 
@@ -2372,5 +2482,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Quote Items');
         $this->command->info('- Payment Statuses');
         $this->command->info('- Payments');
+        $this->command->info('- Campaign Statuses');
     }
 }
