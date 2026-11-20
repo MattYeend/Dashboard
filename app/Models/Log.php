@@ -1081,6 +1081,21 @@ class Log extends Model implements Auditable
 
     public const ACTION_EXPORT_QUOTE_ITEM = 482;
 
+    // Campaign status
+    public const ACTION_CREATE_CAMPAIGN_STATUS = 483;
+
+    public const ACTION_UPDATE_CAMPAIGN_STATUS = 484;
+
+    public const ACTION_DELETE_CAMPAIGN_STATUS = 485;
+
+    public const ACTION_RESTORE_CAMPAIGN_STATUS = 486;
+
+    public const ACTION_FORCE_DELETE_CAMPAIGN_STATUS = 487;
+
+    public const ACTION_IMPORT_CAMPAIGN_STATUS = 488;
+
+    public const ACTION_EXPORT_CAMPAIGN_STATUS = 489;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
