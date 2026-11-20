@@ -34,7 +34,7 @@ class PolicyAuthorisationService
      */
     public function canViewAny(User $actor): bool
     {
-        return $actor->can('view any payment status');
+        return $actor->can('view payment statuses');
     }
 
     /**
@@ -42,7 +42,7 @@ class PolicyAuthorisationService
      */
     public function canCreate(User $actor): bool
     {
-        return $actor->can('create payment status');
+        return $actor->can('create payment statuses');
     }
 
     /**
@@ -54,7 +54,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view payment status')
+        return $actor->can('view payment statuses')
             && $this->activeChecker->isActive($target);
     }
 
@@ -67,7 +67,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit payment status')
+        return $actor->can('edit payment statuses')
             && $this->activeChecker->isActive($target);
     }
 
@@ -82,7 +82,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete payment status')
+        return $actor->can('delete payment statuses')
             && $this->activeChecker->canBeDeleted($target);
     }
 
@@ -95,7 +95,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('restore payment status')
+        return $actor->can('restore payment statuses')
             && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
@@ -120,7 +120,7 @@ class PolicyAuthorisationService
      */
     public function canImport(User $actor): bool
     {
-        return $actor->can('import payment status');
+        return $actor->can('import payment statuses');
     }
 
     /**
@@ -128,6 +128,6 @@ class PolicyAuthorisationService
      */
     public function canExport(User $actor): bool
     {
-        return $actor->can('export payment status');
+        return $actor->can('export payment statuses');
     }
 }

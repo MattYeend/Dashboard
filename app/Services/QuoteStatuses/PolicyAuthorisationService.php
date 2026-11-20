@@ -34,7 +34,7 @@ class PolicyAuthorisationService
      */
     public function canViewAny(User $actor): bool
     {
-        return $actor->can('view any quote status');
+        return $actor->can('view quote statuses');
     }
 
     /**
@@ -42,7 +42,7 @@ class PolicyAuthorisationService
      */
     public function canCreate(User $actor): bool
     {
-        return $actor->can('create quote status');
+        return $actor->can('create quote statuses');
     }
 
     /**
@@ -54,7 +54,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view quote status')
+        return $actor->can('view quote statuses')
             && $this->activeChecker->isActive($target);
     }
 
@@ -67,7 +67,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit quote status')
+        return $actor->can('edit quote statuses')
             && $this->activeChecker->isActive($target);
     }
 
@@ -80,7 +80,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete quote status')
+        return $actor->can('delete quote statuses')
             && $this->activeChecker->canBeDeleted($target);
     }
 
@@ -93,7 +93,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('restore quote status')
+        return $actor->can('restore quote statuses')
             && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
@@ -118,7 +118,7 @@ class PolicyAuthorisationService
      */
     public function canImport(User $actor): bool
     {
-        return $actor->can('import quote status');
+        return $actor->can('import quote statuses');
     }
 
     /**
@@ -126,6 +126,6 @@ class PolicyAuthorisationService
      */
     public function canExport(User $actor): bool
     {
-        return $actor->can('export quote status');
+        return $actor->can('export quote statuses');
     }
 }
