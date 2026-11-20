@@ -52,6 +52,8 @@ class DatabaseSeeder extends Seeder
             QuoteItemSeeder::class,
             PaymentStatusSeeder::class,
 
+            CampaignStatusSeeder::class,
+
             PlanSeeder::class,
 
             CourseSeeder::class,
