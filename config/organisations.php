@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\Address;
 use App\Models\Answer;
 use App\Models\Attachment;
+use App\Models\CampaignStatus;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Company;
@@ -89,6 +90,7 @@ return [
         QuoteStatus::class,
         PaymentStatus::class,
         Payment::class,
+        CampaignStatus::class,
     ],
 
     /*
