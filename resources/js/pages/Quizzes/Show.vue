@@ -3,16 +3,16 @@ import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { Button } from '@/components/ui/button';
+import QuizAuditDetails from '@/pages/Quizzes/components/QuizAuditDetails.vue';
+import QuizBasicDetails from '@/pages/Quizzes/components/QuizBasicDetails.vue';
+import QuizQuestionsDetails from '@/pages/Quizzes/components/QuizQuestionsDetails.vue';
+import QuizSettingsDetails from '@/pages/Quizzes/components/QuizSettingsDetails.vue';
 import {
+    edit as quizzesEdit,
     destroy as quizzesDestroy,
-    edit,
     index as quizzesIndex,
 } from '@/routes/quizzes';
 import type { Quiz } from '@/types';
-import QuizAuditDetails from './components/QuizAuditDetails.vue';
-import QuizBasicDetails from './components/QuizBasicDetails.vue';
-import QuizQuestionsDetails from './components/QuizQuestionsDetails.vue';
-import QuizSettingsDetails from './components/QuizSettingsDetails.vue';
 
 interface Props {
     quiz: Quiz;
@@ -24,25 +24,11 @@ const props = defineProps<Props>();
 const deleteDialogOpen = ref(false);
 const deleteProcessing = ref(false);
 
-/**
- * Open the delete confirmation dialog.
- */
 function requestDestroy(): void {
-    if (!props.quiz?.id) {
-        return;
-    }
-
     deleteDialogOpen.value = true;
 }
 
-/**
- * Move the quiz to trash, then close the confirmation dialog.
- */
 function destroy(): void {
-    if (!props.quiz?.id) {
-        return;
-    }
-
     deleteProcessing.value = true;
 
     router.delete(quizzesDestroy.url(props.quiz.id), {
@@ -56,7 +42,7 @@ function destroy(): void {
 defineOptions({
     layout: {
         breadcrumbs: [
-            { title: 'Quizzes', href: quizzesIndex().url },
+            { title: 'Quizzes', href: quizzesIndex.url() },
             { title: 'Details', href: '#' },
         ],
     },
@@ -74,10 +60,10 @@ defineOptions({
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
                     <Button as-child variant="outline">
-                        <Link :href="quizzesIndex().url">Back</Link>
+                        <Link :href="quizzesIndex.url()">Back</Link>
                     </Button>
                     <Button v-if="canEdit" as-child>
-                        <Link :href="edit(props.quiz.id).url">Edit</Link>
+                        <Link :href="quizzesEdit.url(props.quiz.id)">Edit</Link>
                     </Button>
                     <button
                         v-if="canEdit"
