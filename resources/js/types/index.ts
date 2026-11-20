@@ -7,6 +7,7 @@ export * from './answer';
 export * from './api-token';
 export * from './attachment';
 export * from './auth';
+export * from './campaign-status';
 export * from './category';
 export * from './comment';
 export * from './company';

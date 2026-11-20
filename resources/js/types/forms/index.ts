@@ -1,6 +1,7 @@
 export * from './address-form-data';
 export * from './address-type-form-data';
 export * from './answer-form-data';
+export * from './campaign-status-form-data';
 export * from './category-form-data';
 export * from './company-form-data';
 export * from './contact-form-data';
