@@ -21,6 +21,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardWidgetPreferenceController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\DealStatusController;
+use App\Http\Controllers\EmailTemplateController;
 use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\InteractionLogController;
 use App\Http\Controllers\InvoiceController;
@@ -1210,6 +1211,32 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{campaign_status}/edit', [CampaignStatusController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{campaign_status}', [CampaignStatusController::class, 'update'])->name('update');
             Route::delete('/{campaign_status}', [CampaignStatusController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('email-templates')->name('email-templates.')->group(function () {
+            Route::post('/bulk/delete', [EmailTemplateController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [EmailTemplateController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [EmailTemplateController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [EmailTemplateController::class, 'forceDelete'])->name('force-delete');
+
+            Route::post('/import', [EmailTemplateController::class, 'import'])->name('import');
+            Route::post('/import/preview', [EmailTemplateController::class, 'importPreview'])
+                ->middleware('throttle:10,1')
+                ->name('import.preview');
+            Route::post('/import/commit', [EmailTemplateController::class, 'importCommit'])
+                ->middleware('throttle:10,1')
+                ->name('import.commit');
+            Route::get('/export', [EmailTemplateController::class, 'export'])
+                ->middleware('throttle:10,1')
+                ->name('export');
+
+            Route::get('/', [EmailTemplateController::class, 'index'])->name('index');
+            Route::get('/create', [EmailTemplateController::class, 'create'])->name('create');
+            Route::post('/', [EmailTemplateController::class, 'store'])->name('store');
+            Route::get('/{emailTemplate}', [EmailTemplateController::class, 'show'])->name('show');
+            Route::get('/{emailTemplate}/edit', [EmailTemplateController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{emailTemplate}', [EmailTemplateController::class, 'update'])->name('update');
+            Route::delete('/{emailTemplate}', [EmailTemplateController::class, 'destroy'])->name('destroy');
         });
     });
 });
