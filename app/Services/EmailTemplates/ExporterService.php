@@ -98,7 +98,7 @@ class ExporterService
             $emailTemplate->subject,
             $emailTemplate->preheader,
             $emailTemplate->is_active ? 1 : 0,
-            $emailTemplate->created_at?->format('Y-m-d H:i:s'),
+            $emailTemplate->created_at->format('Y-m-d H:i:s'),
         ]);
     }
 

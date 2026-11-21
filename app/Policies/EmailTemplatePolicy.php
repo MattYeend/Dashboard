@@ -1,18 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\EmailTemplate;
 use App\Models\User;
+use App\Services\EmailTemplates\PolicyAuthorisationService;
 
 class EmailTemplatePolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
+    /**
+     * Determine whether the user can view any email templates.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**
@@ -20,15 +30,15 @@ class EmailTemplatePolicy
      */
     public function view(User $user, EmailTemplate $emailTemplate): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $emailTemplate);
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create email templates.
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canCreate($user);
     }
 
     /**
@@ -36,7 +46,7 @@ class EmailTemplatePolicy
      */
     public function update(User $user, EmailTemplate $emailTemplate): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $emailTemplate);
     }
 
     /**
@@ -44,7 +54,7 @@ class EmailTemplatePolicy
      */
     public function delete(User $user, EmailTemplate $emailTemplate): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $emailTemplate);
     }
 
     /**
@@ -52,7 +62,7 @@ class EmailTemplatePolicy
      */
     public function restore(User $user, EmailTemplate $emailTemplate): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $emailTemplate);
     }
 
     /**
@@ -60,6 +70,38 @@ class EmailTemplatePolicy
      */
     public function forceDelete(User $user, EmailTemplate $emailTemplate): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $emailTemplate);
+    }
+
+    /**
+     * Determine whether the user can bulk delete models.
+     */
+    public function bulkDelete(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can bulk restore models.
+     */
+    public function bulkRestore(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can import email templates.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisationService->canImport($user);
+    }
+
+    /**
+     * Determine whether the user can export email templates.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->canExport($user);
     }
 }
