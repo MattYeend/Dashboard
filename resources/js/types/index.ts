@@ -15,6 +15,7 @@ export * from './contact';
 export * from './course';
 export * from './deal';
 export * from './deal-status';
+export * from './email-template';
 export * from './import';
 export * from './industry';
 export * from './interaction-log';
