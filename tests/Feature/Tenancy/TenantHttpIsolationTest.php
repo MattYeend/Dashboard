@@ -14,6 +14,7 @@ use App\Models\Contact;
 use App\Models\Course;
 use App\Models\Deal;
 use App\Models\DealStatus;
+use App\Models\EmailTemplate;
 use App\Models\Industry;
 use App\Models\InteractionLog;
 use App\Models\Invoice;
@@ -96,6 +97,7 @@ function tenantResourceMap(): array
         'answers' => Answer::class,
         'tags' => Tag::class,
         'payments' => Payment::class,
+        'email-templates' => EmailTemplate::class,
     ];
 }
 
