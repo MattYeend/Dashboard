@@ -23,7 +23,7 @@ describe('index', function () {
             ->get('/campaign-statuses')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignStatuses/Index', false)
+                ->component('CampaignStatuses/Index')
                 ->has('campaignStatuses')
             );
     });
@@ -50,7 +50,7 @@ describe('create', function () {
             ->get('/campaign-statuses/create')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignStatuses/Create', false)
+                ->component('CampaignStatuses/Create')
             );
     });
 
@@ -182,7 +182,7 @@ describe('show', function () {
             ->get("/campaign-statuses/{$campaignStatus->id}")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignStatuses/Show', false)
+                ->component('CampaignStatuses/Show')
                 ->has('campaignStatus')
             );
     });
@@ -223,7 +223,7 @@ describe('edit', function () {
             ->get("/campaign-statuses/{$campaignStatus->id}/edit")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignStatuses/Edit', false)
+                ->component('CampaignStatuses/Edit')
                 ->has('campaignStatus')
             );
     });
@@ -636,7 +636,7 @@ describe('soft delete scoping', function () {
             ->get('/campaign-statuses')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignStatuses/Index', false)
+                ->component('CampaignStatuses/Index')
                 ->has('campaignStatuses')
             );
 
