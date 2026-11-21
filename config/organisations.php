@@ -14,6 +14,7 @@ use App\Models\Contact;
 use App\Models\Course;
 use App\Models\Deal;
 use App\Models\DealStatus;
+use App\Models\EmailTemplate;
 use App\Models\Industry;
 use App\Models\InteractionLog;
 use App\Models\Invoice;
@@ -91,6 +92,7 @@ return [
         PaymentStatus::class,
         Payment::class,
         CampaignStatus::class,
+        EmailTemplate::class,
     ],
 
     /*
