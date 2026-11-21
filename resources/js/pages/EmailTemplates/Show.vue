@@ -54,7 +54,9 @@ function destroy(): void {
                     </Button>
                     <Button v-if="abilities.update" as-child>
                         <Link
-                            :href="emailTemplatesEdit.url(props.emailTemplate.id)"
+                            :href="
+                                emailTemplatesEdit.url(props.emailTemplate.id)
+                            "
                             >Edit</Link
                         >
                     </Button>

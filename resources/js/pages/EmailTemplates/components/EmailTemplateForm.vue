@@ -45,7 +45,11 @@ const bodyText = defineModel<string | null>('bodyText', { default: null });
                 <Link :href="emailTemplatesIndex.url()">Cancel</Link>
             </Button>
             <Button type="submit" :disabled="processing">
-                {{ isEditing ? 'Update Email Template' : 'Create Email Template' }}
+                {{
+                    isEditing
+                        ? 'Update Email Template'
+                        : 'Create Email Template'
+                }}
             </Button>
         </div>
     </form>

@@ -3,7 +3,10 @@ import BulkActionButton from '@/components/table/BulkActionButton.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import RowActions from '@/components/table/RowActions.vue';
-import { edit as emailTemplatesEdit, show as emailTemplatesShow } from '@/routes/email-templates';
+import {
+    edit as emailTemplatesEdit,
+    show as emailTemplatesShow,
+} from '@/routes/email-templates';
 import type { EmailTemplate } from '@/types';
 
 defineProps<{

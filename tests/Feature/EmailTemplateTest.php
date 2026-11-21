@@ -25,7 +25,7 @@ describe('index', function () {
             ->get('/email-templates')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailTemplates/Index', false)
+                ->component('EmailTemplates/Index')
                 ->has('emailTemplates')
                 ->has('permissions_meta')
             );
@@ -54,7 +54,7 @@ describe('index', function () {
             ->get('/email-templates?search=Spring')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailTemplates/Index', false)
+                ->component('EmailTemplates/Index')
                 ->has('emailTemplates.data', 1)
             );
     });
@@ -68,7 +68,7 @@ describe('create', function () {
             ->get('/email-templates/create')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailTemplates/Create', false)
+                ->component('EmailTemplates/Create')
             );
     });
 
@@ -281,7 +281,7 @@ describe('show', function () {
             ->get("/email-templates/{$emailTemplate->id}")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailTemplates/Show', false)
+                ->component('EmailTemplates/Show')
                 ->has('emailTemplate')
             );
     });
@@ -322,7 +322,7 @@ describe('edit', function () {
             ->get("/email-templates/{$emailTemplate->id}/edit")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailTemplates/Edit', false)
+                ->component('EmailTemplates/Edit')
                 ->has('emailTemplate')
             );
     });
@@ -839,7 +839,7 @@ describe('soft delete scoping', function () {
             ->get('/email-templates')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailTemplates/Index', false)
+                ->component('EmailTemplates/Index')
                 ->has('emailTemplates.data', 2)
             );
 
@@ -866,7 +866,7 @@ describe('soft delete scoping', function () {
             ->get('/email-templates?trashed=with')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailTemplates/Index', false)
+                ->component('EmailTemplates/Index')
                 ->has('emailTemplates.data', 3)
             );
     });
