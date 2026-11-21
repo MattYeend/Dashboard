@@ -11,11 +11,11 @@ import {
     edit as emailTemplatesEdit,
     index as emailTemplatesIndex,
 } from '@/routes/email-templates';
-import type { EmailTemplate } from '@/types';
+import type { EmailTemplate, PermissionsMeta } from '@/types';
 
 interface Props {
     emailTemplate: EmailTemplate;
-    abilities: { update: boolean; delete: boolean };
+    permissions_meta: PermissionsMeta;
 }
 
 const props = defineProps<Props>();
@@ -52,7 +52,7 @@ function destroy(): void {
                     <Button as-child variant="outline">
                         <Link :href="emailTemplatesIndex.url()">Back</Link>
                     </Button>
-                    <Button v-if="abilities.update" as-child>
+                    <Button v-if="permissions_meta.can_update" as-child>
                         <Link
                             :href="
                                 emailTemplatesEdit.url(props.emailTemplate.id)
@@ -61,7 +61,7 @@ function destroy(): void {
                         >
                     </Button>
                     <button
-                        v-if="abilities.delete"
+                        v-if="permissions_meta.can_delete"
                         type="button"
                         class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-red-600"
                         @click="requestDestroy"
