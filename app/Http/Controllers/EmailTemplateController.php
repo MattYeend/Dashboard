@@ -59,13 +59,13 @@ class EmailTemplateController extends Controller
      *
      * Authorises via the 'create' policy before rendering.
      */
-    public function create(Request $request): Response
+    public function create(): Response
     {
         $this->authorize('create', EmailTemplate::class);
 
         return Inertia::render(
             'EmailTemplates/Create',
-            $this->query->getFormData($request->user())
+            $this->query->getFormData()
         );
     }
 
@@ -126,7 +126,7 @@ class EmailTemplateController extends Controller
                 $request->user(),
                 $emailTemplate
             ),
-            $this->query->getFormData($request->user()),
+            $this->query->getFormData(),
         );
 
         return Inertia::render('EmailTemplates/Edit', $data);

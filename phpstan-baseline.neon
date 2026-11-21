@@ -1,20 +1,3 @@
 parameters:
-	ignoreErrors:
-		-
-			message: '#^Parameter \$request of method App\\Http\\Controllers\\EmailTemplateController\:\:store\(\) has invalid type App\\Http\\Requests\\StoreEmailTemplateRequest\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Http/Controllers/EmailTemplateController.php
-
-		-
-			message: '#^Parameter \$request of method App\\Http\\Controllers\\EmailTemplateController\:\:update\(\) has invalid type App\\Http\\Requests\\UpdateEmailTemplateRequest\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Http/Controllers/EmailTemplateController.php
-
-		-
-			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Support\\Carbon\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: app/Services/EmailTemplates/ExporterService.php
+	ignoreErrors: []
 
