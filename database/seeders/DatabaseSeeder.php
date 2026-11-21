@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
 
             CampaignStatusSeeder::class,
 
-            EmailTemplateSeeder::class, 
+            EmailTemplateSeeder::class,
 
             PlanSeeder::class,
 

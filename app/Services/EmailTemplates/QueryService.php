@@ -18,11 +18,11 @@ class QueryService
      * @var array<int, string>
      */
     private const RELATIONS = [
-        'creator', 
-        'updater', 
-        'deleter', 
-        'restorer'
-        ];
+        'creator',
+        'updater',
+        'deleter',
+        'restorer',
+    ];
 
     /**
      * Inject the required services into the query service.
