@@ -13,6 +13,17 @@ defineProps<Props>();
 
 const bodyHtml = defineModel<string>('bodyHtml', { required: true });
 const bodyText = defineModel<string | null>('bodyText', { default: null });
+
+const mergeTagNames = [
+    'first_name',
+    'name',
+    'email',
+    'company',
+    'unsubscribe_url',
+] as const;
+
+const mergeTags = mergeTagNames.map((tag) => `{{ ${tag} }}`);
+const unsubscribeTag = '{{ unsubscribe_url }}';
 </script>
 
 <template>
@@ -29,10 +40,8 @@ const bodyText = defineModel<string | null>('bodyText', { default: null });
                 placeholder="Enter HTML body"
             />
             <p class="mt-1 text-xs text-gray-400">
-                Allowed merge tags: {{ '{{ first_name }}' }},
-                {{ '{{ name }}' }}, {{ '{{ email }}' }},
-                {{ '{{ company }}' }} and {{ '{{ unsubscribe_url }}' }}. The
-                unsubscribe tag is required.
+                Allowed merge tags: {{ mergeTags.join(', ') }}.
+                {{ unsubscribeTag }} is required.
             </p>
             <InputError :message="errors.body_html" />
         </div>
