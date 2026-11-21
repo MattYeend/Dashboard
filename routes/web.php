@@ -1233,10 +1233,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/', [EmailTemplateController::class, 'index'])->name('index');
             Route::get('/create', [EmailTemplateController::class, 'create'])->name('create');
             Route::post('/', [EmailTemplateController::class, 'store'])->name('store');
-            Route::get('/{emailTemplate}', [EmailTemplateController::class, 'show'])->name('show');
-            Route::get('/{emailTemplate}/edit', [EmailTemplateController::class, 'edit'])->name('edit');
-            Route::match(['put', 'patch'], '/{emailTemplate}', [EmailTemplateController::class, 'update'])->name('update');
-            Route::delete('/{emailTemplate}', [EmailTemplateController::class, 'destroy'])->name('destroy');
+            Route::get('/{email_template}', [EmailTemplateController::class, 'show'])->name('show');
+            Route::get('/{email_template}/edit', [EmailTemplateController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{email_template}', [EmailTemplateController::class, 'update'])->name('update');
+            Route::delete('/{email_template}', [EmailTemplateController::class, 'destroy'])->name('destroy');
         });
     });
 });

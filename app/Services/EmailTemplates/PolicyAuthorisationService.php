@@ -54,19 +54,19 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can view any email templates.
+     * Determine whether the user can view any email template.
      */
     public function canViewAny(User $actor): bool
     {
-        return $actor->can('view email templates');
+        return $actor->can('view email template');
     }
 
     /**
-     * Determine whether the user can create email templates.
+     * Determine whether the user can create email template.
      */
     public function canCreate(User $actor): bool
     {
-        return $actor->can('create email templates');
+        return $actor->can('create email template');
     }
 
     /**
@@ -78,7 +78,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('view email templates')
+        return $actor->can('view email template')
             && $this->activeChecker->isActive($target);
     }
 
@@ -91,7 +91,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('edit email templates')
+        return $actor->can('edit email template')
             && $this->activeChecker->isEditable($target);
     }
 
@@ -104,7 +104,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('delete email templates')
+        return $actor->can('delete email template')
             && $this->activeChecker->canBeModified($target);
     }
 
@@ -117,7 +117,7 @@ class PolicyAuthorisationService
             return false;
         }
 
-        return $actor->can('restore email templates')
+        return $actor->can('restore email template')
             && $this->activeChecker->canBeRestoredOrForceDeleted($target);
     }
 
@@ -138,25 +138,25 @@ class PolicyAuthorisationService
     }
 
     /**
-     * Determine whether the user can import email templates.
+     * Determine whether the user can import email template.
      */
     public function canImport(User $actor): bool
     {
-        return $actor->can('import email templates');
+        return $actor->can('import email template');
     }
 
     /**
-     * Determine whether the user can export email templates.
+     * Determine whether the user can export email template.
      */
     public function canExport(User $actor): bool
     {
-        return $actor->can('export email templates');
+        return $actor->can('export email template');
     }
 
     /**
      * Determine whether the email template was created by a user who outranks the actor.
      *
-     * Prevents admins from managing email templates created by super admins.
+     * Prevents admins from managing email template created by super admins.
      */
     private function targetOutranksActor(
         User $actor,
