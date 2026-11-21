@@ -1096,6 +1096,21 @@ class Log extends Model implements Auditable
 
     public const ACTION_EXPORT_CAMPAIGN_STATUS = 489;
 
+    // Email template
+    public const ACTION_CREATE_EMAIL_TEMPLATE = 490;
+
+    public const ACTION_UPDATE_EMAIL_TEMPLATE = 491;
+
+    public const ACTION_DELETE_EMAIL_TEMPLATE = 492;
+
+    public const ACTION_RESTORE_EMAIL_TEMPLATE = 493;
+
+    public const ACTION_FORCE_DELETE_EMAIL_TEMPLATE = 494;
+
+    public const ACTION_IMPORT_EMAIL_TEMPLATE = 495;
+
+    public const ACTION_EXPORT_EMAIL_TEMPLATE = 496;
+
     // New Logging Actions should go here to be reviewed
 
     // New Logging Actions should go here to be reviewed
