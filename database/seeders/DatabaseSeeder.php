@@ -53,6 +53,7 @@ class DatabaseSeeder extends Seeder
             PaymentStatusSeeder::class,
 
             CampaignStatusSeeder::class,
+            CampaignSeeder::class,
 
             EmailTemplateSeeder::class,
 
