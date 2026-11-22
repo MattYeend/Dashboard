@@ -625,6 +625,16 @@ class RolePermissionSeeder extends Seeder
             'restore email template',
             'import email template',
             'export email template',
+
+            // Campaign segment management
+            'view any campaign segment',
+            'create campaign segment',
+            'view campaign segment',
+            'edit campaign segment',
+            'delete campaign segment',
+            'restore campaign segment',
+            'import campaign segment',
+            'export campaign segment',
         ];
 
         foreach ($permissions as $permission) {
@@ -1102,6 +1112,14 @@ class RolePermissionSeeder extends Seeder
             'restore email template',
             'import email template',
             'export email template',
+            'view any campaign segment',
+            'create campaign segment',
+            'view campaign segment',
+            'edit campaign segment',
+            'delete campaign segment',
+            'restore campaign segment',
+            'import campaign segment',
+            'export campaign segment',
         ];
         $admin->givePermissionTo($adminPermissions);
         $admin->revokePermissionTo('view logs');
@@ -1468,6 +1486,8 @@ class RolePermissionSeeder extends Seeder
             'assign campaign statuses',
             'view any email template',
             'view email template',
+            'view any campaign segment',
+            'view campaign segment',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1711,6 +1731,8 @@ class RolePermissionSeeder extends Seeder
             'assign campaign statuses',
             'view any email template',
             'view email template',
+            'view any campaign segment',
+            'view campaign segment',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -1780,6 +1802,8 @@ class RolePermissionSeeder extends Seeder
             'view quote statuses',
             'view payment statuses',
             'view campaign statuses',
+            'view any campaign segment',
+            'view campaign segment',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -2505,5 +2529,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Payment Statuses');
         $this->command->info('- Payments');
         $this->command->info('- Campaign Statuses');
+        $this->command->info('- Campaign Segments');
     }
 }
