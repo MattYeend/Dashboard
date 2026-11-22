@@ -1,19 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\Campaign;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\Campaigns\PolicyAuthorisationService;
 
 class CampaignPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
+    /**
+     * Determine whether the user can view any campaigns.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**
@@ -21,15 +30,15 @@ class CampaignPolicy
      */
     public function view(User $user, Campaign $campaign): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $campaign);
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create campaigns.
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canCreate($user);
     }
 
     /**
@@ -37,7 +46,7 @@ class CampaignPolicy
      */
     public function update(User $user, Campaign $campaign): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $campaign);
     }
 
     /**
@@ -45,7 +54,7 @@ class CampaignPolicy
      */
     public function delete(User $user, Campaign $campaign): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $campaign);
     }
 
     /**
@@ -53,7 +62,7 @@ class CampaignPolicy
      */
     public function restore(User $user, Campaign $campaign): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $campaign);
     }
 
     /**
@@ -61,6 +70,38 @@ class CampaignPolicy
      */
     public function forceDelete(User $user, Campaign $campaign): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $campaign);
+    }
+
+    /**
+     * Determine whether the user can bulk delete campaigns.
+     */
+    public function bulkDelete(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can bulk restore campaigns.
+     */
+    public function bulkRestore(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can import campaigns.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisationService->canImport($user);
+    }
+
+    /**
+     * Determine whether the user can export campaigns.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->canExport($user);
     }
 }

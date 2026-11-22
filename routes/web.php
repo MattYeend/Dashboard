@@ -10,6 +10,7 @@ use App\Http\Controllers\ApiTokenController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\CampaignStatusController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
@@ -1237,6 +1238,32 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{email_template}/edit', [EmailTemplateController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{email_template}', [EmailTemplateController::class, 'update'])->name('update');
             Route::delete('/{email_template}', [EmailTemplateController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('campaigns')->name('campaigns.')->group(function () {
+            Route::post('/bulk/delete', [CampaignController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [CampaignController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [CampaignController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [CampaignController::class, 'forceDelete'])->name('force-delete');
+
+            Route::post('/import', [CampaignController::class, 'import'])->name('import');
+            Route::post('/import/preview', [CampaignController::class, 'importPreview'])
+                ->middleware('throttle:10,1')
+                ->name('import.preview');
+            Route::post('/import/commit', [CampaignController::class, 'importCommit'])
+                ->middleware('throttle:10,1')
+                ->name('import.commit');
+            Route::get('/export', [CampaignController::class, 'export'])
+                ->middleware('throttle:10,1')
+                ->name('export');
+
+            Route::get('/', [CampaignController::class, 'index'])->name('index');
+            Route::get('/create', [CampaignController::class, 'create'])->name('create');
+            Route::post('/', [CampaignController::class, 'store'])->name('store');
+            Route::get('/{campaign}', [CampaignController::class, 'show'])->name('show');
+            Route::get('/{campaign}/edit', [CampaignController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{campaign}', [CampaignController::class, 'update'])->name('update');
+            Route::delete('/{campaign}', [CampaignController::class, 'destroy'])->name('destroy');
         });
     });
 });
