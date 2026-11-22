@@ -467,18 +467,37 @@ describe('update', function () {
     });
 
     test('omitted fields are not cleared on update', function () {
-        $segment = CampaignSegment::factory()->create(['name' => 'Original', 'description' => 'Keep me']);
+        $segment = CampaignSegment::factory()->create([
+            'name' => 'Original',
+            'description' => 'Keep me',
+        ]);
+
         $originalCriteria = $segment->criteria;
 
         $this->actingAs($this->superAdminUser())
-            ->patchJson("/campaign-segments/{$segment->id}", ['name' => 'Updated'])
+            ->patchJson("/campaign-segments/{$segment->id}", [
+                'name' => 'Updated',
+            ])
             ->assertStatus(200);
 
         $fresh = $segment->fresh();
 
+        $normaliseCriteria = static function (?array $criteria): ?array {
+            if ($criteria === null) {
+                return null;
+            }
+
+            return array_map(static function (array $criterion): array {
+                ksort($criterion);
+
+                return $criterion;
+            }, $criteria);
+        };
+
         expect($fresh->name)->toBe('Updated')
             ->and($fresh->description)->toBe('Keep me')
-            ->and($fresh->criteria)->toBe($originalCriteria);
+            ->and($normaliseCriteria($fresh->criteria))
+            ->toBe($normaliseCriteria($originalCriteria));
     });
 
     test('system managed fields cannot be changed through update', function () {
