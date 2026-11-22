@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\Address;
 use App\Models\Answer;
 use App\Models\Attachment;
+use App\Models\CampaignSegment;
 use App\Models\CampaignStatus;
 use App\Models\Category;
 use App\Models\Comment;
@@ -70,6 +71,7 @@ function tenantResourceMap(): array
         'quotes' => Quote::class,
         'quote-statuses' => QuoteStatus::class,
         'campaign-statuses' => CampaignStatus::class,
+        'campaign-segments' => CampaignSegment::class,
         'payment-statuses' => PaymentStatus::class,
         'task-statuses' => TaskStatus::class,
         'tasks' => Task::class,

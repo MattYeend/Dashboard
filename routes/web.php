@@ -10,7 +10,11 @@ use App\Http\Controllers\ApiTokenController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CalendarController;
+<<<<<<< HEAD
 use App\Http\Controllers\CampaignController;
+=======
+use App\Http\Controllers\CampaignSegmentController;
+>>>>>>> main
 use App\Http\Controllers\CampaignStatusController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
@@ -1240,6 +1244,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/{email_template}', [EmailTemplateController::class, 'destroy'])->name('destroy');
         });
 
+<<<<<<< HEAD
         Route::prefix('campaigns')->name('campaigns.')->group(function () {
             Route::post('/bulk/delete', [CampaignController::class, 'bulkDelete'])->name('bulk.delete');
             Route::post('/bulk/restore', [CampaignController::class, 'bulkRestore'])->name('bulk.restore');
@@ -1264,6 +1269,34 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{campaign}/edit', [CampaignController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{campaign}', [CampaignController::class, 'update'])->name('update');
             Route::delete('/{campaign}', [CampaignController::class, 'destroy'])->name('destroy');
+=======
+        Route::prefix('campaign-segments')->name('campaign-segments.')->group(function () {
+            Route::post('/bulk/delete', [CampaignSegmentController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [CampaignSegmentController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [CampaignSegmentController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [CampaignSegmentController::class, 'forceDelete'])->name('force-delete');
+
+            Route::post('/import', [CampaignSegmentController::class, 'import'])
+                ->middleware('throttle:10,1')
+                ->name('import');
+            Route::post('/import/preview', [CampaignSegmentController::class, 'importPreview'])
+                ->middleware('throttle:10,1')
+                ->name('import.preview');
+            Route::post('/import/commit', [CampaignSegmentController::class, 'importCommit'])
+                ->middleware('throttle:10,1')
+                ->name('import.commit');
+            Route::get('/export', [CampaignSegmentController::class, 'export'])
+                ->middleware('throttle:10,1')
+                ->name('export');
+
+            Route::get('/', [CampaignSegmentController::class, 'index'])->name('index');
+            Route::get('/create', [CampaignSegmentController::class, 'create'])->name('create');
+            Route::post('/', [CampaignSegmentController::class, 'store'])->name('store');
+            Route::get('/{campaignSegment}', [CampaignSegmentController::class, 'show'])->name('show');
+            Route::get('/{campaignSegment}/edit', [CampaignSegmentController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{campaignSegment}', [CampaignSegmentController::class, 'update'])->name('update');
+            Route::delete('/{campaignSegment}', [CampaignSegmentController::class, 'destroy'])->name('destroy');
+>>>>>>> main
         });
     });
 });

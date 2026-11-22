@@ -7,6 +7,7 @@ use App\Models\Address;
 use App\Models\Answer;
 use App\Models\Attachment;
 use App\Models\Campaign;
+use App\Models\CampaignSegment;
 use App\Models\CampaignStatus;
 use App\Models\Category;
 use App\Models\Comment;
@@ -93,6 +94,7 @@ return [
         PaymentStatus::class,
         Payment::class,
         CampaignStatus::class,
+        CampaignSegment::class,
         EmailTemplate::class,
         Campaign::class,
     ],
