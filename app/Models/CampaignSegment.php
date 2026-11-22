@@ -73,15 +73,15 @@ class CampaignSegment extends Model implements Auditable
         ];
     }
 
-    // /**
-    //  * Get the campaigns using this segment.
-    //  *
-    //  * @return HasMany<Campaign, $this>
-    //  */
-    // public function campaigns(): HasMany
-    // {
-    //     return $this->hasMany(Campaign::class, 'campaign_segment_id');
-    // }
+    /**
+     * Get the campaigns using this segment.
+     *
+     * @return HasMany<Campaign, $this>
+     */
+    public function campaigns(): HasMany
+    {
+        return $this->hasMany(Campaign::class, 'campaign_segment_id');
+    }
 
     /**
      * Get the user who created this segment.

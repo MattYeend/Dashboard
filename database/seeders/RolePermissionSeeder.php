@@ -635,7 +635,7 @@ class RolePermissionSeeder extends Seeder
             'restore campaign',
             'import campaign',
             'export campaign',
-            
+
             // Campaign segment management
             'view any campaign segment',
             'create campaign segment',
