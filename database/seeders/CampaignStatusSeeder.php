@@ -21,7 +21,33 @@ class CampaignStatusSeeder extends Seeder
     {
         $organisation = $this->defaultOrganisation();
 
-        $statuses = [
+        $this->seedForOrganisation((int) $organisation->id);
+    }
+
+    /**
+     * Seed the system campaign statuses for a specific organisation
+     * without changing the current tenant.
+     *
+     * Safe to call repeatedly. Existing rows are matched by system key,
+     * then title, and are never overwritten.
+     */
+    public function seedForOrganisation(int $organisationId): void
+    {
+        $this->seedSystemStatuses(
+            CampaignStatus::class,
+            $organisationId,
+            $this->statuses()
+        );
+    }
+
+    /**
+     * The system statuses every organisation needs.
+     *
+     * @return array<int, array<string, string>>
+     */
+    private function statuses(): array
+    {
+        return [
             [
                 'system_key' => CampaignStatus::KEY_DRAFT,
                 'title' => 'Draft',
@@ -72,7 +98,5 @@ class CampaignStatusSeeder extends Seeder
                 'text_colour' => '#822727',
             ],
         ];
-
-        $this->seedSystemStatuses(CampaignStatus::class, (int) $organisation->id, $statuses);
     }
 }

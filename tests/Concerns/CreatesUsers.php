@@ -7,6 +7,7 @@ namespace Tests\Concerns;
 use App\Models\Organisation;
 use App\Models\Permission;
 use App\Models\User;
+use Database\Seeders\CampaignStatusSeeder;
 
 trait CreatesUsers
 {
@@ -24,6 +25,9 @@ trait CreatesUsers
         $organisation->makeCurrent();
 
         setPermissionsTeamId($organisation->id);
+
+        app(CampaignStatusSeeder::class)
+            ->seedForOrganisation((int) $organisation->id);
 
         return $organisation;
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Campaign;
+use App\Models\CampaignStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Spatie\Multitenancy\Models\Tenant;
@@ -37,6 +38,7 @@ class CampaignFactory extends Factory
             'email_template_id' => null,
             'campaign_segment_id' => null,
             'owner_id' => null,
+            'campaign_status_id' => fn () => CampaignStatus::idForKey(CampaignStatus::KEY_DRAFT),
             'subject' => $this->faker->sentence(4),
             'from_name' => $this->faker->name(),
             'reply_to' => $this->faker->safeEmail(),
@@ -72,6 +74,7 @@ class CampaignFactory extends Factory
     public function scheduled(): static
     {
         return $this->state(fn (array $attributes) => [
+            'campaign_status_id' => fn () => CampaignStatus::idForKey(CampaignStatus::KEY_SCHEDULED),
             'scheduled_at' => now()->addDay(),
             'recipients_count' => 100,
         ]);
