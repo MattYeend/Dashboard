@@ -6,10 +6,13 @@ namespace App\Http\Requests\CampaignSegments\Concerns;
 
 use App\Support\CampaignSegments\CriteriaRules;
 use Closure;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
  * Validation rules for the criteria array, shared by the store and update requests.
+ *
+ * @mixin FormRequest
  */
 trait HasCriteriaRules
 {
