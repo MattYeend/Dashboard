@@ -48,6 +48,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read EmailTemplate|null $template
+ * @property-read CampaignStatus|null $status
  * @property-read CampaignSegment|null $segment
  * @property-read User|null $owner
  * @property-read User|null $creator
@@ -89,6 +90,16 @@ class Campaign extends Model implements Auditable
         $this->loadMissing('status');
 
         return $this->status?->system_key === $systemKey;
+    }
+
+    /**
+     * Get the campaign status.
+     *
+     * @return BelongsTo<CampaignStatus, $this>
+     */
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(CampaignStatus::class, 'status_id');
     }
 
     /**

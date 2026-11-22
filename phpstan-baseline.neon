@@ -1,20 +1,3 @@
 parameters:
-	ignoreErrors:
-		-
-			message: '#^Call to an undefined method App\\Models\\CampaignSegment\:\:campaigns\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: app/Services/CampaignSegments/ActiveCheckerService.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: app/Services/CampaignSegments/ImporterService.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: database/factories/CampaignSegmentFactory.php
+	ignoreErrors: []
 

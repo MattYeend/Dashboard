@@ -26,7 +26,7 @@ class CampaignSegmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'organisation_id' => Organisation::current()?->id
+            'organisation_id' => Organisation::current()->id
                 ?? Organisation::query()->oldest('id')->value('id'),
             'name' => fake()->unique()->words(3, true),
             'description' => fake()->sentence(),

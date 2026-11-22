@@ -157,6 +157,6 @@ class ImporterService
      */
     private function currentOrganisationId(): ?int
     {
-        return Organisation::current()?->id ?? Auth::user()?->organisation_id;
+        return Organisation::current()->id ?? Auth::user()?->organisation_id;
     }
 }
