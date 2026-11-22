@@ -625,6 +625,16 @@ class RolePermissionSeeder extends Seeder
             'restore email template',
             'import email template',
             'export email template',
+
+            // Campaign management
+            'view any campaign',
+            'create campaign',
+            'view campaign',
+            'edit campaign',
+            'delete campaign',
+            'restore campaign',
+            'import campaign',
+            'export campaign',
         ];
 
         foreach ($permissions as $permission) {
@@ -1102,6 +1112,14 @@ class RolePermissionSeeder extends Seeder
             'restore email template',
             'import email template',
             'export email template',
+            'view any campaign',
+            'create campaign',
+            'view campaign',
+            'edit campaign',
+            'delete campaign',
+            'restore campaign',
+            'import campaign',
+            'export campaign',
         ];
         $admin->givePermissionTo($adminPermissions);
         $admin->revokePermissionTo('view logs');
@@ -1468,6 +1486,8 @@ class RolePermissionSeeder extends Seeder
             'assign campaign statuses',
             'view any email template',
             'view email template',
+            'view any campaign',
+            'view campaign',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1711,6 +1731,8 @@ class RolePermissionSeeder extends Seeder
             'assign campaign statuses',
             'view any email template',
             'view email template',
+            'view any campaign',
+            'view campaign',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -1780,6 +1802,8 @@ class RolePermissionSeeder extends Seeder
             'view quote statuses',
             'view payment statuses',
             'view campaign statuses',
+            'view any campaign',
+            'view campaign',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
