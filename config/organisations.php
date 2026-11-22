@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\Address;
 use App\Models\Answer;
 use App\Models\Attachment;
+use App\Models\Campaign;
 use App\Models\CampaignStatus;
 use App\Models\Category;
 use App\Models\Comment;
@@ -93,6 +94,7 @@ return [
         Payment::class,
         CampaignStatus::class,
         EmailTemplate::class,
+        Campaign::class,
     ],
 
     /*
