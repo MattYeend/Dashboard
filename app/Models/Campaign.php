@@ -101,15 +101,15 @@ class Campaign extends Model implements Auditable
         return $this->belongsTo(EmailTemplate::class, 'email_template_id');
     }
 
-    // /**
-    //  * Get the segment.
-    //  *
-    //  * @return BelongsTo<CampaignSegment, $this>
-    //  */
-    // public function segment(): BelongsTo
-    // {
-    //     return $this->belongsTo(CampaignSegment::class, 'campaign_segment_id');
-    // }
+    /**
+     * Get the segment.
+     *
+     * @return BelongsTo<CampaignSegment, $this>
+     */
+    public function segment(): BelongsTo
+    {
+        return $this->belongsTo(CampaignSegment::class, 'campaign_segment_id');
+    }
 
     /**
      * Get the owning user.
