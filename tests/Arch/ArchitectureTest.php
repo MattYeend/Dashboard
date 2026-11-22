@@ -41,7 +41,11 @@ arch('controllers use the Controller suffix')
 
 arch('form requests extend FormRequest')
     ->expect('App\Http\Requests')
-    ->toExtend(FormRequest::class);
+    ->toExtend(FormRequest::class)
+    ->ignoring([
+        'App\Http\Requests\Concerns',
+        'App\Http\Requests\CampaignSegments\Concerns',
+    ]);
 
 arch('policies use the Policy suffix')
     ->expect('App\Policies')
