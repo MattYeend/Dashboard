@@ -38,7 +38,7 @@ class CampaignFactory extends Factory
             'email_template_id' => null,
             'campaign_segment_id' => null,
             'owner_id' => null,
-            'campaign_status_id' => fn () => CampaignStatus::idForKey(CampaignStatus::KEY_DRAFT),
+            'status_id' => fn () => $this->statusId(CampaignStatus::KEY_DRAFT),
             'subject' => $this->faker->sentence(4),
             'from_name' => $this->faker->name(),
             'reply_to' => $this->faker->safeEmail(),
@@ -74,7 +74,7 @@ class CampaignFactory extends Factory
     public function scheduled(): static
     {
         return $this->state(fn (array $attributes) => [
-            'campaign_status_id' => fn () => CampaignStatus::idForKey(CampaignStatus::KEY_SCHEDULED),
+            'status_id' => fn () => CampaignStatus::idForKey(CampaignStatus::KEY_SCHEDULED),
             'scheduled_at' => now()->addDay(),
             'recipients_count' => 100,
         ]);
@@ -86,6 +86,7 @@ class CampaignFactory extends Factory
     public function sending(): static
     {
         return $this->state(fn (array $attributes) => [
+            'status_id' => fn () => CampaignStatus::idForKey(CampaignStatus::KEY_SENDING),
             'scheduled_at' => now()->subHour(),
             'started_at' => now()->subMinutes(10),
             'recipients_count' => 100,
@@ -101,6 +102,7 @@ class CampaignFactory extends Factory
     public function sent(): static
     {
         return $this->state(fn (array $attributes) => [
+            'status_id' => fn () => CampaignStatus::idForKey(CampaignStatus::KEY_SENT),
             'scheduled_at' => now()->subDay(),
             'started_at' => now()->subDay(),
             'completed_at' => now()->subDay()->addMinutes(15),
@@ -119,6 +121,7 @@ class CampaignFactory extends Factory
     public function cancelled(): static
     {
         return $this->state(fn (array $attributes) => [
+            'status_id' => fn () => CampaignStatus::idForKey(CampaignStatus::KEY_CANCELLED),
             'scheduled_at' => now()->addDay(),
             'cancelled_at' => now(),
         ]);
@@ -132,5 +135,20 @@ class CampaignFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'deleted_at' => now(),
         ]);
+    }
+
+    /**
+     * Resolve the current organisation's system status, creating it when
+     * absent so the factory works without seeding.
+     */
+    private function statusId(string $key): int
+    {
+        $id = CampaignStatus::query()
+            ->where('system_key', $key)
+            ->value('id');
+
+        return (int) ($id ?? CampaignStatus::factory()
+            ->create(['system_key' => $key])
+            ->getKey());
     }
 }

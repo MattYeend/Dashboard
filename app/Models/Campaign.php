@@ -65,6 +65,7 @@ use Illuminate\Support\Carbon;
     'from_name',
     'reply_to',
     'scheduled_at',
+    'status_id',
     'meta',
     'created_by',
     'created_at',

@@ -45,7 +45,7 @@ class DataPreparationService
             'from_name' => $this->singleLine($data['from_name'] ?? null),
             'reply_to' => $this->singleLine($data['reply_to'] ?? null),
             'scheduled_at' => $this->parseDate($data['scheduled_at'] ?? null),
-            'campaign_status_id' => CampaignStatus::idForKey(CampaignStatus::KEY_DRAFT),
+            'status_id' => CampaignStatus::idForKey(CampaignStatus::KEY_DRAFT),
             'meta' => $data['meta'] ?? null,
         ];
     }

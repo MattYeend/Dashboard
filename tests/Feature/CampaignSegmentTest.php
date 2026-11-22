@@ -48,7 +48,7 @@ if (! function_exists('campaignUsingSegment')) {
 
         return Campaign::factory()->create([
             'campaign_segment_id' => $segment->id,
-            'campaign_status_id' => $status->id,
+            'status_id' => $status->id,
         ]);
     }
 }
