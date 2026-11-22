@@ -1113,6 +1113,21 @@ class Log extends Model implements Auditable
 
     // New Logging Actions should go here to be reviewed
 
+    // Campaign Segment
+    public const ACTION_CREATE_CAMPAIGN_SEGMENT = 513;
+
+    public const ACTION_UPDATE_CAMPAIGN_SEGMENT = 514;
+
+    public const ACTION_DELETE_CAMPAIGN_SEGMENT = 515;
+
+    public const ACTION_RESTORE_CAMPAIGN_SEGMENT = 516;
+
+    public const ACTION_FORCE_DELETE_CAMPAIGN_SEGMENT = 517;
+
+    public const ACTION_IMPORT_CAMPAIGN_SEGMENT = 518;
+
+    public const ACTION_EXPORT_CAMPAIGN_SEGMENT = 519;
+
     // New Logging Actions should go here to be reviewed
     // by the development team for future releases.
     // Ensure to update the documentation accordingly.
