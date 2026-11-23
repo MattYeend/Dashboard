@@ -11,7 +11,6 @@ import {
     ClipboardList,
     Contact2,
     CreditCard,
-    Flag,
     FileBarChart,
     FileText,
     FolderGit2,
@@ -27,6 +26,7 @@ import {
     Newspaper,
     Package,
     Receipt,
+    Send,
     Settings,
     ShieldCheck,
     SquareCheckBig,
@@ -166,9 +166,14 @@ const navGroups: NavGroup[] = [
                 icon: Package,
             },
             {
-                title: 'Campaign Statuses',
-                href: '/campaign-statuses',
-                icon: Flag,
+                title: 'Campaigns',
+                href: '/campaigns',
+                icon: Send,
+                children: [
+                    { title: 'All Campaigns', href: '/campaigns' },
+                    { title: 'Campaign Segments', href: '/campaign-segments' },
+                    { title: 'Campaign Statuses', href: '/campaign-statuses' },
+                ],
             },
             {
                 title: 'Email Templates',
