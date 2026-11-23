@@ -16,20 +16,28 @@ defineProps<Props>();
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
                 <dt class="text-xs text-gray-400">Created by</dt>
-                <dd class="text-sm">{{ campaign.creator?.name ?? 'System' }}</dd>
+                <dd class="text-sm">
+                    {{ campaign.creator?.name ?? 'System' }}
+                </dd>
             </div>
             <div>
                 <dt class="text-xs text-gray-400">Created at</dt>
-                <dd class="text-sm">{{ formatDateTime(campaign.created_at) }}</dd>
+                <dd class="text-sm">
+                    {{ formatDateTime(campaign.created_at) }}
+                </dd>
             </div>
 
             <div>
                 <dt class="text-xs text-gray-400">Last updated by</dt>
-                <dd class="text-sm">{{ campaign.updater?.name ?? 'System' }}</dd>
+                <dd class="text-sm">
+                    {{ campaign.updater?.name ?? 'System' }}
+                </dd>
             </div>
             <div>
                 <dt class="text-xs text-gray-400">Last updated at</dt>
-                <dd class="text-sm">{{ formatDateTime(campaign.updated_at) }}</dd>
+                <dd class="text-sm">
+                    {{ formatDateTime(campaign.updated_at) }}
+                </dd>
             </div>
 
             <template v-if="campaign.deleted_at">
