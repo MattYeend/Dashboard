@@ -8,20 +8,20 @@ import {
     show as campaignSegmentsShow,
 } from '@/routes/campaign-segments';
 import type { CampaignSegment } from '@/types';
- 
+
 defineProps<{
     campaignSegments: CampaignSegment[];
 }>();
- 
+
 const selected = defineModel<Array<number | string>>('selected', {
     required: true,
 });
- 
+
 const emit = defineEmits<{
     delete: [id: number];
     bulkDelete: [ids: Array<number | string>];
 }>();
- 
+
 const columns: ResourceTableColumn[] = [
     { key: 'name', label: 'Name' },
     { key: 'description', label: 'Description' },
@@ -29,16 +29,16 @@ const columns: ResourceTableColumn[] = [
     { key: 'estimated_recipients_count', label: 'Estimated recipients' },
     { key: 'last_refreshed_at', label: 'Last refreshed' },
 ];
- 
+
 function formatDateTime(value: string | null): string {
     if (!value) {
         return 'Never';
     }
- 
+
     return new Date(value).toLocaleString();
 }
 </script>
- 
+
 <template>
     <ResourceTable
         v-model:selected="selected"
@@ -53,27 +53,27 @@ function formatDateTime(value: string | null): string {
                 Delete selected
             </BulkActionButton>
         </template>
- 
+
         <template #cell-name="{ row }">
             <span class="font-medium text-gray-300">{{ row.name }}</span>
         </template>
- 
+
         <template #cell-description="{ row }">
             {{ row.description ?? '-' }}
         </template>
- 
+
         <template #cell-criteria="{ row }">
             {{ row.criteria?.length ?? 0 }}
         </template>
- 
+
         <template #cell-estimated_recipients_count="{ row }">
             {{ row.estimated_recipients_count ?? 0 }}
         </template>
- 
+
         <template #cell-last_refreshed_at="{ row }">
             {{ formatDateTime(row.last_refreshed_at) }}
         </template>
- 
+
         <template #actions="{ row }">
             <RowActions
                 :show-href="campaignSegmentsShow.url(row.id)"

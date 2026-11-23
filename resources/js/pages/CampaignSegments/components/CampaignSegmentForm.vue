@@ -6,7 +6,7 @@ import type { SelectOption } from '@/types';
 import type { CampaignSegmentFormData } from '@/types/forms';
 import CampaignSegmentBasicDetailsForm from './CampaignSegmentBasicDetailsForm.vue';
 import CampaignSegmentCriteriaForm from './CampaignSegmentCriteriaForm.vue';
- 
+
 defineProps<{
     form: CampaignSegmentFormData;
     errors: Partial<Record<string, string>>;
@@ -15,13 +15,13 @@ defineProps<{
     submitLabel: string;
     processing: boolean;
 }>();
- 
+
 const emit = defineEmits<{
     (e: 'submit'): void;
     (e: 'update:form', value: CampaignSegmentFormData): void;
 }>();
 </script>
- 
+
 <template>
     <form class="space-y-6" @submit.prevent="emit('submit')">
         <CampaignSegmentBasicDetailsForm
@@ -36,7 +36,7 @@ const emit = defineEmits<{
             :operator-options="operatorOptions"
             @update:form="emit('update:form', $event)"
         />
- 
+
         <div class="flex items-center justify-end space-x-3">
             <Button as-child variant="outline">
                 <Link :href="campaignSegmentsIndex.url()">Cancel</Link>

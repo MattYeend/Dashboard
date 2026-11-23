@@ -1,25 +1,25 @@
 <script setup lang="ts">
 import type { CampaignSegment } from '@/types';
- 
+
 interface Props {
     campaignSegment: CampaignSegment;
 }
- 
+
 defineProps<Props>();
- 
+
 function formatDateTime(value: string | null): string {
     if (!value) {
         return '-';
     }
- 
+
     return new Date(value).toLocaleString();
 }
 </script>
- 
+
 <template>
     <div class="rounded-lg border p-4">
         <h2 class="mb-4 text-sm font-medium text-gray-400">Audit details</h2>
- 
+
         <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
                 <dt class="text-xs text-gray-400">Created by</dt>
@@ -33,7 +33,7 @@ function formatDateTime(value: string | null): string {
                     {{ formatDateTime(campaignSegment.created_at) }}
                 </dd>
             </div>
- 
+
             <div>
                 <dt class="text-xs text-gray-400">Last updated by</dt>
                 <dd class="text-sm">
@@ -46,7 +46,7 @@ function formatDateTime(value: string | null): string {
                     {{ formatDateTime(campaignSegment.updated_at) }}
                 </dd>
             </div>
- 
+
             <template v-if="campaignSegment.deleted_at">
                 <div>
                     <dt class="text-xs text-gray-400">Deleted by</dt>
@@ -61,7 +61,7 @@ function formatDateTime(value: string | null): string {
                     </dd>
                 </div>
             </template>
- 
+
             <template v-if="campaignSegment.restored_at">
                 <div>
                     <dt class="text-xs text-gray-400">Restored by</dt>

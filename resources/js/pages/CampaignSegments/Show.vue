@@ -13,33 +13,33 @@ import CampaignSegmentAudienceDetails from './components/CampaignSegmentAudience
 import CampaignSegmentAuditDetails from './components/CampaignSegmentAuditDetails.vue';
 import CampaignSegmentBasicDetails from './components/CampaignSegmentBasicDetails.vue';
 import CampaignSegmentCriteriaDetails from './components/CampaignSegmentCriteriaDetails.vue';
- 
+
 interface Props {
     campaignSegment: CampaignSegment;
     permissions_meta: PermissionsMeta;
     canEdit?: boolean;
 }
- 
+
 const props = defineProps<Props>();
- 
+
 const deleteDialogOpen = ref(false);
 const deleteProcessing = ref(false);
- 
+
 function requestDestroy(): void {
     if (!props.campaignSegment?.id) {
         return;
     }
- 
+
     deleteDialogOpen.value = true;
 }
- 
+
 function destroy(): void {
     if (!props.campaignSegment?.id) {
         return;
     }
- 
+
     deleteProcessing.value = true;
- 
+
     router.delete(campaignSegmentsDestroy.url(props.campaignSegment.id), {
         onFinish: () => {
             deleteProcessing.value = false;
@@ -48,7 +48,7 @@ function destroy(): void {
     });
 }
 </script>
- 
+
 <template>
     <div class="py-6">
         <div class="mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,19 +78,23 @@ function destroy(): void {
                     </button>
                 </div>
             </div>
- 
+
             <div class="space-y-6">
-                <CampaignSegmentBasicDetails :campaign-segment="campaignSegment" />
+                <CampaignSegmentBasicDetails
+                    :campaign-segment="campaignSegment"
+                />
                 <CampaignSegmentCriteriaDetails
                     :campaign-segment="campaignSegment"
                 />
                 <CampaignSegmentAudienceDetails
                     :campaign-segment="campaignSegment"
                 />
-                <CampaignSegmentAuditDetails :campaign-segment="campaignSegment" />
+                <CampaignSegmentAuditDetails
+                    :campaign-segment="campaignSegment"
+                />
             </div>
         </div>
- 
+
         <ConfirmDialog
             v-model:open="deleteDialogOpen"
             title="Delete campaign segment"

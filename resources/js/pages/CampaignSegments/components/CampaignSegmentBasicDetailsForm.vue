@@ -4,21 +4,21 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import type { CampaignSegmentFormData } from '@/types/forms';
- 
+
 interface Errors {
     name?: string;
     description?: string;
 }
- 
+
 const props = defineProps<{
     form: CampaignSegmentFormData;
     errors: Errors;
 }>();
- 
+
 const emit = defineEmits<{
     (e: 'update:form', value: CampaignSegmentFormData): void;
 }>();
- 
+
 function update<K extends keyof CampaignSegmentFormData>(
     field: K,
     value: CampaignSegmentFormData[K],
@@ -26,7 +26,7 @@ function update<K extends keyof CampaignSegmentFormData>(
     emit('update:form', { ...props.form, [field]: value });
 }
 </script>
- 
+
 <template>
     <div class="space-y-4">
         <div>

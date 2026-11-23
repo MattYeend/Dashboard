@@ -1,11 +1,11 @@
 export type CampaignSegmentCriterionValue = string | number | boolean;
- 
+
 export interface CampaignSegmentCriterion {
     field: string;
     operator: string;
     value: CampaignSegmentCriterionValue;
 }
- 
+
 export interface CampaignSegment {
     id: number;
     name: string;

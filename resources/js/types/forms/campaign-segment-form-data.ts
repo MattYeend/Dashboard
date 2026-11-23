@@ -3,7 +3,7 @@ export interface CampaignSegmentCriterionFormData {
     operator: string;
     value: string;
 }
- 
+
 export interface CampaignSegmentFormData {
     name: string;
     description: string | null;

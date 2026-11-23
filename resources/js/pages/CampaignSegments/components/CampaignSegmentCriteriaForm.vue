@@ -8,24 +8,24 @@ import type {
     CampaignSegmentCriterionFormData,
     CampaignSegmentFormData,
 } from '@/types/forms';
- 
+
 const MAX_CRITERIA = 20;
- 
+
 const props = defineProps<{
     form: CampaignSegmentFormData;
     errors: Partial<Record<string, string>>;
     fieldOptions: SelectOption[];
     operatorOptions: SelectOption[];
 }>();
- 
+
 const emit = defineEmits<{
     (e: 'update:form', value: CampaignSegmentFormData): void;
 }>();
- 
+
 function updateCriteria(criteria: CampaignSegmentCriterionFormData[]): void {
     emit('update:form', { ...props.form, criteria });
 }
- 
+
 function addCriterion(): void {
     updateCriteria([
         ...props.form.criteria,
@@ -36,11 +36,11 @@ function addCriterion(): void {
         },
     ]);
 }
- 
+
 function removeCriterion(index: number): void {
     updateCriteria(props.form.criteria.filter((_, i) => i !== index));
 }
- 
+
 function updateCriterion<K extends keyof CampaignSegmentCriterionFormData>(
     index: number,
     key: K,
@@ -53,7 +53,7 @@ function updateCriterion<K extends keyof CampaignSegmentCriterionFormData>(
     );
 }
 </script>
- 
+
 <template>
     <div class="space-y-4">
         <div class="flex items-center justify-between">
@@ -67,13 +67,13 @@ function updateCriterion<K extends keyof CampaignSegmentCriterionFormData>(
                 Add criterion
             </Button>
         </div>
- 
+
         <InputError :message="errors.criteria" />
- 
+
         <p v-if="form.criteria.length === 0" class="text-sm text-gray-400">
             No criteria added. A segment without criteria has no audience rules.
         </p>
- 
+
         <div
             v-for="(criterion, index) in form.criteria"
             :key="index"
@@ -103,7 +103,7 @@ function updateCriterion<K extends keyof CampaignSegmentCriterionFormData>(
                 </select>
                 <InputError :message="errors[`criteria.${index}.field`]" />
             </div>
- 
+
             <div>
                 <Label :for="`criteria-${index}-operator`">Operator</Label>
                 <select
@@ -128,7 +128,7 @@ function updateCriterion<K extends keyof CampaignSegmentCriterionFormData>(
                 </select>
                 <InputError :message="errors[`criteria.${index}.operator`]" />
             </div>
- 
+
             <div>
                 <Label :for="`criteria-${index}-value`">Value</Label>
                 <Input
@@ -143,7 +143,7 @@ function updateCriterion<K extends keyof CampaignSegmentCriterionFormData>(
                 />
                 <InputError :message="errors[`criteria.${index}.value`]" />
             </div>
- 
+
             <div class="flex items-end">
                 <Button
                     type="button"

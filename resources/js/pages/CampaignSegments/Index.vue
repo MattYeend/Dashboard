@@ -21,7 +21,7 @@ import type {
     PermissionsMeta,
 } from '@/types';
 import CampaignSegmentTable from './components/CampaignSegmentTable.vue';
- 
+
 interface Props {
     campaignSegments: {
         data: CampaignSegment[];
@@ -32,9 +32,9 @@ interface Props {
     sort_fields: Record<string, string>;
     trash_filters: Record<string, string>;
 }
- 
+
 const props = defineProps<Props>();
- 
+
 const { filters, filterFields, applyFilters } = useIndexFilters({
     url: () => campaignSegmentsIndex.url(),
     searchPlaceholder: 'Search campaign segments…',
@@ -43,13 +43,13 @@ const { filters, filterFields, applyFilters } = useIndexFilters({
     defaultSortBy: 'created_at',
     defaultSortDirection: 'desc',
 });
- 
+
 const selectedIds = ref<Array<number | string>>([]);
- 
+
 const deleteAction = useRowAction((id, options) =>
     router.delete(campaignSegmentsDestroy.url(id), options),
 );
- 
+
 const bulkDeleteAction = useBulkAction(
     (ids, options) =>
         router.post(campaignSegmentsBulk.delete.url(), { ids }, options),
@@ -58,10 +58,10 @@ const bulkDeleteAction = useBulkAction(
     },
 );
 </script>
- 
+
 <template>
     <Head title="Campaign segments" />
- 
+
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <IndexHeader
@@ -72,27 +72,27 @@ const bulkDeleteAction = useBulkAction(
                 :export-href="campaignSegmentsExport.url()"
                 :can-export="permissions_meta.can_export"
             />
- 
+
             <FilterBar
                 v-model="filters"
                 :fields="filterFields"
                 @change="applyFilters"
             />
- 
+
             <CampaignSegmentTable
                 v-model:selected="selectedIds"
                 :campaign-segments="campaignSegments.data"
                 @delete="deleteAction.request"
                 @bulk-delete="bulkDeleteAction.request"
             />
- 
+
             <Pagination
                 :meta="campaignSegments.meta"
                 :links="campaignSegments.links"
                 resource-label="campaign segments"
             />
         </div>
- 
+
         <ConfirmDialog
             v-model:open="deleteAction.open"
             title="Delete campaign segment"
@@ -101,7 +101,7 @@ const bulkDeleteAction = useBulkAction(
             :processing="deleteAction.processing"
             @confirm="deleteAction.confirm"
         />
- 
+
         <ConfirmDialog
             v-model:open="bulkDeleteAction.open"
             title="Delete campaign segments"
