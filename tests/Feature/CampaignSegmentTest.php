@@ -337,7 +337,7 @@ describe('show', function () {
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('CampaignSegments/Show', false)
-                ->has('campaignSegment')
+                ->has('campaign_segment')
             );
     });
 
@@ -379,7 +379,7 @@ describe('edit', function () {
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('CampaignSegments/Edit', false)
-                ->has('campaignSegment')
+                ->has('campaign_segment')
                 ->has('fieldOptions')
             );
     });

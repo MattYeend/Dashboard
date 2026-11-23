@@ -62,7 +62,7 @@ class QueryService
         $campaignSegment->loadMissing(self::RELATIONS);
 
         return array_merge(
-            ['campaignSegment' => $this->formatterService->format($campaignSegment)],
+            ['campaign_segment' => $this->formatterService->format($campaignSegment)],
             $this->getPermissions($user),
             $this->baseData(),
         );
