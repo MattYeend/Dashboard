@@ -20,7 +20,7 @@ class UpdateCampaignSegmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()?->can('update', $this->route('campaignSegment')) ?? false;
+        return $this->user()?->can('update', $this->route('campaign_segment')) ?? false;
     }
 
     /**
@@ -73,7 +73,7 @@ class UpdateCampaignSegmentRequest extends FormRequest
                     $query->where('organisation_id', Organisation::current()?->id)
                         ->whereNull('deleted_at');
                 })
-                ->ignore($this->route('campaignSegment')),
+                ->ignore($this->route('campaign_segment')),
         ];
     }
 
