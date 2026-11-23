@@ -61,7 +61,7 @@ describe('index', function () {
             ->get('/campaign-segments')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignSegments/Index', false)
+                ->component('CampaignSegments/Index')
                 ->has('campaignSegments.data', 3)
                 ->has('permissions_meta')
             );
@@ -85,7 +85,7 @@ describe('index', function () {
             ->get('/campaign-segments?search=Spring')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignSegments/Index', false)
+                ->component('CampaignSegments/Index')
                 ->has('campaignSegments.data', 1)
             );
     });
@@ -97,7 +97,7 @@ describe('index', function () {
             ->get('/campaign-segments?search=%25')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignSegments/Index', false)
+                ->component('CampaignSegments/Index')
                 ->has('campaignSegments.data', 0)
             );
     });
@@ -123,7 +123,7 @@ describe('create', function () {
             ->get('/campaign-segments/create')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignSegments/Create', false)
+                ->component('CampaignSegments/Create')
                 ->has('fieldOptions')
                 ->has('operatorOptions')
             );
@@ -336,7 +336,7 @@ describe('show', function () {
             ->get("/campaign-segments/{$segment->id}")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignSegments/Show', false)
+                ->component('CampaignSegments/Show')
                 ->has('campaign_segment')
             );
     });
@@ -378,7 +378,7 @@ describe('edit', function () {
             ->get("/campaign-segments/{$segment->id}/edit")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignSegments/Edit', false)
+                ->component('CampaignSegments/Edit')
                 ->has('campaign_segment')
                 ->has('fieldOptions')
             );
@@ -867,7 +867,7 @@ describe('import', function () {
                 'file' => UploadedFile::fake()->createWithContent('segments.csv', "name\nExisting Segment\n"),
             ])
             ->assertStatus(200)
-            ->assertJsonPath('rows.0.valid', false)
+            ->assertJsonPath('rows.0.valid')
             ->assertJsonPath('rows.0.reason', 'A segment with this name already exists');
     });
 
@@ -975,7 +975,7 @@ describe('soft delete scoping', function () {
             ->get('/campaign-segments')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignSegments/Index', false)
+                ->component('CampaignSegments/Index')
                 ->has('campaignSegments.data', 2)
             );
 
@@ -990,7 +990,7 @@ describe('soft delete scoping', function () {
             ->get('/campaign-segments?trashed=with')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignSegments/Index', false)
+                ->component('CampaignSegments/Index')
                 ->has('campaignSegments.data', 3)
             );
     });
