@@ -1,0 +1,47 @@
+export interface Campaign {
+    id: number;
+    name: string;
+    email_template_id: number;
+    campaign_segment_id: number;
+    owner_id: number | null;
+    subject: string | null;
+    from_name: string | null;
+    reply_to: string | null;
+    scheduled_at: string | null;
+    started_at: string | null;
+    completed_at: string | null;
+    cancelled_at: string | null;
+    rendered_subject: string | null;
+    rendered_body_html: string | null;
+    rendered_body_text: string | null;
+    recipients_count: number | null;
+    sent_count: number | null;
+    failed_count: number | null;
+    skipped_count: number | null;
+    opened_count: number | null;
+    unsubscribed_count: number | null;
+    status_id: number | null;
+    meta: Record<string, unknown> | null;
+    created_by: number | null;
+    updated_by: number | null;
+    deleted_by: number | null;
+    restored_by: number | null;
+    restored_at: string | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    template?: { id: number; name: string } | null;
+    segment?: { id: number; name: string } | null;
+    owner?: { id: number; name: string } | null;
+    status?: {
+        id: number;
+        title: string;
+        system_key: string | null;
+        background_colour: string | null;
+        text_colour: string | null;
+    } | null;
+    creator?: { name: string } | null;
+    updater?: { name: string } | null;
+    deleter?: { name: string } | null;
+    restorer?: { name: string } | null;
+}
