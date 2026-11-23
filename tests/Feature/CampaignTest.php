@@ -44,7 +44,7 @@ describe('index', function () {
             ->get('/campaigns')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('Campaigns/Index', false)
+                ->component('Campaigns/Index')
                 ->has('campaigns')
                 ->has('permissions_meta')
             );
@@ -73,7 +73,7 @@ describe('index', function () {
             ->get('/campaigns?search=Spring')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('Campaigns/Index', false)
+                ->component('Campaigns/Index')
                 ->has('campaigns.data', 1)
             );
     });
@@ -87,7 +87,7 @@ describe('create', function () {
             ->get('/campaigns/create')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('Campaigns/Create', false)
+                ->component('Campaigns/Create')
             );
     });
 
@@ -260,7 +260,7 @@ describe('show', function () {
             ->get("/campaigns/{$campaign->id}")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('Campaigns/Show', false)
+                ->component('Campaigns/Show')
                 ->has('campaign')
             );
     });
@@ -301,7 +301,7 @@ describe('edit', function () {
             ->get("/campaigns/{$campaign->id}/edit")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('Campaigns/Edit', false)
+                ->component('Campaigns/Edit')
                 ->has('campaign')
             );
     });
@@ -835,7 +835,7 @@ describe('soft delete scoping', function () {
             ->get('/campaigns')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('Campaigns/Index', false)
+                ->component('Campaigns/Index')
                 ->has('campaigns.data', 2)
             );
 
@@ -862,7 +862,7 @@ describe('soft delete scoping', function () {
             ->get('/campaigns?trashed=with')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('Campaigns/Index', false)
+                ->component('Campaigns/Index')
                 ->has('campaigns.data', 3)
             );
     });
