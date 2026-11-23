@@ -867,7 +867,7 @@ describe('import', function () {
                 'file' => UploadedFile::fake()->createWithContent('segments.csv', "name\nExisting Segment\n"),
             ])
             ->assertStatus(200)
-            ->assertJsonPath('rows.0.valid')
+            ->assertJsonPath('rows.0.valid', false)
             ->assertJsonPath('rows.0.reason', 'A segment with this name already exists');
     });
 
