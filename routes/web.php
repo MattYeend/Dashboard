@@ -11,6 +11,7 @@ use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\CampaignRecipientController;
 use App\Http\Controllers\CampaignSegmentController;
 use App\Http\Controllers\CampaignStatusController;
 use App\Http\Controllers\CategoryController;
@@ -1263,8 +1264,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/', [CampaignController::class, 'store'])->name('store');
             Route::get('/{campaign}', [CampaignController::class, 'show'])->name('show');
             Route::get('/{campaign}/edit', [CampaignController::class, 'edit'])->name('edit');
-            Route::match(['put', 'patch'], '/{campaign}', [CampaignController::class, 'update'])->name('update');
+                        Route::match(['put', 'patch'], '/{campaign}', [CampaignController::class, 'update'])->name('update');
             Route::delete('/{campaign}', [CampaignController::class, 'destroy'])->name('destroy');
+
+            Route::prefix('/{campaign}/campaign-recipients')->name('campaign-recipients.')->scopeBindings()->group(function () {
+                Route::post('/bulk/delete', [CampaignRecipientController::class, 'bulkDelete'])->name('bulk.delete');
+                Route::post('/bulk/restore', [CampaignRecipientController::class, 'bulkRestore'])->name('bulk.restore');
+                Route::post('/{id}/restore', [CampaignRecipientController::class, 'restore'])->name('restore');
+                Route::delete('/{id}/force', [CampaignRecipientController::class, 'forceDelete'])->name('force-delete');
+
+                Route::get('/export', [CampaignRecipientController::class, 'export'])
+                    ->middleware('throttle:10,1')
+                    ->name('export');
+
+                Route::get('/', [CampaignRecipientController::class, 'index'])->name('index');
+                Route::get('/{campaign_recipient}', [CampaignRecipientController::class, 'show'])->name('show');
+                Route::delete('/{campaign_recipient}', [CampaignRecipientController::class, 'destroy'])->name('destroy');
+            });
         });
 
         Route::prefix('campaign-segments')->name('campaign-segments.')->group(function () {
