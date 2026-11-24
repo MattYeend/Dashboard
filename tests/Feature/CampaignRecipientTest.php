@@ -128,7 +128,7 @@ describe('index', function () {
     test('index returns 404 for a campaign in another organisation', function () {
         $superAdmin = $this->superAdminUser();
         $otherOrganisation = Organisation::factory()->create();
-        $campaign = Campaign::factory()->create(['organisation_id' => $otherOrganisation->id]);
+        $campaign = $otherOrganisation->execute(fn () => Campaign::factory()->create());
 
         $this->actingAs($superAdmin)
             ->get("/campaigns/{$campaign->id}/campaign-recipients")
