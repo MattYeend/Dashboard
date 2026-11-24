@@ -6,6 +6,7 @@ use App\Models\Campaign;
 use App\Models\CampaignRecipient;
 use App\Models\Log;
 use App\Models\Organisation;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Concerns\CreatesUsers;
@@ -661,6 +662,6 @@ describe('model', function () {
         expect(fn () => CampaignRecipient::factory()->create([
             'campaign_id' => $campaign->id,
             'email' => 'dupe@example.com',
-        ]))->toThrow(Illuminate\Database\QueryException::class);
+        ]))->toThrow(QueryException::class);
     });
 });

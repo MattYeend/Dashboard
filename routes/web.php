@@ -1264,7 +1264,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/', [CampaignController::class, 'store'])->name('store');
             Route::get('/{campaign}', [CampaignController::class, 'show'])->name('show');
             Route::get('/{campaign}/edit', [CampaignController::class, 'edit'])->name('edit');
-                        Route::match(['put', 'patch'], '/{campaign}', [CampaignController::class, 'update'])->name('update');
+            Route::match(['put', 'patch'], '/{campaign}', [CampaignController::class, 'update'])->name('update');
             Route::delete('/{campaign}', [CampaignController::class, 'destroy'])->name('destroy');
 
             Route::prefix('/{campaign}/campaign-recipients')->name('campaign-recipients.')->scopeBindings()->group(function () {
