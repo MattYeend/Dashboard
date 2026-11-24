@@ -372,13 +372,13 @@ describe('bulk delete', function () {
         $campaignRecipients = CampaignRecipient::factory()->count(3)->create(['campaign_id' => $campaign->id]);
         $ids = $campaignRecipients->pluck('id')->all();
 
-        $this->actingAs($superAdmin)
+        $response = $this->actingAs($superAdmin)
             ->postJson("/campaigns/{$campaign->id}/campaign-recipients/bulk/delete", ['ids' => $ids])
             ->assertStatus(200)
-            ->assertJson([
-                'deleted' => $ids,
-                'skipped' => [],
-            ]);
+            ->assertJsonCount(count($ids), 'deleted')
+            ->assertJson(['skipped' => []]);
+
+        $this->assertEqualsCanonicalizing($ids, $response->json('deleted'));
 
         foreach ($ids as $id) {
             $this->assertSoftDeleted('campaign_recipients', ['id' => $id]);
@@ -449,13 +449,13 @@ describe('bulk restore', function () {
         $campaignRecipients = CampaignRecipient::factory()->count(3)->deleted()->create(['campaign_id' => $campaign->id]);
         $ids = $campaignRecipients->pluck('id')->all();
 
-        $this->actingAs($superAdmin)
+        $response = $this->actingAs($superAdmin)
             ->postJson("/campaigns/{$campaign->id}/campaign-recipients/bulk/restore", ['ids' => $ids])
             ->assertStatus(200)
-            ->assertJson([
-                'restored' => $ids,
-                'skipped' => [],
-            ]);
+            ->assertJsonCount(count($ids), 'restored')
+            ->assertJson(['skipped' => []]);
+
+        $this->assertEqualsCanonicalizing($ids, $response->json('restored'));
 
         foreach ($ids as $id) {
             $this->assertDatabaseHas('campaign_recipients', [
