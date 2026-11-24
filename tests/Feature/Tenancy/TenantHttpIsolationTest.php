@@ -7,6 +7,7 @@ use App\Models\Address;
 use App\Models\Answer;
 use App\Models\Attachment;
 use App\Models\Campaign;
+use App\Models\CampaignRecipient;
 use App\Models\CampaignSegment;
 use App\Models\CampaignStatus;
 use App\Models\Category;
@@ -183,6 +184,8 @@ describe('resource coverage', function () {
             PipelineStage::class => 'nested under its parent pipeline (scoped route bindings, e.g. pipelines/{pipeline}/stages/{stage}) — covered by TenantNestedHttpIsolationTest.php instead',
 
             QuoteItem::class => 'nested under its parent quote (scoped route bindings, e.g. quotes/{quote}/items/{quoteItem}) — covered by TenantNestedHttpIsolationTest.php instead',
+
+            CampaignRecipient::class => 'nested under its parent campaign (scoped route bindings, e.g. campaigns/{campaign}/campaign-recipients/{campaign_recipient}) — covered by TenantNestedHttpIsolationTest.php instead',
 
             QuizQuestion::class => 'pivot with no HTTP resource of its own; managed through quizzes, so there is no route to probe',
 

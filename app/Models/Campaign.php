@@ -8,10 +8,12 @@ use App\Contracts\Auditable;
 use App\Traits\BelongsToOrganisation;
 use Carbon\CarbonImmutable;
 use Database\Factories\CampaignFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -48,6 +50,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read EmailTemplate|null $template
+ * @property-read Collection<int, CampaignRecipient> $campaignRecipients
  * @property-read CampaignStatus|null $status
  * @property-read CampaignSegment|null $segment
  * @property-read User|null $owner
@@ -121,6 +124,16 @@ class Campaign extends Model implements Auditable
     public function segment(): BelongsTo
     {
         return $this->belongsTo(CampaignSegment::class, 'campaign_segment_id');
+    }
+
+    /**
+     * Get the campaign recipients.
+     *
+     * @return HasMany<CampaignRecipient, $this>
+     */
+    public function campaignRecipients(): HasMany
+    {
+        return $this->hasMany(CampaignRecipient::class, 'campaign_id');
     }
 
     /**
