@@ -101,7 +101,7 @@ class CampaignRecipient extends Model implements Auditable
     /**
      * The token is a credential and must never be serialised.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = ['token'];
 

@@ -22,7 +22,11 @@ class CampaignRecipientSeeder extends Seeder
     {
         $organisation = $this->defaultOrganisation();
 
-        // Each row: ['campaign' => 'Campaign name', 'email' => 'real@address', 'name' => 'Real Name']
+        /**
+         * Each row names an existing campaign and a real recipient.
+         *
+         * @var list<array{campaign: string, email: string, name?: string|null}> $rows
+         */
         $rows = [];
 
         foreach ($rows as $row) {
