@@ -1,0 +1,30 @@
+export interface CampaignRecipient {
+    id: number;
+    campaign_id: number;
+    contact_id: number | null;
+    email: string;
+    name: string | null;
+    status: string;
+    attempts: number | null;
+    sent_at: string | null;
+    opened_at: string | null;
+    clicked_at: string | null;
+    unsubscribed_at: string | null;
+    failed_at: string | null;
+    failure_reason: string | null;
+    meta: Record<string, unknown> | null;
+    created_by: number | null;
+    updated_by: number | null;
+    deleted_by: number | null;
+    restored_by: number | null;
+    restored_at: string | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    campaign?: { id: number; name: string } | null;
+    contact?: { id: number; title: string } | null;
+    creator?: { name: string } | null;
+    updater?: { name: string } | null;
+    deleter?: { name: string } | null;
+    restorer?: { name: string } | null;
+}

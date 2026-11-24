@@ -8,6 +8,7 @@ export * from './api-token';
 export * from './attachment';
 export * from './auth';
 export * from './campaign';
+export * from './campaign-recipient';
 export * from './campaign-segment';
 export * from './campaign-status';
 export * from './category';
