@@ -7,6 +7,7 @@ use App\Models\Address;
 use App\Models\Answer;
 use App\Models\Attachment;
 use App\Models\Campaign;
+use App\Models\CampaignRecipient;
 use App\Models\CampaignSegment;
 use App\Models\CampaignStatus;
 use App\Models\Category;
@@ -97,6 +98,7 @@ return [
         CampaignSegment::class,
         EmailTemplate::class,
         Campaign::class,
+        CampaignRecipient::class,
     ],
 
     /*
