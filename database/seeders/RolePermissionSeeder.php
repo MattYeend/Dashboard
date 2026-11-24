@@ -645,6 +645,13 @@ class RolePermissionSeeder extends Seeder
             'restore campaign segment',
             'import campaign segment',
             'export campaign segment',
+
+            // Campaign recipient management
+            'view any campaign recipient',
+            'view campaign recipient',
+            'delete campaign recipient',
+            'restore campaign recipient',
+            'export campaign recipient',
         ];
 
         foreach ($permissions as $permission) {
@@ -1138,6 +1145,11 @@ class RolePermissionSeeder extends Seeder
             'restore campaign segment',
             'import campaign segment',
             'export campaign segment',
+            'view any campaign recipient',
+            'view campaign recipient',
+            'delete campaign recipient',
+            'restore campaign recipient',
+            'export campaign recipient',
         ];
         $admin->givePermissionTo($adminPermissions);
         $admin->revokePermissionTo('view logs');
@@ -1508,6 +1520,8 @@ class RolePermissionSeeder extends Seeder
             'view campaign',
             'view any campaign segment',
             'view campaign segment',
+            'view any campaign recipient',
+            'view campaign recipient',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1755,6 +1769,8 @@ class RolePermissionSeeder extends Seeder
             'view campaign',
             'view any campaign segment',
             'view campaign segment',
+            'view any campaign recipient',
+            'view campaign recipient',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -1828,6 +1844,8 @@ class RolePermissionSeeder extends Seeder
             'view campaign',
             'view any campaign segment',
             'view campaign segment',
+            'view any campaign recipient',
+            'view campaign recipient',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
