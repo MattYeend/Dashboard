@@ -9,6 +9,7 @@ use App\Models\Activity;
 use App\Models\Address;
 use App\Models\Attachment;
 use App\Models\Campaign;
+use App\Models\CampaignRecipient;
 use App\Models\CampaignSegment;
 use App\Models\CampaignStatus;
 use App\Models\Category;
@@ -60,6 +61,7 @@ use App\Policies\AddressPolicy;
 use App\Policies\ApiTokenPolicy;
 use App\Policies\AttachmentPolicy;
 use App\Policies\CampaignPolicy;
+use App\Policies\CampaignRecipientPolicy;
 use App\Policies\CampaignSegmentPolicy;
 use App\Policies\CampaignStatusPolicy;
 use App\Policies\CategoryPolicy;
@@ -158,6 +160,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Address::class, AddressPolicy::class);
         Gate::policy(Attachment::class, AttachmentPolicy::class);
         Gate::policy(Campaign::class, CampaignPolicy::class);
+        Gate::policy(CampaignRecipient::class, CampaignRecipientPolicy::class);
         Gate::policy(CampaignSegment::class, CampaignSegmentPolicy::class);
         Gate::policy(CampaignStatus::class, CampaignStatusPolicy::class);
         Gate::policy(Category::class, CategoryPolicy::class);
@@ -216,6 +219,14 @@ class AppServiceProvider extends ServiceProvider
 
         Route::bind('quoteItem', function (string $value, $route): QuoteItem {
             return QuoteItem::where('quote_id', $route->parameter('quote'))
+                ->findOrFail($value);
+        });
+
+        Route::bind('campaignRecipient', function (string $value, $route): CampaignRecipient {
+            $campaign = $route->parameter('campaign');
+            $campaignId = $campaign instanceof Campaign ? $campaign->getKey() : $campaign;
+
+            return CampaignRecipient::where('campaign_id', $campaignId)
                 ->findOrFail($value);
         });
 
