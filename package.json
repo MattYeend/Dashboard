@@ -21,7 +21,7 @@
         "@eslint/js": "^10.0.1",
         "@inertiajs/vite": "^3.11.0",
         "@laravel/vite-plugin-wayfinder": "^0.1.11",
-        "@stylistic/eslint-plugin": "^5.10.0",
+        "@stylistic/eslint-plugin": "^6.0.1",
         "@tailwindcss/typography": "^0.5.20",
         "@tailwindcss/vite": "^4.1.11",
         "@types/node": "^26.6.6",
