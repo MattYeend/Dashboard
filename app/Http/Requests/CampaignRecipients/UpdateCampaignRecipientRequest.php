@@ -14,7 +14,7 @@ class UpdateCampaignRecipientRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('update', $this->route('campaignRecipient'));
+        return $this->user()->can('update', $this->route('campaign_recipient'));
     }
 
     /**
