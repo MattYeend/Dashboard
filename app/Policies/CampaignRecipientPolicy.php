@@ -1,19 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\CampaignRecipient;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\CampaignRecipients\PolicyAuthorisationService;
 
 class CampaignRecipientPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
+    /**
+     * Determine whether the user can view any campaign recipients.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**
@@ -21,23 +30,7 @@ class CampaignRecipientPolicy
      */
     public function view(User $user, CampaignRecipient $campaignRecipient): bool
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, CampaignRecipient $campaignRecipient): bool
-    {
-        return false;
+        return $this->authorisationService->canView($user, $campaignRecipient);
     }
 
     /**
@@ -45,7 +38,7 @@ class CampaignRecipientPolicy
      */
     public function delete(User $user, CampaignRecipient $campaignRecipient): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $campaignRecipient);
     }
 
     /**
@@ -53,7 +46,7 @@ class CampaignRecipientPolicy
      */
     public function restore(User $user, CampaignRecipient $campaignRecipient): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $campaignRecipient);
     }
 
     /**
@@ -61,6 +54,30 @@ class CampaignRecipientPolicy
      */
     public function forceDelete(User $user, CampaignRecipient $campaignRecipient): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $campaignRecipient);
+    }
+
+    /**
+     * Determine whether the user can bulk delete campaign recipients.
+     */
+    public function bulkDelete(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can bulk restore campaign recipients.
+     */
+    public function bulkRestore(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can export campaign recipients.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->canExport($user);
     }
 }
