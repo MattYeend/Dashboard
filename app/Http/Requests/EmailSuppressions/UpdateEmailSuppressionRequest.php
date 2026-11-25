@@ -17,7 +17,7 @@ class UpdateEmailSuppressionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('update', $this->route('emailSuppression'));
+        return $this->user()->can('update', $this->route('email_suppression'));
     }
 
     /**
