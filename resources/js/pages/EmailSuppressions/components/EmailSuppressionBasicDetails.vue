@@ -25,7 +25,7 @@ defineProps<Props>();
             </div>
             <div class="sm:col-span-2">
                 <dt class="text-xs text-gray-400">Notes</dt>
-                <dd class="whitespace-pre-line text-sm">
+                <dd class="text-sm whitespace-pre-line">
                     {{ emailSuppression.notes ?? '-' }}
                 </dd>
             </div>

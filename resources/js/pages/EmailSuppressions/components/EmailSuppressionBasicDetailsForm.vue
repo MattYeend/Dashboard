@@ -50,10 +50,7 @@ function update<K extends keyof EmailSuppressionFormData>(
                 :value="form.reason"
                 class="mt-1 block w-full rounded-md border px-3 py-2 text-sm"
                 @change="
-                    update(
-                        'reason',
-                        ($event.target as HTMLSelectElement).value,
-                    )
+                    update('reason', ($event.target as HTMLSelectElement).value)
                 "
             >
                 <option value="">Select reason</option>
