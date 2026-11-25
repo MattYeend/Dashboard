@@ -41,7 +41,7 @@ describe('index', function () {
             ->get('/email-suppressions')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailSuppressions/Index', false)
+                ->component('EmailSuppressions/Index')
                 ->has('emailSuppressions')
                 ->has('permissions_meta')
             );
@@ -70,7 +70,7 @@ describe('index', function () {
             ->get('/email-suppressions?search=alpha')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailSuppressions/Index', false)
+                ->component('EmailSuppressions/Index')
                 ->has('emailSuppressions.data', 1)
             );
     });
@@ -86,7 +86,7 @@ describe('index', function () {
             ->get('/email-suppressions?reason=complained')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailSuppressions/Index', false)
+                ->component('EmailSuppressions/Index')
                 ->has('emailSuppressions.data', 2)
             );
     });
@@ -100,7 +100,7 @@ describe('index', function () {
             ->get('/email-suppressions?reason=not-a-reason')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailSuppressions/Index', false)
+                ->component('EmailSuppressions/Index')
                 ->has('emailSuppressions.data', 2)
             );
     });
@@ -114,7 +114,7 @@ describe('create', function () {
             ->get('/email-suppressions/create')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailSuppressions/Create', false)
+                ->component('EmailSuppressions/Create')
                 ->has('reasonOptions', 4)
             );
     });
@@ -309,7 +309,7 @@ describe('show', function () {
             ->get("/email-suppressions/{$emailSuppression->id}")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailSuppressions/Show', false)
+                ->component('EmailSuppressions/Show')
                 ->has('emailSuppression')
             );
     });
@@ -350,7 +350,7 @@ describe('edit', function () {
             ->get("/email-suppressions/{$emailSuppression->id}/edit")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailSuppressions/Edit', false)
+                ->component('EmailSuppressions/Edit')
                 ->has('emailSuppression')
                 ->has('reasonOptions')
             );
@@ -980,7 +980,7 @@ describe('soft delete scoping', function () {
             ->get('/email-suppressions')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailSuppressions/Index', false)
+                ->component('EmailSuppressions/Index')
                 ->has('emailSuppressions.data', 2)
             );
 
@@ -1007,7 +1007,7 @@ describe('soft delete scoping', function () {
             ->get('/email-suppressions?trashed=with')
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('EmailSuppressions/Index', false)
+                ->component('EmailSuppressions/Index')
                 ->has('emailSuppressions.data', 3)
             );
     });
