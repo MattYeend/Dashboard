@@ -3,7 +3,7 @@ import BulkActionButton from '@/components/table/BulkActionButton.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import RowActions from '@/components/table/RowActions.vue';
-import { formatDecimalMoney } from '@/lib/decimal-money';
+import { formatDecimalMoney } from '@/lib/decimalMoney';
 import {
     edit as quoteItemsEdit,
     show as quoteItemsShow,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatDecimalMoney } from '@/lib/decimal-money';
+import { formatDecimalMoney } from '@/lib/decimalMoney';
 import type { QuoteItem } from '@/types';
 
 defineProps<{
