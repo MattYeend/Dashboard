@@ -4,7 +4,7 @@ import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import RowActions from '@/components/table/RowActions.vue';
 import { formatDateTime, humaniseStatus } from '@/lib/campaign-recipients';
-import { show as campaignRecipientsShow } from '@/routes/campaign-recipients';
+import { show as campaignRecipientsShow } from '@/routes/campaigns/campaign-recipients';
 import type { CampaignRecipient } from '@/types';
 
 defineProps<{
@@ -23,7 +23,6 @@ const emit = defineEmits<{
 const columns: ResourceTableColumn[] = [
     { key: 'email', label: 'Email' },
     { key: 'name', label: 'Name' },
-    { key: 'campaign', label: 'Campaign' },
     { key: 'status', label: 'Status' },
     { key: 'sent_at', label: 'Sent' },
 ];
@@ -52,10 +51,6 @@ const columns: ResourceTableColumn[] = [
             {{ row.name ?? '-' }}
         </template>
 
-        <template #cell-campaign="{ row }">
-            {{ row.campaign?.name ?? '-' }}
-        </template>
-
         <template #cell-status="{ row }">
             {{ humaniseStatus(row.status) }}
         </template>
@@ -66,7 +61,12 @@ const columns: ResourceTableColumn[] = [
 
         <template #actions="{ row }">
             <RowActions
-                :show-href="campaignRecipientsShow.url(row.id)"
+                :show-href="
+                    campaignRecipientsShow.url({
+                        campaign: row.campaign_id,
+                        campaign_recipient: row.id,
+                    })
+                "
                 @delete="emit('delete', row.id)"
             />
         </template>

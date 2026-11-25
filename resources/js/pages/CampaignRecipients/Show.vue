@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import {
     destroy as campaignRecipientsDestroy,
     index as campaignRecipientsIndex,
-} from '@/routes/campaign-recipients';
+} from '@/routes/campaigns/campaign-recipients';
 import type { CampaignRecipient, PermissionsMeta } from '@/types';
 import CampaignRecipientAuditDetails from './components/CampaignRecipientAuditDetails.vue';
 import CampaignRecipientBasicDetails from './components/CampaignRecipientBasicDetails.vue';
@@ -37,12 +37,18 @@ function destroy(): void {
 
     deleteProcessing.value = true;
 
-    router.delete(campaignRecipientsDestroy.url(props.campaignRecipient.id), {
-        onFinish: () => {
-            deleteProcessing.value = false;
-            deleteDialogOpen.value = false;
+    router.delete(
+        campaignRecipientsDestroy.url({
+            campaign: props.campaignRecipient.campaign_id,
+            campaign_recipient: props.campaignRecipient.id,
+        }),
+        {
+            onFinish: () => {
+                deleteProcessing.value = false;
+                deleteDialogOpen.value = false;
+            },
         },
-    });
+    );
 }
 </script>
 
@@ -57,7 +63,15 @@ function destroy(): void {
                 </h1>
                 <div class="ml-auto flex flex-wrap gap-2">
                     <Button as-child variant="outline">
-                        <Link :href="campaignRecipientsIndex.url()">Back</Link>
+                        <Link
+                            :href="
+                                campaignRecipientsIndex.url(
+                                    campaignRecipient.campaign_id,
+                                )
+                            "
+                        >
+                            Back
+                        </Link>
                     </Button>
                     <button
                         v-if="permissions_meta.can_delete !== false"

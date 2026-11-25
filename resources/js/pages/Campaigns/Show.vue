@@ -8,6 +8,7 @@ import {
     edit as campaignsEdit,
     index as campaignsIndex,
 } from '@/routes/campaigns';
+import { index as campaignRecipientsIndex } from '@/routes/campaigns/campaign-recipients';
 import type { Campaign, PermissionsMeta } from '@/types';
 import CampaignAuditDetails from './components/CampaignAuditDetails.vue';
 import CampaignBasicDetails from './components/CampaignBasicDetails.vue';
@@ -66,6 +67,11 @@ function destroy(): void {
                 <div class="ml-auto flex flex-wrap gap-2">
                     <Button as-child variant="outline">
                         <Link :href="campaignsIndex.url()">Back</Link>
+                    </Button>
+                    <Button as-child variant="outline">
+                        <Link :href="campaignRecipientsIndex.url(campaign.id)">
+                            Recipients
+                        </Link>
                     </Button>
                     <Button v-if="canEdit" as-child>
                         <Link :href="campaignsEdit.url(campaign.id)">Edit</Link>

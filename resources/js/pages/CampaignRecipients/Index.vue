@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { Head, router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import FilterBar from '@/components/table/FilterBar.vue';
 import IndexHeader from '@/components/table/IndexHeader.vue';
 import Pagination from '@/components/table/Pagination.vue';
+import { Button } from '@/components/ui/button';
 import { useBulkAction, useRowAction } from '@/composables/useConfirmedAction';
 import { useIndexFilters } from '@/composables/useIndexFilters';
+import { show as campaignsShow } from '@/routes/campaigns';
 import {
     destroy as campaignRecipientsDestroy,
     exportMethod as campaignRecipientsExport,
     index as campaignRecipientsIndex,
-} from '@/routes/campaign-recipients';
-import campaignRecipientsBulk from '@/routes/campaign-recipients/bulk';
+} from '@/routes/campaigns/campaign-recipients';
+import campaignRecipientsBulk from '@/routes/campaigns/campaign-recipients/bulk';
 import type {
     CampaignRecipient,
     Pagination as PaginationMeta,
@@ -22,6 +24,7 @@ import type {
 import CampaignRecipientTable from './components/CampaignRecipientTable.vue';
 
 interface Props {
+    campaign: { id: number; name: string };
     campaignRecipients: {
         data: CampaignRecipient[];
         links: PaginationLink[];
@@ -35,7 +38,7 @@ interface Props {
 const props = defineProps<Props>();
 
 const { filters, filterFields, applyFilters } = useIndexFilters({
-    url: () => campaignRecipientsIndex.url(),
+    url: () => campaignRecipientsIndex.url(props.campaign.id),
     searchPlaceholder: 'Search campaign recipients…',
     sortFields: () => props.sort_fields,
     trashFilters: () => props.trash_filters,
@@ -46,12 +49,22 @@ const { filters, filterFields, applyFilters } = useIndexFilters({
 const selectedIds = ref<Array<number | string>>([]);
 
 const deleteAction = useRowAction((id, options) =>
-    router.delete(campaignRecipientsDestroy.url(id), options),
+    router.delete(
+        campaignRecipientsDestroy.url({
+            campaign: props.campaign.id,
+            campaign_recipient: id,
+        }),
+        options,
+    ),
 );
 
 const bulkDeleteAction = useBulkAction(
     (ids, options) =>
-        router.post(campaignRecipientsBulk.delete.url(), { ids }, options),
+        router.post(
+            campaignRecipientsBulk.delete.url(props.campaign.id),
+            { ids },
+            options,
+        ),
     () => {
         selectedIds.value = [];
     },
@@ -59,14 +72,22 @@ const bulkDeleteAction = useBulkAction(
 </script>
 
 <template>
-    <Head title="Campaign recipients" />
+    <Head :title="`${campaign.name} recipients`" />
 
     <div class="py-6">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mb-4">
+                <Button as-child variant="outline">
+                    <Link :href="campaignsShow.url(campaign.id)">
+                        Back to campaign
+                    </Link>
+                </Button>
+            </div>
+
             <IndexHeader
-                title="Campaign Recipients"
+                :title="`Recipients: ${campaign.name}`"
                 :can-create="false"
-                :export-href="campaignRecipientsExport.url()"
+                :export-href="campaignRecipientsExport.url(campaign.id)"
                 :can-export="permissions_meta.can_export"
             />
 
