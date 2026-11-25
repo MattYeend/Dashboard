@@ -3,7 +3,7 @@ import BulkActionButton from '@/components/table/BulkActionButton.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import RowActions from '@/components/table/RowActions.vue';
-import { formatDateTime } from '@/lib/campaigns';
+import { formatDateTime } from '@/lib/dates';
 import {
     edit as campaignsEdit,
     show as campaignsShow,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatDateTime } from '@/lib/campaigns';
+import { formatDateTime } from '@/lib/dates';
 import type { Campaign } from '@/types';
 
 interface Props {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
-import { prepareCampaignPayload } from '@/lib/campaigns';
+import { prepareCampaignPayload } from '@/lib/forms';
 import { store as campaignsStore } from '@/routes/campaigns';
 import type { SelectOption } from '@/types';
 import type { CampaignFormData } from '@/types/forms';

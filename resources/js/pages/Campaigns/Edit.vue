@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
-import { prepareCampaignPayload, toDateTimeLocal } from '@/lib/campaigns';
+import { toDateTimeLocal } from '@/lib/dates';
+import { prepareCampaignPayload } from '@/lib/forms';
 import { update as campaignsUpdate } from '@/routes/campaigns';
 import type { Campaign, SelectOption } from '@/types';
 import type { CampaignFormData } from '@/types/forms';
