@@ -3,7 +3,8 @@ import BulkActionButton from '@/components/table/BulkActionButton.vue';
 import ResourceTable from '@/components/table/ResourceTable.vue';
 import type { ResourceTableColumn } from '@/components/table/ResourceTable.vue';
 import RowActions from '@/components/table/RowActions.vue';
-import { formatDateTime, humaniseStatus } from '@/lib/campaign-recipients';
+import { formatDateTime } from '@/lib/dates';
+import { humaniseStatus } from '@/lib/strings';
 import { show as campaignRecipientsShow } from '@/routes/campaigns/campaign-recipients';
 import type { CampaignRecipient } from '@/types';
 

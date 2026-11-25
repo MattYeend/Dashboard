@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { formatDateTime, humaniseStatus } from '@/lib/campaign-recipients';
+import { formatDateTime } from '@/lib/dates';
+import { humaniseStatus } from '@/lib/strings';
 import type { CampaignRecipient } from '@/types';
 
 interface Props {
