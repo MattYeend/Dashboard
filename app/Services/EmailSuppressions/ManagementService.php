@@ -100,6 +100,7 @@ class ManagementService
 
         $emailSuppressions = EmailSuppression::onlyTrashed()
             ->whereIn('id', $requestedIds)
+            ->orderBy('id')
             ->get();
 
         $restored = [];
@@ -115,6 +116,7 @@ class ManagementService
             'restored' => $restored,
             'skipped' => $requestedIds
                 ->diff($emailSuppressions->pluck('id'))
+                ->sort()
                 ->values()
                 ->all(),
         ];
@@ -136,7 +138,9 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $emailSuppressions = EmailSuppression::whereIn('id', $requestedIds)->get();
+        $emailSuppressions = EmailSuppression::whereIn('id', $requestedIds)
+            ->orderBy('id')
+            ->get();
 
         $deleted = [];
 
@@ -151,6 +155,7 @@ class ManagementService
             'deleted' => $deleted,
             'skipped' => $requestedIds
                 ->diff($emailSuppressions->pluck('id'))
+                ->sort()
                 ->values()
                 ->all(),
         ];

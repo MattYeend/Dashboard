@@ -100,6 +100,7 @@ class ManagementService
 
         $campaigns = Campaign::onlyTrashed()
             ->whereIn('id', $requestedIds)
+            ->orderBy('id')
             ->get();
 
         $restored = [];
@@ -136,7 +137,9 @@ class ManagementService
     ): array {
         $requestedIds = collect($ids)->unique()->values();
 
-        $campaigns = Campaign::whereIn('id', $requestedIds)->get();
+        $campaigns = Campaign::whereIn('id', $requestedIds)
+            ->orderBy('id')
+            ->get();
 
         $deleted = [];
 
