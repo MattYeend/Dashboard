@@ -89,7 +89,7 @@ class UpdateEmailSuppressionRequest extends FormRequest
             'email:rfc',
             Rule::unique('email_suppressions', 'email')
                 ->where('organisation_id', Tenant::current()?->id)
-                ->ignore($this->route('emailSuppression')),
+                ->ignore($this->route('email_suppression')),
         ];
     }
 
