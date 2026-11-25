@@ -24,6 +24,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardWidgetPreferenceController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\DealStatusController;
+use App\Http\Controllers\EmailSuppressionController;
 use App\Http\Controllers\EmailTemplateController;
 use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\InteractionLogController;
@@ -1308,7 +1309,35 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{campaign_segment}', [CampaignSegmentController::class, 'show'])->name('show');
             Route::get('/{campaign_segment}/edit', [CampaignSegmentController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{campaign_segment}', [CampaignSegmentController::class, 'update'])->name('update');
-            Route::delete('/{campaign_segment}', [CampaignSegmentController::class, 'destroy'])->name('destroy');
+                        Route::delete('/{campaign_segment}', [CampaignSegmentController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('email-suppressions')->name('email-suppressions.')->group(function () {
+            Route::post('/bulk/delete', [EmailSuppressionController::class, 'bulkDelete'])->name('bulk.delete');
+            Route::post('/bulk/restore', [EmailSuppressionController::class, 'bulkRestore'])->name('bulk.restore');
+            Route::post('/{id}/restore', [EmailSuppressionController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [EmailSuppressionController::class, 'forceDelete'])->name('force-delete');
+
+            Route::post('/import', [EmailSuppressionController::class, 'import'])
+                ->middleware('throttle:10,1')
+                ->name('import');
+            Route::post('/import/preview', [EmailSuppressionController::class, 'importPreview'])
+                ->middleware('throttle:10,1')
+                ->name('import.preview');
+            Route::post('/import/commit', [EmailSuppressionController::class, 'importCommit'])
+                ->middleware('throttle:10,1')
+                ->name('import.commit');
+            Route::get('/export', [EmailSuppressionController::class, 'export'])
+                ->middleware('throttle:10,1')
+                ->name('export');
+
+            Route::get('/', [EmailSuppressionController::class, 'index'])->name('index');
+            Route::get('/create', [EmailSuppressionController::class, 'create'])->name('create');
+            Route::post('/', [EmailSuppressionController::class, 'store'])->name('store');
+            Route::get('/{email_suppression}', [EmailSuppressionController::class, 'show'])->name('show');
+            Route::get('/{email_suppression}/edit', [EmailSuppressionController::class, 'edit'])->name('edit');
+            Route::match(['put', 'patch'], '/{email_suppression}', [EmailSuppressionController::class, 'update'])->name('update');
+            Route::delete('/{email_suppression}', [EmailSuppressionController::class, 'destroy'])->name('destroy');
         });
     });
 });
