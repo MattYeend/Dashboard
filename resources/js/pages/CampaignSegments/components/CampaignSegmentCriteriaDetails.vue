@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatCriterionValue, humaniseKey } from '@/lib/campaign-segments';
+import { formatCriterionValue, humaniseKey } from '@/lib/strings';
 import type { CampaignSegment } from '@/types';
 
 interface Props {

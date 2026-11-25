@@ -3,7 +3,7 @@ import { useForm } from '@inertiajs/vue3';
 import {
     criterionToFormData,
     prepareCampaignSegmentPayload,
-} from '@/lib/campaign-segments';
+} from '@/lib/forms';
 import { update as campaignSegmentsUpdate } from '@/routes/campaign-segments';
 import type { CampaignSegment, SelectOption } from '@/types';
 import type { CampaignSegmentFormData } from '@/types/forms';

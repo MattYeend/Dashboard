@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
-import { prepareCampaignSegmentPayload } from '@/lib/campaign-segments';
+import { prepareCampaignSegmentPayload } from '@/lib/forms';
 import { store as campaignSegmentsStore } from '@/routes/campaign-segments';
 import type { SelectOption } from '@/types';
 import type { CampaignSegmentFormData } from '@/types/forms';
