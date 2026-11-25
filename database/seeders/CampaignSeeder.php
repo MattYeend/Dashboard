@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\Campaign;
+use App\Models\CampaignStatus;
 use Database\Seeders\Concerns\ResolvesDefaultOrganisation;
 use Illuminate\Database\Seeder;
 
 /**
  * Seeds real campaigns for the default organisation. No Faker data.
- * Safe to run repeatedly: rows are matched on 'name'.
+ * Safe to run repeatedly: rows are matched on name.
  */
 class CampaignSeeder extends Seeder
 {
@@ -24,7 +25,9 @@ class CampaignSeeder extends Seeder
             [
                 'name' => 'Welcome Series Launch',
                 'from_name' => 'Dashboard Team',
-                'status_key' => 'draft',
+                'status_id' => CampaignStatus::idForKey(
+                    CampaignStatus::KEY_DRAFT,
+                ),
             ],
         ];
 
@@ -39,3 +42,4 @@ class CampaignSeeder extends Seeder
         }
     }
 }
+
