@@ -42,4 +42,3 @@ class CampaignSeeder extends Seeder
         }
     }
 }
-

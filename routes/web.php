@@ -1309,7 +1309,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{campaign_segment}', [CampaignSegmentController::class, 'show'])->name('show');
             Route::get('/{campaign_segment}/edit', [CampaignSegmentController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{campaign_segment}', [CampaignSegmentController::class, 'update'])->name('update');
-                        Route::delete('/{campaign_segment}', [CampaignSegmentController::class, 'destroy'])->name('destroy');
+            Route::delete('/{campaign_segment}', [CampaignSegmentController::class, 'destroy'])->name('destroy');
         });
 
         Route::prefix('email-suppressions')->name('email-suppressions.')->group(function () {
