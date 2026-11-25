@@ -27,7 +27,7 @@ describe('index', function () {
             ->get("/campaigns/{$campaign->id}/campaign-recipients")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignRecipients/Index', false)
+                ->component('CampaignRecipients/Index')
                 ->has('campaignRecipients.data', 3)
                 ->has('permissions_meta')
             );
@@ -45,7 +45,7 @@ describe('index', function () {
             ->get("/campaigns/{$campaign->id}/campaign-recipients")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignRecipients/Index', false)
+                ->component('CampaignRecipients/Index')
                 ->has('campaignRecipients.data', 2)
             );
     });
@@ -77,7 +77,7 @@ describe('index', function () {
             ->get("/campaigns/{$campaign->id}/campaign-recipients?search=spring")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignRecipients/Index', false)
+                ->component('CampaignRecipients/Index')
                 ->has('campaignRecipients.data', 1)
             );
     });
@@ -93,7 +93,7 @@ describe('index', function () {
             ->get("/campaigns/{$campaign->id}/campaign-recipients?status=sent")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignRecipients/Index', false)
+                ->component('CampaignRecipients/Index')
                 ->has('campaignRecipients.data', 1)
             );
     });
@@ -147,7 +147,7 @@ describe('show', function () {
             ->get("/campaigns/{$campaign->id}/campaign-recipients/{$campaignRecipient->id}")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignRecipients/Show', false)
+                ->component('CampaignRecipients/Show')
                 ->has('campaignRecipient')
                 ->missing('campaignRecipient.token')
             );
@@ -615,7 +615,7 @@ describe('soft delete scoping', function () {
             ->get("/campaigns/{$campaign->id}/campaign-recipients")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignRecipients/Index', false)
+                ->component('CampaignRecipients/Index')
                 ->has('campaignRecipients.data', 2)
             );
     });
@@ -631,7 +631,7 @@ describe('soft delete scoping', function () {
             ->get("/campaigns/{$campaign->id}/campaign-recipients?trashed=with")
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('CampaignRecipients/Index', false)
+                ->component('CampaignRecipients/Index')
                 ->has('campaignRecipients.data', 3)
             );
     });
