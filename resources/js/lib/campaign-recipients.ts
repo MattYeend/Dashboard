@@ -1,7 +1,4 @@
-export function formatDateTime(
-    value: string | null,
-    fallback = '-',
-): string {
+export function formatDateTime(value: string | null, fallback = '-'): string {
     if (!value) {
         return fallback;
     }

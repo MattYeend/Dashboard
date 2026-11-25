@@ -171,7 +171,10 @@ const navGroups: NavGroup[] = [
                 icon: Send,
                 children: [
                     { title: 'All Campaigns', href: '/campaigns' },
-                    { title: 'Campaign Recipients', href: '/campaign-recipients' },
+                    {
+                        title: 'Campaign Recipients',
+                        href: '/campaign-recipients',
+                    },
                     { title: 'Campaign Segments', href: '/campaign-segments' },
                     { title: 'Campaign Statuses', href: '/campaign-statuses' },
                 ],
