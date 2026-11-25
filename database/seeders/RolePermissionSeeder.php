@@ -652,6 +652,16 @@ class RolePermissionSeeder extends Seeder
             'delete campaign recipient',
             'restore campaign recipient',
             'export campaign recipient',
+
+            // Email suppression management
+            'view any email suppression',
+            'create email suppression',
+            'view email suppression',
+            'edit email suppression',
+            'delete email suppression',
+            'restore email suppression',
+            'import email suppression',
+            'export email suppression',
         ];
 
         foreach ($permissions as $permission) {
@@ -1150,6 +1160,14 @@ class RolePermissionSeeder extends Seeder
             'delete campaign recipient',
             'restore campaign recipient',
             'export campaign recipient',
+            'view any email suppression',
+            'create email suppression',
+            'view email suppression',
+            'edit email suppression',
+            'delete email suppression',
+            'restore email suppression',
+            'import email suppression',
+            'export email suppression',
         ];
         $admin->givePermissionTo($adminPermissions);
         $admin->revokePermissionTo('view logs');
@@ -1522,6 +1540,8 @@ class RolePermissionSeeder extends Seeder
             'view campaign segment',
             'view any campaign recipient',
             'view campaign recipient',
+            'view any email suppression',
+            'view email suppression',
         ];
         $manager->givePermissionTo($managerPermissions);
 
@@ -1771,6 +1791,8 @@ class RolePermissionSeeder extends Seeder
             'view campaign segment',
             'view any campaign recipient',
             'view campaign recipient',
+            'view any email suppression',
+            'view email suppression',
         ];
         $editor->givePermissionTo($editorPermissions);
 
@@ -1846,6 +1868,8 @@ class RolePermissionSeeder extends Seeder
             'view campaign segment',
             'view any campaign recipient',
             'view campaign recipient',
+            'view any email suppression',
+            'view email suppression',
         ];
         $viewer->givePermissionTo($viewerPermissions);
 
@@ -2573,5 +2597,6 @@ class RolePermissionSeeder extends Seeder
         $this->command->info('- Campaign Statuses');
         $this->command->info('- Campaign Segments');
         $this->command->info('- Campaigns');
+        $this->command->info('- Email Suppressions');
     }
 }
