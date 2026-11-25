@@ -14,6 +14,7 @@ export * from './deal-pipeline-form-data';
 export * from './deal-relations-form-data';
 export * from './deal-status-form-data';
 export * from './deal-value-form-data';
+export * from './email-suppression-form-data';
 export * from './email-template-form-data';
 export * from './general-settings-form-data';
 export * from './industry-form-data';
