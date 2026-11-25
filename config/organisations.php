@@ -17,6 +17,7 @@ use App\Models\Contact;
 use App\Models\Course;
 use App\Models\Deal;
 use App\Models\DealStatus;
+use App\Models\EmailSuppression;
 use App\Models\EmailTemplate;
 use App\Models\Industry;
 use App\Models\InteractionLog;
@@ -99,6 +100,7 @@ return [
         EmailTemplate::class,
         Campaign::class,
         CampaignRecipient::class,
+        EmailSuppression::class,
     ],
 
     /*
