@@ -1,19 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\EmailSuppression;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Services\EmailSuppressions\PolicyAuthorisationService;
 
 class EmailSuppressionPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Inject the required services into the policy.
+     */
+    public function __construct(
+        protected PolicyAuthorisationService $authorisationService
+    ) {}
+
+    /**
+     * Determine whether the user can view any email suppressions.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canViewAny($user);
     }
 
     /**
@@ -21,15 +30,15 @@ class EmailSuppressionPolicy
      */
     public function view(User $user, EmailSuppression $emailSuppression): bool
     {
-        return false;
+        return $this->authorisationService->canView($user, $emailSuppression);
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create email suppressions.
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->authorisationService->canCreate($user);
     }
 
     /**
@@ -37,7 +46,7 @@ class EmailSuppressionPolicy
      */
     public function update(User $user, EmailSuppression $emailSuppression): bool
     {
-        return false;
+        return $this->authorisationService->canUpdate($user, $emailSuppression);
     }
 
     /**
@@ -45,7 +54,7 @@ class EmailSuppressionPolicy
      */
     public function delete(User $user, EmailSuppression $emailSuppression): bool
     {
-        return false;
+        return $this->authorisationService->canDelete($user, $emailSuppression);
     }
 
     /**
@@ -53,7 +62,7 @@ class EmailSuppressionPolicy
      */
     public function restore(User $user, EmailSuppression $emailSuppression): bool
     {
-        return false;
+        return $this->authorisationService->canRestore($user, $emailSuppression);
     }
 
     /**
@@ -61,6 +70,38 @@ class EmailSuppressionPolicy
      */
     public function forceDelete(User $user, EmailSuppression $emailSuppression): bool
     {
-        return false;
+        return $this->authorisationService->canForceDelete($user, $emailSuppression);
+    }
+
+    /**
+     * Determine whether the user can bulk delete email suppressions.
+     */
+    public function bulkDelete(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can bulk restore email suppressions.
+     */
+    public function bulkRestore(User $user): bool
+    {
+        return $this->authorisationService->isAdmin($user);
+    }
+
+    /**
+     * Determine whether the user can import email suppressions.
+     */
+    public function import(User $user): bool
+    {
+        return $this->authorisationService->canImport($user);
+    }
+
+    /**
+     * Determine whether the user can export email suppressions.
+     */
+    public function export(User $user): bool
+    {
+        return $this->authorisationService->canExport($user);
     }
 }
