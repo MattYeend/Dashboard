@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BulkIdsRequest;
-use App\Http\Requests\Campaigns\ImportCampaignRequest;
-use App\Http\Requests\Campaigns\StoreCampaignRequest;
-use App\Http\Requests\Campaigns\UpdateCampaignRequest;
-use App\Models\Campaign;
-use App\Services\Campaigns\ManagementService;
-use App\Services\Campaigns\QueryService;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Inertia\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Actions\Campaigns\CancelCampaign;
 use App\Actions\Campaigns\PauseCampaign;
 use App\Actions\Campaigns\ResumeCampaign;
 use App\Actions\Campaigns\ScheduleCampaign;
 use App\Exceptions\CampaignTransitionException;
+use App\Http\Requests\BulkIdsRequest;
+use App\Http\Requests\Campaigns\ImportCampaignRequest;
 use App\Http\Requests\Campaigns\ScheduleCampaignRequest;
+use App\Http\Requests\Campaigns\StoreCampaignRequest;
+use App\Http\Requests\Campaigns\UpdateCampaignRequest;
+use App\Models\Campaign;
+use App\Services\Campaigns\ManagementService;
+use App\Services\Campaigns\QueryService;
 use Closure;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
+use Inertia\Inertia;
+use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CampaignController extends Controller
 {
@@ -349,7 +349,7 @@ class CampaignController extends Controller
         return response()->json($result);
     }
 
-        /**
+    /**
      * Schedule a draft campaign.
      *
      * Validation and authorisation are handled upstream by
@@ -416,7 +416,7 @@ class CampaignController extends Controller
      * Run a status transition and turn a refusal into a validation style
      * error instead of a server error.
      *
-     * @param Closure(): Campaign $callback
+     * @param  Closure(): Campaign  $callback
      */
     private function transition(
         Request $request,

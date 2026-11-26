@@ -12,9 +12,7 @@ class ResumeCampaign
     /**
      * Create a new class instance.
      */
-    public function __construct(private readonly CampaignTransitionService $transitions)
-    {
-    }
+    public function __construct(private readonly CampaignTransitionService $transitions) {}
 
     /**
      * Move a paused campaign back to Sending and queue its pending recipients.

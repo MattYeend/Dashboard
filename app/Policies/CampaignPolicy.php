@@ -105,7 +105,7 @@ class CampaignPolicy
         return $this->authorisationService->canExport($user);
     }
 
-        /**
+    /**
      * Determine whether the user can schedule the campaign.
      */
     public function schedule(User $user, Campaign $campaign): bool

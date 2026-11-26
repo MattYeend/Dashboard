@@ -24,8 +24,7 @@ class CampaignTransitionService
     public function __construct(
         private readonly SegmentResolverService $segments,
         private readonly CampaignSenderService $sender,
-    ) {
-    }
+    ) {}
 
     /**
      * Draft to Scheduled. The dispatch command starts it once scheduled_at has passed.
@@ -123,8 +122,8 @@ class CampaignTransitionService
     /**
      * Atomic compare and swap on status_id.
      *
-     * @param array<int, string> $fromKeys Status keys the campaign may currently have.
-     * @param array<string, mixed> $attributes Extra columns to set in the same UPDATE.
+     * @param  array<int, string>  $fromKeys  Status keys the campaign may currently have.
+     * @param  array<string, mixed>  $attributes  Extra columns to set in the same UPDATE.
      */
     private function swap(
         Campaign $campaign,

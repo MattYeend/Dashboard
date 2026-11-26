@@ -12,9 +12,7 @@ class CancelCampaign
     /**
      * Create a new class instance.
      */
-    public function __construct(private readonly CampaignTransitionService $transitions)
-    {
-    }
+    public function __construct(private readonly CampaignTransitionService $transitions) {}
 
     /**
      * Cancel a draft, scheduled or paused campaign and skip its pending recipients.

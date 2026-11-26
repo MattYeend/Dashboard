@@ -53,7 +53,7 @@ class SegmentResolverService
     }
 
     /**
-     * @param array{field?: string, operator?: string, value?: mixed} $filter
+     * @param  array{field?: string, operator?: string, value?: mixed}  $filter
      */
     private function assertAllowed(array $filter): void
     {
@@ -66,7 +66,7 @@ class SegmentResolverService
     }
 
     /**
-     * @param array{field: string, operator: string, value: mixed} $filter
+     * @param  array{field: string, operator: string, value: mixed}  $filter
      */
     private function condition(Builder $q, string $method, array $filter): void
     {

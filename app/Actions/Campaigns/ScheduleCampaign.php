@@ -13,9 +13,7 @@ class ScheduleCampaign
     /**
      * Create a new class instance.
      */
-    public function __construct(private readonly CampaignTransitionService $transitions)
-    {
-    }
+    public function __construct(private readonly CampaignTransitionService $transitions) {}
 
     /**
      * Move a draft campaign to Scheduled for the given send time.

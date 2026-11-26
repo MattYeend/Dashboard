@@ -19,9 +19,7 @@ class CampaignMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public CampaignRecipient $recipient)
-    {
-    }
+    public function __construct(public CampaignRecipient $recipient) {}
 
     /**
      * Get the message envelope.

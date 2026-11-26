@@ -6,13 +6,13 @@ namespace App\Services\Campaigns;
 
 class TemplateRendererService
 {
-    /** 
-     * Merge tags a template may use. Anything else is left as literal text. 
+    /**
+     * Merge tags a template may use. Anything else is left as literal text.
      */
     public const TAGS = ['first_name', 'name', 'email', 'company', 'unsubscribe_url'];
 
     /**
-     * @param array<string, string> $values
+     * @param  array<string, string>  $values
      */
     public function render(string $template, array $values, bool $html): string
     {

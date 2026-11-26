@@ -7,22 +7,55 @@ namespace App\Console\Commands;
 use App\Jobs\StartCampaignJob;
 use App\Models\Campaign;
 use App\Models\CampaignStatus;
+use App\Models\Organisation;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
+#[Signature('campaigns:dispatch-due')]
+#[Description('Start scheduled campaigns whose send time has arrived')]
 class DispatchDueCampaigns extends Command
 {
-    protected $signature = 'campaigns:dispatch-due';
-
-    protected $description = 'Start scheduled campaigns whose send time has arrived';
-
+    /**
+     * Execute the console command.
+     *
+     * Scopes are removed to find due campaigns across every organisation.
+     * Each job is then dispatched while its own organisation is current, so
+     * the tenant aware queue stores the right tenant in the job payload and
+     * one organisation can never send to another organisation's contacts.
+     */
     public function handle(): int
     {
-        // withoutGlobalScopes is acceptable here only: the job re-enters the tenant via the queue payload.
-        // Add Campaign to config/organisations.php global_scope_bypass_allow_list for this command.
+        // Every organisation has its own Scheduled status row, so match any of them.
+        $scheduledStatusIds = CampaignStatus::withoutGlobalScopes()
+            ->where('system_key', CampaignStatus::KEY_SCHEDULED)
+            ->select('id');
+
+        $dispatched = 0;
+
         Campaign::withoutGlobalScopes()
-            ->where('status_id', CampaignStatus::withoutGlobalScopes()->where('system_key', CampaignStatus::KEY_SCHEDULED)->select('id'))
+            ->whereIn('status_id', $scheduledStatusIds)
             ->where('scheduled_at', '<=', now())
-            ->each(fn (Campaign $c) => StartCampaignJob::dispatch($c->id));
+            ->chunkById(100, function ($campaigns) use (&$dispatched): void {
+                foreach ($campaigns as $campaign) {
+                    $organisation = Organisation::withoutGlobalScopes()->find($campaign->organisation_id);
+
+                    if ($organisation === null) {
+                        continue;
+                    }
+
+                    $organisation->makeCurrent();
+
+                    try {
+                        StartCampaignJob::dispatch($campaign->id);
+                        $dispatched++;
+                    } finally {
+                        Organisation::forgetCurrent();
+                    }
+                }
+            });
+
+        $this->info("Dispatched {$dispatched} campaign(s).");
 
         return self::SUCCESS;
     }

@@ -27,9 +27,7 @@ class StartCampaignJob implements ShouldQueue
 
     public int $tries = 1;
 
-    public function __construct(public int $campaignId)
-    {
-    }
+    public function __construct(public int $campaignId) {}
 
     public function handle(
         SegmentResolverService $resolver,

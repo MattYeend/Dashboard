@@ -42,9 +42,7 @@ class SendCampaignRecipientJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public int $recipientId)
-    {
-    }
+    public function __construct(public int $recipientId) {}
 
     /**
      * Get the middleware the job should pass through.

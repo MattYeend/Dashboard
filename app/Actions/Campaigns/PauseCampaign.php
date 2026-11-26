@@ -12,9 +12,7 @@ class PauseCampaign
     /**
      * Create a new class instance.
      */
-    public function __construct(private readonly CampaignTransitionService $transitions)
-    {
-    }
+    public function __construct(private readonly CampaignTransitionService $transitions) {}
 
     /**
      * Move a sending campaign to Paused so queued jobs stop sending.

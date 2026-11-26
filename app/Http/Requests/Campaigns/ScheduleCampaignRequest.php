@@ -29,9 +29,9 @@ class ScheduleCampaignRequest extends FormRequest
     {
         return [
             'scheduled_at' => [
-                'required', 
-                'date', 
-                'after_or_equal:-1 minute'
+                'required',
+                'date',
+                'after_or_equal:-1 minute',
             ],
         ];
     }
