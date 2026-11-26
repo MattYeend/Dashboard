@@ -80,7 +80,7 @@ if (! function_exists('makeRecipient')) {
     {
         return CampaignRecipient::factory()->create(array_merge([
             'campaign_id' => $campaign->id,
-            'email' => Str::random(8).'@example.com',
+            'email' => Str::lower(Str::random(8)).'@example.com',
             'name' => 'Sam Jones',
             'status' => $status,
             'token' => Str::random(40),
