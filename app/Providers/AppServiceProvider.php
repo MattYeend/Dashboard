@@ -312,6 +312,14 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute((int) config('campaigns.emails_per_minute', 60));
         });
 
+        RateLimiter::for('campaign-unsubscribe', static function (Request $request): Limit {
+            return Limit::perMinute(30)->by('campaign-unsubscribe:'.$request->ip());
+        });
+
+        RateLimiter::for('campaign-tracking', static function (Request $request): Limit {
+            return Limit::perMinute(120)->by('campaign-tracking:'.$request->ip());
+        });
+
         $this->preventDestructiveCommandsInProtectedEnvironments();
     }
 
