@@ -33,7 +33,7 @@ class CampaignMail extends Mailable
         return new Envelope(
             from: new Address((string) config('campaigns.from_address'), $campaign->from_name ?: config('app.name')),
             replyTo: $campaign->reply_to ? [new Address($campaign->reply_to)] : [],
-            subject: $this->render($campaign->rendered_subject, false),
+            subject: $this->renderTemplate($campaign->rendered_subject, false),
         );
     }
 
@@ -45,7 +45,7 @@ class CampaignMail extends Mailable
         $campaign = $this->recipient->campaign;
 
         return new Content(
-            htmlString: $this->render($campaign->rendered_body_html, true),
+            htmlString: $this->renderTemplate($campaign->rendered_body_html, true),
             text: null,
         );
     }
@@ -83,8 +83,10 @@ class CampaignMail extends Mailable
 
     /**
      * Replace merge tags in a template for this recipient.
+     *
+     * Named renderTemplate() because Mailable already defines a public render().
      */
-    private function render(string $template, bool $html): string
+    private function renderTemplate(string $template, bool $html): string
     {
         return app(TemplateRendererService::class)->render($template, [
             'first_name' => explode(' ', (string) $this->recipient->name)[0] ?? '',
