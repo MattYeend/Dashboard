@@ -308,6 +308,10 @@ class AppServiceProvider extends ServiceProvider
             );
         });
 
+        RateLimiter::for('campaign-emails', static function (): Limit {
+            return Limit::perMinute((int) config('campaigns.emails_per_minute', 60));
+        });
+
         $this->preventDestructiveCommandsInProtectedEnvironments();
     }
 

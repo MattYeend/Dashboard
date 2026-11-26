@@ -54,3 +54,8 @@ Schedule::command('quotes:expire')
     ->dailyAt('01:00')
     ->onOneServer()
     ->withoutOverlapping();
+
+Schedule::command('campaigns:dispatch-due')
+    ->everySixHours()
+    ->withoutOverlapping()
+    ->onOneServer();
