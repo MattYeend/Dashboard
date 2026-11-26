@@ -568,7 +568,7 @@ describe('unsubscribe', function () {
         $recipient = makeRecipient(makeSendableCampaign(CampaignStatus::KEY_SENDING));
 
         $this->get("/campaigns/unsubscribe/{$recipient->token}")
-            ->assertStatus(403);
+            ->assertNotFound();
     });
 
     test('an unknown token returns 404', function () {
