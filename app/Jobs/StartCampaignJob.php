@@ -62,7 +62,7 @@ class StartCampaignJob implements ShouldQueue
                         'campaign_id' => $campaign->id,
                         'contact_id' => $contact->id,
                         'email' => $email,
-                        'name' => $contact->title ?? null,
+                        'name' => $contact->name,
                         'status' => $suppression->isSuppressed($email) ? 'skipped' : 'pending',
                         'token' => Str::random(40),
                     ]);

@@ -13,7 +13,9 @@ use App\Models\Contact;
 use App\Models\EmailSuppression;
 use App\Models\EmailTemplate;
 use App\Models\Organisation;
+use App\Models\User;
 use App\Services\Campaigns\SegmentResolverService;
+use Database\Seeders\CampaignStatusSeeder;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
@@ -31,6 +33,13 @@ beforeEach(function () {
         'campaigns.postal_address' => '1 Test Street, Leicester',
         'campaigns.from_address' => 'hello@example.com',
     ]);
+
+    // Tests that never create a user still need a current organisation and statuses.
+    Organisation::factory()->create()->makeCurrent();
+
+    if (! CampaignStatus::query()->where('system_key', CampaignStatus::KEY_DRAFT)->exists()) {
+        $this->seed(CampaignStatusSeeder::class);
+    }
 });
 
 if (! function_exists('makeSendableCampaign')) {
@@ -75,6 +84,22 @@ if (! function_exists('makeRecipient')) {
             'name' => 'Sam Jones',
             'status' => $status,
             'token' => Str::random(40),
+        ], $overrides));
+    }
+}
+
+if (! function_exists('makeContact')) {
+    /**
+     * Build a contact. Contacts are polymorphic, so a contactable is required.
+     *
+     * @param  array<string, mixed>  $overrides
+     */
+    function makeContact(array $overrides = []): Contact
+    {
+        return Contact::factory()->create(array_merge([
+            'contactable_type' => User::class,
+            // No foreign key exists on a polymorphic column, so a fixed id is enough here.
+            'contactable_id' => 1,
         ], $overrides));
     }
 }

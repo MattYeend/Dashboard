@@ -171,5 +171,8 @@ return [
         'app/Services/Organisations/DataExportService.php',
         'app/Services/Invoices/QueryService.php',
         'app/Services/TrashFilterService.php',
+        'app/Console/Commands/DispatchDueCampaigns.php',
+        'app/Http/Controllers/CampaignUnsubscribeController.php',
+        'app/Actions/Campaigns/UnsubscribeRecipient.php',
     ],
 ];
