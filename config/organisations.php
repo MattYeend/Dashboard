@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Actions\Campaigns\UnsubscribeRecipient;
+use App\Actions\Organisations\CascadeSoftDeleteOrganisationScopedRecords;
+use App\Console\Commands\DispatchDueCampaigns;
+use App\Http\Controllers\Public\CampaignUnsubscribeController;
 use App\Models\Activity;
 use App\Models\Address;
 use App\Models\Answer;
@@ -50,6 +54,10 @@ use App\Models\TaskStatus;
 use App\Models\Ticket;
 use App\Models\TicketPriority;
 use App\Models\TicketStatus;
+use App\Services\Campaigns\RecipientLookupService;
+use App\Services\Invoices\QueryService;
+use App\Services\Organisations\DataExportService;
+use App\Services\TrashFilterService;
 
 return [
     'scoped_models' => [
@@ -167,12 +175,20 @@ return [
     */
 
     'global_scope_bypass_allow_list' => [
-        'app/Actions/Organisations/CascadeSoftDeleteOrganisationScopedRecords.php',
-        'app/Services/Organisations/DataExportService.php',
-        'app/Services/Invoices/QueryService.php',
-        'app/Services/TrashFilterService.php',
-        'app/Console/Commands/DispatchDueCampaigns.php',
-        'app/Http/Controllers/CampaignUnsubscribeController.php',
-        'app/Actions/Campaigns/UnsubscribeRecipient.php',
+        // 'app/Actions/Organisations/CascadeSoftDeleteOrganisationScopedRecords.php',
+        // 'app/Services/Organisations/DataExportService.php',
+        // 'app/Services/Invoices/QueryService.php',
+        // 'app/Services/TrashFilterService.php',
+        // 'app/Console/Commands/DispatchDueCampaigns.php',
+        // 'app/Http/Controllers/CampaignUnsubscribeController.php',
+        // 'app/Actions/Campaigns/UnsubscribeRecipient.php',
+        CascadeSoftDeleteOrganisationScopedRecords::class,
+        DataExportService::class,
+        QueryService::class,
+        TrashFilterService::class,
+        DispatchDueCampaigns::class,
+        CampaignUnsubscribeController::class,
+        UnsubscribeRecipient::class,
+        RecipientLookupService::class,
     ],
 ];
