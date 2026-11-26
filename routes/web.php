@@ -53,6 +53,8 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PlatformReportingController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Public\CampaignTrackingController;
+use App\Http\Controllers\Public\CampaignUnsubscribeController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\QuoteController;
@@ -88,9 +90,20 @@ Route::post('register', [RegistrationInterestController::class, 'store'])
 Route::get('register/thanks', fn () => Inertia::render('auth/RegisterThanks'))
     ->name('register.thanks');
 
-// Route::match(['get', 'post'], 'campaigns/unsubscribe/{token}', [CampaignUnsubscribeController::class, 'handle'])
-//     ->middleware(['signed', 'throttle:20,1'])
-//     ->name('campaigns.unsubscribe');
+Route::prefix('c')->name('campaigns.')->group(function () {
+    Route::middleware('throttle:campaign-unsubscribe')->group(function () {
+        Route::get('/u/{token}', [CampaignUnsubscribeController::class, 'show'])
+            ->middleware('signed')
+            ->name('unsubscribe');
+        Route::post('/u/{token}', [CampaignUnsubscribeController::class, 'store'])
+            ->middleware('signed')
+            ->name('unsubscribe.store');
+    });
+
+    Route::get('/o/{token}.gif', [CampaignTrackingController::class, 'open'])
+        ->middleware('throttle:campaign-tracking')
+        ->name('open');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/organisations/select', [OrganisationSelectController::class, 'index'])->name('organisations.select');
