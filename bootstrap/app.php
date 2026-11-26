@@ -49,6 +49,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->preventRequestForgery(except: [
             'stripe/webhook',
+            'campaigns/unsubscribe/*',
         ]);
 
         $middleware->alias([

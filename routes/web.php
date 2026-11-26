@@ -88,6 +88,10 @@ Route::post('register', [RegistrationInterestController::class, 'store'])
 Route::get('register/thanks', fn () => Inertia::render('auth/RegisterThanks'))
     ->name('register.thanks');
 
+// Route::match(['get', 'post'], 'campaigns/unsubscribe/{token}', [CampaignUnsubscribeController::class, 'handle'])
+//     ->middleware(['signed', 'throttle:20,1'])
+//     ->name('campaigns.unsubscribe');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/organisations/select', [OrganisationSelectController::class, 'index'])->name('organisations.select');
 
@@ -1267,6 +1271,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{campaign}/edit', [CampaignController::class, 'edit'])->name('edit');
             Route::match(['put', 'patch'], '/{campaign}', [CampaignController::class, 'update'])->name('update');
             Route::delete('/{campaign}', [CampaignController::class, 'destroy'])->name('destroy');
+
+            Route::post('/{campaign}/schedule', [CampaignController::class, 'schedule'])
+                ->middleware('throttle:20,1')
+                ->name('schedule');
+            Route::post('/{campaign}/pause', [CampaignController::class, 'pause'])
+                ->middleware('throttle:20,1')
+                ->name('pause');
+            Route::post('/{campaign}/resume', [CampaignController::class, 'resume'])
+                ->middleware('throttle:20,1')
+                ->name('resume');
+            Route::post('/{campaign}/cancel', [CampaignController::class, 'cancel'])
+                ->middleware('throttle:20,1')
+                ->name('cancel');
 
             Route::prefix('/{campaign}/campaign-recipients')->name('campaign-recipients.')->scopeBindings()->group(function () {
                 Route::post('/bulk/delete', [CampaignRecipientController::class, 'bulkDelete'])->name('bulk.delete');
