@@ -70,12 +70,12 @@ class StartCampaignJob implements ShouldQueue
             });
         });
 
-        $campaign->update([
+        $campaign->forceFill([
             'recipients_count' => count($seen),
             'rendered_subject' => $campaign->subject ?: $campaign->template->subject,
             'rendered_body_html' => $campaign->template->body_html,
             'rendered_body_text' => $campaign->template->body_text,
-        ]);
+        ])->save();
 
         CampaignRecipient::where('campaign_id', $campaign->id)->where('status', 'pending')
             ->orderBy('id')->each(fn (CampaignRecipient $r) => SendCampaignRecipientJob::dispatch($r->id));
