@@ -43,7 +43,7 @@ class CampaignMail extends Mailable
         $campaign = $this->recipient->campaign;
 
         return new Content(
-            htmlString: $this->renderTemplate($campaign->rendered_body_html, true),
+            htmlString: $this->withOpenPixel($this->renderTemplate($campaign->rendered_body_html, true)),
             text: null,
         );
     }
@@ -77,6 +77,26 @@ class CampaignMail extends Mailable
     private function unsubscribeUrl(): string
     {
         return URL::signedRoute('campaigns.unsubscribe', ['token' => $this->recipient->token]);
+    }
+
+    /**
+     * Append the open tracking pixel when tracking is enabled.
+     */
+    private function withOpenPixel(string $html): string
+    {
+        if (! config('campaigns.track_opens')) {
+            return $html;
+        }
+
+        $pixel = '<img src="'.e(route('campaigns.open', ['token' => $this->recipient->token])).'" width="1" height="1" alt="" style="display:none">';
+
+        $position = strripos($html, '</body>');
+
+        if ($position === false) {
+            return $html.$pixel;
+        }
+
+        return substr_replace($html, $pixel, $position, 0);
     }
 
     /**
