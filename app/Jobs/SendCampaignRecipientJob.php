@@ -24,24 +24,44 @@ class SendCampaignRecipientJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    /**
+     * The number of times the job may be attempted.
+     */
     public int $tries = 3;
 
-    /** @return array<int, int> */
+    /**
+     * Seconds to wait before each retry.
+     *
+     * @return array<int, int>
+     */
     public function backoff(): array
     {
         return [60, 300, 900];
     }
 
+    /**
+     * Create a new job instance.
+     */
     public function __construct(public int $recipientId)
     {
     }
 
-    /** @return array<int, object> */
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array<int, object>
+     */
     public function middleware(): array
     {
         return [new RateLimited('campaign-emails')];
     }
 
+    /**
+     * Execute the job.
+     *
+     * Suppression is checked again here, immediately before sending, so an
+     * unsubscribe that arrives mid-send is honoured.
+     */
     public function handle(SuppressionService $suppression, CampaignSenderService $sender): void
     {
         $recipient = CampaignRecipient::with('campaign')->findOrFail($this->recipientId);
@@ -64,6 +84,9 @@ class SendCampaignRecipientJob implements ShouldQueue
         $sender->refreshCounts($campaign);
     }
 
+    /**
+     * Handle a job failure after all retries are used.
+     */
     public function failed(Throwable $e): void
     {
         $recipient = CampaignRecipient::with('campaign')->find($this->recipientId);

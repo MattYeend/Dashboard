@@ -18,6 +18,14 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use App\Actions\Campaigns\CancelCampaign;
+use App\Actions\Campaigns\PauseCampaign;
+use App\Actions\Campaigns\ResumeCampaign;
+use App\Actions\Campaigns\ScheduleCampaign;
+use App\Exceptions\CampaignTransitionException;
+use App\Http\Requests\Campaigns\ScheduleCampaignRequest;
+use Closure;
+use Illuminate\Support\Facades\Date;
 
 class CampaignController extends Controller
 {
@@ -339,5 +347,96 @@ class CampaignController extends Controller
         }
 
         return response()->json($result);
+    }
+
+        /**
+     * Schedule a draft campaign.
+     *
+     * Validation and authorisation are handled upstream by
+     * ScheduleCampaignRequest.
+     */
+    public function schedule(
+        ScheduleCampaignRequest $request,
+        Campaign $campaign,
+        ScheduleCampaign $action
+    ): JsonResponse|RedirectResponse {
+        return $this->transition(
+            $request,
+            fn () => $action->execute($campaign, Date::parse($request->validated('scheduled_at'))),
+            'Campaign scheduled.'
+        );
+    }
+
+    /**
+     * Pause a sending campaign.
+     *
+     * Authorises via the 'pause' policy before proceeding.
+     */
+    public function pause(
+        Request $request,
+        Campaign $campaign,
+        PauseCampaign $action
+    ): JsonResponse|RedirectResponse {
+        $this->authorize('pause', $campaign);
+
+        return $this->transition($request, fn () => $action->execute($campaign), 'Campaign paused.');
+    }
+
+    /**
+     * Resume a paused campaign.
+     *
+     * Authorises via the 'resume' policy before proceeding.
+     */
+    public function resume(
+        Request $request,
+        Campaign $campaign,
+        ResumeCampaign $action
+    ): JsonResponse|RedirectResponse {
+        $this->authorize('resume', $campaign);
+
+        return $this->transition($request, fn () => $action->execute($campaign), 'Campaign resumed.');
+    }
+
+    /**
+     * Cancel a draft, scheduled or paused campaign.
+     *
+     * Authorises via the 'cancel' policy before proceeding.
+     */
+    public function cancel(
+        Request $request,
+        Campaign $campaign,
+        CancelCampaign $action
+    ): JsonResponse|RedirectResponse {
+        $this->authorize('cancel', $campaign);
+
+        return $this->transition($request, fn () => $action->execute($campaign), 'Campaign cancelled.');
+    }
+
+    /**
+     * Run a status transition and turn a refusal into a validation style
+     * error instead of a server error.
+     *
+     * @param Closure(): Campaign $callback
+     */
+    private function transition(
+        Request $request,
+        Closure $callback,
+        string $message
+    ): JsonResponse|RedirectResponse {
+        try {
+            $campaign = $callback();
+        } catch (CampaignTransitionException $e) {
+            if ($request->wantsJson()) {
+                return response()->json(['message' => $e->getMessage()], 422);
+            }
+
+            return back()->withErrors(['campaign' => $e->getMessage()]);
+        }
+
+        if ($request->wantsJson()) {
+            return response()->json($campaign);
+        }
+
+        return back()->with('success', $message);
     }
 }

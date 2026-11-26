@@ -104,4 +104,38 @@ class CampaignPolicy
     {
         return $this->authorisationService->canExport($user);
     }
+
+        /**
+     * Determine whether the user can schedule the campaign.
+     */
+    public function schedule(User $user, Campaign $campaign): bool
+    {
+        return $this->authorisationService->canSchedule($user, $campaign);
+    }
+
+    /**
+     * Determine whether the user can pause the campaign.
+     */
+    public function pause(User $user, Campaign $campaign): bool
+    {
+        return $this->authorisationService->canPause($user, $campaign);
+    }
+
+    /**
+     * Determine whether the user can resume the campaign.
+     *
+     * Resuming shares the pause permission: whoever can pause can resume.
+     */
+    public function resume(User $user, Campaign $campaign): bool
+    {
+        return $this->authorisationService->canPause($user, $campaign);
+    }
+
+    /**
+     * Determine whether the user can cancel the campaign.
+     */
+    public function cancel(User $user, Campaign $campaign): bool
+    {
+        return $this->authorisationService->canCancel($user, $campaign);
+    }
 }

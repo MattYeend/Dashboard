@@ -153,6 +153,45 @@ class PolicyAuthorisationService
         return $actor->can('export campaign');
     }
 
+        /**
+     * Determine whether the user can schedule the campaign.
+     */
+    public function canSchedule(User $actor, Campaign $target): bool
+    {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('schedule campaign')
+            && $this->activeChecker->isActive($target);
+    }
+
+    /**
+     * Determine whether the user can pause or resume the campaign.
+     */
+    public function canPause(User $actor, Campaign $target): bool
+    {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('pause campaign')
+            && $this->activeChecker->isActive($target);
+    }
+
+    /**
+     * Determine whether the user can cancel the campaign.
+     */
+    public function canCancel(User $actor, Campaign $target): bool
+    {
+        if (! $this->belongsToCurrentOrganisation($target) || $this->targetOutranksActor($actor, $target)) {
+            return false;
+        }
+
+        return $actor->can('cancel campaign')
+            && $this->activeChecker->isActive($target);
+    }
+
     /**
      * Determine whether the campaign was created by a user who outranks the actor.
      *
