@@ -275,8 +275,6 @@ describe('pause', function () {
     });
 
     test('a paused campaign does not send queued emails', function () {
-        Mail::fake();
-
         $campaign = makeSendableCampaign(CampaignStatus::KEY_PAUSED);
         $recipient = makeRecipient($campaign);
 
@@ -498,8 +496,6 @@ describe('start campaign job', function () {
 
 describe('send recipient job', function () {
     test('sends the email and marks the recipient as sent', function () {
-        Mail::fake();
-
         $campaign = makeSendableCampaign(CampaignStatus::KEY_SENDING, [
             'rendered_subject' => 'Hello {{ first_name }}',
             'rendered_body_html' => '<p>Hi {{ first_name }}</p><a href="{{ unsubscribe_url }}">Unsubscribe</a>',
@@ -515,8 +511,6 @@ describe('send recipient job', function () {
     });
 
     test('a suppressed address is skipped even if it was suppressed after queuing', function () {
-        Mail::fake();
-
         $campaign = makeSendableCampaign(CampaignStatus::KEY_SENDING);
         $recipient = makeRecipient($campaign, 'pending', ['email' => 'late@example.com']);
         EmailSuppression::factory()->create(['email' => 'late@example.com']);
@@ -529,8 +523,6 @@ describe('send recipient job', function () {
     });
 
     test('a recipient that is not pending is not emailed again', function () {
-        Mail::fake();
-
         $campaign = makeSendableCampaign(CampaignStatus::KEY_SENDING);
         $recipient = makeRecipient($campaign, 'sent');
 
@@ -540,8 +532,6 @@ describe('send recipient job', function () {
     });
 
     test('the campaign is marked as sent once nothing is pending', function () {
-        Mail::fake();
-
         $campaign = makeSendableCampaign(CampaignStatus::KEY_SENDING, [
             'rendered_subject' => 'Hello',
             'rendered_body_html' => '<a href="{{ unsubscribe_url }}">Unsubscribe</a>',
@@ -653,8 +643,6 @@ describe('unsubscribe', function () {
     });
 
     test('an unsubscribe that arrives before sending stops the email', function () {
-        Mail::fake();
-
         $campaign = makeSendableCampaign(CampaignStatus::KEY_SENDING);
         $recipient = makeRecipient($campaign, 'pending');
         $url = URL::signedRoute('campaigns.unsubscribe', ['token' => $recipient->token]);
