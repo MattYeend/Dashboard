@@ -27,9 +27,8 @@ class SegmentResolverService
      */
     public const FIELDS = [
         'contactable_type' => ['equals'],
-        'city' => ['equals', 'contains'],
-        'country' => ['equals'],
-        'postal_code' => ['starts_with'],
+        'name' => ['equals', 'contains'],
+        'email' => ['contains'],
         'created_at' => ['after', 'before'],
     ];
 

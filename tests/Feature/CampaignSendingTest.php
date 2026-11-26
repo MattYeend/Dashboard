@@ -402,12 +402,12 @@ describe('start campaign job', function () {
         $campaign = makeSendableCampaign(CampaignStatus::KEY_SCHEDULED);
         $campaign->segment->update([
             'criteria' => [
-                ['field' => 'city', 'operator' => 'equals', 'value' => 'Leicester'],
+                ['field' => 'name', 'operator' => 'contains', 'value' => 'Leicester'],
             ],
         ]);
 
-        Contact::factory()->create(['email' => 'in@example.com', 'city' => 'Leicester']);
-        Contact::factory()->create(['email' => 'out@example.com', 'city' => 'Bangor']);
+        makeContact(['email' => 'in@example.com', 'name' => 'Leicester Customer']);
+        makeContact(['email' => 'out@example.com', 'name' => 'Bangor Customer']);
 
         runStartJob($campaign);
 
