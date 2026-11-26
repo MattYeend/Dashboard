@@ -16,8 +16,7 @@ class CampaignTrackingController extends Controller
 
     public function __construct(
         private readonly RecipientLookupService $lookup,
-    ) {
-    }
+    ) {}
 
     public function open(string $token): Response
     {

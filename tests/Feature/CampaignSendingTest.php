@@ -563,94 +563,94 @@ describe('dispatch due command', function () {
     });
 });
 
-// describe('unsubscribe', function () {
-//     test('an unsigned link is rejected', function () {
-//         $recipient = makeRecipient(makeSendableCampaign(CampaignStatus::KEY_SENDING));
+describe('unsubscribe', function () {
+    test('an unsigned link is rejected', function () {
+        $recipient = makeRecipient(makeSendableCampaign(CampaignStatus::KEY_SENDING));
 
-//         $this->get("/campaigns/unsubscribe/{$recipient->token}")
-//             ->assertStatus(403);
-//     });
+        $this->get("/campaigns/unsubscribe/{$recipient->token}")
+            ->assertStatus(403);
+    });
 
-//     test('an unknown token returns 404', function () {
-//         $url = URL::signedRoute('campaigns.unsubscribe', ['token' => Str::random(40)]);
+    test('an unknown token returns 404', function () {
+        $url = URL::signedRoute('campaigns.unsubscribe', ['token' => Str::random(40)]);
 
-//         $this->get($url)->assertStatus(404);
-//     });
+        $this->get($url)->assertStatus(404);
+    });
 
-//     test('viewing the confirmation page changes nothing', function () {
-//         $recipient = makeRecipient(makeSendableCampaign(CampaignStatus::KEY_SENDING), 'pending');
-//         $url = URL::signedRoute('campaigns.unsubscribe', ['token' => $recipient->token]);
+    test('viewing the confirmation page changes nothing', function () {
+        $recipient = makeRecipient(makeSendableCampaign(CampaignStatus::KEY_SENDING), 'pending');
+        $url = URL::signedRoute('campaigns.unsubscribe', ['token' => $recipient->token]);
 
-//         $this->get($url)->assertOk();
+        $this->get($url)->assertOk();
 
-//         expect($recipient->refresh()->status)->toBe('pending');
-//         $this->assertDatabaseMissing('email_suppressions', ['email' => $recipient->email]);
-//     });
+        expect($recipient->refresh()->status)->toBe('pending');
+        $this->assertDatabaseMissing('email_suppressions', ['email' => $recipient->email]);
+    });
 
-//     test('confirming suppresses the address and marks the recipient unsubscribed', function () {
-//         $recipient = makeRecipient(makeSendableCampaign(CampaignStatus::KEY_SENDING), 'pending');
-//         $url = URL::signedRoute('campaigns.unsubscribe', ['token' => $recipient->token]);
+    test('confirming suppresses the address and marks the recipient unsubscribed', function () {
+        $recipient = makeRecipient(makeSendableCampaign(CampaignStatus::KEY_SENDING), 'pending');
+        $url = URL::signedRoute('campaigns.unsubscribe', ['token' => $recipient->token]);
 
-//         $this->post($url)->assertOk();
+        $this->post($url)->assertOk();
 
-//         expect($recipient->refresh()->status)->toBe('unsubscribed');
-//         $this->assertDatabaseHas('email_suppressions', ['email' => $recipient->email]);
-//     });
+        expect($recipient->refresh()->status)->toBe('unsubscribed');
+        $this->assertDatabaseHas('email_suppressions', ['email' => $recipient->email]);
+    });
 
-//     test('a one click request returns no content', function () {
-//         $recipient = makeRecipient(makeSendableCampaign(CampaignStatus::KEY_SENDING), 'pending');
-//         $url = URL::signedRoute('campaigns.unsubscribe', ['token' => $recipient->token]);
+    test('a one click request returns no content', function () {
+        $recipient = makeRecipient(makeSendableCampaign(CampaignStatus::KEY_SENDING), 'pending');
+        $url = URL::signedRoute('campaigns.unsubscribe', ['token' => $recipient->token]);
 
-//         $this->post($url, ['List-Unsubscribe' => 'One-Click'])->assertNoContent();
+        $this->post($url, ['List-Unsubscribe' => 'One-Click'])->assertNoContent();
 
-//         expect($recipient->refresh()->status)->toBe('unsubscribed');
-//     });
+        expect($recipient->refresh()->status)->toBe('unsubscribed');
+    });
 
-//     test('unsubscribing twice is safe', function () {
-//         $recipient = makeRecipient(makeSendableCampaign(CampaignStatus::KEY_SENDING), 'pending');
-//         $url = URL::signedRoute('campaigns.unsubscribe', ['token' => $recipient->token]);
+    test('unsubscribing twice is safe', function () {
+        $recipient = makeRecipient(makeSendableCampaign(CampaignStatus::KEY_SENDING), 'pending');
+        $url = URL::signedRoute('campaigns.unsubscribe', ['token' => $recipient->token]);
 
-//         $this->post($url)->assertOk();
-//         $this->post($url)->assertOk();
+        $this->post($url)->assertOk();
+        $this->post($url)->assertOk();
 
-//         expect(EmailSuppression::where('email', $recipient->email)->count())->toBe(1);
-//     });
+        expect(EmailSuppression::where('email', $recipient->email)->count())->toBe(1);
+    });
 
-//     test('an unsubscribe that arrives before sending stops the email', function () {
-//         $campaign = makeSendableCampaign(CampaignStatus::KEY_SENDING);
-//         $recipient = makeRecipient($campaign, 'pending');
-//         $url = URL::signedRoute('campaigns.unsubscribe', ['token' => $recipient->token]);
+    test('an unsubscribe that arrives before sending stops the email', function () {
+        $campaign = makeSendableCampaign(CampaignStatus::KEY_SENDING);
+        $recipient = makeRecipient($campaign, 'pending');
+        $url = URL::signedRoute('campaigns.unsubscribe', ['token' => $recipient->token]);
 
-//         $this->post($url)->assertOk();
+        $this->post($url)->assertOk();
 
-//         runSendJob($recipient->refresh());
+        runSendJob($recipient->refresh());
 
-//         Mail::assertNothingSent();
-//     });
+        Mail::assertNothingSent();
+    });
 
-//     test('contact names are escaped in the html body', function () {
-//         $campaign = makeSendableCampaign(CampaignStatus::KEY_SENDING, [
-//             'rendered_subject' => 'Hello',
-//             'rendered_body_html' => '<p>Hi {{ name }}</p><a href="{{ unsubscribe_url }}">Unsubscribe</a>',
-//         ]);
-//         $recipient = makeRecipient($campaign, 'pending', ['name' => '<script>alert(1)</script>']);
+    test('contact names are escaped in the html body', function () {
+        $campaign = makeSendableCampaign(CampaignStatus::KEY_SENDING, [
+            'rendered_subject' => 'Hello',
+            'rendered_body_html' => '<p>Hi {{ name }}</p><a href="{{ unsubscribe_url }}">Unsubscribe</a>',
+        ]);
+        $recipient = makeRecipient($campaign, 'pending', ['name' => '<script>alert(1)</script>']);
 
-//         $html = (new CampaignMail($recipient))->render();
+        $html = (new CampaignMail($recipient))->render();
 
-//         expect($html)->not->toContain('<script>')
-//             ->and($html)->toContain('&lt;script&gt;');
-//     });
+        expect($html)->not->toContain('<script>')
+            ->and($html)->toContain('&lt;script&gt;');
+    });
 
-//     test('the email carries one click unsubscribe headers', function () {
-//         $campaign = makeSendableCampaign(CampaignStatus::KEY_SENDING, [
-//             'rendered_subject' => 'Hello',
-//             'rendered_body_html' => '<a href="{{ unsubscribe_url }}">Unsubscribe</a>',
-//         ]);
-//         $recipient = makeRecipient($campaign);
+    test('the email carries one click unsubscribe headers', function () {
+        $campaign = makeSendableCampaign(CampaignStatus::KEY_SENDING, [
+            'rendered_subject' => 'Hello',
+            'rendered_body_html' => '<a href="{{ unsubscribe_url }}">Unsubscribe</a>',
+        ]);
+        $recipient = makeRecipient($campaign);
 
-//         $mail = new CampaignMail($recipient);
+        $mail = new CampaignMail($recipient);
 
-//         $mail->assertHasSubject('Hello');
-//         expect($mail->headers()->text)->toHaveKeys(['List-Unsubscribe', 'List-Unsubscribe-Post']);
-//     });
-// });
+        $mail->assertHasSubject('Hello');
+        expect($mail->headers()->text)->toHaveKeys(['List-Unsubscribe', 'List-Unsubscribe-Post']);
+    });
+});
