@@ -87,7 +87,7 @@ class CampaignMail extends Mailable
     private function renderTemplate(string $template, bool $html): string
     {
         return app(TemplateRendererService::class)->render($template, [
-            'first_name' => explode(' ', (string) $this->recipient->name)[0] ?? '',
+            'first_name' => explode(' ', (string) $this->recipient->name)[0],
             'name' => (string) $this->recipient->name,
             'email' => $this->recipient->email,
             'company' => (string) config('app.name'),

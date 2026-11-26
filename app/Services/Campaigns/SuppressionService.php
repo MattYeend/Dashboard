@@ -30,7 +30,7 @@ class SuppressionService
         $row->reason = $reason;
         $row->campaign_id = $campaignId ?? $row->campaign_id;
         $row->contact_id = $contactId ?? $row->contact_id;
-        $row->suppressed_at = now();
+        $row->forceFill(['suppressed_at' => now()]);
         $row->deleted_at = null;
         $row->save();
 

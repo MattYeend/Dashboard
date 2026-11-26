@@ -13,7 +13,10 @@ use InvalidArgumentException;
  * Turns a saved segment into a tenant scoped Contact query.
  *
  * Only the fields and operators listed here can be used. Anything else is
- * rejected, so stored filters can never become SQL injection.
+ * rejected, so stored criteria can never become SQL injection.
+ *
+ * Every criterion must match (AND). A segment with no criteria matches
+ * every contact that has an email address.
  */
 class SegmentResolverService
 {
@@ -34,31 +37,28 @@ class SegmentResolverService
      * Build the query for a segment. BelongsToOrganisation scopes it.
      *
      * @return Builder<Contact>
+     *
+     * @throws InvalidArgumentException When a criterion uses an unsupported field or operator.
      */
     public function query(CampaignSegment $segment): Builder
     {
         $query = Contact::query()->whereNotNull('email')->where('email', '!=', '');
-        $filters = $segment->filters ?? [];
 
-        $apply = function (Builder $q) use ($filters, $segment): void {
-            foreach ($filters as $filter) {
-                $this->assertAllowed($filter);
-                $method = $segment->match === 'any' ? 'orWhere' : 'where';
-                $this->condition($q, $method, $filter);
-            }
-        };
+        foreach ($segment->criteria ?? [] as $criterion) {
+            $this->assertAllowed($criterion);
+            $this->condition($query, $criterion);
+        }
 
-        // Group the rules so "any" never escapes the tenant scope or the email guard.
-        return $filters === [] ? $query : $query->where($apply);
+        return $query;
     }
 
     /**
-     * @param  array{field?: string, operator?: string, value?: mixed}  $filter
+     * @param  array{field?: string, operator?: string, value?: mixed}  $criterion
      */
-    private function assertAllowed(array $filter): void
+    private function assertAllowed(array $criterion): void
     {
-        $field = $filter['field'] ?? '';
-        $operator = $filter['operator'] ?? '';
+        $field = $criterion['field'] ?? '';
+        $operator = $criterion['operator'] ?? '';
 
         if (! isset(self::FIELDS[$field]) || ! in_array($operator, self::FIELDS[$field], true)) {
             throw new InvalidArgumentException('Unsupported segment rule.');
@@ -66,19 +66,21 @@ class SegmentResolverService
     }
 
     /**
-     * @param  array{field: string, operator: string, value: mixed}  $filter
+     * @param  Builder<Contact>  $q
+     * @param  array{field: string, operator: string, value: mixed}  $criterion
      */
-    private function condition(Builder $q, string $method, array $filter): void
+    private function condition(Builder $q, array $criterion): void
     {
-        $field = $filter['field'];
-        $value = (string) $filter['value'];
+        $field = $criterion['field'];
+        $value = (string) $criterion['value'];
 
-        match ($filter['operator']) {
-            'equals' => $q->{$method}($field, $value),
-            'contains' => $q->{$method}($field, 'like', '%'.addcslashes($value, '%_\\').'%'),
-            'starts_with' => $q->{$method}($field, 'like', addcslashes($value, '%_\\').'%'),
-            'after' => $q->{$method}($field, '>=', $value),
-            'before' => $q->{$method}($field, '<=', $value),
+        match ($criterion['operator']) {
+            'equals' => $q->where($field, $value),
+            'contains' => $q->where($field, 'like', '%'.addcslashes($value, '%_\\').'%'),
+            'starts_with' => $q->where($field, 'like', addcslashes($value, '%_\\').'%'),
+            'after' => $q->where($field, '>=', $value),
+            'before' => $q->where($field, '<=', $value),
+            default => throw new InvalidArgumentException('Unsupported segment rule.'),
         };
     }
 }

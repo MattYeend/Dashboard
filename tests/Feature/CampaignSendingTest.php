@@ -13,6 +13,7 @@ use App\Models\Contact;
 use App\Models\EmailSuppression;
 use App\Models\EmailTemplate;
 use App\Models\Organisation;
+use App\Services\Campaigns\SegmentResolverService;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
@@ -48,8 +49,7 @@ if (! function_exists('makeSendableCampaign')) {
         ]);
 
         $segment = CampaignSegment::factory()->create([
-            'filters' => [],
-            'match' => 'all',
+            'criteria' => [],
         ]);
 
         return Campaign::factory()->create(array_merge([
@@ -372,6 +372,36 @@ describe('start campaign job', function () {
 
         Queue::assertPushed(SendCampaignRecipientJob::class, 2);
     });
+
+    test('only contacts matching the segment criteria are selected', function () {
+        Queue::fake();
+
+        $campaign = makeSendableCampaign(CampaignStatus::KEY_SCHEDULED);
+        $campaign->segment->update([
+            'criteria' => [
+                ['field' => 'city', 'operator' => 'equals', 'value' => 'Leicester'],
+            ],
+        ]);
+
+        Contact::factory()->create(['email' => 'in@example.com', 'city' => 'Leicester']);
+        Contact::factory()->create(['email' => 'out@example.com', 'city' => 'Bangor']);
+
+        runStartJob($campaign);
+
+        expect(CampaignRecipient::where('campaign_id', $campaign->id)->pluck('email')->all())
+            ->toBe(['in@example.com']);
+    });
+
+    test('a segment with an unsupported rule is rejected', function () {
+        $campaign = makeSendableCampaign(CampaignStatus::KEY_SCHEDULED);
+        $campaign->segment->update([
+            'criteria' => [
+                ['field' => 'password', 'operator' => 'equals', 'value' => 'x'],
+            ],
+        ]);
+
+        app(SegmentResolverService::class)->query($campaign->segment->refresh());
+    })->throws(InvalidArgumentException::class);
 
     test('a suppressed address is skipped and not queued', function () {
         Queue::fake();
