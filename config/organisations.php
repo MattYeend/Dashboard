@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Actions\Campaigns\UnsubscribeRecipient;
 use App\Actions\Organisations\CascadeSoftDeleteOrganisationScopedRecords;
 use App\Console\Commands\DispatchDueCampaigns;
-use App\Http\Controllers\Public\CampaignUnsubscribeController;
 use App\Models\Activity;
 use App\Models\Address;
 use App\Models\Answer;
@@ -187,8 +185,8 @@ return [
         QueryService::class,
         TrashFilterService::class,
         DispatchDueCampaigns::class,
-        CampaignUnsubscribeController::class,
-        UnsubscribeRecipient::class,
+        // Public unsubscribe and tracking: the recipient token is the credential
+        // (validated against a strict pattern) and the tenant comes from the row.
         RecipientLookupService::class,
     ],
 ];
