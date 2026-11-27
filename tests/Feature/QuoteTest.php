@@ -531,7 +531,7 @@ describe('update', function () {
         $this->actingAs($superAdmin)
             ->putJson("/quotes/{$quote->id}", [
                 'subtotal' => '200.00',
-                'discount_amount' => '20.00',
+                'discount_amount' => '0.00',
                 'tax_amount' => '36.00',
                 'total_amount' => '1.00',
             ])
