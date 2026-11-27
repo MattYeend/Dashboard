@@ -21,7 +21,6 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 - [Configuration](#configuration)
 - [Running the Application](#running-the-application)
 - [Local Development (Docker)](#local-development-docker)
-- [Deployment (Laravel Cloud)](#deployment-laravel-cloud)
 - [Testing](#testing)
 - [Code Quality](#code-quality)
 - [Scripts Reference](#scripts-reference)
@@ -37,11 +36,12 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 
 ## Requirements
 
-- PHP 8.3 or higher
+- PHP 8.4 or higher
 - Composer
 - Node.js 22.12 or higher
 - npm
 - A supported database: MySQL 8 or PostgreSQL 16 (both run in CI). SQLite is for local development only
+- Optional: Docker Desktop (or Docker Engine with the Compose plugin) if you prefer the [Docker local environment](#local-development-docker)
 
 ---
 
@@ -62,7 +62,6 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 - [Laravel DomPDF](https://github.com/barryvdh/laravel-dompdf) -- PDF generation
 - [Mews Purifier](https://github.com/mewebstudio/purifier) -- HTML sanitisation for rich text
 - [Larastan](https://github.com/larastan/larastan) -- Static analysis
-
 **Frontend**
 
 - [Vue 3](https://vuejs.org) with Composition API
@@ -72,6 +71,9 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 - [Reka UI](https://reka-ui.com) -- Headless UI components
 - [Lucide Vue Next](https://lucide.dev) -- Icon library
 - [Vite 8](https://vitejs.dev) -- Frontend build tool
+**Tooling**
+
+- [Docker Compose](https://docs.docker.com/compose/) -- Optional local environment (PHP-FPM, Nginx, MySQL, Node)
 
 ---
 
@@ -144,7 +146,6 @@ Data is scoped to an organisation using [Spatie Laravel Multitenancy](https://sp
 - Tenant-scoped models use the `App\Traits\BelongsToOrganisation` trait and are listed in `config('organisations.scoped_models')`. Tables that are intentionally shared are listed in `config('organisations.central_tables')`.
 - File storage paths are prefixed with `organisations/{id}/`, cache keys include the organisation id, and queued jobs are tenant aware.
 - Organisation membership is a hard boundary. Organisation roles are separate from the application-wide roles described in [Roles and Permissions](#roles-and-permissions).
-
 Isolation is covered by `tests/Feature/Tenancy/TenantHttpIsolationTest.php`. See [CONTRIBUTING.md](CONTRIBUTING.md) for the checklist to follow when adding a tenant-scoped module.
 
 ---
@@ -231,7 +232,6 @@ This will:
 4. Run database migrations and seed roles, permissions and reference data (the seeded users' shared password is printed once if you have not set `SEED_USER_PASSWORD`)
 5. Install npm dependencies
 6. Build frontend assets
-
 Alternatively, run each step manually:
 
 ```bash
@@ -244,6 +244,8 @@ npm run build
 ```
 
 > **Seeded users:** `UserSeeder` creates local development accounts that share one password. Set `SEED_USER_PASSWORD` in `.env` to choose it, or leave it empty and a random password is generated and printed once when the seeder runs. `UserSeeder` refuses to run in production, so never seed production with development data.
+
+To use Docker instead of a local PHP, Node and database install, follow [Local Development (Docker)](#local-development-docker).
 
 ---
 
@@ -285,12 +287,13 @@ Key variables to configure:
 | Variable | Description |
 |---|---|
 | `APP_NAME` | The name displayed in the application |
-| `APP_URL` | The base URL of your application |
+| `APP_URL` | The base URL of your application (`http://dashboard.test` when using Docker) |
 | `DB_CONNECTION` | Database driver (`mysql`, `pgsql`, `sqlite`) |
-| `DB_HOST` | Database host |
+| `DB_HOST` | Database host (`db` when using Docker) |
 | `DB_DATABASE` | Database name |
 | `DB_USERNAME` | Database username |
 | `DB_PASSWORD` | Database password |
+| `DB_ROOT_PASSWORD` | MySQL root password. Used by the Docker `db` container only |
 | `SEED_USER_PASSWORD` | Optional. Shared password for seeded development users. Leave empty to generate a random one |
 
 ---
@@ -309,7 +312,6 @@ This runs the following in parallel:
 - `php artisan queue:listen` -- Queue worker
 - `php artisan pail` -- Log viewer
 - `npm run dev` -- Vite HMR dev server
-
 To build frontend assets for production:
 
 ```bash
@@ -320,19 +322,19 @@ npm run build
 
 ## Local Development (Docker)
 
-The Docker environment serves the application at `http://dashboard.test`. It is for local development only. Production runs on Laravel Cloud, which ignores the Docker files.
+The Docker environment serves the application at `http://dashboard.test`. It is for local development only.
 
 ### Prerequisites
 
 - Docker Desktop (or Docker Engine with the Compose plugin)
 - Git
-- Free ports `80`, `3306` (localhost only) and `5173`. Stop Laravel Herd or Valet first, as they use port 80
+- Free ports `80`, `3307` (localhost only) and `5173`. Stop Laravel Herd or Valet first, as they use port 80
 
 ### Files
 
 | File | Purpose |
 |---|---|
-| `Dockerfile` | PHP 8.3 FPM image with the required extensions and Composer |
+| `Dockerfile` | PHP 8.4 FPM image with the required extensions and Composer |
 | `docker-compose.yml` | App, Nginx, MySQL and Node (Vite) services |
 | `docker/nginx/default.conf` | Nginx virtual host for `dashboard.test` |
 | `.dockerignore` | Keeps `.env`, `vendor` and `node_modules` out of the image |
@@ -341,9 +343,9 @@ The Docker environment serves the application at `http://dashboard.test`. It is 
 
 | Service | Container | Purpose | Port |
 |---|---|---|---|
-| `app` | `dashboard_app` | PHP 8.3 FPM running Laravel | internal |
+| `app` | `dashboard_app` | PHP 8.4 FPM running Laravel | internal |
 | `nginx` | `dashboard_nginx` | Web server | 80 |
-| `db` | `dashboard_db` | MySQL 8.4 | 127.0.0.1:3306 |
+| `db` | `dashboard_db` | MySQL 8.4 | 127.0.0.1:3307 (container port 3306) |
 | `node` | `dashboard_node` | Vite dev server with HMR | 5173 |
 
 ### Setup
@@ -369,7 +371,6 @@ DB_ROOT_PASSWORD=
 Set strong, unique values for `DB_PASSWORD` and `DB_ROOT_PASSWORD`. Never commit `.env`.
 
 2. Add the local domain to your hosts file.
-
 macOS and Linux:
 
 ```bash
@@ -414,128 +415,6 @@ The Docker setup does not start a queue worker automatically. Run `queue:listen`
 - **Vite HMR not updating:** check `hmr.host` in `vite.config.ts` is `dashboard.test` and that port `5173` is free.
 - **Database connection refused on first start:** the `db` container needs a few seconds to become healthy. Check with `docker compose ps`.
 - **Permission errors in `storage` or `bootstrap/cache`:** set `UID` and `GID` in your shell to match your user (`id -u` and `id -g`), then rebuild with `docker compose up -d --build`.
-
----
-
-## Deployment (Laravel Cloud)
-
-Laravel Cloud builds from the Git repository and runs its own managed PHP, so `Dockerfile`, `docker-compose.yml` and `docker/` are ignored in production.
-
-### Environment settings
-
-- Set the PHP version to **8.4** or higher in the environment settings. `composer.lock` requires PHP 8.4.1.
-- Attach a Cloud managed **PostgreSQL** database. Cloud injects `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME` and `DB_PASSWORD` itself, so do not copy the Docker MySQL values across.
-- Enable a queue worker if you use `QUEUE_CONNECTION=database`, otherwise queued jobs never run.
-
-### Environment variables
-
-Set these in the Laravel Cloud dashboard, not in a committed `.env`. Never paste real values into issues, chat or the README.
-
-Injected by Cloud (check they exist, do not set them yourself):
-
-```dotenv
-APP_ENV=production
-APP_DEBUG=false
-APP_URL=https://main-dashboard.laravel.cloud
-LOG_CHANNEL=laravel-cloud-socket
-LOG_STDERR_FORMATTER=Monolog\Formatter\JsonFormatter
-SESSION_DRIVER=cookie
-CACHE_STORE=database
-SCHEDULE_CACHE_DRIVER=database
-```
-
-Custom variables:
-
-```dotenv
-APP_NAME="Dashboard"
-APP_KEY=
-APP_PREVIOUS_KEYS=
-
-LOG_LEVEL=warning
-LOG_VIEWER_ENABLED=false
-LARADOCS_ENABLED=false
-LARADOCS_ROUTE_REGISTER=false
-
-SESSION_ENCRYPT=true
-SESSION_SECURE_COOKIE=true
-SESSION_SAME_SITE=lax
-SESSION_DOMAIN=null
-
-SANCTUM_STATEFUL_DOMAINS=main-dashboard.laravel.cloud
-CORS_ALLOWED_ORIGINS=https://main-dashboard.laravel.cloud
-
-STRIPE_KEY=
-STRIPE_SECRET=
-STRIPE_WEBHOOK_SECRET=
-CASHIER_CURRENCY=gbp
-CASHIER_CURRENCY_LOCALE=en_GB
-
-MAIL_MAILER=smtp
-MAIL_SCHEME=null
-MAIL_HOST=
-MAIL_PORT=587
-MAIL_USERNAME=
-MAIL_PASSWORD=
-MAIL_FROM_ADDRESS=
-MAIL_FROM_NAME="Dashboard"
-
-AUDIT_LOG_HMAC_KEY_ID=v1
-AUDIT_LOG_HMAC_KEY=
-AUDIT_LOG_HMAC_RETIRED_KEYS=
-
-BACKUP_DISK=s3
-BACKUP_NOTIFICATION_EMAIL=
-BACKUP_ARCHIVE_PASSWORD=
-```
-
-Notes:
-
-- `AUDIT_LOG_HMAC_KEY` is required outside local and testing. The application refuses to boot without it.
-- Use live-mode Stripe keys for real payments. `STRIPE_WEBHOOK_SECRET` must come from a webhook endpoint created in Stripe for `https://main-dashboard.laravel.cloud/stripe/webhook`, not from the Stripe CLI.
-- Generate secrets with `php -r "echo bin2hex(random_bytes(32)).PHP_EOL;"`.
-- `SEED_USER_PASSWORD` is not needed in production, because `UserSeeder` refuses to run there.
-
-### Build commands
-
-```bash
-composer install --no-dev --optimize-autoloader
-npm ci
-npm run build
-```
-
-### Deploy commands
-
-```bash
-php artisan migrate --force
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-```
-
-### First deploy
-
-Do not seed on every deploy. Run the permissions seeder once, manually, from the Cloud command runner:
-
-```bash
-php artisan db:seed --class=RolePermissionSeeder --force
-```
-
-`UserSeeder` refuses to run in production, so create the first Super Admin user manually from the command runner with `php artisan tinker`, using a strong unique password.
-
-### After deploying
-
-- Run `php artisan backup:run` once and confirm `pg_dump` is available, as live uses PostgreSQL.
-- Configure the `BACKUP_DISK` storage (S3 or Cloud object storage), otherwise backups fail.
-- Send a test email to confirm the SMTP credentials work.
-- Trigger a test event from the Stripe dashboard and confirm the webhook is accepted.
-
-### Custom domain
-
-Add the domain in the environment's domain settings and create the DNS record Cloud provides. SSL is handled automatically. When the domain changes, update `APP_URL`, `SANCTUM_STATEFUL_DOMAINS`, `CORS_ALLOWED_ORIGINS` and the Stripe webhook endpoint to match. Menu labels in the Cloud dashboard change between releases, so confirm them there.
-
-### Local and live database difference
-
-Local Docker runs MySQL 8.4 and live runs PostgreSQL. CI covers both, but to reduce surprises, you can switch the Docker `db` service to PostgreSQL.
 
 ---
 
@@ -619,6 +498,8 @@ npm run types:check
 |---|---|
 | `composer run setup` | Full project setup |
 | `composer run dev` | Start all dev services |
+| `docker compose up -d --build` | Build and start the Docker environment |
+| `docker compose down` | Stop the Docker environment |
 | `npm run dev` | Start Vite dev server |
 | `npm run build` | Build frontend for production |
 | `npm run lint` | Fix ESLint violations |
@@ -680,6 +561,13 @@ More artisan commands can be found <a href="https://artisan.page/" target="_blan
 ## Security
 
 Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md). Do not open public issues for security problems.
+
+Docker specific safeguards for local development:
+
+- MySQL is bound to `127.0.0.1` only, so it is not exposed to your network.
+- PHP runs as a non-root user inside the container, and Nginx mounts the code read-only.
+- `.env` files are excluded from the Docker image and must never be committed.
+- Rebuild images regularly with `docker compose build --pull` to pick up security patches.
 
 ---
 
