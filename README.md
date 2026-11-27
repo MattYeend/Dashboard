@@ -408,7 +408,7 @@ docker compose build --pull                           # Rebuild with the latest 
 The Docker setup does not start a queue worker automatically. Run `queue:listen` in a separate terminal when you need queued jobs processed.
 
 ### Troubleshooting
- 
+
 - **Port 80 already in use:** stop Laravel Herd, Valet or any local web server, then run `docker compose up -d` again.
 - **`dashboard.test` does not load:** confirm the hosts file entry exists and clear your browser DNS cache.
 - **Vite HMR not updating:** check `hmr.host` in `vite.config.ts` is `dashboard.test` and that port `5173` is free.
@@ -416,22 +416,84 @@ The Docker setup does not start a queue worker automatically. Run `queue:listen`
 - **Permission errors in `storage` or `bootstrap/cache`:** set `UID` and `GID` in your shell to match your user (`id -u` and `id -g`), then rebuild with `docker compose up -d --build`.
 
 ---
- 
+
 ## Deployment (Laravel Cloud)
 
 Laravel Cloud builds from the Git repository and runs its own managed PHP, so `Dockerfile`, `docker-compose.yml` and `docker/` are ignored in production.
 
+### Environment settings
+
+- Set the PHP version to **8.4** or higher in the environment settings. `composer.lock` requires PHP 8.4.1.
+- Attach a Cloud managed **PostgreSQL** database. Cloud injects `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME` and `DB_PASSWORD` itself, so do not copy the Docker MySQL values across.
+- Enable a queue worker if you use `QUEUE_CONNECTION=database`, otherwise queued jobs never run.
+
 ### Environment variables
 
-Set these in the Laravel Cloud dashboard, not in a committed `.env`:
+Set these in the Laravel Cloud dashboard, not in a committed `.env`. Never paste real values into issues, chat or the README.
+
+Injected by Cloud (check they exist, do not set them yourself):
 
 ```dotenv
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://dashboard.yourdomain.com
+APP_URL=https://main-dashboard.laravel.cloud
+LOG_CHANNEL=laravel-cloud-socket
+LOG_STDERR_FORMATTER=Monolog\Formatter\JsonFormatter
+SESSION_DRIVER=cookie
+CACHE_STORE=database
+SCHEDULE_CACHE_DRIVER=database
 ```
 
-Attach a Cloud managed MySQL database to the environment. Cloud injects the `DB_*` values itself, so the Docker values are not copied across. Set `AUDIT_LOG_HMAC_KEY`, the Stripe keys and any other secrets here too.
+Custom variables:
+
+```dotenv
+APP_NAME="Dashboard"
+APP_KEY=
+APP_PREVIOUS_KEYS=
+
+LOG_LEVEL=warning
+LOG_VIEWER_ENABLED=false
+LARADOCS_ENABLED=false
+LARADOCS_ROUTE_REGISTER=false
+
+SESSION_ENCRYPT=true
+SESSION_SECURE_COOKIE=true
+SESSION_SAME_SITE=lax
+SESSION_DOMAIN=null
+
+SANCTUM_STATEFUL_DOMAINS=main-dashboard.laravel.cloud
+CORS_ALLOWED_ORIGINS=https://main-dashboard.laravel.cloud
+
+STRIPE_KEY=
+STRIPE_SECRET=
+STRIPE_WEBHOOK_SECRET=
+CASHIER_CURRENCY=gbp
+CASHIER_CURRENCY_LOCALE=en_GB
+
+MAIL_MAILER=smtp
+MAIL_SCHEME=null
+MAIL_HOST=
+MAIL_PORT=587
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_FROM_ADDRESS=
+MAIL_FROM_NAME="Dashboard"
+
+AUDIT_LOG_HMAC_KEY_ID=v1
+AUDIT_LOG_HMAC_KEY=
+AUDIT_LOG_HMAC_RETIRED_KEYS=
+
+BACKUP_DISK=s3
+BACKUP_NOTIFICATION_EMAIL=
+BACKUP_ARCHIVE_PASSWORD=
+```
+
+Notes:
+
+- `AUDIT_LOG_HMAC_KEY` is required outside local and testing. The application refuses to boot without it.
+- Use live-mode Stripe keys for real payments. `STRIPE_WEBHOOK_SECRET` must come from a webhook endpoint created in Stripe for `https://main-dashboard.laravel.cloud/stripe/webhook`, not from the Stripe CLI.
+- Generate secrets with `php -r "echo bin2hex(random_bytes(32)).PHP_EOL;"`.
+- `SEED_USER_PASSWORD` is not needed in production, because `UserSeeder` refuses to run there.
 
 ### Build commands
 
@@ -450,17 +512,30 @@ php artisan route:cache
 php artisan view:cache
 ```
 
-### Seeding
+### First deploy
 
-Do not seed on every deploy. `UserSeeder` refuses to run in production. Run the permissions seeder once, manually, from the Cloud command runner:
+Do not seed on every deploy. Run the permissions seeder once, manually, from the Cloud command runner:
 
 ```bash
 php artisan db:seed --class=RolePermissionSeeder --force
 ```
 
+`UserSeeder` refuses to run in production, so create the first Super Admin user manually from the command runner with `php artisan tinker`, using a strong unique password.
+
+### After deploying
+
+- Run `php artisan backup:run` once and confirm `pg_dump` is available, as live uses PostgreSQL.
+- Configure the `BACKUP_DISK` storage (S3 or Cloud object storage), otherwise backups fail.
+- Send a test email to confirm the SMTP credentials work.
+- Trigger a test event from the Stripe dashboard and confirm the webhook is accepted.
+
 ### Custom domain
 
-Add the domain in the environment's domain settings and create the DNS record Cloud provides. SSL is handled automatically.
+Add the domain in the environment's domain settings and create the DNS record Cloud provides. SSL is handled automatically. When the domain changes, update `APP_URL`, `SANCTUM_STATEFUL_DOMAINS`, `CORS_ALLOWED_ORIGINS` and the Stripe webhook endpoint to match. Menu labels in the Cloud dashboard change between releases, so confirm them there.
+
+### Local and live database difference
+
+Local Docker runs MySQL 8.4 and live runs PostgreSQL. CI covers both, but to reduce surprises, you can switch the Docker `db` service to PostgreSQL.
 
 ---
 
