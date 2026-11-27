@@ -20,6 +20,8 @@ A modern admin dashboard built with **Laravel 13**, **Vue 3**, **TypeScript**, a
 - [Roles and Permissions](#roles-and-permissions)
 - [Configuration](#configuration)
 - [Running the Application](#running-the-application)
+- [Local Development (Docker)](#local-development-docker)
+- [Deployment (Laravel Cloud)](#deployment-laravel-cloud)
 - [Testing](#testing)
 - [Code Quality](#code-quality)
 - [Scripts Reference](#scripts-reference)
@@ -313,6 +315,152 @@ To build frontend assets for production:
 ```bash
 npm run build
 ```
+
+---
+
+## Local Development (Docker)
+
+The Docker environment serves the application at `http://dashboard.test`. It is for local development only. Production runs on Laravel Cloud, which ignores the Docker files.
+
+### Prerequisites
+
+- Docker Desktop (or Docker Engine with the Compose plugin)
+- Git
+- Free ports `80`, `3306` (localhost only) and `5173`. Stop Laravel Herd or Valet first, as they use port 80
+
+### Files
+
+| File | Purpose |
+|---|---|
+| `Dockerfile` | PHP 8.3 FPM image with the required extensions and Composer |
+| `docker-compose.yml` | App, Nginx, MySQL and Node (Vite) services |
+| `docker/nginx/default.conf` | Nginx virtual host for `dashboard.test` |
+| `.dockerignore` | Keeps `.env`, `vendor` and `node_modules` out of the image |
+
+### Services
+
+| Service | Container | Purpose | Port |
+|---|---|---|---|
+| `app` | `dashboard_app` | PHP 8.3 FPM running Laravel | internal |
+| `nginx` | `dashboard_nginx` | Web server | 80 |
+| `db` | `dashboard_db` | MySQL 8.4 | 127.0.0.1:3306 |
+| `node` | `dashboard_node` | Vite dev server with HMR | 5173 |
+
+### Setup
+
+1. Copy the environment file and set Docker friendly values:
+
+```bash
+cp .env.example .env
+```
+
+```dotenv
+APP_URL=http://dashboard.test
+ 
+DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_DATABASE=dashboard
+DB_USERNAME=dashboard
+DB_PASSWORD=
+DB_ROOT_PASSWORD=
+```
+
+Set strong, unique values for `DB_PASSWORD` and `DB_ROOT_PASSWORD`. Never commit `.env`.
+
+2. Add the local domain to your hosts file.
+
+macOS and Linux:
+
+```bash
+echo "127.0.0.1 dashboard.test" | sudo tee -a /etc/hosts
+```
+
+Windows: add `127.0.0.1 dashboard.test` to `C:\Windows\System32\drivers\etc\hosts` using an editor run as administrator.
+
+3. Build and start the containers, then install and migrate:
+
+```bash
+docker compose up -d --build
+docker compose exec app composer install
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate --seed
+docker compose exec app php artisan storage:link
+```
+
+4. Visit `http://dashboard.test`.
+
+### Common Docker Commands
+
+```bash
+docker compose up -d                                  # Start containers
+docker compose down                                   # Stop containers
+docker compose ps                                     # Check container health
+docker compose logs -f app                            # Follow application logs
+docker compose exec app php artisan tinker            # Open Tinker
+docker compose exec app php artisan test              # Run the Pest test suite
+docker compose exec app php artisan queue:listen      # Run the queue worker
+docker compose exec app php artisan config:clear      # Clear cached config
+docker compose exec app php artisan wayfinder:generate --with-form
+docker compose build --pull                           # Rebuild with the latest base images
+```
+
+The Docker setup does not start a queue worker automatically. Run `queue:listen` in a separate terminal when you need queued jobs processed.
+
+### Troubleshooting
+ 
+- **Port 80 already in use:** stop Laravel Herd, Valet or any local web server, then run `docker compose up -d` again.
+- **`dashboard.test` does not load:** confirm the hosts file entry exists and clear your browser DNS cache.
+- **Vite HMR not updating:** check `hmr.host` in `vite.config.ts` is `dashboard.test` and that port `5173` is free.
+- **Database connection refused on first start:** the `db` container needs a few seconds to become healthy. Check with `docker compose ps`.
+- **Permission errors in `storage` or `bootstrap/cache`:** set `UID` and `GID` in your shell to match your user (`id -u` and `id -g`), then rebuild with `docker compose up -d --build`.
+
+---
+ 
+## Deployment (Laravel Cloud)
+
+Laravel Cloud builds from the Git repository and runs its own managed PHP, so `Dockerfile`, `docker-compose.yml` and `docker/` are ignored in production.
+
+### Environment variables
+
+Set these in the Laravel Cloud dashboard, not in a committed `.env`:
+
+```dotenv
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://dashboard.yourdomain.com
+```
+
+Attach a Cloud managed MySQL database to the environment. Cloud injects the `DB_*` values itself, so the Docker values are not copied across. Set `AUDIT_LOG_HMAC_KEY`, the Stripe keys and any other secrets here too.
+
+### Build commands
+
+```bash
+composer install --no-dev --optimize-autoloader
+npm ci
+npm run build
+```
+
+### Deploy commands
+
+```bash
+php artisan migrate --force
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+### Seeding
+
+Do not seed on every deploy. `UserSeeder` refuses to run in production. Run the permissions seeder once, manually, from the Cloud command runner:
+
+```bash
+php artisan db:seed --class=RolePermissionSeeder --force
+```
+
+### Custom domain
+
+Add the domain in the environment's domain settings and create the DNS record Cloud provides. SSL is handled automatically.
 
 ---
 
