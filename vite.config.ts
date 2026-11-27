@@ -9,6 +9,10 @@ import { visualizer } from 'rollup-plugin-visualizer';
 
 const analyse = process.env.ANALYSE === 'true';
 
+// The Docker node container has no PHP, so Wayfinder cannot run there.
+// Generate the route files from the app container instead.
+const inDocker = process.env.DOCKER === 'true';
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -30,7 +34,7 @@ export default defineConfig({
                 },
             },
         }),
-        wayfinder({
+        !inDocker && wayfinder({
             formVariants: true,
         }),
         analyse && visualizer({
@@ -40,6 +44,14 @@ export default defineConfig({
             brotliSize: true,
         }),
     ],
+    server: {
+        host: '0.0.0.0',
+        port: 5173,
+        strictPort: true,
+        hmr: {
+            host: 'dashboard.test',
+        },
+    },
     build: {
         rollupOptions: {
             onwarn(warning, warn) {
